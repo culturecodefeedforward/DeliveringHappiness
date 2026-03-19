@@ -1,3 +1,7 @@
+// --- CONFIGURATION ---
+// Dán URL Web App từ Google Apps Script của bạn vào đây:
+const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzEYziybqZxTdCdOwrR1rGFFhb2KSwnusgSz68r0eYFEPtDvbMwtEeke5XGejJ9nj9z/exec";
+
 const quizData = [
     {
         q: "Bạn có một định hướng cuộc đời (Mục tiêu/Đam mê) rất rõ ràng và hay nói về nó, nhưng lại không dành thời gian hay tiền bạc để rèn luyện. Trạng thái này gọi là gì?",
@@ -105,6 +109,28 @@ let currentStep = 0;
 let score = 0;
 let answered = false;
 
+// --- TRACKING LOGIC ---
+async function logToSheet(event, detail, scoreValue = null) {
+    if (!SHEET_WEBAPP_URL) {
+        console.log('Tracking off (No URL):', event, detail, scoreValue);
+        return;
+    }
+    try {
+        await fetch(SHEET_WEBAPP_URL, {
+            method: 'POST',
+            mode: 'no-cors', // Cần thiết cho Google Apps Script
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                event: event,
+                detail: detail,
+                score: scoreValue || ""
+            })
+        });
+    } catch (e) {
+        console.error('Tracking Error:', e);
+    }
+}
+
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -113,6 +139,7 @@ function shuffleArray(array) {
 }
 
 function initQuiz() {
+    logToSheet('START_QUIZ', 'User entered assessment page');
     renderQuestion();
 }
 
@@ -157,6 +184,9 @@ function handleAnswer(index, isCorrect) {
     const options = document.querySelectorAll('.quiz-option');
     options[index].classList.add(isCorrect ? 'correct' : 'wrong');
 
+    // Logging
+    logToSheet('ANSWER_QUESTION', `Q${currentStep + 1}: ${isCorrect ? 'Correct' : 'Wrong'} - ${quizData[currentStep].q.substring(0, 40)}...`);
+
     // Find and highlight correct option if user was wrong
     if (!isCorrect) {
         options.forEach((opt, idx) => {
@@ -190,7 +220,18 @@ function showSummary() {
     if (summary) summary.style.display = 'block';
 
     const finalScoreEl = document.getElementById('finalScore');
-    if (finalScoreEl) finalScoreEl.innerText = `${score}/${quizData.length}`;
+    const scoreStr = `${score}/${quizData.length}`;
+    if (finalScoreEl) finalScoreEl.innerText = scoreStr;
+
+    // Logging final score
+    logToSheet('FINISH_QUIZ', 'User reached summary screen', scoreStr);
+
+    // Track buttons at footer of summary
+    document.querySelectorAll('.summary-actions a').forEach(btn => {
+        btn.addEventListener('click', () => {
+            logToSheet('CTA_CLICK', `User clicked: ${btn.innerText.trim()}`);
+        });
+    });
 }
 
 function finishQuiz() {
