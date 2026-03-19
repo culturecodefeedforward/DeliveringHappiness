@@ -109,21 +109,25 @@ let currentStep = 0;
 let score = 0;
 let answered = false;
 
+// Tạo ID duy nhất cho mỗi phiên làm bài để liên kết bảng Tổng hợp & Chi tiết
+const sessionId = 'dh-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+
 // --- TRACKING LOGIC ---
-async function logToSheet(event, detail, scoreValue = null) {
+async function logToSheet(event, detail, extra = {}) {
     if (!SHEET_WEBAPP_URL) {
-        console.log('Tracking off (No URL):', event, detail, scoreValue);
+        console.log('Tracking off (No URL):', event, detail, extra);
         return;
     }
     try {
         await fetch(SHEET_WEBAPP_URL, {
             method: 'POST',
-            mode: 'no-cors', // Cần thiết cho Google Apps Script
+            mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+                sessionId: sessionId,
                 event: event,
                 detail: detail,
-                score: scoreValue || ""
+                ...extra
             })
         });
     } catch (e) {
@@ -184,8 +188,11 @@ function handleAnswer(index, isCorrect) {
     const options = document.querySelectorAll('.quiz-option');
     options[index].classList.add(isCorrect ? 'correct' : 'wrong');
 
-    // Logging
-    logToSheet('ANSWER_QUESTION', `Q${currentStep + 1}: ${isCorrect ? 'Correct' : 'Wrong'} - ${quizData[currentStep].q.substring(0, 40)}...`);
+    // Logging chi tiết từng câu
+    logToSheet('ANSWER_QUESTION', quizData[currentStep].q, {
+        questionNum: currentStep + 1,
+        result: isCorrect ? 'Đúng' : 'Sai'
+    });
 
     // Find and highlight correct option if user was wrong
     if (!isCorrect) {
@@ -223,13 +230,13 @@ function showSummary() {
     const scoreStr = `${score}/${quizData.length}`;
     if (finalScoreEl) finalScoreEl.innerText = scoreStr;
 
-    // Logging final score
-    logToSheet('FINISH_QUIZ', 'User reached summary screen', scoreStr);
+    // Logging tổng hợp khi xong bài
+    logToSheet('FINISH_QUIZ', 'User reached summary screen', { score: scoreStr });
 
     // Track buttons at footer of summary
     document.querySelectorAll('.summary-actions a').forEach(btn => {
         btn.addEventListener('click', () => {
-            logToSheet('CTA_CLICK', `User clicked: ${btn.innerText.trim()}`);
+            logToSheet('CTA_CLICK', btn.innerText.trim());
         });
     });
 }
