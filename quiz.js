@@ -1,6 +1,6 @@
 // --- CONFIGURATION ---
 // Dán URL Web App từ Google Apps Script của bạn vào đây:
-const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzEYziybqZxTdCdOwrR1rGFFhb2KSwnusgSz68r0eYFEPtDvbMwtEeke5XGejJ9nj9z/exec";
+const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbx0IpPYSMMjJ9onPXL5xaL_VBXf5eYwV_B0xv6zcY_bgeVRWdNZD05VrRFui7wP5wrL/exec";
 
 const quizData = [
     {
