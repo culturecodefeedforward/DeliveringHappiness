@@ -139,7 +139,50 @@ function shuffleArray(array) {
 }
 
 function initQuiz() {
-    logToSheet('START_QUIZ', 'User entered assessment page');
+    renderWelcome();
+}
+
+function renderWelcome() {
+    const container = document.getElementById('quizContent');
+    if (!container) return;
+
+    container.innerHTML = `
+        <div class="quiz-welcome">
+            <h2>Bạn đang dùng "Hệ điều hành" Hạnh phúc nào?</h2>
+            <p>Có thể bạn đang hài lòng hoặc bất như ý với cá nhân mình, gia đình, công ty... Liệu tất cả điều đó đều vì những nhân tố bên ngoài? Hãy dành 1 phút để đánh giá lại về Hệ điều hành hạnh phúc của mình.</p>
+            
+            <div class="quiz-welcome-features">
+                <div class="welcome-feature">
+                    <span>🚀</span>
+                    <div>
+                        <strong>Khám phá bản thân:</strong>
+                        <div style="font-size:0.9rem; opacity:0.7">Bạn thuộc nhóm "Trực giác" hay đã có "Hệ điều hành DH"?</div>
+                    </div>
+                </div>
+                <div class="welcome-feature">
+                    <span>⏱️</span>
+                    <div>
+                        <strong>Nhanh chóng:</strong>
+                        <div style="font-size:0.9rem; opacity:0.7">Chỉ mất 1 phút với 10 câu hỏi trắc nghiệm nhanh.</div>
+                    </div>
+                </div>
+                <div class="welcome-feature">
+                    <span>📊</span>
+                    <div>
+                        <strong>Kết quả tức thì:</strong>
+                        <div style="font-size:0.9rem; opacity:0.7">Nhận phân tích định hướng hạnh phúc ngay sau khi hoàn tất.</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-quiz-next" style="display:block" onclick="startQuiz()">Bắt đầu đánh giá (Start)</button>
+        </div>
+    `;
+    logToSheet('VISIT_ASSESSMENT', 'User reached welcome screen');
+}
+
+function startQuiz() {
+    logToSheet('START_QUIZ', 'User clicked Start button');
     renderQuestion();
 }
 
