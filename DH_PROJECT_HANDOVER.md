@@ -86,4 +86,13 @@ Khi đã nắm hệ thống này, bạn có thể triển khai thành các sản
 3.  **Quản lý Phản hồi (Feedback)**
     *   Viết lại form trang `assessment.html` để tạo luồng xin phản hồi chất lượng CSKH, nối thẳng vào Dashboard Sheets để team leader kiểm tra realtime.
 
+
+---
+
+## PHẦN 4: DANH SÁCH LINK QUAN TRỌNG (QUICK LINKS)
+
+*   **Website (Live):** [https://dh-crm-landing.vercel.app/](https://dh-crm-landing.vercel.app/)
+*   **CRM Lead Sheet (Chính):** [DH4HN CRM Leads - Landing Page](https://docs.google.com/spreadsheets/d/1ZToRX6J5Vo6UgHzYEE_eUxU0bVnsGxBRLt-8tduI5CA/edit)
+*   **Google Apps Script (Webhook):** (Truy cập qua tài khoản quản lý Sheet trên)
+
 **(HẾT TÀI LIỆU CHUYỂN GIAO)**
