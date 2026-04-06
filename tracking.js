@@ -10,8 +10,7 @@ async function logToSheet(event, detail, extra = {}) {
     try {
         await fetch(targetUrl, {
             method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
+            mode: 'cors', // Chuyển sang cors chuẩn
             body: JSON.stringify({
                 sessionId: sessionId,
                 event: event,
