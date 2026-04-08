@@ -1,135 +1,112 @@
 # 🏗️ TÀI LIỆU KỸ THUẬT (TECHNICAL SPECIFICATION) — Dự án DH4HN Website
 
-Dự án này là nền tảng chia sẻ và đánh giá kiến thức cho chương trình **Delivering Happiness Masterclass**.
+Dự án này là nền tảng chia sẻ và tập hợp dữ liệu đăng ký cho chương trình **Delivering Happiness Masterclass** và **CultureCode 101**.
 
 ---
 
 ## 🛠️ Giải pháp Kỹ thuật Đã triển khai
 
-### 1. Hệ thống Theo dõi Đa cấp (Multi-sheet Tracking via Google Apps Script)
-*   **Giải pháp:** Sử dụng Google Apps Script làm trung gian (Web App) để nhận dữ liệu từ Website qua phương thức POST và ghi vào Google Sheets.
+### 1. Hệ thống CRM & Pipeline Dữ liệu (GAS Webhook)
+*   **Giải pháp:** Sử dụng Google Apps Script (GAS) làm Web App xử lý POST request từ Website và ghi trực tiếp vào CRM Google Sheets.
 *   **Webhook CRM URL (Official):** `https://script.google.com/macros/s/AKfycby1-xHkVxBomRyqbL6GGDnwHXSLsmV7FOLX4XgFXCmoltvOeBM9r6WZQrRB_lIFFAUqyw/exec`
-*   **Sheet CRM Link (Culture Code):** `https://docs.google.com/spreadsheets/d/1ZToRX6J5Vo6UghzYEE_eUxU0bVnsGxBRLt-8tduI5CA/edit` (Sheet: `Trang tính1`)
-*   **Cấu trúc dữ liệu (12 Cột):**
-    *   A: `Timestamp`, B: `Event`, C: `FullName`, D: `Phone`, E: `Email`, F: `Company`, G: `Type`, H: `Source`, I: `Event ID`, J: `Session ID`, K: `Referrer Name`, L: `Referrer Phone`
+*   **Sheet CRM Link:** [DH4HN CRM Leads](https://docs.google.com/spreadsheets/d/1ZToRX6J5Vo6UghzYEE_eUxU0bVnsGxBRLt-8tduI5CA/edit)
+*   **Cấu hình Triển khai (Bắt buộc):**
+    *   *Execute as:* `Me` (Tài khoản culturecodeproject@gmail.com).
+    *   *Who has access:* `Anyone` (Để cho phép fetch từ GitHub Pages).
+*   **Mapping Dữ liệu (JSON Keys -> Cột Sheet):**
+    | Cột | Tên Cột | JSON Key | Ghi chú |
+    |---|---|---|---|
+    | A | Timestamp | `new Date()` | Tự động sinh bởi GAS |
+    | B | Event | `data.event` | Phân loại: SUBMIT/EVENT/VIEW |
+    | C | FullName | `data.fullName` | Họ tên khách hàng |
+    | D | Phone | `data.phone` | Số điện thoai/Zalo |
+    | E | Email | `data.email` | Địa chỉ email |
+    | F | Company | `data.company` | Chỉ dùng cho CC101 |
+    | G | Type | `data.type` | Loại đăng ký |
+    | H | Source | `data.source` | Nguồn (Landing/Quiz) |
+    | I | Event ID | `data.event_id` | Mã định danh sự kiện |
+    | J | Session ID | `data.sessionId` | Theo dõi hành trình phiên |
+    | K | Referrer Name | `data.referrerName` | Người giới thiệu (Chỉ dùng cho DH) |
+    | L | Referrer Phone | `data.referrerPhone` | SĐT người giới thiệu |
 
-### 2. Hệ thống Analytics Hợp nhất (Unified Site Analytics)
-*   **Giải pháp:** Tạo file `tracking.js` dùng chung cho toàn bộ Website (Home & Quiz). Dùng `IntersectionObserver` để theo dõi cuộn trang (Scroll Depth).
-*   **Lý do:** Theo dõi hành trình người dùng toàn diện: từ bản Personal/Official -> Cuộn tới mục Đăng ký -> Vào làm Quiz. Giúp đo lường tỷ lệ chuyển đổi (Conversion Rate) chính xác hơn.
-*   **Quản lý Cache (Cache Busting):** Sử dụng tham số version `?v=X.X` khi load Script để vượt qua bộ nhớ đệm của trình duyệt.
-
-### 3. Tích hợp AI Kiến Thức (NotebookLM MCP)
-*   **Giải pháp:** Ứng dụng kiến trúc hệ thống Model Context Protocol (MCP) thông qua máy chủ `notebooklm-mcp` để kết nối Agent AI với Google NotebookLM.
-*   **Lý do:** Tự động hóa tạo các Studio Artifacts (Audio podcast, visual infographic, quiz flashcards) từ tài liệu chuẩn của chương trình. Rút ngắn thời gian sản xuất học liệu.
-*   **Mở rộng:** Hỗ trợ kết xuất tài liệu động, xây dựng hệ thống học tập tương tác không cần viết nội dung thủ công.
-
----
-
-## 🌳 Kiến trúc Triển khai & Ánh xạ Files (Multi-Repo Strategy)
-
-Dự án được duy trì song song trên hai Repository độc lập để đảm bảo việc phân tách nội dung (Public vs Demo). 
-
-Dưới đây là Chiến lược Hai Tệp (Two-File System Strategy) và ánh xạ từng phiên bản:
-
-| Môi trường / Mục tiêu | Repository (Kênh triển khai) | File Gốc Local (Source of Truth) | Cấu trúc Hiển thị |
-| :--- | :--- | :--- | :--- |
-| **Bản SẠCH (Official)**<br>Dành cho cộng đồng, public 100% | `culturecodefeedforward/DeliveringHappiness` | `index_OFFICIAL.html` | Có chứa mục Thư viện Kiến thức (LMS Login). **Không** chứa các bản demo (Artifacts). |
-| **Bản DEMO (Personal)**<br>Training, Sales, Testing Artifacts | `vuhoang2708/culture_code_VN.DH` | `index.html` | Hình ảnh Demo của Studio Artifacts (Audio, Visual, Flashcards) cho khách hàng/nội bộ. |
-| **Cổng Đăng ký DH**<br>Quan tâm Masterclass | Toàn bộ 2 Repositories | `register.html` | Form 5 trường (Tên, SĐT, Email, **Người giới thiệu**). |
-| **Cổng CC101 (HCM)**<br>Đăng ký trực tiếp | Toàn bộ 2 Repositories | `register_cc101.html` | Form 4 trường (Tên, SĐT, Email, **Công ty**). |
+### 2. Hệ thống Analytics & Tracking (`tracking.js`)
+*   **Giải pháp:** Tracker tổng hợp tích hợp `IntersectionObserver`.
+*   **Cơ chế:** Ghi nhận sự kiện `PAGE_VIEW` khi tải trang và `SCROLL_REACH` khi người dùng cuộn đến khu vực đăng ký (Target: `#register` hoặc nút CTA).
+*   **Lý do:** Đo lường chính xác điểm rơi của người dùng trên Landing Page trước khi họ quyết định nhấn vào Form.
+*   **Cache Busting:** Sử dụng tham số `?v=TIMESTAMP` khi gọi script từ HTML.
 
 ---
 
-## 📋 Cấu trúc Cổng Đăng ký (Native Registration Form)
+## 🌳 Chiến lược Quản lý Repository (Branch-based Strategy)
 
-Hệ thống sử dụng file `register.html` để thu thập thông tin khách hàng trực tiếp mà không cần dùng Google Form nhúng (iFrame), giúp tăng tốc độ tải trang và tính thẩm mỹ.
+Dự án sử dụng cơ chế **Branch-based** kết hợp **Git Worktree** để quản lý 2 luồng nội dung song song (Công khai & Nội bộ) trên cùng một Repository.
 
-*   **Các trường dữ liệu (Fields):**
-    *   `fullName`: Họ và tên (Bắt buộc).
-    *   `phone`: Số điện thoại/Zalo (Bắt buộc).
-    *   `email`: Địa chỉ email (Bắt buộc).
-    *   `referrerName`: Tên học viên cũ giới thiệu.
-    *   `referrerPhone`: SĐT học viên cũ giới thiệu.
-*   **Cấu trúc CC101 (`register_cc101.html`):**
-    *   Bổ sung thêm trường `company` để ghi nhận tổ chức/đơn vị công tác.
-*   **Sự kiện Tracking:**
-    *   Sử dụng `REGISTER_EVENT` cho CC101 và `REGISTER_SUBMIT` cho DH quan tâm.
-    *   Khi gửi, hệ thống gọi hàm `logToSheet` trong `tracking.js`.
-*   **Công nghệ:** CSS Glassmorphism, Layout Grid (2 cột), Fetch API.
+> [!IMPORTANT]
+> Quy trình lỗi thời (dùng nhiều file như `index_OFFICIAL.html`, `index_BAK` hay `cp` thủ công) đã BỊ LOẠI BỎ hoàn toàn. Trên mỗi nhánh, chỉ tồn tại duy nhất **MỘT file `index.html`**. Vấn đề bảo mật nội dung DH7 hiện tại chỉ được chặn ở tầng Frontend (Login JS), **KHÔNG** dùng để bảo mật dữ liệu tuyệt đối.
+
+| Nhánh (Branch) | Môi trường (Deployment) | Hiện trạng File `index.html` |
+| :--- | :--- | :--- |
+| **`main`** | Vercel Public / GitHub Pages | Là bản **OFFICIAL**: Hiện thông tin đăng ký và Nút Đăng nhập chờ. Tuyệt đối không để lộ artifacts. |
+| **`07042026`** | Vercel Preview (Link Nội bộ) | Là bản **DH7 CORE**: Hiện trực tiếp 12 Audios, Video và các tài liệu LMS liên quan. |
 
 ---
 
-## 🚦 Quy trình Quản lý GitHub (Git Patch-and-Revert Protocol)
+## 📋 Cổng Đăng ký Native (Native Registration Portal)
 
-Để tránh nhầm lẫn nội dung giữa hai repo (ví dụ: lỡ đẩy Artifacts lên repo của công ty), áp dụng quy trình đẩy code như sau:
+Dự án đã loại bỏ hoàn toàn Google Form iFrame để chuyển sang Form thuần (Native HTML/CSS) nhằm tối ưu trải nghiệm và thẩm mỹ.
 
-1.  **Cập nhật Bản Demo (Repo Personal - `vuhoang2708`):**
-    *   Làm việc trực tiếp và lưu code lên `index.html`.
-    *   Lệnh: `git push personal main --force`
-    
-2.  **Cập nhật Bản Sạch (Repo Official - `culturecodefeedforward`):**
-    *   Lấy file `index_OFFICIAL.html` ghi đè tạm thời sang file chính: `cp index_OFFICIAL.html index.html`
-    *   Lệnh: `git add index.html && git commit -m "deploy clean version"`
-    *   Lệnh đẩy: `git push origin main --force`
-    
-3.  **Khôi phục Môi trường Dev (Revert Local):**
-    *   Lệnh: `git reset --hard HEAD~1` (Trả `index.html` về trạng thái Demo để tiếp tục lập trình).
-    *   Kiểm tra tham số cache `URL?v=TIMESTAMP` trên trình duyệt sau khi deploy.
-
+1.  **Masterclass DH (`register.html`):** Tập trung vào khách hàng cá nhân, có thêm trường **Thông tin người giới thiệu**.
+2.  **CultureCode 101 (`register_cc101.html`):** Tập trung vào khách hàng tổ chức, có thêm trường **Công ty/Đơn vị**.
+*   **Cơ chế:** Cả hai form đều gọi chung hàm `logToSheet` nhưng gửi bộ dữ liệu (JSON) khác nhau để GAS tự động điều hướng vào đúng cột.
 
 ---
 
-## 🔗 Danh sách Link Dự án Chính thức
+## 🚦 Quy trình Vận hành Local (Git Worktree)
 
-| Hệ thống | Đường dẫn (URL) |
-|---|---|
-| **Landing Page** | `https://culturecodefeedforward.github.io/DeliveringHappiness/` |
-| **Trang Quiz** | `https://culturecodefeedforward.github.io/DeliveringHappiness/assessment.html` |
-| **File Dashboard** | `https://docs.google.com/spreadsheets/d/1ZToRX6J5Vo6UgHzYEE_eUxU0bVnsGxBRLt-8tduI5CA/edit` |
+Để giải quyết nhu cầu phát triển song song 2 phiên bản mà không cần chuyển (checkout) qua lại gây nhầm lẫn trên 1 folder, dự án sử dụng `git worktree`:
 
----
+**Cấu trúc thư mục Khuyến nghị:**
+```
+/projects/dh4hn-website/ (Thư mục làm việc nhánh `main` - Bản Public)
+/projects/dh4hn-website-dh7/ (Thư mục Worktree nhánh `07042026` - Bản LMS)
+```
 
-## 🛡️ Quy tắc Dự án (Work Rules)
-
-### 1. Local-First Protocol
-Tuyệt đối không push code lên GitHub nếu chưa chạy thử thành công tại Local (`python -m http.server`) và xác nhận qua giao diện.
-
-### 2. Môi trường Local (Python Fix)
-Sử dụng bản Python Microsoft Store để vượt rào IT công ty. Lệnh chạy: `python -m http.server 8000`.
-
-### 3. Đường dẫn Mặc định (Project Root)
-Tất cả các tệp tin, dữ liệu và hội thoại của dự án phải nằm tại: `G:\My Drive\antigravity`.
-
-## 6. Hệ thống Thông báo (Notification System)
-Hệ thống được thiết lập để tự động gửi Email cho Ban Tổ Chức (BTC) ngay khi có đăng ký mới thành công.
-
-*   **Vị trí cấu hình:** Nằm trong Google Apps Script (`Code.gs`).
-*   **Biến quản lý Email:** **`btcEmail`** (Dòng số 4).
-*   **Cách thêm người nhận:**
-    1. Truy cập [script.google.com](https://script.google.com/home).
-    2. Sửa dòng 4: `var btcEmail = "email1@gmail.com, email2@gmail.com";` (Các email cách nhau bằng dấu phẩy).
-    3. **QUAN TRỌNG:** Bấm **Deploy** -> **Manage deployments** -> **Edit (✏️)** -> Chọn **New version** -> Bấm **Deploy**.
-*   **Điều kiện gửi mail:** Chỉ gửi khi `event` là `REGISTER_SUBMIT` hoặc `REGISTER_EVENT`.
+**Cách triển khai công việc:**
+1. Mở IDE ở thư mục `main` nếu muốn sửa Public Landing Page. Gõ commit & push lên `main`.
+2. Mở IDE ở thư mục `07042026` (worktree) nếu muốn thêm bớt Audio/Video cho Khóa DH7. Commit & push lên nhánh `07042026`.
+3. Hai thư mục hoạt động độc lập, có thể chạy local server preview cùng lúc trên 2 cổng khác nhau để đối chiếu trực tiếp. Cuối ngày, push folder nào thì Vercel cập nhật link đó.
 
 ---
 
-## 7. Các Thành phần Cốt lõi (Core Components)
-1.  **`tracking.js`**: Tracker tổng hợp, gửi dữ liệu về Webhook.
-    *   **Webhook URL:** `https://script.google.com/macros/s/AKfycbw3nzeW2UU6RqArz6DSONtuyApU77jYz5TlW7AoQgYqH0uMNbh4oySWco61PCQNWpqK/exec`
-2.  **`register.html` / `register_cc101.html`**: Giao diện Form đăng ký.
-3.  **Google Apps Script**: Xử lý logic ghi Sheet và gửi Mail thông báo.
+## 📧 Hệ thống Thông báo (Notification System)
+
+*   **Vị trí:** Nằm trong hàm `doPost(e)` của Apps Script.
+*   **Logic:**
+    *   Chỉ gửi email khi nhận được sự kiện đăng ký thành công (`REGISTER_SUBMIT` hoặc `REGISTER_EVENT`).
+    *   Sử dụng `MailApp.sendEmail` gửi đến danh sách `btcEmail`.
+*   **Cấu trúc Email:** 
+    *   Subject: `[DH4HN CRM] Đăng ký mới: {FullName}`
+    *   Body: Chứa tất cả thông tin khách hàng vừa nhập.
 
 ---
 
-## 📅 Lịch sử Thay đổi Kỹ thuật (Change Log)
+## 🔗 Danh sách Link Tài nguyên
 
-| Ngày | Thay đổi | Chi tiết |
-|---|---|---|
-| 04/04 | Cổng Đăng ký Native | Chuyển đổi từ Google Form sang Form nhúng trực tiếp. |
-| 06/04 | Pipeline & Notification | Hoàn thiện Webhook độc lập, sửa lỗi CORS và kích hoạt Mail thông báo BTC. |
+| Thành phần | Link URL |
+| :--- | :--- |
+| **Landing Page (Official)** | [Link](https://culturecodefeedforward.github.io/DeliveringHappiness/) |
+| **Landing Page (Demo)** | [Link](https://vuhoang2708.github.io/culture_code_VN.DH/) |
+| **Google Sheet CRM** | [Link](https://docs.google.com/spreadsheets/d/1ZToRX6J5Vo6UghzYEE_eUxU0bVnsGxBRLt-8tduI5CA/edit) |
 
 ---
-*Cập nhật cuối: 06/04/2026 bởi Antigravity Final Fix.*
-| 02/04 | Sync Verification | Đồng bộ hóa toàn diện qua quy trình Patch-and-Revert. |
-| 03/04 | Native Register Portal | Triển khai form đăng ký 3 trường (`register.html`) và tích hợp GAS CRM. |
-| 04/04 | CRM & CC101 Integration | Triển khai form CC101, bổ sung trường Người giới thiệu cho form DH, đồng bộ Webhook Official (Culture Code account) & Tài liệu kỹ thuật. |
+
+## 📅 Lịch sử Thay đổi (Change Log)
+
+| Ngày | Nội dung | Chi tiết |
+| :--- | :--- | :--- |
+| **04/04** | CRM Integration | Hoàn thiện Webhook và Schema 12 cột cho CRM. |
+| **06/04** | Notification Fix | Sửa lỗi CORS và kích hoạt Mail thông báo BTC. |
+| **07/04** | **Technical Audit** | **Đồng bộ tài liệu với thực tế: Loại bỏ Smart Redirect, chuẩn hóa quy trình Two-File Index, gỡ bỏ NotebookLM Sync (Workspace khác).** |
+
+---
+*Cập nhật bởi Antigravity v3.0 (Audit Mode) - 07/04/2026*
