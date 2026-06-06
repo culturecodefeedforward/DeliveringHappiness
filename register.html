@@ -242,6 +242,19 @@
                     <label>Số ĐT học viên cũ giới thiệu (nếu có)</label>
                     <input type="tel" name="referrerPhone" placeholder="Nhập số điện thoại...">
                 </div>
+                <div class="input-group full-width">
+                    <label>Bạn có nguyện vọng tham gia thêm khóa nào khác ngoài DH?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="checkbox" id="courseNvc" name="additionalCourses" value="NVC - giao tiếp phi bạo lực">
+                            <label for="courseNvc">NVC - giao tiếp phi bạo lực</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="checkbox" id="courseAi" name="additionalCourses" value="AI thực chiến">
+                            <label for="courseAi">AI thực chiến</label>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <button type="submit" class="btn-submit" id="submitBtn">
@@ -261,42 +274,6 @@
     </div>
 
     <script src="tracking.js?v=2.3"></script>
-    <script>
-        document.getElementById('crmForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            const spinner = btn.querySelector('.loading-spinner');
-            const text = btn.querySelector('.btn-text');
-            
-            btn.disabled = true;
-            spinner.style.display = 'inline-block';
-            text.innerText = 'Đang xử lý...';
-
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData.entries());
-
-            // Gửi qua GAS Mini-CRM
-            try {
-                // Tracking behavior event
-                if (window.logToSheet) {
-                    await window.logToSheet('REGISTER_SUBMIT', data.fullName, {
-                        ...data,
-                        type: 'CRM_LEAD'
-                    });
-                }
-                
-                // Show success
-                document.getElementById('crmForm').style.display = 'none';
-                document.querySelector('.header').style.display = 'none';
-                document.getElementById('successMessage').style.display = 'block';
-            } catch (err) {
-                console.error(err);
-                alert('Có lỗi xảy ra, vui lòng thử lại sau.');
-                btn.disabled = false;
-                spinner.style.display = 'none';
-                text.innerText = 'Gửi đăng ký';
-            }
-        });
-    </script>
+    <script src="register.js?v=1.0"></script>
 </body>
 </html>
