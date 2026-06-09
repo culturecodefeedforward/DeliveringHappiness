@@ -1,11 +1,13 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng ký DH Masterclass - CultureCode</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --dark: #0f172a;
@@ -87,7 +89,9 @@
             color: rgba(255, 255, 255, 0.8);
         }
 
-        input, select, textarea {
+        input,
+        select,
+        textarea {
             width: 100%;
             padding: 1rem;
             background: rgba(255, 255, 255, 0.05);
@@ -98,7 +102,9 @@
             transition: all 0.3s;
         }
 
-        input:focus, select:focus, textarea:focus {
+        input:focus,
+        select:focus,
+        textarea:focus {
             outline: none;
             border-color: var(--warm-yellow);
             background: rgba(255, 255, 255, 0.1);
@@ -168,7 +174,7 @@
             display: none;
             width: 20px;
             height: 20px;
-            border: 3px solid rgba(0,0,0,0.1);
+            border: 3px solid rgba(0, 0, 0, 0.1);
             border-top: 3px solid var(--dark);
             border-radius: 50%;
             animation: spin 1s linear infinite;
@@ -176,8 +182,13 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         #successMessage {
@@ -189,7 +200,7 @@
         .back-home {
             display: block;
             margin-top: 2rem;
-            color: rgba(255,255,255,0.4);
+            color: rgba(255, 255, 255, 0.4);
             text-decoration: none;
             font-size: 0.9rem;
             transition: color 0.2s;
@@ -203,15 +214,18 @@
             .form-grid {
                 grid-template-columns: 1fr;
             }
+
             .input-group.full-width {
                 grid-column: span 1;
             }
+
             .radio-group {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
+
 <body>
 
     <div class="form-card" id="formWrapper">
@@ -246,7 +260,8 @@
                     <label>Bạn có nguyện vọng tham gia thêm khóa nào khác ngoài DH?</label>
                     <div class="radio-group">
                         <div class="radio-item">
-                            <input type="checkbox" id="courseNvc" name="additionalCourses" value="NVC - giao tiếp phi bạo lực">
+                            <input type="checkbox" id="courseNvc" name="additionalCourses"
+                                value="NVC - giao tiếp phi bạo lực">
                             <label for="courseNvc">NVC - giao tiếp phi bạo lực</label>
                         </div>
                         <div class="radio-item">
@@ -268,12 +283,16 @@
         <div id="successMessage">
             <div style="font-size: 4rem; margin-bottom: 1rem;">✨</div>
             <h2 style="margin-bottom: 1rem; color: var(--warm-yellow);">Đăng ký thành công!</h2>
-            <p style="color: rgba(255,255,255,0.7); line-height: 1.6;">Cảm ơn bạn đã quan tâm. CultureCode Team sẽ liên hệ với bạn trong thời gian sớm nhất.</p>
-            <a href="index.html" class="btn-submit" style="display: block; text-decoration: none; text-align: center; margin-top: 2rem;"> Quay về trang chủ</a>
+            <p style="color: rgba(255,255,255,0.7); line-height: 1.6;">Cảm ơn bạn đã quan tâm. CultureCode Team sẽ liên
+                hệ với bạn trong thời gian sớm nhất.</p>
+            <a href="index.html" class="btn-submit"
+                style="display: block; text-decoration: none; text-align: center; margin-top: 2rem;"> Quay về trang
+                chủ</a>
         </div>
     </div>
 
     <script src="tracking.js?v=2.3"></script>
     <script src="register.js?v=1.0"></script>
 </body>
+
 </html>

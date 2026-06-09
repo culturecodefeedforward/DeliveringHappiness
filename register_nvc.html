@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giao Tiếp Kết Nối - Đăng ký trải nghiệm NVC</title>
+    <meta name="description" content="Đăng ký tham gia buổi trải nghiệm Giao tiếp kết nối (NVC) - Từ trái tim đến trái tim. 90 phút chạm vào cảm giác kết nối thật sự.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --dark: #0f172a;
+            --mid: #334155;
+            --light: #f8fafc;
+            --accent: #e11d48;
+            --accent-soft: #fb7185;
+            --warm-yellow: #f59e0b;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top right, #4a1942, #1a0a2e, #0f172a);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .form-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 3rem;
+            border-radius: 32px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, #fff, var(--accent-soft));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .subtitle em {
+            color: var(--accent-soft);
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group.full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        label .required {
+            color: var(--accent-soft);
+        }
+
+        .label-hint {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.45);
+            margin-top: 0.25rem;
+            line-height: 1.5;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            line-height: 1.6;
+        }
+
+        select option {
+            background: #1e293b;
+            color: white;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-soft);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.1);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Section divider */
+        .section-divider {
+            grid-column: span 2;
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin: 0.5rem 0;
+        }
+
+        .section-title {
+            grid-column: span 2;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-soft);
+            margin-bottom: 0;
+            padding-top: 0.5rem;
+        }
+
+        .section-subtitle {
+            grid-column: span 2;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.45);
+            margin-top: -0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Checkbox group */
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .checkbox-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .checkbox-item.checked {
+            border-color: var(--accent-soft);
+            background: rgba(225, 29, 72, 0.08);
+        }
+
+        .checkbox-item.disabled-max {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            min-width: 18px;
+            height: 18px;
+            margin-right: 10px;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            margin-bottom: 0;
+            cursor: pointer;
+            font-weight: 400;
+            font-size: 0.85rem;
+        }
+
+        .checkbox-item.disabled-max input[type="checkbox"],
+        .checkbox-item.disabled-max label {
+            cursor: not-allowed;
+        }
+
+        .max-hint {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .max-hint.warning {
+            color: var(--accent-soft);
+        }
+
+        /* "Khác" inline input */
+        .other-input-wrapper {
+            grid-column: span 2;
+        }
+
+        .other-input-wrapper input {
+            margin-top: 4px;
+            padding: 0.7rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, var(--accent), #be123c);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px -10px rgba(225, 29, 72, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px -10px rgba(225, 29, 72, 0.6);
+            filter: brightness(1.1);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #successMessage {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .back-home {
+            display: block;
+            margin-top: 2rem;
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .back-home:hover {
+            color: white;
+        }
+
+        @media (max-width: 640px) {
+            .form-card {
+                padding: 2rem 1.25rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .input-group.full-width,
+            .section-divider,
+            .section-title,
+            .section-subtitle,
+            .other-input-wrapper {
+                grid-column: span 1;
+            }
+
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="form-card" id="formWrapper">
+        <div class="header">
+            <img src="culcurecode logo.jpeg" alt="CultureCode Logo" style="max-height: 80px; display: block; margin: 0 auto 1.5rem; border-radius: 8px;">
+            <h1>Giao Tiếp Kết Nối</h1>
+            <p class="subtitle">
+                <em>Từ trái tim đến trái tim</em><br>
+                Một trải nghiệm ngắn để chạm vào cảm giác kết nối thật sự
+            </p>
+        </div>
+
+        <form id="crmForm">
+            <div class="form-grid">
+
+                <!-- === PHẦN 1: THÔNG TIN CÁ NHÂN === -->
+                <div class="input-group full-width">
+                    <label>Họ và tên <span class="required">*</span></label>
+                    <input type="text" name="fullName" id="fullName" required placeholder="Nhập họ tên...">
+                </div>
+                <div class="input-group">
+                    <label>Số điện thoại (Zalo) <span class="required">*</span></label>
+                    <input type="tel" name="phone" id="phone" required placeholder="Nhập số điện thoại...">
+                </div>
+                <div class="input-group">
+                    <label>Email liên hệ <span class="required">*</span></label>
+                    <input type="email" name="email" id="email" required placeholder="Nhập địa chỉ email...">
+                </div>
+                <div class="input-group">
+                    <label>Vai trò trong doanh nghiệp <span class="required">*</span></label>
+                    <select name="role" id="role" required>
+                        <option value="" disabled selected>— Chọn vai trò —</option>
+                        <option value="HR">HR (Nhân sự)</option>
+                        <option value="Manager">Manager (Quản lý)</option>
+                        <option value="Chủ doanh nghiệp">Chủ doanh nghiệp</option>
+                        <option value="Nhân viên">Nhân viên</option>
+                        <option value="Freelancer">Freelancer</option>
+                        <option value="Khác">Khác</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Tên công ty / Tổ chức</label>
+                    <input type="text" name="company" id="company" placeholder="Nhập tên đơn vị công tác...">
+                </div>
+                <div class="input-group">
+                    <label>Người giới thiệu (nếu có)</label>
+                    <input type="text" name="referrerName" id="referrerName" placeholder="Nhập tên người giới thiệu...">
+                </div>
+                <div class="input-group">
+                    <label>SĐT người giới thiệu (nếu có)</label>
+                    <input type="tel" name="referrerPhone" id="referrerPhone" placeholder="Nhập số điện thoại...">
+                </div>
+
+                <!-- === SECTION DIVIDER === -->
+                <hr class="section-divider">
+                <div class="section-title">📝 Chia sẻ để buổi học phù hợp hơn với bạn</div>
+                <div class="section-subtitle">Những câu hỏi dưới đây giúp chúng tôi chuẩn bị nội dung sát với nhu cầu thực tế của anh/chị.</div>
+
+                <!-- === CÂU 1: Free text === -->
+                <div class="input-group full-width">
+                    <label>
+                        1. Trong công việc hiện tại, anh/chị đang thấy khó giữ kết nối nhất ở tình huống giao tiếp nào? <span class="required">*</span>
+                        <span class="label-hint">Anh/chị vui lòng chia sẻ 1 tình huống giao tiếp thật mà mình đang thấy khó nhất lúc này.</span>
+                    </label>
+                    <textarea name="q1_situation" id="q1_situation" required rows="4"
+                        placeholder="Ví dụ: góp ý nhưng người kia phòng thủ, phối hợp không thông, nói điều khó nói, xử lý cảm xúc mạnh, bị hiểu sai, không được lắng nghe…"></textarea>
+                </div>
+
+                <!-- === CÂU 2: Checkbox max 2 === -->
+                <div class="input-group full-width">
+                    <label>
+                        2. Ngoài công việc, nếu Giao tiếp kết nối có thể giúp ích ngay cho một mối quan hệ trong cuộc sống, anh/chị mong đó là mối quan hệ nào nhất? <span class="required">*</span>
+                    </label>
+                    <p class="max-hint" id="q2Hint">Chọn tối đa 2</p>
+                    <div class="checkbox-group" id="q2Group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="q2_con" name="q2_relationship" value="Con">
+                            <label for="q2_con">Con</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="q2_spouse" name="q2_relationship" value="Vợ/ chồng">
+                            <label for="q2_spouse">Vợ/ chồng</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="q2_parent" name="q2_relationship" value="Ba/ mẹ">
+                            <label for="q2_parent">Ba/ mẹ</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="q2_sibling" name="q2_relationship" value="Anh/ Chị/ Em">
+                            <label for="q2_sibling">Anh/ Chị/ Em</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="q2_relative" name="q2_relationship" value="Người thân khác">
+                            <label for="q2_relative">Người thân khác</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="q2_friend" name="q2_relationship" value="Bạn bè">
+                            <label for="q2_friend">Bạn bè</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="q2_other" name="q2_relationship" value="Khác">
+                            <label for="q2_other">Khác</label>
+                        </div>
+                    </div>
+                    <div class="other-input-wrapper" id="q2OtherWrapper" style="display:none;">
+                        <input type="text" name="q2_other_text" id="q2_other_text" placeholder="Vui lòng ghi rõ...">
+                    </div>
+                </div>
+
+                <!-- === CÂU 3: Checkbox max 2 === -->
+                <div class="input-group full-width">
+                    <label>
+                        3. Sau buổi 90 phút này, anh/chị mong mình mang về điều gì nhất? <span class="required">*</span>
+                    </label>
+                    <p class="max-hint" id="q3Hint">Chọn tối đa 2</p>
+                    <div class="checkbox-group" id="q3Group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="q3_understand" name="q3_expectation" value="Hiểu rõ hơn GTKN là gì">
+                            <label for="q3_understand">Hiểu rõ hơn GTKN là gì</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="q3_experience" name="q3_expectation" value="Trải nghiệm sự khác biệt của một cách giao tiếp tạo kết nối">
+                            <label for="q3_experience">Trải nghiệm cách giao tiếp tạo kết nối</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="q3_express" name="q3_expectation" value="Biết cách bày tỏ điều khó nói mà vẫn giữ được kết nối">
+                            <label for="q3_express">Bày tỏ điều khó nói mà vẫn giữ kết nối</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="q3_listen" name="q3_expectation" value="Biết cách lắng nghe người khác sâu hơn">
+                            <label for="q3_listen">Lắng nghe người khác sâu hơn</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="q3_emotion" name="q3_expectation" value="Biết cách điều hoà cảm xúc của mình trong giao tiếp">
+                            <label for="q3_emotion">Điều hoà cảm xúc trong giao tiếp</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="q3_tool" name="q3_expectation" value="Có một công cụ thực tế để áp dụng ngay trong công việc">
+                            <label for="q3_tool">Công cụ thực tế áp dụng ngay</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="q3_other" name="q3_expectation" value="Khác">
+                            <label for="q3_other">Khác</label>
+                        </div>
+                    </div>
+                    <div class="other-input-wrapper" id="q3OtherWrapper" style="display:none;">
+                        <input type="text" name="q3_other_text" id="q3_other_text" placeholder="Vui lòng ghi rõ...">
+                    </div>
+                </div>
+
+                <input type="hidden" name="event_id" value="NVC_GTKN_0926">
+            </div>
+
+            <button type="submit" class="btn-submit" id="submitBtn">
+                <span class="loading-spinner"></span>
+                <span class="btn-text">Đăng ký tham gia</span>
+            </button>
+
+            <a href="index.html" class="back-home" style="text-align: center;">← Quay về trang chủ</a>
+        </form>
+
+        <div id="successMessage">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">💛</div>
+            <h2 style="margin-bottom: 1rem; color: var(--accent-soft);">Đăng ký thành công!</h2>
+            <p style="color: rgba(255,255,255,0.7); line-height: 1.8;">
+                Cảm ơn anh/chị đã dành thời gian chia sẻ.<br>
+                CultureCode Team sẽ liên hệ xác nhận trong thời gian sớm nhất.<br>
+                <em style="color: var(--accent-soft);">Hẹn gặp anh/chị tại buổi trải nghiệm Giao tiếp kết nối!</em>
+            </p>
+            <div style="margin-top: 1.5rem; background: rgba(255, 255, 255, 0.05); padding: 1.5rem; border-radius: 16px; border: 1px solid var(--glass-border); text-align: center;">
+                <p style="margin-bottom: 1rem; font-weight: 600; color: #fff; font-size: 0.95rem;">Quét mã QR dưới đây để tham gia nhóm Zalo đồng hành **Blooming On**:</p>
+                <img src="blooming_on_qr.jpg" alt="Blooming On Zalo Group QR" style="max-width: 200px; border-radius: 12px; border: 4px solid white; display: inline-block;">
+            </div>
+            <a href="index.html" class="btn-submit"
+                style="display: flex; text-decoration: none; text-align: center; margin-top: 2rem;">Quay về trang chủ</a>
+        </div>
+    </div>
+
+    <script>
+        // Cấu hình URL Web App của Google Apps Script (CultureCode - NVC Webhook) sau khi Deploy
+        window.CUSTOM_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxdjYGd8ki2f5LAyo5oCSUiFBUz3f-o9II6vz73VQIDULLS1J05mFaz-og4e1RjdTPg/exec";
+    </script>
+    <script src="tracking.js?v=2.4"></script>
+    <script>
+        // === MAX CHECKBOX LOGIC ===
+        function setupMaxCheckbox(groupId, max, hintId, otherCheckboxId, otherWrapperId) {
+            const group = document.getElementById(groupId);
+            const hint = document.getElementById(hintId);
+            const otherCb = document.getElementById(otherCheckboxId);
+            const otherWrapper = document.getElementById(otherWrapperId);
+            const checkboxes = group.querySelectorAll('input[type="checkbox"]');
+
+            group.addEventListener('change', () => {
+                const checked = group.querySelectorAll('input[type="checkbox"]:checked');
+                const count = checked.length;
+
+                // Toggle "Khác" input visibility
+                if (otherCb && otherWrapper) {
+                    otherWrapper.style.display = otherCb.checked ? 'block' : 'none';
+                }
+
+                // Disable unchecked when max reached
+                checkboxes.forEach(cb => {
+                    const item = cb.closest('.checkbox-item');
+                    if (!cb.checked && count >= max) {
+                        cb.disabled = true;
+                        item.classList.add('disabled-max');
+                    } else {
+                        cb.disabled = false;
+                        item.classList.remove('disabled-max');
+                    }
+                    // Toggle checked style
+                    if (cb.checked) {
+                        item.classList.add('checked');
+                    } else {
+                        item.classList.remove('checked');
+                    }
+                });
+
+                // Update hint
+                if (count >= max) {
+                    hint.textContent = `Đã chọn ${count}/${max}`;
+                    hint.classList.add('warning');
+                } else {
+                    hint.textContent = `Chọn tối đa ${max} (đã chọn ${count})`;
+                    hint.classList.remove('warning');
+                }
+            });
+        }
+
+        setupMaxCheckbox('q2Group', 2, 'q2Hint', 'q2_other', 'q2OtherWrapper');
+        setupMaxCheckbox('q3Group', 2, 'q3Hint', 'q3_other', 'q3OtherWrapper');
+
+        // === FORM SUBMISSION ===
+        document.getElementById('crmForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const spinner = btn.querySelector('.loading-spinner');
+            const text = btn.querySelector('.btn-text');
+
+            // Validate at least 1 checkbox for q2 and q3
+            const q2Checked = document.querySelectorAll('#q2Group input[type="checkbox"]:checked');
+            const q3Checked = document.querySelectorAll('#q3Group input[type="checkbox"]:checked');
+
+            if (q2Checked.length === 0) {
+                alert('Vui lòng chọn ít nhất 1 mối quan hệ ở câu 2.');
+                return;
+            }
+            if (q3Checked.length === 0) {
+                alert('Vui lòng chọn ít nhất 1 kỳ vọng ở câu 3.');
+                return;
+            }
+
+            btn.disabled = true;
+            spinner.style.display = 'inline-block';
+            text.innerText = 'Đang xử lý...';
+
+            // Collect form data
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+
+            // Collect checkbox arrays
+            const q2Values = Array.from(q2Checked).map(cb => cb.value);
+            if (document.getElementById('q2_other').checked && document.getElementById('q2_other_text').value) {
+                q2Values.push('Khác: ' + document.getElementById('q2_other_text').value);
+                q2Values.splice(q2Values.indexOf('Khác'), 1);
+            }
+            data.q2_relationship = q2Values.join(', ');
+
+            const q3Values = Array.from(q3Checked).map(cb => cb.value);
+            if (document.getElementById('q3_other').checked && document.getElementById('q3_other_text').value) {
+                q3Values.push('Khác: ' + document.getElementById('q3_other_text').value);
+                q3Values.splice(q3Values.indexOf('Khác'), 1);
+            }
+            data.q3_expectation = q3Values.join(', ');
+
+            // Remove individual checkbox entries
+            delete data.q2_other_text;
+            delete data.q3_other_text;
+
+            try {
+                if (window.logToSheet) {
+                    await window.logToSheet('REGISTER_NVC', data.fullName, {
+                        ...data,
+                        type: 'NVC_LEAD',
+                        source: 'NVC_Register'
+                    });
+                }
+
+                document.getElementById('crmForm').style.display = 'none';
+                document.querySelector('.header').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+            } catch (err) {
+                console.error(err);
+                alert('Có lỗi xảy ra, vui lòng thử lại sau.');
+                btn.disabled = false;
+                spinner.style.display = 'none';
+                text.innerText = 'Đăng ký tham gia';
+            }
+        });
+    </script>
+</body>
+
+</html>
