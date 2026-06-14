@@ -31,7 +31,7 @@
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 24px;
-    padding: 30px 40px;
+    padding: 20px 25px;
     max-width: 700px;
     width: 100%;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
@@ -40,21 +40,22 @@
 
 .quiz-header {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    margin-bottom: 25px;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
     text-align: center;
 }
 
 .quiz-logo {
-    height: 80px;
+    height: 40px;
     width: auto;
-    margin-bottom: 12px;
-    border-radius: 12px;
+    border-radius: 8px;
 }
 
 .quiz-main-title {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: 700;
     color: var(--warm-yellow);
     letter-spacing: 1px;
@@ -66,7 +67,7 @@
     height: 6px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 3px;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     overflow: hidden;
 }
 
@@ -83,30 +84,30 @@
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 2px;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
 }
 
 .quiz-question-text {
-    font-size: 1.4rem;
+    font-size: 1.15rem;
     font-weight: 700;
     line-height: 1.4;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 .quiz-options {
     display: grid;
-    gap: 15px;
+    gap: 8px;
 }
 
 .quiz-option {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 18px 24px;
+    padding: 10px 16px;
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: left;
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     line-height: 1.5;
     display: flex;
     align-items: center;
@@ -129,8 +130,8 @@
 }
 
 .quiz-feedback {
-    margin-top: 25px;
-    padding: 20px;
+    margin-top: 15px;
+    padding: 12px;
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.03);
     border-left: 4px solid var(--warm-yellow);
@@ -163,9 +164,9 @@
 }
 
 .btn-quiz-next {
-    margin-top: 30px;
+    margin-top: 15px;
     width: 100%;
-    padding: 16px;
+    padding: 12px;
     border-radius: 12px;
     background: var(--warm-yellow);
     color: #000;
