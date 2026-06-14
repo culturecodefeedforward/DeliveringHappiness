@@ -10,27 +10,41 @@ document.getElementById('crmForm').addEventListener('submit', async (e) => {
 
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-    const additionalCourses = formData.getAll('additionalCourses');
-    data.additionalCourses = additionalCourses.join(', ');
-    data.wantsNvcCourse = document.getElementById('courseNvc').checked ? 'Yes' : 'No';
-    data.wantsAiCourse = document.getElementById('courseAi').checked ? 'Yes' : 'No';
+
+    // Gather checkboxes for purpose
+    const purposeChoices = formData.getAll('purpose');
+    let purposeList = [...purposeChoices];
+    const indexKhacPurp = purposeList.indexOf('Khác');
+    if (indexKhacPurp !== -1) {
+        purposeList[indexKhacPurp] = `Khác: ${data.purposeOther || ''}`;
+    }
+    data.purpose = purposeList.filter(p => p !== 'Khác').join(', ');
+    delete data.purposeOther;
+
+    // Gather radio for sourceHearing
+    if (data.sourceHearing === 'Khác') {
+        data.sourceHearing = `Khác: ${data.sourceHearingOther || ''}`;
+    }
+    delete data.sourceHearingOther;
 
     try {
         if (window.logToSheet) {
             await window.logToSheet('REGISTER_SUBMIT', data.fullName, {
                 ...data,
-                type: 'CRM_LEAD'
+                type: 'EVENT_LEAD_DHM8',
+                source: 'Web_DHM8_Official'
             });
         }
 
         document.getElementById('crmForm').style.display = 'none';
         document.querySelector('.header').style.display = 'none';
         document.getElementById('successMessage').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
         console.error(err);
         alert('Có lỗi xảy ra, vui lòng thử lại sau.');
         btn.disabled = false;
         spinner.style.display = 'none';
-        text.innerText = 'Gửi đăng ký';
+        text.innerText = 'Gửi đăng ký & Hoàn tất';
     }
 });
