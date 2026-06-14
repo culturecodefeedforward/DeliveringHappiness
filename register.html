@@ -322,6 +322,12 @@
                     <input type="email" name="email" required placeholder="Nhập địa chỉ email...">
                 </div>
 
+                <!-- Linkedin -->
+                <div class="input-group">
+                    <label>Linkedin Public profile & URL *</label>
+                    <input type="text" name="linkedin" required placeholder="https://linkedin.com/in/username...">
+                </div>
+
                 <!-- 3. Số điện thoại -->
                 <div class="input-group">
                     <label>Số điện thoại liên hệ (Zalo) *</label>
@@ -340,11 +346,7 @@
                     <input type="text" name="jobTitle" required placeholder="Nhập chức danh của bạn...">
                 </div>
 
-                <!-- 8. Chương trình đã tham gia -->
-                <div class="input-group">
-                    <label>Bạn đã tham gia chương trình nào của CultureCode? *</label>
-                    <input type="text" name="attendedPrograms" required placeholder="Ghi rõ các chương trình đã học hoặc 'Chưa tham gia'...">
-                </div>
+
 
                 <!-- 6. Quy mô công ty (Radio group) -->
                 <div class="input-group full-width">
@@ -405,6 +407,30 @@
                     </div>
                 </div>
 
+                <!-- 8. Chương trình đã tham gia (Checkbox group + Other) -->
+                <div class="input-group full-width">
+                    <label>Bạn đã tham gia chương trình nào của CultureCode? *</label>
+                    <div class="radio-group" style="grid-template-columns: 1fr 1fr;">
+                        <div class="radio-item">
+                            <input type="checkbox" id="prog1" name="attendedPrograms" value="CultureCode CC101">
+                            <label for="prog1">CultureCode CC101</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="checkbox" id="prog2" name="attendedPrograms" value="Trà Chiều">
+                            <label for="prog2">Trà Chiều</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="checkbox" id="prog3" name="attendedPrograms" value="Blooming on">
+                            <label for="prog3">Blooming on</label>
+                        </div>
+                        <div class="radio-item full-width" style="grid-column: span 2; display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="progOther" name="attendedPrograms" value="Khác">
+                            <label for="progOther" style="white-space: nowrap; margin-bottom: 0;">Mục khác:</label>
+                            <input type="text" id="attendedProgramsOther" name="attendedProgramsOther" placeholder="Vui lòng nhập mục khác..." class="option-other-input" style="margin: 0; padding: 6px 12px; height: auto;">
+                        </div>
+                    </div>
+                </div>
+
                 <!-- 9. Mục đích tham gia (Checkbox group + Other) -->
                 <div class="input-group full-width">
                     <label>Mục đích khi bạn đăng ký tham gia Masterclass Retreat? *</label>
@@ -448,6 +474,18 @@
                 <div class="input-group full-width">
                     <label>03 điều bạn mong đợi nhất sau khi kết thúc chương trình là gì? *</label>
                     <textarea name="expectations" required rows="3" placeholder="Ví dụ: 1. Hiểu cách xây dựng văn hóa hạnh phúc; 2. ..."></textarea>
+                </div>
+
+                <!-- 12. Tên người giới thiệu -->
+                <div class="input-group">
+                    <label>Tên người giới thiệu (nếu có)</label>
+                    <input type="text" name="referrerName" placeholder="Nhập tên người giới thiệu...">
+                </div>
+
+                <!-- 13. Số điện thoại người giới thiệu -->
+                <div class="input-group">
+                    <label>Số điện thoại người giới thiệu (nếu có)</label>
+                    <input type="text" name="referrerPhone" placeholder="Nhập số điện thoại...">
                 </div>
 
                 <!-- Event ID & Default Status -->
