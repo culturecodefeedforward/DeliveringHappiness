@@ -9,4 +9,4 @@
 - [x] Update landing page link in `assessment.html` to `dh8/index.html`
 - [x] Run DOM verification and audit for `assessment.html`
 - [x] Create UAT report for assessment page link update
-- [ ] Review git status and push changes for assessment update
+- [x] Review git status and push changes for assessment update
