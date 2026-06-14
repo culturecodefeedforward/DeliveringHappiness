@@ -1,4 +1,4 @@
-# BÁO CÁO KIỂM THỬ NGHIỆM THU NGƯỜI DÙNG (UAT REPORT) - KHÔI PHỤC BIỂU MẪU ĐĂNG KÝ DHM8
+# BÁO CÁO KIỂM THỬ NGHIỆM THU NGƯỜI DÙNG (UAT REPORT) - KHÔI PHỤC BIỂU MẪU ĐĂNG KÝ DHM8 & ĐƯỜNG DẪN `/dh8`
 *Ngày thực hiện: 14/06/2026*
 *Mã cuộc trò chuyện (Conversation ID): ffd397b9-8a66-46ff-8400-f1db9fe8b60d*
 
@@ -8,11 +8,12 @@
 
 - **`VERIFIED` (Đã kiểm chứng)**:
   - Bố cục trang đăng ký `register.html` tải đầy đủ, responsive (tương thích mọi thiết bị) và không bị lỗi hiển thị.
+  - Đường dẫn URL mới `/dh8/` (sử dụng thư mục con `dh8/index.html`) hoạt động hoàn hảo. Nhật ký máy chủ (server logs) xác nhận trình duyệt tải thành công tài nguyên từ thư mục cha thông qua tương đối trỏ ngược (`../tracking.js?v=2.3` và `../register.js?v=1.0` đều trả về HTTP 200).
   - Hộp thông tin thanh toán (`payment-info`) hiển thị chính xác **2 tài khoản ngân hàng** (cá nhân BIDV và doanh nghiệp MB) kèm theo đúng cú pháp chuyển khoản chuẩn: `DHM8 - [SĐT] - [Họ tên]`.
   - Logic Javascript trong `register.js` xử lý chuẩn xác dữ liệu khi người dùng chọn "Khác" (cho cả nguồn biết và mục đích), ghép chuỗi tự động và gửi payload về CRM qua `window.logToSheet` với tag `EVENT_LEAD_DHM8` và `event_id` cố định: `DHM8_REG_040726`.
   - Luồng gửi biểu mẫu hoạt động tốt dưới môi trường local, hiển thị màn hình thông báo **"Đăng ký thành công!"** ngay sau khi gửi form và ẩn form/header đi để tránh gửi trùng lặp.
 - **`INFERRED` (Suy luận lý thuyết)**:
-  - Máy chủ live Vercel sẽ tự động cập nhật ngay khi push code lên nhánh phát triển chính thức (`backup_20260613` hoặc merge sang `main`).
+  - Máy chủ live Vercel sẽ tự động phục vụ thư mục con `/dh8` mà không cần bất cứ cấu hình rewrite đặc biệt nào.
 - **`UNVERIFIED` (Chưa kiểm chứng)**:
   - Bản ghi thực tế trong Google Sheets CRM trực tiếp trên tài khoản Google của Admin (cần Admin mở Google Sheet kiểm tra xem dữ liệu test đã đổ về dòng mới nhất chưa).
 
@@ -26,16 +27,21 @@
   - **Form điền đầy đủ thông tin (Phần 1)**: [dhm8_form_filled_part1.png](file:///c:/Users/vu.hoang/.gemini/antigravity/scratch/dh4hn-website/UAT/dhm8_form_filled_part1.png)
   - **Form điền đầy đủ thông tin (Phần 2)**: [dhm8_form_filled_part2.png](file:///c:/Users/vu.hoang/.gemini/antigravity/scratch/dh4hn-website/UAT/dhm8_form_filled_part2.png)
   - **Màn hình thông báo đăng ký thành công & thông tin chuyển khoản**: [dhm8_register_success.png](file:///c:/Users/vu.hoang/.gemini/antigravity/scratch/dh4hn-website/UAT/dhm8_register_success.png)
+  - **Log tải tài nguyên thành công từ /dh8/**:
+    - `GET /dh8/ HTTP/1.1` -> 200
+    - `GET /tracking.js?v=2.3 HTTP/1.1` -> 200 (parent file parsed)
+    - `GET /register.js?v=1.0 HTTP/1.1` -> 200 (parent file parsed)
 
 ---
 
 ## 3. PHÂN LOẠI FILE (FILE CATEGORIZATION)
 
-Theo kết quả kiểm tra `git status --short --branch` lúc 10:47 ngày 14/06/2026:
+Theo kết quả kiểm tra `git status --short --branch` lúc 12:32 ngày 14/06/2026:
 
 - **`Files safe to stage` (File an toàn để stage)**:
-  - `register.html` (Mã nguồn giao diện native form mới)
-  - `register.js` (Mã nguồn logic xử lý biểu mẫu mới)
+  - `dh8/index.html` (Mã nguồn trang định tuyến mới)
+  - `register.html` (Mã nguồn giao diện native form)
+  - `register.js` (Mã nguồn logic xử lý biểu mẫu)
   - `UAT/dhm8_register_loaded.png` (Ảnh minh chứng UAT)
   - `UAT/dhm8_form_filled_part1.png` (Ảnh minh chứng UAT)
   - `UAT/dhm8_form_filled_part2.png` (Ảnh minh chứng UAT)

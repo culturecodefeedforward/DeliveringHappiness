@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký DH Masterclass - CultureCode</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --dark: #0f172a;
+            --mid: #334155;
+            --light: #f8fafc;
+            --accent: #3b82f6;
+            --warm-yellow: #f59e0b;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top right, #1e293b, #0f172a);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .form-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 3rem;
+            border-radius: 32px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff, var(--warm-yellow));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group.full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--warm-yellow);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
+        }
+
+        .radio-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .radio-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .radio-item input {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .radio-item label {
+            margin-bottom: 0;
+            cursor: pointer;
+            font-weight: 400;
+            font-size: 0.85rem;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1.25rem;
+            background: var(--warm-yellow);
+            color: var(--dark);
+            border: none;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px -10px rgba(245, 158, 11, 0.5);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px -10px rgba(245, 158, 11, 0.6);
+            filter: brightness(1.1);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            border-top: 3px solid var(--dark);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        #successMessage {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .back-home {
+            display: block;
+            margin-top: 2rem;
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .back-home:hover {
+            color: white;
+        }
+
+        .payment-info {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid var(--warm-yellow);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .payment-info h3 {
+            color: var(--warm-yellow);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .payment-details {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .payment-details ul {
+            margin-top: 8px;
+            padding-left: 0;
+        }
+
+        .payment-details li {
+            margin-bottom: 6px;
+        }
+
+        .option-other-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .option-other-input {
+            flex: 1;
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .option-other-input:focus {
+            outline: none;
+            border-color: var(--warm-yellow);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 640px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .input-group.full-width {
+                grid-column: span 1;
+            }
+
+            .radio-group {
+                grid-template-columns: 1fr !important;
+            }
+
+            .radio-item.full-width {
+                grid-column: span 1 !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="form-card" id="formWrapper">
+        <div class="header">
+            <h1>Đăng ký DH Masterclass (DHM8)</h1>
+            <p class="subtitle">Thứ Bảy, 04/07/2026 | Trung tâm đào tạo Circle K</p>
+        </div>
+
+        <form id="crmForm">
+            <!-- Thông tin Thanh toán -->
+            <div class="payment-info">
+                <h3>💰 Chi phí hậu cần: 300.000đ</h3>
+                <div class="payment-details">
+                    <p>Bao gồm: Tài liệu, Ăn trưa, Teabreak.</p>
+                    <p style="margin-top: 10px;"><strong>Tài khoản nhận phí:</strong></p>
+                    <ul style="list-style: none; margin-left: 0; padding-top: 5px;">
+                        <li>🏦 <strong>Ngân hàng BIDV</strong> (cá nhân, không cần xuất hoá đơn đỏ): <code>8815369431</code> - Hà Ngọc Hoàn</li>
+                        <li>🏦 <strong>Ngân hàng MB</strong> (doanh nghiệp, cần xuất hoá đơn đỏ): <code>9600006868</code> - CONG TY TNHH HIPER CONSULTING</li>
+                        <li>✍️ <strong>Nội dung chuyển khoản</strong>: <code>DHM8 - [SĐT] - [Họ tên]</code></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <!-- 1. Họ và tên -->
+                <div class="input-group">
+                    <label>Họ và tên *</label>
+                    <input type="text" name="fullName" required placeholder="Nhập họ và tên đầy đủ...">
+                </div>
+
+                <!-- 2. Email -->
+                <div class="input-group">
+                    <label>Business Email *</label>
+                    <input type="email" name="email" required placeholder="Nhập địa chỉ email...">
+                </div>
+
+                <!-- 3. Số điện thoại -->
+                <div class="input-group">
+                    <label>Số điện thoại liên hệ (Zalo) *</label>
+                    <input type="tel" name="phone" required placeholder="Để BTC liên hệ và mời vào nhóm...">
+                </div>
+
+                <!-- 4. Tên công ty -->
+                <div class="input-group">
+                    <label>Tên công ty / Tổ chức hiện tại *</label>
+                    <input type="text" name="company" required placeholder="Nhập tên đơn vị công tác...">
+                </div>
+
+                <!-- 5. Chức danh -->
+                <div class="input-group">
+                    <label>Chức danh / Vị trí *</label>
+                    <input type="text" name="jobTitle" required placeholder="Nhập chức danh của bạn...">
+                </div>
+
+                <!-- 8. Chương trình đã tham gia -->
+                <div class="input-group">
+                    <label>Bạn đã tham gia chương trình nào của CultureCode? *</label>
+                    <input type="text" name="attendedPrograms" required placeholder="Ghi rõ các chương trình đã học hoặc 'Chưa tham gia'...">
+                </div>
+
+                <!-- 6. Quy mô công ty (Radio group) -->
+                <div class="input-group full-width">
+                    <label>Quy mô công ty nơi bạn đang công tác *</label>
+                    <div class="radio-group" style="grid-template-columns: repeat(2, 1fr);">
+                        <div class="radio-item">
+                            <input type="radio" id="size1" name="companySize" value="<50" required>
+                            <label for="size1">&lt;50 nhân sự</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="size2" name="companySize" value="50-200">
+                            <label for="size2">50-200 nhân sự</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="size3" name="companySize" value="200-1000">
+                            <label for="size3">200 - 1000 nhân sự</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="size4" name="companySize" value=">1000">
+                            <label for="size4">&gt;1000 nhân sự</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. Nguồn biết đến chương trình (Radio group + Other) -->
+                <div class="input-group full-width">
+                    <label>Lần đầu bạn nghe thông tin chương trình từ đâu? *</label>
+                    <div class="radio-group" style="grid-template-columns: 1fr 1fr;">
+                        <div class="radio-item">
+                            <input type="radio" id="src1" name="sourceHearing" value="CultureCode linkedin page" required>
+                            <label for="src1">CultureCode linkedin page</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="src2" name="sourceHearing" value="Nhóm zalo cộng đồng CultureCode">
+                            <label for="src2">Nhóm Zalo cộng đồng CultureCode</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="src3" name="sourceHearing" value="Nhóm zalo cộng đồng Delivering Happiness">
+                            <label for="src3">Nhóm Zalo cộng đồng Delivering Happiness</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="src4" name="sourceHearing" value="Nhóm cộng đồng khác">
+                            <label for="src4">Nhóm cộng đồng khác</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="src5" name="sourceHearing" value="Linkedin của giảng viên">
+                            <label for="src5">Linkedin của giảng viên</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="src6" name="sourceHearing" value="Bạn bè, người quen">
+                            <label for="src6">Bạn bè, người quen</label>
+                        </div>
+                        <div class="radio-item full-width" style="grid-column: span 2; display: flex; align-items: center; gap: 10px;">
+                            <input type="radio" id="srcOther" name="sourceHearing" value="Khác">
+                            <label for="srcOther" style="white-space: nowrap; margin-bottom: 0;">Mục khác:</label>
+                            <input type="text" id="sourceHearingOther" name="sourceHearingOther" placeholder="Vui lòng nhập nguồn khác..." class="option-other-input" style="margin: 0; padding: 6px 12px; height: auto;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 9. Mục đích tham gia (Checkbox group + Other) -->
+                <div class="input-group full-width">
+                    <label>Mục đích khi bạn đăng ký tham gia Masterclass Retreat? *</label>
+                    <div class="radio-group" style="grid-template-columns: 1fr 1fr;">
+                        <div class="radio-item">
+                            <input type="checkbox" id="purp1" name="purpose" value="Học và áp dụng cho bản thân">
+                            <label for="purp1">Học và áp dụng cho bản thân</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="checkbox" id="purp2" name="purpose" value="Xem xét áp dụng cho công ty/ tổ chức">
+                            <label for="purp2">Xem xét áp dụng cho công ty/ tổ chức</label>
+                        </div>
+                        <div class="radio-item full-width" style="grid-column: span 2; display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="purpOther" name="purpose" value="Khác">
+                            <label for="purpOther" style="white-space: nowrap; margin-bottom: 0;">Mục khác:</label>
+                            <input type="text" id="purposeOther" name="purposeOther" placeholder="Vui lòng nhập mục đích khác..." class="option-other-input" style="margin: 0; padding: 6px 12px; height: auto;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 10. Mức độ tìm hiểu Delivering Happiness (Radio group) -->
+                <div class="input-group full-width">
+                    <label>Bạn đã tìm hiểu gì về &quot;Delivering Happiness&quot; chưa? *</label>
+                    <div class="radio-group" style="grid-template-columns: 1fr;">
+                        <div class="radio-item">
+                            <input type="radio" id="happy1" name="happinessKnowledge" value="Chưa từng nghe" required>
+                            <label for="happy1">Chưa từng nghe</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="happy2" name="happinessKnowledge" value="Đã biết về quyển sách &quot;Tỷ phú bán giày&quot; nhưng chưa đọc">
+                            <label for="happy2">Đã biết về quyển sách "Tỷ phú bán giày" nhưng chưa đọc</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="happy3" name="happinessKnowledge" value="Đã đọc sách &quot;Tỷ phú bán giày&quot; nhưng chưa hoàn toàn hiểu và biết cách áp dụng">
+                            <label for="happy3">Đã đọc sách "Tỷ phú bán giày" nhưng chưa hoàn toàn hiểu và biết cách áp dụng</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 11. 03 điều mong đợi nhất (Textarea) -->
+                <div class="input-group full-width">
+                    <label>03 điều bạn mong đợi nhất sau khi kết thúc chương trình là gì? *</label>
+                    <textarea name="expectations" required rows="3" placeholder="Ví dụ: 1. Hiểu cách xây dựng văn hóa hạnh phúc; 2. ..."></textarea>
+                </div>
+
+                <!-- Event ID & Default Status -->
+                <input type="hidden" name="event_id" value="DHM8_REG_040726">
+                <input type="hidden" name="paymentStatus" value="Pending">
+            </div>
+
+            <button type="submit" class="btn-submit" id="submitBtn">
+                <span class="loading-spinner"></span>
+                <span class="btn-text">Gửi đăng ký & Hoàn tất</span>
+            </button>
+
+            <a href="../index.html" class="back-home" style="text-align: center;">← Quay về trang chủ</a>
+        </form>
+
+        <div id="successMessage">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">✅</div>
+            <h2 style="margin-bottom: 1rem; color: var(--warm-yellow);">Đăng ký thành công!</h2>
+            <p style="color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 1.5rem;">
+                Cảm ơn bạn đã đăng ký **Delivering Happiness Masterclass (DHM8)**. <br>
+                BTC đã nhận được thông tin đăng ký của bạn.
+            </p>
+            
+            <div class="payment-info" style="text-align: left;">
+                <h3 style="margin-bottom: 0.5rem;">⚠️ Xác nhận giữ chỗ chính thức:</h3>
+                <p style="font-size: 0.9rem; margin-bottom: 10px;">Vui lòng hoàn tất chuyển khoản chi phí hậu cần <strong>300.000đ</strong>:</p>
+                <div class="payment-details" style="font-size: 0.85rem;">
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li>🏦 <strong>Ngân hàng BIDV</strong> (cá nhân): <code>8815369431</code> - Hà Ngọc Hoàn</li>
+                        <li>🏦 <strong>Ngân hàng MB</strong> (doanh nghiệp): <code>9600006868</code> - CONG TY TNHH HIPER CONSULTING</li>
+                        <li>✍️ <strong>Cú pháp chuyển khoản</strong>: <code style="color: var(--warm-yellow); font-size: 1rem;">DHM8 - [SĐT] - [Họ tên]</code></li>
+                    </ul>
+                </div>
+            </div>
+
+            <a href="../index.html" class="btn-submit" style="display: block; text-decoration: none; text-align: center; margin-top: 2rem;">Quay về trang chủ</a>
+        </div>
+    </div>
+
+    <script src="../tracking.js?v=2.3"></script>
+    <script src="../register.js?v=1.0"></script>
+</body>
+
+</html>
