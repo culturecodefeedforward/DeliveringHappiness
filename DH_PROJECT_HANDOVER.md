@@ -16,9 +16,10 @@ Tuy nhiên, cấu trúc dự án cực kỳ tinh gọn, giúp bạn dễ dàng c
 
 ### 2. Bộ ba Công cụ Kỹ thuật Lõi
 1.  **Hệ thống Form & Tracking qua Google Apps Script (GAS)**
-    *   **Mục đích:** Đã hoàn thiện hệ thống thu thập danh sách khách hàng chuyên nghiệp (Họ tên, Email, SĐT) thông qua file `register.html`, thay thế hoàn toàn cho Google Form bên ngoài.
-    *   **Cơ chế:** Thay vì cần Backend tốn phí, thông tin submitted từ `register.html` được đẩy qua Webhook của Google Apps Script và lưu chính xác vào **CRM Google Sheets**. Điều này đảm bảo tính thẩm mỹ cao (Glassmorphism) và tốc độ tải trang tối ưu.
+    *   **Mục đích:** Sử dụng biểu mẫu native (`register.html` & `register.js`) có tích hợp thanh toán kép (Dual Payment Accounts: sinh mã VietQR động hoặc hiển thị thông tin tài khoản chuyển khoản) giúp tăng trải nghiệm người dùng, thay thế hoàn toàn cho Google Form nhúng bên ngoài.
+    *   **Cơ chế:** Thông tin submitted từ biểu mẫu được đẩy thẳng qua Webhook của Google Apps Script để ghi nhận dữ liệu thời gian thực (realtime) vào **CRM Google Sheets**, đồng thời kích hoạt email thông báo tự động tới Ban tổ chức.
     *   **Tracking nâng cao:** Tích hợp sẵn `tracking.js` để đo lường tỷ lệ chuyển đổi từ các trang đích (Landing Pages) vào trang đăng ký.
+    *   **Workspace MCP & Gmail Integration:** AI Antigravity kết nối trực tiếp với tài khoản Google `culturecodeproject@gmail.com` để quản trị dữ liệu CRM Sheet, đồng thời cho phép gửi email tự động qua Gmail API một cách an toàn.
 2.  **Kiến trúc Đa kho lưu trữ (Multi-Repo & Two-File Strategy)**
     *   Dự án quản lý chung trong 1 thư mục code nhưng đẩy ra 2 Link web khác nhau.
     *   `index_OFFICIAL.html` là file Sạch (không quảng cáo/demo), được đẩy lên Repo của Công ty.
@@ -92,7 +93,8 @@ Khi đã nắm hệ thống này, bạn có thể triển khai thành các sản
 ## PHẦN 4: DANH SÁCH LINK QUAN TRỌNG (QUICK LINKS)
 
 *   **Website (Live):** [https://dh-crm-landing.vercel.app/](https://dh-crm-landing.vercel.app/)
+*   **Lối tắt đăng ký DHM8 (Live Shortcut):** [https://dh-crm-landing.vercel.app/dh8](https://dh-crm-landing.vercel.app/dh8)
 *   **CRM Lead Sheet (Chính):** [DH4HN CRM Leads - Landing Page](https://docs.google.com/spreadsheets/d/1ZToRX6J5Vo6UgHzYEE_eUxU0bVnsGxBRLt-8tduI5CA/edit)
-*   **Google Apps Script (Webhook):** (Truy cập qua tài khoản quản lý Sheet trên)
+*   **Google Apps Script (Webhook):** (Truy cập qua tài khoản quản lý Sheet `culturecodeproject@gmail.com`)
 
 **(HẾT TÀI LIỆU CHUYỂN GIAO)**

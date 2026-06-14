@@ -55,11 +55,22 @@ Dự án sử dụng cơ chế **Branch-based** kết hợp **Git Worktree** đ�
 
 Dự án đã loại bỏ hoàn toàn Google Form iFrame để chuyển sang Form thuần (Native HTML/CSS) nhằm tối ưu trải nghiệm và thẩm mỹ.
 
-1.  **Masterclass DH (`register.html`):** Tập trung vào khách hàng cá nhân, có thêm trường **Thông tin người giới thiệu**.
+1.  **Masterclass DH (`register.html` & `register.js`):** Tập trung vào khách hàng đăng ký Delivering Happiness Masterclass 8.
+    *   **Tích hợp thanh toán kép (Dual Payment Accounts):** Hỗ trợ hiển thị thông tin tài khoản ngân hàng và sinh mã VietQR động để quét thanh toán nhanh chóng.
+    *   **Tự động điền (Prefill) & CRM Sync:** Hỗ trợ lưu trữ tiến trình nhập form, tự động đồng bộ thông tin đăng ký về CRM Google Sheets thông qua GAS Webhook.
 2.  **CultureCode 101 (`register_cc101.html`):** Tập trung vào khách hàng tổ chức, có thêm trường **Công ty/Đơn vị**.
-*   **Cơ chế:** Cả hai form đều gọi chung hàm `logToSheet` nhưng gửi bộ dữ liệu (JSON) khác nhau để GAS tự động điều hướng vào đúng cột.
+*   **Cơ chế:** Các form đều gọi chung hàm `logToSheet` nhưng gửi bộ dữ liệu (JSON) khác nhau để GAS tự động điều hướng vào đúng cột.
 
 ---
+
+## 🚦 Định tuyến tĩnh đường dẫn rút gọn (Static Subdirectory Routing)
+
+*   **Đường dẫn:** `/dh8` (`dh8/index.html`)
+*   **Mục đích:** Tạo lối tắt truy cập trực tiếp (`short link`) cho chiến dịch đăng ký Delivering Happiness Masterclass 8.
+*   **Cơ chế:** Khi người dùng truy cập `domain/dh8/`, tệp tĩnh `dh8/index.html` sẽ tự động hiển thị trang thông tin và mẫu đăng ký (nhúng hoặc chuyển hướng mượt mà).
+
+---
+
 
 ## 🚦 Quy trình Vận hành Local (Git Worktree)
 
@@ -90,6 +101,16 @@ Dự án đã loại bỏ hoàn toàn Google Form iFrame để chuyển sang For
 
 ---
 
+## ⚙️ Tích hợp Máy chủ Workspace MCP (Workspace MCP & Google OAuth)
+
+Hệ thống được kết nối với tài khoản Google `culturecodeproject@gmail.com` để chạy Workspace MCP server phục vụ cho các thao tác quản trị tài nguyên nâng cao:
+*   **Default Target Email:** `culturecodeproject@gmail.com` (Được cấu hình thông qua biến môi trường `USER_GOOGLE_EMAIL` tại tệp `mcp_config.json`).
+*   **OAuth Credentials Store:** Lưu trữ cục bộ tại `C:\Users\vu.hoang\.google_workspace_mcp\credentials\culturecodeproject@gmail.com.json`.
+*   **Kiểm chứng (Verification):** Đã kiểm thử thành công khả năng kết nối Google Drive (truy xuất Sheets CRM) và gửi email qua Gmail API (`gmail.send` scope) bằng Python scripts.
+
+---
+
+
 ## 🔗 Danh sách Link Tài nguyên
 
 | Thành phần | Link URL |
@@ -106,7 +127,9 @@ Dự án đã loại bỏ hoàn toàn Google Form iFrame để chuyển sang For
 | :--- | :--- | :--- |
 | **04/04** | CRM Integration | Hoàn thiện Webhook và Schema 12 cột cho CRM. |
 | **06/04** | Notification Fix | Sửa lỗi CORS và kích hoạt Mail thông báo BTC. |
-| **07/04** | **Technical Audit** | **Đồng bộ tài liệu với thực tế: Loại bỏ Smart Redirect, chuẩn hóa quy trình Two-File Index, gỡ bỏ NotebookLM Sync (Workspace khác).** |
+| **07/04** | **Technical Audit** | Đồng bộ tài liệu với thực tế: Loại bỏ Smart Redirect, chuẩn hóa quy trình Two-File Index. |
+| **13/06** | **Open DHM8** | Mở link đăng ký cho Delivering Happiness Masterclass 8 ngày 04/07. |
+| **14/06** | **Reactivate Form & MCP** | Kích hoạt lại Form Native (`register.html`) tích hợp thanh toán kép (VietQR/Bank). Cấu hình định tuyến tĩnh `/dh8`. Xác thực thành công Workspace MCP với tài khoản `culturecodeproject@gmail.com` và hoàn thành kiểm thử Gmail API. |
 
 ---
-*Cập nhật bởi Antigravity v3.0 (Audit Mode) - 07/04/2026*
+*Cập nhật bởi Antigravity v3.5 (Audit Mode) - 14/06/2026*
