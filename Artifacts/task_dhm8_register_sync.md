@@ -13,4 +13,4 @@
 - [x] Add assessment CTA next to Register buttons on `index.html`
 - [x] Optimize CSS sizes and heights in `quiz.css` to fit on-screen
 - [x] Create UAT report for Homepage CTA and Quiz spacing
-- [ ] Review git status and push changes for CTA & Spacing update
+- [x] Review git status and push changes for CTA & Spacing update
