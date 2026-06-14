@@ -21,6 +21,17 @@ document.getElementById('crmForm').addEventListener('submit', async (e) => {
     data.purpose = purposeList.filter(p => p !== 'Khác').join(', ');
     delete data.purposeOther;
 
+    // Gather checkboxes for attendedPrograms
+    const progChoices = formData.getAll('attendedPrograms');
+    let progList = [...progChoices];
+    const indexKhacProg = progList.indexOf('Khác');
+    if (indexKhacProg !== -1) {
+        progList[indexKhacProg] = `Khác: ${data.attendedProgramsOther || ''}`;
+    }
+    // Set to empty string if no program is checked to avoid undefined behavior
+    data.attendedPrograms = progList.length > 0 ? progList.filter(p => p !== 'Khác').join(', ') : 'Chưa tham gia';
+    delete data.attendedProgramsOther;
+
     // Gather radio for sourceHearing
     if (data.sourceHearing === 'Khác') {
         data.sourceHearing = `Khác: ${data.sourceHearingOther || ''}`;
