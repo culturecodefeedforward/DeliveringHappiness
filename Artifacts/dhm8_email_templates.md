@@ -59,7 +59,7 @@ Tài liệu này chứa 3 mẫu email HTML dùng cho hệ thống tự động h
         </ul>
       </div>
 
-      <p style="font-size: 14px; color: #4b5563;">*Sau khi bạn chuyển khoản thành công, hệ thống gạch nợ tự động của BTC sẽ kiểm tra giao dịch và tự động gửi email xác nhận giữ chỗ chính thức tới hòm thư này.*</p>
+      <p style="font-size: 14px; color: #4b5563;">*Sau khi bạn chuyển khoản thành công, hệ thống tự động của BTC sẽ ghi nhận giao dịch và gửi email xác nhận giữ chỗ chính thức tới hòm thư này.*</p>
       
       <p>Hẹn gặp lại bạn tại lớp học!</p>
       <p>Trân trọng,<br><strong>Ban Tổ chức Delivering Happiness</strong></p>
@@ -109,7 +109,7 @@ Tài liệu này chứa 3 mẫu email HTML dùng cho hệ thống tự động h
     </div>
     <div class="content">
       <div class="greeting">Chào {{FullName}},</div>
-      <p>Chúc mừng bạn! Hệ thống gạch nợ tự động của Delivering Happiness đã ghi nhận giao dịch thanh toán chi phí hậu cần thành công cho hồ sơ của bạn.</p>
+      <p>Chúc mừng bạn! Hệ thống tự động xác nhận của Delivering Happiness đã ghi nhận giao dịch thanh toán chi phí hậu cần thành công cho hồ sơ của bạn.</p>
       
       <div class="success-box">
         <h3>✅ Đã xác nhận giữ chỗ thành công:</h3>
