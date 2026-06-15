@@ -127,6 +127,23 @@ Tài liệu này chứa 3 mẫu email HTML dùng cho hệ thống tự động h
 
       <p>BTC sẽ gửi email hướng dẫn chi tiết về tài liệu học tập, địa điểm học và các khâu chuẩn bị trước sự kiện qua email này. Bạn vui lòng chú ý theo dõi hòm thư (và kiểm tra mục Spam/Quảng cáo nếu không thấy thư gửi về nhé).</p>
       
+      <!-- Zalo Group Connection Card -->
+      <div style="background-color: #eff6ff; border-left: 4px solid #3b82f6; padding: 15px 20px; margin: 20px 0; border-radius: 6px;">
+        <h4 style="margin: 0 0 8px 0; color: #1e3a8a; font-size: 15px; font-weight: 600;">📱 Tham gia Nhóm Zalo Lớp học:</h4>
+        <p style="margin: 0 0 12px 0; font-size: 14px; color: #1e293b;">Để dễ dàng kết nối với Ban tổ chức, giảng viên và nhận các thông báo quan trọng nhất trong suốt khóa học, bạn vui lòng tham gia nhóm Zalo hỗ trợ tại đây:</p>
+        <a href="https://zalo.me/g/idmxekeesuabqk2qxzld" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #3b82f6; color: #ffffff; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 13px;">Tham gia Nhóm Zalo DHM8</a>
+      </div>
+
+      <!-- Logistics & Culture Notes -->
+      <div style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 15px 20px; margin: 15px 0;">
+        <h4 style="margin-top: 0; color: #374151; font-size: 15px; font-weight: 600;">🌱 Một số lưu ý từ BTC:</h4>
+        <ul style="padding-left: 20px; margin: 0; font-size: 14px; color: #4b5563; line-height: 1.6;">
+          <li style="margin-bottom: 8px;"><strong>Thời gian có mặt</strong>: Lớp học sẽ bắt đầu đúng giờ. Bạn vui lòng có mặt trước 15 phút để hoàn tất check-in và nhận tài liệu in ấn.</li>
+          <li style="margin-bottom: 8px;"><strong>Cam kết xanh</strong>: BTC khuyến khích bạn mang theo <strong>bình nước cá nhân</strong> để cùng hạn chế rác thải nhựa, bảo vệ môi trường.</li>
+          <li style="margin-bottom: 0;"><strong>Chính sách hoàn phí</strong>: Chi phí hậu cần đã được sử dụng để chuẩn bị teabreak, ăn trưa và in ấn tài liệu nên BTC không hỗ trợ hoàn phí. Bạn có thể chuyển nhượng suất học cho người khác và báo lại cho BTC tối thiểu 3 ngày trước sự kiện. Chi phí còn dư (nếu có) sẽ được quyên góp vào Quỹ Nhân ái của Báo Dân trí.</li>
+        </ul>
+      </div>
+
       <p>Cảm ơn bạn đã đồng hành cùng Delivering Happiness!</p>
       <p>Trân trọng,<br><strong>Ban Tổ chức Delivering Happiness</strong></p>
     </div>
