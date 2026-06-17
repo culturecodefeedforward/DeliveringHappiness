@@ -300,6 +300,7 @@
             outline: none;
             border-color: var(--warm-yellow);
             background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.1) !important;
         }
 
         @media (max-width: 640px) {
@@ -381,6 +382,7 @@
                     <label>Chức danh / Vị trí *</label>
                     <input type="text" name="jobTitle" required placeholder="Nhập chức danh của bạn...">
                 </div>
+
 
 
                 <!-- 6. Quy mô công ty (Radio group) -->
@@ -528,12 +530,16 @@
                 <input type="hidden" name="paymentStatus" value="Pending">
             </div>
 
+            <input type="hidden" name="registrationUuid" id="registrationUuid">
+
+            <div id="registrationError" style="display:none; background:rgba(255,80,80,0.15); border:1px solid rgba(255,80,80,0.4); border-radius:8px; padding:1rem; margin-bottom:1rem; color:#fff; font-size:0.9rem;"></div>
+
             <button type="submit" class="btn-submit" id="submitBtn">
                 <span class="loading-spinner"></span>
                 <span class="btn-text">Gửi đăng ký & Hoàn tất</span>
             </button>
 
-            <a href="../index.html" class="back-home" style="text-align: center;">← Quay về trang chủ</a>
+            <a href="index.html" class="back-home" style="text-align: center;">← Quay về trang chủ</a>
         </form>
 
         <div id="successMessage">
@@ -568,12 +574,12 @@
                 </div>
             </div>
 
-            <a href="../index.html" class="btn-submit" style="display: block; text-decoration: none; text-align: center; margin-top: 2rem;">Quay về trang chủ</a>
+            <a href="index.html" class="btn-submit" style="display: block; text-decoration: none; text-align: center; margin-top: 2rem;">Quay về trang chủ</a>
         </div>
     </div>
 
     <script>
-        window.CUSTOM_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxxbba8bvb7H2Em179HgJUv0Tj8dnxWIuGynmVqjDcPVwADrTBXxx7UwE5AKroIQR5i/exec";
+        window.CUSTOM_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxfbK1IWH_fL-3BzcoYDsdl61L0EpKuuF_MwPgdzDMutHHqECGRRJaDfsBdHqty-Vjtpg/exec";
         window.DHM8_JSONP_MAX_ATTEMPTS = 10;
         window.DHM8_JSONP_TIMEOUT_MS = 12000;
         window.DHM8_JSONP_POLL_DELAY_MS = 4000;
@@ -587,8 +593,8 @@
         window.DHM8_QR_SHOW_INFO = false;
         window.DHM8_ZALO_GROUP_URL = "https://zalo.me/g/hpf7qu45j6qkft6hpghx";
     </script>
-    <script src="../tracking.js?v=3.1-live"></script>
-    <script src="../register.js?v=2.6-live"></script>
+    <script src="tracking.js?v=3.1-live"></script>
+    <script src="register.js?v=2.6-live"></script>
 </body>
 
 </html>

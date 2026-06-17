@@ -29,10 +29,10 @@ Apps Script hoạt động như một microservice backend xử lý lưu trữ d
     *   *Who has access:* `Anyone` (để tránh lỗi chặn CORS khi gọi API từ trình duyệt khách hàng).
 7.  Copy URL Web App mới sinh ra và cập nhật vào cấu hình `window.CUSTOM_WEBAPP_URL` của các trang đăng ký DHM8, đồng thời đồng bộ fallback trong `register.js` và `tracking.js`.
 
-### URL Apps Script đang dùng cho lane DHM8 hiện hành
+### URL Apps Script production đang dùng cho lane DHM8 hiện hành
 
 ```text
-https://script.google.com/macros/s/AKfycbxfbK1IWH_fL-3BzcoYDsdl61L0EpKuuF_MwPgdzDMutHHqECGRRJaDfsBdHqty-Vjtpg/exec
+https://script.google.com/macros/s/AKfycbxxbba8bvb7H2Em179HgJUv0Tj8dnxWIuGynmVqjDcPVwADrTBXxx7UwE5AKroIQR5i/exec
 ```
 
 ### Lưu ý vận hành
