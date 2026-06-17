@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng ký DH Masterclass - CultureCode</title>
+    <title>TEST - Đăng ký DH Masterclass - CultureCode</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700;800&display=swap"
         rel="stylesheet">
@@ -279,6 +279,21 @@
             margin-bottom: 6px;
         }
 
+        .test-banner {
+            background: rgba(245, 158, 11, 0.16);
+            border: 1px solid var(--warm-yellow);
+            border-radius: 12px;
+            color: #fff7ed;
+            font-size: 0.92rem;
+            line-height: 1.55;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+        }
+
+        .test-banner strong {
+            color: var(--warm-yellow);
+        }
+
         .option-other-container {
             display: flex;
             align-items: center;
@@ -327,21 +342,29 @@
 
     <div class="form-card" id="formWrapper">
         <div class="header">
-            <h1>Đăng ký DH Masterclass (DHM8)</h1>
-            <p class="subtitle">Thứ Bảy, 04/07/2026 | Trung tâm đào tạo Circle K</p>
+            <h1>TEST - Đăng ký DH Masterclass (DHM8)</h1>
+            <p class="subtitle">Bản thử nghiệm riêng, không dùng cho đăng ký thật</p>
+        </div>
+
+        <div class="test-banner">
+            <strong>Bản thử nghiệm:</strong> form này gửi dữ liệu vào Sheet thử nghiệm và Web App thử nghiệm.
+            Sau khi đăng ký thành công, vui lòng quét đúng mã QR test SePay bên dưới để chuyển khoản thật 3.000đ vào
+            luồng thử nghiệm.
         </div>
 
         <form id="crmForm">
             <!-- Thông tin Thanh toán -->
             <div class="payment-info">
-                <h3>💰 Chi phí hậu cần: 300.000đ</h3>
+                <h3>TEST thanh toán: 3.000đ</h3>
                 <div class="payment-details">
-                    <p>Bao gồm: Tài liệu, Ăn trưa, Teabreak.</p>
-                    <p style="margin-top: 10px;"><strong>Tài khoản nhận phí:</strong></p>
+                    <p>Sau khi gửi form, hệ thống sẽ hiện mã QR test SePay đúng luồng webhook để mình chuyển khoản thật
+                        3.000đ và kiểm tra end-to-end (đầu cuối) từ đăng ký đến xác nhận thanh toán.
+                    </p>
+                    <p style="margin-top: 10px;"><strong>Giá trị test:</strong></p>
                     <ul style="list-style: none; margin-left: 0; padding-top: 5px;">
-                        <li>🏦 <strong>Ngân hàng BIDV</strong> (cá nhân, không cần xuất hoá đơn đỏ): <code>8815369431</code> - Hà Ngọc Hoàn</li>
-                        <li>🏦 <strong>Ngân hàng MB</strong> (doanh nghiệp, cần xuất hoá đơn đỏ): <code>9600006868</code> - CONG TY TNHH HIPER CONSULTING</li>
-                        <li>✍️ <strong>Nội dung chuyển khoản</strong>: <code>DHM8 - [SĐT] - [Họ tên]</code></li>
+                        <li><strong>Số tiền:</strong> <code>3000</code></li>
+                        <li><strong>Luồng nhận tiền:</strong> <code>VA SePay 96247ABCD (BIDV 1300244416)</code></li>
+                        <li><strong>Nội dung chuyển khoản:</strong> <code>Mã DH8 + 9 số cuối điện thoại do hệ thống sinh sau khi đăng ký</code></li>
                     </ul>
                 </div>
             </div>
@@ -413,7 +436,8 @@
                     <label>Lần đầu bạn nghe thông tin chương trình từ đâu? *</label>
                     <div class="radio-group" style="grid-template-columns: 1fr 1fr;">
                         <div class="radio-item">
-                            <input type="radio" id="src1" name="sourceHearing" value="CultureCode linkedin page" required>
+                            <input type="radio" id="src1" name="sourceHearing" value="CultureCode linkedin page"
+                                required>
                             <label for="src1">CultureCode linkedin page</label>
                         </div>
                         <div class="radio-item">
@@ -421,7 +445,8 @@
                             <label for="src2">Nhóm Zalo cộng đồng CultureCode</label>
                         </div>
                         <div class="radio-item">
-                            <input type="radio" id="src3" name="sourceHearing" value="Nhóm zalo cộng đồng Delivering Happiness">
+                            <input type="radio" id="src3" name="sourceHearing"
+                                value="Nhóm zalo cộng đồng Delivering Happiness">
                             <label for="src3">Nhóm Zalo cộng đồng Delivering Happiness</label>
                         </div>
                         <div class="radio-item">
@@ -436,10 +461,13 @@
                             <input type="radio" id="src6" name="sourceHearing" value="Bạn bè, người quen">
                             <label for="src6">Bạn bè, người quen</label>
                         </div>
-                        <div class="radio-item full-width" style="grid-column: span 2; display: flex; align-items: center; gap: 10px;">
+                        <div class="radio-item full-width"
+                            style="grid-column: span 2; display: flex; align-items: center; gap: 10px;">
                             <input type="radio" id="srcOther" name="sourceHearing" value="Khác">
                             <label for="srcOther" style="white-space: nowrap; margin-bottom: 0;">Mục khác:</label>
-                            <input type="text" id="sourceHearingOther" name="sourceHearingOther" placeholder="Vui lòng nhập nguồn khác..." class="option-other-input" style="margin: 0; padding: 6px 12px; height: auto;">
+                            <input type="text" id="sourceHearingOther" name="sourceHearingOther"
+                                placeholder="Vui lòng nhập nguồn khác..." class="option-other-input"
+                                style="margin: 0; padding: 6px 12px; height: auto;">
                         </div>
                     </div>
                 </div>
@@ -460,10 +488,13 @@
                             <input type="checkbox" id="prog3" name="attendedPrograms" value="Blooming on">
                             <label for="prog3">Blooming on</label>
                         </div>
-                        <div class="radio-item full-width" style="grid-column: span 2; display: flex; align-items: center; gap: 10px;">
+                        <div class="radio-item full-width"
+                            style="grid-column: span 2; display: flex; align-items: center; gap: 10px;">
                             <input type="checkbox" id="progOther" name="attendedPrograms" value="Khác">
                             <label for="progOther" style="white-space: nowrap; margin-bottom: 0;">Mục khác:</label>
-                            <input type="text" id="attendedProgramsOther" name="attendedProgramsOther" placeholder="Vui lòng nhập mục khác..." class="option-other-input" style="margin: 0; padding: 6px 12px; height: auto;">
+                            <input type="text" id="attendedProgramsOther" name="attendedProgramsOther"
+                                placeholder="Vui lòng nhập mục khác..." class="option-other-input"
+                                style="margin: 0; padding: 6px 12px; height: auto;">
                         </div>
                     </div>
                 </div>
@@ -477,13 +508,17 @@
                             <label for="purp1">Học và áp dụng cho bản thân</label>
                         </div>
                         <div class="radio-item">
-                            <input type="checkbox" id="purp2" name="purpose" value="Xem xét áp dụng cho công ty/ tổ chức">
+                            <input type="checkbox" id="purp2" name="purpose"
+                                value="Xem xét áp dụng cho công ty/ tổ chức">
                             <label for="purp2">Xem xét áp dụng cho công ty/ tổ chức</label>
                         </div>
-                        <div class="radio-item full-width" style="grid-column: span 2; display: flex; align-items: center; gap: 10px;">
+                        <div class="radio-item full-width"
+                            style="grid-column: span 2; display: flex; align-items: center; gap: 10px;">
                             <input type="checkbox" id="purpOther" name="purpose" value="Khác">
                             <label for="purpOther" style="white-space: nowrap; margin-bottom: 0;">Mục khác:</label>
-                            <input type="text" id="purposeOther" name="purposeOther" placeholder="Vui lòng nhập mục đích khác..." class="option-other-input" style="margin: 0; padding: 6px 12px; height: auto;">
+                            <input type="text" id="purposeOther" name="purposeOther"
+                                placeholder="Vui lòng nhập mục đích khác..." class="option-other-input"
+                                style="margin: 0; padding: 6px 12px; height: auto;">
                         </div>
                     </div>
                 </div>
@@ -497,12 +532,15 @@
                             <label for="happy1">Chưa từng nghe</label>
                         </div>
                         <div class="radio-item">
-                            <input type="radio" id="happy2" name="happinessKnowledge" value="Đã biết về quyển sách &quot;Tỷ phú bán giày&quot; nhưng chưa đọc">
+                            <input type="radio" id="happy2" name="happinessKnowledge"
+                                value="Đã biết về quyển sách &quot;Tỷ phú bán giày&quot; nhưng chưa đọc">
                             <label for="happy2">Đã biết về quyển sách "Tỷ phú bán giày" nhưng chưa đọc</label>
                         </div>
                         <div class="radio-item">
-                            <input type="radio" id="happy3" name="happinessKnowledge" value="Đã đọc sách &quot;Tỷ phú bán giày&quot; nhưng chưa hoàn toàn hiểu và biết cách áp dụng">
-                            <label for="happy3">Đã đọc sách "Tỷ phú bán giày" nhưng chưa hoàn toàn hiểu và biết cách áp dụng</label>
+                            <input type="radio" id="happy3" name="happinessKnowledge"
+                                value="Đã đọc sách &quot;Tỷ phú bán giày&quot; nhưng chưa hoàn toàn hiểu và biết cách áp dụng">
+                            <label for="happy3">Đã đọc sách "Tỷ phú bán giày" nhưng chưa hoàn toàn hiểu và biết cách áp
+                                dụng</label>
                         </div>
                     </div>
                 </div>
@@ -510,7 +548,8 @@
                 <!-- 11. 03 điều mong đợi nhất (Textarea) -->
                 <div class="input-group full-width">
                     <label>03 điều bạn mong đợi nhất sau khi kết thúc chương trình là gì? *</label>
-                    <textarea name="expectations" required rows="3" placeholder="Ví dụ: 1. Hiểu cách xây dựng văn hóa hạnh phúc; 2. ..."></textarea>
+                    <textarea name="expectations" required rows="3"
+                        placeholder="Ví dụ: 1. Hiểu cách xây dựng văn hóa hạnh phúc; 2. ..."></textarea>
                 </div>
 
                 <!-- 12. Tên người giới thiệu -->
@@ -532,7 +571,9 @@
 
             <input type="hidden" name="registrationUuid" id="registrationUuid">
 
-            <div id="registrationError" style="display:none; background:rgba(255,80,80,0.15); border:1px solid rgba(255,80,80,0.4); border-radius:8px; padding:1rem; margin-bottom:1rem; color:#fff; font-size:0.9rem;"></div>
+            <div id="registrationError"
+                style="display:none; background:rgba(255,80,80,0.15); border:1px solid rgba(255,80,80,0.4); border-radius:8px; padding:1rem; margin-bottom:1rem; color:#fff; font-size:0.9rem;">
+            </div>
 
             <button type="submit" class="btn-submit" id="submitBtn">
                 <span class="loading-spinner"></span>
@@ -549,25 +590,52 @@
                 Cảm ơn bạn đã đăng ký **Delivering Happiness Masterclass (DHM8)**. <br>
                 BTC đã nhận được thông tin đăng ký của bạn.
             </p>
-            
+
             <div class="payment-info" style="text-align: left;">
-                <h3 style="margin-bottom: 0.5rem;">⚠️ Xác nhận giữ chỗ chính thức:</h3>
-                <p style="font-size: 0.9rem; margin-bottom: 10px;">Vui lòng hoàn tất chuyển khoản chi phí hậu cần <strong>300.000đ</strong>:</p>
+                <h3 style="margin-bottom: 0.5rem;">Bước test tiếp theo:</h3>
+                <p style="font-size: 0.9rem; margin-bottom: 10px;">Quét đúng mã QR SePay bên dưới hoặc chuyển khoản
+                    thật <strong>3.000đ</strong> theo đúng mã thanh toán này:</p>
                 <div class="payment-details" style="font-size: 0.85rem;">
                     <ul style="list-style: none; padding-left: 0;">
-                        <li>🏦 <strong>Ngân hàng BIDV</strong> (cá nhân): <code>8815369431</code> - Hà Ngọc Hoàn</li>
-                        <li>🏦 <strong>Ngân hàng MB</strong> (doanh nghiệp): <code>9600006868</code> - CONG TY TNHH HIPER CONSULTING</li>
-                        <li>✍️ <strong>Cú pháp chuyển khoản</strong>: <code style="color: var(--warm-yellow); font-size: 1rem;">DHM8 - [SĐT] - [Họ tên]</code></li>
+                        <li><strong>Mã đăng ký:</strong> <code id="successRegistrationUuid">Đang tạo...</code></li>
+                        <li><strong>Mã thanh toán:</strong> <code id="successPaymentCode">Đang tạo...</code></li>
+                        <li><strong>Nội dung chuyển khoản mẫu:</strong> <code id="successTransferContent"
+                                style="color: var(--warm-yellow); font-size: 1rem;">Đang tạo...</code></li>
+                        <li><strong>Đích nhận tiền test:</strong> <code id="successPaymentAccount">Đang tải...</code></li>
+                        <li><strong>Số tiền:</strong> <code id="successPaymentAmount">3.000đ</code></li>
+                        <li><strong>Trạng thái thanh toán:</strong> <code id="successPaymentStatus">Chờ thanh toán</code></li>
+                        <li><strong>Luồng webhook:</strong> <code>SePay DH - Web App thử nghiệm</code></li>
                     </ul>
+                </div>
+                <div id="successPaymentQrWrapper" style="display:none; margin-top: 1rem; text-align:center;">
+                    <img id="successPaymentQr" alt="QR thanh toán test DHM8"
+                        style="width: 240px; max-width: 100%; border-radius: 16px; background: #fff; padding: 10px;">
                 </div>
             </div>
 
-            <a href="index.html" class="btn-submit" style="display: block; text-decoration: none; text-align: center; margin-top: 2rem;">Quay về trang chủ</a>
+            <a href="index.html" class="btn-submit"
+                style="display: block; text-decoration: none; text-align: center; margin-top: 2rem;">Quay về trang
+                chủ</a>
         </div>
     </div>
 
+    <script>
+        window.CUSTOM_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxfbK1IWH_fL-3BzcoYDsdl61L0EpKuuF_MwPgdzDMutHHqECGRRJaDfsBdHqty-Vjtpg/exec";
+        window.DHM8_TEST_FORM = true;
+        window.DHM8_JSONP_MAX_ATTEMPTS = 10;
+        window.DHM8_JSONP_TIMEOUT_MS = 12000;
+        window.DHM8_JSONP_POLL_DELAY_MS = 4000;
+        window.DHM8_STATUS_CHECK_MODE = "fetch";
+        window.DHM8_PAYMENT_ACCOUNT = "96247ABCD";
+        window.DHM8_PAYMENT_ACCOUNT_LABEL = "VA 96247ABCD / BIDV 1300244416";
+        window.DHM8_PAYMENT_BANK = "BIDV";
+        window.DHM8_PAYMENT_HOLDER = "NGUYEN TO DUNG";
+        window.DHM8_PAYMENT_AMOUNT = 3000;
+        window.DHM8_QR_TEMPLATE = "compact";
+        window.DHM8_QR_SHOW_INFO = false;
+    </script>
     <script src="tracking.js?v=3.0"></script>
-    <script src="register.js?v=2.0"></script>
+    <script src="register.js?v=2.5-test"></script>
 </body>
 
 </html>
