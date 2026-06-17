@@ -1,4 +1,7 @@
 .vercel
+.env
+.env.local
+.env.*.local
 backup_13042026/
 .vscode/
 register_nvc - Copy.html

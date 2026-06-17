@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <title>DHM8 JSONP Probe</title>
+</head>
+<body>
+  <pre id="result">WAITING</pre>
+  <script>
+    (function () {
+      var web = 'https://script.google.com/macros/s/AKfycbxfbK1IWH_fL-3BzcoYDsdl61L0EpKuuF_MwPgdzDMutHHqECGRRJaDfsBdHqty-Vjtpg/exec';
+      var uuid = '45beb6a8-3267-4f3a-99a7-2d2718dd3aef';
+      var callback = 'dhm8Jsonp_PROBEABCDEFGHIJKLMNOP';
+      var result = document.getElementById('result');
+      var timer = setTimeout(function () {
+        result.textContent = 'TIMEOUT';
+      }, 12000);
+
+      window[callback] = function (payload) {
+        clearTimeout(timer);
+        result.textContent = JSON.stringify(payload);
+      };
+
+      var script = document.createElement('script');
+      script.onerror = function () {
+        clearTimeout(timer);
+        result.textContent = 'SCRIPT_ERROR';
+      };
+      script.src = web + '?action=checkStatus&uuid=' + encodeURIComponent(uuid) + '&callback=' + callback;
+      document.head.appendChild(script);
+    })();
+  </script>
+</body>
+</html>

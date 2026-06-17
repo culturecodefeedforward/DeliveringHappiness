@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/sepay-dh.js": {
+      "maxDuration": 30
+    }
+  }
+}

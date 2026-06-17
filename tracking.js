@@ -1,13 +1,20 @@
-// tracking.js - Hệ thống Analytics hợp nhất cho Dự án DH4HN
+// tracking.js - Analytics hợp nhất cho dự án DH4HN
+// SCOPE: Analytics only (fire-and-forget). Logic đăng ký nghiệp vụ nằm trong register.js.
+
 const SHEET_WEBAPP_URL = window.CUSTOM_WEBAPP_URL || "https://script.google.com/macros/s/AKfycbxxbba8bvb7H2Em179HgJUv0Tj8dnxWIuGynmVqjDcPVwADrTBXxx7UwE5AKroIQR5i/exec";
 const sessionId = 'dh-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);
 
 window.sessionId = sessionId; // Export cho quiz.js dùng chung
 
-async function logToSheet(event, detail, extra = {}) {
+/**
+ * Ghi nhận sự kiện analytics (fire-and-forget).
+ * Lỗi analytics KHÔNG ảnh hưởng luồng đăng ký nghiệp vụ.
+ */
+async function logAnalytics(event, detail, extra = {}) {
     const targetUrl = window.CUSTOM_WEBAPP_URL || SHEET_WEBAPP_URL;
     if (!targetUrl) return;
     try {
+        // Analytics dùng no-cors là hợp lệ vì không cần đọc response
         await fetch(targetUrl, {
             method: 'POST',
             mode: 'no-cors',
@@ -20,24 +27,25 @@ async function logToSheet(event, detail, extra = {}) {
                 ...extra
             })
         });
-    } catch (e) { console.error('Tracking error', e); }
+    } catch (e) { console.error('[Analytics] Tracking error', e); }
 }
 
-window.logToSheet = logToSheet; // Export ra global
+// Alias cũ để không phá các page dùng window.logToSheet cho analytics
+window.logToSheet = logAnalytics;
+window.logAnalytics = logAnalytics;
 
-// 1. Theo dõi lượt xem trang và cuộn trang
+// --- Theo dõi lượt xem trang và cuộn trang ---
 document.addEventListener('DOMContentLoaded', () => {
     const pageName = window.location.pathname.split('/').pop() || 'index.html';
-    logToSheet('PAGE_VIEW', `Truy cập trang: ${pageName}`);
+    logAnalytics('PAGE_VIEW', 'Truy cập trang: ' + pageName);
 
-    // Theo dõi cuộn trang chủ
     if (pageName === 'index.html' || pageName === '') {
         const registerBtn = document.querySelector('a[href*="docs.google.com/forms"]');
         if (registerBtn) {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        logToSheet('SCROLL_REACH', 'Người dùng đã cuộn tới khu vực Đăng ký');
+                        logAnalytics('SCROLL_REACH', 'Người dùng đã cuộn tới khu vực Đăng ký');
                         observer.unobserve(entry.target);
                     }
                 });
@@ -45,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
             observer.observe(registerBtn);
 
             registerBtn.addEventListener('click', () => {
-                logToSheet('CTA_CLICK', 'Nhấn nút Đăng ký (Landing Page)');
+                logAnalytics('CTA_CLICK', 'Nhấn nút Đăng ký (Landing Page)');
             });
         }
     }
