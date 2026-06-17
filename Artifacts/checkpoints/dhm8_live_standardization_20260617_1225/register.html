@@ -334,14 +334,14 @@
         <form id="crmForm">
             <!-- Thông tin Thanh toán -->
             <div class="payment-info">
-                <h3>💰 Chi phí xác nhận giữ chỗ hiện tại: 3.000đ</h3>
+                <h3>💰 Chi phí hậu cần: 300.000đ</h3>
                 <div class="payment-details">
                     <p>Bao gồm: Tài liệu, Ăn trưa, Teabreak.</p>
-                    <p style="margin-top: 10px;">Sau khi gửi form, hệ thống sẽ tạo <strong>mã thanh toán SePay riêng</strong> và hiện đúng QR tương ứng để bạn chuyển khoản theo luồng tự động.</p>
+                    <p style="margin-top: 10px;"><strong>Tài khoản nhận phí:</strong></p>
                     <ul style="list-style: none; margin-left: 0; padding-top: 5px;">
-                        <li><strong>Số tiền hiện tại:</strong> <code>3.000đ</code></li>
-                        <li><strong>Luồng nhận tiền:</strong> <code>VA SePay 96247ABCD / BIDV 1300244416</code></li>
-                        <li><strong>Nội dung chuyển khoản:</strong> <code>Mã DH8 hệ thống sinh theo số điện thoại đã đăng ký</code></li>
+                        <li>🏦 <strong>Ngân hàng BIDV</strong> (cá nhân, không cần xuất hoá đơn đỏ): <code>8815369431</code> - Hà Ngọc Hoàn</li>
+                        <li>🏦 <strong>Ngân hàng MB</strong> (doanh nghiệp, cần xuất hoá đơn đỏ): <code>9600006868</code> - CONG TY TNHH HIPER CONSULTING</li>
+                        <li>✍️ <strong>Nội dung chuyển khoản</strong>: <code>DHM8 - [SĐT] - [Họ tên]</code></li>
                     </ul>
                 </div>
             </div>
@@ -551,26 +551,14 @@
             </p>
             
             <div class="payment-info" style="text-align: left;">
-                <h3 style="margin-bottom: 0.5rem;">Bước tiếp theo để giữ chỗ:</h3>
-                <p style="font-size: 0.9rem; margin-bottom: 10px;">Quét đúng mã QR SePay bên dưới hoặc chuyển khoản theo đúng mã thanh toán hệ thống đã tạo cho bạn:</p>
+                <h3 style="margin-bottom: 0.5rem;">⚠️ Xác nhận giữ chỗ chính thức:</h3>
+                <p style="font-size: 0.9rem; margin-bottom: 10px;">Vui lòng hoàn tất chuyển khoản chi phí hậu cần <strong>300.000đ</strong>:</p>
                 <div class="payment-details" style="font-size: 0.85rem;">
                     <ul style="list-style: none; padding-left: 0;">
-                        <li><strong>Mã đăng ký:</strong> <code id="successRegistrationUuid">Đang tạo...</code></li>
-                        <li><strong>Mã thanh toán:</strong> <code id="successPaymentCode">Đang tạo...</code></li>
-                        <li><strong>Nội dung chuyển khoản mẫu:</strong> <code id="successTransferContent" style="color: var(--warm-yellow); font-size: 1rem;">Đang tạo...</code></li>
-                        <li><strong>Đích nhận tiền:</strong> <code id="successPaymentAccount">Đang tải...</code></li>
-                        <li><strong>Số tiền:</strong> <code id="successPaymentAmount">3.000đ</code></li>
-                        <li><strong>Trạng thái thanh toán:</strong> <code id="successPaymentStatus">Chờ thanh toán</code></li>
+                        <li>🏦 <strong>Ngân hàng BIDV</strong> (cá nhân): <code>8815369431</code> - Hà Ngọc Hoàn</li>
+                        <li>🏦 <strong>Ngân hàng MB</strong> (doanh nghiệp): <code>9600006868</code> - CONG TY TNHH HIPER CONSULTING</li>
+                        <li>✍️ <strong>Cú pháp chuyển khoản</strong>: <code style="color: var(--warm-yellow); font-size: 1rem;">DHM8 - [SĐT] - [Họ tên]</code></li>
                     </ul>
-                    <a id="successZaloGroupLink" href="https://zalo.me/g/hpf7qu45j6qkft6hpghx" target="_blank"
-                        rel="noopener"
-                        style="display:none; margin-top: 0.75rem; padding: 0.8rem 1rem; border-radius: 10px; background:#0068ff; color:#fff; font-weight:700; text-decoration:none; text-align:center;">
-                        Vào nhóm Zalo DH8 HCM
-                    </a>
-                </div>
-                <div id="successPaymentQrWrapper" style="display:none; margin-top: 1rem; text-align:center;">
-                    <img id="successPaymentQr" alt="QR thanh toán DHM8"
-                        style="width: 240px; max-width: 100%; border-radius: 16px; background: #fff; padding: 10px;">
                 </div>
             </div>
 
@@ -578,23 +566,8 @@
         </div>
     </div>
 
-    <script>
-        window.CUSTOM_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxfbK1IWH_fL-3BzcoYDsdl61L0EpKuuF_MwPgdzDMutHHqECGRRJaDfsBdHqty-Vjtpg/exec";
-        window.DHM8_JSONP_MAX_ATTEMPTS = 10;
-        window.DHM8_JSONP_TIMEOUT_MS = 12000;
-        window.DHM8_JSONP_POLL_DELAY_MS = 4000;
-        window.DHM8_STATUS_CHECK_MODE = "fetch";
-        window.DHM8_PAYMENT_ACCOUNT = "96247ABCD";
-        window.DHM8_PAYMENT_ACCOUNT_LABEL = "VA 96247ABCD / BIDV 1300244416";
-        window.DHM8_PAYMENT_BANK = "BIDV";
-        window.DHM8_PAYMENT_HOLDER = "NGUYEN TO DUNG";
-        window.DHM8_PAYMENT_AMOUNT = 3000;
-        window.DHM8_QR_TEMPLATE = "compact";
-        window.DHM8_QR_SHOW_INFO = false;
-        window.DHM8_ZALO_GROUP_URL = "https://zalo.me/g/hpf7qu45j6qkft6hpghx";
-    </script>
-    <script src="tracking.js?v=3.1-live"></script>
-    <script src="register.js?v=2.6-live"></script>
+    <script src="tracking.js?v=3.0"></script>
+    <script src="register.js?v=2.0"></script>
 </body>
 
 </html>

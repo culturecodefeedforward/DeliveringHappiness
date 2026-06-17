@@ -5,7 +5,7 @@
 // ============================================================
 // CONFIG
 // ============================================================
-const DHM8_WEBAPP_URL = window.CUSTOM_WEBAPP_URL || "https://script.google.com/macros/s/AKfycbxfbK1IWH_fL-3BzcoYDsdl61L0EpKuuF_MwPgdzDMutHHqECGRRJaDfsBdHqty-Vjtpg/exec";
+const DHM8_WEBAPP_URL = window.CUSTOM_WEBAPP_URL || "https://script.google.com/macros/s/AKfycbxxbba8bvb7H2Em179HgJUv0Tj8dnxWIuGynmVqjDcPVwADrTBXxx7UwE5AKroIQR5i/exec";
 const JSONP_MAX_ATTEMPTS = Number(window.DHM8_JSONP_MAX_ATTEMPTS) || 5;
 const JSONP_POLL_DELAY_MS = Number(window.DHM8_JSONP_POLL_DELAY_MS) || 3000;   // 3 giây giữa các lần thử
 const JSONP_TIMEOUT_MS = Number(window.DHM8_JSONP_TIMEOUT_MS) || 5000;      // 5 giây timeout mỗi request JSONP
@@ -217,7 +217,7 @@ function ensurePaidModal() {
         <div style="width:min(520px, 100%); background:#ffffff; color:#111827; border-radius:16px; padding:28px; box-shadow:0 24px 70px rgba(0,0,0,0.28); text-align:center;">
             <div style="font-size:3rem; line-height:1; margin-bottom:14px;">✅</div>
             <h2 id="paymentCompleteTitle" style="margin:0 0 12px; color:#047857; font-size:1.45rem;">Đã hoàn tất chi phí hậu cần</h2>
-            <p style="margin:0 0 18px; color:#374151; line-height:1.55;">Chúc mừng bạn! Hệ thống đã ghi nhận thanh toán thành công. Bạn có thể tham gia nhóm Zalo DH8 HCM để nhận thông báo, lịch trình và kết nối với BTC.</p>
+            <p style="margin:0 0 18px; color:#374151; line-height:1.55;">Chúc mừng bạn! Hệ thống đã ghi nhận thanh toán thành công. Bạn có thể tham gia nhóm Zalo DH8 HCM để nhận thông báo và kết nối với BTC.</p>
             <a id="paymentCompleteZaloLink" href="${DHM8_ZALO_GROUP_URL}" target="_blank" rel="noopener" style="display:block; background:#0068ff; color:#ffffff; text-decoration:none; font-weight:700; border-radius:10px; padding:13px 18px; margin-bottom:10px;">Vào nhóm Zalo DH8 HCM</a>
             <button id="paymentCompleteClose" type="button" style="width:100%; border:1px solid #d1d5db; background:#ffffff; color:#374151; font-weight:700; border-radius:10px; padding:12px 18px; cursor:pointer;">Đóng</button>
         </div>`;
@@ -292,12 +292,12 @@ function renderPaymentReference(uuid) {
     if (uuidEl) uuidEl.textContent = uuid || '';
     if (paymentCodeEl) paymentCodeEl.textContent = paymentCode || 'Đang tạo mã';
     if (contentEl) contentEl.textContent = transferContent || 'DH89xxxxxxxx';
-    if (accountEl) accountEl.textContent = paymentAccountLabel || 'Chưa cấu hình tài khoản thanh toán';
+    if (accountEl) accountEl.textContent = paymentAccountLabel || 'Chưa cấu hình tài khoản test';
     if (amountEl) amountEl.textContent = Number(paymentAmount).toLocaleString('vi-VN') + 'đ';
     if (qrEl && qrWrapperEl) {
         if (qrUrl) {
             qrEl.src = qrUrl;
-            qrEl.alt = 'QR thanh toán DHM8';
+            qrEl.alt = 'QR thanh toán test DHM8';
             qrWrapperEl.style.display = 'block';
         } else {
             qrEl.removeAttribute('src');
