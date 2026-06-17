@@ -1084,3 +1084,64 @@ Apps Script staging has NOT been redeployed after the email renderer changes.
 No email was sent.
 No git commit/push was performed for this local update.
 ```
+
+## Apps Script Staging Deploy - Post-Payment UX Email Templates - 2026-06-17 12:07 ICT
+
+Claim level: `VERIFIED` for commit, Apps Script push/deploy metadata, and
+read-only endpoint probes. `UNVERIFIED` for real email delivery because no
+email worker was run in this step.
+
+Git commit:
+
+```text
+bd9fe2a feat: add DHM8 post-payment UX and emails
+```
+
+Pre-deploy verification:
+
+```text
+node --check register.js
+node --check Scripts\active_code_gs_final.js
+node --check Artifacts\dhm8_gate2_clasp_staging_20260616\Code.js
+node UAT\dhm8_mock_tests_20260616.js
+=> All 86 tests PASSED.
+```
+
+Deployment evidence:
+
+```text
+npx @google/clasp status
+=> tracked files only:
+   Artifacts\dhm8_gate2_clasp_staging_20260616\appsscript.json
+   Artifacts\dhm8_gate2_clasp_staging_20260616\Code.js
+   Artifacts\dhm8_gate2_clasp_staging_20260616\DHM8Gate2UATRunner.js
+
+npx @google/clasp push -f
+=> Pushed 3 files at 12:06:41 PM.
+
+npx @google/clasp deploy --deploymentId AKfycbxfbK1IWH_fL-3BzcoYDsdl61L0EpKuuF_MwPgdzDMutHHqECGRRJaDfsBdHqty-Vjtpg --description "DHM8 post-payment UX email templates 20260617"
+=> Deployed AKfycbxfbK1IWH_fL-3BzcoYDsdl61L0EpKuuF_MwPgdzDMutHHqECGRRJaDfsBdHqty-Vjtpg @13
+```
+
+Read-only post-deploy probes:
+
+```text
+checkStatus for UUID 41a384ee-9f23-4744-aded-6b98d4874798
+=> dhm8Jsonp_ABCDEFGHIJKLMNOP({"success":true,"state":"REGISTERED","registrationUuid":"41a384ee-9f23-4744-aded-6b98d4874798","paymentStatus":"PAID"});
+
+getPaymentDebug for same UUID
+=> paymentStatus=PAID
+=> paymentCode=DH8334122
+=> paymentRow.transactionId=63753115
+=> paymentRow.state=MATCHED
+=> paymentRow.matchedUuid=41a384ee-9f23-4744-aded-6b98d4874798
+```
+
+Boundary:
+
+```text
+Apps Script staging is deployed at @13.
+No git push was performed.
+No public website/Vercel deployment was performed.
+No email worker run or real email-send test was performed.
+```
