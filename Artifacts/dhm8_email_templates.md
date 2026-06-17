@@ -1,7 +1,7 @@
 # DHM8 Email Templates (Mẫu Email Hệ Thống DHM8)
 **File Location**: `C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\Artifacts\dhm8_email_templates.md`
 
-Tài liệu này chứa 3 mẫu email HTML dùng cho hệ thống tự động hóa đăng ký khóa học Delivering Happiness Masterclass 8 (DHM8).
+Tài liệu này chứa 3 mẫu email HTML dùng cho hệ thống tự động hóa gửi thư (email automation) của khóa học Delivering Happiness Masterclass 8 (DHM8).
 
 ---
 
@@ -15,10 +15,11 @@ Tài liệu này chứa 3 mẫu email HTML dùng cho hệ thống tự động h
 <html>
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333333; margin: 0; padding: 0; background-color: #f9f9f9; }
     .container { max-width: 600px; margin: 20px auto; background: #ffffff; border-radius: 8px; border: 1px solid #e0e0e0; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-    .header { background: linear-gradient(135deg, #1e3a8a, #0d9488); padding: 30px 20px; text-align: center; color: #ffffff; }
+    .header { background-color: #1e3a8a; background: linear-gradient(135deg, #1e3a8a, #0d9488); padding: 30px 20px; text-align: center; color: #ffffff; }
     .header h1 { margin: 0; font-size: 24px; font-weight: 600; letter-spacing: 0.5px; }
     .header p { margin: 5px 0 0 0; opacity: 0.9; font-size: 14px; }
     .content { padding: 30px 25px; }
@@ -30,7 +31,6 @@ Tài liệu này chứa 3 mẫu email HTML dùng cho hệ thống tự động h
     .payment-details li { margin-bottom: 8px; font-size: 14px; }
     .payment-details li strong { color: #1f2937; }
     .code-syntax { font-family: 'Courier New', Courier, monospace; background: #e5e7eb; padding: 2px 6px; border-radius: 4px; font-weight: bold; color: #b91c1c; }
-    .btn { display: inline-block; padding: 12px 24px; background-color: #0d9488; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: bold; margin: 20px 0; text-align: center; }
     .footer { background-color: #f3f4f6; padding: 20px; text-align: center; font-size: 12px; color: #6b7280; border-top: 1px solid #e5e7eb; }
   </style>
 </head>
@@ -42,8 +42,8 @@ Tài liệu này chứa 3 mẫu email HTML dùng cho hệ thống tự động h
     </div>
     <div class="content">
       <div class="greeting">Chào {{FullName}},</div>
-      <p>Cảm ơn bạn đã đăng ký tham gia chương trình **Delivering Happiness Masterclass 8 (DHM8)** diễn ra vào ngày 04/07/2026 sắp tới.</p>
-      <p>Ban Tổ chức (BTC) đã nhận được thông tin đăng ký của bạn. Để đảm bảo quyền lợi và hoàn tất thủ tục **giữ chỗ chính thức**, vui lòng hoàn thành chi phí hậu cần theo hướng dẫn bên dưới.</p>
+      <p>Cảm ơn bạn đã đăng ký tham gia chương trình <strong>Delivering Happiness Masterclass 8 (DHM8)</strong> diễn ra vào ngày 04/07/2026 sắp tới.</p>
+      <p>Ban Tổ chức (BTC) đã nhận được thông tin đăng ký của bạn. Để đảm bảo quyền lợi và hoàn tất thủ tục <strong>giữ chỗ chính thức</strong>, vui lòng hoàn thành chi phí hậu cần theo hướng dẫn bên dưới.</p>
       
       <div class="highlight-box">
         <h3>⚠️ Lưu ý quan trọng:</h3>
@@ -55,11 +55,11 @@ Tài liệu này chứa 3 mẫu email HTML dùng cho hệ thống tự động h
         <ul>
           <li>🏦 <strong>Ngân hàng BIDV</strong> (cá nhân): <code>8815369431</code> - Hà Ngọc Hoàn</li>
           <li>🏦 <strong>Ngân hàng MB</strong> (doanh nghiệp): <code>9600006868</code> - CONG TY TNHH HIPER CONSULTING</li>
-          <li>✍️ <strong>Cú pháp chuyển khoản</strong> (Bắt buộc đúng): <span class="code-syntax">DHM8 - {{Phone}} - {{FullName}}</span></li>
+          <li>✍️ <strong>Nội dung chuyển khoản</strong> (Bắt buộc đúng): <span class="code-syntax">{{PaymentCode}}</span></li>
         </ul>
       </div>
 
-      <p style="font-size: 14px; color: #4b5563;">*Sau khi bạn chuyển khoản thành công, hệ thống tự động của BTC sẽ ghi nhận giao dịch và gửi email xác nhận giữ chỗ chính thức tới hòm thư này.*</p>
+      <p style="font-size: 14px; color: #4b5563;"><em>Sau khi bạn chuyển khoản thành công, hệ thống tự động của BTC sẽ ghi nhận giao dịch và gửi email xác nhận giữ chỗ chính thức tới hòm thư này.</em></p>
       
       <p>Hẹn gặp lại bạn tại lớp học!</p>
       <p>Trân trọng,<br><strong>Ban Tổ chức Delivering Happiness</strong></p>
@@ -85,10 +85,11 @@ Tài liệu này chứa 3 mẫu email HTML dùng cho hệ thống tự động h
 <html>
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333333; margin: 0; padding: 0; background-color: #f9f9f9; }
     .container { max-width: 600px; margin: 20px auto; background: #ffffff; border-radius: 8px; border: 1px solid #e0e0e0; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-    .header { background: linear-gradient(135deg, #10b981, #059669); padding: 30px 20px; text-align: center; color: #ffffff; }
+    .header { background-color: #10b981; background: linear-gradient(135deg, #10b981, #059669); padding: 30px 20px; text-align: center; color: #ffffff; }
     .header h1 { margin: 0; font-size: 24px; font-weight: 600; letter-spacing: 0.5px; }
     .header p { margin: 5px 0 0 0; opacity: 0.9; font-size: 14px; }
     .content { padding: 30px 25px; }
@@ -109,7 +110,7 @@ Tài liệu này chứa 3 mẫu email HTML dùng cho hệ thống tự động h
     </div>
     <div class="content">
       <div class="greeting">Chào {{FullName}},</div>
-      <p>Chúc mừng bạn! Hệ thống tự động xác nhận của Delivering Happiness đã ghi nhận giao dịch thanh toán chi phí hậu cần thành công cho hồ sơ của bạn.</p>
+      <p>Chúc mừng bạn! Hệ thống xác nhận của Delivering Happiness đã ghi nhận giao dịch thanh toán chi phí hậu cần thành công cho hồ sơ của bạn.</p>
       
       <div class="success-box">
         <h3>✅ Đã xác nhận giữ chỗ thành công:</h3>
@@ -121,7 +122,7 @@ Tài liệu này chứa 3 mẫu email HTML dùng cho hệ thống tự động h
         <ul>
           <li>📅 <strong>Thời gian</strong>: Ngày 04/07/2026 (Chi tiết giờ học cụ thể sẽ được gửi trước sự kiện 1 tuần)</li>
           <li>📍 <strong>Hình thức</strong>: Học trực tiếp (Offline)</li>
-          <li>📚 <strong>Chương trình đăng ký</strong>: {{AttendedPrograms}}</li>
+          <li>📚 <strong>Chương trình đăng ký</strong>: Delivering Happiness Masterclass 8 (DHM8)</li>
         </ul>
       </div>
 
@@ -131,7 +132,7 @@ Tài liệu này chứa 3 mẫu email HTML dùng cho hệ thống tự động h
       <div style="background-color: #eff6ff; border-left: 4px solid #3b82f6; padding: 15px 20px; margin: 20px 0; border-radius: 6px;">
         <h4 style="margin: 0 0 8px 0; color: #1e3a8a; font-size: 15px; font-weight: 600;">📱 Tham gia Nhóm Zalo Lớp học:</h4>
         <p style="margin: 0 0 12px 0; font-size: 14px; color: #1e293b;">Để dễ dàng kết nối với Ban tổ chức, giảng viên và nhận các thông báo quan trọng nhất trong suốt khóa học, bạn vui lòng tham gia nhóm Zalo hỗ trợ tại đây:</p>
-        <a href="https://zalo.me/g/idmxekeesuabqk2qxzld" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #3b82f6; color: #ffffff; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 13px;">Tham gia Nhóm Zalo DHM8</a>
+        <a href="https://zalo.me/g/hpf7qu45j6qkft6hpghx" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #3b82f6; color: #ffffff; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 13px;">Tham gia Nhóm Zalo DH8 HCM</a>
       </div>
 
       <!-- Logistics & Culture Notes -->
@@ -159,7 +160,7 @@ Tài liệu này chứa 3 mẫu email HTML dùng cho hệ thống tự động h
 ---
 
 ## 3. Mẫu 3: Email Thông báo Đăng ký Mới cho Ban Tổ Chức (BTC Notification)
-*   **Người nhận**: BTC (`quochung.reo@gmail.com, chauhm71@gmail.com`)
+*   **Người nhận**: BTC (`chauhm71@gmail.com`, `vuhoang2708@gmail.com`)
 *   **Tiêu đề**: `[DHM8 - NEW REG] Đăng ký mới từ {{FullName}} - {{Phone}} ({{PaymentStatus}})`
 *   **Định dạng**: HTML
 
@@ -168,6 +169,7 @@ Tài liệu này chứa 3 mẫu email HTML dùng cho hệ thống tự động h
 <html>
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body { font-family: Arial, sans-serif; line-height: 1.5; color: #333333; }
     .header { background-color: #1e293b; color: #ffffff; padding: 15px 20px; }
@@ -185,7 +187,7 @@ Tài liệu này chứa 3 mẫu email HTML dùng cho hệ thống tự động h
     <h2>[DHM8] THÔNG BÁO CÓ ĐĂNG KÝ MỚI</h2>
   </div>
   <div class="content">
-    <p>Hệ thống vừa ghi nhận một lượt đăng ký mới cho khóa học **DHM8**. Chi tiết thông tin học viên như sau:</p>
+    <p>Hệ thống vừa ghi nhận một lượt đăng ký mới cho khóa học <strong>DHM8</strong>. Chi tiết thông tin học viên như sau:</p>
     
     <table class="detail-table">
       <tr>
@@ -209,7 +211,7 @@ Tài liệu này chứa 3 mẫu email HTML dùng cho hệ thống tự động h
         <td>{{JobTitle}}</td>
       </tr>
       <tr>
-        <th>Chương trình đăng ký</th>
+        <th>Các chương trình đã tham gia trước đây</th>
         <td>{{AttendedPrograms}}</td>
       </tr>
       <tr>

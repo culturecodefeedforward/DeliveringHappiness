@@ -13,6 +13,7 @@ const PAYMENT_STATUS_MAX_ATTEMPTS = Number(window.DHM8_PAYMENT_STATUS_MAX_ATTEMP
 const PAYMENT_STATUS_POLL_DELAY_MS = Number(window.DHM8_PAYMENT_STATUS_POLL_DELAY_MS) || 5000;
 const CALLBACK_PREFIX = 'dhm8Jsonp_';
 const CALLBACK_REGEX = /^dhm8Jsonp_[A-Za-z0-9]{16,40}$/;
+const DHM8_ZALO_GROUP_URL = window.DHM8_ZALO_GROUP_URL || 'https://zalo.me/g/hpf7qu45j6qkft6hpghx';
 
 // ============================================================
 // UUID GENERATION (Condition 1: crypto-safe, no Math.random)
@@ -202,6 +203,41 @@ function setSubmitState(btn, spinnerEl, textEl, text, disabled) {
     if (textEl) textEl.innerText = text;
 }
 
+function ensurePaidModal() {
+    let modal = document.getElementById('paymentCompleteModal');
+    if (modal) return modal;
+
+    modal = document.createElement('div');
+    modal.id = 'paymentCompleteModal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-labelledby', 'paymentCompleteTitle');
+    modal.style.cssText = 'display:none; position:fixed; inset:0; z-index:9999; background:rgba(10,15,28,0.72); align-items:center; justify-content:center; padding:20px;';
+    modal.innerHTML = `
+        <div style="width:min(520px, 100%); background:#ffffff; color:#111827; border-radius:16px; padding:28px; box-shadow:0 24px 70px rgba(0,0,0,0.28); text-align:center;">
+            <div style="font-size:3rem; line-height:1; margin-bottom:14px;">✅</div>
+            <h2 id="paymentCompleteTitle" style="margin:0 0 12px; color:#047857; font-size:1.45rem;">Đã hoàn tất chi phí hậu cần</h2>
+            <p style="margin:0 0 18px; color:#374151; line-height:1.55;">Chúc mừng bạn! Hệ thống đã ghi nhận thanh toán thành công. Bạn có thể tham gia nhóm Zalo DH8 HCM để nhận thông báo và kết nối với BTC.</p>
+            <a id="paymentCompleteZaloLink" href="${DHM8_ZALO_GROUP_URL}" target="_blank" rel="noopener" style="display:block; background:#0068ff; color:#ffffff; text-decoration:none; font-weight:700; border-radius:10px; padding:13px 18px; margin-bottom:10px;">Vào nhóm Zalo DH8 HCM</a>
+            <button id="paymentCompleteClose" type="button" style="width:100%; border:1px solid #d1d5db; background:#ffffff; color:#374151; font-weight:700; border-radius:10px; padding:12px 18px; cursor:pointer;">Đóng</button>
+        </div>`;
+    document.body.appendChild(modal);
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal || event.target.id === 'paymentCompleteClose') {
+            modal.style.display = 'none';
+        }
+    });
+    return modal;
+}
+
+function showPaymentCompleteModal(uuid) {
+    const modalKey = 'dhm8_paid_modal_shown_' + String(uuid || registrationUuid || '');
+    if (sessionStorage.getItem(modalKey) === 'true') return;
+    sessionStorage.setItem(modalKey, 'true');
+    const modal = ensurePaidModal();
+    modal.style.display = 'flex';
+}
+
 function renderPaymentStatus(paymentStatus) {
     const statusEl = document.getElementById('successPaymentStatus');
     if (!statusEl) return;
@@ -210,6 +246,8 @@ function renderPaymentStatus(paymentStatus) {
     if (status === 'PAID') {
         statusEl.textContent = 'Đã thanh toán';
         statusEl.style.color = '#86efac';
+        const zaloEl = document.getElementById('successZaloGroupLink');
+        if (zaloEl) zaloEl.style.display = 'inline-block';
         return;
     }
     statusEl.textContent = 'Chờ thanh toán';
@@ -277,7 +315,10 @@ function showInlineError(message) {
 
 async function startPaymentStatusPolling(uuid, initialStatus) {
     renderPaymentStatus(initialStatus);
-    if (String(initialStatus || '').toUpperCase() === 'PAID') return;
+    if (String(initialStatus || '').toUpperCase() === 'PAID') {
+        showPaymentCompleteModal(uuid);
+        return;
+    }
 
     for (let attempt = 0; attempt < PAYMENT_STATUS_MAX_ATTEMPTS; attempt++) {
         await new Promise(r => setTimeout(r, PAYMENT_STATUS_POLL_DELAY_MS));
@@ -285,7 +326,10 @@ async function startPaymentStatusPolling(uuid, initialStatus) {
             const result = await pollRegistrationStatus(uuid, attempt);
             if (result.success) {
                 renderPaymentStatus(result.paymentStatus || result.state);
-                if (String(result.paymentStatus || '').toUpperCase() === 'PAID') return;
+                if (String(result.paymentStatus || '').toUpperCase() === 'PAID') {
+                    showPaymentCompleteModal(uuid);
+                    return;
+                }
             }
         } catch (err) {
             console.warn('[DHM8] Không kiểm tra được trạng thái thanh toán:', err.message);
@@ -299,6 +343,7 @@ function showSuccess(uuid, paymentStatus) {
     const success = document.getElementById('successMessage');
     renderPaymentReference(uuid);
     renderPaymentStatus(paymentStatus);
+    if (String(paymentStatus || '').toUpperCase() === 'PAID') showPaymentCompleteModal(uuid);
     if (form) form.style.display = 'none';
     if (header) header.style.display = 'none';
     if (success) success.style.display = 'block';

@@ -346,7 +346,7 @@ function getRegistrationStatus(uuid) {
           state: 'REGISTERED',
           registrationUuid: uuid,
           paymentStatus: paymentStatus,
-          // KHÔNG trả tên, email, SĐT hay thông tin thanh toán
+          // KHÔNG trả tên, email, SĐT hay thông tin thanh toán chi tiết
         };
       }
     }
@@ -764,30 +764,91 @@ function updateOutboxRow(outbox, jobKey, leaseOwner, state, attempts, lastError,
   }
 }
 
-// ─── EMAIL RENDERER (PII Minimization) ───────────────────────
-function renderEmailBody(ss, emailType, regUuid) {
+var DHM8_ZALO_GROUP_URL = 'https://zalo.me/g/hpf7qu45j6qkft6hpghx';
+
+function escapeHtml_(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function getRegistrationEmailData_(ss, regUuid) {
   var dataSheet = ss.getSheetByName('DHM8_Data');
-  var name = '(Học viên)';
+  var data = {
+    name: '(Học viên)',
+    email: '',
+    phone: '',
+    company: '',
+    paymentStatus: '',
+    paymentCode: ''
+  };
   if (dataSheet) {
     var rows = dataSheet.getDataRange().getValues();
     for (var i = 1; i < rows.length; i++) {
-      if (rows[i][17] === regUuid) { name = rows[i][1] || name; break; }
+      if (rows[i][17] === regUuid) {
+        data.name = rows[i][1] || data.name;
+        data.email = rows[i][2] || '';
+        data.phone = normalizePhone(rows[i][3] || '');
+        data.company = rows[i][5] || '';
+        data.paymentStatus = rows[i][15] || '';
+        data.paymentCode = getPaymentCodeInfo_(data.phone, regUuid).paymentCode;
+        break;
+      }
     }
   }
+  return data;
+}
+
+function renderEmailShell_(title, preheader, bodyHtml) {
+  return '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">' +
+    '<style>body{font-family:Arial,sans-serif;line-height:1.6;color:#1f2937;background:#f8fafc;margin:0;padding:0}.container{max-width:640px;margin:20px auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden}.header{background:#0f766e;color:#fff;padding:24px}.header h1{font-size:22px;margin:0}.content{padding:24px}.box{background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;padding:16px;margin:16px 0}.success{background:#ecfdf5;border-color:#a7f3d0}.warning{background:#fffbeb;border-color:#fde68a}.code{font-family:Consolas,monospace;font-weight:700;background:#e5e7eb;border-radius:6px;padding:3px 7px;color:#b91c1c}.btn{display:inline-block;background:#0068ff;color:#fff!important;text-decoration:none;font-weight:700;border-radius:9px;padding:12px 18px}.footer{font-size:12px;color:#6b7280;background:#f3f4f6;padding:16px;text-align:center}</style></head><body>' +
+    '<div class="container"><div class="header"><h1>' + escapeHtml_(title) + '</h1><div style="opacity:.9">' + escapeHtml_(preheader) + '</div></div><div class="content">' +
+    bodyHtml +
+    '</div><div class="footer">Email này được gửi tự động từ hệ thống đăng ký Delivering Happiness.</div></div></body></html>';
+}
+
+// ─── EMAIL RENDERER (PII Minimization) ───────────────────────
+function renderEmailBody(ss, emailType, regUuid) {
+  var data = getRegistrationEmailData_(ss, regUuid);
+  var name = escapeHtml_(data.name);
+  var paymentCode = escapeHtml_(data.paymentCode || 'DH8...');
+
   if (emailType === 'PENDING') {
-    return '<p>Xin chào <strong>' + name + '</strong>,</p>' +
-      '<p>Chúng tôi đã nhận được thông tin đăng ký DHM8 của bạn. ' +
-      'Vui lòng hoàn tất thanh toán để xác nhận suất tham dự.</p>' +
-      '<p>Trân trọng,<br>CultureCode Team</p>';
+    return renderEmailShell_(
+      'DHM8 - Xác nhận đăng ký',
+      'BTC đã nhận được thông tin đăng ký của bạn',
+      '<p>Xin chào <strong>' + name + '</strong>,</p>' +
+      '<p>BTC đã nhận được thông tin đăng ký Delivering Happiness Masterclass 8 (DHM8) của bạn.</p>' +
+      '<div class="box warning"><strong>Bước tiếp theo:</strong><br>Vui lòng hoàn tất chi phí hậu cần theo đúng nội dung chuyển khoản: <span class="code">' + paymentCode + '</span>.</div>' +
+      '<p>Sau khi hệ thống ghi nhận thanh toán, bạn sẽ nhận email xác nhận giữ chỗ chính thức và link tham gia nhóm Zalo lớp DH8 HCM.</p>' +
+      '<p>Trân trọng,<br><strong>Ban Tổ chức Delivering Happiness</strong></p>'
+    );
   }
   if (emailType === 'PAID') {
-    return '<p>Xin chào <strong>' + name + '</strong>,</p>' +
-      '<p>Thanh toán của bạn đã được xác nhận. Hẹn gặp bạn tại DHM8!</p>' +
-      '<p>Trân trọng,<br>CultureCode Team</p>';
+    return renderEmailShell_(
+      'DHM8 - Đã xác nhận thanh toán',
+      'Bạn đã hoàn tất chi phí hậu cần',
+      '<p>Xin chào <strong>' + name + '</strong>,</p>' +
+      '<div class="box success"><strong>Chúc mừng bạn!</strong><br>Hệ thống đã ghi nhận thanh toán chi phí hậu cần thành công. Suất tham dự DHM8 của bạn đã được xác nhận.</div>' +
+      '<p>Bạn vui lòng tham gia nhóm Zalo DH8 HCM để nhận thông báo từ BTC, cập nhật thông tin lớp học và kết nối với cộng đồng học viên.</p>' +
+      '<p><a class="btn" href="' + DHM8_ZALO_GROUP_URL + '" target="_blank">Vào nhóm Zalo DH8 HCM</a></p>' +
+      '<div class="box"><strong>Lưu ý nhanh:</strong><br>BTC sẽ tiếp tục gửi thông tin check-in, địa điểm và chuẩn bị trước sự kiện qua email này và nhóm Zalo.</div>' +
+      '<p>Trân trọng,<br><strong>Ban Tổ chức Delivering Happiness</strong></p>'
+    );
   }
   if (emailType === 'BTC') {
-    return '<p><strong>Thông báo nội bộ BTC:</strong></p>' +
-      '<p>Có hoạt động mới liên quan đến đăng ký UUID: ' + regUuid + '</p>';
+    return renderEmailShell_(
+      'DHM8 - Thông báo nội bộ BTC',
+      'Có hoạt động mới liên quan đến đăng ký',
+      '<p><strong>UUID:</strong> ' + escapeHtml_(regUuid) + '</p>' +
+      '<p><strong>Họ tên:</strong> ' + name + '</p>' +
+      '<p><strong>SĐT:</strong> ' + escapeHtml_(data.phone) + '</p>' +
+      '<p><strong>Email:</strong> ' + escapeHtml_(data.email) + '</p>' +
+      '<p><strong>Trạng thái thanh toán:</strong> ' + escapeHtml_(data.paymentStatus) + '</p>'
+    );
   }
   return '<p>Email notification - DHM8</p>';
 }

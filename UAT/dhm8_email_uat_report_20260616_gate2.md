@@ -1016,3 +1016,71 @@ VERIFIED: payment matcher linked DH8334122 to the correct registration UUID.
 VERIFIED: Sheet/App Script state is PAID/MATCHED.
 VERIFIED: registration UI observed by user updated to "Đã thanh toán".
 ```
+
+## Post-Payment UX And Email Flow Local Update - 2026-06-17
+
+Claim level: `VERIFIED` for local code inspection, static server read-back, and
+automated tests. `UNVERIFIED` for actual email delivery because no email worker
+was run and Apps Script staging was not redeployed in this step.
+
+Plan:
+
+```text
+C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\Implementation Plan\codex_20260617_PostPaymentUXAndEmailFlow.md
+```
+
+Changes:
+
+```text
+Frontend:
+- register.js now shows a paid-state modal when paymentStatus becomes PAID.
+- The modal congratulates the learner for completing the logistics fee.
+- The modal links to the Zalo group:
+  https://zalo.me/g/hpf7qu45j6qkft6hpghx
+- register-test.html has a persistent Zalo CTA that appears after PAID.
+
+Apps Script email renderer:
+- PENDING email confirms registration and shows the payment code.
+- PAID email confirms completed logistics fee and includes the Zalo group link.
+- BTC email contains a compact internal registration/payment summary.
+
+Template artifact:
+- Artifacts/dhm8_email_templates.md now uses {{PaymentCode}} instead of the old
+  "DHM8 - phone - name" transfer syntax.
+- Old Zalo link was replaced with the current user-provided Zalo group link.
+```
+
+Verification:
+
+```text
+node --check register.js
+node --check Scripts\active_code_gs_final.js
+node --check Artifacts\dhm8_gate2_clasp_staging_20260616\Code.js
+node UAT\dhm8_mock_tests_20260616.js
+=> All 86 tests PASSED.
+
+Local static read-back:
+http://127.0.0.1:8787/register.js
+=> contains paymentCompleteModal
+=> contains hpf7qu45j6qkft6hpghx
+=> contains "Đã hoàn tất chi phí hậu cần"
+
+http://127.0.0.1:8787/register-test.html
+=> contains successZaloGroupLink
+=> contains hpf7qu45j6qkft6hpghx
+
+Source scan:
+Scripts\active_code_gs_final.js
+Artifacts\dhm8_gate2_clasp_staging_20260616\Code.js
+Artifacts\dhm8_email_templates.md
+=> contain current Zalo link and new pending/paid template markers.
+```
+
+Boundary:
+
+```text
+Local code updated only.
+Apps Script staging has NOT been redeployed after the email renderer changes.
+No email was sent.
+No git commit/push was performed for this local update.
+```

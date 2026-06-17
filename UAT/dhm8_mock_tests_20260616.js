@@ -382,6 +382,9 @@ assert(finalSrc.includes('body.content ||') && finalSrc.includes('body.descripti
   'Webhook content fallback supports content/description payloads');
 assert(finalSrc.includes("inbox.getRange(i + 1, 2).setValue(JSON.stringify(body));"),
   'Duplicate durable inbox updates Raw Payload');
+assert(finalSrc.includes('https://zalo.me/g/hpf7qu45j6qkft6hpghx'), 'Paid email includes current Zalo group link');
+assert(finalSrc.includes('DHM8 - Xác nhận đăng ký'), 'Pending registration email template present');
+assert(finalSrc.includes('DHM8 - Đã xác nhận thanh toán'), 'Paid confirmation email template present');
 
 // T20: durable inbox replay + retention functions exist
 console.log('\n[T20] Durable inbox replay + retention helpers present:');
