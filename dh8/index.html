@@ -279,6 +279,20 @@
             margin-bottom: 6px;
         }
 
+        .registration-closed {
+            display: none;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .registration-closed h2 {
+            color: var(--warm-yellow);
+            margin-bottom: 1rem;
+        }
+
         .option-other-container {
             display: flex;
             align-items: center;
@@ -330,18 +344,27 @@
             <p class="subtitle">Thứ Bảy, 04/07/2026 | Trung tâm đào tạo Circle K</p>
         </div>
 
+        <div id="registrationClosed" class="registration-closed">
+            <h2>DHM8 đã đủ số lượng đăng ký</h2>
+            <p style="color: rgba(255,255,255,0.75); line-height: 1.6; margin-bottom: 1.5rem;">
+                Cảm ơn bạn đã quan tâm. Chương trình hiện đã đủ 40 suất đăng ký, bạn có thể để lại thông tin để nhận thông báo cho chương trình tiếp theo.
+            </p>
+            <a id="registrationClosedInterestLink" href="../interest.html" class="btn-submit" style="display:block; text-decoration:none; text-align:center;">Để lại quan tâm</a>
+            <a href="../index_OFFICIAL.html" class="back-home" style="text-align: center;">← Quay về trang chủ</a>
+        </div>
+
         <form id="crmForm">
             <!-- Thông tin Thanh toán -->
             <div class="payment-info">
-                <h3>💰 Chi phí xác nhận giữ chỗ hiện tại: 3.000đ</h3>
+                <h3>💰 Chi phí hậu cần: 250.000đ</h3>
                 <div class="payment-details">
                     <p>Bao gồm: Tài liệu, Ăn trưa, Teabreak.</p>
-                    <p style="margin-top: 10px;">Sau khi gửi form, hệ thống sẽ tạo <strong>mã thanh toán SePay riêng</strong> và hiện đúng QR tương ứng để bạn chuyển khoản theo luồng tự động.</p>
-                    <ul style="list-style: none; margin-left: 0; padding-top: 5px;">
-                        <li><strong>Số tiền hiện tại:</strong> <code>3.000đ</code></li>
-                        <li><strong>Luồng nhận tiền:</strong> <code>VA SePay 96247ABCD / BIDV 1300244416</code></li>
-                        <li><strong>Nội dung chuyển khoản:</strong> <code>Mã DH8 hệ thống sinh theo số điện thoại đã đăng ký</code></li>
-                    </ul>
+                    <p style="margin-top: 10px;">Sau khi gửi form, hệ thống sẽ tạo <strong>mã thanh toán SePay riêng</strong> và hiển thị đúng QR tương ứng để bạn chuyển khoản theo luồng tự động.</p>
+                    <p style="font-size: 0.85rem; color: rgba(255,255,255,0.7); line-height: 1.5; border-top: 1px dashed rgba(255,255,255,0.2); padding-top: 10px; margin-top: 10px;">
+                        <strong>Lưu ý:</strong><br>
+                        1- Nếu cần xuất hóa đơn cho Công ty, vui lòng liên hệ Ban tổ chức trước khi thanh toán để được hướng dẫn.<br>
+                        2- Sau khi chương trình kết thúc, Ban tổ chức sẽ quyết toán chi phí và chuyển phần dư còn lại vào hoạt động thiện nguyện. Vì vậy, khoản phí đã đóng sẽ không được hoàn lại nếu bạn hủy tham gia sau khi đăng ký. Mong bạn thông cảm.
+                    </p>
                 </div>
             </div>
 
@@ -545,16 +568,16 @@
             </p>
             
             <div class="payment-info" style="text-align: left;">
-                <h3 style="margin-bottom: 0.5rem;">Bước tiếp theo để giữ chỗ:</h3>
-                <p style="font-size: 0.9rem; margin-bottom: 10px;">Quét đúng mã QR SePay bên dưới hoặc chuyển khoản theo đúng mã thanh toán hệ thống đã tạo cho bạn:</p>
+                <h3 style="margin-bottom: 0.5rem;">Để hoàn thành đăng ký và tham gia nhóm học tập:</h3>
+                <p style="font-size: 0.9rem; margin-bottom: 10px;">Quét đúng mã QR SePay bên dưới hoặc chuyển khoản theo thông tin sau:</p>
                 <div class="payment-details" style="font-size: 0.85rem;">
                     <ul style="list-style: none; padding-left: 0;">
-                        <li><strong>Mã đăng ký:</strong> <code id="successRegistrationUuid">Đang tạo...</code></li>
-                        <li><strong>Mã thanh toán:</strong> <code id="successPaymentCode">Đang tạo...</code></li>
-                        <li><strong>Nội dung chuyển khoản mẫu:</strong> <code id="successTransferContent" style="color: var(--warm-yellow); font-size: 1rem;">Đang tạo...</code></li>
+                        <li style="display: none;"><code id="successRegistrationUuid"></code></li>
+                        <li style="display: none;"><code id="successPaymentCode"></code></li>
+                        <li><strong>Nội dung chuyển khoản:</strong> <code id="successTransferContent" style="color: var(--warm-yellow); font-size: 1.1rem; font-weight: bold;">Đang tạo...</code></li>
+                        <li><strong>Số tiền:</strong> <code id="successPaymentAmount" style="font-size: 1rem; font-weight: bold; color: #fff;">250.000đ</code></li>
                         <li><strong>Đích nhận tiền:</strong> <code id="successPaymentAccount">Đang tải...</code></li>
-                        <li><strong>Số tiền:</strong> <code id="successPaymentAmount">3.000đ</code></li>
-                        <li><strong>Trạng thái thanh toán:</strong> <code id="successPaymentStatus">Chờ thanh toán</code></li>
+                        <li><strong>Trạng thái thanh toán:</strong> <code id="successPaymentStatus" style="color: var(--warm-yellow);">Chờ thanh toán</code></li>
                     </ul>
                     <a id="successZaloGroupLink" href="https://zalo.me/g/hpf7qu45j6qkft6hpghx" target="_blank"
                         rel="noopener"
@@ -573,18 +596,19 @@
     </div>
 
     <script>
-        window.CUSTOM_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxxbba8bvb7H2Em179HgJUv0Tj8dnxWIuGynmVqjDcPVwADrTBXxx7UwE5AKroIQR5i/exec";
+        window.CUSTOM_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwynSXvhSbrM4YMvZbXaOFR8fW-BJ5frBiyWfwkUCH5CgcWM-gEA0uuJ4xSdXLrKbQMQg/exec";
         window.DHM8_JSONP_MAX_ATTEMPTS = 10;
         window.DHM8_JSONP_TIMEOUT_MS = 12000;
         window.DHM8_JSONP_POLL_DELAY_MS = 4000;
         window.DHM8_STATUS_CHECK_MODE = "fetch";
-        window.DHM8_PAYMENT_ACCOUNT = "96247ABCD";
-        window.DHM8_PAYMENT_ACCOUNT_LABEL = "VA 96247ABCD / BIDV 1300244416";
+        window.DHM8_PAYMENT_ACCOUNT = "96247CULTURECODE";
+        window.DHM8_PAYMENT_ACCOUNT_LABEL = "VA 96247CULTURECODE / BIDV 8815369431 / Hà Ngọc Hoàn";
         window.DHM8_PAYMENT_BANK = "BIDV";
-        window.DHM8_PAYMENT_HOLDER = "NGUYEN TO DUNG";
-        window.DHM8_PAYMENT_AMOUNT = 3000;
+        window.DHM8_PAYMENT_HOLDER = "HA NGOC HOAN";
+        window.DHM8_PAYMENT_AMOUNT = 250000;
         window.DHM8_QR_TEMPLATE = "compact";
         window.DHM8_QR_SHOW_INFO = false;
+        window.DH_INTEREST_URL = "../interest.html";
         window.DHM8_ZALO_GROUP_URL = "https://zalo.me/g/hpf7qu45j6qkft6hpghx";
     </script>
     <script src="../tracking.js?v=3.1-live"></script>

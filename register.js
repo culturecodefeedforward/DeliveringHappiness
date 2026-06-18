@@ -5,15 +5,19 @@
 // ============================================================
 // CONFIG
 // ============================================================
-const DHM8_WEBAPP_URL = window.CUSTOM_WEBAPP_URL || "https://script.google.com/macros/s/AKfycbxxbba8bvb7H2Em179HgJUv0Tj8dnxWIuGynmVqjDcPVwADrTBXxx7UwE5AKroIQR5i/exec";
+const DHM8_WEBAPP_URL = window.CUSTOM_WEBAPP_URL || "https://script.google.com/macros/s/AKfycbwynSXvhSbrM4YMvZbXaOFR8fW-BJ5frBiyWfwkUCH5CgcWM-gEA0uuJ4xSdXLrKbQMQg/exec";
 const JSONP_MAX_ATTEMPTS = Number(window.DHM8_JSONP_MAX_ATTEMPTS) || 5;
 const JSONP_POLL_DELAY_MS = Number(window.DHM8_JSONP_POLL_DELAY_MS) || 3000;   // 3 giây giữa các lần thử
 const JSONP_TIMEOUT_MS = Number(window.DHM8_JSONP_TIMEOUT_MS) || 5000;      // 5 giây timeout mỗi request JSONP
 const PAYMENT_STATUS_MAX_ATTEMPTS = Number(window.DHM8_PAYMENT_STATUS_MAX_ATTEMPTS) || 120;
 const PAYMENT_STATUS_POLL_DELAY_MS = Number(window.DHM8_PAYMENT_STATUS_POLL_DELAY_MS) || 5000;
+const PAYMENT_STATUS_BACKGROUND_DELAY_MS = Number(window.DHM8_PAYMENT_STATUS_BACKGROUND_DELAY_MS) || 30000;
 const CALLBACK_PREFIX = 'dhm8Jsonp_';
 const CALLBACK_REGEX = /^dhm8Jsonp_[A-Za-z0-9]{16,40}$/;
+const DH_INTEREST_URL = window.DH_INTEREST_URL || 'interest.html';
 const DHM8_ZALO_GROUP_URL = window.DHM8_ZALO_GROUP_URL || 'https://zalo.me/g/hpf7qu45j6qkft6hpghx';
+const LAST_REGISTRATION_UUID_KEY = 'dhm8_lastRegistrationUuid';
+const LAST_PAYMENT_STATUS_KEY = 'dhm8_lastPaymentStatus';
 
 // ============================================================
 // UUID GENERATION (Condition 1: crypto-safe, no Math.random)
@@ -50,6 +54,23 @@ function clearRegistrationUuid() {
     sessionStorage.removeItem('dhm8_registrationUuid');
 }
 
+function rememberLastRegistration(uuid, paymentStatus) {
+    if (!uuid) return;
+    sessionStorage.setItem(LAST_REGISTRATION_UUID_KEY, String(uuid));
+    if (paymentStatus) sessionStorage.setItem(LAST_PAYMENT_STATUS_KEY, String(paymentStatus));
+}
+
+function clearLastRegistration() {
+    sessionStorage.removeItem(LAST_REGISTRATION_UUID_KEY);
+    sessionStorage.removeItem(LAST_PAYMENT_STATUS_KEY);
+}
+
+function clearPaymentReference() {
+    sessionStorage.removeItem('dhm8_paymentCode');
+    sessionStorage.removeItem('dhm8_paymentPhone');
+    sessionStorage.removeItem('dhm8_paymentName');
+}
+
 function normalizePhone(phone) {
     if (!phone) return '';
     var digits = String(phone).replace(/\D/g, '');
@@ -67,6 +88,40 @@ function buildPaymentCodeFromPhone(phone) {
 
 function isValidSePayPaymentCode(code) {
     return /^DH8\d{3,9}$/.test(String(code || '').toUpperCase());
+}
+
+function getStoredPaymentCode() {
+    const paymentCode = String(sessionStorage.getItem('dhm8_paymentCode') || '').toUpperCase();
+    return isValidSePayPaymentCode(paymentCode) ? paymentCode : '';
+}
+
+function getResumeParamsFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const rawUuid = String(params.get('uuid') || '').trim();
+    const rawPaymentCode = normalizePaymentCodeToken(params.get('paymentCode') || '');
+    const paymentCode = isValidSePayPaymentCode(rawPaymentCode) ? rawPaymentCode : '';
+
+    if (!rawUuid && !paymentCode && params.get('resume') === null) {
+        return null;
+    }
+
+    return {
+        uuid: rawUuid,
+        paymentCode
+    };
+}
+
+function primeResumeStateFromUrl() {
+    const resumeParams = getResumeParamsFromUrl();
+    if (!resumeParams) return null;
+
+    clearLastRegistration();
+    clearPaymentReference();
+    sessionStorage.setItem(LAST_PAYMENT_STATUS_KEY, 'PENDING');
+    if (resumeParams.uuid) sessionStorage.setItem(LAST_REGISTRATION_UUID_KEY, resumeParams.uuid);
+    if (resumeParams.paymentCode) sessionStorage.setItem('dhm8_paymentCode', resumeParams.paymentCode);
+
+    return resumeParams;
 }
 
 function rememberPaymentReference(data) {
@@ -100,9 +155,12 @@ function generateCallbackName() {
 // ============================================================
 // JSONP POLLING (Condition 2: chỉ trả success/state/registrationUuid/error)
 // ============================================================
-function pollRegistrationStatus(uuid, attempt) {
+function pollRegistrationStatus(uuid, attempt, paymentCode) {
+    const normalizedPaymentCode = isValidSePayPaymentCode(paymentCode)
+        ? String(paymentCode).toUpperCase()
+        : getStoredPaymentCode();
     if (window.DHM8_STATUS_CHECK_MODE === 'fetch') {
-        return fetchRegistrationStatus(uuid, attempt);
+        return fetchRegistrationStatus(uuid, attempt, normalizedPaymentCode);
     }
 
     return new Promise((resolve, reject) => {
@@ -151,6 +209,7 @@ function pollRegistrationStatus(uuid, attempt) {
         const url = DHM8_WEBAPP_URL
             + '?action=checkStatus'
             + '&uuid=' + encodeURIComponent(uuid)
+            + (normalizedPaymentCode ? '&paymentCode=' + encodeURIComponent(normalizedPaymentCode) : '')
             + '&callback=' + encodeURIComponent(callbackName);
 
         scriptEl = document.createElement('script');
@@ -165,11 +224,12 @@ function pollRegistrationStatus(uuid, attempt) {
     });
 }
 
-async function fetchRegistrationStatus(uuid, attempt) {
+async function fetchRegistrationStatus(uuid, attempt, paymentCode) {
     const callbackName = CALLBACK_PREFIX + 'FetchStatus' + String(attempt).padStart(2, '0') + 'ABCDEFGH';
     const url = DHM8_WEBAPP_URL
         + '?action=checkStatus'
         + '&uuid=' + encodeURIComponent(uuid)
+        + (paymentCode ? '&paymentCode=' + encodeURIComponent(paymentCode) : '')
         + '&callback=' + encodeURIComponent(callbackName)
         + '&_=' + Date.now();
 
@@ -189,8 +249,56 @@ async function fetchRegistrationStatus(uuid, attempt) {
         state: data.state || null,
         registrationUuid: data.registrationUuid || null,
         paymentStatus: data.paymentStatus || null,
-        error: data.error || null
+        error: data.error || null,
+        interestLink: data.interestLink || null
     };
+}
+
+function fetchRegistrationAvailability() {
+    return new Promise((resolve, reject) => {
+        let callbackName;
+        try {
+            callbackName = generateCallbackName();
+        } catch (e) {
+            return reject(e);
+        }
+
+        let settled = false;
+        let timeoutId;
+        const scriptEl = document.createElement('script');
+
+        window[callbackName] = function (data) {
+            if (settled) return;
+            settled = true;
+            cleanup();
+            resolve(data || {});
+        };
+
+        function cleanup() {
+            clearTimeout(timeoutId);
+            if (scriptEl.parentNode) scriptEl.parentNode.removeChild(scriptEl);
+            try { delete window[callbackName]; } catch (e) { window[callbackName] = undefined; }
+        }
+
+        timeoutId = setTimeout(() => {
+            if (settled) return;
+            settled = true;
+            cleanup();
+            reject(new Error('AVAILABILITY_TIMEOUT'));
+        }, JSONP_TIMEOUT_MS);
+
+        scriptEl.src = DHM8_WEBAPP_URL
+            + '?action=checkRegistrationAvailability'
+            + '&callback=' + encodeURIComponent(callbackName)
+            + '&_=' + Date.now();
+        scriptEl.onerror = function () {
+            if (settled) return;
+            settled = true;
+            cleanup();
+            reject(new Error('AVAILABILITY_LOAD_ERROR'));
+        };
+        document.head.appendChild(scriptEl);
+    });
 }
 
 // ============================================================
@@ -219,11 +327,13 @@ function ensurePaidModal() {
             <h2 id="paymentCompleteTitle" style="margin:0 0 12px; color:#047857; font-size:1.45rem;">Đã hoàn tất chi phí hậu cần</h2>
             <p style="margin:0 0 18px; color:#374151; line-height:1.55;">Chúc mừng bạn! Hệ thống đã ghi nhận thanh toán thành công. Bạn có thể tham gia nhóm Zalo DH8 HCM để nhận thông báo, lịch trình và kết nối với BTC.</p>
             <a id="paymentCompleteZaloLink" href="${DHM8_ZALO_GROUP_URL}" target="_blank" rel="noopener" style="display:block; background:#0068ff; color:#ffffff; text-decoration:none; font-weight:700; border-radius:10px; padding:13px 18px; margin-bottom:10px;">Vào nhóm Zalo DH8 HCM</a>
-            <button id="paymentCompleteClose" type="button" style="width:100%; border:1px solid #d1d5db; background:#ffffff; color:#374151; font-weight:700; border-radius:10px; padding:12px 18px; cursor:pointer;">Đóng</button>
+            <a id="paymentCompleteClose" href="https://delivering-happiness.vercel.app/" style="display:block; width:100%; border:1px solid #d1d5db; background:#ffffff; color:#374151; font-weight:700; border-radius:10px; padding:12px 18px; text-decoration:none; cursor:pointer;">Quay về trang chủ</a>
         </div>`;
     document.body.appendChild(modal);
     modal.addEventListener('click', (event) => {
         if (event.target === modal || event.target.id === 'paymentCompleteClose') {
+            clearLastRegistration();
+            clearPaymentReference();
             modal.style.display = 'none';
         }
     });
@@ -262,7 +372,7 @@ function renderPaymentReference(uuid) {
         : buildPaymentCodeFromPhone(paymentPhone);
     if (!paymentCode) sessionStorage.removeItem('dhm8_paymentCode');
     const transferContent = paymentCode || 'Số điện thoại không hợp lệ';
-    const paymentAmount = String(window.DHM8_PAYMENT_AMOUNT || 300000);
+    const paymentAmount = String(window.DHM8_PAYMENT_AMOUNT || 250000);
     const paymentAccount = window.DHM8_PAYMENT_ACCOUNT || '';
     const paymentAccountLabel = window.DHM8_PAYMENT_ACCOUNT_LABEL || paymentAccount;
     const paymentBank = window.DHM8_PAYMENT_BANK || '';
@@ -313,9 +423,22 @@ function showInlineError(message) {
     errorDiv.textContent = message;
 }
 
+function showRegistrationClosed(interestLink) {
+    const form = document.getElementById('crmForm');
+    const header = document.querySelector('.header');
+    const closed = document.getElementById('registrationClosed');
+    const closedLink = document.getElementById('registrationClosedInterestLink');
+    if (closedLink) closedLink.href = interestLink || DH_INTEREST_URL;
+    if (form) form.style.display = 'none';
+    if (header) header.style.display = 'none';
+    if (closed) closed.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 async function startPaymentStatusPolling(uuid, initialStatus) {
     renderPaymentStatus(initialStatus);
     if (String(initialStatus || '').toUpperCase() === 'PAID') {
+        rememberLastRegistration(uuid, 'PAID');
         showPaymentCompleteModal(uuid);
         return;
     }
@@ -325,8 +448,10 @@ async function startPaymentStatusPolling(uuid, initialStatus) {
         try {
             const result = await pollRegistrationStatus(uuid, attempt);
             if (result.success) {
+                const status = String(result.paymentStatus || result.state || '').toUpperCase();
+                rememberLastRegistration(uuid, status || initialStatus || 'PENDING');
                 renderPaymentStatus(result.paymentStatus || result.state);
-                if (String(result.paymentStatus || '').toUpperCase() === 'PAID') {
+                if (status === 'PAID') {
                     showPaymentCompleteModal(uuid);
                     return;
                 }
@@ -335,12 +460,33 @@ async function startPaymentStatusPolling(uuid, initialStatus) {
             console.warn('[DHM8] Không kiểm tra được trạng thái thanh toán:', err.message);
         }
     }
+
+    // Nếu người dùng thanh toán muộn hơn nhịp fast-poll ban đầu, tiếp tục kiểm tra chậm hơn
+    while (document.getElementById('successMessage')?.style.display === 'block') {
+        await new Promise(r => setTimeout(r, PAYMENT_STATUS_BACKGROUND_DELAY_MS));
+        try {
+            const result = await pollRegistrationStatus(uuid, 'background');
+            if (result.success) {
+                const status = String(result.paymentStatus || result.state || '').toUpperCase();
+                rememberLastRegistration(uuid, status || 'PENDING');
+                renderPaymentStatus(result.paymentStatus || result.state);
+                if (status === 'PAID') {
+                    showPaymentCompleteModal(uuid);
+                    return;
+                }
+            }
+        } catch (err) {
+            console.warn('[DHM8] Không kiểm tra được trạng thái thanh toán nền:', err.message);
+        }
+    }
 }
 
-function showSuccess(uuid, paymentStatus) {
+function showSuccess(uuid, paymentStatus, options) {
     const form = document.getElementById('crmForm');
     const header = document.querySelector('.header');
     const success = document.getElementById('successMessage');
+    const shouldPersist = !options || options.persist !== false;
+    if (shouldPersist) rememberLastRegistration(uuid, paymentStatus || 'PENDING');
     renderPaymentReference(uuid);
     renderPaymentStatus(paymentStatus);
     if (String(paymentStatus || '').toUpperCase() === 'PAID') showPaymentCompleteModal(uuid);
@@ -395,6 +541,9 @@ async function startPolling(uuid, startAttempt) {
             // NOT_FOUND: Sheets có thể đang trễ, thử tiếp
             if (result.error === 'NOT_FOUND') {
                 console.info(`[DHM8] Lần ${attempt + 1}: NOT_FOUND - có thể Sheets đang trễ, thử tiếp.`);
+            } else if (result.error === 'REGISTRATION_CLOSED' || result.state === 'REGISTRATION_CLOSED') {
+                showRegistrationClosed(result.interestLink);
+                return;
             } else {
                 console.warn('[DHM8] Phản hồi không nhận ra:', result.state, result.error);
             }
@@ -420,6 +569,50 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('crmForm');
     if (!form) return;
 
+    const resumeParams = primeResumeStateFromUrl();
+    const resumeUuid = (resumeParams && resumeParams.uuid) || sessionStorage.getItem(LAST_REGISTRATION_UUID_KEY) || '';
+    const resumePaymentCode = (resumeParams && resumeParams.paymentCode) || getStoredPaymentCode();
+    if (resumeUuid || resumePaymentCode) {
+        const lastKnownStatus = sessionStorage.getItem(LAST_PAYMENT_STATUS_KEY) || 'PENDING';
+        pollRegistrationStatus(resumeUuid, 'resume', resumePaymentCode).then((result) => {
+            const resolvedUuid = result.registrationUuid || resumeUuid;
+            const resolvedStatus = String(result.paymentStatus || result.state || lastKnownStatus || '').toUpperCase();
+            if (result.success && (result.state === 'REGISTERED' || result.state === 'PENDING' || result.state === 'PAID')) {
+                showSuccess(
+                    resolvedUuid,
+                    result.paymentStatus || result.state || lastKnownStatus,
+                    { persist: resolvedStatus !== 'PAID' }
+                );
+                if (resolvedStatus === 'PAID') {
+                    clearLastRegistration();
+                    clearPaymentReference();
+                }
+                return;
+            }
+            if (String(lastKnownStatus).toUpperCase() === 'PAID') {
+                showSuccess(resolvedUuid, 'PAID', { persist: false });
+                clearLastRegistration();
+                clearPaymentReference();
+                return;
+            }
+            clearLastRegistration();
+        }).catch(() => {
+            if (String(lastKnownStatus).toUpperCase() === 'PAID') {
+                showSuccess(resumeUuid, 'PAID', { persist: false });
+                clearLastRegistration();
+                clearPaymentReference();
+            }
+        });
+    } else {
+        fetchRegistrationAvailability().then((result) => {
+            if (result && result.registrationOpen === false) {
+                showRegistrationClosed(result.interestLink);
+            }
+        }).catch((err) => {
+            console.warn('[DHM8] Không kiểm tra được trạng thái mở đăng ký:', err.message);
+        });
+    }
+
     // Ghi UUID vào hidden field nếu có
     const uuidInput = document.getElementById('registrationUuid');
     if (uuidInput) uuidInput.value = registrationUuid;
@@ -432,6 +625,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const textEl = btn ? btn.querySelector('.btn-text') : null;
 
         setSubmitState(btn, spinner, textEl, 'Đang gửi đăng ký...', true);
+
+        try {
+            const availability = await fetchRegistrationAvailability();
+            if (availability && availability.registrationOpen === false) {
+                setSubmitState(btn, spinner, textEl, 'Gửi đăng ký & Hoàn tất', false);
+                showRegistrationClosed(availability.interestLink);
+                return;
+            }
+        } catch (err) {
+            console.warn('[DHM8] Không kiểm tra được cap trước khi gửi, backend vẫn sẽ chặn nếu đã đủ:', err.message);
+        }
 
         // --- Thu thập dữ liệu form ---
         const formData = new FormData(e.target);
