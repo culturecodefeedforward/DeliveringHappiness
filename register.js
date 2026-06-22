@@ -90,6 +90,10 @@ function isValidSePayPaymentCode(code) {
     return /^DH8\d{3,9}$/.test(String(code || '').toUpperCase());
 }
 
+function normalizePaymentCodeToken(code) {
+    return String(code || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+}
+
 function getStoredPaymentCode() {
     const paymentCode = String(sessionStorage.getItem('dhm8_paymentCode') || '').toUpperCase();
     return isValidSePayPaymentCode(paymentCode) ? paymentCode : '';
