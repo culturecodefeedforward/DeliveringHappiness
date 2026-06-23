@@ -859,6 +859,15 @@ function getRegistrationStatus(query) {
   }
 }
 
+function getMissingRegistrationFields_(data) {
+  var required = ['fullName', 'email', 'phone'];
+  var missing = [];
+  required.forEach(function(field) {
+    if (!String((data && data[field]) || '').trim()) missing.push(field);
+  });
+  return missing;
+}
+
 // ─── DUPLICATE PHONE GUARD ───────────────────────────────────
 function findActiveRegistrationsByPhone_(dataSheet, phone, laneKey) {
   var normalized = normalizePhone(phone);
@@ -905,6 +914,22 @@ function handleRegistration(data, laneKey) {
 
   var uuid = data.registrationUuid || '';
   if (!uuid) return jsonOut({ success: false, error: 'MISSING_UUID' });
+
+  var missingFields = getMissingRegistrationFields_(data);
+  if (missingFields.length) {
+    writeSystemLog(ss, 'WARN', 'Rejected incomplete registration payload', JSON.stringify({
+      uuid: uuid,
+      missingFields: missingFields,
+      event: data.event || '',
+      source: data.source || '',
+      hasSessionId: !!data.sessionId
+    }));
+    return jsonOut({
+      success: false,
+      error: 'MISSING_REQUIRED_REGISTRATION_FIELDS',
+      missingFields: missingFields
+    });
+  }
 
   // Idempotency: kiểm tra UUID đã tồn tại chưa
   var lock = LockService.getScriptLock();

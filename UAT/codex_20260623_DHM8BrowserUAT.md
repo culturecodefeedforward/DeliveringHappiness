@@ -160,3 +160,74 @@ Result:
 
 - DH8 production referrer UI: `LIVE VERIFIED`.
 - Fresh production duplicate submit protection remains `UNVERIFIED` because no real production form submit was performed in this verification step.
+
+## 2026-06-23 Controlled Production Submit Verification
+
+### First Submit Attempt - FAILED THEN RECOVERED
+
+- Production duplicate-submit probe used phone `0812468678`, payment code `DH8812468678`, and test UUID `11a0bd06-54f5-48ee-bcc5-5a2cd492c8b4`.
+- Result exposed a real production bug:
+  - Tracking/analytics sent a secondary POST to the same Apps Script endpoint with `registrationUuid` but without required registration fields.
+  - Backend accepted that incomplete payload and appended a blank `PENDING` row.
+  - The blank row then made frontend polling show `Chờ thanh toán` instead of resolving to the existing paid registration.
+- Immediate cleanup performed:
+  - Deleted `DHM8_Data` test row `10`.
+  - Deleted `DHM8_Email_Outbox` test rows `84` and `85`.
+  - Verified after cleanup:
+    - only one row remains for phone/payment code `812468678` / `DH8812468678`
+    - no test UUID row remains
+    - no test outbox jobs remain
+    - outbox state count returned to `SENT: 82`
+
+### Backend Hotfix
+
+- Added server-side validation in `Scripts/active_code_gs_final.js`:
+  - reject registration payloads missing `fullName`, `email`, or `phone`
+  - return `MISSING_REQUIRED_REGISTRATION_FIELDS`
+  - do not append Sheet row
+  - do not enqueue email jobs
+- Apps Script active deployment updated:
+  - deployment ID: `AKfycbwynSXvhSbrM4YMvZbXaOFR8fW-BJ5frBiyWfwkUCH5CgcWM-gEA0uuJ4xSdXLrKbQMQg`
+  - deployed version: `@37`
+  - description: `Guard incomplete registration payloads 20260623`
+
+### Incomplete Payload Guard Probe - VERIFIED
+
+Direct incomplete payload probe returned:
+
+```json
+{
+  "success": false,
+  "error": "MISSING_REQUIRED_REGISTRATION_FIELDS",
+  "missingFields": ["fullName", "email", "phone"]
+}
+```
+
+### Second Controlled Production Submit - VERIFIED
+
+- Production duplicate-submit probe used phone `0812468678`, payment code `DH8812468678`, and test UUID `14705567-b10b-432c-b772-aebe95cddc66`.
+- Browser result:
+  - `successVisible = true`
+  - `modalVisible = true`
+  - `errorVisible = false`
+  - payment status text: `Đã thanh toán`
+  - payment code text: `DH8812468678`
+  - modal title: `Đã hoàn tất chi phí hậu cần`
+- Sheet/outbox verification after submit:
+  - exactly one row remains for phone/payment code `812468678` / `DH8812468678`
+  - remaining row is the real paid registration:
+    - row `9`
+    - name `Nguyen quoc hung`
+    - email `quochung.reo@gmail.com`
+    - status `PAID`
+    - UUID `19e225ee-86b8-4352-ac0d-b389f85083f8`
+  - no row exists for test UUID `14705567-b10b-432c-b772-aebe95cddc66`
+  - no outbox job exists for the test UUID or test email
+  - outbox state count remains `SENT: 82`
+
+### Final Verdict After Controlled Submit
+
+- DH8 production referrer UI: `LIVE VERIFIED`.
+- DH8 production duplicate paid-phone submit: `LIVE VERIFIED`.
+- No new duplicate registration row was created after backend hotfix.
+- No new test outbox/email job remained after the passing submit.
