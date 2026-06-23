@@ -124,3 +124,39 @@ Result:
 - Duplicate phone backend local/mock: `VERIFIED`.
 - Duplicate phone current production read-only state: `VERIFIED`.
 - Fresh production duplicate submit protection: `UNVERIFIED` until user explicitly approves a controlled live submit test.
+
+## 2026-06-23 Production Verification After Push
+
+### VERIFIED
+
+- Commit pushed to `origin/main`:
+  - `ed8b533 feat(dhm8): add duplicate guardrail and referrer source UI`
+- Production URL probed:
+  - `https://delivering-happiness.vercel.app/register.html`
+- Production DOM now contains `input[name="referrerSource"]`.
+- Production options verified by Playwright Chromium:
+  - `GEM Global`
+  - `Smart Train`
+  - `Nguồn khác`
+- Production interaction after waiting for CSS transition:
+  - Selecting `GEM Global`:
+    - checked value: `GEM Global`
+    - `referrerName.required = false`
+    - section class: `collapsible-section`
+    - `max-height = 0px`
+    - `opacity = 0`
+    - bounding height `0`
+  - Selecting `Nguồn khác`:
+    - checked value: `Nguồn khác`
+    - `referrerName.required = true`
+    - section class: `collapsible-section visible`
+    - `max-height = 250px`
+    - `opacity = 1`
+    - bounding height `80`
+- Screenshot evidence added locally:
+  - `C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\UAT\screenshots\dhm8_referrer_ui_20260623\production_live_1366x768_after_deploy_waited.png`
+
+### UPDATED VERDICT
+
+- DH8 production referrer UI: `LIVE VERIFIED`.
+- Fresh production duplicate submit protection remains `UNVERIFIED` because no real production form submit was performed in this verification step.
