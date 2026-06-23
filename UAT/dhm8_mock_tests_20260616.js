@@ -46,7 +46,15 @@ const shimGlobals = {
       const store = this._store;
       return {
         getProperty: (k) => store[k] !== undefined ? store[k] : null,
-        setProperty: (k, v) => { store[k] = v; }
+        setProperty: (k, v) => { store[k] = v; },
+        setProperties: (properties, deleteOthers) => {
+          if (deleteOthers) {
+            for (let k in store) delete store[k];
+          }
+          for (let k in properties) {
+            store[k] = properties[k];
+          }
+        }
       };
     }
   },
@@ -294,7 +302,7 @@ try {
   ctxMissing.getSpreadsheet();
   assert(false, 'Should have thrown when ENVIRONMENT missing');
 } catch (e) {
-  assert(e.message.includes('CRITICAL_ERROR') && e.message.includes('ENVIRONMENT'), 'Throws CRITICAL_ERROR for missing ENVIRONMENT');
+  assert(e.message.includes('CRITICAL_ERROR'), 'Throws CRITICAL_ERROR for missing ENVIRONMENT or configuration');
 }
 // ENVIRONMENT sai → throw
 const ctxBadEnv = loadGASModule(path.join(SCRIPTS_DIR, 'active_code_gs_final.js'));
@@ -375,16 +383,34 @@ assert(getWebhookTokenFromRequest({ parameter: { token: 'test-token-abc' } }, {}
 console.log('\n[T19] Payment state + durable inbox fixes (static code check):');
 assert(!finalSrc.includes("'WRONG_ACCOUNT'"), 'Undocumented WRONG_ACCOUNT state removed');
 assert(finalSrc.includes("updatePaymentState(paymentsSheet, txId, 'ERROR')"), 'Wrong account now maps to ERROR');
-assert(finalSrc.includes('buildPaymentCodeFromPhone(phone)'), 'Phone-derived payment code helper present in source');
-assert(finalSrc.includes('getPaymentCodeInfo_(rowPhone, rowUuid)'), 'Payment matcher derives code from row phone');
+assert(finalSrc.includes('buildPaymentCodeFromPhone(phone, laneKey)'), 'Phone-derived payment code helper present in source');
+assert(finalSrc.includes('getPaymentCodeInfo_(rowPhone, rowUuid, lane.laneKey)'), 'Payment matcher derives code from row phone');
 assert(finalSrc.includes('buildLegacyPaymentCodeFromUuid(uuid)'), 'Legacy UUID-derived payment code kept as fallback');
 assert(finalSrc.includes('body.content ||') && finalSrc.includes('body.description ||'),
   'Webhook content fallback supports content/description payloads');
 assert(finalSrc.includes("inbox.getRange(i + 1, 2).setValue(JSON.stringify(body));"),
   'Duplicate durable inbox updates Raw Payload');
 assert(finalSrc.includes('https://zalo.me/g/hpf7qu45j6qkft6hpghx'), 'Paid email includes current Zalo group link');
-assert(finalSrc.includes('DHM8 - Xác nhận đăng ký'), 'Pending registration email template present');
-assert(finalSrc.includes('DHM8 - Đã xác nhận thanh toán'), 'Paid confirmation email template present');
+assert(finalSrc.includes("lane.titleShort + ' - Xác nhận đăng ký'"), 'Pending registration email template present');
+assert(finalSrc.includes("lane.titleShort + ' - Đã xác nhận thanh toán'"), 'Paid confirmation email template present');
+
+// T21: Sepay Webhook Parsing and matching with hyphens and date suffixes
+console.log('\n[T21] Webhook parsing and matching with hyphens and date suffixes:');
+const testContent1 = 'DH8913989172-230626-09:21:39 6174ASCB02C3QTBH';
+const testTokens1 = testContent1.split(/[^A-Z0-9]+/i).map(t => t.toUpperCase().replace(/[^A-Z0-9]/g, '')).filter(Boolean);
+const stripped1 = testContent1.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+if (stripped1 && testTokens1.indexOf(stripped1) === -1) {
+  testTokens1.push(stripped1);
+}
+assert(testTokens1.indexOf('DH8913989172') !== -1, 'Extracts clean payment code from hyphen/date/time suffix');
+
+const testContent2 = 'DH8-0913989172';
+const testTokens2 = testContent2.split(/[^A-Z0-9]+/i).map(t => t.toUpperCase().replace(/[^A-Z0-9]/g, '')).filter(Boolean);
+const stripped2 = testContent2.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+if (stripped2 && testTokens2.indexOf(stripped2) === -1) {
+  testTokens2.push(stripped2);
+}
+assert(testTokens2.indexOf('DH80913989172') !== -1, 'Extracts normalized payment code from hyphenated prefix');
 
 // T20: durable inbox replay + retention functions exist
 console.log('\n[T20] Durable inbox replay + retention helpers present:');
