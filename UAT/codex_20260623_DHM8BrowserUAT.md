@@ -231,3 +231,75 @@ Direct incomplete payload probe returned:
 - DH8 production duplicate paid-phone submit: `LIVE VERIFIED`.
 - No new duplicate registration row was created after backend hotfix.
 - No new test outbox/email job remained after the passing submit.
+
+## 2026-06-23 Duplicate UX Hotfix Verification
+
+### Root Cause
+
+- Previous implementation protected Sheet rows but still returned success for duplicate phone/payment-code lookup.
+- Frontend polling interpreted the existing paid registration as a successful new registration, so users on another device saw a success/paid state instead of being blocked.
+- Same-device users could be stuck on the payment/success surface because DHM8 session state resumed automatically without a clear "register another person" action.
+
+### Backend Fix - VERIFIED
+
+- Apps Script active deployment updated:
+  - deployment ID: `AKfycbwynSXvhSbrM4YMvZbXaOFR8fW-BJ5frBiyWfwkUCH5CgcWM-gEA0uuJ4xSdXLrKbQMQg`
+  - deployed version: `@39`
+  - description: `Block duplicate phone UX 20260623`
+- Live `checkStatus` with a new UUID and existing payment code `DH8812468678` now returns:
+  - `success=false`
+  - `error=DUPLICATE_PAID`
+  - message: `Số điện thoại này đã được đăng ký và thanh toán DHM8. Vui lòng không đăng ký lại.`
+
+### Frontend Fix - VERIFIED
+
+- Production `register.js` now contains:
+  - duplicate preflight before `POST no-cors`
+  - `DUPLICATE_PAID` / `DUPLICATE_PENDING` handling
+  - `Đăng ký người khác` reset actions on success surface and paid modal
+
+### Browser UAT - Duplicate Phone Block
+
+Artifact:
+`C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\UAT\dhm8_production_duplicate_preflight_block_after_fix_20260623.json`
+
+Screenshot:
+`C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\UAT\screenshots\dhm8_referrer_ui_20260623\production_duplicate_preflight_block_after_fix.png`
+
+Observed result:
+
+- Submitted production form with phone `0812468678`.
+- UI result:
+  - `successVisible=false`
+  - `errorVisible=true`
+  - error text: `Số điện thoại này đã có đăng ký DHM8. Vui lòng không đăng ký lại.`
+  - `submitDisabled=false`
+  - DHM8 session state cleared.
+- Sheet/outbox probe after submit:
+  - exactly one row remains for phone `812468678`
+  - no test row for UUID `3547f869-e79e-4040-bf83-fae7032a5d80`
+  - no test outbox job for that UUID/email
+
+### Browser UAT - Same-device Reset
+
+Artifact:
+`C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\UAT\dhm8_production_reset_form_after_modal_fix_clean_20260623.json`
+
+Screenshot:
+`C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\UAT\screenshots\dhm8_referrer_ui_20260623\production_reset_form_after_modal_fix_clean.png`
+
+Observed result:
+
+- Simulated a device with previous paid DHM8 session state.
+- Paid modal showed `Đăng ký người khác` button.
+- Clicking the button reset to a fresh form:
+  - `formVisible=true`
+  - `successVisible=false`
+  - modal not visible
+  - old DHM8 session keys cleared; only a fresh `dhm8_registrationUuid` remains.
+
+### Updated Verdict
+
+- Duplicate phone on another device: `LIVE VERIFIED BLOCKED`.
+- Same-device reset for another registrant: `LIVE VERIFIED`.
+- No new Sheet row or outbox job was created by the final duplicate-preflight test.
