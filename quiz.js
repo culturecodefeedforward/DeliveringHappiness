@@ -123,6 +123,16 @@ function shuffleArray(array) {
 function initQuiz() {
     logToSheet('START_QUIZ', 'User entered assessment page');
     renderQuestion();
+
+    // Track buttons at navigation of quiz
+    const navActions = document.getElementById('quizNavActions');
+    if (navActions) {
+        navActions.querySelectorAll('.btn-nav').forEach(btn => {
+            btn.addEventListener('click', () => {
+                logToSheet('CTA_CLICK_DURING_QUIZ', btn.innerText.trim());
+            });
+        });
+    }
 }
 
 function renderQuestion() {
@@ -200,6 +210,10 @@ function showSummary() {
     document.getElementById('quizProgressBar').style.width = '100%';
     const container = document.getElementById('quizContent');
     const summary = document.getElementById('quizSummary');
+
+    // Ẩn các nút điều hướng nhanh của quiz để tránh trùng lặp nút ở màn hình kết quả
+    const navActions = document.getElementById('quizNavActions');
+    if (navActions) navActions.style.display = 'none';
 
     if (container) container.style.display = 'none';
     if (summary) summary.style.display = 'block';
