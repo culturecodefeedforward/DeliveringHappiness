@@ -736,6 +736,30 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Chặn trùng SĐT trước khi gửi POST no-cors để user không thấy success giả.
+        try {
+            const preflight = await fetchRegistrationStatus(registrationUuid, 'preSubmit', paymentCode);
+            if (preflight.error === 'AMBIGUOUS_PAYMENT_CODE') {
+                setSubmitState(btn, spinner, textEl, 'Gửi đăng ký & Hoàn tất', false);
+                showDuplicatePhoneError({ message: 'Số điện thoại này đang có nhiều đăng ký. Ban tổ chức sẽ liên hệ để xử lý thủ công. Vui lòng không đăng ký lại.' });
+                return;
+            }
+            if (preflight.error === 'DUPLICATE_PAID' || preflight.error === 'DUPLICATE_PENDING') {
+                setSubmitState(btn, spinner, textEl, 'Gửi đăng ký & Hoàn tất', false);
+                showDuplicatePhoneError(preflight);
+                return;
+            }
+            if (preflight.success && preflight.registrationUuid && preflight.registrationUuid !== registrationUuid) {
+                setSubmitState(btn, spinner, textEl, 'Gửi đăng ký & Hoàn tất', false);
+                showDuplicatePhoneError({ message: 'Số điện thoại này đã có đăng ký DHM8. Vui lòng không đăng ký lại.' });
+                return;
+            }
+        } catch (err) {
+            setSubmitState(btn, spinner, textEl, 'Gửi đăng ký & Hoàn tất', false);
+            showInlineError('Không kiểm tra được trạng thái trùng số điện thoại. Vui lòng thử lại sau ít phút.');
+            return;
+        }
+
         // --- POST no-cors (gửi dữ liệu - không đọc response) ---
         try {
             await fetch(DHM8_WEBAPP_URL, {
