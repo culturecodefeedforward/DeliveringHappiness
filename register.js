@@ -720,12 +720,8 @@ document.addEventListener('DOMContentLoaded', () => {
             data.referrerName = refSourceVal;
             data.referrerPhone = '';
         } else {
-            // Nguồn khác: bắt buộc điền referrerName
-            if (!data.referrerName || !data.referrerName.trim()) {
-                setSubmitState(btn, spinner, textEl, 'Gửi đăng ký & Hoàn tất', false);
-                showInlineError('Vui lòng điền tên người giới thiệu.');
-                return;
-            }
+            data.referrerName = (data.referrerName || '').trim();
+            data.referrerPhone = (data.referrerPhone || '').trim();
         }
         delete data.referrerSource;
 
@@ -799,7 +795,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!refSection) return;
         if (refOther && refOther.checked) {
             refSection.classList.add('visible');
-            if (refNameInput) refNameInput.required = true;
+            if (refNameInput) refNameInput.required = false;
         } else {
             refSection.classList.remove('visible');
             if (refNameInput) {
