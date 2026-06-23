@@ -278,6 +278,11 @@ function normalizePaymentCodeToken(code) {
   return (code || '').toString().toUpperCase().replace(/[^A-Z0-9]/g, '');
 }
 
+function isActiveRegistrationStatus_(status) {
+  var normalized = String(status || '').toUpperCase();
+  return normalized === 'PENDING' || normalized === 'PAID';
+}
+
 function getPaymentCodeInfo_(phone, uuid, laneKey) {
   var config = getLaneConfig_(laneKey);
   var paymentCode = buildPaymentCodeFromPhone(phone, config.laneKey);
@@ -458,6 +463,7 @@ function handleOperatorRuntimeDebugGet_(e) {
     environment: props.getProperty('ENVIRONMENT') || '',
     runtimeBuildLabel: RUNTIME_BUILD_LABEL,
     paymentBtcEmailType: PAYMENT_BTC_EMAIL_TYPE,
+    btcEmails: BTC_EMAILS.join(','),
     mailTriggerFunction: MAIL_TRIGGER_FUNCTION,
     mailTriggerEveryMinutes: MAIL_TRIGGER_EVERY_MINUTES
   });
@@ -803,13 +809,15 @@ function getRegistrationStatus(query) {
     if (paymentCode) {
       var matches = [];
       for (var j = 1; j < data.length; j++) {
+        var rowStatus = data[j][15] || 'PENDING';
+        if (!isActiveRegistrationStatus_(rowStatus)) continue;
         var rowUuid = data[j][17] || '';
         var rowPhone = normalizePhone(data[j][3]);
         var rowCodeInfo = getPaymentCodeInfo_(rowPhone, rowUuid, lane.laneKey);
         if (rowCodeInfo.variants.indexOf(paymentCode) !== -1) {
           matches.push({
             registrationUuid: rowUuid,
-            paymentStatus: data[j][15] || 'PENDING'
+            paymentStatus: rowStatus
           });
         }
       }
@@ -851,6 +859,32 @@ function getRegistrationStatus(query) {
   }
 }
 
+// ─── DUPLICATE PHONE GUARD ───────────────────────────────────
+function findActiveRegistrationsByPhone_(dataSheet, phone, laneKey) {
+  var normalized = normalizePhone(phone);
+  var submittedPaymentCode = buildPaymentCodeFromPhone(phone, laneKey);
+  if (!normalized && !submittedPaymentCode) return [];
+  var rows = dataSheet.getDataRange().getValues();
+  var matches = [];
+  for (var i = 1; i < rows.length; i++) {
+    var rowPhone = normalizePhone(rows[i][3]);
+    var rowPaymentCode = buildPaymentCodeFromPhone(rowPhone, laneKey);
+    var status = String(rows[i][15] || '').toUpperCase();
+    var samePhoneOrCode = (rowPhone === normalized) ||
+      (submittedPaymentCode && rowPaymentCode === submittedPaymentCode);
+    if (samePhoneOrCode && isActiveRegistrationStatus_(status)) {
+      matches.push({
+        rowIdx: i,
+        uuid: rows[i][17],
+        paymentStatus: status,
+        email: rows[i][2],
+        phone: rows[i][3]
+      });
+    }
+  }
+  return matches;
+}
+
 // ─── HANDLE REGISTRATION ─────────────────────────────────────
 function handleRegistration(data, laneKey) {
   var lane = getLaneConfig_(laneKey);
@@ -885,6 +919,47 @@ function handleRegistration(data, laneKey) {
       }
     }
     if (!isDuplicate) {
+      // ─── PHONE DUPLICATE GUARD ────────────────────────────
+      var activeByPhone = findActiveRegistrationsByPhone_(sheet, data.phone || '', lane.laneKey);
+      if (activeByPhone.length >= 2) {
+        writeSystemLog(ss, 'ERROR', 'DUPLICATE_ACTIVE_REGISTRATION blocked: ' + normalizePhone(data.phone || ''), uuid);
+        return jsonOut({
+          success: false,
+          error: 'DUPLICATE_ACTIVE_REGISTRATION',
+          message: 'Số điện thoại này đang có nhiều đăng ký active. BTC sẽ xử lý thủ công.'
+        });
+      }
+      if (activeByPhone.length === 1) {
+        var existingReg = activeByPhone[0];
+        var existingPaymentCode = buildPaymentCodeFromPhone(existingReg.phone, lane.laneKey);
+        var existingQrUrl = buildPaymentQrUrl_(existingPaymentCode, lane.laneKey);
+        var existingResumeUrl = buildPaymentResumeUrl_(existingReg.uuid, existingPaymentCode, lane.laneKey);
+        writeSystemLog(ss, 'WARN', 'DUPLICATE_PHONE blocked, returning existing: ' + existingReg.uuid, uuid);
+        if (existingReg.paymentStatus === 'PAID') {
+          return jsonOut({
+            success: true,
+            state: 'DUPLICATE_PAID',
+            duplicate: true,
+            registrationUuid: existingReg.uuid,
+            paymentStatus: 'PAID',
+            paymentCode: existingPaymentCode,
+            message: 'Số điện thoại này đã được đăng ký và thanh toán DHM8.'
+          });
+        }
+        return jsonOut({
+          success: true,
+          state: 'DUPLICATE_PENDING',
+          duplicate: true,
+          registrationUuid: existingReg.uuid,
+          paymentStatus: 'PENDING',
+          paymentCode: existingPaymentCode,
+          paymentQrUrl: existingQrUrl,
+          resumeUrl: existingResumeUrl,
+          message: 'Số điện thoại này đã có đăng ký DHM8. Vui lòng dùng mã thanh toán cũ.'
+        });
+      }
+      // ─── END PHONE DUPLICATE GUARD ────────────────────────
+
       var dataRowCount = getDhm8RegistrationDataRowCount_(sheet);
       if (dataRowCount >= lane.registrationCap) {
         return jsonOut(buildRegistrationClosedPayload_(dataRowCount, lane.laneKey));
@@ -1230,6 +1305,7 @@ function processEmailQueue() {
 }
 
 function processEmailQueueForLane_(laneKey) {
+  var props = getScriptProperties_();
   var lane = getLaneConfig_(laneKey);
   var ss = getSpreadsheet();
   var outbox = ss.getSheetByName(lane.outboxSheetName);

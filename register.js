@@ -538,7 +538,8 @@ async function startPolling(uuid, startAttempt) {
             // Condition 4: chỉ thành công khi state là REGISTERED (UUID tồn tại thực sự)
             // PENDING = trạng thái thanh toán của registration đã tồn tại
             if (result.success && (result.state === 'REGISTERED' || result.state === 'PENDING' || result.state === 'PAID')) {
-                showSuccess(uuid, result.paymentStatus || result.state);
+                const resolvedUuid = result.registrationUuid || uuid;
+                showSuccess(resolvedUuid, result.paymentStatus || result.state);
                 return;
             }
 
@@ -547,6 +548,10 @@ async function startPolling(uuid, startAttempt) {
                 console.info(`[DHM8] Lần ${attempt + 1}: NOT_FOUND - có thể Sheets đang trễ, thử tiếp.`);
             } else if (result.error === 'REGISTRATION_CLOSED' || result.state === 'REGISTRATION_CLOSED') {
                 showRegistrationClosed(result.interestLink);
+                return;
+            } else if (result.error === 'AMBIGUOUS_PAYMENT_CODE') {
+                setSubmitState(btn, spinner, textEl, 'Gửi đăng ký & Hoàn tất', false);
+                showInlineError('Số điện thoại này đang có nhiều đăng ký. Ban tổ chức sẽ liên hệ để xử lý thủ công. Vui lòng không đăng ký lại.');
                 return;
             } else {
                 console.warn('[DHM8] Phản hồi không nhận ra:', result.state, result.error);
@@ -667,6 +672,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         delete data.sourceHearingOther;
 
+        // --- Chuẩn hóa Referrer Source & Partner ---
+        const refSourceVal = data.referrerSource || 'Nguồn khác';
+        if (refSourceVal === 'GEM Global' || refSourceVal === 'Smart Train') {
+            data.referrerName = refSourceVal;
+            data.referrerPhone = '';
+        } else {
+            // Nguồn khác: bắt buộc điền referrerName
+            if (!data.referrerName || !data.referrerName.trim()) {
+                setSubmitState(btn, spinner, textEl, 'Gửi đăng ký & Hoàn tất', false);
+                showInlineError('Vui lòng điền tên người giới thiệu.');
+                return;
+            }
+        }
+        delete data.referrerSource;
+
         // Gắn UUID và metadata
         data.registrationUuid = registrationUuid;
         data.type = 'EVENT_LEAD_DHM8';
@@ -700,4 +720,36 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- JSONP Polling để xác nhận nghiệp vụ ---
         await startPolling(registrationUuid, 0);
     });
+
+    // --- COLLAPSIBLE REFERRER SECTION LOGIC ---
+    const refGem = document.getElementById('refPartnerGem');
+    const refSmart = document.getElementById('refPartnerSmart');
+    const refOther = document.getElementById('refPartnerOther');
+    const refSection = document.getElementById('referrerDetailsSection');
+    const refNameInput = document.getElementById('referrerName');
+    const refPhoneInput = document.getElementById('referrerPhone');
+
+    function updateReferrerUiState() {
+        if (!refSection) return;
+        if (refOther && refOther.checked) {
+            refSection.classList.add('visible');
+            if (refNameInput) refNameInput.required = true;
+        } else {
+            refSection.classList.remove('visible');
+            if (refNameInput) {
+                refNameInput.required = false;
+                refNameInput.value = "";
+            }
+            if (refPhoneInput) {
+                refPhoneInput.value = "";
+            }
+        }
+    }
+
+    [refGem, refSmart, refOther].forEach(el => {
+        if (el) el.addEventListener('change', updateReferrerUiState);
+    });
+
+    // Run initial check
+    updateReferrerUiState();
 });
