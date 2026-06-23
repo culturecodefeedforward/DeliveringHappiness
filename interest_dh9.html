@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Để lại quan tâm - Delivering Happiness</title>
+  <meta name="description"
+    content="Để lại thông tin quan tâm để nhận thông báo về các chương trình Delivering Happiness tiếp theo từ CultureCode Community." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #0f172a 100%);
+      color: #ffffff;
+      font-family: 'Be Vietnam Pro', sans-serif;
+    }
+
+    .interest-shell {
+      width: min(760px, calc(100% - 32px));
+      margin: 96px auto 48px;
+      padding: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
+    }
+
+    .interest-shell h1 {
+      margin: 0 0 12px;
+      color: var(--warm-yellow);
+      font-size: 2rem;
+      line-height: 1.25;
+    }
+
+    .interest-shell p {
+      color: rgba(255, 255, 255, 0.78);
+      line-height: 1.6;
+    }
+
+    .interest-form {
+      display: grid;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .interest-form label {
+      display: grid;
+      gap: 8px;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .interest-form input,
+    .interest-form textarea {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      font: inherit;
+      padding: 12px 14px;
+      outline: none;
+    }
+
+    .interest-form textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .interest-form input:focus,
+    .interest-form textarea:focus {
+      border-color: var(--warm-yellow);
+      box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.16);
+    }
+
+    .interest-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .interest-submit {
+      border: 0;
+      cursor: pointer;
+    }
+
+    .interest-submit:disabled {
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .interest-status {
+      display: none;
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 8px;
+      background: rgba(16, 185, 129, 0.16);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #d1fae5;
+      line-height: 1.55;
+    }
+
+    .interest-status.error {
+      background: rgba(239, 68, 68, 0.14);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #fee2e2;
+    }
+
+    @media (max-width: 640px) {
+      .interest-shell {
+        margin-top: 72px;
+        padding: 24px;
+      }
+
+      .interest-actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="top-nav">
+    <a href="https://www.linkedin.com/company/culturecodecommunity/" target="_blank"
+      class="nav-brand">
+      <img src="data/logo.jpg" alt="CultureCode Logo" class="nav-logo-img" />
+    </a>
+  </nav>
+
+  <main class="interest-shell">
+    <h1>DH9 đã đủ số lượng đăng ký</h1>
+    <p>
+      Cảm ơn bạn đã quan tâm đến Delivering Happiness Masterclass 9 tại Hà Nội ngày 22/08. Bạn có thể để lại thông tin dưới đây để BTC liên hệ
+      khi có chương trình tiếp theo hoặc khi có suất phù hợp. Địa điểm chính xác sẽ được thông báo sau.
+    </p>
+
+    <form id="interestForm" class="interest-form">
+      <label>
+        Họ và tên *
+        <input type="text" name="fullName" autocomplete="name" required placeholder="Nhập họ và tên..." />
+      </label>
+
+      <label>
+        Email *
+        <input type="email" name="email" autocomplete="email" required placeholder="name@company.com" />
+      </label>
+
+      <label>
+        Số điện thoại/Zalo *
+        <input type="tel" name="phone" autocomplete="tel" required placeholder="Để BTC liên hệ khi có suất phù hợp..." />
+      </label>
+
+      <label>
+        Công ty/Tổ chức
+        <input type="text" name="company" autocomplete="organization" placeholder="Nhập công ty hoặc tổ chức..." />
+      </label>
+
+      <label>
+        Chức danh/Vị trí
+        <input type="text" name="jobTitle" autocomplete="organization-title" placeholder="Nhập chức danh..." />
+      </label>
+
+      <label>
+        Ghi chú
+        <textarea name="note" placeholder="Bạn muốn BTC lưu ý điều gì khi có chương trình tiếp theo?"></textarea>
+      </label>
+
+      <div class="interest-actions">
+        <button type="submit" id="interestSubmit" class="btn-primary interest-submit">Gửi thông tin quan tâm</button>
+        <a href="index_OFFICIAL.html" style="color: rgba(255,255,255,0.72); text-decoration: none;">Quay về landing page</a>
+      </div>
+    </form>
+
+    <div id="interestStatus" class="interest-status"></div>
+  </main>
+
+  <script>
+    window.CUSTOM_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
+
+    function createInterestUuid() {
+      if (crypto && typeof crypto.randomUUID === 'function') return crypto.randomUUID();
+      var arr = new Uint8Array(16);
+      crypto.getRandomValues(arr);
+      return Array.from(arr).map(function(byte) {
+        return byte.toString(16).padStart(2, '0');
+      }).join('');
+    }
+
+    function showInterestStatus(message, isError) {
+      var status = document.getElementById('interestStatus');
+      status.textContent = message;
+      status.className = 'interest-status' + (isError ? ' error' : '');
+      status.style.display = 'block';
+    }
+
+    document.getElementById('interestForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      var submit = document.getElementById('interestSubmit');
+      submit.disabled = true;
+      submit.textContent = 'Đang gửi...';
+
+      var formData = new FormData(event.target);
+      var data = Object.fromEntries(formData.entries());
+      data.type = 'DH9_INTEREST';
+      data.source = 'Web_DH9_Interest';
+      data.event_id = 'DH9_INTEREST_220826_HN';
+      data.interestUuid = createInterestUuid();
+
+      try {
+        await fetch(window.CUSTOM_WEBAPP_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        event.target.reset();
+        showInterestStatus('BTC đã nhận thông tin quan tâm của bạn. Cảm ơn bạn, BTC sẽ liên hệ khi có chương trình hoặc suất phù hợp.', false);
+      } catch (err) {
+        showInterestStatus('Chưa gửi được thông tin. Vui lòng kiểm tra kết nối mạng và thử lại.', true);
+      } finally {
+        submit.disabled = false;
+        submit.textContent = 'Gửi thông tin quan tâm';
+      }
+    });
+  </script>
+</body>
+
+</html>
