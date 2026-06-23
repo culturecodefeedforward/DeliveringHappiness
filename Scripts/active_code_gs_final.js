@@ -823,6 +823,18 @@ function getRegistrationStatus(query) {
       }
 
       if (matches.length === 1) {
+        if (uuid && matches[0].registrationUuid && matches[0].registrationUuid !== uuid) {
+          var duplicateStatus = String(matches[0].paymentStatus || '').toUpperCase();
+          return {
+            success: false,
+            error: duplicateStatus === 'PAID' ? 'DUPLICATE_PAID' : 'DUPLICATE_PENDING',
+            state: duplicateStatus === 'PAID' ? 'DUPLICATE_PAID' : 'DUPLICATE_PENDING',
+            paymentStatus: duplicateStatus,
+            message: duplicateStatus === 'PAID'
+              ? 'Số điện thoại này đã được đăng ký và thanh toán DHM8. Vui lòng không đăng ký lại.'
+              : 'Số điện thoại này đã có đăng ký DHM8 đang chờ thanh toán. Vui lòng không đăng ký lại.'
+          };
+        }
         return {
           success: true,
           state: 'REGISTERED',
@@ -835,6 +847,15 @@ function getRegistrationStatus(query) {
         return String(match.paymentStatus || '').toUpperCase() === 'PAID';
       });
       if (paidMatches.length === 1) {
+        if (uuid && paidMatches[0].registrationUuid && paidMatches[0].registrationUuid !== uuid) {
+          return {
+            success: false,
+            error: 'DUPLICATE_PAID',
+            state: 'DUPLICATE_PAID',
+            paymentStatus: 'PAID',
+            message: 'Số điện thoại này đã được đăng ký và thanh toán DHM8. Vui lòng không đăng ký lại.'
+          };
+        }
         return {
           success: true,
           state: 'REGISTERED',
@@ -962,25 +983,23 @@ function handleRegistration(data, laneKey) {
         writeSystemLog(ss, 'WARN', 'DUPLICATE_PHONE blocked, returning existing: ' + existingReg.uuid, uuid);
         if (existingReg.paymentStatus === 'PAID') {
           return jsonOut({
-            success: true,
+            success: false,
+            error: 'DUPLICATE_PAID',
             state: 'DUPLICATE_PAID',
             duplicate: true,
-            registrationUuid: existingReg.uuid,
             paymentStatus: 'PAID',
             paymentCode: existingPaymentCode,
-            message: 'Số điện thoại này đã được đăng ký và thanh toán DHM8.'
+            message: 'Số điện thoại này đã được đăng ký và thanh toán DHM8. Vui lòng không đăng ký lại.'
           });
         }
         return jsonOut({
-          success: true,
+          success: false,
+          error: 'DUPLICATE_PENDING',
           state: 'DUPLICATE_PENDING',
           duplicate: true,
-          registrationUuid: existingReg.uuid,
           paymentStatus: 'PENDING',
           paymentCode: existingPaymentCode,
-          paymentQrUrl: existingQrUrl,
-          resumeUrl: existingResumeUrl,
-          message: 'Số điện thoại này đã có đăng ký DHM8. Vui lòng dùng mã thanh toán cũ.'
+          message: 'Số điện thoại này đã có đăng ký DHM8 đang chờ thanh toán. Vui lòng không đăng ký lại.'
         });
       }
       // ─── END PHONE DUPLICATE GUARD ────────────────────────
@@ -1563,3 +1582,4 @@ function jsonOut(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
 }
+

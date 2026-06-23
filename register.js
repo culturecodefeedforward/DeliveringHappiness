@@ -71,6 +71,17 @@ function clearPaymentReference() {
     sessionStorage.removeItem('dhm8_paymentName');
 }
 
+function clearAllDhm8SessionState() {
+    Object.keys(sessionStorage).forEach((key) => {
+        if (key.indexOf('dhm8_') === 0) sessionStorage.removeItem(key);
+    });
+}
+
+function resetRegistrationAndReload() {
+    clearAllDhm8SessionState();
+    window.location.replace(window.location.pathname);
+}
+
 function normalizePhone(phone) {
     if (!phone) return '';
     var digits = String(phone).replace(/\D/g, '');
@@ -427,6 +438,27 @@ function showInlineError(message) {
     errorDiv.textContent = message;
 }
 
+function showDuplicatePhoneError(result) {
+    clearPaymentReference();
+    clearLastRegistration();
+    clearRegistrationUuid();
+    const message = (result && result.message) || 'Số điện thoại này đã có đăng ký DHM8. Vui lòng không đăng ký lại.';
+    showInlineError(message);
+}
+
+function ensureStartNewRegistrationButton() {
+    const success = document.getElementById('successMessage');
+    if (!success || document.getElementById('startNewRegistrationBtn')) return;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.id = 'startNewRegistrationBtn';
+    button.className = 'btn-submit';
+    button.style.cssText = 'display:block; width:100%; margin-top:1rem; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.28);';
+    button.textContent = 'Đăng ký người khác';
+    button.addEventListener('click', resetRegistrationAndReload);
+    success.appendChild(button);
+}
+
 function showRegistrationClosed(interestLink) {
     const form = document.getElementById('crmForm');
     const header = document.querySelector('.header');
@@ -497,6 +529,7 @@ function showSuccess(uuid, paymentStatus, options) {
     if (form) form.style.display = 'none';
     if (header) header.style.display = 'none';
     if (success) success.style.display = 'block';
+    ensureStartNewRegistrationButton();
     window.scrollTo({ top: 0, behavior: 'smooth' });
     clearRegistrationUuid();
     startPaymentStatusPolling(uuid, paymentStatus);
@@ -551,7 +584,11 @@ async function startPolling(uuid, startAttempt) {
                 return;
             } else if (result.error === 'AMBIGUOUS_PAYMENT_CODE') {
                 setSubmitState(btn, spinner, textEl, 'Gửi đăng ký & Hoàn tất', false);
-                showInlineError('Số điện thoại này đang có nhiều đăng ký. Ban tổ chức sẽ liên hệ để xử lý thủ công. Vui lòng không đăng ký lại.');
+                showDuplicatePhoneError({ message: 'Số điện thoại này đang có nhiều đăng ký. Ban tổ chức sẽ liên hệ để xử lý thủ công. Vui lòng không đăng ký lại.' });
+                return;
+            } else if (result.error === 'DUPLICATE_PAID' || result.error === 'DUPLICATE_PENDING') {
+                setSubmitState(btn, spinner, textEl, 'Gửi đăng ký & Hoàn tất', false);
+                showDuplicatePhoneError(result);
                 return;
             } else {
                 console.warn('[DHM8] Phản hồi không nhận ra:', result.state, result.error);
@@ -753,3 +790,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Run initial check
     updateReferrerUiState();
 });
+
