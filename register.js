@@ -342,10 +342,15 @@ function ensurePaidModal() {
             <h2 id="paymentCompleteTitle" style="margin:0 0 12px; color:#047857; font-size:1.45rem;">Đã hoàn tất chi phí hậu cần</h2>
             <p style="margin:0 0 18px; color:#374151; line-height:1.55;">Chúc mừng bạn! Hệ thống đã ghi nhận thanh toán thành công. Bạn có thể tham gia nhóm Zalo DH8 HCM để nhận thông báo, lịch trình và kết nối với BTC.</p>
             <a id="paymentCompleteZaloLink" href="${DHM8_ZALO_GROUP_URL}" target="_blank" rel="noopener" style="display:block; background:#0068ff; color:#ffffff; text-decoration:none; font-weight:700; border-radius:10px; padding:13px 18px; margin-bottom:10px;">Vào nhóm Zalo DH8 HCM</a>
+            <button id="paymentCompleteNewRegistration" type="button" style="display:block; width:100%; border:1px solid #047857; background:#ecfdf5; color:#047857; font-weight:700; border-radius:10px; padding:12px 18px; margin-bottom:10px; cursor:pointer;">Đăng ký người khác</button>
             <a id="paymentCompleteClose" href="https://delivering-happiness.vercel.app/" style="display:block; width:100%; border:1px solid #d1d5db; background:#ffffff; color:#374151; font-weight:700; border-radius:10px; padding:12px 18px; text-decoration:none; cursor:pointer;">Quay về trang chủ</a>
         </div>`;
     document.body.appendChild(modal);
     modal.addEventListener('click', (event) => {
+        if (event.target.id === 'paymentCompleteNewRegistration') {
+            resetRegistrationAndReload();
+            return;
+        }
         if (event.target === modal || event.target.id === 'paymentCompleteClose') {
             clearLastRegistration();
             clearPaymentReference();
