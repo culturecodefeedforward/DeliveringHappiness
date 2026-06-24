@@ -1,9 +1,8 @@
-# Danh sách công việc (Task Checklist) - Cập nhật Email NVC, Thêm Link Zalo & Đồng bộ Git
-
-- `[x]` Cập nhật danh sách email nhận thông báo đăng ký trong tệp `Code` của dự án Google Apps Script.
-- `[ ]` Bổ sung liên kết Zalo vào màn hình thành công trên tệp `register_nvc.html` phía trên ảnh QR.
-- `[ ]` Thực hiện deploy (triển khai phiên bản thực tế) Google Apps Script Web App và kiểm tra URL mới.
-- `[ ]` Cập nhật URL Web App mới vào tệp `register_nvc.html` (nếu thay đổi).
-- `[ ]` Thực hiện UAT (User Acceptance Testing - kiểm thử nghiệm thu người dùng) qua trình duyệt trên môi trường live Vercel.
-- `[ ]` Chụp ảnh màn hình UAT làm bằng chứng và lưu vào thư mục `UAT/`.
-- `[ ]` Đồng bộ hóa mã nguồn và đẩy lên 3 remote Git (`origin`, `personal`, `legacy_org`).
+- [x] Sao chép tệp PDF sang thư mục attachments được cho phép
+- [x] Thực hiện gửi email brochure qua workspace-mcp
+- [x] Xác minh kết quả gửi thư
+- [x] Chỉnh sửa logic Apps Script định tuyến email cho GEM Global (gửi thêm cho hang.ho@gemglobal.edu.vn)
+- [x] Chỉnh sửa logic Apps Script định tuyến email cho Smart Train (gửi thêm cho thanh.pham@smarttrain.edu.vn)
+- [x] Đồng bộ hóa logic Apps Script cho cả DH8 & DH9
+- [x] Chạy test suite giả lập Node.js để kiểm thử (88/88 assertions pass)
+- [x] Lập báo cáo kết quả kiểm thử (Walkthrough)
