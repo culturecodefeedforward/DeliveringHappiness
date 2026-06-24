@@ -814,5 +814,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Run initial check
     updateReferrerUiState();
+
+    // --- ACCORDION FOR ADDITIONAL INFO ---
+    const trigger = document.getElementById('additionalInfoTrigger');
+    const section = document.getElementById('additionalInfoSection');
+    if (trigger && section) {
+        trigger.addEventListener('click', () => {
+            const isVisible = section.classList.toggle('visible');
+            const arrow = trigger.querySelector('.arrow');
+            if (arrow) {
+                arrow.style.transform = isVisible ? 'rotate(180deg)' : 'rotate(0deg)';
+            }
+        });
+    }
 });
 

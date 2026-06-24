@@ -363,6 +363,51 @@
                 gap: 1.5rem;
             }
         }
+
+        /* CSS Accordion */
+        .additional-info-trigger {
+            grid-column: span 2;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .additional-info-trigger:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .additional-info-trigger .arrow {
+            transition: transform 0.3s ease;
+            font-size: 1.2rem;
+        }
+        .additional-info-section {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            grid-column: span 2;
+            width: 100%;
+        }
+        .additional-info-section.visible {
+            display: grid !important;
+        }
+
+        @media (max-width: 600px) {
+            .additional-info-trigger,
+            .additional-info-section {
+                grid-column: span 1;
+            }
+
+            .additional-info-section {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 
@@ -371,7 +416,7 @@
     <div class="form-card" id="formWrapper">
         <div class="header">
             <h1>Đăng ký DH Masterclass (DHM8)</h1>
-            <p class="subtitle">Thứ Bảy, 04/07/2026 | Trung tâm đào tạo Circle K</p>
+            <p class="subtitle">Thứ Bảy, 18/07/2026 | Trung tâm đào tạo Circle K</p>
         </div>
 
         <div id="registrationClosed" class="registration-closed">
@@ -399,6 +444,7 @@
             </div>
 
             <div class="form-grid">
+                <!-- ================= PHẦN A: THÔNG TIN CƠ BẢN ================= -->
                 <!-- 1. Họ và tên -->
                 <div class="input-group">
                     <label>Họ và tên *</label>
@@ -407,14 +453,8 @@
 
                 <!-- 2. Email -->
                 <div class="input-group">
-                    <label>Business Email *</label>
+                    <label>Email *</label>
                     <input type="email" name="email" required placeholder="Nhập địa chỉ email...">
-                </div>
-
-                <!-- Linkedin -->
-                <div class="input-group">
-                    <label>Linkedin Public profile & URL *</label>
-                    <input type="text" name="linkedin" required placeholder="https://linkedin.com/in/username...">
                 </div>
 
                 <!-- 3. Số điện thoại -->
@@ -423,168 +463,27 @@
                     <input type="tel" name="phone" required placeholder="Để BTC liên hệ và mời vào nhóm...">
                 </div>
 
-                <!-- 4. Tên công ty -->
-                <div class="input-group">
-                    <label>Tên công ty / Tổ chức hiện tại *</label>
-                    <input type="text" name="company" required placeholder="Nhập tên đơn vị công tác...">
-                </div>
-
-                <!-- 5. Chức danh -->
-                <div class="input-group">
-                    <label>Chức danh / Vị trí *</label>
-                    <input type="text" name="jobTitle" required placeholder="Nhập chức danh của bạn...">
-                </div>
-
-
-                <!-- 6. Quy mô công ty (Radio group) -->
-                <div class="input-group full-width">
-                    <label>Quy mô công ty nơi bạn đang công tác *</label>
-                    <div class="radio-group" style="grid-template-columns: repeat(2, 1fr);">
-                        <div class="radio-item">
-                            <input type="radio" id="size1" name="companySize" value="<50" required>
-                            <label for="size1">&lt;50 nhân sự</label>
-                        </div>
-                        <div class="radio-item">
-                            <input type="radio" id="size2" name="companySize" value="50-200">
-                            <label for="size2">50-200 nhân sự</label>
-                        </div>
-                        <div class="radio-item">
-                            <input type="radio" id="size3" name="companySize" value="200-1000">
-                            <label for="size3">200 - 1000 nhân sự</label>
-                        </div>
-                        <div class="radio-item">
-                            <input type="radio" id="size4" name="companySize" value=">1000">
-                            <label for="size4">&gt;1000 nhân sự</label>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 7. Nguồn biết đến chương trình (Radio group + Other) -->
-                <div class="input-group full-width">
-                    <label>Lần đầu bạn nghe thông tin chương trình từ đâu? *</label>
-                    <div class="radio-group" style="grid-template-columns: 1fr 1fr;">
-                        <div class="radio-item">
-                            <input type="radio" id="src1" name="sourceHearing" value="CultureCode linkedin page" required>
-                            <label for="src1">CultureCode linkedin page</label>
-                        </div>
-                        <div class="radio-item">
-                            <input type="radio" id="src2" name="sourceHearing" value="Nhóm zalo cộng đồng CultureCode">
-                            <label for="src2">Nhóm Zalo cộng đồng CultureCode</label>
-                        </div>
-                        <div class="radio-item">
-                            <input type="radio" id="src3" name="sourceHearing" value="Nhóm zalo cộng đồng Delivering Happiness">
-                            <label for="src3">Nhóm Zalo cộng đồng Delivering Happiness</label>
-                        </div>
-                        <div class="radio-item">
-                            <input type="radio" id="src4" name="sourceHearing" value="Nhóm cộng đồng khác">
-                            <label for="src4">Nhóm cộng đồng khác</label>
-                        </div>
-                        <div class="radio-item">
-                            <input type="radio" id="src5" name="sourceHearing" value="Linkedin của giảng viên">
-                            <label for="src5">Linkedin của giảng viên</label>
-                        </div>
-                        <div class="radio-item">
-                            <input type="radio" id="src6" name="sourceHearing" value="Bạn bè, người quen">
-                            <label for="src6">Bạn bè, người quen</label>
-                        </div>
-                        <div class="radio-item full-width" style="grid-column: span 2; display: flex; align-items: center; gap: 10px;">
-                            <input type="radio" id="srcOther" name="sourceHearing" value="Khác">
-                            <label for="srcOther" style="white-space: nowrap; margin-bottom: 0;">Mục khác:</label>
-                            <input type="text" id="sourceHearingOther" name="sourceHearingOther" placeholder="Vui lòng nhập nguồn khác..." class="option-other-input" style="margin: 0; padding: 6px 12px; height: auto;">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 8. Chương trình đã tham gia (Checkbox group + Other) -->
-                <div class="input-group full-width">
-                    <label>Bạn đã tham gia chương trình nào của CultureCode? *</label>
-                    <div class="radio-group" style="grid-template-columns: 1fr 1fr;">
-                        <div class="radio-item">
-                            <input type="checkbox" id="prog1" name="attendedPrograms" value="CultureCode CC101">
-                            <label for="prog1">CultureCode CC101</label>
-                        </div>
-                        <div class="radio-item">
-                            <input type="checkbox" id="prog2" name="attendedPrograms" value="Trà Chiều">
-                            <label for="prog2">Trà Chiều</label>
-                        </div>
-                        <div class="radio-item">
-                            <input type="checkbox" id="prog3" name="attendedPrograms" value="Blooming on">
-                            <label for="prog3">Blooming on</label>
-                        </div>
-                        <div class="radio-item full-width" style="grid-column: span 2; display: flex; align-items: center; gap: 10px;">
-                            <input type="checkbox" id="progOther" name="attendedPrograms" value="Khác">
-                            <label for="progOther" style="white-space: nowrap; margin-bottom: 0;">Mục khác:</label>
-                            <input type="text" id="attendedProgramsOther" name="attendedProgramsOther" placeholder="Vui lòng nhập mục khác..." class="option-other-input" style="margin: 0; padding: 6px 12px; height: auto;">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 9. Mục đích tham gia (Checkbox group + Other) -->
-                <div class="input-group full-width">
-                    <label>Mục đích khi bạn đăng ký tham gia Masterclass Retreat? *</label>
-                    <div class="radio-group" style="grid-template-columns: 1fr 1fr;">
-                        <div class="radio-item">
-                            <input type="checkbox" id="purp1" name="purpose" value="Học và áp dụng cho bản thân">
-                            <label for="purp1">Học và áp dụng cho bản thân</label>
-                        </div>
-                        <div class="radio-item">
-                            <input type="checkbox" id="purp2" name="purpose" value="Xem xét áp dụng cho công ty/ tổ chức">
-                            <label for="purp2">Xem xét áp dụng cho công ty/ tổ chức</label>
-                        </div>
-                        <div class="radio-item full-width" style="grid-column: span 2; display: flex; align-items: center; gap: 10px;">
-                            <input type="checkbox" id="purpOther" name="purpose" value="Khác">
-                            <label for="purpOther" style="white-space: nowrap; margin-bottom: 0;">Mục khác:</label>
-                            <input type="text" id="purposeOther" name="purposeOther" placeholder="Vui lòng nhập mục đích khác..." class="option-other-input" style="margin: 0; padding: 6px 12px; height: auto;">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 10. Mức độ tìm hiểu Delivering Happiness (Radio group) -->
-                <div class="input-group full-width">
-                    <label>Bạn đã tìm hiểu gì về &quot;Delivering Happiness&quot; chưa? *</label>
-                    <div class="radio-group" style="grid-template-columns: 1fr;">
-                        <div class="radio-item">
-                            <input type="radio" id="happy1" name="happinessKnowledge" value="Chưa từng nghe" required>
-                            <label for="happy1">Chưa từng nghe</label>
-                        </div>
-                        <div class="radio-item">
-                            <input type="radio" id="happy2" name="happinessKnowledge" value="Đã biết về quyển sách &quot;Tỷ phú bán giày&quot; nhưng chưa đọc">
-                            <label for="happy2">Đã biết về quyển sách "Tỷ phú bán giày" nhưng chưa đọc</label>
-                        </div>
-                        <div class="radio-item">
-                            <input type="radio" id="happy3" name="happinessKnowledge" value="Đã đọc sách &quot;Tỷ phú bán giày&quot; nhưng chưa hoàn toàn hiểu và biết cách áp dụng">
-                            <label for="happy3">Đã đọc sách "Tỷ phú bán giày" nhưng chưa hoàn toàn hiểu và biết cách áp dụng</label>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 11. 03 điều mong đợi nhất (Textarea) -->
-                <div class="input-group full-width">
-                    <label>03 điều bạn mong đợi nhất sau khi kết thúc chương trình là gì? *</label>
-                    <textarea name="expectations" required rows="3" placeholder="Ví dụ: 1. Hiểu cách xây dựng văn hóa hạnh phúc; 2. ..."></textarea>
-                </div>
-
                 <!-- Nguồn giới thiệu / Đối tác (Radio group) -->
-                <div class="input-group full-width">
+                <div class="input-group">
                     <label>Nguồn giới thiệu / Đối tác (nếu có)</label>
-                    <div class="radio-group" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="radio-group" style="grid-template-columns: repeat(3, 1fr); gap: 8px;">
                         <div class="radio-item">
                             <input type="radio" id="refPartnerGem" name="referrerSource" value="GEM Global">
-                            <label for="refPartnerGem">GEM Global</label>
+                            <label for="refPartnerGem" style="font-size: 0.85rem;">GEM Global</label>
                         </div>
                         <div class="radio-item">
                             <input type="radio" id="refPartnerSmart" name="referrerSource" value="Smart Train">
-                            <label for="refPartnerSmart">Smart Train</label>
+                            <label for="refPartnerSmart" style="font-size: 0.85rem;">Smart Train</label>
                         </div>
                         <div class="radio-item">
                             <input type="radio" id="refPartnerOther" name="referrerSource" value="Nguồn khác" checked>
-                            <label for="refPartnerOther">Nguồn khác</label>
+                            <label for="refPartnerOther" style="font-size: 0.85rem;">Khác</label>
                         </div>
                     </div>
                 </div>
 
                 <!-- Container thông tin chi tiết người giới thiệu -->
-                <div id="referrerDetailsSection" class="collapsible-section visible">
+                <div id="referrerDetailsSection" class="collapsible-section visible" style="grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: -0.5rem; margin-bottom: 0.5rem;">
                     <!-- 12. Tên người giới thiệu -->
                     <div class="input-group" style="margin-bottom: 0;">
                         <label id="referrerNameLabel">Tên người giới thiệu (nếu có)</label>
@@ -598,8 +497,168 @@
                     </div>
                 </div>
 
+                <!-- Trust Note -->
+                <div class="input-group full-width" style="font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: -0.5rem; margin-bottom: 1.5rem;">
+                    <i>* BTC cam kết bảo mật thông tin và chỉ chia sẻ với đối tác liên kết bạn đã chọn để hỗ trợ xác thực đăng ký.</i>
+                </div>
+
+                <!-- ================= NÚT ACCORDION NGĂN CÁCH ================= -->
+                <div class="additional-info-trigger" id="additionalInfoTrigger">
+                    <span>Thông tin bổ sung giúp BTC thấu hiểu mong đợi của bạn (Không bắt buộc)</span>
+                    <span class="arrow">▾</span>
+                </div>
+
+                <!-- ================= PHẦN B: THÔNG TIN BỔ SUNG (COLLAPSED) ================= -->
+                <div class="additional-info-section" id="additionalInfoSection">
+                    <!-- Linkedin (BỎ required) -->
+                    <div class="input-group">
+                        <label>Linkedin Public profile & URL</label>
+                        <input type="text" name="linkedin" placeholder="https://linkedin.com/in/username...">
+                    </div>
+
+                    <!-- 4. Tên công ty (BỎ required) -->
+                    <div class="input-group">
+                        <label>Tên công ty / Tổ chức hiện tại</label>
+                        <input type="text" name="company" placeholder="Nhập tên đơn vị công tác...">
+                    </div>
+
+                    <!-- 5. Chức danh (BỎ required) -->
+                    <div class="input-group">
+                        <label>Chức danh / Vị trí</label>
+                        <input type="text" name="jobTitle" placeholder="Nhập chức danh của bạn...">
+                    </div>
+
+                    <!-- 6. Quy mô công ty (Radio group - BỎ required) -->
+                    <div class="input-group full-width">
+                        <label>Quy mô công ty nơi bạn đang công tác</label>
+                        <div class="radio-group" style="grid-template-columns: repeat(2, 1fr);">
+                            <div class="radio-item">
+                                <input type="radio" id="size1" name="companySize" value="<50">
+                                <label for="size1">&lt;50 nhân sự</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="size2" name="companySize" value="50-200">
+                                <label for="size2">50-200 nhân sự</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="size3" name="companySize" value="200-1000">
+                                <label for="size3">200 - 1000 nhân sự</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="size4" name="companySize" value=">1000">
+                                <label for="size4">&gt;1000 nhân sự</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 7. Nguồn biết đến chương trình (Radio group + Other - BỎ required) -->
+                    <div class="input-group full-width">
+                        <label>Lần đầu bạn nghe thông tin chương trình từ đâu?</label>
+                        <div class="radio-group" style="grid-template-columns: 1fr 1fr;">
+                            <div class="radio-item">
+                                <input type="radio" id="src1" name="sourceHearing" value="CultureCode linkedin page">
+                                <label for="src1">CultureCode linkedin page</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="src2" name="sourceHearing" value="Nhóm zalo cộng đồng CultureCode">
+                                <label for="src2">Nhóm Zalo cộng đồng CultureCode</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="src3" name="sourceHearing" value="Nhóm zalo cộng đồng Delivering Happiness">
+                                <label for="src3">Nhóm Zalo cộng đồng Delivering Happiness</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="src4" name="sourceHearing" value="Nhóm cộng đồng khác">
+                                <label for="src4">Nhóm cộng đồng khác</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="src5" name="sourceHearing" value="Linkedin của giảng viên">
+                                <label for="src5">Linkedin của giảng viên</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="src6" name="sourceHearing" value="Bạn bè, người quen">
+                                <label for="src6">Bạn bè, người quen</label>
+                            </div>
+                            <div class="radio-item full-width" style="grid-column: span 2; display: flex; align-items: center; gap: 10px;">
+                                <input type="radio" id="srcOther" name="sourceHearing" value="Khác">
+                                <label for="srcOther" style="white-space: nowrap; margin-bottom: 0;">Mục khác:</label>
+                                <input type="text" id="sourceHearingOther" name="sourceHearingOther" placeholder="Vui lòng nhập nguồn khác..." class="option-other-input" style="margin: 0; padding: 6px 12px; height: auto;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 8. Chương trình đã tham gia (Checkbox group + Other) -->
+                    <div class="input-group full-width">
+                        <label>Bạn đã tham gia chương trình nào của CultureCode?</label>
+                        <div class="radio-group" style="grid-template-columns: 1fr 1fr;">
+                            <div class="radio-item">
+                                <input type="checkbox" id="prog1" name="attendedPrograms" value="CultureCode CC101">
+                                <label for="prog1">CultureCode CC101</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="checkbox" id="prog2" name="attendedPrograms" value="Trà Chiều">
+                                <label for="prog2">Trà Chiều</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="checkbox" id="prog3" name="attendedPrograms" value="Blooming on">
+                                <label for="prog3">Blooming on</label>
+                            </div>
+                            <div class="radio-item full-width" style="grid-column: span 2; display: flex; align-items: center; gap: 10px;">
+                                <input type="checkbox" id="progOther" name="attendedPrograms" value="Khác">
+                                <label for="progOther" style="white-space: nowrap; margin-bottom: 0;">Mục khác:</label>
+                                <input type="text" id="attendedProgramsOther" name="attendedProgramsOther" placeholder="Vui lòng nhập mục khác..." class="option-other-input" style="margin: 0; padding: 6px 12px; height: auto;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 9. Mục đích tham gia (Checkbox group + Other) -->
+                    <div class="input-group full-width">
+                        <label>Mục đích khi bạn đăng ký tham gia Masterclass Retreat?</label>
+                        <div class="radio-group" style="grid-template-columns: 1fr 1fr;">
+                            <div class="radio-item">
+                                <input type="checkbox" id="purp1" name="purpose" value="Học và áp dụng cho bản thân">
+                                <label for="purp1">Học và áp dụng cho bản thân</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="checkbox" id="purp2" name="purpose" value="Xem xét áp dụng cho công ty/ tổ chức">
+                                <label for="purp2">Xem xét áp dụng cho công ty/ tổ chức</label>
+                            </div>
+                            <div class="radio-item full-width" style="grid-column: span 2; display: flex; align-items: center; gap: 10px;">
+                                <input type="checkbox" id="purpOther" name="purpose" value="Khác">
+                                <label for="purpOther" style="white-space: nowrap; margin-bottom: 0;">Mục khác:</label>
+                                <input type="text" id="purposeOther" name="purposeOther" placeholder="Vui lòng nhập mục đích khác..." class="option-other-input" style="margin: 0; padding: 6px 12px; height: auto;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 10. Mức độ tìm hiểu Delivering Happiness (Radio group - BỎ required) -->
+                    <div class="input-group full-width">
+                        <label>Bạn đã tìm hiểu gì về "Delivering Happiness" chưa?</label>
+                        <div class="radio-group" style="grid-template-columns: 1fr;">
+                            <div class="radio-item">
+                                <input type="radio" id="happy1" name="happinessKnowledge" value="Chưa từng nghe">
+                                <label for="happy1">Chưa từng nghe</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="happy2" name="happinessKnowledge" value="Đã biết về quyển sách &quot;Tỷ phú bán giày&quot; nhưng chưa đọc">
+                                <label for="happy2">Đã biết về quyển sách "Tỷ phú bán giày" nhưng chưa đọc</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="happy3" name="happinessKnowledge" value="Đã đọc sách &quot;Tỷ phú bán giày&quot; nhưng chưa hoàn toàn hiểu và biết cách áp dụng">
+                                <label for="happy3">Đã đọc sách "Tỷ phú bán giày" nhưng chưa hoàn toàn hiểu và biết cách áp dụng</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 11. 03 điều mong đợi nhất (Textarea - BỎ required) -->
+                    <div class="input-group full-width">
+                        <label>03 điều bạn mong đợi nhất sau khi kết thúc chương trình là gì?</label>
+                        <textarea name="expectations" rows="3" placeholder="Ví dụ: 1. Hiểu cách xây dựng văn hóa hạnh phúc; 2. ..."></textarea>
+                    </div>
+                </div>
+
                 <!-- Event ID & Default Status -->
-                <input type="hidden" name="event_id" value="DHM8_REG_040726">
+                <input type="hidden" name="event_id" value="DHM8_REG_180726">
                 <input type="hidden" name="paymentStatus" value="Pending">
             </div>
 
