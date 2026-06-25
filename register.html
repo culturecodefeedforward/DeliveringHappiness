@@ -118,6 +118,10 @@
             margin-top: 5px;
         }
 
+        .radio-group-3col {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
         .radio-item {
             display: flex;
             align-items: center;
@@ -396,8 +400,17 @@
         }
 
         @media (max-width: 640px) {
+            .form-card {
+                padding: 1.5rem !important;
+                border-radius: 16px !important;
+            }
+
             .form-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .radio-group-3col {
+                grid-template-columns: 1fr !important;
             }
 
             .input-group.full-width {
@@ -496,7 +509,7 @@
                 <!-- Nguồn giới thiệu / Đối tác (Radio group) -->
                 <div class="input-group">
                     <label>Nguồn giới thiệu / Đối tác (nếu có)</label>
-                    <div class="radio-group" style="grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                    <div class="radio-group radio-group-3col" style="gap: 8px;">
                         <div class="radio-item">
                             <input type="radio" id="refPartnerGem" name="referrerSource" value="GEM Global">
                             <label for="refPartnerGem" style="font-size: 0.85rem;">GEM Global</label>
@@ -513,7 +526,7 @@
                 </div>
 
                 <!-- Container thông tin chi tiết người giới thiệu -->
-                <div id="referrerDetailsSection" class="collapsible-section visible" style="grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: -0.5rem; margin-bottom: 0.5rem;">
+                <div id="referrerDetailsSection" class="collapsible-section visible" style="margin-top: -0.5rem; margin-bottom: 0.5rem;">
                     <!-- 12. Tên người giới thiệu -->
                     <div class="input-group" style="margin-bottom: 0;">
                         <label id="referrerNameLabel">Tên người giới thiệu (nếu có)</label>
