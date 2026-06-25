@@ -335,6 +335,30 @@
                 grid-column: span 1 !important;
             }
         }
+
+        .collapsible-section {
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(-8px);
+            overflow: hidden;
+            transition: max-height 0.35s ease-out, opacity 0.35s ease-out, transform 0.35s ease-out;
+            grid-column: span 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .collapsible-section.visible {
+            max-height: 250px;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .collapsible-section {
+                transition: none !important;
+            }
+        }
     </style>
 </head>
 
@@ -552,20 +576,42 @@
                         placeholder="Ví dụ: 1. Hiểu cách xây dựng văn hóa hạnh phúc; 2. ..."></textarea>
                 </div>
 
-                <!-- 12. Tên người giới thiệu -->
-                <div class="input-group">
-                    <label>Tên người giới thiệu (nếu có)</label>
-                    <input type="text" name="referrerName" placeholder="Nhập tên người giới thiệu...">
+                <!-- Nguồn giới thiệu / Đối tác (Radio group) -->
+                <div class="input-group full-width">
+                    <label>Nguồn giới thiệu / Đối tác (nếu có)</label>
+                    <div class="radio-group" style="grid-template-columns: repeat(3, 1fr);">
+                        <div class="radio-item">
+                            <input type="radio" id="refPartnerGem" name="referrerSource" value="GEM Global">
+                            <label for="refPartnerGem">GEM Global</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="refPartnerSmart" name="referrerSource" value="Smart Train">
+                            <label for="refPartnerSmart">Smart Train</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="refPartnerOther" name="referrerSource" value="Nguồn khác" checked>
+                            <label for="refPartnerOther">Nguồn khác</label>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- 13. Số điện thoại người giới thiệu -->
-                <div class="input-group">
-                    <label>Số điện thoại người giới thiệu (nếu có)</label>
-                    <input type="text" name="referrerPhone" placeholder="Nhập số điện thoại...">
+                <!-- Container thông tin chi tiết người giới thiệu -->
+                <div id="referrerDetailsSection" class="collapsible-section visible">
+                    <!-- 12. Tên người giới thiệu -->
+                    <div class="input-group" style="margin-bottom: 0;">
+                        <label id="referrerNameLabel">Tên người giới thiệu (nếu có)</label>
+                        <input type="text" id="referrerName" name="referrerName" placeholder="Nhập tên người giới thiệu...">
+                    </div>
+
+                    <!-- 13. Số điện thoại người giới thiệu -->
+                    <div class="input-group" style="margin-bottom: 0;">
+                        <label>Số điện thoại người giới thiệu (nếu có)</label>
+                        <input type="text" id="referrerPhone" name="referrerPhone" placeholder="Nhập số điện thoại...">
+                    </div>
                 </div>
 
                 <!-- Event ID & Default Status -->
-                <input type="hidden" name="event_id" value="DHM8_REG_040726">
+                <input type="hidden" name="event_id" value="DHM8_REG_180726">
                 <input type="hidden" name="paymentStatus" value="Pending">
             </div>
 

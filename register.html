@@ -129,6 +129,11 @@
             transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
         }
 
+        .radio-item.full-width {
+            grid-column: span 2;
+            gap: 10px;
+        }
+
         .radio-item:hover {
             background: rgba(255, 255, 255, 0.08);
         }
@@ -419,6 +424,18 @@
 
             .additional-info-section {
                 grid-template-columns: 1fr;
+            }
+
+            .radio-item.full-width {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 6px !important;
+            }
+
+            .radio-item.full-width input[type="text"] {
+                width: 100% !important;
+                margin-left: 0 !important;
+                margin-top: 5px !important;
             }
         }
     </style>
