@@ -401,38 +401,30 @@
 
         @media (max-width: 640px) {
             .form-card {
-                padding: 1.5rem !important;
+                padding: 1.25rem !important;
                 border-radius: 16px !important;
             }
 
             .form-grid {
                 grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .form-grid > * {
+                grid-column: 1 / -1 !important;
             }
 
             .radio-group-3col {
                 grid-template-columns: 1fr !important;
             }
 
-            .input-group.full-width {
-                grid-column: span 1;
-            }
-
             .radio-group {
                 grid-template-columns: 1fr !important;
             }
 
-            .radio-item.full-width {
-                grid-column: span 1 !important;
-            }
-
             .collapsible-section {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .additional-info-trigger,
-            .additional-info-section {
-                grid-column: span 1;
+                gap: 1rem;
             }
 
             .additional-info-section {
@@ -449,7 +441,6 @@
                 width: 100% !important;
                 margin-left: 0 !important;
                 margin-top: 5px !important;
-            }
         }
     </style>
 </head>
