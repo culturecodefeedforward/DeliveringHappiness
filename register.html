@@ -398,37 +398,27 @@
                 transition: none !important;
             }
         }
-
         @media (max-width: 640px) {
             .form-card {
                 padding: 1.25rem !important;
                 border-radius: 16px !important;
             }
 
-            .form-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
+            .form-grid,
+            .additional-info-section,
+            .collapsible-section {
+                grid-template-columns: 1fr !important;
+                gap: 1rem !important;
             }
 
-            .form-grid > * {
+            .form-grid > *,
+            .additional-info-section > * {
                 grid-column: 1 / -1 !important;
             }
 
-            .radio-group-3col {
-                grid-template-columns: 1fr !important;
-            }
-
+            .radio-group-3col,
             .radio-group {
                 grid-template-columns: 1fr !important;
-            }
-
-            .collapsible-section {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-
-            .additional-info-section {
-                grid-template-columns: 1fr;
             }
 
             .radio-item.full-width {
@@ -441,6 +431,7 @@
                 width: 100% !important;
                 margin-left: 0 !important;
                 margin-top: 5px !important;
+            }
         }
     </style>
 </head>
