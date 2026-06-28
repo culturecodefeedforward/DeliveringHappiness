@@ -392,6 +392,41 @@
             margin-bottom: 1rem;
         }
 
+        /* Brand Logo Style */
+        .brand-logo-link {
+            display: block;
+            margin-bottom: 1.5rem;
+            width: fit-content;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            z-index: 10;
+        }
+        .brand-logo-link:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+        .brand-logo {
+            height: 35px;
+            width: auto;
+            border-radius: 6px;
+            display: block;
+        }
+        @media (min-width: 769px) {
+            .form-card {
+                position: relative;
+            }
+            .brand-logo-link {
+                position: absolute;
+                top: 1.5rem;
+                left: 1.5rem;
+                margin-bottom: 0;
+            }
+        }
+        @media (max-width: 768px) {
+            .brand-logo-link {
+                margin: 0 auto 1.5rem auto;
+            }
+        }
+
 
         @media (prefers-reduced-motion: reduce) {
             .collapsible-section {
@@ -439,6 +474,10 @@
 <body>
 
     <div class="form-card" id="formWrapper">
+        <!-- Logo CultureCode top-left -->
+        <a href="https://www.linkedin.com/company/culturecodecommunity" target="_blank" class="brand-logo-link">
+            <img src="culturecode_logo_transparent.png" alt="CultureCode Logo" class="brand-logo">
+        </a>
         <div class="header">
             <h1>Đăng ký DH Masterclass (DHM8)</h1>
             <p class="subtitle">Thứ Bảy, 18/07/2026 | Trung tâm đào tạo Circle K</p>

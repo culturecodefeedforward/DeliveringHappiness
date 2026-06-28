@@ -169,11 +169,50 @@
                 grid-column: span 1;
             }
         }
+
+        /* Brand Logo Style */
+        .brand-logo-link {
+            display: block;
+            margin-bottom: 1.5rem;
+            width: fit-content;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            z-index: 10;
+        }
+        .brand-logo-link:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+        .brand-logo {
+            height: 35px;
+            width: auto;
+            border-radius: 6px;
+            display: block;
+        }
+        @media (min-width: 769px) {
+            .form-card {
+                position: relative;
+            }
+            .brand-logo-link {
+                position: absolute;
+                top: 1.5rem;
+                left: 1.5rem;
+                margin-bottom: 0;
+            }
+        }
+        @media (max-width: 768px) {
+            .brand-logo-link {
+                margin: 0 auto 1.5rem auto;
+            }
+        }
     </style>
 </head>
 <body>
 
     <div class="form-card" id="formWrapper">
+        <!-- Logo CultureCode top-left -->
+        <a href="https://www.linkedin.com/company/culturecodecommunity" target="_blank" class="brand-logo-link">
+            <img src="culturecode_logo_transparent.png" alt="CultureCode Logo" class="brand-logo">
+        </a>
         <div class="header">
             <h1>CultureCode101 MasterClass</h1>
             <p class="subtitle">Đăng ký tham dự chương trình tại TP.HCM | sẽ thông báo sau</p>

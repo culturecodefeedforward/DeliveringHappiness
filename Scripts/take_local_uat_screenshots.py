@@ -43,28 +43,29 @@ async def main():
                 await trigger.click()
                 await page.wait_for_timeout(1500)
                 
-            # Scroll to expectations field at the bottom to verify layout
-            expectations = await page.query_selector("textarea[name='expectations']")
-            if expectations:
-                await expectations.scroll_into_view_if_needed()
-                await page.wait_for_timeout(500)
-                
             await page.screenshot(path=os.path.join(project_uat_dir, "register_local_desktop_expanded.png"))
             await page.screenshot(path=os.path.join(brain_dir, "register_local_desktop_expanded.png"))
             print("Captured register.html desktop expanded.")
+
+            # --- 1b. Test register.html (Mobile) ---
+            context_mobile = await browser.new_context(
+                viewport={"width": 375, "height": 812},
+                is_mobile=True,
+                has_touch=True
+            )
+            page_mobile = await context_mobile.new_page()
+            print("Navigating to local register.html (Mobile)...")
+            await page_mobile.goto(f"http://localhost:{PORT}/register.html")
+            await page_mobile.wait_for_timeout(1000)
+            await page_mobile.screenshot(path=os.path.join(project_uat_dir, "register_local_mobile.png"))
+            await page_mobile.screenshot(path=os.path.join(brain_dir, "register_local_mobile.png"))
+            print("Captured register.html mobile.")
 
             # --- 2. Test register_dh9_hanoi.html ---
             page_hanoi = await browser.new_page(viewport={"width": 1280, "height": 1200})
             print("Navigating to local register_dh9_hanoi.html...")
             await page_hanoi.goto(f"http://localhost:{PORT}/register_dh9_hanoi.html")
             await page_hanoi.wait_for_timeout(1000)
-            
-            # Scroll to expectations field
-            expectations_hanoi = await page_hanoi.query_selector("textarea[name='expectations']")
-            if expectations_hanoi:
-                await expectations_hanoi.scroll_into_view_if_needed()
-                await page_hanoi.wait_for_timeout(500)
-                
             await page_hanoi.screenshot(path=os.path.join(project_uat_dir, "register_hanoi_local.png"))
             await page_hanoi.screenshot(path=os.path.join(brain_dir, "register_hanoi_local.png"))
             print("Captured register_dh9_hanoi.html.")
@@ -74,16 +75,26 @@ async def main():
             print("Navigating to local register_direct.html...")
             await page_direct.goto(f"http://localhost:{PORT}/register_direct.html")
             await page_direct.wait_for_timeout(1000)
-            
-            # Scroll to expectations field
-            expectations_direct = await page_direct.query_selector("textarea[name='expectations']")
-            if expectations_direct:
-                await expectations_direct.scroll_into_view_if_needed()
-                await page_direct.wait_for_timeout(500)
-                
             await page_direct.screenshot(path=os.path.join(project_uat_dir, "register_direct_local.png"))
             await page_direct.screenshot(path=os.path.join(brain_dir, "register_direct_local.png"))
             print("Captured register_direct.html.")
+
+            # --- 4. Test assessment.html (Desktop & Mobile) ---
+            page_quiz = await browser.new_page(viewport={"width": 1280, "height": 1000})
+            print("Navigating to local assessment.html...")
+            await page_quiz.goto(f"http://localhost:{PORT}/assessment.html")
+            await page_quiz.wait_for_timeout(1000)
+            await page_quiz.screenshot(path=os.path.join(project_uat_dir, "assessment_local_desktop.png"))
+            await page_quiz.screenshot(path=os.path.join(brain_dir, "assessment_local_desktop.png"))
+            print("Captured assessment.html desktop.")
+
+            page_quiz_mobile = await context_mobile.new_page()
+            print("Navigating to local assessment.html (Mobile)...")
+            await page_quiz_mobile.goto(f"http://localhost:{PORT}/assessment.html")
+            await page_quiz_mobile.wait_for_timeout(1000)
+            await page_quiz_mobile.screenshot(path=os.path.join(project_uat_dir, "assessment_local_mobile.png"))
+            await page_quiz_mobile.screenshot(path=os.path.join(brain_dir, "assessment_local_mobile.png"))
+            print("Captured assessment.html mobile.")
             
             await browser.close()
             
