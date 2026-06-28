@@ -1,8 +1,13 @@
-- [x] Sao chép tệp PDF sang thư mục attachments được cho phép
-- [x] Thực hiện gửi email brochure qua workspace-mcp
-- [x] Xác minh kết quả gửi thư
-- [x] Chỉnh sửa logic Apps Script định tuyến email cho GEM Global (gửi thêm cho hang.ho@gemglobal.edu.vn)
-- [x] Chỉnh sửa logic Apps Script định tuyến email cho Smart Train (gửi thêm cho thanh.pham@smarttrain.edu.vn)
-- [x] Đồng bộ hóa logic Apps Script cho cả DH8 & DH9
-- [x] Chạy test suite giả lập Node.js để kiểm thử (88/88 assertions pass)
-- [x] Lập báo cáo kết quả kiểm thử (Walkthrough)
+- [x] Sửa đổi ngày 18/07/2026 trên frontend html (index.html, register.html, dh8/index.html, register-test.html)
+- [x] Cập nhật event_id DHM8_REG_180726 trên backend Apps Script (active_code_gs_final.js, Mã.js)
+- [x] Đã deploy Clasp Staging (@15) và Production (@41)
+- [x] Khắc phục lỗi sót:
+  - [x] Audit và xóa Code.js khỏi Staging, chạy clasp push làm sạch bundle
+  - [x] Sửa đổi register_direct.html (ngày 18/07/2026 và DHM8_REG_180726)
+  - [x] Tạo AGENT_REPORTING_RULES.md quy chuẩn báo cáo
+  - [x] Đồng bộ các tài liệu báo cáo cũ về UNVERIFIED
+  - [x] Tạo gói vercel_deploy_temp sạch và chạy deploy Vercel Production
+  - [x] Xác minh Alias Vercel (dpl_5e3sQvWuzQcCorBnAZNApbtZTf5m)
+  - [x] Chạy probe HTTP live 5 URLs
+  - [x] Chụp ảnh màn hình Browser UAT làm bằng chứng
+  - [x] Hoàn tất báo cáo UAT & cập nhật walkthrough

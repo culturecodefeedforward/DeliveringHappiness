@@ -543,7 +543,7 @@ body {
 
 .nav-logo-img {
   width: auto;
-  height: 55px;
+  height: 144px;
   object-fit: contain;
   border-radius: 8px;
 }
@@ -647,7 +647,7 @@ body {
 /* ============ RESPONSIVE ============ */
 @media (max-width: 768px) {
   .nav-logo-img {
-    height: 45px;
+    height: 80px;
   }
 
   .top-nav {
@@ -657,6 +657,6 @@ body {
 
 @media (max-width: 480px) {
   .nav-logo-img {
-    height: 45px;
+    height: 60px;
   }
 }

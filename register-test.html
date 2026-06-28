@@ -363,9 +363,10 @@
         /* Brand Logo Style */
         .brand-logo-link {
             display: block;
-            margin-bottom: 1.5rem;
+            margin: 0 auto 2rem auto;
             width: fit-content;
             transition: transform 0.2s ease, opacity 0.2s ease;
+            text-align: center;
             z-index: 10;
         }
         .brand-logo-link:hover {
@@ -373,28 +374,18 @@
             opacity: 0.9;
         }
         .brand-logo {
-            height: 55px;
+            height: 110px;
             width: auto;
-            border-radius: 6px;
+            border-radius: 8px;
             display: block;
-        }
-        @media (min-width: 769px) {
-            .form-card {
-                position: relative;
-            }
-            .brand-logo-link {
-                position: absolute;
-                top: 1.5rem;
-                left: 1.5rem;
-                margin-bottom: 0;
-            }
+            margin: 0 auto;
         }
         @media (max-width: 768px) {
             .brand-logo-link {
                 margin: 0 auto 1.5rem auto;
             }
             .brand-logo {
-                height: 45px;
+                height: 90px;
             }
         }
     </style>
