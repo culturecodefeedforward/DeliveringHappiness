@@ -96,6 +96,23 @@ async def main():
             await page_quiz_mobile.screenshot(path=os.path.join(brain_dir, "assessment_local_mobile.png"))
             print("Captured assessment.html mobile.")
             
+            # --- 5. Test index.html (Desktop & Mobile) ---
+            page_landing = await browser.new_page(viewport={"width": 1280, "height": 800})
+            print("Navigating to local index.html...")
+            await page_landing.goto(f"http://localhost:{PORT}/index.html")
+            await page_landing.wait_for_timeout(1000)
+            await page_landing.screenshot(path=os.path.join(project_uat_dir, "landing_local_desktop.png"))
+            await page_landing.screenshot(path=os.path.join(brain_dir, "landing_local_desktop.png"))
+            print("Captured index.html desktop.")
+
+            page_landing_mobile = await context_mobile.new_page()
+            print("Navigating to local index.html (Mobile)...")
+            await page_landing_mobile.goto(f"http://localhost:{PORT}/index.html")
+            await page_landing_mobile.wait_for_timeout(1000)
+            await page_landing_mobile.screenshot(path=os.path.join(project_uat_dir, "landing_local_mobile.png"))
+            await page_landing_mobile.screenshot(path=os.path.join(brain_dir, "landing_local_mobile.png"))
+            print("Captured index.html mobile.")
+            
             await browser.close()
             
     finally:
