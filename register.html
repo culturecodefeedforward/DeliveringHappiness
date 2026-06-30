@@ -2,6 +2,14 @@
 <html lang="vi">
 
 <head>
+    <script>
+        (function() {
+            var params = new URLSearchParams(window.location.search);
+            if (params.get('location') === 'hn') {
+                window.location.replace('/register_dh9_hanoi' + window.location.search);
+            }
+        })();
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng ký DH Masterclass - CultureCode</title>
