@@ -599,23 +599,9 @@
                     <textarea name="expectations" rows="3" placeholder="Ví dụ: 1. Hiểu cách xây dựng văn hóa hạnh phúc; 2. ..."></textarea>
                 </div>
 
-                <!-- Nguồn giới thiệu / Đối tác (Radio group) -->
-                <div class="input-group full-width">
-                    <label>Nguồn giới thiệu / Đối tác (nếu có)</label>
-                    <div class="radio-group" style="grid-template-columns: repeat(3, 1fr);">
-                        <div class="radio-item">
-                            <input type="radio" id="refPartnerGem" name="referrerSource" value="GEM Global">
-                            <label for="refPartnerGem">GEM Global</label>
-                        </div>
-                        <div class="radio-item">
-                            <input type="radio" id="refPartnerSmart" name="referrerSource" value="Smart Train">
-                            <label for="refPartnerSmart">Smart Train</label>
-                        </div>
-                        <div class="radio-item">
-                            <input type="radio" id="refPartnerOther" name="referrerSource" value="Nguồn khác" checked>
-                            <label for="refPartnerOther">Nguồn khác</label>
-                        </div>
-                    </div>
+                <!-- Nguồn giới thiệu / Đối tác (Radio group) - Ẩn theo yêu cầu nghiệp vụ -->
+                <div style="display: none;">
+                    <input type="radio" id="refPartnerOther" name="referrerSource" value="Nguồn khác" checked>
                 </div>
 
                 <!-- Container thông tin chi tiết người giới thiệu -->
@@ -670,7 +656,7 @@
                         <li><strong>Số tiền:</strong> <code id="successPaymentAmount" style="font-size: 1rem; font-weight: bold; color: #fff;">250.000đ</code></li>
                         <li><strong>Trạng thái thanh toán:</strong> <code id="successPaymentStatus" style="color: var(--warm-yellow);">Chờ thanh toán</code></li>
                     </ul>
-                    <a id="successZaloGroupLink" href="https://zalo.me/g/hpf7qu45j6qkft6hpghx" target="_blank"
+                    <a id="successZaloGroupLink" href="https://zalo.me/g/3wrsaoygrfcjubr0ie44" target="_blank"
                         rel="noopener"
                         style="display:none; margin-top: 0.75rem; padding: 0.8rem 1rem; border-radius: 10px; background:#0068ff; color:#fff; font-weight:700; text-decoration:none; text-align:center;">
                         Vào nhóm Zalo DH9 Hà Nội
@@ -701,7 +687,7 @@
         window.DH9_QR_SHOW_INFO = false;
         window.DH_FORM_LANE = "dh9";
         window.DH_INTEREST_URL = "interest_dh9.html";
-        window.DH9_ZALO_GROUP_URL = "https://zalo.me/g/hpf7qu45j6qkft6hpghx";
+        window.DH9_ZALO_GROUP_URL = "https://zalo.me/g/3wrsaoygrfcjubr0ie44";
     </script>
     <script src="tracking.js?v=3.1-live"></script>
     <script src="register_dh9.js?v=1.0-local"></script>
