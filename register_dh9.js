@@ -16,7 +16,7 @@ const CALLBACK_PREFIX = 'dh9Jsonp_';
 const CALLBACK_REGEX = /^dh9Jsonp_[A-Za-z0-9]{16,40}$/;
 const DH_FORM_LANE = window.DH_FORM_LANE || 'dh9';
 const DH_INTEREST_URL = window.DH_INTEREST_URL || 'interest_dh9.html';
-const DH9_ZALO_GROUP_URL = window.DH9_ZALO_GROUP_URL || 'https://zalo.me/g/hpf7qu45j6qkft6hpghx';
+const DH9_ZALO_GROUP_URL = window.DH9_ZALO_GROUP_URL || 'https://zalo.me/g/3wrsaoygrfcjubr0ie44';
 const LAST_REGISTRATION_UUID_KEY = 'dh9_lastRegistrationUuid';
 const LAST_PAYMENT_STATUS_KEY = 'dh9_lastPaymentStatus';
 
@@ -752,4 +752,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Run initial check
     updateReferrerUiState();
+
+    // --- ACCORDION FOR ADDITIONAL INFO ---
+    const trigger = document.getElementById('additionalInfoTrigger');
+    const section = document.getElementById('additionalInfoSection');
+    if (trigger && section) {
+        trigger.addEventListener('click', () => {
+            const isVisible = section.classList.toggle('visible');
+            const arrow = trigger.querySelector('.arrow');
+            if (arrow) {
+                arrow.style.transform = isVisible ? 'rotate(180deg)' : 'rotate(0deg)';
+            }
+        });
+    }
 });
