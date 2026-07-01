@@ -1,0 +1,70 @@
+{
+  "baseUrl": "http://127.0.0.1:8000",
+  "results": [
+    {
+      "source": "/",
+      "label": "Đăng ký TP.HCM",
+      "expected": "/register.html",
+      "observed": "/register.html",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "source": "/",
+      "label": "Đăng ký Hà Nội",
+      "expected": "/register_dh9_hanoi.html",
+      "observed": "/register_dh9_hanoi.html",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "source": "/",
+      "label": "Kiểm tra \"Hệ điều hành Hạnh Phúc\"",
+      "expected": "/assessment.html",
+      "observed": "/assessment.html",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "source": "/register.html",
+      "label": "Quay về trang chủ",
+      "expected": "/",
+      "observed": "/",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "source": "/register_dh9_hanoi.html",
+      "label": "Quay về trang chủ",
+      "expected": "/",
+      "observed": "/",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "source": "/assessment.html",
+      "label": "Thông tin chương trình",
+      "expected": "/",
+      "observed": "/",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "source": "/assessment.html",
+      "label": "Đăng ký TP.HCM",
+      "expected": "/register.html",
+      "observed": "/register.html",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "source": "/assessment.html",
+      "label": "Đăng ký Hà Nội",
+      "expected": "/register_dh9_hanoi.html",
+      "observed": "/register_dh9_hanoi.html",
+      "status": "PASS",
+      "error": null
+    }
+  ],
+  "allPassed": true
+}

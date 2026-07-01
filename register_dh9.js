@@ -1,24 +1,32 @@
-// register_dh9.js - Logic đăng ký nghiệp vụ DH9
+// register_DHM9.js - Logic đăng ký nghiệp vụ DHM9
 // Bao gồm: UUID generation, POST no-cors, JSONP polling, retry/backoff, UI state.
 // SCOPE: Nghiệp vụ đăng ký. Analytics (fire-and-forget) nằm trong tracking.js.
 
 // ============================================================
 // CONFIG
 // ============================================================
-const DH9_WEBAPP_URL = window.CUSTOM_WEBAPP_URL || "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
-const JSONP_MAX_ATTEMPTS = Number(window.DH9_JSONP_MAX_ATTEMPTS) || 5;
-const JSONP_POLL_DELAY_MS = Number(window.DH9_JSONP_POLL_DELAY_MS) || 3000;
-const JSONP_TIMEOUT_MS = Number(window.DH9_JSONP_TIMEOUT_MS) || 5000;
-const PAYMENT_STATUS_MAX_ATTEMPTS = Number(window.DH9_PAYMENT_STATUS_MAX_ATTEMPTS) || 120;
-const PAYMENT_STATUS_POLL_DELAY_MS = Number(window.DH9_PAYMENT_STATUS_POLL_DELAY_MS) || 5000;
-const PAYMENT_STATUS_BACKGROUND_DELAY_MS = Number(window.DH9_PAYMENT_STATUS_BACKGROUND_DELAY_MS) || 30000;
+const DHM9_WEBAPP_URL = window.CUSTOM_WEBAPP_URL || "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
+const JSONP_MAX_ATTEMPTS = Number(window.DHM9_JSONP_MAX_ATTEMPTS) || 5;
+const JSONP_POLL_DELAY_MS = Number(window.DHM9_JSONP_POLL_DELAY_MS) || 3000;
+const JSONP_TIMEOUT_MS = Number(window.DHM9_JSONP_TIMEOUT_MS) || 5000;
+const PAYMENT_STATUS_MAX_ATTEMPTS = Number(window.DHM9_PAYMENT_STATUS_MAX_ATTEMPTS) || 120;
+const PAYMENT_STATUS_POLL_DELAY_MS = Number(window.DHM9_PAYMENT_STATUS_POLL_DELAY_MS) || 5000;
+const PAYMENT_STATUS_BACKGROUND_DELAY_MS = Number(window.DHM9_PAYMENT_STATUS_BACKGROUND_DELAY_MS) || 30000;
 const CALLBACK_PREFIX = 'dh9Jsonp_';
 const CALLBACK_REGEX = /^dh9Jsonp_[A-Za-z0-9]{16,40}$/;
 const DH_FORM_LANE = window.DH_FORM_LANE || 'dh9';
 const DH_INTEREST_URL = window.DH_INTEREST_URL || 'interest_dh9.html';
-const DH9_ZALO_GROUP_URL = window.DH9_ZALO_GROUP_URL || 'https://zalo.me/g/3wrsaoygrfcjubr0ie44';
-const LAST_REGISTRATION_UUID_KEY = 'dh9_lastRegistrationUuid';
-const LAST_PAYMENT_STATUS_KEY = 'dh9_lastPaymentStatus';
+const DHM9_ZALO_GROUP_URL = window.DHM9_ZALO_GROUP_URL || 'https://zalo.me/g/3wrsaoygrfcjubr0ie44';
+const LAST_REGISTRATION_UUID_KEY = 'DHM9_lastRegistrationUuid';
+const LAST_PAYMENT_STATUS_KEY = 'DHM9_lastPaymentStatus';
+const REGISTRATION_UUID_KEY = 'DHM9_registrationUuid';
+const LEGACY_REGISTRATION_UUID_KEY = 'dh9_registrationUuid';
+const PAYMENT_CODE_KEY = 'DHM9_paymentCode';
+const LEGACY_PAYMENT_CODE_KEY = 'dh9_paymentCode';
+const PAYMENT_PHONE_KEY = 'DHM9_paymentPhone';
+const LEGACY_PAYMENT_PHONE_KEY = 'dh9_paymentPhone';
+const PAYMENT_NAME_KEY = 'DHM9_paymentName';
+const LEGACY_PAYMENT_NAME_KEY = 'dh9_paymentName';
 
 // ============================================================
 // UUID GENERATION (Condition 1: crypto-safe, no Math.random)
@@ -36,23 +44,24 @@ function generateRegistrationUuid() {
         const hex = Array.from(arr).map(b => b.toString(16).padStart(2, '0')).join('');
         return `${hex.slice(0,8)}-${hex.slice(8,12)}-${hex.slice(12,16)}-${hex.slice(16,20)}-${hex.slice(20)}`;
     }
-    throw new Error('[DH9] crypto API không khả dụng - không thể tạo UUID an toàn.');
+    throw new Error('[DHM9] crypto API không khả dụng - không thể tạo UUID an toàn.');
 }
 
 // ============================================================
 // UUID SESSION MANAGEMENT
 // ============================================================
 function getOrCreateRegistrationUuid() {
-    let uuid = sessionStorage.getItem('dh9_registrationUuid');
+    let uuid = sessionStorage.getItem(REGISTRATION_UUID_KEY) || sessionStorage.getItem(LEGACY_REGISTRATION_UUID_KEY);
     if (!uuid) {
         uuid = generateRegistrationUuid();
-        sessionStorage.setItem('dh9_registrationUuid', uuid);
     }
+    sessionStorage.setItem(REGISTRATION_UUID_KEY, uuid);
     return uuid;
 }
 
 function clearRegistrationUuid() {
-    sessionStorage.removeItem('dh9_registrationUuid');
+    sessionStorage.removeItem(REGISTRATION_UUID_KEY);
+    sessionStorage.removeItem(LEGACY_REGISTRATION_UUID_KEY);
 }
 
 function rememberLastRegistration(uuid, paymentStatus) {
@@ -67,9 +76,12 @@ function clearLastRegistration() {
 }
 
 function clearPaymentReference() {
-    sessionStorage.removeItem('dh9_paymentCode');
-    sessionStorage.removeItem('dh9_paymentPhone');
-    sessionStorage.removeItem('dh9_paymentName');
+    sessionStorage.removeItem(PAYMENT_CODE_KEY);
+    sessionStorage.removeItem(LEGACY_PAYMENT_CODE_KEY);
+    sessionStorage.removeItem(PAYMENT_PHONE_KEY);
+    sessionStorage.removeItem(LEGACY_PAYMENT_PHONE_KEY);
+    sessionStorage.removeItem(PAYMENT_NAME_KEY);
+    sessionStorage.removeItem(LEGACY_PAYMENT_NAME_KEY);
 }
 
 function normalizePhone(phone) {
@@ -84,11 +96,11 @@ function buildPaymentCodeFromPhone(phone) {
     var normalizedPhone = normalizePhone(phone);
     var codeDigits = normalizedPhone.replace(/^0/, '');
     if (!/^\d{3,}$/.test(codeDigits)) return '';
-    return 'DH9' + codeDigits.slice(-9);
+    return 'DHM9' + codeDigits.slice(-9);
 }
 
 function isValidSePayPaymentCode(code) {
-    return /^DH9\d{3,9}$/.test(String(code || '').toUpperCase());
+    return /^(DHM9|DH9)\d{3,9}$/.test(String(code || '').toUpperCase());
 }
 
 function normalizePaymentCodeToken(code) {
@@ -96,7 +108,11 @@ function normalizePaymentCodeToken(code) {
 }
 
 function getStoredPaymentCode() {
-    const paymentCode = String(sessionStorage.getItem('dh9_paymentCode') || '').toUpperCase();
+    const paymentCode = String(
+        sessionStorage.getItem(PAYMENT_CODE_KEY) ||
+        sessionStorage.getItem(LEGACY_PAYMENT_CODE_KEY) ||
+        ''
+    ).toUpperCase();
     return isValidSePayPaymentCode(paymentCode) ? paymentCode : '';
 }
 
@@ -124,7 +140,7 @@ function primeResumeStateFromUrl() {
     clearPaymentReference();
     sessionStorage.setItem(LAST_PAYMENT_STATUS_KEY, 'PENDING');
     if (resumeParams.uuid) sessionStorage.setItem(LAST_REGISTRATION_UUID_KEY, resumeParams.uuid);
-    if (resumeParams.paymentCode) sessionStorage.setItem('dh9_paymentCode', resumeParams.paymentCode);
+    if (resumeParams.paymentCode) sessionStorage.setItem(PAYMENT_CODE_KEY, resumeParams.paymentCode);
 
     return resumeParams;
 }
@@ -132,10 +148,17 @@ function primeResumeStateFromUrl() {
 function rememberPaymentReference(data) {
     var paymentPhone = normalizePhone(data.phone || '');
     var paymentCode = buildPaymentCodeFromPhone(paymentPhone);
-    sessionStorage.setItem('dh9_paymentPhone', paymentPhone);
-    sessionStorage.setItem('dh9_paymentName', data.fullName || '');
-    if (paymentCode) sessionStorage.setItem('dh9_paymentCode', paymentCode);
-    else sessionStorage.removeItem('dh9_paymentCode');
+    sessionStorage.setItem(PAYMENT_PHONE_KEY, paymentPhone);
+    sessionStorage.setItem(PAYMENT_NAME_KEY, data.fullName || '');
+    sessionStorage.removeItem(LEGACY_PAYMENT_PHONE_KEY);
+    sessionStorage.removeItem(LEGACY_PAYMENT_NAME_KEY);
+    if (paymentCode) {
+        sessionStorage.setItem(PAYMENT_CODE_KEY, paymentCode);
+        sessionStorage.removeItem(LEGACY_PAYMENT_CODE_KEY);
+    } else {
+        sessionStorage.removeItem(PAYMENT_CODE_KEY);
+        sessionStorage.removeItem(LEGACY_PAYMENT_CODE_KEY);
+    }
     return paymentCode;
 }
 
@@ -152,7 +175,7 @@ function generateCallbackName() {
     const random = Array.from(arr).map(b => chars[b % chars.length]).join('');
     const name = CALLBACK_PREFIX + random; // dh9Jsonp_ + 20 ký tự = 29 ký tự tổng
     if (!CALLBACK_REGEX.test(name)) {
-        throw new Error('[DH9] Callback name không hợp lệ: ' + name);
+        throw new Error('[DHM9] Callback name không hợp lệ: ' + name);
     }
     return name;
 }
@@ -164,7 +187,7 @@ function pollRegistrationStatus(uuid, attempt, paymentCode) {
     const normalizedPaymentCode = isValidSePayPaymentCode(paymentCode)
         ? String(paymentCode).toUpperCase()
         : getStoredPaymentCode();
-    if (window.DH9_STATUS_CHECK_MODE === 'fetch') {
+    if (window.DHM9_STATUS_CHECK_MODE === 'fetch') {
         return fetchRegistrationStatus(uuid, attempt, normalizedPaymentCode);
     }
 
@@ -211,7 +234,7 @@ function pollRegistrationStatus(uuid, attempt, paymentCode) {
             reject(new Error('JSONP_TIMEOUT'));
         }, JSONP_TIMEOUT_MS);
 
-        const url = DH9_WEBAPP_URL
+        const url = DHM9_WEBAPP_URL
             + '?action=checkStatus'
             + '&uuid=' + encodeURIComponent(uuid)
             + (normalizedPaymentCode ? '&paymentCode=' + encodeURIComponent(normalizedPaymentCode) : '')
@@ -232,7 +255,7 @@ function pollRegistrationStatus(uuid, attempt, paymentCode) {
 
 async function fetchRegistrationStatus(uuid, attempt, paymentCode) {
     const callbackName = CALLBACK_PREFIX + 'FetchStatus' + String(attempt).padStart(2, '0') + 'ABCDEFGH';
-    const url = DH9_WEBAPP_URL
+    const url = DHM9_WEBAPP_URL
         + '?action=checkStatus'
         + '&uuid=' + encodeURIComponent(uuid)
         + (paymentCode ? '&paymentCode=' + encodeURIComponent(paymentCode) : '')
@@ -294,7 +317,7 @@ function fetchRegistrationAvailability() {
             reject(new Error('AVAILABILITY_TIMEOUT'));
         }, JSONP_TIMEOUT_MS);
 
-        scriptEl.src = DH9_WEBAPP_URL
+        scriptEl.src = DHM9_WEBAPP_URL
             + '?action=checkRegistrationAvailability'
             + '&lane=' + encodeURIComponent(DH_FORM_LANE)
             + '&callback=' + encodeURIComponent(callbackName)
@@ -333,8 +356,8 @@ function ensurePaidModal() {
         <div style="width:min(520px, 100%); background:#ffffff; color:#111827; border-radius:16px; padding:28px; box-shadow:0 24px 70px rgba(0,0,0,0.28); text-align:center;">
             <div style="font-size:3rem; line-height:1; margin-bottom:14px;">✅</div>
             <h2 id="paymentCompleteTitle" style="margin:0 0 12px; color:#047857; font-size:1.45rem;">Đã hoàn tất chi phí hậu cần</h2>
-            <p style="margin:0 0 18px; color:#374151; line-height:1.55;">Chúc mừng bạn! Hệ thống đã ghi nhận thanh toán thành công. Bạn có thể tham gia nhóm Zalo DH9 Hà Nội để nhận thông báo, lịch trình và kết nối với BTC.</p>
-            <a id="paymentCompleteZaloLink" href="${DH9_ZALO_GROUP_URL}" target="_blank" rel="noopener" style="display:block; background:#0068ff; color:#ffffff; text-decoration:none; font-weight:700; border-radius:10px; padding:13px 18px; margin-bottom:10px;">Vào nhóm Zalo DH9 Hà Nội</a>
+            <p style="margin:0 0 18px; color:#374151; line-height:1.55;">Chúc mừng bạn! Hệ thống đã ghi nhận thanh toán thành công. Bạn có thể tham gia nhóm Zalo DHM9 Hà Nội để nhận thông báo, lịch trình và kết nối với BTC.</p>
+            <a id="paymentCompleteZaloLink" href="${DHM9_ZALO_GROUP_URL}" target="_blank" rel="noopener" style="display:block; background:#0068ff; color:#ffffff; text-decoration:none; font-weight:700; border-radius:10px; padding:13px 18px; margin-bottom:10px;">Vào nhóm Zalo DHM9 Hà Nội</a>
             <a id="paymentCompleteClose" href="https://delivering-happiness.vercel.app/" style="display:block; width:100%; border:1px solid #d1d5db; background:#ffffff; color:#374151; font-weight:700; border-radius:10px; padding:12px 18px; text-decoration:none; cursor:pointer;">Quay về landing page</a>
         </div>`;
     document.body.appendChild(modal);
@@ -349,7 +372,7 @@ function ensurePaidModal() {
 }
 
 function showPaymentCompleteModal(uuid) {
-    const modalKey = 'dh9_paid_modal_shown_' + String(uuid || registrationUuid || '');
+    const modalKey = 'DHM9_paid_modal_shown_' + String(uuid || registrationUuid || '');
     if (sessionStorage.getItem(modalKey) === 'true') return;
     sessionStorage.setItem(modalKey, 'true');
     const modal = ensurePaidModal();
@@ -373,20 +396,23 @@ function renderPaymentStatus(paymentStatus) {
 }
 
 function renderPaymentReference(uuid) {
-    const paymentPhone = sessionStorage.getItem('dh9_paymentPhone') || '';
-    const storedPaymentCode = sessionStorage.getItem('dh9_paymentCode') || '';
+    const paymentPhone = sessionStorage.getItem(PAYMENT_PHONE_KEY) || sessionStorage.getItem(LEGACY_PAYMENT_PHONE_KEY) || '';
+    const storedPaymentCode = sessionStorage.getItem(PAYMENT_CODE_KEY) || sessionStorage.getItem(LEGACY_PAYMENT_CODE_KEY) || '';
     const paymentCode = isValidSePayPaymentCode(storedPaymentCode)
         ? storedPaymentCode
         : buildPaymentCodeFromPhone(paymentPhone);
-    if (!paymentCode) sessionStorage.removeItem('dh9_paymentCode');
+    if (!paymentCode) {
+        sessionStorage.removeItem(PAYMENT_CODE_KEY);
+        sessionStorage.removeItem(LEGACY_PAYMENT_CODE_KEY);
+    }
     const transferContent = paymentCode || 'Số điện thoại không hợp lệ';
-    const paymentAmount = String(window.DH9_PAYMENT_AMOUNT || 250000);
-    const paymentAccount = window.DH9_PAYMENT_ACCOUNT || '';
-    const paymentAccountLabel = window.DH9_PAYMENT_ACCOUNT_LABEL || paymentAccount;
-    const paymentBank = window.DH9_PAYMENT_BANK || '';
-    const qrTemplate = window.DH9_QR_TEMPLATE || 'compact';
-    const qrShowInfo = window.DH9_QR_SHOW_INFO === false ? 'false' : 'true';
-    const qrHolder = window.DH9_PAYMENT_HOLDER || '';
+    const paymentAmount = String(window.DHM9_PAYMENT_AMOUNT || 250000);
+    const paymentAccount = window.DHM9_PAYMENT_ACCOUNT || '';
+    const paymentAccountLabel = window.DHM9_PAYMENT_ACCOUNT_LABEL || paymentAccount;
+    const paymentBank = window.DHM9_PAYMENT_BANK || '';
+    const qrTemplate = window.DHM9_QR_TEMPLATE || 'compact';
+    const qrShowInfo = window.DHM9_QR_SHOW_INFO === false ? 'false' : 'true';
+    const qrHolder = window.DHM9_PAYMENT_HOLDER || '';
     const qrUrl = paymentAccount && paymentBank && paymentCode
         ? 'https://qr.sepay.vn/img?' + new URLSearchParams({
             acc: paymentAccount,
@@ -409,13 +435,13 @@ function renderPaymentReference(uuid) {
 
     if (uuidEl) uuidEl.textContent = uuid || '';
     if (paymentCodeEl) paymentCodeEl.textContent = paymentCode || 'Đang tạo mã';
-    if (contentEl) contentEl.textContent = transferContent || 'DH99xxxxxxxx';
+    if (contentEl) contentEl.textContent = transferContent || 'DHM99xxxxxxxx';
     if (accountEl) accountEl.textContent = paymentAccountLabel || 'Chưa cấu hình tài khoản thanh toán';
     if (amountEl) amountEl.textContent = Number(paymentAmount).toLocaleString('vi-VN') + 'đ';
     if (qrEl && qrWrapperEl) {
         if (qrUrl) {
             qrEl.src = qrUrl;
-            qrEl.alt = 'QR thanh toán DH9';
+            qrEl.alt = 'QR thanh toán DHM9';
             qrWrapperEl.style.display = 'block';
         } else {
             qrEl.removeAttribute('src');
@@ -465,7 +491,7 @@ async function startPaymentStatusPolling(uuid, initialStatus) {
                 }
             }
         } catch (err) {
-            console.warn('[DH9] Không kiểm tra được trạng thái thanh toán:', err.message);
+            console.warn('[DHM9] Không kiểm tra được trạng thái thanh toán:', err.message);
         }
     }
 
@@ -484,7 +510,7 @@ async function startPaymentStatusPolling(uuid, initialStatus) {
                 }
             }
         } catch (err) {
-            console.warn('[DH9] Không kiểm tra được trạng thái thanh toán nền:', err.message);
+            console.warn('[DHM9] Không kiểm tra được trạng thái thanh toán nền:', err.message);
         }
     }
 }
@@ -549,7 +575,7 @@ async function startPolling(uuid, startAttempt) {
 
             // NOT_FOUND: Sheets có thể đang trễ, thử tiếp
             if (result.error === 'NOT_FOUND') {
-                console.info(`[DH9] Lần ${attempt + 1}: NOT_FOUND - có thể Sheets đang trễ, thử tiếp.`);
+                console.info(`[DHM9] Lần ${attempt + 1}: NOT_FOUND - có thể Sheets đang trễ, thử tiếp.`);
             } else if (result.error === 'REGISTRATION_CLOSED' || result.state === 'REGISTRATION_CLOSED') {
                 showRegistrationClosed(result.interestLink);
                 return;
@@ -558,10 +584,10 @@ async function startPolling(uuid, startAttempt) {
                 showInlineError('Số điện thoại này đang có nhiều đăng ký. Ban tổ chức sẽ liên hệ để xử lý thủ công. Vui lòng không đăng ký lại.');
                 return;
             } else {
-                console.warn('[DH9] Phản hồi không nhận ra:', result.state, result.error);
+                console.warn('[DHM9] Phản hồi không nhận ra:', result.state, result.error);
             }
         } catch (err) {
-            console.error(`[DH9] Lần ${attempt + 1} lỗi:`, err.message);
+            console.error(`[DHM9] Lần ${attempt + 1} lỗi:`, err.message);
         }
 
         // Chờ trước lần thử tiếp theo (trừ lần cuối)
@@ -622,7 +648,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showRegistrationClosed(result.interestLink);
             }
         }).catch((err) => {
-            console.warn('[DH9] Không kiểm tra được trạng thái mở đăng ký:', err.message);
+            console.warn('[DHM9] Không kiểm tra được trạng thái mở đăng ký:', err.message);
         });
     }
 
@@ -647,7 +673,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
         } catch (err) {
-            console.warn('[DH9] Không kiểm tra được cap trước khi gửi, backend vẫn sẽ chặn nếu đã đủ:', err.message);
+            console.warn('[DHM9] Không kiểm tra được cap trước khi gửi, backend vẫn sẽ chặn nếu đã đủ:', err.message);
         }
 
         // --- Thu thập dữ liệu form ---
@@ -689,8 +715,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Gắn UUID và metadata
         data.registrationUuid = registrationUuid;
-        data.type = 'EVENT_LEAD_DH9';
-        data.source = 'Web_DH9_Hanoi_Official';
+        data.type = 'EVENT_LEAD_DHM9';
+        data.source = 'Web_DHM9_Hanoi_Official';
         data.event = 'REGISTER_SUBMIT';
         const paymentCode = rememberPaymentReference(data);
         if (!paymentCode) {
@@ -698,10 +724,12 @@ document.addEventListener('DOMContentLoaded', () => {
             showInlineError('Không đọc được đủ chữ số từ số điện thoại để tạo mã thanh toán SePay. Vui lòng kiểm tra lại số điện thoại đã nhập.');
             return;
         }
+        data.paymentCode = paymentCode;
+        data.transferContent = paymentCode;
 
         // --- POST no-cors (gửi dữ liệu - không đọc response) ---
         try {
-            await fetch(DH9_WEBAPP_URL, {
+            await fetch(DHM9_WEBAPP_URL, {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
@@ -709,7 +737,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         } catch (err) {
             // Lỗi mạng: vẫn tiến hành polling để kiểm tra nếu request đã tới server
-            console.warn('[DH9] POST gặp lỗi mạng, tiến hành polling kiểm tra:', err.message);
+            console.warn('[DHM9] POST gặp lỗi mạng, tiến hành polling kiểm tra:', err.message);
         }
 
         // --- Analytics (fire-and-forget, không block đăng ký) ---

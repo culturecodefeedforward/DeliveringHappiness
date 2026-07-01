@@ -102,6 +102,36 @@ body {
   margin-bottom: 2.5rem;
 }
 
+.hero-event-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  max-width: 800px;
+  margin: 2rem auto 0 auto;
+  padding: 0 1rem;
+}
+
+.hero-event-card {
+  background: rgba(0,0,0,0.2);
+  padding: 1.2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.95);
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .hero-event-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .btn-primary {
   background: linear-gradient(90deg, var(--warm-yellow), var(--warm-orange));
   color: var(--dark);
@@ -652,6 +682,20 @@ body {
 
   .top-nav {
     padding: 1rem;
+  }
+
+  .overview-icons {
+    flex-wrap: wrap;
+    gap: 1.25rem !important;
+    font-size: 2.5rem !important;
+  }
+
+  .overview-icons > div {
+    min-width: 72px;
+  }
+
+  .levels-grid {
+    grid-template-columns: 1fr !important;
   }
 }
 

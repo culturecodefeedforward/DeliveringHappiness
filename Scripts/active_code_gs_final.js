@@ -52,26 +52,34 @@ var DEFAULT_PAYMENT_HOLDER_DISPLAY = 'Hà Ngọc Hoàn';
 var DEFAULT_PUBLIC_REGISTER_URL = 'https://delivering-happiness.vercel.app/register.html';
 var DEFAULT_DH9_PUBLIC_REGISTER_URL = 'https://delivering-happiness.vercel.app/register_dh9_hanoi.html';
 var DEFAULT_DHM8_ZALO_GROUP_URL = 'https://zalo.me/g/hpf7qu45j6qkft6hpghx';
-var DEFAULT_DH9_ZALO_GROUP_URL = 'https://zalo.me/g/hpf7qu45j6qkft6hpghx';
+var DEFAULT_DH9_ZALO_GROUP_URL = 'https://zalo.me/g/3wrsaoygrfcjubr0ie44';
 
 function getLaneKey_(value) {
-  return String(value || '').toLowerCase() === 'dh9' ? 'dh9' : 'dh8';
+  var normalized = String(value || '').toLowerCase();
+  return (normalized === 'dh9' || normalized === 'dhm9') ? 'dh9' : 'dh8';
+}
+
+function isDhm9Token_(value) {
+  var normalized = normalizePaymentCodeToken(value || '');
+  return normalized.indexOf('DH9') === 0 || normalized.indexOf('DHM9') === 0;
 }
 
 function detectLaneKeyFromPaymentCode_(paymentCode) {
-  var normalized = normalizePaymentCodeToken(paymentCode || '');
-  if (normalized.indexOf('DH9') === 0) return 'dh9';
+  if (isDhm9Token_(paymentCode)) return 'dh9';
   return 'dh8';
 }
 
 function detectLaneKeyFromPayload_(data) {
   var laneCandidate = String((data && (data.lane || data.registrationLane || data.eventLane)) || '').toLowerCase();
-  if (laneCandidate === 'dh9') return 'dh9';
+  if (laneCandidate === 'dh9' || laneCandidate === 'dhm9') return 'dh9';
   var eventId = String((data && data.event_id) || '').toUpperCase();
   var type = String((data && data.type) || '').toUpperCase();
   var source = String((data && data.source) || '').toUpperCase();
   var content = String((data && (data.transferContent || data.transactionContent || data.content || data.description || data.paymentCode)) || '').toUpperCase();
-  if (eventId.indexOf('DH9') !== -1 || type.indexOf('DH9') !== -1 || source.indexOf('DH9') !== -1 || normalizePaymentCodeToken(content).indexOf('DH9') === 0) {
+  if (eventId.indexOf('DH9') !== -1 || eventId.indexOf('DHM9') !== -1 ||
+      type.indexOf('DH9') !== -1 || type.indexOf('DHM9') !== -1 ||
+      source.indexOf('DH9') !== -1 || source.indexOf('DHM9') !== -1 ||
+      isDhm9Token_(content)) {
     return 'dh9';
   }
   return 'dh8';
@@ -83,25 +91,26 @@ function getLaneConfig_(laneKey) {
   if (resolvedLane === 'dh9') {
     return {
       laneKey: 'dh9',
-      paymentPrefix: 'DH9',
+      paymentPrefix: 'DHM9',
+      paymentPrefixes: ['DHM9', 'DH9'],
       registrationCap: parseInt(props.getProperty('DH9_REGISTRATION_CAP'), 10) || DHM8_REGISTRATION_CAP,
-      dataSheetName: 'DH9_Data',
-      paymentsSheetName: 'DH9_Payments',
-      outboxSheetName: 'DH9_Email_Outbox',
-      inboxSheetName: 'DH9_Inbox',
-      interestSheetName: 'DH9 interest',
+      dataSheetName: 'DHM9_Data',
+      paymentsSheetName: 'DHM9_Payments',
+      outboxSheetName: 'DHM9_Email_Outbox',
+      inboxSheetName: 'DHM9_Inbox',
+      interestSheetName: 'DHM9 interest',
       interestUrl: (props.getProperty('DH9_INTEREST_URL') || DEFAULT_DH9_INTEREST_URL).trim(),
       publicRegisterUrl: (props.getProperty('DH9_PUBLIC_REGISTER_URL') || DEFAULT_DH9_PUBLIC_REGISTER_URL).trim(),
-      titleShort: 'DH9',
-      classLabel: 'Delivering Happiness Masterclass 9 (DH9)',
+      titleShort: 'DHM9',
+      classLabel: 'Delivering Happiness Masterclass 9 (DHM9)',
       cityLabel: 'Hà Nội',
       zaloGroupUrl: (props.getProperty('DH9_ZALO_GROUP_URL') || DEFAULT_DH9_ZALO_GROUP_URL).trim(),
-      defaultEventId: 'DH9_REG_220826_HN',
-      defaultInterestEventId: 'DH9_INTEREST_220826_HN',
-      defaultLeadType: 'EVENT_LEAD_DH9',
-      defaultLeadSource: 'Web_DH9_Hanoi_Official',
-      defaultInterestType: 'DH9_INTEREST',
-      defaultInterestSource: 'Web_DH9_Interest'
+      defaultEventId: 'DHM9_REG_220826_HN',
+      defaultInterestEventId: 'DHM9_INTEREST_220826_HN',
+      defaultLeadType: 'EVENT_LEAD_DHM9',
+      defaultLeadSource: 'Web_DHM9_Hanoi_Official',
+      defaultInterestType: 'DHM9_INTEREST',
+      defaultInterestSource: 'Web_DHM9_Interest'
     };
   }
 
@@ -256,8 +265,12 @@ function getRemainingQuota() {
 function normalizePhone(phone) {
   if (!phone) return '';
   var digits = phone.toString().replace(/\D/g, '');
-  if (digits.indexOf('0084') === 0 && digits.length > 6) return '0' + digits.slice(4);
-  if (digits.indexOf('84') === 0 && digits.length > 6) return '0' + digits.slice(2);
+  if (digits.indexOf('0084') === 0 && digits.length > 6) digits = '0' + digits.slice(4);
+  else if (digits.indexOf('84') === 0 && digits.length > 6) digits = '0' + digits.slice(2);
+
+  if (digits.length === 9 && digits.indexOf('0') !== 0) {
+    digits = '0' + digits;
+  }
   return digits;
 }
 
@@ -266,6 +279,13 @@ function buildPaymentCodeFromPhone(phone, laneKey) {
   var codeDigits = normalizedPhone.replace(/^0/, '');
   if (!/^\d{3,}$/.test(codeDigits)) return '';
   return getLaneConfig_(laneKey).paymentPrefix + codeDigits.slice(-9);
+}
+
+function getPaymentPrefixesForLane_(config) {
+  var prefixes = (config && config.paymentPrefixes) || (config && config.paymentPrefix ? [config.paymentPrefix] : []);
+  return prefixes.filter(function(prefix, index) {
+    return prefix && prefixes.indexOf(prefix) === index;
+  });
 }
 
 function buildLegacyPaymentCodeFromUuid(uuid) {
@@ -288,13 +308,21 @@ function getPaymentCodeInfo_(phone, uuid, laneKey) {
   var paymentCode = buildPaymentCodeFromPhone(phone, config.laneKey);
   var legacyPaymentCode = buildLegacyPaymentCodeFromUuid(uuid);
   var normalizedPhone = normalizePhone(phone);
+  var codeDigits = normalizedPhone.replace(/^0/, '');
   var variants = [];
-  [
-    paymentCode,
-    normalizedPhone ? config.paymentPrefix + '-' + normalizedPhone : '',
-    normalizedPhone ? config.paymentPrefix + normalizedPhone : '',
+  var prefixVariants = [paymentCode];
+  getPaymentPrefixesForLane_(config).forEach(function(prefix) {
+    if (normalizedPhone) {
+      prefixVariants.push(prefix + '-' + normalizedPhone);
+      prefixVariants.push(prefix + normalizedPhone);
+    }
+    if (/^\d{3,}$/.test(codeDigits)) {
+      prefixVariants.push(prefix + codeDigits.slice(-9));
+    }
+  });
+  prefixVariants.concat([
     legacyPaymentCode
-  ].forEach(function(code) {
+  ]).forEach(function(code) {
     var normalizedCode = normalizePaymentCodeToken(code);
     if (normalizedCode && variants.indexOf(normalizedCode) === -1) {
       variants.push(normalizedCode);
@@ -1188,6 +1216,64 @@ function handleSePayWebhook(body, laneKey) {
   }
 
   var matched = matchedByCode.length > 0 ? matchedByCode : matchedByPhone;
+
+  // Logic tự động kiểm tra chéo (Cross-Check) để bảo vệ luồng thanh toán DH9/DH8 khi gõ sai cú pháp chuyển khoản
+  if (matched.length === 0) {
+    try {
+      var altLaneKey = lane.laneKey === 'dh8' ? 'dh9' : 'dh8';
+      var altLane = getLaneConfig_(altLaneKey);
+      var altDataSheet = ss.getSheetByName(altLane.dataSheetName);
+      if (altDataSheet) {
+        var altDataRows = altDataSheet.getDataRange().getValues();
+        var altMatchedByCode = [];
+        var altMatchedByPhone = [];
+        for (var j = 1; j < altDataRows.length; j++) {
+          if (altDataRows[j][15] !== 'PENDING') continue;
+          var rowUuid = altDataRows[j][17];
+          var rowPhone = normalizePhone(altDataRows[j][3]);
+          var rowCodeInfo = getPaymentCodeInfo_(rowPhone, rowUuid, altLane.laneKey);
+          var matchedCode = rowCodeInfo.variants.filter(function(code) {
+            return contentCodeTokens.indexOf(code) !== -1;
+          })[0];
+          if (matchedCode) {
+            altMatchedByCode.push({ rowIdx: j, uuid: rowUuid, method: 'PAYMENT_CODE', paymentCodeToken: matchedCode });
+            continue;
+          }
+          if (rowPhone && contentPhoneTokens.indexOf(rowPhone) !== -1) {
+            altMatchedByPhone.push({ rowIdx: j, uuid: rowUuid, method: 'PHONE' });
+          }
+        }
+        var altMatched = altMatchedByCode.length > 0 ? altMatchedByCode : altMatchedByPhone;
+        if (altMatched.length === 1) {
+          var oldPaymentsSheet = paymentsSheet;
+          var altPaymentsSheet = ss.getSheetByName(altLane.paymentsSheetName);
+          if (altPaymentsSheet) {
+            // Xóa dòng thanh toán vừa append nhầm ở sheet của lane mặc định
+            var oldRowsCount = oldPaymentsSheet.getLastRow();
+            if (oldRowsCount > 1) {
+              var lastTxId = oldPaymentsSheet.getRange(oldRowsCount, 1).getValue().toString();
+              if (lastTxId === txId) {
+                oldPaymentsSheet.deleteRow(oldRowsCount);
+              }
+            }
+
+            // Định tuyến lại các biến tham chiếu sang lane mới
+            lane = altLane;
+            dataSheet = altDataSheet;
+            dataRows = altDataRows;
+            matched = altMatched;
+            paymentsSheet = altPaymentsSheet;
+
+            // Ghi nhận dòng giao dịch sang sheet của lane mới khớp
+            paymentsSheet.appendRow([txId, amountIn, accountNo, content, gateway, 'RECEIVED', '', 0, new Date(), new Date()]);
+            writeSystemLog(ss, 'INFO', 'Tự động kiểm tra chéo chuyển hướng lane thanh toán: ' + oldPaymentsSheet.getName() + ' -> ' + paymentsSheet.getName(), txId);
+          }
+        }
+      }
+    } catch (e_cross) {
+      writeSystemLog(ss, 'ERROR', 'Lỗi trong quá trình tự động kiểm tra chéo lane: ' + e_cross.message, txId);
+    }
+  }
 
   if (matched.length === 0) {
     updatePaymentState(paymentsSheet, txId, 'NO_MATCH');
