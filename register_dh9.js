@@ -201,7 +201,8 @@ function pollRegistrationStatus(uuid, attempt, paymentCode) {
     const normalizedPaymentCode = isValidSePayPaymentCode(paymentCode)
         ? String(paymentCode).toUpperCase()
         : getStoredPaymentCode();
-    if (window.DHM9_STATUS_CHECK_MODE === 'fetch') {
+    const fetchStatusOptIn = window.DHM9_ENABLE_FETCH_STATUS === true;
+    if (fetchStatusOptIn && window.DHM9_STATUS_CHECK_MODE === 'fetch') {
         return fetchRegistrationStatus(uuid, attempt, normalizedPaymentCode);
     }
 
