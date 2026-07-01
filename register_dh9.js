@@ -64,6 +64,7 @@ function clearRegistrationUuid() {
     sessionStorage.removeItem(LEGACY_REGISTRATION_UUID_KEY);
 }
 
+
 function rememberLastRegistration(uuid, paymentStatus) {
     if (!uuid) return;
     sessionStorage.setItem(LAST_REGISTRATION_UUID_KEY, String(uuid));
@@ -82,6 +83,19 @@ function clearPaymentReference() {
     sessionStorage.removeItem(LEGACY_PAYMENT_PHONE_KEY);
     sessionStorage.removeItem(PAYMENT_NAME_KEY);
     sessionStorage.removeItem(LEGACY_PAYMENT_NAME_KEY);
+}
+
+function clearAllDhm9SessionState() {
+    Object.keys(sessionStorage).forEach(key => {
+        if (key.startsWith('DHM9_') || key.startsWith('dh9_')) {
+            sessionStorage.removeItem(key);
+        }
+    });
+}
+
+function resetRegistrationAndReload() {
+    clearAllDhm9SessionState();
+    window.location.replace(window.location.pathname);
 }
 
 function normalizePhone(phone) {
@@ -214,7 +228,8 @@ function pollRegistrationStatus(uuid, attempt, paymentCode) {
                 state: data.state || null,
                 registrationUuid: data.registrationUuid || null,
                 paymentStatus: data.paymentStatus || null,
-                error: data.error || null
+                error: data.error || null,
+                message: data.message || null
             });
         };
 
@@ -280,6 +295,7 @@ async function fetchRegistrationStatus(uuid, attempt, paymentCode) {
         registrationUuid: data.registrationUuid || null,
         paymentStatus: data.paymentStatus || null,
         error: data.error || null,
+        message: data.message || null,
         interestLink: data.interestLink || null
     };
 }
@@ -358,10 +374,15 @@ function ensurePaidModal() {
             <h2 id="paymentCompleteTitle" style="margin:0 0 12px; color:#047857; font-size:1.45rem;">Đã hoàn tất chi phí hậu cần</h2>
             <p style="margin:0 0 18px; color:#374151; line-height:1.55;">Chúc mừng bạn! Hệ thống đã ghi nhận thanh toán thành công. Bạn có thể tham gia nhóm Zalo DHM9 Hà Nội để nhận thông báo, lịch trình và kết nối với BTC.</p>
             <a id="paymentCompleteZaloLink" href="${DHM9_ZALO_GROUP_URL}" target="_blank" rel="noopener" style="display:block; background:#0068ff; color:#ffffff; text-decoration:none; font-weight:700; border-radius:10px; padding:13px 18px; margin-bottom:10px;">Vào nhóm Zalo DHM9 Hà Nội</a>
+            <button id="paymentCompleteNewRegistration" type="button" style="display:block; width:100%; border:1px solid #047857; background:#ecfdf5; color:#047857; font-weight:700; border-radius:10px; padding:12px 18px; margin-bottom:10px; cursor:pointer;">Đăng ký người khác</button>
             <a id="paymentCompleteClose" href="https://delivering-happiness.vercel.app/" style="display:block; width:100%; border:1px solid #d1d5db; background:#ffffff; color:#374151; font-weight:700; border-radius:10px; padding:12px 18px; text-decoration:none; cursor:pointer;">Quay về landing page</a>
         </div>`;
     document.body.appendChild(modal);
     modal.addEventListener('click', (event) => {
+        if (event.target.id === 'paymentCompleteNewRegistration') {
+            resetRegistrationAndReload();
+            return;
+        }
         if (event.target === modal || event.target.id === 'paymentCompleteClose') {
             clearLastRegistration();
             clearPaymentReference();
@@ -469,6 +490,19 @@ function showRegistrationClosed(interestLink) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+function ensureStartNewRegistrationButton() {
+    const success = document.getElementById('successMessage');
+    if (!success || document.getElementById('startNewRegistrationBtn')) return;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.id = 'startNewRegistrationBtn';
+    btn.className = 'btn-submit';
+    btn.style.cssText = 'display:block; width:100%; margin-top:1rem; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.28); color:#ffffff; font-weight:700;';
+    btn.textContent = 'Đăng ký người khác';
+    btn.addEventListener('click', resetRegistrationAndReload);
+    success.appendChild(btn);
+}
+
 async function startPaymentStatusPolling(uuid, initialStatus) {
     renderPaymentStatus(initialStatus);
     if (String(initialStatus || '').toUpperCase() === 'PAID') {
@@ -526,7 +560,10 @@ function showSuccess(uuid, paymentStatus, options) {
     if (String(paymentStatus || '').toUpperCase() === 'PAID') showPaymentCompleteModal(uuid);
     if (form) form.style.display = 'none';
     if (header) header.style.display = 'none';
-    if (success) success.style.display = 'block';
+    if (success) {
+        success.style.display = 'block';
+        ensureStartNewRegistrationButton();
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
     clearRegistrationUuid();
     startPaymentStatusPolling(uuid, paymentStatus);
@@ -583,6 +620,10 @@ async function startPolling(uuid, startAttempt) {
                 setSubmitState(btn, spinner, textEl, 'Gửi đăng ký & Hoàn tất', false);
                 showInlineError('Số điện thoại này đang có nhiều đăng ký. Ban tổ chức sẽ liên hệ để xử lý thủ công. Vui lòng không đăng ký lại.');
                 return;
+            } else if (result.error === 'DUPLICATE_PAID' || result.error === 'DUPLICATE_PENDING') {
+                setSubmitState(btn, spinner, textEl, 'Gửi đăng ký & Hoàn tất', false);
+                showInlineError(result.message || 'Số điện thoại này đã được đăng ký DHM9. Vui lòng không đăng ký lại.');
+                return;
             } else {
                 console.warn('[DHM9] Phản hồi không nhận ra:', result.state, result.error);
             }
@@ -607,6 +648,118 @@ async function startPolling(uuid, startAttempt) {
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('crmForm');
     if (!form) return;
+
+    const phoneInput = document.querySelector('input[name="phone"]');
+    let _phoneDebounceTimer = null;
+    let lastCheckedPhone = '';
+    let phoneValidated = false;
+
+    function showPhoneValidating() {
+        let errorDiv = document.getElementById('phoneInputError');
+        if (!errorDiv) {
+            errorDiv = document.createElement('div');
+            errorDiv.id = 'phoneInputError';
+            errorDiv.className = 'field-error-message';
+            errorDiv.style.cssText = 'color:#60a5fa; font-size:0.85rem; margin-top:6px;';
+            if (phoneInput) phoneInput.parentNode.appendChild(errorDiv);
+        }
+        errorDiv.textContent = 'Đang kiểm tra số điện thoại...';
+        errorDiv.style.color = '#60a5fa';
+        errorDiv.style.display = 'block';
+
+        const btn = document.getElementById('submitBtn');
+        if (btn) btn.disabled = true;
+    }
+
+    function hidePhoneError() {
+        const errorDiv = document.getElementById('phoneInputError');
+        if (errorDiv) {
+            errorDiv.style.display = 'none';
+        }
+        const btn = document.getElementById('submitBtn');
+        if (btn) btn.disabled = false;
+    }
+
+    function showPhoneError(msg) {
+        let errorDiv = document.getElementById('phoneInputError');
+        if (!errorDiv) {
+            errorDiv = document.createElement('div');
+            errorDiv.id = 'phoneInputError';
+            errorDiv.className = 'field-error-message';
+            errorDiv.style.cssText = 'color:#f87171; font-size:0.85rem; margin-top:6px;';
+            if (phoneInput) phoneInput.parentNode.appendChild(errorDiv);
+        }
+        errorDiv.textContent = msg;
+        errorDiv.style.color = '#f87171';
+        errorDiv.style.display = 'block';
+
+        const btn = document.getElementById('submitBtn');
+        if (btn) btn.disabled = true;
+    }
+
+    async function validatePhoneRealtime() {
+        if (!phoneInput) return;
+        const phoneVal = phoneInput.value.trim();
+        const normalizedPhone = normalizePhone(phoneVal);
+
+        if (!normalizedPhone || normalizedPhone.length < 9) {
+            phoneValidated = false;
+            hidePhoneError();
+            return;
+        }
+
+        if (normalizedPhone === lastCheckedPhone) {
+            return;
+        }
+
+        lastCheckedPhone = normalizedPhone;
+        phoneValidated = false;
+
+        const paymentCode = buildPaymentCodeFromPhone(normalizedPhone);
+        if (!paymentCode) {
+            showPhoneError('Số điện thoại không hợp lệ để tạo mã thanh toán.');
+            return;
+        }
+
+        showPhoneValidating();
+
+        try {
+            const preflight = await pollRegistrationStatus(registrationUuid, 'preSubmit', paymentCode);
+            if (preflight.error === 'AMBIGUOUS_PAYMENT_CODE') {
+                showPhoneError('Số điện thoại này đang có nhiều đăng ký. Ban tổ chức sẽ liên hệ để xử lý thủ công. Vui lòng không đăng ký lại.');
+                return;
+            }
+            if (preflight.error === 'DUPLICATE_PAID' || preflight.error === 'DUPLICATE_PENDING') {
+                showPhoneError(preflight.message || 'Số điện thoại này đã được đăng ký DHM9. Vui lòng không đăng ký lại.');
+                return;
+            }
+            if (preflight.success && preflight.registrationUuid && preflight.registrationUuid !== registrationUuid) {
+                showPhoneError('Số điện thoại này đã có đăng ký DHM9. Vui lòng không đăng ký lại.');
+                return;
+            }
+
+            phoneValidated = true;
+            hidePhoneError();
+        } catch (err) {
+            console.warn('[DHM9] Không check trùng SĐT realtime được:', err.message);
+            phoneValidated = false;
+            const errorDiv = document.getElementById('phoneInputError');
+            if (errorDiv && errorDiv.textContent === 'Đang kiểm tra số điện thoại...') {
+                errorDiv.style.display = 'none';
+            }
+            const btn = document.getElementById('submitBtn');
+            if (btn) btn.disabled = false;
+        }
+    }
+
+    if (phoneInput) {
+        phoneInput.addEventListener('blur', validatePhoneRealtime);
+        phoneInput.addEventListener('input', () => {
+            phoneValidated = false; // Reset ngay để tránh bỏ qua pre-submit guard khi user gõ số mới rồi submit nhanh
+            clearTimeout(_phoneDebounceTimer);
+            _phoneDebounceTimer = setTimeout(validatePhoneRealtime, 800);
+        });
+    }
 
     const resumeParams = primeResumeStateFromUrl();
     const resumeUuid = (resumeParams && resumeParams.uuid) || sessionStorage.getItem(LAST_REGISTRATION_UUID_KEY) || '';
@@ -726,6 +879,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         data.paymentCode = paymentCode;
         data.transferContent = paymentCode;
+
+        // Chặn trùng SĐT trước khi gửi POST no-cors để user không thấy success giả.
+        // Bỏ qua nếu đã được validated realtime thành công trước đó.
+        if (!phoneValidated) {
+            try {
+                const preflight = await pollRegistrationStatus(registrationUuid, 'preSubmit', paymentCode);
+                if (preflight.error === 'AMBIGUOUS_PAYMENT_CODE') {
+                    setSubmitState(btn, spinner, textEl, 'Gửi đăng ký & Hoàn tất', false);
+                    showPhoneError('Số điện thoại này đang có nhiều đăng ký. Ban tổ chức sẽ liên hệ để xử lý thủ công. Vui lòng không đăng ký lại.');
+                    return;
+                }
+                if (preflight.error === 'DUPLICATE_PAID' || preflight.error === 'DUPLICATE_PENDING') {
+                    setSubmitState(btn, spinner, textEl, 'Gửi đăng ký & Hoàn tất', false);
+                    showPhoneError(preflight.message || 'Số điện thoại này đã được đăng ký DHM9. Vui lòng không đăng ký lại.');
+                    return;
+                }
+                if (preflight.success && preflight.registrationUuid && preflight.registrationUuid !== registrationUuid) {
+                    setSubmitState(btn, spinner, textEl, 'Gửi đăng ký & Hoàn tất', false);
+                    showPhoneError('Số điện thoại này đã có đăng ký DHM9. Vui lòng không đăng ký lại.');
+                    return;
+                }
+            } catch (err) {
+                setSubmitState(btn, spinner, textEl, 'Gửi đăng ký & Hoàn tất', false);
+                showInlineError('Không kiểm tra được trạng thái trùng số điện thoại. Vui lòng thử lại sau ít phút.');
+                return;
+            }
+        }
 
         // --- POST no-cors (gửi dữ liệu - không đọc response) ---
         try {
