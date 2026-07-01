@@ -667,9 +667,6 @@ document.addEventListener('DOMContentLoaded', () => {
         errorDiv.textContent = 'Đang kiểm tra số điện thoại...';
         errorDiv.style.color = '#60a5fa';
         errorDiv.style.display = 'block';
-
-        const btn = document.getElementById('submitBtn');
-        if (btn) btn.disabled = true;
     }
 
     function hidePhoneError() {
@@ -812,6 +809,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        clearTimeout(_phoneDebounceTimer);
+        hidePhoneError();
 
         const btn = document.getElementById('submitBtn');
         const spinner = btn ? btn.querySelector('.loading-spinner') : null;
