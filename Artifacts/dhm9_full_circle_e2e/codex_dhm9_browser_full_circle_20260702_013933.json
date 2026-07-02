@@ -1,0 +1,173 @@
+{
+  "timestamp": "20260702_013933",
+  "frontendUrl": "https://delivering-happiness.vercel.app/register_dh9_hanoi.html",
+  "backendUrl": "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec",
+  "testEmail": "vuhoang2708@gmail.com",
+  "testPhone": "0931173905",
+  "fullName": "Codex DHM9 Browser E2E 20260702_013933",
+  "registrationUuid": "9ed7cdc0-80d6-4f5d-b7f4-7f4eef01fcc2",
+  "paymentCode": "DHM9931173905",
+  "transferContent": "DHM9931173905",
+  "transactionId": "codex-dhm9-browser-e2e-20260702_013933",
+  "health": {
+    "success": true,
+    "environment": "PRODUCTION",
+    "spreadsheetId": "[REDACTED]",
+    "officialAccountNumber": "[REDACTED]",
+    "sepayWebhookTokenConfigured": true,
+    "processEmailQueueTriggerPresent": true,
+    "processEmailQueueTriggerCount": 1,
+    "processEmailQueueTriggerError": "",
+    "amount": 250000
+  },
+  "browserSubmit": {
+    "httpStatus": 200,
+    "liveJsFlags": {
+      "hasFetchOptInFix": true,
+      "hasSubmitRaceFix": true
+    },
+    "pendingStatusText": "Chờ thanh toán",
+    "startNewRegistrationButtonCountAfterSubmit": 1,
+    "pendingScreenshot": "UAT\\screenshots\\dhm9_production_finish_20260702\\codex_e2e_pending_20260702_013933.png",
+    "fatalConsoleCount": 0,
+    "fatalConsole": [],
+    "pageErrors": [
+      "dh9Jsonp_1s70clIPZdfYD4L7cEaX is not defined"
+    ],
+    "scriptResponses": [
+      {
+        "url": "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec",
+        "status": 302
+      },
+      {
+        "url": "https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnSU91wC7KsRKRBBmYsjAh-1KL_1Vlh3y_khw9x0VepataRUs10qfSXBZDgpfsj15gLVTfsesqGcokxwUPM7fI4gTDmrjlMP6zk0TR-W2p4-2dPFV6uFdlzdUvmBt7f96oOZZcNlR9ZDorHSePbcxegpmHOSLxbs23naYQhBf28d7GgNM9UayR2WQYVR4i",
+        "status": 200
+      },
+      {
+        "url": "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec?action=checkRegistrationAvailability&lane=dh9&callback=dh9Jsonp_TMEIuR7v7z0O7OUP6ZMZ&_=1782931178430",
+        "status": 302
+      },
+      {
+        "url": "https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnQby7jl22yUYmIYTCo39MyR0inZLJ21kRGkJQUCmPGEqRUUqZWnnstNvqfTaMZrWVt0exVByU_a5nrxF71kSoV6EbjdJjJ-1iD9brDLcw6OYM-KV4XS47mE3jiZqkOWdqLOJd_oXG-UICW50XShpLfn5JGMf2x-lLR_Vj3d20wD4bOoaeAbzkhd3zado0",
+        "status": 200
+      },
+      {
+        "url": "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec?action=checkRegistrationAvailability&lane=dh9&callback=dh9Jsonp_acTtyKsba2QwwEBGhuuD&_=1782931184818",
+        "status": 302
+      },
+      {
+        "url": "https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnRiLXxZf75D7YZQzighwoSirHhTRVEK2rd-TWFKDVLQ9M1VZcd5qEhh9nCwUR89NV5Kxneqr44Xhcf7abTpttAUHmPzbMW5iOLlOdusaXY2B3_jHu-rJZ07GfUPHD4QneEjtEPEAuUO2reCYzVF8FZ1-XypbswaGv_QRJEPkwDqYecYiv5KsGRYLDRet8",
+        "status": 200
+      },
+      {
+        "url": "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec?action=checkStatus&uuid=9ed7cdc0-80d6-4f5d-b7f4-7f4eef01fcc2&paymentCode=DHM9931173905&lane=dh9&callback=dh9Jsonp_JgnweUbgog4KDKV6Zxcy",
+        "status": 302
+      },
+      {
+        "url": "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec?action=checkStatus&uuid=9ed7cdc0-80d6-4f5d-b7f4-7f4eef01fcc2&paymentCode=DHM9931173905&lane=dh9&callback=dh9Jsonp_1s70clIPZdfYD4L7cEaX",
+        "status": 302
+      },
+      {
+        "url": "https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnSTdBZmSXQROrgDAEeWAzcoKkgg-Azk63VSJp3pSQNzUeuFgbKzhL6cyzk2ghukADSyY53iLEyVuXkjLUavqjGy8dtEudmTw2dZQrtaGc09xqwVm7aPO4NR8Ul3Xi824ZvCtK2vb-HoadoEpz5gQrYcwDhmLOBnXnV2HDOH18dSeJHyQlIqG0Rieb-pu6",
+        "status": 200
+      },
+      {
+        "url": "https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnQPrrBlUYA2HLKbYCUFwsl3opil6dor2XDt3sfcdKSpz-pgdmF3POto-GninK_RP84ebQW9jZR3yy-eMGVTabNfRFm42PA307_0butb0MZ6omOnw-EfSHr4JfKP3EypOSQ1EHuQRhiQyidGEQE55ljNmU0He66-06JvyqHkuEwy8khoyO2eXsqSUOv9bd",
+        "status": 200
+      },
+      {
+        "url": "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec",
+        "status": 302
+      },
+      {
+        "url": "https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnQUAhUYtZ4OUc32nzbARh4ORYhPcNHPKtd4ewEKw53Z_nvMByAeQFMNGzSt9SweBb2QfIgDBfTTjpWeC0-g_sXh3RaTTbFGfVr_Jr8fqRfGf6LPoFgnj1-WqInzVP2PiydbyHtelL7uMQz-oy5rkTBoYdEEFrm-Pxh5nUV51JjTiy2ZM501nr-fImJmWZ",
+        "status": 200
+      },
+      {
+        "url": "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec?action=checkStatus&uuid=9ed7cdc0-80d6-4f5d-b7f4-7f4eef01fcc2&paymentCode=DHM9931173905&lane=dh9&callback=dh9Jsonp_IdqGjy7uuH2ZWpv6VUv1",
+        "status": 302
+      },
+      {
+        "url": "https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnSoBf8cX5-M-CsIoAVFcXaywAZTtaZrRYbC5iKU7fRgpJeOlVp9CCiImGe8eCE5XnXdyUx9adUXfZsUBG-nD9E-uzPLySbCa_t4SO5exl8Jel-kl53f9SjPKiHXFF7-2e7YS9WCuQkkm1ZtXyjG2zf7b6kMvwuv6fILNRuw7K-_SgAZ-7JS1YcDtT1Wmf",
+        "status": 200
+      },
+      {
+        "url": "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec",
+        "status": 302
+      },
+      {
+        "url": "https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnSDfd3QfdQIu2mx85q1AwApDmqpF1CFUqRiBSd58t6ksUnqT9BV8UBTgLq4uYpfjxgP16b9JmqSEdqkdgYkBZHtuS4F0VUvdeWGubDtYoZ16XOwzE83rJa67yBZ5dC14do475ATN7e2iXcJ52_fD7Wvaet3YU7ON19hUzbD0b1Y0OBqeY2IN9ee357vs4",
+        "status": 200
+      },
+      {
+        "url": "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec?action=checkStatus&uuid=9ed7cdc0-80d6-4f5d-b7f4-7f4eef01fcc2&paymentCode=DHM9931173905&lane=dh9&callback=dh9Jsonp_vFJkCVzL3HaaRbtRnZ61",
+        "status": 302
+      },
+      {
+        "url": "https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnQfqGpYRAfcAJd8z23KJ2heWa7JocUndF-JiiP0oLMAuD-MFD4751FzRGwPSvotBZmNgErZ8pKXBV80MdsSXrp6jqNwAJgaxBXqffg_idM7AvOSB7a__9b4hxc5S5Iy2-8eaS-sOS4RvR9bImfthvDi08jHdw01ljDApS-DKerjb6K5P4LZLy0LIS3XTv",
+        "status": 200
+      },
+      {
+        "url": "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec?action=checkStatus&uuid=9ed7cdc0-80d6-4f5d-b7f4-7f4eef01fcc2&paymentCode=DHM9931173905&lane=dh9&callback=dh9Jsonp_Wdv8Cap6u9q0msBRAOCA",
+        "status": 302
+      },
+      {
+        "url": "https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnRYEThehuUTEd0KwRus0vPm8-zUlB_TOs-OFiAAv2L9xjTaqrlC0eoUxUdeI66yYlPGdThKIKiWKhOxI5LqkG5vugvXuS-_taf-rZLGNIt8pX1u_VbTZa9eJaC2QYapN2xwCvNcOiVYhkJlRBZIcbffAN7DJ7B_9XqHYe-3wWPOwwn4icmwNIqqLalUkQ",
+        "status": 200
+      },
+      {
+        "url": "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec?action=checkStatus&uuid=9ed7cdc0-80d6-4f5d-b7f4-7f4eef01fcc2&paymentCode=DHM9931173905&lane=dh9&callback=dh9Jsonp_4nmGX4GzmT5jwWZx2qxi",
+        "status": 302
+      },
+      {
+        "url": "https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnTVmIT2C8FvfFwnMiAxlxJv-DzUX6BoDJFNKzu5Yd3YgMjXuiXxqL2Leo3dyBrsTjJmr1zsES_K26ptwjvFi7r3nUgLe-K9EQKjrTzhzdOy3tvxhM-PHmtPJhvi45jbZz3IMM6xaN5QahMwWNeXiJ84SFXtDyEgMzkVsyHN-sWH5OYfJdgKHgiqdoCQLi",
+        "status": 200
+      },
+      {
+        "url": "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec",
+        "status": 302
+      },
+      {
+        "url": "https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnSCFw4B05Y8z0LH7qIJBPF3Zv0eVhHgdda9Kpy-QiWMi4sxxjNCtJOHu7e5SBV7DIWbtLQAihwj7wxfVnF703cvkqjw1LOQOB1JdfM8MXVYJRFLqxhHG2FqVyzYcB6pV2g5ULBMlqKQIUUzoi0fDlpn53DmATt5ncRwzqKBrePYBQojxhu4p3SaZvN90k",
+        "status": 200
+      }
+    ]
+  },
+  "statusBeforePayment": {
+    "error": "INVALID_CALLBACK"
+  },
+  "webhookResponse": {
+    "success": true
+  },
+  "statusAfterPayment": {
+    "error": "INVALID_CALLBACK"
+  },
+  "runEmailQueueResponse": {
+    "success": true,
+    "before": {
+      "total": 174,
+      "states": {
+        "SENT": 174
+      }
+    },
+    "after": {
+      "total": 174,
+      "states": {
+        "SENT": 174
+      }
+    }
+  },
+  "finalStatus": {
+    "error": "INVALID_CALLBACK"
+  },
+  "browserResumePaid": {
+    "resumeUrl": "https://delivering-happiness.vercel.app/register_dh9_hanoi.html?uuid=9ed7cdc0-80d6-4f5d-b7f4-7f4eef01fcc2&paymentCode=DHM9931173905",
+    "paidSeenInBrowser": false,
+    "paidStatusText": "Đã thanh toán",
+    "bodyMentionsDHM9": true,
+    "modalNewRegistrationButtonCount": 0,
+    "successNewRegistrationButtonCount": 1,
+    "paidScreenshot": "UAT\\screenshots\\dhm9_production_finish_20260702\\codex_e2e_paid_resume_20260702_013933.png"
+  },
+  "tokenHandling": "Token resolved locally and supplied only in requests; token value intentionally omitted from report."
+}

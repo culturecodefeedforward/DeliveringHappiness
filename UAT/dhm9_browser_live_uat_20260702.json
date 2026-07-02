@@ -1,0 +1,52 @@
+{
+  "url": "https://delivering-happiness.vercel.app/register_dh9_hanoi.html",
+  "expected_event_id": "DHM9_REG_220826_HN",
+  "expected_deploy_id": "AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ",
+  "cases": [
+    {
+      "name": "desktop",
+      "http_status": 200,
+      "title": "Đăng ký DH Masterclass - CultureCode",
+      "h1": "Đăng ký DH Masterclass (DHM9)",
+      "event_id": "DHM9_REG_220826_HN",
+      "event_id_ok": true,
+      "webapp_url_has_expected_deploy": true,
+      "body_mentions_dhm9": true,
+      "required_fields": {
+        "name": 1,
+        "email": 1,
+        "phone": 1,
+        "submit_button": 1
+      },
+      "fatal_console_count": 0,
+      "fatal_console": [],
+      "screenshots": [
+        "UAT\\screenshots\\dhm9_production_finish_20260702\\codex_desktop_initial.png",
+        "UAT\\screenshots\\dhm9_production_finish_20260702\\codex_desktop_expanded.png"
+      ]
+    },
+    {
+      "name": "mobile",
+      "http_status": 200,
+      "title": "Đăng ký DH Masterclass - CultureCode",
+      "h1": "Đăng ký DH Masterclass (DHM9)",
+      "event_id": "DHM9_REG_220826_HN",
+      "event_id_ok": true,
+      "webapp_url_has_expected_deploy": true,
+      "body_mentions_dhm9": true,
+      "required_fields": {
+        "name": 1,
+        "email": 1,
+        "phone": 1,
+        "submit_button": 1
+      },
+      "fatal_console_count": 0,
+      "fatal_console": [],
+      "screenshots": [
+        "UAT\\screenshots\\dhm9_production_finish_20260702\\codex_mobile_initial.png",
+        "UAT\\screenshots\\dhm9_production_finish_20260702\\codex_mobile_expanded.png"
+      ]
+    }
+  ],
+  "overall_static_browser_ok": true
+}

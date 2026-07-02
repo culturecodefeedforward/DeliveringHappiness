@@ -1,0 +1,47 @@
+{
+  "account": "vuhoang2708@gmail.com",
+  "sourceE2EReport": "Artifacts\\dhm9_full_circle_e2e\\codex_dhm9_browser_full_circle_20260702_013933.json",
+  "registrationUuid": "9ed7cdc0-80d6-4f5d-b7f4-7f4eef01fcc2",
+  "paymentCode": "DHM9931173905",
+  "fullName": "Codex DHM9 Browser E2E 20260702_013933",
+  "queries": [
+    {
+      "query": "\"DHM9931173905\" newer_than:1d",
+      "isError": false,
+      "textPreview": "Found 1 messages matching '\"DHM9931173905\" newer_than:1d':\n\n📧 MESSAGES:\n  1. Message ID: 19f1efb568bb2d7f\n     Web Link: https://mail.google.com/mail/u/0/#all/19f1efb568bb2d7f\n     Thread ID: 19f1ce178b637c18\n     Thread Link: https://mail.google.com/mail/u/0/#all/19f1ce178b637c18\n\n💡 USAGE:\n  • Pass the Message IDs **as a list** to get_gmail_messages_content_batch()\n    e.g. get_gmail_messages_content_batch(message_ids=[...])\n  • Pass the Thread IDs to get_gmail_thread_content() (single) or get_gmail_threads_content_batch() (batch)",
+      "containsPaymentCode": true,
+      "containsFullName": false,
+      "containsRegistrationUuid": false,
+      "containsDHM9": true
+    },
+    {
+      "query": "\"Codex DHM9 Browser E2E 20260702_013933\" newer_than:1d",
+      "isError": false,
+      "textPreview": "Found 4 messages matching '\"Codex DHM9 Browser E2E 20260702_013933\" newer_than:1d':\n\n📧 MESSAGES:\n  1. Message ID: 19f1efbb5548fd26\n     Web Link: https://mail.google.com/mail/u/0/#all/19f1efbb5548fd26\n     Thread ID: 19f1d617fca2c6d1\n     Thread Link: https://mail.google.com/mail/u/0/#all/19f1d617fca2c6d1\n\n  2. Message ID: 19f1efb9444758f8\n     Web Link: https://mail.google.com/mail/u/0/#all/19f1efb9444758f8\n     Thread ID: 19f1d6165601ebe9\n     Thread Link: https://mail.google.com/mail/u/0/#all/19f1d6165601ebe9\n\n  3. Message ID: 19f1efb741edf17e\n     Web Link: https://mail.google.com/mail/u/0/#all/19f1efb741edf17e\n     Thread ID: 19f1ce18eeb35a1c\n     Thread Link: https://mail.google.com/mail/u/0/#all/19f1ce18eeb35a1c\n\n  4. Message ID: 19f1efb568bb2d7f\n     Web Link: https://mail.google.com/mail/u/0/#all/19f1efb568bb2d7f\n     Thread ID: 19f1ce178b637c18\n     Thread Link: https://mail.google.com/mail/u/0/#all/19f1ce178b637c18\n\n💡 USAGE:\n  • Pass the Message IDs **as a list** to get_gmail_messages_content_batch()\n    e.g. get_gmail_messages_content_batch(message_ids=[...])\n  • Pass the Thread IDs to get_gmail_thread_content() (single) or get_gmail_threads_content_batch() (batch)",
+      "containsPaymentCode": false,
+      "containsFullName": true,
+      "containsRegistrationUuid": false,
+      "containsDHM9": true
+    },
+    {
+      "query": "\"9ed7cdc0-80d6-4f5d-b7f4-7f4eef01fcc2\" newer_than:1d",
+      "isError": false,
+      "textPreview": "Found 2 messages matching '\"9ed7cdc0-80d6-4f5d-b7f4-7f4eef01fcc2\" newer_than:1d':\n\n📧 MESSAGES:\n  1. Message ID: 19f1efbb5548fd26\n     Web Link: https://mail.google.com/mail/u/0/#all/19f1efbb5548fd26\n     Thread ID: 19f1d617fca2c6d1\n     Thread Link: https://mail.google.com/mail/u/0/#all/19f1d617fca2c6d1\n\n  2. Message ID: 19f1efb741edf17e\n     Web Link: https://mail.google.com/mail/u/0/#all/19f1efb741edf17e\n     Thread ID: 19f1ce18eeb35a1c\n     Thread Link: https://mail.google.com/mail/u/0/#all/19f1ce18eeb35a1c\n\n💡 USAGE:\n  • Pass the Message IDs **as a list** to get_gmail_messages_content_batch()\n    e.g. get_gmail_messages_content_batch(message_ids=[...])\n  • Pass the Thread IDs to get_gmail_thread_content() (single) or get_gmail_threads_content_batch() (batch)",
+      "containsPaymentCode": false,
+      "containsFullName": false,
+      "containsRegistrationUuid": true,
+      "containsDHM9": false
+    },
+    {
+      "query": "DHM9 newer_than:1d to:vuhoang2708@gmail.com",
+      "isError": false,
+      "textPreview": "Found 10 messages matching 'DHM9 newer_than:1d to:vuhoang2708@gmail.com':\n\n📧 MESSAGES:\n  1. Message ID: 19f1efbb5548fd26\n     Web Link: https://mail.google.com/mail/u/0/#all/19f1efbb5548fd26\n     Thread ID: 19f1d617fca2c6d1\n     Thread Link: https://mail.google.com/mail/u/0/#all/19f1d617fca2c6d1\n\n  2. Message ID: 19f1efb9444758f8\n     Web Link: https://mail.google.com/mail/u/0/#all/19f1efb9444758f8\n     Thread ID: 19f1d6165601ebe9\n     Thread Link: https://mail.google.com/mail/u/0/#all/19f1d6165601ebe9\n\n  3. Message ID: 19f1efb741edf17e\n     Web Link: https://mail.google.com/mail/u/0/#all/19f1efb741edf17e\n     Thread ID: 19f1ce18eeb35a1c\n     Thread Link: https://mail.google.com/mail/u/0/#all/19f1ce18eeb35a1c\n\n  4. Message ID: 19f1efb568bb2d7f\n     Web Link: https://mail.google.com/mail/u/0/#all/19f1efb568bb2d7f\n     Thread ID: 19f1ce178b637c18\n     Thread Link: https://mail.google.com/mail/u/0/#all/19f1ce178b637c18\n\n  5. Message ID: 19f1ef8be8a13c87\n     Web Link: https://mail.google.com/mail/u/0/#all/19f1ef8be8a13c87\n     Thread ID: 19f1d617fca2c6d1\n     Thread Link: https://mail.google.com/mail/u/0/#all/19f1d617fca2c6d1\n\n  6. Message ID: 19f1ef8b4e33d04f\n     Web Link: https://mail.google.com/mail/u/0/#all/19f1ef8b4e33d04f\n     Thread ID: 19f1d6165601ebe9\n     Thread Link: https://mail.google.com/mail/u/0/#all/19f1d6165601ebe9\n\n  7. Message ID: 19f1ef8a9f9ce70c\n     Web Link: https://mail.google.com/mail/u/0/#all/19f1ef8a9f9ce70c\n     Thread ID: 19f1ce18eeb35a1c\n     Thread Link: https://mail.google.com/mail/u/0/#all/19f1ce18eeb35a1c\n\n  8. Message ID: 19f1ef89edb177ff\n     Web Link: https://mail.google.com/mail/u/0/#all/19f1ef89edb177ff\n     Thread ID: 19f1ce178b637c18\n     Thread Link: https://mail.google.com/mail/u/0/#all/19f1ce178b637c18\n\n  9. Message ID: 19f1e141020a939b\n     Web Link: https://mail.google.com/mail/u/0/#all/19f1e141020a939b\n     Thread ID: 19f1ce18eeb35a1c\n     Thread Link: https://mail.google.com/mail/u/0/#all/19f1ce18eeb35a1c\n\n  10. Message ID: 19f1e140096e1a96\n     Web Link: https://mail.google.com/mail/u/0/#all/19f1e140096e1a96\n     Thread ID: 19f1ce178b637c18\n     Thread Link: https://mail.google.com/mail/u/0/#all/19f1ce178b637c18\n\n💡 USAGE:\n  • Pass the Message IDs **as a list** to get_gmail_messages_content_batch()\n    e.g. get_gmail_messages_content_batch(message_ids=[...])\n  • Pass the Thread IDs to get_gmail_thread_content() (single) or get_gmail_threads_content_batch() (batch)\n\n📄 PAGINATION: To get the next page, call search_gmail_messages again with page_token='12678169272196714883'",
+      "containsPaymentCode": false,
+      "containsFullName": false,
+      "containsRegistrationUuid": false,
+      "containsDHM9": true
+    }
+  ],
+  "verifiedByInboxSearch": true,
+  "matchedDHM9Recent": true
+}

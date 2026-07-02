@@ -1,0 +1,12 @@
+{
+  "sourceReport": "Artifacts\\dhm9_full_circle_e2e\\codex_dhm9_browser_full_circle_20260702_013933.json",
+  "registrationUuid": "9ed7cdc0-80d6-4f5d-b7f4-7f4eef01fcc2",
+  "paymentCode": "DHM9931173905",
+  "validCallback": "dh9Jsonp_BROWSER1234567890ABCD",
+  "status": {
+    "success": true,
+    "state": "REGISTERED",
+    "registrationUuid": "9ed7cdc0-80d6-4f5d-b7f4-7f4eef01fcc2",
+    "paymentStatus": "PAID"
+  }
+}
