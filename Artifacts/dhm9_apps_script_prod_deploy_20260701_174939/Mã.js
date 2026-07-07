@@ -64,6 +64,18 @@ function isDhm9Token_(value) {
   return normalized.indexOf('DH9') === 0 || normalized.indexOf('DHM9') === 0;
 }
 
+function containsDhm9Token_(value) {
+  var raw = String(value || '').toUpperCase();
+  var tokens = raw.split(/[^A-Z0-9]+/)
+    .map(function(token) { return normalizePaymentCodeToken(token); })
+    .filter(function(token) { return token !== ''; });
+  var stripped = normalizePaymentCodeToken(raw);
+  if (stripped && tokens.indexOf(stripped) === -1) {
+    tokens.push(stripped);
+  }
+  return tokens.some(function(token) { return isDhm9Token_(token); });
+}
+
 function detectLaneKeyFromPaymentCode_(paymentCode) {
   if (isDhm9Token_(paymentCode)) return 'dh9';
   return 'dh8';
@@ -75,11 +87,18 @@ function detectLaneKeyFromPayload_(data) {
   var eventId = String((data && data.event_id) || '').toUpperCase();
   var type = String((data && data.type) || '').toUpperCase();
   var source = String((data && data.source) || '').toUpperCase();
-  var content = String((data && (data.transferContent || data.transactionContent || data.content || data.description || data.paymentCode)) || '').toUpperCase();
+  var content = data ? [
+    data.transferContent,
+    data.transactionContent,
+    data.content,
+    data.description,
+    data.paymentCode,
+    data.code
+  ].join(' ').toUpperCase() : '';
   if (eventId.indexOf('DH9') !== -1 || eventId.indexOf('DHM9') !== -1 ||
       type.indexOf('DH9') !== -1 || type.indexOf('DHM9') !== -1 ||
       source.indexOf('DH9') !== -1 || source.indexOf('DHM9') !== -1 ||
-      isDhm9Token_(content)) {
+      containsDhm9Token_(content)) {
     return 'dh9';
   }
   return 'dh8';
