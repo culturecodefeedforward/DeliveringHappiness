@@ -33,25 +33,28 @@ const topics = [
 
 // Render topics
 const list = document.getElementById('topicsList');
-topics.forEach(t => {
-  const item = document.createElement('div');
-  item.className = 'topic-item';
-  item.innerHTML = `
-    <div class="topic-header">
-      <div class="topic-num">${t.num}</div>
-      <div style="flex:1">
-        <div class="topic-name">${t.name}</div>
-        <div class="topic-en">${t.en}</div>
+if (list) {
+  list.replaceChildren();
+  topics.forEach(t => {
+    const item = document.createElement('div');
+    item.className = 'topic-item';
+    item.innerHTML = `
+      <div class="topic-header">
+        <div class="topic-num">${t.num}</div>
+        <div style="flex:1">
+          <div class="topic-name">${t.name}</div>
+          <div class="topic-en">${t.en}</div>
+        </div>
+        <div class="topic-chevron">▾</div>
       </div>
-      <div class="topic-chevron">▾</div>
-    </div>
-    <div class="topic-body">${t.desc}</div>
-  `;
-  item.querySelector('.topic-header').addEventListener('click', () => {
-    const isOpen = item.classList.contains('open');
-    // close all
-    document.querySelectorAll('.topic-item.open').forEach(el => el.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
+      <div class="topic-body">${t.desc}</div>
+    `;
+    item.querySelector('.topic-header').addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      // close all
+      document.querySelectorAll('.topic-item.open').forEach(el => el.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+    list.appendChild(item);
   });
-  list.appendChild(item);
-});
+}

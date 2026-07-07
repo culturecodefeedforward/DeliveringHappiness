@@ -16,461 +16,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700;800&display=swap"
         rel="stylesheet">
-    <style>
-        :root {
-            --dark: #0f172a;
-            --mid: #334155;
-            --light: #f8fafc;
-            --accent: #3b82f6;
-            --warm-yellow: #f59e0b;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Be Vietnam Pro', sans-serif;
-        }
-
-        body {
-            background: radial-gradient(circle at top right, #1e293b, #0f172a);
-            color: var(--light);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
-        }
-
-        .form-card {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            padding: 3rem;
-            border-radius: 32px;
-            width: 100%;
-            max-width: 800px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #fff, var(--warm-yellow));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .subtitle {
-            color: rgba(255, 255, 255, 0.6);
-            line-height: 1.6;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-
-        .input-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .input-group.full-width {
-            grid-column: span 2;
-        }
-
-        label {
-            display: block;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        input,
-        select,
-        textarea {
-            width: 100%;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            color: white;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        input:focus,
-        select:focus,
-        textarea:focus {
-            outline: none;
-            border-color: var(--warm-yellow);
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
-        }
-
-        .radio-group {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 5px;
-        }
-
-        .radio-group-3col {
-            grid-template-columns: repeat(3, 1fr);
-        }
-
-        .radio-item {
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid var(--glass-border);
-            cursor: pointer;
-            transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .radio-item.full-width {
-            grid-column: span 2;
-            gap: 10px;
-        }
-
-        .radio-item:hover {
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .radio-item:has(input:checked) {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: var(--warm-yellow);
-            box-shadow: 0 0 0 1px var(--warm-yellow);
-        }
-
-        .radio-item:focus-within {
-            border-color: var(--warm-yellow);
-            box-shadow: 0 0 0 1px var(--warm-yellow);
-        }
-
-        .radio-item input[type="radio"],
-        .radio-item input[type="checkbox"] {
-            width: 18px !important;
-            height: 18px !important;
-            padding: 0 !important;
-            margin: 0 10px 0 0 !important;
-            background: transparent !important;
-            border: 1px solid var(--glass-border) !important;
-            flex-shrink: 0;
-            cursor: pointer;
-            box-shadow: none !important;
-            transition: border-color 0.2s;
-        }
-
-        .radio-item input[type="radio"] {
-            border-radius: 50% !important;
-        }
-
-        .radio-item input[type="checkbox"] {
-            border-radius: 4px !important;
-        }
-
-        .radio-item input[type="radio"]:focus,
-        .radio-item input[type="checkbox"]:focus {
-            outline: none !important;
-            border-color: var(--warm-yellow) !important;
-            box-shadow: none !important;
-            background: transparent !important;
-        }
-
-        .radio-item label {
-            margin-bottom: 0;
-            cursor: pointer;
-            font-weight: 400;
-            font-size: 0.85rem;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 1.25rem;
-            background: var(--warm-yellow);
-            color: var(--dark);
-            border: none;
-            border-radius: 16px;
-            font-weight: 800;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            margin-top: 2rem;
-            box-shadow: 0 10px 30px -10px rgba(245, 158, 11, 0.5);
-        }
-
-        .btn-submit:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px -10px rgba(245, 158, 11, 0.6);
-            filter: brightness(1.1);
-        }
-
-        .btn-submit:active {
-            transform: translateY(0);
-        }
-
-        .loading-spinner {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(0, 0, 0, 0.1);
-            border-top: 3px solid var(--dark);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-right: 10px;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        #successMessage {
-            display: none;
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .back-home {
-            display: block;
-            margin-top: 2rem;
-            color: rgba(255, 255, 255, 0.4);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.2s;
-        }
-
-        .back-home:hover {
-            color: white;
-        }
-
-        .payment-info {
-            background: rgba(245, 158, 11, 0.1);
-            border: 1px solid var(--warm-yellow);
-            padding: 1.5rem;
-            border-radius: 16px;
-            margin-bottom: 2rem;
-            text-align: left;
-        }
-
-        .payment-info h3 {
-            color: var(--warm-yellow);
-            margin-bottom: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        .payment-details {
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: rgba(255, 255, 255, 0.85);
-        }
-
-        .payment-details ul {
-            margin-top: 8px;
-            padding-left: 0;
-        }
-
-        .payment-details li {
-            margin-bottom: 6px;
-        }
-
-        .registration-closed {
-            display: none;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.16);
-            border-radius: 12px;
-            padding: 2rem;
-        }
-
-        .registration-closed h2 {
-            color: var(--warm-yellow);
-            margin-bottom: 1rem;
-        }
-
-        .option-other-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            width: 100%;
-        }
-
-        .option-other-input {
-            flex: 1;
-            padding: 6px 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            color: white;
-            font-size: 0.9rem;
-        }
-
-        .option-other-input:focus {
-            outline: none;
-            border-color: var(--warm-yellow);
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.1) !important;
-        }
-
-        .collapsible-section {
-            max-height: 0;
-            opacity: 0;
-            transform: translateY(-8px);
-            overflow: hidden;
-            transition: max-height 0.35s ease-out, opacity 0.35s ease-out, transform 0.35s ease-out;
-            grid-column: span 2;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-
-        .collapsible-section.visible {
-            max-height: 250px;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .additional-info-trigger {
-            grid-column: span 2;
-            cursor: pointer;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: all 0.3s;
-            margin-bottom: 0.5rem;
-            margin-top: -0.5rem;
-        }
-
-        .additional-info-trigger:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .additional-info-trigger .arrow {
-            transition: transform 0.3s;
-        }
-
-        .additional-info-trigger.open .arrow {
-            transform: rotate(180deg);
-        }
-
-        .additional-info-section {
-            grid-column: span 2;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease-out, opacity 0.4s ease-out;
-        }
-
-        .additional-info-section.visible {
-            max-height: 2000px;
-            opacity: 1;
-            margin-bottom: 1rem;
-        }
-
-        /* Brand Logo Style */
-        .brand-logo-link {
-            display: block;
-            margin: 0 auto 2rem auto;
-            width: fit-content;
-            transition: transform 0.2s ease, opacity 0.2s ease;
-            text-align: center;
-            z-index: 10;
-        }
-        .brand-logo-link:hover {
-            transform: scale(1.05);
-            opacity: 0.9;
-        }
-        .brand-logo {
-            height: 110px;
-            width: auto;
-            border-radius: 8px;
-            display: block;
-            margin: 0 auto;
-        }
-        @media (max-width: 768px) {
-            .brand-logo-link {
-                margin: 0 auto 1.5rem auto;
-            }
-            .brand-logo {
-                height: 90px;
-            }
-        }
-
-
-        @media (prefers-reduced-motion: reduce) {
-            .collapsible-section {
-                transition: none !important;
-            }
-        }
-        @media (max-width: 640px) {
-            .form-card {
-                padding: 1.25rem !important;
-                border-radius: 16px !important;
-            }
-
-            .form-grid,
-            .additional-info-section,
-            .collapsible-section {
-                grid-template-columns: 1fr !important;
-                gap: 1rem !important;
-            }
-
-            .form-grid > *,
-            .additional-info-section > * {
-                grid-column: 1 / -1 !important;
-            }
-
-            .radio-group-3col,
-            .radio-group {
-                grid-template-columns: 1fr !important;
-            }
-
-            .radio-item.full-width {
-                flex-direction: column !important;
-                align-items: flex-start !important;
-                gap: 6px !important;
-            }
-
-            .radio-item.full-width input[type="text"] {
-                width: 100% !important;
-                margin-left: 0 !important;
-                margin-top: 5px !important;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="register.css">
 </head>
 
 <body>
@@ -478,7 +24,7 @@
     <div class="form-card" id="formWrapper">
         <!-- Logo CultureCode top-left -->
         <a href="https://www.linkedin.com/company/culturecodecommunity" target="_blank" class="brand-logo-link">
-            <img src="culturecode_logo_transparent.png" alt="CultureCode Logo" class="brand-logo">
+            <img src="assets/culturecode-logo-light.jpg" alt="CultureCode Logo" class="brand-logo">
         </a>
         <div class="header">
             <h1>Đăng ký DH Masterclass (DHM8)</h1>
@@ -503,8 +49,8 @@
                     <p style="margin-top: 10px; margin-bottom: 15px;">Sau khi gửi form, hệ thống sẽ tạo <strong>mã thanh toán SePay riêng</strong> và hiển thị đúng QR tương ứng để bạn chuyển khoản theo luồng tự động.</p>
                     <p style="font-size: 0.85rem; color: rgba(255,255,255,0.7); line-height: 1.5; border-top: 1px dashed rgba(255,255,255,0.2); padding-top: 10px; margin-top: 10px;">
                         <strong>Lưu ý:</strong><br>
-                        1- Nếu cần xuất hóa đơn cho Công ty, vui lòng liên hệ Ban tổ chức trước khi thanh toán để được hướng dẫn.<br>
-                        2- Sau khi chương trình kết thúc, Ban tổ chức sẽ quyết toán chi phí và chuyển phần dư còn lại vào hoạt động thiện nguyện. Vì vậy, khoản phí đã đóng sẽ không được hoàn lại nếu bạn hủy tham gia sau khi đăng ký. Mong bạn thông cảm.
+                        1- Nếu cần xuất hóa đơn cho Công ty, vui lòng liên hệ CultureCode Team trước khi thanh toán để được hướng dẫn.<br>
+                        2- Sau khi chương trình kết thúc, CultureCode Team sẽ quyết toán chi phí và chuyển phần dư còn lại vào hoạt động thiện nguyện. Vì vậy, khoản phí đã đóng sẽ không được hoàn lại nếu bạn hủy tham gia sau khi đăng ký. Mong bạn thông cảm.
                     </p>
                 </div>
             </div>
@@ -526,7 +72,7 @@
                 <!-- 3. Số điện thoại -->
                 <div class="input-group">
                     <label>Số điện thoại liên hệ (Zalo) *</label>
-                    <input type="tel" name="phone" required placeholder="Để BTC liên hệ và mời vào nhóm...">
+                    <input type="tel" name="phone" required placeholder="Để CultureCode Team liên hệ và mời vào nhóm...">
                 </div>
 
                 <!-- Nguồn giới thiệu / Đối tác (Radio group) -->
@@ -565,12 +111,12 @@
 
                 <!-- Trust Note -->
                 <div class="input-group full-width" style="font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: -0.5rem; margin-bottom: 1.5rem;">
-                    <i>* BTC cam kết bảo mật thông tin và chỉ chia sẻ với đối tác liên kết bạn đã chọn để hỗ trợ xác thực đăng ký.</i>
+                    <i>* CultureCode Team cam kết bảo mật thông tin và chỉ chia sẻ với đối tác liên kết bạn đã chọn để hỗ trợ xác thực đăng ký.</i>
                 </div>
 
                 <!-- ================= NÚT ACCORDION NGĂN CÁCH ================= -->
                 <div class="additional-info-trigger" id="additionalInfoTrigger">
-                    <span>Thông tin bổ sung giúp BTC thấu hiểu mong đợi của bạn (Không bắt buộc)</span>
+                    <span>Thông tin bổ sung giúp CultureCode Team thấu hiểu mong đợi của bạn (Không bắt buộc)</span>
                     <span class="arrow">▾</span>
                 </div>
 
@@ -745,7 +291,7 @@
             <h2 style="margin-bottom: 1rem; color: var(--warm-yellow);">Đăng ký thành công!</h2>
             <p style="color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 1.5rem;">
                 Cảm ơn bạn đã đăng ký **Delivering Happiness Masterclass (DHM8)**. <br>
-                BTC đã nhận được thông tin đăng ký của bạn.
+                CultureCode Team đã nhận được thông tin đăng ký của bạn.
             </p>
             
             <div class="payment-info" style="text-align: left;">

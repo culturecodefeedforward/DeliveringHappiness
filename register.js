@@ -340,7 +340,7 @@ function ensurePaidModal() {
         <div style="width:min(520px, 100%); background:#ffffff; color:#111827; border-radius:16px; padding:28px; box-shadow:0 24px 70px rgba(0,0,0,0.28); text-align:center;">
             <div style="font-size:3rem; line-height:1; margin-bottom:14px;">✅</div>
             <h2 id="paymentCompleteTitle" style="margin:0 0 12px; color:#047857; font-size:1.45rem;">Đã hoàn tất chi phí hậu cần</h2>
-            <p style="margin:0 0 18px; color:#374151; line-height:1.55;">Chúc mừng bạn! Hệ thống đã ghi nhận thanh toán thành công. Bạn có thể tham gia nhóm Zalo DH8 HCM để nhận thông báo, lịch trình và kết nối với BTC.</p>
+            <p style="margin:0 0 18px; color:#374151; line-height:1.55;">Chúc mừng bạn! Hệ thống đã ghi nhận thanh toán thành công. Bạn có thể tham gia nhóm Zalo DH8 HCM để nhận thông báo, lịch trình và kết nối với CultureCode Team.</p>
             <a id="paymentCompleteZaloLink" href="${DHM8_ZALO_GROUP_URL}" target="_blank" rel="noopener" style="display:block; background:#0068ff; color:#ffffff; text-decoration:none; font-weight:700; border-radius:10px; padding:13px 18px; margin-bottom:10px;">Vào nhóm Zalo DH8 HCM</a>
             <button id="paymentCompleteNewRegistration" type="button" style="display:block; width:100%; border:1px solid #047857; background:#ecfdf5; color:#047857; font-weight:700; border-radius:10px; padding:12px 18px; margin-bottom:10px; cursor:pointer;">Đăng ký người khác</button>
             <a id="paymentCompleteClose" href="https://delivering-happiness.vercel.app/" style="display:block; width:100%; border:1px solid #d1d5db; background:#ffffff; color:#374151; font-weight:700; border-radius:10px; padding:12px 18px; text-decoration:none; cursor:pointer;">Quay về trang chủ</a>
@@ -546,7 +546,7 @@ function showRetryMessage(uuid) {
         errorDiv.style.display = 'block';
         errorDiv.innerHTML = `
             <p>Đăng ký của bạn đang được xử lý. Nếu chưa nhận được email xác nhận sau 5 phút,
-            vui lòng lưu lại <strong>Mã Đăng ký: ${uuid}</strong> và liên hệ ban tổ chức.</p>
+            vui lòng lưu lại <strong>Mã Đăng ký: ${uuid}</strong> và liên hệ CultureCode Team.</p>
             <button id="retryPollBtn" type="button" class="btn-retry">Kiểm tra lại</button>`;
         const retryBtn = document.getElementById('retryPollBtn');
         if (retryBtn) {
@@ -589,7 +589,7 @@ async function startPolling(uuid, startAttempt) {
                 return;
             } else if (result.error === 'AMBIGUOUS_PAYMENT_CODE') {
                 setSubmitState(btn, spinner, textEl, 'Gửi đăng ký & Hoàn tất', false);
-                showDuplicatePhoneError({ message: 'Số điện thoại này đang có nhiều đăng ký. Ban tổ chức sẽ liên hệ để xử lý thủ công. Vui lòng không đăng ký lại.' });
+                showDuplicatePhoneError({ message: 'Số điện thoại này đang có nhiều đăng ký. CultureCode Team sẽ liên hệ để xử lý thủ công. Vui lòng không đăng ký lại.' });
                 return;
             } else if (result.error === 'DUPLICATE_PAID' || result.error === 'DUPLICATE_PENDING') {
                 setSubmitState(btn, spinner, textEl, 'Gửi đăng ký & Hoàn tất', false);
@@ -697,7 +697,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const preflight = await pollRegistrationStatus(registrationUuid, 'preSubmit', paymentCode);
             if (preflight.error === 'AMBIGUOUS_PAYMENT_CODE') {
-                showPhoneError('Số điện thoại này đang có nhiều đăng ký. Ban tổ chức sẽ liên hệ để xử lý thủ công. Vui lòng không đăng ký lại.');
+                showPhoneError('Số điện thoại này đang có nhiều đăng ký. CultureCode Team sẽ liên hệ để xử lý thủ công. Vui lòng không đăng ký lại.');
                 return;
             }
             if (preflight.error === 'DUPLICATE_PAID' || preflight.error === 'DUPLICATE_PENDING') {
@@ -858,7 +858,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const preflight = await pollRegistrationStatus(registrationUuid, 'preSubmit', paymentCode);
                 if (preflight.error === 'AMBIGUOUS_PAYMENT_CODE') {
                     setSubmitState(btn, spinner, textEl, 'Gửi đăng ký & Hoàn tất', false);
-                    showDuplicatePhoneError({ message: 'Số điện thoại này đang có nhiều đăng ký. Ban tổ chức sẽ liên hệ để xử lý thủ công. Vui lòng không đăng ký lại.' });
+                    showDuplicatePhoneError({ message: 'Số điện thoại này đang có nhiều đăng ký. CultureCode Team sẽ liên hệ để xử lý thủ công. Vui lòng không đăng ký lại.' });
                     return;
                 }
                 if (preflight.error === 'DUPLICATE_PAID' || preflight.error === 'DUPLICATE_PENDING') {

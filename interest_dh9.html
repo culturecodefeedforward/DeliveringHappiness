@@ -131,14 +131,14 @@
   <nav class="top-nav">
     <a href="https://www.linkedin.com/company/culturecodecommunity/" target="_blank"
       class="nav-brand">
-      <img src="data/logo.jpg" alt="CultureCode Logo" class="nav-logo-img" />
+      <img src="assets/culturecode-logo-dark.jpg" alt="CultureCode Logo" class="nav-logo-img" />
     </a>
   </nav>
 
   <main class="interest-shell">
     <h1>DH9 đã đủ số lượng đăng ký</h1>
     <p>
-      Cảm ơn bạn đã quan tâm đến Delivering Happiness Masterclass 9 tại Hà Nội ngày 22/08. Bạn có thể để lại thông tin dưới đây để BTC liên hệ
+      Cảm ơn bạn đã quan tâm đến Delivering Happiness Masterclass 9 tại Hà Nội ngày 22/08. Bạn có thể để lại thông tin dưới đây để CultureCode Team liên hệ
       khi có chương trình tiếp theo hoặc khi có suất phù hợp. Địa điểm chính xác sẽ được thông báo sau.
     </p>
 
@@ -155,7 +155,7 @@
 
       <label>
         Số điện thoại/Zalo *
-        <input type="tel" name="phone" autocomplete="tel" required placeholder="Để BTC liên hệ khi có suất phù hợp..." />
+        <input type="tel" name="phone" autocomplete="tel" required placeholder="Để CultureCode Team liên hệ khi có suất phù hợp..." />
       </label>
 
       <label>
@@ -170,7 +170,7 @@
 
       <label>
         Ghi chú
-        <textarea name="note" placeholder="Bạn muốn BTC lưu ý điều gì khi có chương trình tiếp theo?"></textarea>
+        <textarea name="note" placeholder="Bạn muốn CultureCode Team lưu ý điều gì khi có chương trình tiếp theo?"></textarea>
       </label>
 
       <div class="interest-actions">
@@ -222,7 +222,7 @@
           body: JSON.stringify(data)
         });
         event.target.reset();
-        showInterestStatus('BTC đã nhận thông tin quan tâm của bạn. Cảm ơn bạn, BTC sẽ liên hệ khi có chương trình hoặc suất phù hợp.', false);
+        showInterestStatus('CultureCode Team đã nhận thông tin quan tâm của bạn. Cảm ơn bạn, chúng tôi sẽ liên hệ khi có chương trình hoặc suất phù hợp.', false);
       } catch (err) {
         showInterestStatus('Chưa gửi được thông tin. Vui lòng kiểm tra kết nối mạng và thử lại.', true);
       } finally {

@@ -133,6 +133,9 @@ body {
 }
 
 .btn-primary {
+  display: inline-block;
+  text-align: center;
+  white-space: nowrap;
   background: linear-gradient(90deg, var(--warm-yellow), var(--warm-orange));
   color: var(--dark);
   font-weight: 700;
@@ -226,12 +229,15 @@ body {
 /* ============ TOPICS ============ */
 .topics-list {
   display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1.5rem;
   margin-top: 2rem;
 }
 
 .topic-item {
+  flex: 0 1 300px;
   background: var(--white);
   border-radius: var(--radius);
   overflow: hidden;
@@ -356,6 +362,10 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
   margin-top: 2.5rem;
+}
+
+.levels-grid {
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .lever-card {
@@ -696,6 +706,17 @@ body {
 
   .levels-grid {
     grid-template-columns: 1fr !important;
+  }
+
+  .topics-list {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .topic-item {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 100%;
   }
 }
 
