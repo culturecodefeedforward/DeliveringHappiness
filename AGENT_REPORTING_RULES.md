@@ -79,3 +79,33 @@ tài liệu trước khi xin commit, push, deploy, `clasp push`, hoặc external
    hoặc xin approve Cấp độ 3.
 5. **Docs không thay verification:** Cập nhật docs không được dùng để claim
    frontend/live/email/payment đã chạy. Các bề mặt đó vẫn cần evidence riêng.
+
+## 5. Repo Hygiene Continuity Gate
+
+Với `dh4hn-website`, sau mỗi task có sửa/tạo file, sinh report, tạo artifact,
+chạy workflow email/sheet/deploy, hoặc nhận handoff từ agent khác, Agent phải
+chủ động kiểm tra và báo trạng thái repo trước khi kết thúc lượt.
+
+Quy tắc bắt buộc:
+
+1. **Git status bắt buộc:** Chạy `git status --short --branch` và phân loại mọi
+   thay đổi còn lại thành 3 nhóm:
+   - `Keep/commit later` (giữ lại để commit sau): file tài liệu, UAT, report,
+     hoặc code có giá trị dài hạn.
+   - `Archive outside repo` (lưu trữ ngoài worktree): file tạm, payload, script
+     one-off, bản nháp, hoặc artifact chỉ phục vụ thao tác hiện tại.
+   - `Restore/revert` (khôi phục về nguồn chuẩn): thay đổi tracked không còn
+     nằm trong scope đã duyệt.
+2. **Chủ động đề xuất cleanup:** Nếu repo còn dirty, Agent phải đề xuất một
+   cleanup lane (luồng dọn dẹp) rõ ràng, có backup, không push/deploy/delete
+   vĩnh viễn nếu chưa được User duyệt trực tiếp.
+3. **Không để bẩn âm thầm:** Không được kết thúc bằng claim `done`, `safe`,
+   `ready`, hoặc `VERIFIED` nếu vừa tạo dirty files mà không nêu rõ dirty files
+   đó thuộc nhóm nào và bước xử lý tiếp theo.
+4. **Backup-first:** Trước mọi restore/remove untracked, phải export patch tracked
+   changes, copy untracked artifacts ra backup ngoài worktree, tạo manifest, và
+   verify backup tồn tại.
+5. **Rule update/Docs update ngoại lệ có kiểm soát:** Nếu task cuối cùng là cập
+   nhật rule/docs, repo có thể còn dirty đúng file rule/docs đó, nhưng Agent phải
+   nói rõ đây là intentional dirty state (trạng thái bẩn có chủ đích) và xin
+   approval riêng nếu User muốn commit.
