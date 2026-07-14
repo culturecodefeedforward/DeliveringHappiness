@@ -1,6 +1,6 @@
 # Workflow dang ky va thanh toan DHM9
 
-Ngay cap nhat: 2026-07-02
+Ngay cap nhat: 2026-07-09
 
 Tai lieu nay la `source of truth` (nguon chuan de cac agent cung tham chieu)
 cho luong DHM9 Ha Noi sau production finish ngay 2026-07-02.
@@ -88,16 +88,31 @@ flowchart TD
     A[Hoc vien mo register_dh9_hanoi.html] --> B[Tao registrationUuid]
     B --> C[Luu UUID va paymentCode DHM9 trong localStorage/sessionStorage]
     C --> D[POST registration toi Apps Script production]
-    D --> E[Ghi vao DHM9_Data]
-    E --> F[Tao email jobs trong DHM9_Email_Outbox]
-    F --> G[Frontend checkStatus bang UUID va paymentCode]
-    G --> H[Hien trang thai PENDING va QR SePay]
-    H --> I[SePay webhook gui giao dich co noi dung DHM9 hoac DH9]
-    I --> J[Apps Script doi soat tren DHM9_Payments]
-    J --> K[Cap nhat DHM9_Data thanh PAID]
-    K --> L[Tao/hoan tat email PAID]
-    L --> M[Frontend resume URL hien modal thanh toan xong va link Zalo DHM9]
+    D --> E{paidCount DHM9 < 40?}
+    E -->|Co| F[Ghi vao DHM9_Data]
+    E -->|Khong| X[Tra REGISTRATION_CLOSED va link interest_dh9]
+    F --> G[Tao email jobs trong DHM9_Email_Outbox]
+    G --> H[Frontend checkStatus bang UUID va paymentCode]
+    H --> I[Hien trang thai PENDING va QR SePay]
+    I --> J[SePay webhook gui giao dich co noi dung DHM9 hoac DH9]
+    J --> K[Apps Script doi soat tren DHM9_Payments]
+    K --> L[Cap nhat DHM9_Data thanh PAID]
+    L --> M[Tao/hoan tat email PAID]
+    M --> N[Frontend resume URL hien modal thanh toan xong va link Zalo DHM9]
 ```
+
+## 4.1 Rule dong cong dang ky
+
+`VERIFIED from local source 2026-07-09`: cong dang ky DHM9 dung chung backend
+Apps Script voi DHM8 va dong theo `paidCount`, khong dong theo tong so dong
+dang ky.
+
+- `paidCount` la so dong trong `DHM9_Data` co `Payment Status = PAID`.
+- Cong dang ky moi dong khi `paidCount >= 40`.
+- `checkRegistrationAvailability?lane=dh9` phai tra `countBasis: "PAID"`,
+  `paidCount`, `dataRowCount`, `cap`, va `registrationOpen`.
+- Viec dong cong chi chan dang ky moi. Luong resume/checkStatus va thanh toan
+  cua registration da ton tai van tiep tuc hoat dong.
 
 ## 5. Dieu kien doi soat SePay
 
@@ -170,5 +185,7 @@ Ket qua browser:
 - Frontend sinh ma thanh toan canonical `DHM9`.
 - Backend chap nhan ca `DHM9` va `DH9`.
 - `checkStatus` voi `lane=dh8` khong thay registration DHM9.
+- `checkRegistrationAvailability?lane=dh9` phai dung `countBasis: "PAID"` va
+  dong cong theo `paidCount >= 40`, khong theo tong so dong `DHM9_Data`.
 - Browser UAT co desktop/mobile screenshot.
 - Neu co Apps Script deploy, phai ghi version deployment va backup path vao UAT.

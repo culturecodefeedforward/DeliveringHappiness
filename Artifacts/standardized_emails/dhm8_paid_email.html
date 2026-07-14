@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333333; margin: 0; padding: 0; background-color: #eae6df; }
+    .container { max-width: 600px; margin: 30px auto; background: #ffffff; border-radius: 12px; border: 1px solid #d1c9bd; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .header { background-color: #1a1a1a; padding: 35px 25px; text-align: center; color: #ffffff; }
+    .header img { width: 100px; height: auto; display: block; margin: 0 auto; }
+    .header h1 { margin: 15px 0 0 0; font-size: 22px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+    .header p { margin: 8px 0 0 0; opacity: 0.8; font-size: 13px; font-weight: 500; line-height: 1.5; color: #aaaaaa; }
+    .content { padding: 35px 30px; background-color: #ffffff; }
+    .greeting { font-size: 16px; font-weight: bold; margin-bottom: 15px; color: #1a1a1a; }
+    .paragraph { margin-bottom: 15px; text-align: justify; font-size: 14.5px; color: #444444; }
+    
+    /* Box Thành công */
+    .success-box { background-color: #ecfdf5; border-left: 4px solid #10b981; padding: 15px 20px; margin: 20px 0; border-radius: 4px; }
+    .success-box h3 { margin: 0 0 8px 0; color: #065f46; font-size: 15px; }
+    .success-box p { margin: 0; font-size: 14px; color: #065f46; line-height: 1.5; }
+    
+    /* Box Thông tin lớp học */
+    .info-box { background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin: 20px 0; }
+    .info-title { font-size: 15px; font-weight: bold; color: #0f766e; margin: 0 0 12px 0; }
+    .info-list { list-style: none; padding: 0; margin: 0; }
+    .info-item { margin-bottom: 8px; font-size: 14px; color: #4b5563; }
+    .info-item strong { color: #1f2937; }
+    
+    /* Card kết nối Zalo */
+    .zalo-card { background-color: #eff6ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 25px 0; border-radius: 6px; }
+    .zalo-title { margin: 0 0 8px 0; color: #1e3a8a; font-size: 15px; font-weight: bold; }
+    .zalo-desc { margin: 0 0 15px 0; font-size: 13.5px; color: #1e293b; line-height: 1.5; }
+    .zalo-btn { display: inline-block; padding: 10px 20px; background-color: #3b82f6; color: #ffffff !important; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+    
+    /* Box Lưu ý */
+    .notes-box { background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin: 20px 0; }
+    .notes-title { font-size: 15px; font-weight: bold; color: #374151; margin: 0 0 12px 0; }
+    .notes-list { padding-left: 20px; margin: 0; font-size: 13.5px; color: #4b5563; line-height: 1.6; }
+    .notes-list li { margin-bottom: 8px; }
+    
+    .footer { background-color: #ffffff; padding: 20px 30px 35px 30px; border-top: 1px solid #f3f4f6; }
+    .footer-table { width: 100%; border-collapse: collapse; }
+    .footer-left { text-align: left; vertical-align: bottom; }
+    .footer-right { text-align: right; vertical-align: bottom; width: 100px; }
+    .footer-logo { width: 90px; height: auto; display: block; margin-left: auto; }
+    .closing { font-size: 14.5px; font-weight: bold; color: #1a1a1a; margin: 0; }
+    .team-name { font-size: 14.5px; font-weight: bold; color: #1a1a1a; margin: 4px 0 0 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="https://delivering-happiness.vercel.app/culturecode_live_club_logo.jpg" alt="CultureCode Logo" />
+      <h1>Delivering Happiness Masterclass</h1>
+      <p>Một ngày học sâu về văn hóa hạnh phúc, động lực đội ngũ và cách tổ chức vận hành từ bên trong.</p>
+    </div>
+    
+    <div class="content">
+      <div class="greeting">Chào {{FullName}},</div>
+      
+      <p class="paragraph">
+        Chúc mừng bạn! Hệ thống xác nhận của Delivering Happiness đã ghi nhận giao dịch thanh toán chi phí hậu cần thành công cho hồ sơ của bạn.
+      </p>
+      
+      <div class="success-box">
+        <h3>✅ Đã xác nhận giữ chỗ thành công:</h3>
+        <p>Hồ sơ đăng ký của bạn đã được chuyển trạng thái sang <strong>ĐÃ THANH TOÁN (Paid)</strong>. Vị trí tham gia lớp học của bạn đã được đảm bảo chính thức.</p>
+      </div>
+
+      <div class="info-box">
+        <div class="info-title">Thông tin lớp học của bạn:</div>
+        <ul class="info-list">
+          <li class="info-item">📅 <strong>Thời gian:</strong> Ngày {{EventDate}} (Chi tiết giờ học cụ thể sẽ được gửi trước sự kiện 1 tuần)</li>
+          <li class="info-item">📍 <strong>Hình thức:</strong> Học trực tiếp (Offline)</li>
+          <li class="info-item">📚 <strong>Chương trình đăng ký:</strong> Delivering Happiness Masterclass ({{EventName}})</li>
+        </ul>
+      </div>
+
+      <div class="zalo-card">
+        <div class="zalo-title">📱 Tham gia Nhóm Zalo Lớp học:</div>
+        <p class="zalo-desc">Để dễ dàng kết nối với Ban tổ chức, giảng viên và nhận các thông báo quan trọng nhất trong suốt khóa học, bạn vui lòng tham gia nhóm Zalo hỗ trợ tại đây:</p>
+        <a href="{{ZaloGroupLink}}" target="_blank" class="zalo-btn">Tham gia Nhóm Zalo lớp học</a>
+      </div>
+
+      <div class="notes-box">
+        <div class="notes-title">🌱 Một số lưu ý từ BTC:</div>
+        <ul class="notes-list">
+          <li><strong>Thời gian có mặt:</strong> Lớp học sẽ bắt đầu đúng giờ. Bạn vui lòng có mặt trước 15 phút để hoàn tất check-in và nhận tài liệu in ấn.</li>
+          <li><strong>Cam kết xanh:</strong> BTC khuyến khích bạn mang theo <strong>bình nước cá nhân</strong> để cùng hạn chế rác thải nhựa, bảo vệ môi trường.</li>
+          <li><strong>Chính sách hoàn phí:</strong> Chi phí hậu cần đã được sử dụng để chuẩn bị teabreak, ăn trưa và in ấn tài liệu nên BTC không hỗ trợ hoàn phí. Bạn có thể chuyển nhượng suất học cho người khác và báo lại cho BTC tối thiểu 3 ngày trước sự kiện. Chi phí còn dư (nếu có) sẽ được quyên góp vào Quỹ Nhân ái của Báo Dân trí.</li>
+        </ul>
+      </div>
+
+      <p class="paragraph">
+        BTC sẽ gửi email hướng dẫn chi tiết về tài liệu học tập, địa điểm học và các khâu chuẩn bị trước sự kiện qua email này. Bạn vui lòng chú ý theo dõi hòm thư của mình.
+      </p>
+
+      <p class="paragraph" style="margin-top: 25px;">
+        Cảm ơn bạn đã đồng hành cùng Delivering Happiness!
+      </p>
+    </div>
+    
+    <div class="footer">
+      <table class="footer-table">
+        <tr>
+          <td class="footer-left">
+            <p class="closing">Trân trọng,</p>
+            <p class="team-name">Ban Tổ chức Delivering Happiness</p>
+          </td>
+          <td class="footer-right">
+            <img src="https://delivering-happiness.vercel.app/culturecode_live_club_logo.jpg" alt="CultureCode Small Logo" class="footer-logo" />
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

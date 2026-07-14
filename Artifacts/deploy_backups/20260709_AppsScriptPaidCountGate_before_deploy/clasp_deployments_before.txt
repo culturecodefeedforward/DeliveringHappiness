@@ -1,0 +1,11 @@
+﻿Found 10 deployments.
+- AKfycbyf4Q7nOxJuuuyzp66Omnji3MnipEvtI7GXFuMPcLbs @HEAD 
+- AKfycbyo_aknuZe1frjy3oF6VnQtOuP1XnolucokOfzjwjMR_fwYuaMoe4TMA2skOMQnMnbAJw @1 - DHM8 Gate2 staging 20260616
+- AKfycbygCA9Gy7gq9KH1DtclT3PeNGAVCTA9Z9m0vVDdpICvaeke0AxJS0-ni4t_T5vK5ddODg @3 - DHM8 payment-code test flow 20260616
+- AKfycbwP_VSYqjQdOqF2tTk77Z1kxBTao1Hlk5P3uF3eIZA0-M3CsYJAub1N0ZlikWGG4pEyTQ @5 - DHM8 staging admin config endpoint 20260616
+- AKfycbxfbK1IWH_fL-3BzcoYDsdl61L0EpKuuF_MwPgdzDMutHHqECGRRJaDfsBdHqty-Vjtpg @19 - Remove mock phone duplication, restore clean Staging
+- AKfycbwJt-LN6I3GncgGsPUKHKah86UyWGXEDkYfQfgy9YbWXfWAP1PsDm5RJ4V8DFeSx-RZ3Q @21 - Fix multiple doGet
+- AKfycbwtYlRzNWKMFPQVZ4pp_O3Zp61jz-ya4mc126D-QqIXaqi8yq09SqWhV8s9ZGOgLF7z1w @4 - DHM8 amount 3000 test lane 20260616
+- AKfycbzr6cAp0lR8z9EMQDUipVmtRDtxD8esuFjGhOqNmB_LiRctY3ls6WZr7JyTlgJtIzUxCw @6 - DHM8 payment debug endpoint 20260616
+- AKfycbxxHDDtpkPUhl52OHlXbQC6mMwsdwM0b-dLWlak_g13AaCmC1-rjxMWWin3K_mNYn5d2Q @7 - DHM8 payment candidate debug 20260616
+- AKfycbxJ2Wwu7qPa4ZJBnKIZSvpurYlaxKGR9SO3x3YBL3fQ_nUpAAnmT_3qMIzk9IgBhnhG_Q @20 - Added sendReminders API

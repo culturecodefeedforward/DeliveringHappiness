@@ -34,7 +34,8 @@
 // ─── CONSTANTS ───────────────────────────────────────────────
 var BTC_EMAILS = ['chauhm71@gmail.com', 'vuhoang2708@gmail.com', 'hoanhn.edu.vn@gmail.com'];
 var DHM8_PRICE = 250000;
-var DHM8_REGISTRATION_CAP = 40;
+var DHM8_REGISTRATION_CAP = 32;
+var DHM9_REGISTRATION_CAP = 40;
 var DEFAULT_INTEREST_URL = 'https://delivering-happiness.vercel.app/interest.html';
 var DEFAULT_DH9_INTEREST_URL = 'https://delivering-happiness.vercel.app/interest_dh9.html';
 var CALLBACK_REGEX = /^dh(?:m8|9)Jsonp_[A-Za-z0-9]{16,40}$/;
@@ -52,26 +53,53 @@ var DEFAULT_PAYMENT_HOLDER_DISPLAY = 'Hà Ngọc Hoàn';
 var DEFAULT_PUBLIC_REGISTER_URL = 'https://delivering-happiness.vercel.app/register.html';
 var DEFAULT_DH9_PUBLIC_REGISTER_URL = 'https://delivering-happiness.vercel.app/register_dh9_hanoi.html';
 var DEFAULT_DHM8_ZALO_GROUP_URL = 'https://zalo.me/g/hpf7qu45j6qkft6hpghx';
-var DEFAULT_DH9_ZALO_GROUP_URL = 'https://zalo.me/g/hpf7qu45j6qkft6hpghx';
+var DEFAULT_DH9_ZALO_GROUP_URL = 'https://zalo.me/g/3wrsaoygrfcjubr0ie44';
 
 function getLaneKey_(value) {
-  return String(value || '').toLowerCase() === 'dh9' ? 'dh9' : 'dh8';
+  var normalized = String(value || '').toLowerCase();
+  return (normalized === 'dh9' || normalized === 'dhm9') ? 'dh9' : 'dh8';
+}
+
+function isDhm9Token_(value) {
+  var normalized = normalizePaymentCodeToken(value || '');
+  return normalized.indexOf('DH9') === 0 || normalized.indexOf('DHM9') === 0;
+}
+
+function containsDhm9Token_(value) {
+  var raw = String(value || '').toUpperCase();
+  var tokens = raw.split(/[^A-Z0-9]+/)
+    .map(function(token) { return normalizePaymentCodeToken(token); })
+    .filter(function(token) { return token !== ''; });
+  var stripped = normalizePaymentCodeToken(raw);
+  if (stripped && tokens.indexOf(stripped) === -1) {
+    tokens.push(stripped);
+  }
+  return tokens.some(function(token) { return isDhm9Token_(token); });
 }
 
 function detectLaneKeyFromPaymentCode_(paymentCode) {
-  var normalized = normalizePaymentCodeToken(paymentCode || '');
-  if (normalized.indexOf('DH9') === 0) return 'dh9';
+  if (isDhm9Token_(paymentCode)) return 'dh9';
   return 'dh8';
 }
 
 function detectLaneKeyFromPayload_(data) {
   var laneCandidate = String((data && (data.lane || data.registrationLane || data.eventLane)) || '').toLowerCase();
-  if (laneCandidate === 'dh9') return 'dh9';
+  if (laneCandidate === 'dh9' || laneCandidate === 'dhm9') return 'dh9';
   var eventId = String((data && data.event_id) || '').toUpperCase();
   var type = String((data && data.type) || '').toUpperCase();
   var source = String((data && data.source) || '').toUpperCase();
-  var content = String((data && (data.transferContent || data.transactionContent || data.content || data.description || data.paymentCode)) || '').toUpperCase();
-  if (eventId.indexOf('DH9') !== -1 || type.indexOf('DH9') !== -1 || source.indexOf('DH9') !== -1 || normalizePaymentCodeToken(content).indexOf('DH9') === 0) {
+  var content = data ? [
+    data.transferContent,
+    data.transactionContent,
+    data.content,
+    data.description,
+    data.paymentCode,
+    data.code
+  ].join(' ').toUpperCase() : '';
+  if (eventId.indexOf('DH9') !== -1 || eventId.indexOf('DHM9') !== -1 ||
+      type.indexOf('DH9') !== -1 || type.indexOf('DHM9') !== -1 ||
+      source.indexOf('DH9') !== -1 || source.indexOf('DHM9') !== -1 ||
+      containsDhm9Token_(content)) {
     return 'dh9';
   }
   return 'dh8';
@@ -83,25 +111,26 @@ function getLaneConfig_(laneKey) {
   if (resolvedLane === 'dh9') {
     return {
       laneKey: 'dh9',
-      paymentPrefix: 'DH9',
-      registrationCap: parseInt(props.getProperty('DH9_REGISTRATION_CAP'), 10) || DHM8_REGISTRATION_CAP,
-      dataSheetName: 'DH9_Data',
-      paymentsSheetName: 'DH9_Payments',
-      outboxSheetName: 'DH9_Email_Outbox',
-      inboxSheetName: 'DH9_Inbox',
-      interestSheetName: 'DH9 interest',
+      paymentPrefix: 'DHM9',
+      paymentPrefixes: ['DHM9', 'DH9'],
+      registrationCap: parseInt(props.getProperty('DH9_REGISTRATION_CAP'), 10) || DHM9_REGISTRATION_CAP,
+      dataSheetName: 'DHM9_Data',
+      paymentsSheetName: 'DHM9_Payments',
+      outboxSheetName: 'DHM9_Email_Outbox',
+      inboxSheetName: 'DHM9_Inbox',
+      interestSheetName: 'DHM9 interest',
       interestUrl: (props.getProperty('DH9_INTEREST_URL') || DEFAULT_DH9_INTEREST_URL).trim(),
       publicRegisterUrl: (props.getProperty('DH9_PUBLIC_REGISTER_URL') || DEFAULT_DH9_PUBLIC_REGISTER_URL).trim(),
-      titleShort: 'DH9',
-      classLabel: 'Delivering Happiness Masterclass 9 (DH9)',
+      titleShort: 'DHM9',
+      classLabel: 'Delivering Happiness Masterclass 9 (DHM9)',
       cityLabel: 'Hà Nội',
       zaloGroupUrl: (props.getProperty('DH9_ZALO_GROUP_URL') || DEFAULT_DH9_ZALO_GROUP_URL).trim(),
-      defaultEventId: 'DH9_REG_220826_HN',
-      defaultInterestEventId: 'DH9_INTEREST_220826_HN',
-      defaultLeadType: 'EVENT_LEAD_DH9',
-      defaultLeadSource: 'Web_DH9_Hanoi_Official',
-      defaultInterestType: 'DH9_INTEREST',
-      defaultInterestSource: 'Web_DH9_Interest'
+      defaultEventId: 'DHM9_REG_220826_HN',
+      defaultInterestEventId: 'DHM9_INTEREST_220826_HN',
+      defaultLeadType: 'EVENT_LEAD_DHM9',
+      defaultLeadSource: 'Web_DHM9_Hanoi_Official',
+      defaultInterestType: 'DHM9_INTEREST',
+      defaultInterestSource: 'Web_DHM9_Interest'
     };
   }
 
@@ -129,17 +158,10 @@ function getLaneConfig_(laneKey) {
   };
 }
 
-var cachedPropertiesInstance_ = null;
-
 function getScriptProperties_() {
-  if (cachedPropertiesInstance_ !== null) {
-    return cachedPropertiesInstance_;
-  }
-
   var props = PropertiesService.getScriptProperties();
-  var allProps = props.getProperties(); // Đọc tất cả các thuộc tính 1 lần duy nhất!
   var updates = {};
-  var env = allProps['ENVIRONMENT'];
+  var env = props.getProperty('ENVIRONMENT');
   var activeSpreadsheet = null;
 
   try {
@@ -151,54 +173,34 @@ function getScriptProperties_() {
   if (!env) {
     updates.ENVIRONMENT = DEFAULT_ENVIRONMENT;
     env = DEFAULT_ENVIRONMENT;
-    allProps['ENVIRONMENT'] = env;
   }
 
-  if (!allProps['SPREADSHEET_ID'] && activeSpreadsheet) {
-    var ssId = activeSpreadsheet.getId();
-    updates.SPREADSHEET_ID = ssId;
-    allProps['SPREADSHEET_ID'] = ssId;
+  if (!props.getProperty('SPREADSHEET_ID') && activeSpreadsheet) {
+    updates.SPREADSHEET_ID = activeSpreadsheet.getId();
   }
 
-  var sheetId = allProps['SPREADSHEET_ID'] || updates.SPREADSHEET_ID || '';
+  var sheetId = props.getProperty('SPREADSHEET_ID') || updates.SPREADSHEET_ID || '';
   var allowKey = env === 'STAGING' ? 'STAGING_ALLOWED_IDS' : 'PRODUCTION_ALLOWED_IDS';
-  if (!allProps[allowKey] && sheetId) {
+  if (!props.getProperty(allowKey) && sheetId) {
     updates[allowKey] = sheetId;
-    allProps[allowKey] = sheetId;
   }
 
-  if (!allProps['OFFICIAL_ACCOUNT_NUMBER']) {
+  if (!props.getProperty('OFFICIAL_ACCOUNT_NUMBER')) {
     updates.OFFICIAL_ACCOUNT_NUMBER = DEFAULT_OFFICIAL_ACCOUNT_NUMBER;
-    allProps['OFFICIAL_ACCOUNT_NUMBER'] = DEFAULT_OFFICIAL_ACCOUNT_NUMBER;
   }
-  if (env === 'PRODUCTION' && allProps['OFFICIAL_ACCOUNT_NUMBER'] !== DEFAULT_OFFICIAL_ACCOUNT_NUMBER) {
+  if (env === 'PRODUCTION' && props.getProperty('OFFICIAL_ACCOUNT_NUMBER') !== DEFAULT_OFFICIAL_ACCOUNT_NUMBER) {
     updates.OFFICIAL_ACCOUNT_NUMBER = DEFAULT_OFFICIAL_ACCOUNT_NUMBER;
-    allProps['OFFICIAL_ACCOUNT_NUMBER'] = DEFAULT_OFFICIAL_ACCOUNT_NUMBER;
   }
 
-  if (!allProps['SEPAY_WEBHOOK_TOKEN']) {
+  if (!props.getProperty('SEPAY_WEBHOOK_TOKEN')) {
     updates.SEPAY_WEBHOOK_TOKEN = LEGACY_SEPAY_WEBHOOK_TOKEN;
-    allProps['SEPAY_WEBHOOK_TOKEN'] = LEGACY_SEPAY_WEBHOOK_TOKEN;
   }
 
   if (Object.keys(updates).length > 0) {
     props.setProperties(updates, false);
   }
 
-  // Tạo mock object để giả lập đối tượng Properties Service, tránh gọi API ngoài cho các lượt đọc sau
-  cachedPropertiesInstance_ = {
-    getProperty: function(key) {
-      return allProps[key] !== undefined ? allProps[key] : null;
-    },
-    setProperties: function(newProps, deleteOthers) {
-      props.setProperties(newProps, deleteOthers);
-      for (var k in newProps) {
-        allProps[k] = newProps[k];
-      }
-    }
-  };
-
-  return cachedPropertiesInstance_;
+  return props;
 }
 
 function getProcessEmailQueueTriggerInfo_() {
@@ -283,8 +285,12 @@ function getRemainingQuota() {
 function normalizePhone(phone) {
   if (!phone) return '';
   var digits = phone.toString().replace(/\D/g, '');
-  if (digits.indexOf('0084') === 0 && digits.length > 6) return '0' + digits.slice(4);
-  if (digits.indexOf('84') === 0 && digits.length > 6) return '0' + digits.slice(2);
+  if (digits.indexOf('0084') === 0 && digits.length > 6) digits = '0' + digits.slice(4);
+  else if (digits.indexOf('84') === 0 && digits.length > 6) digits = '0' + digits.slice(2);
+
+  if (digits.length === 9 && digits.indexOf('0') !== 0) {
+    digits = '0' + digits;
+  }
   return digits;
 }
 
@@ -293,6 +299,13 @@ function buildPaymentCodeFromPhone(phone, laneKey) {
   var codeDigits = normalizedPhone.replace(/^0/, '');
   if (!/^\d{3,}$/.test(codeDigits)) return '';
   return getLaneConfig_(laneKey).paymentPrefix + codeDigits.slice(-9);
+}
+
+function getPaymentPrefixesForLane_(config) {
+  var prefixes = (config && config.paymentPrefixes) || (config && config.paymentPrefix ? [config.paymentPrefix] : []);
+  return prefixes.filter(function(prefix, index) {
+    return prefix && prefixes.indexOf(prefix) === index;
+  });
 }
 
 function buildLegacyPaymentCodeFromUuid(uuid) {
@@ -315,13 +328,21 @@ function getPaymentCodeInfo_(phone, uuid, laneKey) {
   var paymentCode = buildPaymentCodeFromPhone(phone, config.laneKey);
   var legacyPaymentCode = buildLegacyPaymentCodeFromUuid(uuid);
   var normalizedPhone = normalizePhone(phone);
+  var codeDigits = normalizedPhone.replace(/^0/, '');
   var variants = [];
-  [
-    paymentCode,
-    normalizedPhone ? config.paymentPrefix + '-' + normalizedPhone : '',
-    normalizedPhone ? config.paymentPrefix + normalizedPhone : '',
+  var prefixVariants = [paymentCode];
+  getPaymentPrefixesForLane_(config).forEach(function(prefix) {
+    if (normalizedPhone) {
+      prefixVariants.push(prefix + '-' + normalizedPhone);
+      prefixVariants.push(prefix + normalizedPhone);
+    }
+    if (/^\d{3,}$/.test(codeDigits)) {
+      prefixVariants.push(prefix + codeDigits.slice(-9));
+    }
+  });
+  prefixVariants.concat([
     legacyPaymentCode
-  ].forEach(function(code) {
+  ]).forEach(function(code) {
     var normalizedCode = normalizePaymentCodeToken(code);
     if (normalizedCode && variants.indexOf(normalizedCode) === -1) {
       variants.push(normalizedCode);
@@ -768,14 +789,29 @@ function getDhm8RegistrationDataRowCount_(sheet) {
   return count;
 }
 
-function buildRegistrationClosedPayload_(dataRowCount, laneKey) {
+function getRegistrationPaidCount_(sheet) {
+  if (!sheet) return 0;
+  var lastRow = sheet.getLastRow();
+  if (lastRow <= 1) return 0;
+  // Cột P (index 16 trong Sheet, index 15 trong mảng) = Payment Status.
+  var values = sheet.getRange(2, 16, lastRow - 1, 1).getValues();
+  var count = 0;
+  values.forEach(function(row) {
+    if (String(row[0] || '').trim().toUpperCase() === 'PAID') count++;
+  });
+  return count;
+}
+
+function buildRegistrationClosedPayload_(paidCount, laneKey, dataRowCount) {
   var lane = getLaneConfig_(laneKey);
   return {
     success: false,
     state: 'REGISTRATION_CLOSED',
     error: 'REGISTRATION_CLOSED',
     cap: lane.registrationCap,
+    paidCount: paidCount,
     dataRowCount: dataRowCount,
+    countBasis: 'PAID',
     interestLink: getInterestUrl_(lane.laneKey)
   };
 }
@@ -785,13 +821,16 @@ function getRegistrationAvailability_(laneKey) {
   var ss = getSpreadsheet();
   var sheet = ss.getSheetByName(lane.dataSheetName);
   var dataRowCount = getDhm8RegistrationDataRowCount_(sheet);
-  var isOpen = dataRowCount < lane.registrationCap;
+  var paidCount = getRegistrationPaidCount_(sheet);
+  var isOpen = paidCount < lane.registrationCap;
   return {
     success: true,
     state: isOpen ? 'OPEN' : 'REGISTRATION_CLOSED',
     registrationOpen: isOpen,
     cap: lane.registrationCap,
+    paidCount: paidCount,
     dataRowCount: dataRowCount,
+    countBasis: 'PAID',
     interestLink: getInterestUrl_(lane.laneKey)
   };
 }
@@ -858,8 +897,8 @@ function getRegistrationStatus(query) {
             state: duplicateStatus === 'PAID' ? 'DUPLICATE_PAID' : 'DUPLICATE_PENDING',
             paymentStatus: duplicateStatus,
             message: duplicateStatus === 'PAID'
-              ? 'Số điện thoại này đã được đăng ký và thanh toán DHM8. Vui lòng không đăng ký lại.'
-              : 'Số điện thoại này đã có đăng ký DHM8 đang chờ thanh toán. Vui lòng không đăng ký lại.'
+              ? 'Số điện thoại này đã được đăng ký và thanh toán ' + lane.titleShort + '. Vui lòng không đăng ký lại.'
+              : 'Số điện thoại này đã có đăng ký ' + lane.titleShort + ' đang chờ thanh toán. Vui lòng không đăng ký lại.'
           };
         }
         return {
@@ -880,7 +919,7 @@ function getRegistrationStatus(query) {
             error: 'DUPLICATE_PAID',
             state: 'DUPLICATE_PAID',
             paymentStatus: 'PAID',
-            message: 'Số điện thoại này đã được đăng ký và thanh toán DHM8. Vui lòng không đăng ký lại.'
+            message: 'Số điện thoại này đã được đăng ký và thanh toán ' + lane.titleShort + '. Vui lòng không đăng ký lại.'
           };
         }
         return {
@@ -898,7 +937,7 @@ function getRegistrationStatus(query) {
 
     var availability = getRegistrationAvailability_(lane.laneKey);
     if (!availability.registrationOpen) {
-      return buildRegistrationClosedPayload_(availability.dataRowCount, lane.laneKey);
+      return buildRegistrationClosedPayload_(availability.paidCount, lane.laneKey, availability.dataRowCount);
     }
 
     return { success: false, error: 'NOT_FOUND' };
@@ -1016,7 +1055,7 @@ function handleRegistration(data, laneKey) {
             duplicate: true,
             paymentStatus: 'PAID',
             paymentCode: existingPaymentCode,
-            message: 'Số điện thoại này đã được đăng ký và thanh toán DHM8. Vui lòng không đăng ký lại.'
+            message: 'Số điện thoại này đã được đăng ký và thanh toán ' + lane.titleShort + '. Vui lòng không đăng ký lại.'
           });
         }
         return jsonOut({
@@ -1026,14 +1065,15 @@ function handleRegistration(data, laneKey) {
           duplicate: true,
           paymentStatus: 'PENDING',
           paymentCode: existingPaymentCode,
-          message: 'Số điện thoại này đã có đăng ký DHM8 đang chờ thanh toán. Vui lòng không đăng ký lại.'
+          message: 'Số điện thoại này đã có đăng ký ' + lane.titleShort + ' đang chờ thanh toán. Vui lòng không đăng ký lại.'
         });
       }
       // ─── END PHONE DUPLICATE GUARD ────────────────────────
 
       var dataRowCount = getDhm8RegistrationDataRowCount_(sheet);
-      if (dataRowCount >= lane.registrationCap) {
-        return jsonOut(buildRegistrationClosedPayload_(dataRowCount, lane.laneKey));
+      var paidCount = getRegistrationPaidCount_(sheet);
+      if (paidCount >= lane.registrationCap) {
+        return jsonOut(buildRegistrationClosedPayload_(paidCount, lane.laneKey, dataRowCount));
       }
       sheet.appendRow([
         new Date(), data.fullName || '', data.email || '', data.phone || '',
@@ -1053,11 +1093,13 @@ function handleRegistration(data, laneKey) {
   // enqueueEmail() tự bỏ qua nếu job đã tồn tại → an toàn để gọi idempotently
   enqueueEmail(ss, uuid, 'PENDING', data.email || '', 'Xác nhận đăng ký ' + lane.titleShort, lane.laneKey);
   var recipients = [].concat(BTC_EMAILS);
-  if (data.referrerName === 'GEM Global' || data.referrerName === 'Smart Train') {
-    recipients.push('hang.ho@gemglobal.edu.vn', 'thanh.pham@smarttrain.edu.vn');
+  if (data.referrerName === 'GEM Global') {
+    recipients.push('hang.ho@gemglobal.edu.vn');
+  } else if (data.referrerName === 'Smart Train') {
+    recipients.push('thanh.pham@smarttrain.edu.vn');
   }
   enqueueEmail(ss, uuid, 'BTC', recipients.join(','), 'Thông báo đăng ký mới - ' + lane.titleShort, lane.laneKey);
-  // kickEmailQueueSafely_(ss, 'registration:' + uuid);
+  kickEmailQueueSafely_(ss, 'registration:' + uuid);
 
   writeSystemLog(ss, 'INFO', isDuplicate ? 'Duplicate reg + outbox backfill' : 'Đăng ký mới', uuid);
   return jsonOut({ success: true, state: 'REGISTERED', registrationUuid: uuid, duplicate: isDuplicate });
@@ -1227,8 +1269,10 @@ function handleSePayWebhook(body, laneKey) {
     enqueueEmail(ss, m.uuid, 'PAID', dataRows[m.rowIdx][2], 'Xác nhận thanh toán ' + lane.titleShort, lane.laneKey);
     var referrerName = dataRows[m.rowIdx][13] || '';
     var paymentRecipients = [].concat(BTC_EMAILS);
-    if (referrerName === 'GEM Global' || referrerName === 'Smart Train') {
-      paymentRecipients.push('hang.ho@gemglobal.edu.vn', 'thanh.pham@smarttrain.edu.vn');
+    if (referrerName === 'GEM Global') {
+      paymentRecipients.push('hang.ho@gemglobal.edu.vn');
+    } else if (referrerName === 'Smart Train') {
+      paymentRecipients.push('thanh.pham@smarttrain.edu.vn');
     }
     enqueueEmail(ss, m.uuid, PAYMENT_BTC_EMAIL_TYPE, paymentRecipients.join(','), 'Thanh toán xác nhận - ' + lane.titleShort, lane.laneKey);
     kickEmailQueueSafely_(ss, 'payment:' + txId);
@@ -1497,6 +1541,22 @@ function getEmailOutboxSummary_(ss, laneKey) {
 }
 
 function kickEmailQueueSafely_(ss, detail) {
+  // Chỉ tối ưu hóa đối với luồng đăng ký mới (registration) để bảo vệ trải nghiệm học viên
+  if (detail && detail.indexOf('registration:') === 0) {
+    try {
+      var triggerInfo = getProcessEmailQueueTriggerInfo_();
+      if (triggerInfo.present && triggerInfo.count >= 1) {
+        writeSystemLog(ss, 'INFO', 'Bỏ qua kích hoạt email đồng bộ (Trigger hoạt động tốt)', detail);
+        return; // Thoát ngay, nhường việc gửi email cho trigger chạy ngầm xử lý sau ít giây
+      } else {
+        writeSystemLog(ss, 'WARN', 'Trigger thiếu hoặc lỗi, chạy đồng bộ làm fallback phòng mất email', detail);
+      }
+    } catch (e_trigger) {
+      writeSystemLog(ss, 'ERROR', 'Lỗi kiểm tra trigger, chạy đồng bộ làm fallback', detail + ' | Err: ' + e_trigger.message);
+    }
+  }
+
+  // Thực hiện xử lý gửi thư ngay lập tức (cho webhook payment hoặc khi trigger bị lỗi/thiếu)
   try {
     processEmailQueue();
   } catch (err) {
@@ -1583,7 +1643,7 @@ function renderEmailBody(ss, emailType, regUuid, laneKey) {
       '<p style="font-size:13px; color:#6b7280;">Bạn có thể mở link này trên thiết bị khác để xem lại QR và trạng thái thanh toán.</p>' +
       '<p>Sau khi hệ thống ghi nhận thanh toán, bạn sẽ nhận email xác nhận giữ chỗ chính thức và link tham gia nhóm Zalo lớp ' + escapeHtml_(lane.titleShort) + ' ' + escapeHtml_(lane.cityLabel) + '.</p>' +
       '<div style="margin-top: 20px; border-top: 1px solid #e5e7eb; padding-top: 15px;">' +
-      '<p>Trân trọng,<br><strong>Ban tổ chức DHM8</strong></p>' +
+      '<p>Trân trọng,<br><strong>Ban tổ chức ' + escapeHtml_(lane.titleShort) + '</strong></p>' +
       '<img src="https://delivering-happiness.vercel.app/culturecode_logo_transparent.png" alt="CultureCode" style="width: 90px; height: 90px; margin-top: 10px; display: block; border-radius: 8px;">' +
       '<p style="margin-top: 5px;"><a href="https://www.linkedin.com/company/culturecodecommunity" style="color: #0f766e; text-decoration: none; font-size: 14px;">Cập nhật thông tin mới nhất trên LinkedIn CultureCode</a></p>' +
       '</div>'
@@ -1599,7 +1659,7 @@ function renderEmailBody(ss, emailType, regUuid, laneKey) {
       '<p><a class="btn" href="' + escapeHtml_(lane.zaloGroupUrl) + '" target="_blank">Vào nhóm Zalo ' + escapeHtml_(lane.titleShort) + ' ' + escapeHtml_(lane.cityLabel) + '</a></p>' +
       '<div class="box"><strong>Lưu ý nhanh:</strong><br>BTC sẽ tiếp tục gửi thông tin check-in, địa điểm và chuẩn bị trước sự kiện qua email này và nhóm Zalo.</div>' +
       '<div style="margin-top: 20px; border-top: 1px solid #e5e7eb; padding-top: 15px;">' +
-      '<p>Trân trọng,<br><strong>Ban tổ chức DHM8</strong></p>' +
+      '<p>Trân trọng,<br><strong>Ban tổ chức ' + escapeHtml_(lane.titleShort) + '</strong></p>' +
       '<img src="https://delivering-happiness.vercel.app/culturecode_logo_transparent.png" alt="CultureCode" style="width: 90px; height: 90px; margin-top: 10px; display: block; border-radius: 8px;">' +
       '<p style="margin-top: 5px;"><a href="https://www.linkedin.com/company/culturecodecommunity" style="color: #0f766e; text-decoration: none; font-size: 14px;">Cập nhật thông tin mới nhất trên LinkedIn CultureCode</a></p>' +
       '</div>'
@@ -1607,6 +1667,8 @@ function renderEmailBody(ss, emailType, regUuid, laneKey) {
   }
   if (emailType === 'BTC' || emailType === 'BTC_PAID') {
     var isPaidNotice = emailType === 'BTC_PAID';
+    var dataSheet = ss.getSheetByName(lane.dataSheetName);
+    var paidCount = getRegistrationPaidCount_(dataSheet);
     return renderEmailShell_(
       lane.titleShort + ' - Thông báo nội bộ BTC',
       isPaidNotice ? 'Có học viên vừa hoàn tất thanh toán' : 'Có hoạt động mới liên quan đến đăng ký',
@@ -1616,8 +1678,9 @@ function renderEmailBody(ss, emailType, regUuid, laneKey) {
       '<p><strong>Email:</strong> ' + escapeHtml_(data.email) + '</p>' +
       '<p><strong>Trạng thái thanh toán:</strong> ' + escapeHtml_(data.paymentStatus) + '</p>' +
       (isPaidNotice ? '<p><strong>Sự kiện:</strong> Học viên đã hoàn tất thanh toán.</p>' : '') +
+      '<p>Tổng số lượng học viên hoàn thành thanh toán của ' + escapeHtml_(lane.titleShort) + ' là ' + paidCount + ' người.</p>' +
       '<div style="margin-top: 20px; border-top: 1px solid #e5e7eb; padding-top: 15px;">' +
-      '<p>Trân trọng,<br><strong>Ban tổ chức DHM8</strong></p>' +
+      '<p>Trân trọng,<br><strong>Ban tổ chức ' + escapeHtml_(lane.titleShort) + '</strong></p>' +
       '<img src="https://delivering-happiness.vercel.app/culturecode_logo_transparent.png" alt="CultureCode" style="width: 90px; height: 90px; margin-top: 10px; display: block; border-radius: 8px;">' +
       '<p style="margin-top: 5px;"><a href="https://www.linkedin.com/company/culturecodecommunity" style="color: #0f766e; text-decoration: none; font-size: 14px;">Cập nhật thông tin mới nhất trên LinkedIn CultureCode</a></p>' +
       '</div>'

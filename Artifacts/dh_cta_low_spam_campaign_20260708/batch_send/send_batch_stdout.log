@@ -1,0 +1,62 @@
+START intended_recipients=28 already_verified=0
+MCP_SERVER_PID=34968
+MCP_SERVER_PORT=8892
+MCP_STDOUT_LOG=C:\Users\vu.hoang\.google_workspace_mcp\logs\codex_workspace_mcp_20260708_230319_8892.out.log
+MCP_STDERR_LOG=C:\Users\vu.hoang\.google_workspace_mcp\logs\codex_workspace_mcp_20260708_230319_8892.err.log
+SENDING 1/28 Nguyễn Thạch Uyên Vy <vy.ntu2011@gmail.com>
+VERIFIED_DELIVERY 1/28 vy.ntu2011@gmail.com MESSAGE_ID=19f4277e0081ae45
+SENDING 2/28 Sofia <quynhtruc90@gmail.com>
+VERIFIED_DELIVERY 2/28 quynhtruc90@gmail.com MESSAGE_ID=19f4277f2d4112d2
+SENDING 3/28 Nguyễn Duy Trường <truongnd1989@gmail.com>
+VERIFIED_DELIVERY 3/28 truongnd1989@gmail.com MESSAGE_ID=19f427803195f70e
+SENDING 4/28 Thai Thi Van Anh <van.anh.thai@ktcvietnam.com>
+VERIFIED_DELIVERY 4/28 van.anh.thai@ktcvietnam.com MESSAGE_ID=19f427813d71da0a
+SENDING 5/28 Nguyễn Trọng Đức <nguyentrong.duc@vn.sika.com>
+VERIFIED_DELIVERY 5/28 nguyentrong.duc@vn.sika.com MESSAGE_ID=19f42782068e46e8
+SENDING 6/28 Phan Thị Ngọc Hội <hoi.ngoc.phan@ktcvietnam.com>
+VERIFIED_DELIVERY 6/28 hoi.ngoc.phan@ktcvietnam.com MESSAGE_ID=19f427830298708e
+SENDING 7/28 Võ Hương <janevo0509@gmail.com>
+VERIFIED_DELIVERY 7/28 janevo0509@gmail.com MESSAGE_ID=19f42783e1096596
+SENDING 8/28 Phúc HIPER <hiper@hiperconsulting.vn>
+VERIFIED_DELIVERY 8/28 hiper@hiperconsulting.vn MESSAGE_ID=19f42784d13b8f11
+SENDING 9/28 Vũ Thị Thanh Tâm <dungtam1210@gmail.com>
+VERIFIED_DELIVERY 9/28 dungtam1210@gmail.com MESSAGE_ID=19f42785ab32d393
+SENDING 10/28 Lê Thị Hiên <hienle292@gmail.com>
+VERIFIED_DELIVERY 10/28 hienle292@gmail.com MESSAGE_ID=19f42786b6f446e3
+SENDING 11/28 Linh Vu <vukhanhlinh91@gmail.com>
+VERIFIED_DELIVERY 11/28 vukhanhlinh91@gmail.com MESSAGE_ID=19f42787c3f8f253
+SENDING 12/28 Hồ Lê Tấn <tan.hole@outlook.com>
+VERIFIED_DELIVERY 12/28 tan.hole@outlook.com MESSAGE_ID=19f42788c2aed700
+SENDING 13/28 Nguyễn Ngọc Khánh Ngân <nnkngan4w@gmail.com>
+VERIFIED_DELIVERY 13/28 nnkngan4w@gmail.com MESSAGE_ID=19f42789d62acc07
+SENDING 14/28 Trần Tử Phú <phienbanbv@gmail.com>
+VERIFIED_DELIVERY 14/28 phienbanbv@gmail.com MESSAGE_ID=19f4278aff3f991e
+SENDING 15/28 Ngô Thị Phương Thảo <ngothiphuong.thao@vn.nestle.com>
+VERIFIED_DELIVERY 15/28 ngothiphuong.thao@vn.nestle.com MESSAGE_ID=19f4278bf65f5dd2
+SENDING 16/28 Nguyễn Phương Hà <ha.nguyen@whitecoat.global>
+VERIFIED_DELIVERY 16/28 ha.nguyen@whitecoat.global MESSAGE_ID=19f4278cce4bf9ea
+SENDING 17/28 Đoàn Trâm Anh <anh.doan@whitecoat.vn>
+VERIFIED_DELIVERY 17/28 anh.doan@whitecoat.vn MESSAGE_ID=19f4278da6560e11
+SENDING 18/28 Lê Hoài Vân Anh <anh.le@fuchs.com>
+VERIFIED_DELIVERY 18/28 anh.le@fuchs.com MESSAGE_ID=19f4278e9be20db0
+SENDING 19/28 Lương Thị Thu Phương <tina.15011999@gmail.com>
+VERIFIED_DELIVERY 19/28 tina.15011999@gmail.com MESSAGE_ID=19f4278f7047b552
+SENDING 20/28 Nguyen Quoc Hung <quochung.reo@gmail.com>
+VERIFIED_DELIVERY 20/28 quochung.reo@gmail.com MESSAGE_ID=19f427909bac74b7
+SENDING 21/28 Huỳnh Bá Bích Vân <huynhbabichvan@gmail.com>
+VERIFIED_DELIVERY 21/28 huynhbabichvan@gmail.com MESSAGE_ID=19f42791781dec71
+SENDING 22/28 Nguyễn Phương Vy <phuongvynguyen127@gmail.com>
+VERIFIED_DELIVERY 22/28 phuongvynguyen127@gmail.com MESSAGE_ID=19f4279279cd9dfc
+SENDING 23/28 Nguyễn Thùy Trân <tran.nguyen1@action-composites.com.vn>
+VERIFIED_DELIVERY 23/28 tran.nguyen1@action-composites.com.vn MESSAGE_ID=19f427934a4e571c
+SENDING 24/28 Nguyễn Thị Phương Thanh <thanhntp.exp@gmail.com>
+VERIFIED_DELIVERY 24/28 thanhntp.exp@gmail.com MESSAGE_ID=19f42794202d1991
+SENDING 25/28 Nguyễn Văn Đại <dai.nguyen@mht.masangroup.com>
+VERIFIED_DELIVERY 25/28 dai.nguyen@mht.masangroup.com MESSAGE_ID=19f4279525bd2e18
+SENDING 26/28 Khoa Nguyễn <nguyenphamanhkhoa1807@gmail.com>
+VERIFIED_DELIVERY 26/28 nguyenphamanhkhoa1807@gmail.com MESSAGE_ID=19f4279611cb5c4d
+SENDING 27/28 Nguyễn Hoàng Hương <hoanghuongs@gmail.com>
+VERIFIED_DELIVERY 27/28 hoanghuongs@gmail.com MESSAGE_ID=19f42796ea9538d1
+SENDING 28/28 Lê Thị Thanh Hằng <lethi.thanhhang@yahoo.com>
+VERIFIED_DELIVERY 28/28 lethi.thanhhang@yahoo.com MESSAGE_ID=19f42797e78640c5
+DONE verified_sent=28/28 results=C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\Artifacts\dh_cta_low_spam_campaign_20260708\batch_send\send_results.csv

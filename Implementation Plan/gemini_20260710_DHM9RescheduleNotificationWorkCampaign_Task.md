@@ -1,0 +1,4 @@
+- [x] Tạo script chiến dịch `scratch/dhm9_reschedule_campaign.py`
+- [x] Gửi thử nghiệm UAT (1 PAID + 1 PENDING) cho sếp qua `workspace-mcp-work`
+- [x] Chạy chiến dịch gửi hàng loạt cho 29 người dùng trong sheet `dhm9_data`
+- [x] Gửi email báo cáo kết quả tổng kết cho 3 email BTC: Vũ, Châu, Hoàn

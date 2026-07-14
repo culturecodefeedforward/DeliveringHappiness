@@ -1,0 +1,8 @@
+- [x] Tạo thư mục `Artifacts/standardized_emails/`
+- [x] Soạn mẫu email dời lịch DHM9 chuẩn hóa layout: `Artifacts/standardized_emails/dhm9_reschedule_email.html`
+- [x] Soạn mẫu email Pending chuẩn hóa layout: `Artifacts/standardized_emails/dhm8_pending_email.html`
+- [x] Soạn mẫu email Paid chuẩn hóa layout: `Artifacts/standardized_emails/dhm8_paid_email.html`
+- [x] Soạn mẫu email Thông báo BTC chuẩn hóa layout: `Artifacts/standardized_emails/dhm8_btc_notification_email.html`
+- [x] Cập nhật tệp draft email dời lịch: `Artifacts/dhm9_reschedule_20260710/dhm9_reschedule_email_draft.md`
+- [x] Cập nhật script Python `scratch/send_test_email.py` để dùng layout mới
+- [x] Gửi thử email dời lịch mới tới vuhoang2708@gmail.com để verify

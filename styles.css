@@ -126,6 +126,32 @@ body {
   min-width: 0;
 }
 
+.event-location {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.45rem;
+  line-height: 1.45;
+}
+
+.event-location-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.12rem;
+  min-width: 0;
+}
+
+.event-map-link {
+  color: var(--warm-yellow);
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
 @media (max-width: 768px) {
   .hero-event-grid {
     grid-template-columns: 1fr;

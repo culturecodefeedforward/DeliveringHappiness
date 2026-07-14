@@ -1,0 +1,8 @@
+﻿Found 7 deployments.
+- AKfycbxjp2SL8Ja_i8Mp72Z46bln7TQ7d5UOofxFET9DrPhO @HEAD 
+- AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ @57 - DHM9 email outbox summary probe 20260708
+- AKfycbwynSXvhSbrM4YMvZbXaOFR8fW-BJ5frBiyWfwkUCH5CgcWM-gEA0uuJ4xSdXLrKbQMQg @53 - Clean triggerVluEmails
+- AKfycbwhbK_19TuDXyJLefReyE1MgYE23MoV76rq5sA8_eJIskTB-oKe-Ljm11u0y-y4gd6Yqw @19 - DHM8 previewEmail isolated deploy 20260618
+- AKfycbxa_66WeBb8rGo395mxQZrHXHLjoFeO-P_5PzewrJmk8B7hVE5jL-w3y2A0ukexgTIp4g @8 - DHM8 production inline-queue 20260617
+- AKfycbxxbba8bvb7H2Em179HgJUv0Tj8dnxWIuGynmVqjDcPVwADrTBXxx7UwE5AKroIQR5i @6 - DHM8 production mail-trigger self-heal 20260617
+- AKfycbxFd5G5e2Mdup1SiaFP1hZJJme_h8K_Qiv5RqEEXQrw5fUfeGGp8uf6HIDNu_DIGt3uSg @10 - DHM8 production fresh webapp oauth-scopes 20260617

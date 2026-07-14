@@ -34,7 +34,8 @@
 // ─── CONSTANTS ───────────────────────────────────────────────
 var BTC_EMAILS = ['chauhm71@gmail.com', 'vuhoang2708@gmail.com', 'hoanhn.edu.vn@gmail.com'];
 var DHM8_PRICE = 250000;
-var DHM8_REGISTRATION_CAP = 40;
+var DHM8_REGISTRATION_CAP = 32;
+var DHM9_REGISTRATION_CAP = 40;
 var DEFAULT_INTEREST_URL = 'https://delivering-happiness.vercel.app/interest.html';
 var DEFAULT_DH9_INTEREST_URL = 'https://delivering-happiness.vercel.app/interest_dh9.html';
 var CALLBACK_REGEX = /^dh(?:m8|9)Jsonp_[A-Za-z0-9]{16,40}$/;
@@ -112,7 +113,7 @@ function getLaneConfig_(laneKey) {
       laneKey: 'dh9',
       paymentPrefix: 'DHM9',
       paymentPrefixes: ['DHM9', 'DH9'],
-      registrationCap: parseInt(props.getProperty('DH9_REGISTRATION_CAP'), 10) || DHM8_REGISTRATION_CAP,
+      registrationCap: parseInt(props.getProperty('DH9_REGISTRATION_CAP'), 10) || DHM9_REGISTRATION_CAP,
       dataSheetName: 'DHM9_Data',
       paymentsSheetName: 'DHM9_Payments',
       outboxSheetName: 'DHM9_Email_Outbox',
@@ -788,14 +789,29 @@ function getDhm8RegistrationDataRowCount_(sheet) {
   return count;
 }
 
-function buildRegistrationClosedPayload_(dataRowCount, laneKey) {
+function getRegistrationPaidCount_(sheet) {
+  if (!sheet) return 0;
+  var lastRow = sheet.getLastRow();
+  if (lastRow <= 1) return 0;
+  // Cột P (index 16 trong Sheet, index 15 trong mảng) = Payment Status.
+  var values = sheet.getRange(2, 16, lastRow - 1, 1).getValues();
+  var count = 0;
+  values.forEach(function(row) {
+    if (String(row[0] || '').trim().toUpperCase() === 'PAID') count++;
+  });
+  return count;
+}
+
+function buildRegistrationClosedPayload_(paidCount, laneKey, dataRowCount) {
   var lane = getLaneConfig_(laneKey);
   return {
     success: false,
     state: 'REGISTRATION_CLOSED',
     error: 'REGISTRATION_CLOSED',
     cap: lane.registrationCap,
+    paidCount: paidCount,
     dataRowCount: dataRowCount,
+    countBasis: 'PAID',
     interestLink: getInterestUrl_(lane.laneKey)
   };
 }
@@ -805,13 +821,16 @@ function getRegistrationAvailability_(laneKey) {
   var ss = getSpreadsheet();
   var sheet = ss.getSheetByName(lane.dataSheetName);
   var dataRowCount = getDhm8RegistrationDataRowCount_(sheet);
-  var isOpen = dataRowCount < lane.registrationCap;
+  var paidCount = getRegistrationPaidCount_(sheet);
+  var isOpen = paidCount < lane.registrationCap;
   return {
     success: true,
     state: isOpen ? 'OPEN' : 'REGISTRATION_CLOSED',
     registrationOpen: isOpen,
     cap: lane.registrationCap,
+    paidCount: paidCount,
     dataRowCount: dataRowCount,
+    countBasis: 'PAID',
     interestLink: getInterestUrl_(lane.laneKey)
   };
 }
@@ -918,7 +937,7 @@ function getRegistrationStatus(query) {
 
     var availability = getRegistrationAvailability_(lane.laneKey);
     if (!availability.registrationOpen) {
-      return buildRegistrationClosedPayload_(availability.dataRowCount, lane.laneKey);
+      return buildRegistrationClosedPayload_(availability.paidCount, lane.laneKey, availability.dataRowCount);
     }
 
     return { success: false, error: 'NOT_FOUND' };
@@ -1052,8 +1071,9 @@ function handleRegistration(data, laneKey) {
       // ─── END PHONE DUPLICATE GUARD ────────────────────────
 
       var dataRowCount = getDhm8RegistrationDataRowCount_(sheet);
-      if (dataRowCount >= lane.registrationCap) {
-        return jsonOut(buildRegistrationClosedPayload_(dataRowCount, lane.laneKey));
+      var paidCount = getRegistrationPaidCount_(sheet);
+      if (paidCount >= lane.registrationCap) {
+        return jsonOut(buildRegistrationClosedPayload_(paidCount, lane.laneKey, dataRowCount));
       }
       sheet.appendRow([
         new Date(), data.fullName || '', data.email || '', data.phone || '',
@@ -1647,6 +1667,8 @@ function renderEmailBody(ss, emailType, regUuid, laneKey) {
   }
   if (emailType === 'BTC' || emailType === 'BTC_PAID') {
     var isPaidNotice = emailType === 'BTC_PAID';
+    var dataSheet = ss.getSheetByName(lane.dataSheetName);
+    var paidCount = getRegistrationPaidCount_(dataSheet);
     return renderEmailShell_(
       lane.titleShort + ' - Thông báo nội bộ BTC',
       isPaidNotice ? 'Có học viên vừa hoàn tất thanh toán' : 'Có hoạt động mới liên quan đến đăng ký',
@@ -1656,6 +1678,7 @@ function renderEmailBody(ss, emailType, regUuid, laneKey) {
       '<p><strong>Email:</strong> ' + escapeHtml_(data.email) + '</p>' +
       '<p><strong>Trạng thái thanh toán:</strong> ' + escapeHtml_(data.paymentStatus) + '</p>' +
       (isPaidNotice ? '<p><strong>Sự kiện:</strong> Học viên đã hoàn tất thanh toán.</p>' : '') +
+      '<p>Tổng số lượng học viên hoàn thành thanh toán của ' + escapeHtml_(lane.titleShort) + ' là ' + paidCount + ' người.</p>' +
       '<div style="margin-top: 20px; border-top: 1px solid #e5e7eb; padding-top: 15px;">' +
       '<p>Trân trọng,<br><strong>Ban tổ chức ' + escapeHtml_(lane.titleShort) + '</strong></p>' +
       '<img src="https://delivering-happiness.vercel.app/culturecode_logo_transparent.png" alt="CultureCode" style="width: 90px; height: 90px; margin-top: 10px; display: block; border-radius: 8px;">' +

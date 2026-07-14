@@ -1,6 +1,6 @@
 # Workflow Dang Ky Va Thanh Toan DHM8
 
-Ngay cap nhat: 2026-06-16
+Ngay cap nhat: 2026-07-09
 
 Tai lieu nay mo ta thiet ke du kien trong:
 
@@ -81,9 +81,10 @@ sequenceDiagram
 
     GAS->>GAS: Fail-closed config check
     GAS->>DATA: Kiem tra UUID duoi lock
+    GAS->>DATA: Dem so dong Payment Status = PAID
 
     alt UUID chua ton tai
-        GAS->>DATA: Ghi registration
+        GAS->>DATA: Chi ghi registration public neu paidCount < 32
         GAS->>OUT: Tao PENDING va BTC jobs
     else UUID da ton tai
         GAS->>GAS: Khong ghi trung
@@ -188,6 +189,14 @@ stateDiagram-v2
 
 - UUID phai tao bang `crypto.randomUUID()` hoac `crypto.getRandomValues()`.
 - Chi hien dang ky thanh cong sau khi JSONP xac nhan UUID co trong `DHM8_Data`.
+- Si so cong bo cua DHM8 van la 40. Nguong van hanh tam thoi cua cong dang ky
+  public la `paidCount >= 32`; 8 hoc vien con lai duoc import sau theo quy trinh
+  rieng. `paidCount` la so dong `DHM8_Data` co `Payment Status = PAID`; khong
+  dong theo tong so dong dang ky PENDING.
+- `checkRegistrationAvailability` phai tra `countBasis: "PAID"`, `paidCount`,
+  `dataRowCount`, `cap`, va `registrationOpen` de de audit.
+- Viec dong cong chi chan dang ky moi. Luong resume/checkStatus va thanh toan
+  cua registration da ton tai van tiep tuc hoat dong.
 - `getSpreadsheet()` phai fail-closed, khong fallback sang active spreadsheet.
 - Webhook SePay phai xac thuc token truoc khi xu ly giao dich.
 - Giao dich chi auto-match khi dung 300.000 VND va co dung mot hoc vien phu hop.
