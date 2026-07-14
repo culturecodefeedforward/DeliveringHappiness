@@ -138,6 +138,12 @@ function finishStep1() {
   step2.classList.add('active');
   
   renderTopValues();
+
+  if (topValues.length > 7) {
+    setTimeout(() => {
+      alert(`Bạn có đến ${topValues.length} giá trị nổi bật. Vui lòng chọn lọc lại đúng 7 giá trị cốt lõi nhất ở bước này nhé!`);
+    }, 100);
+  }
 }
 
 const topValuesList = document.getElementById('topValuesList');
