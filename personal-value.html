@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Personal Value Compass — CultureCode Community</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -12,90 +12,413 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
   <style>
-    .pv-container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; color: #fff; }
-    .step-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; display: none; }
-    .step-card.active { display: block; }
-    .value-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
-    .value-item { background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
-    .value-item h4 { margin: 0 0 0.5rem 0; font-size: 1.1rem; color: var(--warm-yellow); }
-    .rating-group { display: flex; gap: 5px; }
-    .rating-btn { flex: 1; padding: 0.4rem; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.2); background: transparent; color: #fff; cursor: pointer; border-radius: 4px; transition: all 0.2s; }
-    .rating-btn:hover { background: rgba(255,255,255,0.1); }
-    .rating-btn.selected { background: var(--warm-yellow); color: #000; font-weight: bold; border-color: var(--warm-yellow); }
+    /* Premium App Shell */
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #1c1917 0%, #292524 50%, #3a2c1a 100%);
+      color: var(--white);
+      font-family: 'Be Vietnam Pro', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .app-header {
+      padding: 1.5rem;
+      text-align: center;
+      position: relative;
+    }
     
-    .selectable-value { background: rgba(255,255,255,0.05); padding: 1rem; border: 2px solid transparent; border-radius: 8px; cursor: pointer; transition: all 0.2s; text-align: center; font-weight: 600; }
-    .selectable-value:hover { background: rgba(255,255,255,0.1); }
-    .selectable-value.selected { border-color: var(--warm-yellow); background: rgba(255, 193, 7, 0.1); color: var(--warm-yellow); }
+    .back-btn {
+      position: absolute;
+      left: 1rem;
+      top: 1.5rem;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 1.5rem;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .back-btn:hover { color: var(--warm-yellow); }
+
+    .app-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin: 0;
+      background: linear-gradient(90deg, var(--warm-yellow), var(--warm-orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Steps & Progress */
+    .step-container {
+      display: none;
+      min-height: calc(100vh - 80px);
+      flex-direction: column;
+    }
+    .step-container.active {
+      display: flex;
+    }
     
-    .duel-container { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 2rem; }
-    .duel-card { flex: 1; padding: 3rem 1rem; text-align: center; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.2); border-radius: 12px; cursor: pointer; transition: all 0.3s; font-size: 1.5rem; font-weight: 700; color: #fff; }
-    .duel-card:hover { transform: translateY(-5px); border-color: var(--warm-yellow); background: rgba(255,193,7,0.1); }
-    .duel-vs { font-size: 1.2rem; font-weight: bold; color: var(--mid); }
+    .progress-bar-container {
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      position: relative;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--warm-yellow), var(--warm-orange));
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .progress-text {
+      text-align: center;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 0.8rem;
+    }
+
+    /* Flashcard UI */
+    .flashcard-wrapper {
+      flex: 1;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .flashcard {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 2.5rem 1.5rem;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      position: absolute;
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.9);
+    }
+    .flashcard.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1) translateX(0);
+      z-index: 10;
+    }
+    .flashcard.next {
+      opacity: 0.5;
+      transform: scale(0.95) translateY(20px);
+      z-index: 5;
+    }
+    .flashcard.slide-out-left {
+      transform: translateX(-120%) rotate(-5deg);
+      opacity: 0;
+    }
+    .flashcard.slide-out-right {
+      transform: translateX(120%) rotate(5deg);
+      opacity: 0;
+    }
+    .flashcard.slide-out-up {
+      transform: translateY(-120%);
+      opacity: 0;
+    }
+
+    .fc-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
     
-    .progress-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin: 1rem 0; overflow: hidden; }
-    .progress-fill { height: 100%; background: var(--warm-yellow); width: 0%; transition: width 0.3s; }
+    .fc-desc {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+      min-height: 48px;
+    }
+
+    .fc-details-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--warm-yellow);
+      border-radius: 99px;
+      padding: 0.4rem 1rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      margin-bottom: 2rem;
+      transition: all 0.2s;
+    }
+    .fc-details-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .fc-details-content {
+      display: none;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.85);
+      background: rgba(0,0,0,0.3);
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      text-align: left;
+      line-height: 1.6;
+      border-left: 3px solid var(--warm-yellow);
+    }
+    .fc-details-content.open {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Actions */
+    .action-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
     
-    .chart-container { width: 100%; max-width: 600px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 1rem; }
+    .btn-rate {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.1);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: #fff;
+    }
+    .btn-rate.r-0 { background: rgba(255,255,255,0.05); }
+    .btn-rate.r-0:active { background: rgba(255,255,255,0.15); }
+    
+    .btn-rate.r-1 { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.3); color: #93c5fd; }
+    .btn-rate.r-1:active { background: rgba(59, 130, 246, 0.3); }
+    
+    .btn-rate.r-2 { background: rgba(245, 158, 11, 0.15); border-color: rgba(245, 158, 11, 0.3); color: var(--warm-yellow); }
+    .btn-rate.r-2:active { background: rgba(245, 158, 11, 0.3); }
+
+    /* Step 2 & 3 List/Grid */
+    .selection-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.8rem;
+      padding: 1.5rem;
+      padding-bottom: 100px;
+    }
+    
+    .selectable-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 1.2rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 600;
+      color: rgba(255,255,255,0.8);
+      user-select: none;
+    }
+    .selectable-card.selected {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: var(--warm-yellow);
+      color: var(--warm-yellow);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+    }
+    
+    .floating-action {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem;
+      background: linear-gradient(transparent, #1c1917 40%);
+      text-align: center;
+      z-index: 100;
+    }
+
+    .btn-glow {
+      background: linear-gradient(90deg, var(--warm-yellow), var(--warm-orange));
+      color: var(--dark);
+      font-weight: 800;
+      font-size: 1.1rem;
+      padding: 1rem 3rem;
+      border-radius: 999px;
+      border: none;
+      box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .btn-glow:disabled {
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.3);
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+    .btn-glow:not(:disabled):active {
+      transform: scale(0.95);
+    }
+
+    /* Duel UI */
+    .duel-arena {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      padding-bottom: 50px;
+    }
+    .duel-card {
+      flex: 1;
+      max-height: 200px;
+      background: rgba(255,255,255,0.05);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      padding: 1rem;
+    }
+    .duel-card:active {
+      transform: scale(0.95);
+      background: rgba(255,255,255,0.1);
+    }
+    .duel-vs {
+      text-align: center;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--warm-yellow);
+      font-style: italic;
+    }
+
+    /* Results */
+    .result-container {
+      padding: 1.5rem;
+      padding-bottom: 100px;
+      text-align: center;
+    }
+    .radar-wrapper {
+      background: rgba(255,255,255,0.03);
+      border-radius: 20px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+    }
+    .rank-item {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.05);
+      padding: 1rem 1.5rem;
+      border-radius: 16px;
+      margin-bottom: 0.8rem;
+      text-align: left;
+    }
+    .rank-num {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--warm-yellow);
+      width: 40px;
+    }
+    .rank-name {
+      flex: 1;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .rank-score {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.9rem;
+    }
+
   </style>
 </head>
 
 <body>
-  <header class="hero" style="min-height: 40vh; padding: 3rem 1rem;">
-    <h1 class="hero-title" style="font-size: 2.5rem;">Personal Value <span class="accent">Compass</span></h1>
-    <p style="font-size: 1.2rem; color: rgba(255,255,255,0.8); max-width: 600px; margin: 0 auto;">Khám phá và ưu tiên các giá trị cốt lõi quan trọng nhất của bạn để đưa ra những quyết định đúng đắn trong cuộc sống.</p>
+  <header class="app-header">
+    <a href="index.html" class="back-btn">&larr;</a>
+    <h1 class="app-title">Personal Value Compass</h1>
   </header>
 
-  <div class="pv-container">
-    <!-- STEP 1: RATE ALL VALUES -->
-    <div id="step1" class="step-card active">
-      <h2 class="section-title" style="color: var(--warm-yellow); font-size: 1.8rem; margin-bottom: 0.5rem;">Bước 1: Đánh giá Giá trị</h2>
-      <p style="color: var(--mid);">Hãy đánh giá mức độ quan trọng của từng giá trị dưới đây đối với bạn.</p>
-      <div id="allValuesList" class="value-list"></div>
-      <div style="text-align: right; margin-top: 2rem;">
-        <button id="btnNext1" class="btn-primary" disabled>Tiếp tục (Vui lòng đánh giá hết)</button>
-      </div>
+  <!-- STEP 1: FLASHCARD RATING -->
+  <div id="step1" class="step-container active">
+    <div class="progress-bar-container">
+      <div id="pb1" class="progress-fill"></div>
     </div>
-
-    <!-- STEP 2: SELECT TOP 7 -->
-    <div id="step2" class="step-card">
-      <h2 class="section-title" style="color: var(--warm-yellow); font-size: 1.8rem; margin-bottom: 0.5rem;">Bước 2: Chọn Top 7</h2>
-      <p style="color: var(--mid);">Từ những giá trị "Rất quan trọng" bạn đã chọn, hãy thu hẹp lại <strong>chính xác 7 giá trị</strong> cốt lõi nhất.</p>
-      <div style="font-size: 1.2rem; margin: 1rem 0; font-weight: bold;">Đã chọn: <span id="selectionCount" style="color: var(--warm-yellow);">0</span>/7</div>
-      <div id="topValuesList" class="value-list" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));"></div>
-      <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
-        <button id="btnBack2" class="btn-primary" style="background: transparent; border: 1px solid #fff;">Quay lại</button>
-        <button id="btnNext2" class="btn-primary" disabled>Tiếp tục Bước 3</button>
-      </div>
+    <div class="progress-text">Bước 1: Đánh giá <span id="s1-count">1</span>/41</div>
+    
+    <div id="flashcardArea" class="flashcard-wrapper">
+      <!-- Cards will be injected here via JS -->
     </div>
+  </div>
 
-    <!-- STEP 3: PAIRWISE COMPARISON -->
-    <div id="step3" class="step-card">
-      <h2 class="section-title" style="color: var(--warm-yellow); font-size: 1.8rem; margin-bottom: 0.5rem;">Bước 3: So sánh chéo</h2>
-      <p style="color: var(--mid);">Chọn giá trị quan trọng hơn giữa 2 lựa chọn dưới đây. (Hãy hành động bằng trực giác đầu tiên)</p>
-      <div class="progress-bar"><div id="duelProgress" class="progress-fill"></div></div>
-      <div style="text-align: center; color: var(--mid); margin-bottom: 1rem;">Câu <span id="duelCurrent">1</span>/21</div>
+  <!-- STEP 2: SELECT TOP 7 -->
+  <div id="step2" class="step-container">
+    <div class="progress-bar-container">
+      <div class="progress-fill" style="width: 33%;"></div>
+    </div>
+    <div class="progress-text">Bước 2: Lọc Top 7 giá trị cốt lõi</div>
+    <p style="text-align: center; padding: 0 1.5rem; color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-top: 1rem;">
+      Từ những giá trị "Rất quan trọng", hãy chọn đúng <strong style="color:var(--warm-yellow)">7 giá trị</strong> đại diện nhất cho bạn.
+    </p>
+    
+    <div id="topValuesList" class="selection-grid"></div>
+    
+    <div class="floating-action">
+      <div style="margin-bottom: 0.8rem; font-weight: bold;">Đã chọn: <span id="selectionCount" style="color: var(--warm-yellow);">0</span>/7</div>
+      <button id="btnNext2" class="btn-glow" disabled>Bắt đầu So sánh chéo</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: PAIRWISE DUEL -->
+  <div id="step3" class="step-container">
+    <div class="progress-bar-container">
+      <div class="progress-fill" style="width: 66%;"></div>
+    </div>
+    <div class="progress-text">Bước 3: Trực giác quyết định (<span id="duelCurrent">1</span>/21)</div>
+    <p style="text-align: center; padding: 0 1.5rem; color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-top: 1rem;">
+      Nếu bắt buộc phải chọn 1, bạn sẽ giữ lại giá trị nào? (Hãy tin vào trực giác)
+    </p>
+    
+    <div class="duel-arena">
+      <div id="duelA" class="duel-card">A</div>
+      <div class="duel-vs">VS</div>
+      <div id="duelB" class="duel-card">B</div>
+    </div>
+  </div>
+
+  <!-- STEP 4: RESULTS -->
+  <div id="step4" class="step-container">
+    <div class="progress-bar-container">
+      <div class="progress-fill" style="width: 100%;"></div>
+    </div>
+    
+    <div class="result-container">
+      <h2 style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--warm-yellow);">La Bàn Của Bạn</h2>
+      <p style="color: rgba(255,255,255,0.7); margin-bottom: 2rem;">Đây là DNA giá trị cốt lõi của riêng bạn.</p>
       
-      <div class="duel-container">
-        <div id="duelA" class="duel-card">Giá trị A</div>
-        <div class="duel-vs">VS</div>
-        <div id="duelB" class="duel-card">Giá trị B</div>
-      </div>
-    </div>
-
-    <!-- STEP 4: RESULTS -->
-    <div id="step4" class="step-card">
-      <h2 class="section-title" style="color: var(--warm-yellow); font-size: 2.2rem; margin-bottom: 0.5rem;">La bàn Giá trị của bạn</h2>
-      <p style="color: var(--mid); text-align: center; margin-bottom: 2rem;">Đây là kết quả xếp hạng 7 giá trị cốt lõi nhất của bạn.</p>
-      
-      <div class="chart-container">
+      <div class="radar-wrapper">
         <canvas id="resultChart"></canvas>
       </div>
       
-      <div id="resultRanking" style="margin-top: 2rem; background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 8px;"></div>
+      <div id="resultRanking"></div>
       
-      <div style="text-align: center; margin-top: 2rem;">
-        <button class="btn-primary" onclick="window.print()">Lưu kết quả (Print/PDF)</button>
-        <a href="index.html" class="btn-primary" style="background: transparent; border: 1px solid #fff; margin-left: 10px;">Về trang chủ</a>
+      <div style="margin-top: 3rem; margin-bottom: 2rem;">
+        <a href="index.html" class="btn-glow" style="text-decoration: none; padding: 1rem 2rem;">Quay về Trang chủ</a>
       </div>
     </div>
   </div>
