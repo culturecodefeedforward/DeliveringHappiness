@@ -57,89 +57,86 @@ const gridArea = document.getElementById('gridArea');
 const s1Count = document.getElementById('s1-count');
 const btnNext1 = document.getElementById('btnNext1');
 
-// Khởi tạo thẻ Grid
+// Trả về HTML của một thẻ giá trị
+function createCardHTML(val) {
+  return `
+    <div class="flip-card" id="card-${val.id}">
+      <div class="tick-mark" id="tick-${val.id}" title="Đánh dấu Rất quan trọng">
+        <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
+      </div>
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <div class="fc-title">${val.name}</div>
+          <div class="fc-desc">${val.desc}</div>
+        </div>
+        <div class="flip-card-back">
+          <div class="fc-title" style="color: var(--warm-orange); font-size: 1rem;">${val.name}</div>
+          <div class="fc-details">${val.details}</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// Gắn Event Listener cho thẻ
+function bindCardEvents(val) {
+  const card = document.getElementById(`card-${val.id}`);
+  const tick = document.getElementById(`tick-${val.id}`);
+  let flipTimeout;
+
+  // Click vào thẻ (phần thân) -> Lật & đánh dấu Quan trọng
+  card.addEventListener('click', (e) => {
+    if(e.target.closest('.tick-mark')) return;
+    
+    if (userRatings[val.id] === 0) {
+      selectedCount++;
+      updateProgress1();
+    }
+
+    if (userRatings[val.id] !== 2) {
+      userRatings[val.id] = 1;
+      card.classList.add('status-1');
+    }
+    
+    card.classList.add('flipped');
+    
+    clearTimeout(flipTimeout);
+    flipTimeout = setTimeout(() => {
+      card.classList.remove('flipped');
+    }, 5000);
+  });
+
+  // Click vào Tick Mark -> Rất quan trọng
+  tick.addEventListener('click', (e) => {
+    e.stopPropagation();
+    
+    if (userRatings[val.id] === 0) {
+      selectedCount++;
+      updateProgress1();
+    }
+
+    userRatings[val.id] = 2;
+    card.classList.remove('status-1');
+    card.classList.add('status-2');
+    card.classList.add('blinking');
+    
+    card.classList.add('flipped');
+    
+    clearTimeout(flipTimeout);
+    flipTimeout = setTimeout(() => {
+      card.classList.remove('flipped');
+      card.classList.remove('blinking');
+    }, 5000);
+  });
+}
+
+// Khởi tạo thẻ Grid mặc định
 function initGrid() {
   rawValues.forEach(val => {
     userRatings[val.id] = 0; // Default chưa chọn
-    
-    const cardHTML = `
-      <div class="flip-card" id="card-${val.id}">
-        <div class="tick-mark" id="tick-${val.id}" title="Đánh dấu Rất quan trọng">
-          <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
-        </div>
-        <div class="flip-card-inner">
-          <div class="flip-card-front">
-            <div class="fc-title">${val.name}</div>
-            <div class="fc-desc">${val.desc}</div>
-          </div>
-          <div class="flip-card-back">
-            <div class="fc-title" style="color: var(--warm-yellow); font-size: 1rem;">${val.name}</div>
-            <div class="fc-details">${val.details}</div>
-          </div>
-        </div>
-      </div>
-    `;
+    const cardHTML = createCardHTML(val);
     gridArea.insertAdjacentHTML('beforeend', cardHTML);
-  });
-
-  // Gắn Event Listener sau khi render
-  rawValues.forEach(val => {
-    const card = document.getElementById(`card-${val.id}`);
-    const tick = document.getElementById(`tick-${val.id}`);
-    let flipTimeout;
-
-    // Click vào thẻ (phần thân) -> Lật & đánh dấu Quan trọng
-    card.addEventListener('click', (e) => {
-      // Nếu click vào tick mark thì không xử lý ở đây
-      if(e.target.closest('.tick-mark')) return;
-      
-      // Nếu chưa được đánh giá thì đếm lên
-      if (userRatings[val.id] === 0) {
-        selectedCount++;
-        updateProgress1();
-      }
-
-      // Đánh dấu Quan trọng (trừ khi nó đang là Rất quan trọng thì giữ nguyên)
-      if (userRatings[val.id] !== 2) {
-        userRatings[val.id] = 1;
-        card.classList.add('status-1');
-      }
-      
-      // Lật thẻ
-      card.classList.add('flipped');
-      
-      // Clear timer cũ nếu click liên tiếp
-      clearTimeout(flipTimeout);
-      // Úp thẻ sau 5 giây
-      flipTimeout = setTimeout(() => {
-        card.classList.remove('flipped');
-      }, 5000);
-    });
-
-    // Click vào Tick Mark -> Rất quan trọng
-    tick.addEventListener('click', (e) => {
-      e.stopPropagation(); // Ngăn sự kiện click lan ra thẻ
-      
-      if (userRatings[val.id] === 0) {
-        selectedCount++;
-        updateProgress1();
-      }
-
-      // Đổi trạng thái sang Rất quan trọng
-      userRatings[val.id] = 2;
-      card.classList.remove('status-1');
-      card.classList.add('status-2');
-      card.classList.add('blinking');
-      
-      // Lật thẻ
-      card.classList.add('flipped');
-      
-      clearTimeout(flipTimeout);
-      flipTimeout = setTimeout(() => {
-        card.classList.remove('flipped');
-        card.classList.remove('blinking');
-      }, 5000);
-    });
+    bindCardEvents(val);
   });
 
   // Event click ra ngoài để úp tất cả thẻ đang lật
@@ -151,6 +148,74 @@ function initGrid() {
       });
     }
   });
+
+  initCustomValueModal();
+}
+
+// Xử lý Modal thêm giá trị tự định nghĩa
+function initCustomValueModal() {
+  const btnAddCustom = document.getElementById('btnAddCustom');
+  const customValueModal = document.getElementById('customValueModal');
+  const btnCancelCustom = document.getElementById('btnCancelCustom');
+  const btnSaveCustom = document.getElementById('btnSaveCustom');
+  
+  const inputName = document.getElementById('customValueName');
+  const inputDesc = document.getElementById('customValueDesc');
+
+  btnAddCustom.onclick = () => {
+    inputName.value = '';
+    inputDesc.value = '';
+    customValueModal.classList.add('active');
+    inputName.focus();
+  };
+
+  btnCancelCustom.onclick = () => {
+    customValueModal.classList.remove('active');
+  };
+
+  customValueModal.onclick = (e) => {
+    if (e.target === customValueModal) {
+      customValueModal.classList.remove('active');
+    }
+  };
+
+  btnSaveCustom.onclick = () => {
+    const nameVal = inputName.value.trim();
+    const descVal = inputDesc.value.trim();
+
+    if (!nameVal) {
+      alert('Vui lòng nhập tên giá trị cốt lõi!');
+      return;
+    }
+
+    const newId = rawValues.length + 1000; // Tránh trùng lặp ID mặc định
+    const newVal = {
+      id: newId,
+      name: nameVal,
+      desc: descVal || 'Giá trị cốt lõi tự định nghĩa.',
+      details: descVal || 'Giá trị cốt lõi do bạn tự định nghĩa và thêm mới vào la bàn.',
+      context: `sống và theo đuổi giá trị "${nameVal}"`
+    };
+
+    rawValues.push(newVal);
+    userRatings[newId] = 2; // Tự động chọn làm Rất quan trọng
+    selectedCount++;
+    updateProgress1();
+
+    const cardHTML = createCardHTML(newVal);
+    gridArea.insertAdjacentHTML('afterbegin', cardHTML);
+    
+    const newCard = document.getElementById(`card-${newId}`);
+    newCard.classList.add('status-2', 'blinking', 'flipped');
+    bindCardEvents(newVal);
+
+    setTimeout(() => {
+      newCard.classList.remove('flipped', 'blinking');
+    }, 5000);
+
+    customValueModal.classList.remove('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 }
 
 function updateProgress1() {

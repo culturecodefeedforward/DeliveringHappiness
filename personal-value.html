@@ -87,8 +87,8 @@
 
     .values-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1.2rem;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
       width: 100%;
       max-width: 1200px;
       margin: 0 auto;
@@ -97,7 +97,7 @@
     .flip-card {
       background: transparent;
       perspective: 1000px;
-      height: 220px;
+      height: 160px;
       cursor: pointer;
     }
     .flip-card-inner {
@@ -107,8 +107,8 @@
       text-align: center;
       transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
       transform-style: preserve-3d;
-      border-radius: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
     }
     .flip-card.flipped .flip-card-inner {
       transform: rotateY(180deg);
@@ -121,8 +121,8 @@
       height: 100%;
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
-      border-radius: 20px;
-      padding: 1.2rem;
+      border-radius: 16px;
+      padding: 0.8rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -137,7 +137,7 @@
     .flip-card-front:hover {
       background: #fff;
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
     }
     
     .flip-card-back {
@@ -147,22 +147,23 @@
     }
 
     .fc-title {
-      font-size: 1.2rem;
+      font-size: 1.05rem;
       font-weight: 800;
       color: var(--dark, #1c1917);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.2rem;
     }
     
     .fc-desc {
-      font-size: 0.9rem;
+      font-size: 0.78rem;
       color: var(--mid, #44403c);
-      line-height: 1.4;
+      line-height: 1.35;
+      margin: 0;
     }
 
     .fc-details {
-      font-size: 0.85rem;
+      font-size: 0.78rem;
       color: rgba(255,255,255,0.9);
-      line-height: 1.5;
+      line-height: 1.35;
     }
 
     /* Hiệu ứng trạng thái */
@@ -221,22 +222,7 @@
     }
     .flip-card.blinking .flip-card-inner {
       animation: blink-glow 1.5s infinite;
-      border-radius: 20px;
-    }
-
-    .fc-title {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: var(--dark, #1c1917);
-      margin-bottom: 0.5rem;
-    }
-    
-    .fc-desc {
-      font-size: 1rem;
-      color: var(--mid, #44403c);
-      margin-bottom: 1.5rem;
-      line-height: 1.5;
-      min-height: 48px;
+      border-radius: 16px;
     }
 
     /* Removed Action Buttons */
@@ -450,6 +436,25 @@
       color: rgba(0, 0, 0, 0.2);
     }
 
+    /* Custom Modal Overlay */
+    .custom-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(28, 25, 23, 0.4);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .custom-modal.active {
+      display: flex;
+    }
+
   </style>
 </head>
 
@@ -469,6 +474,10 @@
       Nhấp vào thẻ bất kỳ để lật xem ý nghĩa và tự động chọn là <strong>"Quan trọng"</strong>.<br/>
       Nếu thẻ đó thực sự định hình con người bạn, hãy bấm vào <strong>dấu Tick</strong> ở góc để đánh dấu <strong>"Rất quan trọng"</strong>.
     </p>
+    
+    <div style="text-align: center; margin-bottom: 1.5rem; margin-top: -0.5rem;">
+      <button id="btnAddCustom" class="btn-glow" style="padding: 0.6rem 1.5rem; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15); font-weight: 700;">+ Bổ sung giá trị cốt lõi khác</button>
+    </div>
     
     <div class="grid-wrapper">
       <div id="gridArea" class="values-grid">
@@ -558,6 +567,34 @@
       </div>
     </div>
   </div>
+
+  <!-- Custom Value Input Modal -->
+  <div id="customValueModal" class="custom-modal">
+    <div style="background: var(--warm-cream, #fffbeb); padding: 2rem; border-radius: 24px; border: 1px solid rgba(0,0,0,0.08); width: 90%; max-width: 420px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); animation: zoomIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+      <h3 style="color: var(--dark, #1c1917); margin-top: 0; margin-bottom: 1rem; font-weight: 800; font-size: 1.3rem;">Bổ sung giá trị của bạn</h3>
+      <p style="color: var(--mid, #44403c); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.4;">
+        Nếu bạn không tìm thấy giá trị cốt lõi của mình trong danh sách 41 thẻ, hãy tự định nghĩa nó dưới đây.
+      </p>
+      
+      <label style="display: block; margin-bottom: 0.5rem; font-weight: 700; color: var(--dark, #1c1917); font-size: 0.95rem;">Tên giá trị cốt lõi:</label>
+      <input type="text" id="customValueName" placeholder="Ví dụ: Sự tử tế, Trí tuệ cảm xúc..." style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); margin-bottom: 1.2rem; font-family: inherit; font-size: 0.95rem; background: white; color: var(--dark);" />
+      
+      <label style="display: block; margin-bottom: 0.5rem; font-weight: 700; color: var(--dark, #1c1917); font-size: 0.95rem;">Mô tả ngắn gọn:</label>
+      <input type="text" id="customValueDesc" placeholder="Ví dụ: Giúp đỡ người khác không màng lợi ích..." style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); margin-bottom: 1.8rem; font-family: inherit; font-size: 0.95rem; background: white; color: var(--dark);" />
+      
+      <div style="display: flex; gap: 0.8rem; justify-content: flex-end;">
+        <button id="btnCancelCustom" style="background: transparent; border: 1px solid rgba(0,0,0,0.1); padding: 0.75rem 1.5rem; border-radius: 999px; cursor: pointer; font-weight: 700; color: var(--mid, #44403c); font-family: inherit;">Hủy</button>
+        <button id="btnSaveCustom" style="background: linear-gradient(90deg, var(--warm-yellow), var(--warm-orange)); border: none; padding: 0.75rem 1.5rem; border-radius: 999px; cursor: pointer; font-weight: 800; color: var(--dark, #1c1917); font-family: inherit; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);">Thêm giá trị</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes zoomIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  </style>
 
   <script src="personal-value.js"></script>
 </body>
