@@ -693,6 +693,11 @@ function doPost(e) {
       return handleSePayWebhook(body, detectLaneKeyFromPayload_(body));
     }
 
+    // --- BÀI TEST GIÁ TRỊ CỐT LÕI (PERSONAL VALUES) ---
+    if (body.action === 'submit_pv') {
+      return handlePersonalValuesSubmission(body);
+    }
+
     // --- FORM ĐĂNG KÝ ---
     var killReg = props.getProperty('KILL_SWITCH_REGISTRATION');
     if (killReg === 'true') {
@@ -765,6 +770,16 @@ function doGet(e) {
         .setMimeType(ContentService.MimeType.JAVASCRIPT);
     }
     return jsonOut(availability);
+  }
+
+  if (action === 'submit_pv') {
+    if (!CALLBACK_REGEX.test(callback)) {
+      return ContentService.createTextOutput('{"error":"INVALID_CALLBACK"}')
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    var result = handlePersonalValuesSubmission(e.parameter);
+    return ContentService.createTextOutput(callback + '(' + JSON.stringify(result) + ');')
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
   }
 
   return jsonOut({ success: false, error: 'UNKNOWN_ACTION' });
@@ -1695,3 +1710,271 @@ function jsonOut(obj) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
+// ─── PERSONAL VALUES ASSESSMENT SERVICES ─────────────────────
+function handlePersonalValuesSubmission(body) {
+  var ss = getSpreadsheet();
+  var props = getScriptProperties_();
+  
+  // 1. Kill switch
+  if (props.getProperty('KILL_SWITCH_PV') === 'true') {
+    return { success: false, error: 'PV_DISABLED', message: 'Hệ thống khảo sát đang tạm đóng. Vui lòng liên hệ BTC.' };
+  }
+  
+  // 2. Input validation
+  var fullName = (body.fullName || '').trim();
+  var email = (body.email || '').trim();
+  var rankedDataStr = body.rankedData || '';
+  var duelHistoryStr = body.duelHistory || '';
+  
+  if (!fullName || fullName.length > 100) {
+    return { success: false, error: 'INVALID_NAME', message: 'Họ và tên không hợp lệ hoặc quá dài.' };
+  }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return { success: false, error: 'INVALID_EMAIL', message: 'Địa chỉ Email không hợp lệ.' };
+  }
+  
+  // CAPTCHA verification
+  var num1 = parseInt(body.num1, 10);
+  var num2 = parseInt(body.num2, 10);
+  var captchaAnswer = parseInt(body.captchaAnswer, 10);
+  var captchaToken = parseInt(body.captchaToken, 10);
+  
+  if (isNaN(num1) || isNaN(num2) || isNaN(captchaAnswer) || isNaN(captchaToken)) {
+    return { success: false, error: 'INVALID_CAPTCHA_INPUT', message: 'Thiếu thông tin xác minh người dùng.' };
+  }
+  
+  var expectedToken = (num1 * 3 + num2 * 7) ^ 90;
+  if (captchaToken !== expectedToken || captchaAnswer !== (num1 + num2)) {
+    return { success: false, error: 'CAPTCHA_FAILED', message: 'Mã xác minh không chính xác.' };
+  }
+  
+  // 3. Parse and validate rankedData
+  var parsedRanked = [];
+  try {
+    parsedRanked = JSON.parse(rankedDataStr);
+  } catch(e) {
+    return { success: false, error: 'INVALID_RANKED_JSON', message: 'Dữ liệu xếp hạng không hợp lệ.' };
+  }
+  
+  if (!Array.isArray(parsedRanked) || parsedRanked.length !== 7) {
+    return { success: false, error: 'INVALID_RANKED_SIZE', message: 'Báo cáo bắt buộc phải chứa đúng 7 giá trị.' };
+  }
+  
+  for (var i = 0; i < parsedRanked.length; i++) {
+    var item = parsedRanked[i];
+    if (!item.name || typeof item.name !== 'string') {
+      return { success: false, error: 'INVALID_RANKED_ITEM', message: 'Tên giá trị không hợp lệ.' };
+    }
+    item.score = parseInt(item.score, 10);
+    if (isNaN(item.score) || item.score < 0 || item.score > 6) {
+      return { success: false, error: 'INVALID_RANKED_SCORE', message: 'Điểm số của giá trị không hợp lệ.' };
+    }
+    // Escape HTML for security
+    item.name = escapeHtml_(item.name);
+    item.details = escapeHtml_(item.details || item.desc || '');
+  }
+  
+  // 4. Rate Limiting by Email (Max 3 submissions in 5 minutes)
+  var sheetName = 'PV_Data';
+  var sheet = ss.getSheetByName(sheetName);
+  
+  if (!sheet) {
+    sheet = ss.insertSheet(sheetName);
+    sheet.appendRow([
+      'Timestamp', 
+      'Full Name', 
+      'Email', 
+      'Top 7 Values (Ranked)', 
+      'Duel History (JSON)'
+    ]);
+    sheet.getRange(1, 1, 1, 5).setFontWeight('bold').setBackground('#f59e0b');
+    sheet.setFrozenRows(1);
+  } else {
+    var now = new Date();
+    var fiveMinsAgo = new Date(now.getTime() - 5 * 60 * 1000);
+    var emailSubmissions = 0;
+    var rows = sheet.getDataRange().getValues();
+    for (var j = rows.length - 1; j >= 1; j--) {
+      var rowEmail = rows[j][2];
+      var rowTime = rows[j][0] ? new Date(rows[j][0]) : null;
+      if (rowEmail === email && rowTime && rowTime >= fiveMinsAgo) {
+        emailSubmissions++;
+        if (emailSubmissions >= 3) {
+          return { success: false, error: 'RATE_LIMIT_EXCEEDED', message: 'Bạn đã gửi yêu cầu quá nhiều lần. Vui lòng thử lại sau ít phút.' };
+        }
+      }
+    }
+  }
+  
+  // 5. Append to sheet (Write to Sheet)
+  var timestamp = new Date();
+  var escapedFullName = escapeHtml_(fullName);
+  var escapedEmail = escapeHtml_(email);
+  
+  var rankedDisplay = parsedRanked.map(function(item, idx) {
+    return (idx + 1) + '. ' + item.name + ' (' + item.score + 'đ)';
+  }).join(', ');
+  
+  if (duelHistoryStr.length > 5000) {
+    duelHistoryStr = duelHistoryStr.substring(0, 5000);
+  }
+  var escapedDuelHistoryStr = escapeHtml_(duelHistoryStr);
+  
+  sheet.appendRow([
+    timestamp,
+    escapedFullName,
+    escapedEmail,
+    rankedDisplay,
+    escapedDuelHistoryStr
+  ]);
+  
+  // 6. Quota check & Send Email
+  var emailSent = false;
+  var emailMessage = '';
+  
+  var killEmail = props.getProperty('KILL_SWITCH_EMAIL') === 'true';
+  if (killEmail) {
+    writeSystemLog(ss, 'INFO', 'KILL_SWITCH_EMAIL is true, skipping PV email to ' + escapedEmail);
+    emailMessage = 'Gửi email tạm tắt từ hệ thống.';
+  } else if (getRemainingQuota() < 5) {
+    writeSystemLog(ss, 'WARN', 'Daily email quota low, skipping PV email to ' + escapedEmail);
+    emailMessage = 'Hạn mức gửi thư của hệ thống đã hết hôm nay. Kết quả vẫn được ghi nhận.';
+  } else {
+    try {
+      sendPersonalValuesEmail(escapedEmail, escapedFullName, parsedRanked);
+      emailSent = true;
+    } catch(mailErr) {
+      writeSystemLog(ss, 'ERROR', 'Failed to send PV email to ' + escapedEmail, mailErr.message);
+      emailMessage = 'Gửi email gặp lỗi: ' + mailErr.message;
+    }
+  }
+  
+  return { 
+    success: true, 
+    emailSent: emailSent, 
+    emailMessage: emailMessage,
+    message: emailSent ? 'Đã gửi báo cáo! Vui lòng kiểm tra hộp thư của bạn sau vài phút.' : ('Đăng ký thành công. ' + emailMessage)
+  };
+}
+
+function calculateSchwartzDimensions(ranked) {
+  var mapping = {
+    "Thành tựu": "SE", "Sự thăng tiến": "SE", "Thu nhập cao": "SE", "Tính Độc Lập": "SE", "Lãnh đạo": "SE", "Được ghi nhận": "SE", "Thành công": "SE", "Nổi tiếng": "SE", "Độc lập": "SE", "Ảnh hưởng": "SE", "Sức mạnh": "SE", "Thanh thế": "SE", "Chất lượng làm việc": "SE", "Tài sản": "SE", "Cạnh tranh": "SE",
+    "Phiêu lưu": "OC", "Sự tự chủ": "OC", "Sự sáng tạo": "OC", "Sự đa dạng": "OC", "Linh hoạt/Thích ứng": "OC", "Tự do": "OC", "Sự hài hước": "OC", "Học tập, phát triển": "OC", "Tự khám phá": "OC", "Niềm vui": "OC", "Tiến bộ": "OC", "Mạo hiểm": "OC", "Cảm nhận về nghệ thuật": "OC", "Sáng tạo": "OC", "Học văn": "OC", "Phát triển cá nhân": "OC", "Thoải mái": "OC",
+    "Tình cảm": "ST", "Sự cân bằng": "ST", "Gắn kết cộng đồng": "ST", "Gắn kết gia đình": "ST", "Sự phục vụ": "ST", "Làm việc nhóm": "ST", "Bao dung/Tha thứ": "ST", "Tình bạn": "ST", "Sự bình đẳng": "ST", "Sự cống hiến": "ST", "Lãng mạn": "ST", "Đóng góp": "ST", "Hợp tác": "ST", "Công bằng": "ST", "Hạnh phúc gia đình": "ST", "Tha thứ": "ST", "Giúp đỡ": "ST", "Lòng khoan dung": "ST", "Tính phong phú": "ST",
+    "Sự cam kết": "CO", "Sự tự tin": "CO", "Sức khoẻ": "CO", "Sức khỏe": "CO", "Sự trung thực": "CO", "Môi trường làm việc": "CO", "Năng suất": "CO", "Tôn giáo/Tín ngưỡng": "CO", "Sự an toàn": "CO", "An toàn": "CO", "Bình yên": "CO", "Trí tuệ": "CO", "Lòng dũng cảm": "CO", "Tính dũng cảm": "CO", "Tự kỷ luật": "CO", "Trách nhiệm": "CO", "Kiềm chế": "CO", "Bảo đảm kinh tế": "CO", "Sự tĩnh tâm": "CO", "Sự chính trực": "CO", "Trung thành": "CO", "Trật tự": "CO", "Tôn trọng bản thân": "CO", "Tâm linh": "CO", "Chính thống": "CO"
+  };
+
+  var scores = { ST: 0, SE: 0, OC: 0, CO: 0 };
+  var total = 0;
+
+  if (!Array.isArray(ranked)) {
+    return { selfTranscendence: 25, selfEnhancement: 25, opennessToChange: 25, conservation: 25 };
+  }
+
+  ranked.forEach(function(item) {
+    if (item && item.name) {
+      var dim = mapping[item.name];
+      if (dim) {
+        var scoreVal = Number(item.score);
+        if (!isNaN(scoreVal)) {
+          scores[dim] += scoreVal;
+          total += scoreVal;
+        }
+      }
+    }
+  });
+
+  if (total === 0) {
+    return { selfTranscendence: 25, selfEnhancement: 25, opennessToChange: 25, conservation: 25 };
+  }
+
+  return {
+    selfTranscendence: Math.round((scores.ST / total) * 100),
+    selfEnhancement: Math.round((scores.SE / total) * 100),
+    opennessToChange: Math.round((scores.OC / total) * 100),
+    conservation: Math.round((scores.CO / total) * 100)
+  };
+}
+
+function sendPersonalValuesEmail(recipientEmail, fullName, parsedRanked) {
+  var props = getScriptProperties_();
+  var ss = getSpreadsheet();
+  
+  var testMode = props.getProperty('TEST_MODE') === 'true';
+  var allowlistStr = props.getProperty('RECIPIENT_ALLOWLIST') || '';
+  var allowlist = allowlistStr.split(',').map(function(e) { return e.trim(); }).filter(Boolean);
+  
+  var toAddress = testMode ? allowlist.join(',') : recipientEmail;
+  if (!toAddress) {
+    writeSystemLog(ss, 'WARN', 'Skipping PV email: testMode is true but RECIPIENT_ALLOWLIST is empty');
+    return;
+  }
+  
+  var subject = '[Delivering Happiness] DNA Giá Trị Cốt Lõi Của Bạn';
+  
+  var valuesHtml = parsedRanked.map(function(item, index) {
+    var desc = item.details || '';
+    return '<tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">' +
+           '<td style="padding: 10px; font-weight: bold; color: #ea580c; width: 40px;">#' + (index + 1) + '</td>' +
+           '<td style="padding: 10px; font-weight: bold; color: #1c1917;">' + item.name + '</td>' +
+           '<td style="padding: 10px; color: #ea580c; font-weight: bold; text-align: center; width: 60px;">' + item.score + ' đ</td>' +
+           '<td style="padding: 10px; color: #44403c; font-size: 0.9rem;">' + desc + '</td>' +
+           '</tr>';
+  }).join('');
+  
+  var dimensions = calculateSchwartzDimensions(parsedRanked);
+  
+  var dimensionsHtml = 
+    '<div style="margin: 20px 0; padding: 15px; background-color: #fffbeb; border-radius: 12px; border: 1.5px dashed #f59e0b;">' +
+    '<h3 style="color: #ea580c; margin-top: 0; margin-bottom: 10px;">📊 Định hình Nhóm Động Lực Chủ Đạo:</h3>' +
+    '<ul style="margin: 0; padding-left: 20px; line-height: 1.6;">' +
+    '<li><strong>Vượt lên Bản thân:</strong> ' + dimensions.selfTranscendence + '% (Học hỏi, cống hiến, giúp đỡ, yêu thương)</li>' +
+    '<li><strong>Tự khẳng định Bản thân:</strong> ' + dimensions.selfEnhancement + '% (Vị thế, thành công, thăng tiến, sức mạnh)</li>' +
+    '<li><strong>Sẵn sàng Thay đổi:</strong> ' + dimensions.opennessToChange + '% (Độc lập, sáng tạo, tự do, phiêu lưu)</li>' +
+    '<li><strong>Duy trì Ổn định:</strong> ' + dimensions.conservation + '% (Kỷ luật, an toàn, trật tự, truyền thống)</li>' +
+    '</ul>' +
+    '<p style="margin: 10px 0 0 0; font-size: 0.85rem; color: #78716c; font-style: italic;">* Tỷ lệ thể hiện xu hướng ưu tiên năng lượng tinh thần của bạn dựa trên 7 giá trị dẫn đầu.</p>' +
+    '</div>';
+
+  var htmlBody = 
+    '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid rgba(0,0,0,0.06); border-radius: 16px; background-color: #ffffff; color: #1c1917;">' +
+    '<div style="text-align: center; margin-bottom: 20px;">' +
+    '<h2 style="color: #ea580c; margin-bottom: 5px; font-weight: bold;">DNA GIÁ TRỊ CỐT LÕI CỦA BẠN</h2>' +
+    '<p style="color: #78716c; font-size: 0.95rem; margin-top: 0;">Chào <strong>' + fullName + '</strong>, dưới đây là kết quả phân tích La bàn Giá trị của riêng bạn.</p>' +
+    '</div>' +
+    
+    dimensionsHtml +
+    
+    '<h3 style="color: #44403c; margin-bottom: 10px;">🏆 Bảng Xếp Hạng Top 7 Giá Trị Cốt Lõi:</h3>' +
+    '<table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">' +
+    '<thead>' +
+    '<tr style="background-color: #f59e0b; color: #1c1917; font-weight: bold; text-align: left;">' +
+    '<th style="padding: 10px; border-radius: 8px 0 0 8px;">Hạng</th>' +
+    '<th style="padding: 10px;">Giá trị</th>' +
+    '<th style="padding: 10px; text-align: center;">Điểm</th>' +
+    '<th style="padding: 10px; border-radius: 0 8px 8px 0;">Ý nghĩa hành vi</th>' +
+    '</tr>' +
+    '</thead>' +
+    '<tbody>' +
+    valuesHtml +
+    '</tbody>' +
+    '</table>' +
+    
+    '<div style="margin-top: 30px; padding: 15px; background-color: #fdf2f8; border-radius: 12px; text-align: center;">' +
+    '<h3 style="color: #db2777; margin-top: 0; margin-bottom: 5px;">🎯 Kêu Gọi Hành Động (Call to Action):</h3>' +
+    '<p style="color: #44403c; font-size: 0.9rem; margin-bottom: 15px; line-height: 1.5;">Hãy cùng tham gia cộng đồng Delivering Happiness để cùng nhau thực hành đồng điệu hóa (alignment) và phát triển các giá trị cốt lõi này trong cuộc sống.</p>' +
+    '<a href="https://zalo.me/g/3wrsaoygrfcjubr0ie44" style="background-color: #ea580c; color: white; text-decoration: none; padding: 10px 20px; border-radius: 999px; font-weight: bold; display: inline-block; box-shadow: 0 4px 10px rgba(234, 88, 12, 0.2);">Tham gia nhóm Zalo DHM9 ngay</a>' +
+    '</div>' +
+    
+    '<div style="text-align: center; margin-top: 30px; font-size: 0.8rem; color: #78716c; border-top: 1px solid rgba(0,0,0,0.06); padding-top: 15px;">' +
+    '<p>Báo cáo này được tự động tạo bởi Hệ thống Delivering Happiness &copy; 2026</p>' +
+    '</div>' +
+    '</div>';
+    
+  MailApp.sendEmail({
+    to: toAddress,
+    subject: subject,
+    htmlBody: htmlBody
+  });
+}

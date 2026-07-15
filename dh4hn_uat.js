@@ -33,8 +33,8 @@ async function runUAT() {
   });
 
   // 1. Go to local URL
-  console.log('Navigating to local URL...');
-  await page.goto('http://127.0.0.1:8087/personal-value.html', { waitUntil: 'networkidle2' });
+  console.log('Navigating to live production URL...');
+  await page.goto('https://delivering-happiness.vercel.app/personal-value.html', { waitUntil: 'networkidle2' });
   await new Promise(r => setTimeout(r, 1000));
 
   // Take screenshot of step 1 grid
