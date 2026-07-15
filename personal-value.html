@@ -306,29 +306,50 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 1.5rem;
+      gap: 1.2rem;
       padding: 1.5rem;
       padding-bottom: 50px;
     }
     .duel-card {
       flex: 1;
-      max-height: 200px;
-      background: rgba(255,255,255,0.05);
-      border: 2px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
+      max-height: 220px;
+      min-height: 110px;
+      background: #ffffff;
+      border: 2.5px solid rgba(234, 88, 12, 0.18);
+      border-radius: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.3rem;
+      font-size: 1.35rem;
       font-weight: 800;
+      color: var(--dark, #1c1917);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.22s cubic-bezier(0.4,0,0.2,1);
       text-align: center;
-      padding: 1rem;
+      padding: 1.2rem 1.5rem;
+      box-shadow: 0 4px 18px rgba(234, 88, 12, 0.10), 0 1px 4px rgba(0,0,0,0.06);
+      position: relative;
+      overflow: hidden;
+      user-select: none;
     }
+    .duel-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(245,158,11,0.07) 0%, rgba(234,88,12,0.05) 100%);
+      opacity: 0;
+      transition: opacity 0.2s;
+      border-radius: 24px;
+    }
+    .duel-card:hover {
+      border-color: var(--warm-orange, #ea580c);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 32px rgba(234, 88, 12, 0.20), 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .duel-card:hover::before { opacity: 1; }
     .duel-card:active {
-      transform: scale(0.95);
-      background: rgba(255,255,255,0.1);
+      transform: scale(0.96);
+      box-shadow: 0 2px 8px rgba(234, 88, 12, 0.12);
     }
     .duel-vs {
       text-align: center;
@@ -482,8 +503,8 @@
     </div>
     <div class="progress-text" style="font-weight: bold; color: var(--dark);">Bước 1: Khám phá Giá trị Cốt lõi</div>
     <p style="text-align: center; padding: 0 1.5rem; color: var(--mid); font-size: 0.95rem; margin-top: 1rem; max-width: 800px; margin-left: auto; margin-right: auto;">
-      Nhấp vào thẻ bất kỳ để lật xem ý nghĩa và tự động chọn là <strong>"Quan trọng"</strong>.<br/>
-      Nếu thẻ đó thực sự định hình con người bạn, hãy bấm vào <strong>dấu Tick</strong> ở góc để đánh dấu <strong>"Rất quan trọng"</strong>.
+      Nhấp vào thẻ bất kỳ để lật xem ý nghĩa và tự động chọn là <strong>"Quan&nbsp;trọng"</strong>.<br/>
+      Nếu thẻ đó thực sự định hình con người bạn, hãy bấm vào <strong>dấu&nbsp;Tick</strong> ở góc để đánh dấu <strong style="white-space: nowrap">"Rất&nbsp;quan&nbsp;trọng"</strong>.
     </p>
     
     <div style="text-align: center; margin-bottom: 1.5rem; margin-top: -0.5rem;">
