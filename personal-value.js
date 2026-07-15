@@ -595,10 +595,6 @@ function renderSchwartzDimensions(ranked) {
   }
 }
 
-// Gọi hàm vẽ ma trận 7x7
-renderMatrixTable(ranked);
-}
-
 function renderMatrixTable(ranked) {
   const tableEl = document.getElementById('matrixTable');
   tableEl.innerHTML = '';
