@@ -573,27 +573,30 @@ function initReportFormEvents() {
       const fullName = document.getElementById('reportName').value.trim() || 'DH-User';
       const element = document.getElementById('resultReportCard');
       
-      const opt = {
-        margin:       0.5,
-        filename:     `DNA-Gia-Tri-Cot-Loi-${fullName.replace(/\s+/g, '-')}.pdf`,
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true },
-        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-      };
-      
       btnDownload.disabled = true;
       const origText = btnDownload.innerText;
       btnDownload.innerText = "Đang xuất PDF...";
       
-      html2pdf().set(opt).from(element).save().then(() => {
-        btnDownload.disabled = false;
-        btnDownload.innerText = origText;
-      }).catch(err => {
-        console.error(err);
-        btnDownload.disabled = false;
-        btnDownload.innerText = origText;
-        alert("Có lỗi xảy ra khi xuất PDF!");
-      });
+      // Delay 400ms để Chart.js canvas render xong trước khi capture
+      setTimeout(() => {
+        const opt = {
+          margin:       0.5,
+          filename:     `DNA-Gia-Tri-Cot-Loi-${fullName.replace(/\s+/g, '-')}.pdf`,
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  { scale: 2, useCORS: true, allowTaint: true, logging: false },
+          jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+        
+        html2pdf().set(opt).from(element).save().then(() => {
+          btnDownload.disabled = false;
+          btnDownload.innerText = origText;
+        }).catch(err => {
+          console.error(err);
+          btnDownload.disabled = false;
+          btnDownload.innerText = origText;
+          alert("Có lỗi xảy ra khi xuất PDF!");
+        });
+      }, 400);
     };
   }
   
@@ -683,12 +686,14 @@ function submitPersonalValuesReport(fullName, email, captchaAnswer) {
   
   const webAppUrl = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
   
+  // Gửi payload gọn: chỉ name+score để tránh vượt URL query string limit (~2000 chars)
+  const rankedSummary = latestRankedData.map(r => ({ n: r.name, s: r.score }));
+  
   const payload = {
     action: "submit_pv",
     fullName: fullName,
     email: email,
-    rankedData: JSON.stringify(latestRankedData.map(r => ({ name: r.name, score: r.score, details: r.details || r.desc || '' }))),
-    duelHistory: JSON.stringify(duelHistory),
+    rankedData: JSON.stringify(rankedSummary),
     num1: captchaNum1,
     num2: captchaNum2,
     captchaAnswer: captchaAnswer,
@@ -705,7 +710,7 @@ function submitPersonalValuesReport(fullName, email, captchaAnswer) {
     cleanup();
     btnSendEmail.disabled = false;
     btnSendEmail.innerText = "Gửi báo cáo qua Email";
-    alert("Lỗi mạng: Không thể kết nối tới máy chủ Google.");
+    alert("Lỗi kết nối: Không thể gửi tới máy chủ Google. Vui lòng kiểm tra mạng và thử lại.");
     generateCaptcha();
   };
   document.head.appendChild(scriptEl);
