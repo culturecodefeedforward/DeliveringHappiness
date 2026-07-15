@@ -369,8 +369,9 @@
       background: rgba(255, 255, 255, 0.6);
       border: 1px solid rgba(0, 0, 0, 0.06);
       border-radius: 24px;
-      padding: 1.5rem;
-      margin-bottom: 2rem;
+      padding: 1.2rem;
+      margin: 0 auto 2rem auto;
+      max-width: 520px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
     }
     .rank-item {
@@ -432,26 +433,28 @@
     .matrix-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       text-align: center;
-      min-width: 650px;
+      min-width: 520px;
     }
     .matrix-table th, .matrix-table td {
-      padding: 0.85rem 0.5rem;
+      padding: 0.6rem 0.35rem;
       border: 1px solid rgba(0, 0, 0, 0.06);
     }
     .matrix-table th {
       background: rgba(245, 158, 11, 0.06);
       color: var(--dark, #1c1917);
       font-weight: 700;
+      font-size: 0.78rem;
     }
     .matrix-table td.matrix-header-cell {
       background: rgba(245, 158, 11, 0.06);
       color: var(--dark, #1c1917);
       font-weight: 700;
       text-align: left;
-      padding-left: 1rem;
-      width: 140px;
+      padding-left: 0.6rem;
+      width: 110px;
+      font-size: 0.78rem;
     }
     .matrix-table td.matrix-diagonal {
       background: rgba(0, 0, 0, 0.04);
@@ -580,8 +583,13 @@
         <h2 style="font-size: 2.2rem; margin-bottom: 0.5rem; color: var(--warm-orange); font-weight: 800; text-align: center;">La Bàn Của Bạn</h2>
         <p style="color: var(--mid); margin-bottom: 2rem; font-size: 1.05rem; text-align: center;">Đây là DNA giá trị cốt lõi của riêng bạn.</p>
         
-        <div class="radar-wrapper" style="background: white; border: 1px solid rgba(0,0,0,0.04); border-radius: 20px; padding: 1rem; margin-bottom: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.01);">
-          <canvas id="resultChart"></canvas>
+        <div class="radar-wrapper" style="background: white; border: 1px solid rgba(0,0,0,0.04); border-radius: 20px; padding: 0.8rem; margin-bottom: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.01);">
+          <canvas id="resultChart" style="max-height: 380px; max-width: 100%;"></canvas>
+        </div>
+        
+        <!-- Nhóm động lực Schwartz (Được tính toán và hiển thị trực quan) -->
+        <div id="schwartzDimensionsCard" style="background: white; border: 1px solid rgba(0,0,0,0.04); border-radius: 20px; padding: 1.5rem; margin-bottom: 2rem; text-align: left; box-shadow: 0 4px 16px rgba(0,0,0,0.01);">
+          <!-- Dynamic details injected via JS -->
         </div>
         
         <div id="resultRanking"></div>
