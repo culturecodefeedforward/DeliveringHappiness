@@ -244,11 +244,13 @@ btnNext2.addEventListener('click', () => {
 let duelPairs = [];
 let duelIndex = 0;
 let duelScores = {}; // Lưu điểm số của từng item.id
+let duelHistory = {}; // Lưu kết quả đối đầu dạng "idA-idB": winnerId
 
 function initDuel() {
   duelPairs = [];
   duelIndex = 0;
   duelScores = {};
+  duelHistory = {};
 
   for (let i = 0; i < selectedTop7.length; i++) {
     duelScores[selectedTop7[i].id] = 0; // init score
@@ -286,10 +288,14 @@ function renderDuel() {
   duelB.onclick = () => handleDuelClick(pair[1].id);
 
   // Hiển thị tình huống giằng xé chi tiết
-  conflictScenario.innerHTML = `Giữa việc <strong style="color:var(--warm-yellow);">${pair[0].context}</strong> và việc <strong style="color:var(--warm-yellow);">${pair[1].context}</strong>, bạn sẽ nhượng bộ điều gì để giữ lại điều kia?`;
+  conflictScenario.innerHTML = `Giữa việc <strong style="color:var(--warm-orange);">${pair[0].context}</strong> và việc <strong style="color:var(--warm-orange);">${pair[1].context}</strong>, bạn sẽ nhượng bộ điều gì để giữ lại điều kia?`;
 }
 
 function handleDuelClick(winnerId) {
+  const pair = duelPairs[duelIndex];
+  // Lưu lịch sử thắng trận
+  duelHistory[`${pair[0].id}-${pair[1].id}`] = winnerId;
+  
   duelScores[winnerId] += 1;
   duelIndex++;
   renderDuel();
@@ -329,7 +335,7 @@ function renderResults(ranked) {
     `;
   });
   
-  // Vẽ Radar Chart - Bánh xe 7 đỉnh
+  // Vẽ Radar Chart - Bánh xe 7 đỉnh (Chủ đề sáng, sắc nét)
   const ctx = document.getElementById('resultChart').getContext('2d');
   new Chart(ctx, {
     type: 'radar',
@@ -338,16 +344,16 @@ function renderResults(ranked) {
       datasets: [{
         label: 'Sức mạnh Giá trị',
         data: data,
-        backgroundColor: 'rgba(234, 88, 12, 0.3)', // gradient style color
-        borderColor: 'rgba(245, 158, 11, 1)',
+        backgroundColor: 'rgba(234, 88, 12, 0.2)', // gradient style color
+        borderColor: 'rgba(234, 88, 12, 1)',
         borderWidth: 3,
         pointBackgroundColor: '#fff',
         pointBorderColor: 'rgba(234, 88, 12, 1)',
         pointBorderWidth: 2,
-        pointRadius: 4,
+        pointRadius: 5,
         pointHoverBackgroundColor: 'rgba(245, 158, 11, 1)',
         pointHoverBorderColor: '#fff',
-        pointHoverRadius: 6,
+        pointHoverRadius: 7,
         fill: true
       }]
     },
@@ -355,20 +361,39 @@ function renderResults(ranked) {
       responsive: true,
       scales: {
         r: {
-          angleLines: { color: 'rgba(255,255,255,0.15)', lineWidth: 1 },
-          grid: { color: 'rgba(255,255,255,0.1)', circular: false }, // Đổi thành đa giác (bánh xe) thay vì tròn
+          angleLines: { 
+            color: 'rgba(28, 25, 23, 0.25)', 
+            lineWidth: 1.5 
+          }, // Nan hoa sẫm màu chạy từ tâm ra
+          grid: { 
+            color: 'rgba(28, 25, 23, 0.15)', 
+            circular: false,
+            lineWidth: 1
+          }, // Vòng bánh xe đa giác
           pointLabels: {
-            color: 'rgba(255,255,255,0.95)',
-            font: { size: 14, family: "'Be Vietnam Pro', sans-serif", weight: 'bold' }
+            color: '#1c1917', // Tên trị cốt lõi màu sẫm rõ nét
+            font: { 
+              size: 14, 
+              family: "'Be Vietnam Pro', sans-serif", 
+              weight: 'bold' 
+            }
           },
-          ticks: { display: false, stepSize: 1, min: 0, max: 6 } // Tối đa 6 điểm cho mỗi đỉnh
+          ticks: { 
+            display: true, 
+            stepSize: 1,
+            color: 'rgba(28, 25, 23, 0.4)',
+            backdropColor: 'transparent',
+            font: { size: 10 }
+          }, // Thể hiện số điểm toả ra từ tâm (0 -> 6)
+          suggestedMin: 0,
+          suggestedMax: 6
         }
       },
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: 'rgba(0,0,0,0.8)',
-          titleFont: { family: "'Be Vietnam Pro', sans-serif", size: 14 },
+          backgroundColor: 'rgba(28, 25, 23, 0.9)',
+          titleFont: { family: "'Be Vietnam Pro', sans-serif", size: 14, weight: 'bold' },
           bodyFont: { family: "'Be Vietnam Pro', sans-serif", size: 14 },
           padding: 12,
           cornerRadius: 8,
@@ -377,6 +402,54 @@ function renderResults(ranked) {
       }
     }
   });
+
+  // Gọi hàm vẽ ma trận 7x7
+  renderMatrixTable(ranked);
+}
+
+function renderMatrixTable(ranked) {
+  const tableEl = document.getElementById('matrixTable');
+  tableEl.innerHTML = '';
+
+  // Xếp theo điểm số đã rank (từ cao đến thấp) làm cho ma trận dễ nhìn
+  const items = ranked; 
+
+  // 1. Tạo Header hàng đầu tiên (tiêu đề các cột)
+  let headerHTML = '<thead><tr><th style="text-align: left; padding-left: 1rem;">Giá trị</th>';
+  items.forEach(item => {
+    headerHTML += `<th>${item.name}</th>`;
+  });
+  headerHTML += '</tr></thead>';
+  
+  // 2. Tạo nội dung bảng
+  let bodyHTML = '<tbody>';
+  items.forEach(rowItem => {
+    bodyHTML += `<tr><td class="matrix-header-cell">${rowItem.name}</td>`;
+    items.forEach(colItem => {
+      if (rowItem.id === colItem.id) {
+        // Đường chéo chính
+        bodyHTML += '<td class="matrix-diagonal">\\</td>';
+      } else {
+        // Kiểm tra xem rowItem có thắng colItem không
+        const key1 = `${rowItem.id}-${colItem.id}`;
+        const key2 = `${colItem.id}-${rowItem.id}`;
+        
+        let winnerId = null;
+        if (duelHistory[key1] !== undefined) winnerId = duelHistory[key1];
+        else if (duelHistory[key2] !== undefined) winnerId = duelHistory[key2];
+
+        if (winnerId === rowItem.id) {
+          bodyHTML += '<td class="matrix-win">✔</td>';
+        } else {
+          bodyHTML += '<td class="matrix-loss">-</td>';
+        }
+      }
+    });
+    bodyHTML += '</tr>';
+  });
+  bodyHTML += '</tbody>';
+
+  tableEl.innerHTML = headerHTML + bodyHTML;
 }
 
 // Khởi chạy

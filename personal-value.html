@@ -348,34 +348,106 @@
       text-align: center;
     }
     .radar-wrapper {
-      background: rgba(255,255,255,0.03);
-      border-radius: 20px;
-      padding: 1rem;
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 24px;
+      padding: 1.5rem;
       margin-bottom: 2rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
     }
     .rank-item {
       display: flex;
       align-items: center;
-      background: rgba(255,255,255,0.05);
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(0, 0, 0, 0.04);
       padding: 1rem 1.5rem;
       border-radius: 16px;
       margin-bottom: 0.8rem;
       text-align: left;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.01);
     }
     .rank-num {
       font-size: 1.5rem;
       font-weight: 800;
-      color: var(--warm-yellow);
+      color: var(--warm-orange);
       width: 40px;
     }
     .rank-name {
       flex: 1;
       font-weight: 700;
       font-size: 1.1rem;
+      color: var(--dark);
     }
     .rank-score {
-      color: rgba(255,255,255,0.5);
+      color: var(--light-text);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    /* Comparison Matrix */
+    .matrix-container {
+      margin-top: 3rem;
+      margin-bottom: 2rem;
+      text-align: left;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .matrix-title {
+      font-size: 1.3rem;
+      color: var(--dark, #1c1917);
+      margin-bottom: 0.5rem;
+      font-weight: 800;
+    }
+    .matrix-desc {
+      color: var(--mid, #44403c);
+      font-size: 0.95rem;
+      margin-bottom: 1.2rem;
+    }
+    .matrix-table-wrapper {
+      overflow-x: auto;
+      border-radius: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    }
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
       font-size: 0.9rem;
+      text-align: center;
+      min-width: 650px;
+    }
+    .matrix-table th, .matrix-table td {
+      padding: 0.85rem 0.5rem;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    .matrix-table th {
+      background: rgba(245, 158, 11, 0.06);
+      color: var(--dark, #1c1917);
+      font-weight: 700;
+    }
+    .matrix-table td.matrix-header-cell {
+      background: rgba(245, 158, 11, 0.06);
+      color: var(--dark, #1c1917);
+      font-weight: 700;
+      text-align: left;
+      padding-left: 1rem;
+      width: 140px;
+    }
+    .matrix-table td.matrix-diagonal {
+      background: rgba(0, 0, 0, 0.04);
+      color: rgba(0,0,0,0.15);
+      font-weight: bold;
+    }
+    .matrix-table td.matrix-win {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--warm-orange, #ea580c);
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+    .matrix-table td.matrix-loss {
+      color: rgba(0, 0, 0, 0.2);
     }
 
   </style>
@@ -415,15 +487,15 @@
     <div class="progress-bar-container">
       <div class="progress-fill" style="width: 33%;"></div>
     </div>
-    <div class="progress-text">Bước 2: Lọc Top 7 giá trị cốt lõi</div>
-    <p style="text-align: center; padding: 0 1.5rem; color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-top: 1rem;">
-      Từ những giá trị "Rất quan trọng", hãy chọn đúng <strong style="color:var(--warm-yellow)">7 giá trị</strong> đại diện nhất cho bạn.
+    <div class="progress-text" style="font-weight: bold; color: var(--dark);">Bước 2: Lọc Top 7 giá trị cốt lõi</div>
+    <p style="text-align: center; padding: 0 1.5rem; color: var(--mid); font-size: 0.95rem; margin-top: 1rem;">
+      Từ những giá trị "Rất quan trọng", hãy chọn đúng <strong style="color:var(--warm-orange)">7 giá trị</strong> đại diện nhất cho bạn.
     </p>
     
     <div id="topValuesList" class="selection-grid"></div>
     
-    <div class="floating-action">
-      <div style="margin-bottom: 0.8rem; font-weight: bold;">Đã chọn: <span id="selectionCount" style="color: var(--warm-yellow);">0</span>/7</div>
+    <div class="floating-action" style="background: linear-gradient(transparent, #fffbeb 40%);">
+      <div style="margin-bottom: 0.8rem; font-weight: bold; color: var(--dark);">Đã chọn: <span id="selectionCount" style="color: var(--warm-orange);">0</span>/7</div>
       <button id="btnNext2" class="btn-glow" disabled>Bắt đầu So sánh chéo</button>
     </div>
   </div>
@@ -433,17 +505,17 @@
     <div class="progress-bar-container">
       <div class="progress-fill" style="width: 66%;"></div>
     </div>
-    <div class="progress-text">Bước 3: Trực giác quyết định (<span id="duelCurrent">1</span>/21)</div>
-    <p style="text-align: center; padding: 0 1.5rem; color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-top: 1rem;">
+    <div class="progress-text" style="font-weight: bold; color: var(--dark);">Bước 3: Trực giác quyết định (<span id="duelCurrent">1</span>/21)</div>
+    <p style="text-align: center; padding: 0 1.5rem; color: var(--mid); font-size: 0.95rem; margin-top: 1rem;">
       Nếu bắt buộc phải chọn 1, bạn sẽ giữ lại giá trị nào? (Hãy tin vào trực giác)
     </p>
     
     <div class="duel-arena">
       <div id="duelA" class="duel-card">A</div>
       
-      <div style="text-align: center; max-width: 600px; margin: 0 auto; background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
-        <div class="duel-vs" style="margin-bottom: 0.5rem;">TÌNH HUỐNG GIẰNG XÉ</div>
-        <div id="conflictScenario" style="font-size: 1rem; color: rgba(255,255,255,0.9); line-height: 1.6; font-style: italic;">
+      <div style="text-align: center; max-width: 600px; margin: 0 auto; background: rgba(0,0,0,0.03); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.06);">
+        <div class="duel-vs" style="margin-bottom: 0.5rem; color: var(--warm-orange);">TÌNH HUỐNG GIẰNG XÉ</div>
+        <div id="conflictScenario" style="font-size: 1.05rem; color: var(--dark); line-height: 1.6; font-style: italic;">
           Nếu bạn phải hi sinh [A] để giữ được [B], bạn sẽ chọn bên nào?
         </div>
       </div>
@@ -459,14 +531,27 @@
     </div>
     
     <div class="result-container">
-      <h2 style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--warm-yellow);">La Bàn Của Bạn</h2>
-      <p style="color: rgba(255,255,255,0.7); margin-bottom: 2rem;">Đây là DNA giá trị cốt lõi của riêng bạn.</p>
+      <h2 style="font-size: 2.2rem; margin-bottom: 0.5rem; color: var(--warm-orange); font-weight: 800;">La Bàn Của Bạn</h2>
+      <p style="color: var(--mid); margin-bottom: 2rem; font-size: 1.05rem;">Đây là DNA giá trị cốt lõi của riêng bạn.</p>
       
       <div class="radar-wrapper">
         <canvas id="resultChart"></canvas>
       </div>
       
       <div id="resultRanking"></div>
+
+      <!-- 7x7 Comparison Matrix Container -->
+      <div class="matrix-container">
+        <div class="matrix-title">Ma Trận Đối Đầu Chi Tiết</div>
+        <div class="matrix-desc">
+          Bảng tổng hợp chi tiết kết quả 21 trận đối kháng. Các giá trị ở <strong>Hàng ngang</strong> thắng giá trị ở <strong>Cột dọc</strong> tương ứng sẽ được đánh dấu tích cam (<span style="color: var(--warm-orange); font-weight: bold;">✔</span>).
+        </div>
+        <div class="matrix-table-wrapper">
+          <table id="matrixTable" class="matrix-table">
+            <!-- Dynamic matrix rendered here -->
+          </table>
+        </div>
+      </div>
       
       <div style="margin-top: 3rem; margin-bottom: 2rem;">
         <a href="index.html" class="btn-glow" style="text-decoration: none; padding: 1rem 2rem;">Quay về Trang chủ</a>
