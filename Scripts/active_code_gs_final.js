@@ -1,5 +1,5 @@
 /**
- * DHM8 Email Automation - HARDENED VERSION (Gate 1 Rev 3)
+ * DHM8 Email Automation - HARDENED VERSION (Gate 1 Rev 3.1 - ABCDE)
  * File: Scripts/active_code_gs_final.js
  * Copy toàn bộ nội dung này vào Apps Script Editor trước khi deploy.
  *
@@ -696,6 +696,11 @@ function doPost(e) {
     // --- BÀI TEST GIÁ TRỊ CỐT LÕI (PERSONAL VALUES) ---
     if (body.action === 'submit_pv') {
       return handlePersonalValuesSubmission(body);
+    }
+
+    // --- THỰC HÀNH LẠC QUAN ABCDE ---
+    if (body.action === 'submit_abcde') {
+      return jsonOut(handleAbcdeSubmission(body));
     }
 
     // --- FORM ĐĂNG KÝ ---
@@ -1974,6 +1979,112 @@ function sendPersonalValuesEmail(recipientEmail, fullName, parsedRanked) {
     
   MailApp.sendEmail({
     to: toAddress,
+    subject: subject,
+    htmlBody: htmlBody
+  });
+}
+
+function handleAbcdeSubmission(body) {
+  var ss = getSpreadsheet();
+  var props = getScriptProperties_();
+  
+  if (props.getProperty('KILL_SWITCH_ABCDE') === 'true') {
+    return { success: false, error: 'ABCDE_DISABLED', message: 'Hệ thống thực hành đang tạm đóng. Vui lòng liên hệ BTC.' };
+  }
+  
+  var fullName = (body.fullName || '').trim();
+  var email = (body.email || '').trim();
+  var passcode = (body.passcode || '').trim().toUpperCase();
+  var chatVersion = (body.chatVersion || 'stable').trim();
+  var data = body.data || {};
+  
+  if (!fullName || fullName.length > 100) {
+    return { success: false, error: 'INVALID_NAME', message: 'Họ và tên không hợp lệ.' };
+  }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return { success: false, error: 'INVALID_EMAIL', message: 'Địa chỉ Email không hợp lệ.' };
+  }
+  
+  var sheetName = 'ABCDE_Data';
+  var sheet = ss.getSheetByName(sheetName);
+  if (!sheet) {
+    sheet = ss.insertSheet(sheetName);
+    sheet.appendRow(['Timestamp', 'FullName', 'Email', 'Passcode', 'A_Adversity', 'B_Belief', 'C_Consequence', 'D_Disputation', 'E_Energization', 'ChatVersion']);
+    sheet.getRange(1, 1, 1, 10).setFontWeight('bold');
+  } else {
+    // Đảm bảo tiêu đề cột 10 là ChatVersion nếu chưa có
+    var lastCol = sheet.getLastColumn();
+    if (lastCol < 10) {
+      sheet.getRange(1, 10).setValue('ChatVersion').setFontWeight('bold');
+    }
+  }
+  
+  sheet.appendRow([
+    new Date(),
+    fullName,
+    email,
+    passcode,
+    data.A || '',
+    data.B || '',
+    data.C || '',
+    data.D || '',
+    data.E || '',
+    chatVersion
+  ]);
+  
+  try {
+    sendAbcdeEmailReport_(email, fullName, data, chatVersion);
+  } catch(mailErr) {
+    Logger.log('Send email failed: ' + mailErr.toString());
+  }
+  
+  return { success: true };
+}
+
+function sendAbcdeEmailReport_(email, fullName, data, chatVersion) {
+  var subject = '☀️ Báo cáo Thực hành Lạc quan ABCDE - ' + fullName;
+  var versionText = chatVersion === 'beta' ? 'Bản thử nghiệm (Có tri thức lớp học RAG)' : 'Bản ổn định (Thực hành nhanh)';
+  var htmlBody = 
+    '<div style="font-family: \'Segoe UI\', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px; background-color: #fcfbf7; color: #2c2520;">' +
+    '<h2 style="color: #c97d54; text-align: center; border-bottom: 2px solid #c97d54; padding-bottom: 10px; margin-top: 0;">☀️ Báo cáo Thực hành Lạc quan ABCDE</h2>' +
+    '<p>Xin chào <strong>' + fullName + '</strong>,</p>' +
+    '<p>Chúc mừng bạn đã hoàn thành xuất sắc quy trình Socratic ABCDE của Martin Seligman để tự điều chỉnh cảm xúc và tư duy. Dưới đây là bản tổng hợp kết quả thực hành của bạn:</p>' +
+    '<p style="font-size: 0.9rem; color: #64748b; margin-bottom: 20px;"><strong>Phiên bản thực hành:</strong> ' + versionText + '</p>' +
+    
+    '<div style="margin-top: 20px;">' +
+    '<div style="background-color: #fff; padding: 15px; border-left: 4px solid #d45d55; margin-bottom: 15px; border-radius: 0 8px 8px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">' +
+    '<strong style="color: #d45d55; font-size: 1.1rem;">A - Nghịch cảnh (Adversity)</strong>' +
+    '<p style="margin: 5px 0 0 0; line-height: 1.5;">' + data.A + '</p>' +
+    '</div>' +
+    
+    '<div style="background-color: #fff; padding: 15px; border-left: 4px solid #e2a85c; margin-bottom: 15px; border-radius: 0 8px 8px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">' +
+    '<strong style="color: #e2a85c; font-size: 1.1rem;">B - Niềm tin tự động (Belief)</strong>' +
+    '<p style="margin: 5px 0 0 0; line-height: 1.5;">' + data.B + '</p>' +
+    '</div>' +
+    
+    '<div style="background-color: #fff; padding: 15px; border-left: 4px solid #6b9e78; margin-bottom: 15px; border-radius: 0 8px 8px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">' +
+    '<strong style="color: #6b9e78; font-size: 1.1rem;">C - Hệ quả (Consequence)</strong>' +
+    '<p style="margin: 5px 0 0 0; line-height: 1.5;">' + data.C + '</p>' +
+    '</div>' +
+    
+    '<div style="background-color: #fff; padding: 15px; border-left: 4px solid #4a90e2; margin-bottom: 15px; border-radius: 0 8px 8px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">' +
+    '<strong style="color: #4a90e2; font-size: 1.1rem;">D - Phản biện (Disputation)</strong>' +
+    '<p style="margin: 5px 0 0 0; line-height: 1.5;">' + data.D + '</p>' +
+    '</div>' +
+    
+    '<div style="background-color: #fff; padding: 15px; border-left: 4px solid #9c27b0; margin-bottom: 15px; border-radius: 0 8px 8px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">' +
+    '<strong style="color: #9c27b0; font-size: 1.1rem;">E - Thiết lập Năng lượng (Energization)</strong>' +
+    '<p style="margin: 5px 0 0 0; line-height: 1.5;">' + data.E + '</p>' +
+    '</div>' +
+    '</div>' +
+    
+    '<p style="margin-top: 20px; font-size: 0.9rem; color: #7f756d; text-align: center; border-top: 1px solid #e0e0e0; padding-top: 15px;">' +
+    'Được phát triển bởi CultureCode Community & Deliver Happiness Masterclass © 2026.' +
+    '</p>' +
+    '</div>';
+    
+  MailApp.sendEmail({
+    to: email,
     subject: subject,
     htmlBody: htmlBody
   });

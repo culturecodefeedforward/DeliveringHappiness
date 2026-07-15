@@ -16,20 +16,26 @@ Thư mục gốc chứa các trang tĩnh, tệp cấu hình phong cách và các
 
 ## 2. Kịch bản logic & CSS (Scripts & Styles)
 *   `styles.css` / `quiz.css` / `register.css`: Định nghĩa phong cách giao diện Glassmorphism, CSS Variables, và layout responsive cho toàn bộ trang web.
+*   `chat-abcde.css`: Phong cách giao diện hiện đại, glassmorphism và responsive dành riêng cho Chatbox ABCDE Socratic (scoped qua tiền tố `.abcde-*`).
 *   `register.js` / `register_dh9.js` / `register_direct.js`: Quản lý trạng thái biểu mẫu đăng ký, tính toán mã QR thanh toán động và gọi Webhook gửi dữ liệu CRM qua giao thức JSONP/JSON.
-*   `personal-value.js`: Xử lý logic khảo sát La bàn Giá trị Cá nhân (quản lý 41 thẻ giá trị, lật thẻ, so sánh đúp Top 7, vẽ radar chart qua Chart.js, gọi html2pdf.js xuất file và gửi dữ liệu về GAS Web App qua JSONP).
+*   `personal-value.js`: Xử lý logic khảo sát La bàn Giá trị Cá nhân.
+*   `chat-abcde.js`: Quản lý luồng máy trạng thái hội thoại ABCDE phía client, hiển thị giao diện chat bong bóng và giao tiếp với API backend proxy.
 *   `script.js`: Xử lý các hiệu ứng động trên trang chủ (cuộn trang mượt, tương tác micro-animations).
 *   `tracking.js`: Bộ theo dõi phân tích hành vi cuộn trang và lượt truy cập của người dùng.
 *   `dh4hn_uat.js`: Kịch bản kiểm thử tự động phục vụ UAT trên môi trường local.
 
 ## 3. Thư mục và tệp tin bổ sung
 *   `docs/`: Thư mục chứa tài liệu đặc tả và hướng dẫn kỹ thuật của dự án.
+*   `api/`: Thư mục chứa các API Backend Proxy (Vercel Serverless Functions):
+    *   `chat-abcde.js`: API xử lý hội thoại Socratic, kiểm soát passcode, gọi Gemini API (`gemini-3.1-flash-lite`) và ký bảo mật HMAC trước khi chuyển tiếp sang Google Apps Script.
 *   `Scripts/`: Chứa mã nguồn Apps Script và các script bổ trợ:
-    *   `active_code_gs_final.js`: Mã nguồn Apps Script backend chính thống (handling Webhook SePay, ghi CRM Sheets, gửi email đăng ký và xử lý kết quả khảo sát Giá trị Cốt lõi).
-    *   `active_code_gs_rollback.js`: Bản sao lưu để khôi phục nhanh backend khi gặp sự cố.
+    *   `active_code_gs_final.js`: Mã nguồn Apps Script backend chính thống (handling Webhook SePay, ghi CRM Sheets, gửi email đăng ký và xử lý kết quả khảo sát ABCDE/Giá trị Cốt lõi).
+    *   `active_code_gs_rollback.js`: Bản sao lưu để khôi phục nhanh backend khi gặp sự cố (bị loại trừ khi push lên cloud bằng `.claspignore` để tránh xung đột hàm).
     *   `appsscript_staging_manifest.json`: Tệp manifest cấu hình dự án Apps Script trên GCP.
     *   `dhm8_gate2_uat_runner.js`: Trình chạy kịch bản kiểm thử tích hợp tự động cho backend.
     *   `take_uat_screenshots.py` / `take_local_uat_screenshots.py`: Các script Python tự động hóa việc chụp ảnh màn hình UAT.
 *   `Implementation Plan/`: Lưu trữ kế hoạch chi tiết cho từng giai đoạn cập nhật mã nguồn (phiên bản hóa theo định dạng ngày).
 *   `UAT/`: Chứa kết quả kiểm thử nghiệm thu người dùng (UAT reports) và bằng chứng kiểm thử giao diện thực tế.
 *   `.clasp.json`: File cấu hình của clasp để đồng bộ mã nguồn Apps Script với Google Cloud.
+*   `.claspignore`: File cấu hình loại trừ các tệp rollback/runner khỏi quá trình clasp push để tránh Function Shadowing (xung đột trùng tên hàm).
+

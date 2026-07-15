@@ -21,3 +21,5 @@ implementation_plan_20260413_UpdateGeminiRules.md
 Artifacts/dh_cta_low_spam_campaign_20260708/batch_send/mcp_config_work_alias.json
 scratch/send_test_email.py
 **/mcp_config*.json
+
+.env*

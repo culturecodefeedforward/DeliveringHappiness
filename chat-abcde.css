@@ -1,0 +1,347 @@
+/* Scoped CSS for ABCDE Socratic Chatbox */
+
+.abcde-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.abcde-modal-overlay.abcde-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.abcde-modal-container {
+  width: 90%;
+  max-width: 600px;
+  height: 80%;
+  max-height: 700px;
+  background: rgba(30, 41, 59, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.95);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  color: #f8fafc;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.abcde-modal-overlay.abcde-active .abcde-modal-container {
+  transform: scale(1);
+}
+
+/* Header */
+.abcde-header {
+  padding: 1.2rem 1.5rem;
+  background: rgba(15, 23, 42, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.abcde-header-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fbbf24; /* warm yellow */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.abcde-close-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.abcde-close-btn:hover {
+  color: #ef4444;
+  transform: rotate(90deg);
+}
+
+/* Chat Body */
+.abcde-chat-body {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: rgba(15, 23, 42, 0.2);
+}
+
+.abcde-message {
+  max-width: 80%;
+  padding: 0.8rem 1.1rem;
+  border-radius: 12px;
+  line-height: 1.5;
+  font-size: 0.95rem;
+  word-wrap: break-word;
+}
+
+.abcde-message-ai {
+  align-self: flex-start;
+  background: rgba(51, 65, 85, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom-left-radius: 2px;
+}
+
+.abcde-message-user {
+  align-self: flex-end;
+  background: #2563eb; /* Blue primary */
+  color: #fff;
+  border-bottom-right-radius: 2px;
+}
+
+.abcde-message-system {
+  align-self: center;
+  max-width: 90%;
+  background: rgba(234, 179, 8, 0.1);
+  border: 1px solid rgba(234, 179, 8, 0.2);
+  color: #facc15;
+  text-align: center;
+  font-size: 0.85rem;
+  border-radius: 8px;
+}
+
+/* State Status bar */
+.abcde-status-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 1.5rem;
+  background: rgba(15, 23, 42, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.abcde-status-step {
+  display: flex;
+  gap: 4px;
+}
+
+.abcde-step-badge {
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  font-weight: 700;
+}
+
+.abcde-step-badge.abcde-active-badge {
+  background: #3b82f6;
+  color: #fff;
+}
+
+.abcde-step-badge.abcde-done-badge {
+  background: #10b981;
+  color: #fff;
+}
+
+/* Input Area */
+.abcde-input-area {
+  padding: 1.2rem 1.5rem;
+  background: rgba(15, 23, 42, 0.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.abcde-input-box {
+  flex: 1;
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  color: #fff;
+  font-size: 0.95rem;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.abcde-input-box:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.abcde-input-box::placeholder {
+  color: #64748b;
+}
+
+.abcde-btn-send {
+  background: #3b82f6;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  font-family: inherit;
+}
+
+.abcde-btn-send:hover {
+  background-color: #2563eb;
+}
+
+.abcde-btn-send:active {
+  transform: scale(0.98);
+}
+
+.abcde-btn-send:disabled {
+  background-color: #475569;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* Passcode Form inside Chat */
+.abcde-passcode-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 320px;
+  margin: auto;
+  padding: 1.5rem;
+  background: rgba(15, 23, 42, 0.4);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: center;
+}
+
+.abcde-passcode-input {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 0.7rem;
+  color: #fff;
+  text-align: center;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  outline: none;
+}
+
+/* Submit Form (Email) inside Chat */
+.abcde-submit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: 100%;
+  max-width: 350px;
+  margin: auto;
+  padding: 1.5rem;
+  background: rgba(15, 23, 42, 0.4);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.abcde-form-input {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 0.7rem;
+  color: #fff;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+/* Loading indicator */
+.abcde-typing-indicator {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(51, 65, 85, 0.6);
+  border-radius: 8px;
+  align-self: flex-start;
+}
+
+.abcde-typing-dot {
+  width: 6px;
+  height: 6px;
+  background: #94a3b8;
+  border-radius: 50%;
+  animation: abcde-bounce 1.4s infinite ease-in-out both;
+}
+
+.abcde-typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.abcde-typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes abcde-bounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1.0); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .abcde-modal-container {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border-radius: 0;
+    border: none;
+  }
+  .abcde-chat-body {
+    padding: 1rem;
+  }
+  .abcde-input-area {
+    padding: 1rem;
+  }
+}
+
+/* Version Selector & Fallback UI */
+.abcde-version-selector {
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
+  padding: 1.5rem;
+  background: rgba(15, 23, 42, 0.4);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.abcde-version-card {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(30, 41, 59, 0.3);
+  transition: all 0.2s ease;
+}
+
+.abcde-version-card:hover {
+  border-color: #38bdf8;
+  background: rgba(30, 41, 59, 0.5);
+}
+
+.abcde-version-card.abcde-card-selected {
+  border-color: #38bdf8;
+  background: rgba(30, 41, 59, 0.6);
+}
+
+.abcde-fallback-area {
+  margin: 10px auto;
+  text-align: center;
+}
+

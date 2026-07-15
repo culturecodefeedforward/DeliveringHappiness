@@ -40,27 +40,40 @@ Backend của hệ thống chạy trên nền tảng Google Apps Script (GAS) We
       "rootDir": "Scripts"
     }
     ```
-    *Lưu ý:* Hãy đảm bảo thuộc tính `rootDir` trỏ chính xác đến thư mục `Scripts/` chứa file code `active_code_gs_final.js` và `appsscript.json` (nếu dùng clasp push cho thư mục này).
-2.  Đẩy mã nguồn từ máy local lên Google Apps Script:
+    *Lưu ý:* Hãy đảm bảo thuộc tính `rootDir` trỏ chính xác đến thư mục `Scripts/` chứa file code `active_code_gs_final.js` và `appsscript.json`.
+3.  **Cấu hình tệp loại trừ `.claspignore` (Bắt buộc):**
+    Để tránh xung đột trùng lặp hàm `doPost` (Function Shadowing) do clasp đẩy cả tệp rollback/runner lên cloud, tạo tệp `.claspignore` ở thư mục gốc của dự án với nội dung:
+    ```text
+    # Ignore files relative to rootDir (Scripts)
+    active_code_gs_rollback.js
+    dhm8_gate2_uat_runner.js
+    ```
+4.  Đẩy mã nguồn từ máy local lên Google Apps Script:
     ```bash
-    clasp push
+    clasp push -f
     ```
 
 ### Bước 3: Tạo phiên bản Deploy Web App trên Console
 Sau khi clasp push code thành công, thực hiện tạo bản deploy trên Google Apps Script:
-1.  Truy cập trang quản trị Google Sheet CRM và mở **Extensions** -> **Apps Script** (hoặc mở trực tiếp qua Script ID trên script.google.com).
+1.  Truy cập trang quản trị Google Sheet CRM và mở **Extensions** -> **Apps Script**.
 2.  Nhấp chọn **Deploy** -> **New Deployment**.
 3.  Chọn loại cấu hình triển khai là **Web App**:
     *   *Execute as:* Chọn **Me** (chạy dưới danh nghĩa tài khoản culturecodeproject@gmail.com).
-    *   *Who has access:* Chọn **Anyone** (để cho phép trình duyệt của khách hàng gửi yêu cầu AJAX/JSONP mà không bị chặn phân quyền).
+    *   *Who has access:* Chọn **Anyone** (để cho phép backend Vercel gọi API công khai).
 4.  Nhấp **Deploy**, hệ thống sẽ sinh ra một URL Web App mới (ví dụ: `https://script.google.com/macros/s/AKfycb.../exec`).
 
-### Bước 4: Cập nhật URL Web App trên Frontend
-1.  Sao chép URL Web App mới tạo ở Bước 3.
-2.  Thay thế URL này vào biến cấu hình API tương ứng trên client-side:
-    *   **Khảo sát giá trị:** Biến `webAppUrl` ở cuối tệp `personal-value.js` (khoảng dòng 684).
-    *   **Form Đăng ký:** Biến `window.CUSTOM_WEBAPP_URL` hoặc cấu hình endpoint trong `register.js` và `register_dh9.js`.
-3.  Commit và push frontend lên nhánh `main` để Vercel cập nhật thay đổi.
+### Bước 4: Cập nhật biến môi trường trên Vercel Backend
+Không tự ý sửa URL trực tiếp trong mã nguồn backend. Mọi URL và token kết nối đều được cấu hình qua **Vercel Environment Variables**:
+1.  Truy cập bảng điều khiển Vercel của dự án.
+2.  Cấu hình các biến môi trường sau:
+    *   `DHM8_APPS_SCRIPT_URL`: URL Web App mới deploy ở Bước 3.
+    *   `DHM8_APPS_SCRIPT_TOKEN`: Token dùng để ký mã HMAC (Ví dụ: `shared-token-key-2026`).
+    *   `GEMINI_API_KEY`: API Key của Google Gemini dùng để chạy chatbot Socratic.
+    *   `GEMINI_MODEL`: Model sử dụng (mặc định: `gemini-3.1-flash-lite`).
+3.  Chạy deploy lại dự án để áp dụng các biến môi trường mới:
+    ```bash
+    vercel --prod --yes
+    ```
 
 ---
 
@@ -77,3 +90,4 @@ Sau khi clasp push code thành công, thực hiện tạo bản deploy trên Goo
 | `KILL_SWITCH_EMAIL` | Đặt là `true` để tạm dừng tất cả các hoạt động gửi email |
 | `KILL_SWITCH_REGISTRATION` | Đặt là `true` để tạm dừng nhận đăng ký mới |
 | `KILL_SWITCH_PV` | Đặt là `true` để đóng cổng khảo sát Giá trị Cốt lõi |
+| `KILL_SWITCH_ABCDE` | Đặt là `true` để tạm dừng nhận bài thực hành ABCDE Socratic |
