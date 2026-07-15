@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   
   <style>
     /* Premium App Shell - Light Theme */
@@ -504,7 +505,10 @@
     <div id="topValuesList" class="selection-grid"></div>
     
     <div class="floating-action" style="background: linear-gradient(transparent, #fffbeb 40%);">
-      <div style="margin-bottom: 0.8rem; font-weight: bold; color: var(--dark);">Đã chọn: <span id="selectionCount" style="color: var(--warm-orange);">0</span>/7</div>
+      <div style="margin-bottom: 0.8rem; font-weight: bold; color: var(--dark);">
+        Đã chọn: <span id="selectionCount" style="color: var(--warm-orange);">0</span>/7
+        <span id="selectionWarning" style="color: var(--warm-orange); font-size: 0.85rem; margin-left: 0.5rem; display: none; font-weight: 800;">(Chỉ chọn đúng 7 giá trị!)</span>
+      </div>
       <button id="btnNext2" class="btn-glow" disabled>Bắt đầu So sánh chéo</button>
     </div>
   </div>
@@ -540,29 +544,70 @@
     </div>
     
     <div class="result-container">
-      <h2 style="font-size: 2.2rem; margin-bottom: 0.5rem; color: var(--warm-orange); font-weight: 800;">La Bàn Của Bạn</h2>
-      <p style="color: var(--mid); margin-bottom: 2rem; font-size: 1.05rem;">Đây là DNA giá trị cốt lõi của riêng bạn.</p>
-      
-      <div class="radar-wrapper">
-        <canvas id="resultChart"></canvas>
-      </div>
-      
-      <div id="resultRanking"></div>
+      <!-- Vùng in PDF -->
+      <div id="resultReportCard" style="background: var(--warm-cream, #fffbeb); padding: 1.5rem; border-radius: 24px; border: 1px solid rgba(0,0,0,0.03); margin-bottom: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.01);">
+        <h2 style="font-size: 2.2rem; margin-bottom: 0.5rem; color: var(--warm-orange); font-weight: 800; text-align: center;">La Bàn Của Bạn</h2>
+        <p style="color: var(--mid); margin-bottom: 2rem; font-size: 1.05rem; text-align: center;">Đây là DNA giá trị cốt lõi của riêng bạn.</p>
+        
+        <div class="radar-wrapper" style="background: white; border: 1px solid rgba(0,0,0,0.04); border-radius: 20px; padding: 1rem; margin-bottom: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.01);">
+          <canvas id="resultChart"></canvas>
+        </div>
+        
+        <div id="resultRanking"></div>
 
-      <!-- 7x7 Comparison Matrix Container -->
-      <div class="matrix-container">
-        <div class="matrix-title">Ma Trận Đối Đầu Chi Tiết</div>
-        <div class="matrix-desc">
-          Bảng tổng hợp chi tiết kết quả 21 trận đối kháng. Các giá trị ở <strong>Hàng ngang</strong> thắng giá trị ở <strong>Cột dọc</strong> tương ứng sẽ được đánh dấu tích cam (<span style="color: var(--warm-orange); font-weight: bold;">✔</span>).
+        <!-- 7x7 Comparison Matrix Container -->
+        <div class="matrix-container" style="background: white; border: 1px solid rgba(0,0,0,0.04); border-radius: 20px; padding: 1.2rem; margin-top: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.01);">
+          <div class="matrix-title" style="margin-bottom: 0.5rem;">Ma Trận Đối Đầu Chi Tiết</div>
+          <div class="matrix-desc" style="font-size: 0.85rem; color: var(--mid); margin-bottom: 1rem; text-align: center;">
+            Bảng tổng hợp chi tiết kết quả 21 trận đối kháng. Các giá trị ở <strong>Hàng ngang</strong> thắng giá trị ở <strong>Cột dọc</strong> tương ứng sẽ được đánh dấu tích cam (<span style="color: var(--warm-orange); font-weight: bold;">✔</span>).
+          </div>
+          <div class="matrix-table-wrapper">
+            <table id="matrixTable" class="matrix-table">
+              <!-- Dynamic matrix rendered here -->
+            </table>
+          </div>
         </div>
-        <div class="matrix-table-wrapper">
-          <table id="matrixTable" class="matrix-table">
-            <!-- Dynamic matrix rendered here -->
-          </table>
+      </div>
+
+      <!-- Form nhận báo cáo -->
+      <div id="emailFormCard" style="max-width: 650px; margin: 0 auto 2.5rem auto; background: var(--warm-cream, #fffbeb); border: 1px solid rgba(0, 0, 0, 0.08); padding: 2rem; border-radius: 24px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03); text-align: left;">
+        <h3 style="color: var(--dark, #1c1917); margin-top: 0; margin-bottom: 0.5rem; font-weight: 800; font-size: 1.3rem;">Nhận Bản Phân Tích & DNA Giá Trị</h3>
+        <p style="color: var(--mid, #44403c); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">
+          Nhập thông tin để nhận báo cáo phân tích xu hướng tính cách (Schwartz Dimensions) qua Email hoặc tải xuống bản in PDF trực tiếp.
+        </p>
+        
+        <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+              <label style="display: block; margin-bottom: 0.4rem; font-weight: 700; color: var(--dark, #1c1917); font-size: 0.9rem;">Họ và tên của bạn:</label>
+              <input type="text" id="reportName" placeholder="Ví dụ: Nguyễn Văn A" style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); font-family: inherit; font-size: 0.95rem; background: white; color: var(--dark);" />
+            </div>
+            <div>
+              <label style="display: block; margin-bottom: 0.4rem; font-weight: 700; color: var(--dark, #1c1917); font-size: 0.9rem;">Địa chỉ Email nhận:</label>
+              <input type="email" id="reportEmail" placeholder="email@vi-du.com" style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); font-family: inherit; font-size: 0.95rem; background: white; color: var(--dark);" />
+            </div>
+          </div>
+          
+          <!-- CAPTCHA Block -->
+          <div id="captchaContainer" style="display: grid; grid-template-columns: 1fr; gap: 0.5rem; margin-top: 1rem; padding: 1rem; background: rgba(0,0,0,0.02); border-radius: 16px; border: 1px solid rgba(0,0,0,0.05);">
+            <label style="display: block; font-weight: 700; color: var(--dark, #1c1917); font-size: 0.9rem;">
+              Xác minh bảo mật: <span id="captchaQuestion" style="color: var(--warm-orange); font-weight: 800;">...</span>
+            </label>
+            <input type="number" id="reportCaptcha" placeholder="Nhập kết quả phép tính" style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); font-family: inherit; font-size: 0.95rem; background: white; color: var(--dark);" />
+          </div>
+        </div>
+        
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <button id="btnSendReportEmail" class="btn-glow" style="flex: 1; padding: 0.8rem 1.5rem; font-size: 0.95rem; font-weight: 800; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);">
+            Gửi báo cáo qua Email
+          </button>
+          <button id="btnDownloadReportPDF" style="flex: 1; background: white; border: 1.5px solid var(--warm-orange); padding: 0.8rem 1.5rem; border-radius: 999px; cursor: pointer; font-weight: 800; color: var(--warm-orange); font-family: inherit; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
+            Tải PDF Trực Tiếp
+          </button>
         </div>
       </div>
       
-      <div style="margin-top: 3rem; margin-bottom: 2rem;">
+      <div style="margin-top: 3rem; margin-bottom: 2rem; text-align: center;">
         <a href="index.html" class="btn-glow" style="text-decoration: none; padding: 1rem 2rem;">Quay về Trang chủ</a>
       </div>
     </div>

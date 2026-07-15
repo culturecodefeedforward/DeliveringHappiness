@@ -222,6 +222,28 @@ function updateProgress1() {
   s1Count.innerText = selectedCount;
 }
 
+// Bắt sự kiện nút quay lại trong header để điều hướng lùi bước thay vì thoát hẳn trang
+const backBtn = document.querySelector('.back-btn');
+if (backBtn) {
+  backBtn.removeAttribute('href');
+  backBtn.style.cursor = 'pointer';
+  backBtn.onclick = (e) => {
+    e.preventDefault();
+    if (step4.classList.contains('active')) {
+      step4.classList.remove('active');
+      step3.classList.add('active');
+    } else if (step3.classList.contains('active')) {
+      step3.classList.remove('active');
+      step2.classList.add('active');
+    } else if (step2.classList.contains('active')) {
+      step2.classList.remove('active');
+      step1.classList.add('active');
+    } else {
+      window.location.href = 'index.html';
+    }
+  };
+}
+
 btnNext1.addEventListener('click', () => {
   finishStep1();
 });
@@ -290,15 +312,25 @@ function renderTopValues() {
 
 function toggleSelectTop7(item, el) {
   const idx = selectedTop7.findIndex(v => v.id === item.id);
+  const warningEl = document.getElementById('selectionWarning');
+  
   if (idx > -1) {
     selectedTop7.splice(idx, 1);
     el.classList.remove('selected');
+    if (warningEl) warningEl.style.display = 'none';
   } else {
     if (selectedTop7.length < 7) {
       selectedTop7.push(item);
       el.classList.add('selected');
+      if (warningEl) warningEl.style.display = 'none';
     } else {
-      alert("Bạn chỉ được chọn tối đa 7 giá trị!");
+      if (warningEl) {
+        warningEl.style.display = 'inline-block';
+        warningEl.classList.add('blinking');
+        setTimeout(() => {
+          warningEl.classList.remove('blinking');
+        }, 1000);
+      }
     }
   }
   
@@ -376,6 +408,8 @@ function handleDuelClick(winnerId) {
 
 // ----------------------------------------------------
 // STEP 4: RESULTS
+let latestRankedData = [];
+
 function finishDuel() {
   step3.classList.remove('active');
   step4.classList.add('active');
@@ -385,7 +419,9 @@ function finishDuel() {
     return { ...item, score: duelScores[item.id] };
   }).sort((a, b) => b.score - a.score); // Giảm dần
   
+  latestRankedData = ranked;
   renderResults(ranked);
+  initReportFormEvents();
 }
 
 function renderResults(ranked) {
@@ -527,3 +563,151 @@ function renderMatrixTable(ranked) {
 
 // Khởi chạy
 initGrid();
+
+function initReportFormEvents() {
+  const btnDownload = document.getElementById('btnDownloadReportPDF');
+  const btnSendEmail = document.getElementById('btnSendReportEmail');
+  
+  if (btnDownload) {
+    btnDownload.onclick = () => {
+      const fullName = document.getElementById('reportName').value.trim() || 'DH-User';
+      const element = document.getElementById('resultReportCard');
+      
+      const opt = {
+        margin:       0.5,
+        filename:     `DNA-Gia-Tri-Cot-Loi-${fullName.replace(/\s+/g, '-')}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      
+      btnDownload.disabled = true;
+      const origText = btnDownload.innerText;
+      btnDownload.innerText = "Đang xuất PDF...";
+      
+      html2pdf().set(opt).from(element).save().then(() => {
+        btnDownload.disabled = false;
+        btnDownload.innerText = origText;
+      }).catch(err => {
+        console.error(err);
+        btnDownload.disabled = false;
+        btnDownload.innerText = origText;
+        alert("Có lỗi xảy ra khi xuất PDF!");
+      });
+    };
+  }
+  
+  // Tạo CAPTCHA ngẫu nhiên lần đầu tiên load Form
+  generateCaptcha();
+  
+  if (btnSendEmail) {
+    btnSendEmail.onclick = () => {
+      const fullName = document.getElementById('reportName').value.trim();
+      const email = document.getElementById('reportEmail').value.trim();
+      const captchaAnswer = document.getElementById('reportCaptcha').value.trim();
+      
+      if (!fullName) {
+        alert("Vui lòng điền Họ và tên của bạn!");
+        return;
+      }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert("Vui lòng điền địa chỉ Email hợp lệ!");
+        return;
+      }
+      if (!captchaAnswer) {
+        alert("Vui lòng nhập kết quả xác minh bảo mật!");
+        return;
+      }
+      
+      submitPersonalValuesReport(fullName, email, captchaAnswer);
+    };
+  }
+}
+
+let captchaNum1 = 0;
+let captchaNum2 = 0;
+let captchaToken = 0;
+
+function generateCaptcha() {
+  captchaNum1 = Math.floor(Math.random() * 15) + 1;
+  captchaNum2 = Math.floor(Math.random() * 15) + 1;
+  captchaToken = (captchaNum1 * 3 + captchaNum2 * 7) ^ 90;
+  
+  const questionEl = document.getElementById('captchaQuestion');
+  if (questionEl) {
+    questionEl.innerText = `${captchaNum1} + ${captchaNum2} = ?`;
+  }
+  const captchaInput = document.getElementById('reportCaptcha');
+  if (captchaInput) {
+    captchaInput.value = '';
+  }
+}
+
+function submitPersonalValuesReport(fullName, email, captchaAnswer) {
+  const btnSendEmail = document.getElementById('btnSendReportEmail');
+  btnSendEmail.disabled = true;
+  btnSendEmail.innerText = "Đang gửi báo cáo...";
+  
+  const callbackName = 'pvJsonp_' + Math.random().toString(36).substring(2, 15);
+  
+  window[callbackName] = function(data) {
+    cleanup();
+    if (data.success) {
+      btnSendEmail.innerText = "Gửi thành công! Check mail nhé";
+      btnSendEmail.style.background = "#059669";
+      btnSendEmail.style.boxShadow = "none";
+      alert(data.message || "Đã gửi yêu cầu gửi báo cáo! Vui lòng kiểm tra hộp thư của bạn sau vài phút.");
+    } else {
+      btnSendEmail.disabled = false;
+      btnSendEmail.innerText = "Gửi báo cáo qua Email";
+      alert("Lỗi gửi báo cáo: " + (data.message || data.error));
+      generateCaptcha();
+    }
+  };
+  
+  function cleanup() {
+    clearTimeout(timeoutId);
+    if (scriptEl && scriptEl.parentNode) {
+      scriptEl.parentNode.removeChild(scriptEl);
+    }
+    try { delete window[callbackName]; } catch (e) { window[callbackName] = undefined; }
+  }
+  
+  const timeoutId = setTimeout(() => {
+    cleanup();
+    btnSendEmail.disabled = false;
+    btnSendEmail.innerText = "Gửi báo cáo qua Email";
+    alert("Yêu cầu gửi báo cáo quá hạn (timeout). Vui lòng kiểm tra kết nối mạng và thử lại.");
+    generateCaptcha();
+  }, 12000);
+  
+  const webAppUrl = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
+  
+  const payload = {
+    action: "submit_pv",
+    fullName: fullName,
+    email: email,
+    rankedData: JSON.stringify(latestRankedData.map(r => ({ name: r.name, score: r.score, details: r.details || r.desc || '' }))),
+    duelHistory: JSON.stringify(duelHistory),
+    num1: captchaNum1,
+    num2: captchaNum2,
+    captchaAnswer: captchaAnswer,
+    captchaToken: captchaToken,
+    callback: callbackName
+  };
+  
+  const queryParams = new URLSearchParams(payload).toString();
+  const url = webAppUrl + "?" + queryParams;
+  
+  const scriptEl = document.createElement('script');
+  scriptEl.src = url;
+  scriptEl.onerror = function() {
+    cleanup();
+    btnSendEmail.disabled = false;
+    btnSendEmail.innerText = "Gửi báo cáo qua Email";
+    alert("Lỗi mạng: Không thể kết nối tới máy chủ Google.");
+    generateCaptcha();
+  };
+  document.head.appendChild(scriptEl);
+}
+
