@@ -238,21 +238,28 @@
     }
     
     .selectable-card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.9);
+      border: 1px solid rgba(0,0,0,0.1);
       border-radius: 12px;
       padding: 1.2rem 1rem;
       text-align: center;
       cursor: pointer;
       transition: all 0.2s;
       font-weight: 600;
-      color: rgba(255,255,255,0.8);
+      color: var(--dark, #1c1917);
       user-select: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .selectable-card:hover {
+      background: #fff;
+      border-color: rgba(245, 158, 11, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
     .selectable-card.selected {
-      background: rgba(245, 158, 11, 0.15);
-      border-color: var(--warm-yellow);
-      color: var(--warm-yellow);
+      background: rgba(245, 158, 11, 0.12);
+      border-color: var(--warm-orange);
+      color: var(--warm-orange);
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
     }
