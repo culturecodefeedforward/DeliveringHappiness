@@ -229,6 +229,14 @@ btnNext1.addEventListener('click', () => {
 // ----------------------------------------------------
 // STEP 2: Lọc TOP 7
 function finishStep1() {
+  // Lọc ra tất cả các thẻ đã chọn (Quan trọng hoặc Rất quan trọng)
+  const totalSelected = rawValues.filter(v => userRatings[v.id] === 1 || userRatings[v.id] === 2);
+  
+  if (totalSelected.length < 7) {
+    alert("Vui lòng chọn tối thiểu 7 giá trị (bằng cách click lật thẻ 'Quan trọng' hoặc tick 'Rất quan trọng') để tiếp tục!");
+    return;
+  }
+
   // Lọc ra những cái "Rất quan trọng" (rating == 2)
   topValues = rawValues.filter(v => userRatings[v.id] === 2);
   
