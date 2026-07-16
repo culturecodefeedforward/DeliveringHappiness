@@ -695,6 +695,19 @@
           <canvas id="resultChart" style="max-height: 380px; max-width: 100%;"></canvas>
         </div>
         
+        <!-- 7x7 Comparison Matrix Container -->
+        <div class="matrix-container" style="background: white; border: 1px solid rgba(0,0,0,0.04); border-radius: 20px; padding: 1.2rem; margin-bottom: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.01);">
+          <div class="matrix-title" style="margin-bottom: 0.5rem;">Ma Trận Đối Đầu Chi Tiết</div>
+          <div class="matrix-desc" style="font-size: 0.85rem; color: var(--mid); margin-bottom: 1rem; text-align: center;">
+            Bảng tổng hợp chi tiết kết quả 21 trận đối kháng. Các giá trị ở <strong>Hàng ngang</strong> thắng giá trị ở <strong>Cột dọc</strong> tương ứng sẽ được đánh dấu tích cam (<span style="color: var(--warm-orange); font-weight: bold;">✔</span>).
+          </div>
+          <div class="matrix-table-wrapper">
+            <table id="matrixTable" class="matrix-table">
+              <!-- Dynamic matrix rendered here -->
+            </table>
+          </div>
+        </div>
+        
         <!-- Nhóm động lực Schwartz (Được tính toán và hiển thị trực quan) -->
         <div id="schwartzDimensionsCard" style="background: white; border: 1px solid rgba(0,0,0,0.04); border-radius: 20px; padding: 1.5rem; margin-bottom: 2rem; text-align: left; box-shadow: 0 4px 16px rgba(0,0,0,0.01);">
           <!-- Dynamic details injected via JS -->
@@ -711,19 +724,7 @@
             <a href="https://www.linkedin.com/company/culturecodecommunity/" target="_blank" style="background: #0A66C2; color: white; text-decoration: none; padding: 0.8rem 1.5rem; border-radius: 999px; font-weight: 700; font-size: 1rem; box-shadow: 0 4px 12px rgba(10,102,194,0.3); transition: transform 0.2s;">Theo dõi LinkedIn</a>
           </div>
         </div>
-        
-        <!-- 7x7 Comparison Matrix Container -->
-        <div class="matrix-container" style="background: white; border: 1px solid rgba(0,0,0,0.04); border-radius: 20px; padding: 1.2rem; margin-top: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.01);">
-          <div class="matrix-title" style="margin-bottom: 0.5rem;">Ma Trận Đối Đầu Chi Tiết</div>
-          <div class="matrix-desc" style="font-size: 0.85rem; color: var(--mid); margin-bottom: 1rem; text-align: center;">
-            Bảng tổng hợp chi tiết kết quả 21 trận đối kháng. Các giá trị ở <strong>Hàng ngang</strong> thắng giá trị ở <strong>Cột dọc</strong> tương ứng sẽ được đánh dấu tích cam (<span style="color: var(--warm-orange); font-weight: bold;">✔</span>).
-          </div>
-          <div class="matrix-table-wrapper">
-            <table id="matrixTable" class="matrix-table">
-              <!-- Dynamic matrix rendered here -->
-            </table>
-          </div>
-        </div>
+
       </div>
 
       <div style="text-align: center; margin-bottom: 2rem;">
