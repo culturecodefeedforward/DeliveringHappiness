@@ -477,7 +477,9 @@ function finishDuel() {
 
 function renderResults(ranked) {
   const listEl = document.getElementById('resultRanking');
-  listEl.innerHTML = '';
+  if (listEl) {
+    listEl.innerHTML = '';
+  }
   
   const labels = [];
   const data = [];
@@ -486,13 +488,15 @@ function renderResults(ranked) {
     labels.push(item.name);
     data.push(item.score);
     
-    listEl.innerHTML += `
-      <div class="rank-item">
-        <div class="rank-num">#${index + 1}</div>
-        <div class="rank-name">${item.name}</div>
-        <div class="rank-score">${item.score} điểm</div>
-      </div>
-    `;
+    if (listEl) {
+      listEl.innerHTML += `
+        <div class="rank-item">
+          <div class="rank-num">#${index + 1}</div>
+          <div class="rank-name">${item.name}</div>
+          <div class="rank-score">${item.score} điểm</div>
+        </div>
+      `;
+    }
   });
   
   // Tính toán và hiển thị nhóm động lực Schwartz
