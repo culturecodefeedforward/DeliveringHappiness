@@ -3,9 +3,9 @@
 Tài liệu này định nghĩa các quy chuẩn lập trình, tiêu chuẩn bảo mật và quy trình quản trị mã nguồn cho dự án DH4HN Website.
 
 ## 1. Tiêu chuẩn Mã nguồn (Code Quality Standards)
-*   **HTML:** Sử dụng HTML5 ngữ nghĩa (semantic tags như `<section>`, `<article>`, `<header>`). Luôn đặt thẻ tiêu đề `<title>` mô tả chính xác nội dung trang và bộ mã hóa UTF-8.
-*   **CSS:** Sử dụng Vanilla CSS sạch, khai báo các biến CSS chung (CSS variables) tại khối `:root` trong `styles.css` để đồng bộ bảng màu (màu chủ đạo: `#1e3a8a`, v.v.). Tránh sử dụng CSS inline hoặc Tailwind CSS trừ khi có yêu cầu đặc biệt.
-*   **JavaScript:** Viết code JavaScript theo tiêu chuẩn ES6+. Các hàm xử lý sự kiện (event handlers) và tương tác API phải được đóng gói gọn gàng, sử dụng `async/await` để xử lý các cuộc gọi mạng và có xử lý ngoại lệ (try-catch).
+*   **HTML:** Sử dụng HTML5 ngữ nghĩa (semantic tags như `<section>`, `<article>`, `<header>`). Luôn đặt thẻ tiêu đề `<title>` mô tả chính xác nội dung trang và bộ mã hóa UTF-8. **Tiêu chuẩn WCAG 2.1:** Các thành phần tương tác dạng hộp hội thoại (Modal/Dialog) phải có `role="dialog"` và `aria-modal="true"`. Các thẻ nhập liệu (`<input>`) phải được gắn nhãn `<label>` tương ứng thông qua thuộc tính `for`.
+*   **CSS:** Sử dụng Vanilla CSS sạch, khai báo các biến CSS chung (CSS variables) tại khối `:root` trong `styles.css` để đồng bộ bảng màu (màu chủ đạo: `#1e3a8a`, v.v.). Tránh sử dụng CSS inline hoặc Tailwind CSS trừ khi có yêu cầu đặc biệt. **Độ tương thích & Trải nghiệm:** Kích thước vùng bấm tương tác (Touch Targets) tối thiểu là `44px` theo WCAG. Phải hỗ trợ tắt các hiệu ứng động vô hạn hoặc hiệu ứng lật khi người dùng bật cấu hình prefers-reduced-motion trên thiết bị.
+*   **JavaScript:** Viết code JavaScript theo tiêu chuẩn ES6+. Các hàm xử lý sự kiện (event handlers) và tương tác API phải được đóng gói gọn gàng, sử dụng `async/await` để xử lý các cuộc gọi mạng và có xử lý ngoại lệ (try-catch). **Bẫy tiêu điểm (Focus Trap):** Khi mở Modal, tiêu điểm phải được khóa trong Modal (sử dụng phím `Tab` / `Shift+Tab`) và phải trả lại tiêu điểm về phần tử kích hoạt trước đó khi đóng Modal. Hỗ trợ phím `Escape` để thoát nhanh modal.
 
 ## 2. Tiêu chuẩn Bảo mật & Lập trình Backend (Apps Script Backend Standards)
 Để tránh các lỗ hổng bảo mật phổ biến, các lập trình viên Apps Script bắt buộc phải tuân theo các quy tắc sau:

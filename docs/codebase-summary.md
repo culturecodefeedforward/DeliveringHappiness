@@ -26,6 +26,7 @@ Thư mục gốc chứa các trang tĩnh, tệp cấu hình phong cách và các
 
 ## 3. Thư mục và tệp tin bổ sung
 *   `docs/`: Thư mục chứa tài liệu đặc tả và hướng dẫn kỹ thuật của dự án.
+    *   `deployment.md` [NEW]: Tài liệu ghi chép cấu hình nền tảng, URL Live chính thức và lệnh deploy nhanh.
 *   `api/`: Thư mục chứa các API Backend Proxy (Vercel Serverless Functions):
     *   `chat-abcde.js`: API xử lý hội thoại Socratic, kiểm soát passcode, gọi Gemini API (`gemini-3.1-flash-lite`) và ký bảo mật HMAC trước khi chuyển tiếp sang Google Apps Script.
 *   `Scripts/`: Chứa mã nguồn Apps Script và các script bổ trợ:
@@ -34,6 +35,7 @@ Thư mục gốc chứa các trang tĩnh, tệp cấu hình phong cách và các
     *   `appsscript_staging_manifest.json`: Tệp manifest cấu hình dự án Apps Script trên GCP.
     *   `dhm8_gate2_uat_runner.js`: Trình chạy kịch bản kiểm thử tích hợp tự động cho backend.
     *   `take_uat_screenshots.py` / `take_local_uat_screenshots.py`: Các script Python tự động hóa việc chụp ảnh màn hình UAT.
+    *   `run_uat_20260716.js` [NEW]: Script Puppeteer tự động chạy các test cases về Accessibility (Keyboard focus return, Focus trap, Esc) và chụp ảnh UAT.
 *   `Implementation Plan/`: Lưu trữ kế hoạch chi tiết cho từng giai đoạn cập nhật mã nguồn (phiên bản hóa theo định dạng ngày).
 *   `UAT/`: Chứa kết quả kiểm thử nghiệm thu người dùng (UAT reports) và bằng chứng kiểm thử giao diện thực tế.
 *   `.clasp.json`: File cấu hình của clasp để đồng bộ mã nguồn Apps Script với Google Cloud.

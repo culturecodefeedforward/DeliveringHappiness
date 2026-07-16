@@ -70,3 +70,22 @@ Mỗi giá trị trong số 41 giá trị sống được thiết kế dưới d
     };
     ```
 *   Sử dụng CSS page-break (`page-break-before: always`) để kiểm soát ngắt trang thủ công, tránh trường hợp biểu đồ hoặc chữ bị cắt đôi giữa các trang.
+
+---
+
+## 5. Quy chuẩn Tiếp cận & Khả dụng (WCAG 2.1 Accessibility & Usability)
+
+Để đảm bảo trang web có thể tiếp cận tốt nhất cho tất cả người dùng, bao gồm cả những người khuyết tật sử dụng công cụ hỗ trợ (như trình đọc màn hình - Screen Readers):
+
+### A. Kích thước vùng tương tác (Touch Targets)
+*   Mọi nút bấm tương tác (ví dụ: `.abcde-btn-send`) phải có kích thước vùng bấm tối thiểu là `44px x 44px` để người dùng di động dễ dàng thao tác mà không bấm nhầm.
+
+### B. Bẫy tiêu điểm (Keyboard Focus Trap)
+*   Khi các hộp thoại dạng Modal (như ABCDE Chatbox hoặc Custom Value Modal) đang mở:
+    *   Phím `Tab` và `Shift + Tab` phải được giới hạn di chuyển chỉ trong các phần tử tương tác của modal đó (Input, Button, Link). Tiêu điểm không được lọt ra các phần tử nền bên ngoài.
+    *   Phím `Escape` phải đóng modal lập tức và trả lại tiêu điểm (`return focus`) về nút bấm đã mở modal đó trước đó.
+
+### C. Khử chuyển động (Reduced Motion)
+*   Hệ thống tôn trọng cấu hình hệ điều hành của người dùng. Khi phát hiện media query `prefers-reduced-motion: reduce`:
+    *   Tất cả các hiệu ứng lật thẻ 3D xoay (`.flip-card-inner`) phải chuyển sang trạng thái chuyển đổi tức thời (không dùng transition).
+    *   Các hiệu ứng nhấp nháy vô hạn (`blink-glow` trên `.flip-card.blinking`) và hiệu ứng phóng to modal (`zoomIn`) phải bị vô hiệu hóa hoàn toàn (`animation: none`).
