@@ -839,8 +839,13 @@ function submitPersonalValuesReport(fullName, email, captchaAnswer) {
     cleanup();
     btnSendEmail.disabled = false;
     btnSendEmail.innerText = "Hiện kết quả La bàn giá trị cốt lõi cá nhân của bạn";
-    alert("Yêu cầu quá hạn (timeout). Vui lòng kiểm tra kết nối mạng và thử lại.");
-    generateCaptcha();
+    alert("Yêu cầu quá hạn (timeout). Vui lòng kiểm tra mạng hoặc tắt trình chặn quảng cáo (AdBlocker).\n\nHệ thống sẽ mở khóa Kết quả để bạn có thể xem và Tải file PDF trực tiếp.");
+    
+    // Fallback: Unlock step 4 anyway so they can see result & download PDF
+    document.getElementById('stepInfo').classList.remove('active');
+    document.getElementById('step4').classList.add('active');
+    renderResults(latestRankedData);
+    window.scrollTo(0,0);
   }, 12000);
   
   const webAppUrl = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
@@ -868,9 +873,14 @@ function submitPersonalValuesReport(fullName, email, captchaAnswer) {
   scriptEl.onerror = function() {
     cleanup();
     btnSendEmail.disabled = false;
-    btnSendEmail.innerText = "Gửi báo cáo qua Email";
-    alert("Lỗi kết nối: Không thể gửi tới máy chủ Google. Vui lòng kiểm tra mạng và thử lại.");
-    generateCaptcha();
+    btnSendEmail.innerText = "Hiện kết quả La bàn giá trị cốt lõi cá nhân của bạn";
+    alert("Lỗi kết nối tới máy chủ (Thường do mạng hoặc trình chặn quảng cáo AdBlocker).\n\nHệ thống không thể gửi email tự động, nhưng sẽ mở khóa Kết quả để bạn xem và Tải file PDF trực tiếp!");
+    
+    // Fallback: Unlock step 4 anyway so they can see result & download PDF
+    document.getElementById('stepInfo').classList.remove('active');
+    document.getElementById('step4').classList.add('active');
+    renderResults(latestRankedData);
+    window.scrollTo(0,0);
   };
   document.head.appendChild(scriptEl);
 }
