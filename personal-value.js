@@ -458,7 +458,12 @@ let latestRankedData = [];
 
 function finishDuel() {
   step3.classList.remove('active');
-  step4.classList.add('active');
+  const stepInfo = document.getElementById('stepInfo');
+  if (stepInfo) {
+    stepInfo.classList.add('active');
+  } else {
+    step4.classList.add('active');
+  }
   
   // Tính rank
   const ranked = selectedTop7.map(item => {
@@ -466,7 +471,7 @@ function finishDuel() {
   }).sort((a, b) => b.score - a.score); // Giảm dần
   
   latestRankedData = ranked;
-  renderResults(ranked);
+  // Không renderResults ngay mà chờ user submit form (hoặc sửa form)
   initReportFormEvents();
 }
 
@@ -522,14 +527,29 @@ function renderResults(ranked) {
       scales: {
         r: {
           angleLines: { 
-            color: 'rgba(28, 25, 23, 0.25)', 
+            color: [
+              'rgba(28, 25, 23, 0.25)', 
+              'rgba(28, 25, 23, 0.25)',
+              'rgba(28, 25, 23, 0.25)',
+              'rgba(28, 25, 23, 0.25)',
+              'rgba(28, 25, 23, 0.25)',
+              'rgba(28, 25, 23, 0.25)',
+              'rgba(28, 25, 23, 0.25)'
+            ],
             lineWidth: 1.5 
           }, // Nan hoa sẫm màu chạy từ tâm ra
           grid: { 
-            color: 'rgba(28, 25, 23, 0.15)', 
+            color: [
+              'rgba(234, 88, 12, 0.1)',   // vong 1
+              'rgba(234, 88, 12, 0.2)',   // vong 2
+              'rgba(234, 88, 12, 0.3)',   // vong 3
+              'rgba(234, 88, 12, 0.4)',   // vong 4
+              'rgba(234, 88, 12, 0.5)',   // vong 5
+              'rgba(234, 88, 12, 0.7)'    // vong 6
+            ], 
             circular: false,
-            lineWidth: 1
-          }, // Vòng bánh xe đa giác
+            lineWidth: 2
+          }, // Vòng bánh xe đa giác có màu đậm dần
           pointLabels: {
             color: '#1c1917', // Tên trị cốt lõi màu sẫm rõ nét
             font: { 
@@ -541,9 +561,9 @@ function renderResults(ranked) {
           ticks: { 
             display: true, 
             stepSize: 1,
-            color: 'rgba(28, 25, 23, 0.4)',
+            color: 'rgba(28, 25, 23, 0.7)',
             backdropColor: 'transparent',
-            font: { size: 10 }
+            font: { size: 11, weight: 'bold' }
           }, // Thể hiện số điểm toả ra từ tâm (0 -> 6)
           suggestedMin: 0,
           suggestedMax: 6
@@ -702,23 +722,28 @@ function initReportFormEvents() {
       const origText = btnDownload.innerText;
       btnDownload.innerText = "Đang xuất PDF...";
       
+      // Thêm class pdf-export để tối ưu CSS cho 1 trang PDF
+      element.classList.add('pdf-export');
+      
       // Delay 400ms để Chart.js canvas render xong trước khi capture
       setTimeout(() => {
         const opt = {
-          margin:       0.5,
+          margin:       0.2, // Giảm margin để có thêm không gian
           filename:     `DNA-Gia-Tri-Cot-Loi-${fullName.replace(/\s+/g, '-')}.pdf`,
           image:        { type: 'jpeg', quality: 0.98 },
-          html2canvas:  { scale: 2, useCORS: true, allowTaint: true, logging: false },
+          html2canvas:  { scale: 2, useCORS: true, allowTaint: true, logging: false, scrollY: 0 },
           jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
         };
         
         html2pdf().set(opt).from(element).save().then(() => {
           btnDownload.disabled = false;
           btnDownload.innerText = origText;
+          element.classList.remove('pdf-export');
         }).catch(err => {
           console.error(err);
           btnDownload.disabled = false;
           btnDownload.innerText = origText;
+          element.classList.remove('pdf-export');
           alert("Có lỗi xảy ra khi xuất PDF!");
         });
       }, 400);
@@ -774,21 +799,26 @@ function generateCaptcha() {
 function submitPersonalValuesReport(fullName, email, captchaAnswer) {
   const btnSendEmail = document.getElementById('btnSendReportEmail');
   btnSendEmail.disabled = true;
-  btnSendEmail.innerText = "Đang gửi báo cáo...";
-  
-  const callbackName = 'pvJsonp_' + Math.random().toString(36).substring(2, 15);
+  btnSendEmail.innerText = "Đang xử lý dữ liệu...";
+  const randomStr = Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
+  const callbackName = 'dhm8Jsonp_' + randomStr.substring(0, 20);
   
   window[callbackName] = function(data) {
     cleanup();
     if (data.success) {
-      btnSendEmail.innerText = "Gửi thành công! Check mail nhé";
+      btnSendEmail.innerText = "Đã lưu thành công! Đang mở kết quả...";
       btnSendEmail.style.background = "#059669";
       btnSendEmail.style.boxShadow = "none";
-      alert(data.message || "Đã gửi yêu cầu gửi báo cáo! Vui lòng kiểm tra hộp thư của bạn sau vài phút.");
+      setTimeout(() => {
+        document.getElementById('stepInfo').classList.remove('active');
+        document.getElementById('step4').classList.add('active');
+        renderResults(latestRankedData);
+        window.scrollTo(0,0);
+      }, 800);
     } else {
       btnSendEmail.disabled = false;
-      btnSendEmail.innerText = "Gửi báo cáo qua Email";
-      alert("Lỗi gửi báo cáo: " + (data.message || data.error));
+      btnSendEmail.innerText = "Hiện kết quả La bàn giá trị cốt lõi cá nhân của bạn";
+      alert("Lỗi lưu thông tin: " + (data.message || data.error));
       generateCaptcha();
     }
   };
@@ -804,15 +834,15 @@ function submitPersonalValuesReport(fullName, email, captchaAnswer) {
   const timeoutId = setTimeout(() => {
     cleanup();
     btnSendEmail.disabled = false;
-    btnSendEmail.innerText = "Gửi báo cáo qua Email";
-    alert("Yêu cầu gửi báo cáo quá hạn (timeout). Vui lòng kiểm tra kết nối mạng và thử lại.");
+    btnSendEmail.innerText = "Hiện kết quả La bàn giá trị cốt lõi cá nhân của bạn";
+    alert("Yêu cầu quá hạn (timeout). Vui lòng kiểm tra kết nối mạng và thử lại.");
     generateCaptcha();
   }, 12000);
   
   const webAppUrl = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
   
   // Gửi payload gọn: chỉ name+score để tránh vượt URL query string limit (~2000 chars)
-  const rankedSummary = latestRankedData.map(r => ({ n: r.name, s: r.score }));
+  const rankedSummary = latestRankedData.map(r => ({ name: r.name, score: r.score }));
   
   const payload = {
     action: "submit_pv",
@@ -841,3 +871,21 @@ function submitPersonalValuesReport(fullName, email, captchaAnswer) {
   document.head.appendChild(scriptEl);
 }
 
+// Xử lý nút thu gọn/hiện video ở Step 1
+const btnToggleVideo = document.getElementById('btnToggleVideo');
+const videoContainer = document.getElementById('videoContainer');
+const tutorialVideo = document.getElementById('tutorialVideo');
+
+if (btnToggleVideo && videoContainer) {
+  btnToggleVideo.addEventListener('click', () => {
+    if (videoContainer.style.display === 'none') {
+      videoContainer.style.display = 'block';
+      btnToggleVideo.innerHTML = '▼ Ẩn video hướng dẫn';
+      if (tutorialVideo) tutorialVideo.play();
+    } else {
+      videoContainer.style.display = 'none';
+      btnToggleVideo.innerHTML = '▶ Xem video hướng dẫn';
+      if (tutorialVideo) tutorialVideo.pause();
+    }
+  });
+}

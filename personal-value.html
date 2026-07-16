@@ -520,6 +520,36 @@
       .flip-card.blinking .flip-card-inner { animation: none; }
       .custom-modal > div { animation: none !important; }
     }
+    /* PDF Export Optimization */
+    .pdf-export {
+      padding: 1rem !important;
+      background: white !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+    .pdf-export h2 { font-size: 1.6rem !important; margin-bottom: 0 !important; }
+    .pdf-export > p { font-size: 0.85rem !important; margin-bottom: 0.5rem !important; }
+    .pdf-export .radar-wrapper { margin-bottom: 0.5rem !important; padding: 0 !important; border: none !important; box-shadow: none !important; }
+    .pdf-export canvas { max-height: 280px !important; }
+    
+    .pdf-export #schwartzDimensionsCard { padding: 0.8rem !important; margin-bottom: 0.5rem !important; border: none !important; box-shadow: none !important; background: rgba(0,0,0,0.02) !important; }
+    .pdf-export #schwartzDimensionsCard h3 { font-size: 1.1rem !important; margin-bottom: 0.3rem !important; }
+    .pdf-export #schwartzDimensionsCard p { font-size: 0.85rem !important; margin-bottom: 0.2rem !important; line-height: 1.3 !important; }
+    
+    .pdf-export #resultRanking { margin-bottom: 0.5rem !important; }
+    .pdf-export .ranking-item { padding: 0.4rem 0.8rem !important; margin-bottom: 0.3rem !important; border-radius: 8px !important; }
+    .pdf-export .ranking-name { font-size: 0.9rem !important; }
+    .pdf-export .ranking-score { font-size: 0.85rem !important; }
+    
+    .pdf-export .matrix-container { margin-top: 0 !important; padding: 0 !important; border: none !important; box-shadow: none !important; background: transparent !important; }
+    .pdf-export .matrix-title { font-size: 1.1rem !important; margin-bottom: 0.2rem !important; }
+    .pdf-export .matrix-desc { font-size: 0.75rem !important; margin-bottom: 0.5rem !important; }
+    .pdf-export .matrix-table th, .pdf-export .matrix-table td { padding: 0.3rem !important; font-size: 0.7rem !important; }
+    
+    .pdf-export .cta-box { padding: 0.8rem !important; margin-bottom: 0 !important; border: none !important; }
+    .pdf-export .cta-box h3 { font-size: 1.1rem !important; margin-bottom: 0.3rem !important; }
+    .pdf-export .cta-box p { font-size: 0.85rem !important; margin-bottom: 0.5rem !important; line-height: 1.3 !important; }
+    .pdf-export .cta-box a { padding: 0.5rem 1rem !important; font-size: 0.85rem !important; }
   </style>
 </head>
 
@@ -535,8 +565,13 @@
       <div id="pb1" class="progress-fill" style="width: 25%;"></div>
     </div>
     <div class="progress-text" style="font-weight: bold; color: var(--dark);">Bước 1: Khám phá Giá trị Cốt lõi</div>
-    <div style="text-align: center; margin: 1rem auto; max-width: 400px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-      <video width="100%" controls autoplay loop muted playsinline style="display: block;">
+    <div style="text-align: center; margin: 1rem auto; margin-bottom: 0;">
+      <button id="btnToggleVideo" class="btn-glow" style="padding: 0.5rem 1.2rem; font-size: 0.85rem; background: white; border: 1px solid var(--warm-orange); color: var(--warm-orange); border-radius: 999px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05); font-weight: 700; display: inline-flex; align-items: center; gap: 0.5rem;">
+        ▶ Xem video hướng dẫn
+      </button>
+    </div>
+    <div id="videoContainer" style="display: none; text-align: center; margin: 1rem auto; max-width: 400px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: all 0.3s ease;">
+      <video id="tutorialVideo" width="100%" controls loop muted playsinline style="display: block;">
         <source src="demo_video.mp4" type="video/mp4">
         Trình duyệt của bạn không hỗ trợ thẻ video.
       </video>
@@ -607,6 +642,48 @@
     </div>
   </div>
 
+  <!-- STEP INFO: NHẬP THÔNG TIN -->
+  <div id="stepInfo" class="step-container">
+    <div class="progress-bar-container">
+      <div class="progress-fill" style="width: 85%;"></div>
+    </div>
+    <div class="progress-text" style="font-weight: bold; color: var(--dark);">Bước 4: Xác nhận thông tin</div>
+    
+    <div id="emailFormCard" style="max-width: 650px; margin: 3rem auto; background: var(--warm-cream, #fffbeb); border: 1px solid rgba(0, 0, 0, 0.08); padding: 2.5rem 2rem; border-radius: 24px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03); text-align: left;">
+      <h3 style="color: var(--dark, #1c1917); margin-top: 0; margin-bottom: 0.5rem; font-weight: 800; font-size: 1.5rem; text-align: center;">Hoàn thành đối đấu trực giác!</h3>
+      <p style="color: var(--mid, #44403c); font-size: 1rem; margin-bottom: 2rem; line-height: 1.5; text-align: center;">
+        Dữ liệu phân tích đã sẵn sàng. Vui lòng nhập thông tin của bạn để lưu trữ và xem ngay kết quả La bàn giá trị cốt lõi cá nhân.
+      </p>
+      
+      <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div>
+            <label style="display: block; margin-bottom: 0.4rem; font-weight: 700; color: var(--dark, #1c1917); font-size: 0.9rem;">Họ và tên của bạn:</label>
+            <input type="text" id="reportName" placeholder="Ví dụ: Nguyễn Văn A" style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); font-family: inherit; font-size: 0.95rem; background: white; color: var(--dark);" />
+          </div>
+          <div>
+            <label style="display: block; margin-bottom: 0.4rem; font-weight: 700; color: var(--dark, #1c1917); font-size: 0.9rem;">Địa chỉ Email:</label>
+            <input type="email" id="reportEmail" placeholder="email@vi-du.com" style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); font-family: inherit; font-size: 0.95rem; background: white; color: var(--dark);" />
+          </div>
+        </div>
+        
+        <!-- CAPTCHA Block -->
+        <div id="captchaContainer" style="display: grid; grid-template-columns: 1fr; gap: 0.5rem; margin-top: 1rem; padding: 1rem; background: rgba(0,0,0,0.02); border-radius: 16px; border: 1px solid rgba(0,0,0,0.05);">
+          <label style="display: block; font-weight: 700; color: var(--dark, #1c1917); font-size: 0.9rem;">
+            Xác minh bảo mật: <span id="captchaQuestion" style="color: var(--warm-orange); font-weight: 800;">...</span>
+          </label>
+          <input type="number" id="reportCaptcha" placeholder="Nhập kết quả phép tính" style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); font-family: inherit; font-size: 0.95rem; background: white; color: var(--dark);" />
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 2rem;">
+        <button id="btnSendReportEmail" class="btn-glow" style="width: 100%; padding: 1rem 1.5rem; font-size: 1.1rem; font-weight: 800; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);">
+          Hiện kết quả La bàn giá trị cốt lõi cá nhân của bạn
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- STEP 4: RESULTS -->
   <div id="step4" class="step-container">
     <div class="progress-bar-container">
@@ -627,9 +704,21 @@
         <div id="schwartzDimensionsCard" style="background: white; border: 1px solid rgba(0,0,0,0.04); border-radius: 20px; padding: 1.5rem; margin-bottom: 2rem; text-align: left; box-shadow: 0 4px 16px rgba(0,0,0,0.01);">
           <!-- Dynamic details injected via JS -->
         </div>
-        
+
         <div id="resultRanking"></div>
 
+        <!-- Call to Action -->
+        <div class="cta-box" style="background: linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(234,88,12,0.05) 100%); border: 1px solid rgba(234,88,12,0.2); border-radius: 20px; padding: 2rem 1.5rem; margin-bottom: 2rem; text-align: center;">
+          <h3 style="color: var(--warm-orange); margin-top: 0; margin-bottom: 1rem; font-weight: 800; font-size: 1.4rem;">🎯 Kêu Gọi Hành Động</h3>
+          <p style="color: var(--dark); font-size: 1.05rem; margin-bottom: 1.5rem; line-height: 1.6; max-width: 600px; margin-left: auto; margin-right: auto;">
+            Hãy cùng tham gia Sáng kiến CultureCode và cộng đồng Delivering Happiness Việt Nam để thường xuyên nhận được những kiến thức, thông tin bổ ích và cùng nhau thực hành để đồng điệu hóa (alignment) và phát triển các giá trị cốt lõi này trong cuộc sống hướng đến hạnh phúc đích thực cho Bản thân, gia đình, tổ chức và cộng đồng.
+          </p>
+          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="https://zalo.me/g/xdqgta913" target="_blank" style="background: #0068FF; color: white; text-decoration: none; padding: 0.8rem 1.5rem; border-radius: 999px; font-weight: 700; font-size: 1rem; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">Tham gia Group Zalo</a>
+            <a href="https://www.linkedin.com/company/culturecodecommunity/" target="_blank" style="background: #0A66C2; color: white; text-decoration: none; padding: 0.8rem 1.5rem; border-radius: 999px; font-weight: 700; font-size: 1rem; box-shadow: 0 4px 12px rgba(10,102,194,0.3); transition: transform 0.2s;">Theo dõi LinkedIn</a>
+          </div>
+        </div>
+        
         <!-- 7x7 Comparison Matrix Container -->
         <div class="matrix-container" style="background: white; border: 1px solid rgba(0,0,0,0.04); border-radius: 20px; padding: 1.2rem; margin-top: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.01);">
           <div class="matrix-title" style="margin-bottom: 0.5rem;">Ma Trận Đối Đầu Chi Tiết</div>
@@ -644,42 +733,10 @@
         </div>
       </div>
 
-      <!-- Form nhận báo cáo -->
-      <div id="emailFormCard" style="max-width: 650px; margin: 0 auto 2.5rem auto; background: var(--warm-cream, #fffbeb); border: 1px solid rgba(0, 0, 0, 0.08); padding: 2rem; border-radius: 24px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03); text-align: left;">
-        <h3 style="color: var(--dark, #1c1917); margin-top: 0; margin-bottom: 0.5rem; font-weight: 800; font-size: 1.3rem;">Nhận Bản Phân Tích & DNA Giá Trị</h3>
-        <p style="color: var(--mid, #44403c); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">
-          Nhập thông tin để nhận báo cáo phân tích xu hướng tính cách (Schwartz Dimensions) qua Email hoặc tải xuống bản in PDF trực tiếp.
-        </p>
-        
-        <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.5rem;">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-            <div>
-              <label style="display: block; margin-bottom: 0.4rem; font-weight: 700; color: var(--dark, #1c1917); font-size: 0.9rem;">Họ và tên của bạn:</label>
-              <input type="text" id="reportName" placeholder="Ví dụ: Nguyễn Văn A" style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); font-family: inherit; font-size: 0.95rem; background: white; color: var(--dark);" />
-            </div>
-            <div>
-              <label style="display: block; margin-bottom: 0.4rem; font-weight: 700; color: var(--dark, #1c1917); font-size: 0.9rem;">Địa chỉ Email nhận:</label>
-              <input type="email" id="reportEmail" placeholder="email@vi-du.com" style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); font-family: inherit; font-size: 0.95rem; background: white; color: var(--dark);" />
-            </div>
-          </div>
-          
-          <!-- CAPTCHA Block -->
-          <div id="captchaContainer" style="display: grid; grid-template-columns: 1fr; gap: 0.5rem; margin-top: 1rem; padding: 1rem; background: rgba(0,0,0,0.02); border-radius: 16px; border: 1px solid rgba(0,0,0,0.05);">
-            <label style="display: block; font-weight: 700; color: var(--dark, #1c1917); font-size: 0.9rem;">
-              Xác minh bảo mật: <span id="captchaQuestion" style="color: var(--warm-orange); font-weight: 800;">...</span>
-            </label>
-            <input type="number" id="reportCaptcha" placeholder="Nhập kết quả phép tính" style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); font-family: inherit; font-size: 0.95rem; background: white; color: var(--dark);" />
-          </div>
-        </div>
-        
-        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-          <button id="btnSendReportEmail" class="btn-glow" style="flex: 1; padding: 0.8rem 1.5rem; font-size: 0.95rem; font-weight: 800; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);">
-            Gửi báo cáo qua Email
-          </button>
-          <button id="btnDownloadReportPDF" style="flex: 1; background: white; border: 1.5px solid var(--warm-orange); padding: 0.8rem 1.5rem; border-radius: 999px; cursor: pointer; font-weight: 800; color: var(--warm-orange); font-family: inherit; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
-            Tải PDF Trực Tiếp
-          </button>
-        </div>
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <button id="btnDownloadReportPDF" class="btn-glow" style="background: white; border: 2px solid var(--warm-orange); padding: 1rem 2.5rem; border-radius: 999px; cursor: pointer; font-weight: 800; color: var(--warm-orange); font-family: inherit; font-size: 1.1rem; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);">
+          📥 Tải bản PDF báo cáo chi tiết
+        </button>
       </div>
       
       <div style="margin-top: 3rem; margin-bottom: 2rem; text-align: center;">
