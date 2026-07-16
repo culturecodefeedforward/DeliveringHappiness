@@ -1,0 +1,13 @@
+- [x] Chạy duplicate preflight check — VERIFIED: 8 NEW, 0 DUPLICATE (sếp confirm không skip ai)
+- [x] Tạo dry-run report v2 — 8 rows DHM8_Data (51-58), 16 jobs Outbox (298-313)
+- [x] Đọc và verify backup snapshots
+  - [x] DHM8_Data!A1:R50 (50 dòng, 32 PAID, 10 PENDING) — VERIFIED 18:46
+  - [x] DHM8_Email_Outbox!A1:N297 (297 dòng) — VERIFIED 19:06
+- [x] Tạo backup repo-visible
+  - [x] UAT/gemini_20260715_ImportGemGlobalList_Backup_DHM8Data.md
+  - [x] UAT/gemini_20260715_ImportGemGlobalList_Backup_EmailOutbox.md (297 rows đầy đủ)
+- [x] Cập nhật Plan v3: sync 8 rows/16 jobs/paid 32→40/rollback row 51-58 & 298-313/full 14-cột Outbox schema
+- [x] [DONE — VERIFIED] Phase 1: Ghi 8 dòng vào DHM8_Data (row 51–58) — 144 cells updated lúc 19:21 15/07/2026
+- [x] [DONE — VERIFIED] Phase 2: Ghi 16 jobs vào DHM8_Email_Outbox (row 298–313) — 224 cells updated lúc 19:24 15/07/2026
+- [x] Verify Phase 1: đọc DHM8_Data!A51:R58 — 8 rows đúng UUID/PAID/EventID — VERIFIED
+- [x] Verify Phase 2: đọc DHM8_Email_Outbox!A298:N313 — 16 rows đúng job key/UUID/State=PENDING/laneKey=dh8 — VERIFIED
