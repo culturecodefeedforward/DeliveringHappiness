@@ -309,10 +309,10 @@ function finishStep1() {
   topValues = rawValues.filter(v => userRatings[v.id] === 2);
   
   if (topValues.length < 7) {
-    // Nếu chọn quá ít, bù thêm những cái "Quan trọng" (rating == 1)
+    // Nếu chọn quá ít thẻ "Rất quan trọng", bù thêm TẤT CẢ những thẻ "Quan trọng" (rating == 1)
+    // để user tự lọc lại đủ 7 thẻ ở bước sau thay vì tự động cắt bỏ.
     const tier1 = rawValues.filter(v => userRatings[v.id] === 1);
-    const needed = 7 - topValues.length;
-    topValues = topValues.concat(tier1.slice(0, needed));
+    topValues = topValues.concat(tier1);
   }
 
   // Chuyển UI
