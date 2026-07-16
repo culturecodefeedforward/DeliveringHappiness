@@ -162,22 +162,68 @@ function initCustomValueModal() {
   const inputName = document.getElementById('customValueName');
   const inputDesc = document.getElementById('customValueDesc');
 
-  btnAddCustom.onclick = () => {
+  // ARIA: sết modal semantics (chỉ gán một lần, không lặp)
+  customValueModal.setAttribute('role', 'dialog');
+  customValueModal.setAttribute('aria-modal', 'true');
+  customValueModal.setAttribute('aria-labelledby', 'customValueModalTitle');
+
+  let _lastFocusEl = null;
+
+  // Focus trap: các phần tử focusable trong modal
+  const focusableSelectors = 'input, button, [tabindex]:not([tabindex="-1"])';
+  function getFocusable() {
+    return Array.from(customValueModal.querySelectorAll(focusableSelectors)).filter(el => !el.disabled);
+  }
+
+  function openModal() {
+    _lastFocusEl = document.activeElement;
     inputName.value = '';
     inputDesc.value = '';
     customValueModal.classList.add('active');
     inputName.focus();
-  };
+  }
 
-  btnCancelCustom.onclick = () => {
+  function closeModal() {
     customValueModal.classList.remove('active');
-  };
+    if (_lastFocusEl) { _lastFocusEl.focus(); }
+  }
+
+  btnAddCustom.onclick = openModal;
+
+  btnCancelCustom.onclick = closeModal;
 
   customValueModal.onclick = (e) => {
     if (e.target === customValueModal) {
-      customValueModal.classList.remove('active');
+      closeModal();
     }
   };
+
+  // Escape đóng modal và trả focus
+  customValueModal.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      e.stopPropagation();
+      closeModal();
+      return;
+    }
+    // Focus trap: giữ focus trong modal khi nhấn Tab
+    if (e.key === 'Tab') {
+      const focusable = getFocusable();
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+  });
 
   btnSaveCustom.onclick = () => {
     const nameVal = inputName.value.trim();
@@ -213,7 +259,7 @@ function initCustomValueModal() {
       newCard.classList.remove('flipped', 'blinking');
     }, 5000);
 
-    customValueModal.classList.remove('active');
+    closeModal();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 }

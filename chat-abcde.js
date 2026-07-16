@@ -19,6 +19,9 @@
     E: ""
   };
 
+  // Focus management
+  let _lastFocusedEl = null;
+
   // Elements
   let btnOpen = null;
   let modalOverlay = null;
@@ -38,6 +41,7 @@
   });
 
   function openChatbox() {
+    _lastFocusedEl = document.activeElement;
     if (!modalOverlay) {
       createChatboxDOM();
     }
@@ -52,6 +56,7 @@
   function closeChatbox() {
     if (modalOverlay) {
       modalOverlay.classList.remove("abcde-active");
+      if (_lastFocusedEl) { _lastFocusedEl.focus(); }
     }
   }
 
@@ -59,15 +64,18 @@
     modalOverlay = document.createElement("div");
     modalOverlay.className = "abcde-modal-overlay";
     modalOverlay.id = "abcdeChatModal";
+    modalOverlay.setAttribute("role", "dialog");
+    modalOverlay.setAttribute("aria-modal", "true");
+    modalOverlay.setAttribute("aria-labelledby", "abcdeChatModalTitle");
 
     modalOverlay.innerHTML = `
       <div class="abcde-modal-container">
         <div class="abcde-header">
-          <h3 class="abcde-header-title">☀️ Thực hành Lạc quan ABCDE</h3>
-          <button class="abcde-close-btn" id="abcdeCloseBtn">&times;</button>
+          <h3 id="abcdeChatModalTitle" class="abcde-header-title">☀️ Thực hành Lạc quan ABCDE</h3>
+          <button class="abcde-close-btn" id="abcdeCloseBtn" aria-label="Đóng cửa sổ thực hành ABCDE">&times;</button>
         </div>
         <div class="abcde-status-bar">
-          <span id="abcdeStatusLabel">Trạng thái: Khởi tạo</span>
+          <span id="abcdeStatusLabel" aria-live="polite">Trạng thái: Khởi tạo</span>
           <div class="abcde-status-step">
             <span class="abcde-step-badge" id="abcdeBadgeA">A</span>
             <span class="abcde-step-badge" id="abcdeBadgeB">B</span>
@@ -76,7 +84,7 @@
             <span class="abcde-step-badge" id="abcdeBadgeE">E</span>
           </div>
         </div>
-        <div class="abcde-chat-body" id="abcdeChatBody"></div>
+        <div class="abcde-chat-body" id="abcdeChatBody" aria-live="polite"></div>
         <div class="abcde-input-area" id="abcdeInputArea" style="display: none;">
           <input type="text" class="abcde-input-box" id="abcdeInput" placeholder="Nhập câu trả lời của bạn..." />
           <button class="abcde-btn-send" id="abcdeSendBtn">Gửi</button>
@@ -102,6 +110,37 @@
     });
     modalOverlay.addEventListener("click", (e) => {
       if (e.target === modalOverlay) closeChatbox();
+    });
+
+    // Escape closes modal; Tab manages focus trap
+    document.addEventListener("keydown", (e) => {
+      if (!modalOverlay.classList.contains("abcde-active")) return;
+      
+      if (e.key === "Escape") {
+        closeChatbox();
+        return;
+      }
+      
+      if (e.key === "Tab") {
+        const focusableSelectors = 'a[href], input:not([disabled]), button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+        const focusable = Array.from(modalOverlay.querySelectorAll(focusableSelectors)).filter(el => el.offsetParent !== null);
+        if (focusable.length === 0) return;
+        
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        
+        if (e.shiftKey) {
+          if (document.activeElement === first || document.activeElement === document.body) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last || document.activeElement === document.body) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      }
     });
   }
 
@@ -170,6 +209,7 @@
     formEl.className = "abcde-passcode-form";
     formEl.innerHTML = `
       <p style="margin: 0 0 1rem; font-size: 0.95rem; color: #cbd5e1;">Chào mừng bạn đến với công cụ thực hành Lạc quan ABCDE. Vui lòng nhập mật mã lớp học:</p>
+      <label class="sr-only" for="passcodeInput">Mật mã lớp học</label>
       <input type="text" class="abcde-passcode-input" id="passcodeInput" placeholder="MẬT MÃ" />
       <button class="abcde-btn-send" id="btnSubmitPasscode" style="margin-top: 0.5rem; width: 100%;">Xác nhận</button>
       <p id="passcodeError" style="margin: 0.5rem 0 0; font-size: 0.85rem; color: #ef4444; display: none;"></p>
@@ -456,7 +496,9 @@
     const formEl = document.createElement("div");
     formEl.className = "abcde-submit-form";
     formEl.innerHTML = `
+      <label class="sr-only" for="studentName">Họ và tên</label>
       <input type="text" class="abcde-form-input" id="studentName" placeholder="Họ và tên của bạn" />
+      <label class="sr-only" for="studentEmail">Địa chỉ Email nhận báo cáo</label>
       <input type="email" class="abcde-form-input" id="studentEmail" placeholder="Địa chỉ Email nhận báo cáo" />
       <button class="abcde-btn-send" id="btnSubmitPractice" style="width: 100%;">Nhận báo cáo qua Email</button>
       <p id="submitError" style="margin: 0.5rem 0 0; font-size: 0.85rem; color: #ef4444; display: none;"></p>

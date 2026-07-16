@@ -3,8 +3,8 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Personal Value Compass — CultureCode Community</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La bàn giá trị cốt lõi cá nhân - Personal Core Value Compass</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
@@ -310,6 +310,29 @@
       padding: 1.5rem;
       padding-bottom: 50px;
     }
+    .duel-scenario {
+      text-align: center; 
+      max-width: 600px; 
+      margin: 0 auto; 
+      background: rgba(0,0,0,0.03); 
+      padding: 1.5rem; 
+      border-radius: 16px; 
+      border: 1px solid rgba(0,0,0,0.06);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    @media (min-width: 768px) {
+      .duel-arena {
+        flex-direction: row;
+        align-items: center;
+      }
+      .duel-scenario {
+        margin: 0;
+        flex: 1.5;
+      }
+    }
     .duel-card {
       flex: 1;
       max-height: 220px;
@@ -490,13 +513,20 @@
       display: flex;
     }
 
+
+    /* Reduced Motion Guard — hỗ trợ người dùng cài prefers-reduced-motion */
+    @media (prefers-reduced-motion: reduce) {
+      .flip-card-inner { transition: none; }
+      .flip-card.blinking .flip-card-inner { animation: none; }
+      .custom-modal > div { animation: none !important; }
+    }
   </style>
 </head>
 
 <body>
   <header class="app-header">
     <a href="index.html" class="back-btn">&larr;</a>
-    <h1 class="app-title">Personal Value Compass</h1>
+    <h1 class="app-title">La bàn giá trị cốt lõi cá nhân - Personal Core Value Compass</h1>
   </header>
 
   <!-- STEP 1: GRID RATING -->
@@ -505,6 +535,12 @@
       <div id="pb1" class="progress-fill" style="width: 25%;"></div>
     </div>
     <div class="progress-text" style="font-weight: bold; color: var(--dark);">Bước 1: Khám phá Giá trị Cốt lõi</div>
+    <div style="text-align: center; margin: 1rem auto; max-width: 400px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+      <video width="100%" controls autoplay loop muted playsinline style="display: block;">
+        <source src="demo_video.mp4" type="video/mp4">
+        Trình duyệt của bạn không hỗ trợ thẻ video.
+      </video>
+    </div>
     <p style="text-align: center; padding: 0 1.5rem; color: var(--mid); font-size: 0.95rem; margin-top: 1rem; max-width: 800px; margin-left: auto; margin-right: auto;">
       Nhấp vào thẻ bất kỳ để lật xem ý nghĩa và tự động chọn là <strong>"Quan&nbsp;trọng"</strong>.<br/>
       Nếu thẻ đó thực sự định hình con người bạn, hãy bấm vào <strong>dấu&nbsp;Tick</strong> ở góc để đánh dấu <strong style="white-space: nowrap">"Rất&nbsp;quan&nbsp;trọng"</strong>.
@@ -560,7 +596,7 @@
     <div class="duel-arena">
       <div id="duelA" class="duel-card">A</div>
       
-      <div style="text-align: center; max-width: 600px; margin: 0 auto; background: rgba(0,0,0,0.03); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.06);">
+      <div class="duel-scenario">
         <div class="duel-vs" style="margin-bottom: 0.5rem; color: var(--warm-orange);">TÌNH HUỐNG GIẰNG XÉ</div>
         <div id="conflictScenario" style="font-size: 1.05rem; color: var(--dark); line-height: 1.6; font-style: italic;">
           Nếu bạn phải hi sinh [A] để giữ được [B], bạn sẽ chọn bên nào?
@@ -655,15 +691,15 @@
   <!-- Custom Value Input Modal -->
   <div id="customValueModal" class="custom-modal">
     <div style="background: var(--warm-cream, #fffbeb); padding: 2rem; border-radius: 24px; border: 1px solid rgba(0,0,0,0.08); width: 90%; max-width: 420px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); animation: zoomIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
-      <h3 style="color: var(--dark, #1c1917); margin-top: 0; margin-bottom: 1rem; font-weight: 800; font-size: 1.3rem;">Bổ sung giá trị của bạn</h3>
+      <h3 id="customValueModalTitle" style="color: var(--dark, #1c1917); margin-top: 0; margin-bottom: 1rem; font-weight: 800; font-size: 1.3rem;">Bổ sung giá trị của bạn</h3>
       <p style="color: var(--mid, #44403c); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.4;">
         Nếu bạn không tìm thấy giá trị cốt lõi của mình trong danh sách 41 thẻ, hãy tự định nghĩa nó dưới đây.
       </p>
       
-      <label style="display: block; margin-bottom: 0.5rem; font-weight: 700; color: var(--dark, #1c1917); font-size: 0.95rem;">Tên giá trị cốt lõi:</label>
+      <label for="customValueName" style="display: block; margin-bottom: 0.5rem; font-weight: 700; color: var(--dark, #1c1917); font-size: 0.95rem;">Tên giá trị cốt lõi:</label>
       <input type="text" id="customValueName" placeholder="Ví dụ: Sự tử tế, Trí tuệ cảm xúc..." style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); margin-bottom: 1.2rem; font-family: inherit; font-size: 0.95rem; background: white; color: var(--dark);" />
       
-      <label style="display: block; margin-bottom: 0.5rem; font-weight: 700; color: var(--dark, #1c1917); font-size: 0.95rem;">Mô tả ngắn gọn:</label>
+      <label for="customValueDesc" style="display: block; margin-bottom: 0.5rem; font-weight: 700; color: var(--dark, #1c1917); font-size: 0.95rem;">Mô tả ngắn gọn:</label>
       <input type="text" id="customValueDesc" placeholder="Ví dụ: Giúp đỡ người khác không màng lợi ích..." style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); margin-bottom: 1.8rem; font-family: inherit; font-size: 0.95rem; background: white; color: var(--dark);" />
       
       <div style="display: flex; gap: 0.8rem; justify-content: flex-end;">
