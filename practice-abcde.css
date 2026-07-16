@@ -1,0 +1,409 @@
+/* ==========================================================================
+   Interactive ABCDE Practice Page Styling
+   Delivering Happiness - CultureCode Community
+   ========================================================================== */
+
+:root {
+  --warm-yellow: #f59e0b;
+  --warm-orange: #ea580c;
+  --warm-light: #fef3c7;
+  --warm-cream: #fffbeb;
+  --dark: #1c1917;
+  --dark-gray: #292524;
+  --mid: #44403c;
+  --light-text: #a8a29e;
+  --white: #ffffff;
+  --radius-lg: 16px;
+  --radius-md: 8px;
+  --glass: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.07);
+  --glass-focus: rgba(245, 158, 11, 0.2);
+  --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  background: linear-gradient(135deg, #12100e 0%, #1c1917 50%, #292015 100%);
+  color: var(--white);
+  line-height: 1.6;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Background decoration */
+.background-decor {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
+  top: -10%;
+  right: -10%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Header Area */
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.logo-area {
+  margin-bottom: 1.5rem;
+}
+
+.logo-area img {
+  height: 60px;
+  width: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease;
+}
+
+.logo-area img:hover {
+  transform: scale(1.05);
+}
+
+.title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 0.8rem;
+}
+
+.title .accent {
+  background: linear-gradient(90deg, var(--warm-yellow), var(--warm-orange));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  color: var(--light-text);
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  font-weight: 300;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Section Cards */
+.section-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.section-card:hover {
+  border-color: rgba(245, 158, 11, 0.15);
+}
+
+/* Selection Section */
+.selection-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.field-label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--warm-yellow);
+}
+
+.select-wrapper {
+  position: relative;
+}
+
+select {
+  width: 100%;
+  padding: 1.2rem 1.5rem;
+  background: rgba(28, 25, 23, 0.8);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  color: var(--white);
+  font-family: inherit;
+  font-size: 1.05rem;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: var(--transition);
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--warm-yellow);
+  box-shadow: 0 0 0 3px var(--glass-focus);
+}
+
+.select-wrapper::after {
+  content: '▼';
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--light-text);
+  pointer-events: none;
+  font-size: 0.8rem;
+}
+
+/* Adversity Display */
+.adversity-card {
+  border-left: 5px solid #ef4444;
+}
+
+.card-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--white);
+}
+
+.adversity-text {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Input Form */
+.card-intro {
+  color: var(--light-text);
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+.input-group {
+  margin-bottom: 2rem;
+}
+
+.input-label {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--warm-yellow);
+  margin-bottom: 0.4rem;
+}
+
+.input-hint {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--light-text);
+  margin-bottom: 0.8rem;
+}
+
+textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 1rem 1.2rem;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  color: var(--white);
+  font-family: inherit;
+  font-size: 1rem;
+  resize: vertical;
+  transition: var(--transition);
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--warm-yellow);
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 3px var(--glass-focus);
+}
+
+.action-bar {
+  text-align: right;
+  margin-top: 1.5rem;
+}
+
+.btn-submit {
+  background: linear-gradient(135deg, var(--warm-yellow) 0%, var(--warm-orange) 100%);
+  color: var(--white);
+  border: none;
+  padding: 1.2rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.25);
+  transition: var(--transition);
+}
+
+.btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(245, 158, 11, 0.4);
+}
+
+.btn-submit:active {
+  transform: translateY(0);
+}
+
+/* Comparison Results Area */
+.comparison-header-card {
+  text-align: center;
+  border-bottom: 3px solid var(--warm-yellow);
+}
+
+.comparison-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--warm-yellow);
+  margin-bottom: 0.5rem;
+}
+
+.comparison-desc {
+  color: var(--light-text);
+}
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.comp-col {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.col-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--glass-border);
+  text-align: center;
+}
+
+.user-answers .col-title {
+  color: #3b82f6;
+}
+
+.suggestion-answers .col-title {
+  color: #10b981;
+}
+
+.comp-item {
+  margin-bottom: 2rem;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 1.2rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.comp-item:last-child {
+  margin-bottom: 0;
+}
+
+.comp-step {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.6rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+}
+
+.user-answers .comp-step {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+}
+
+.suggestion-answers .comp-step {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+}
+
+.comp-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  white-space: pre-line;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.bottom-action-bar {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.btn-reset {
+  background: transparent;
+  color: var(--white);
+  border: 2px solid var(--glass-border);
+  padding: 1rem 2rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-reset:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--white);
+}
+
+/* Utilities */
+.hidden {
+  display: none !important;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 5rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.85rem;
+}
+
+/* ==========================================================================
+   Responsive adjustments
+   ========================================================================== */
+
+@media (max-width: 868px) {
+  .comparison-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .wrapper {
+    padding: 1rem 1rem 3rem 1rem;
+  }
+  
+  .section-card {
+    padding: 1.5rem;
+  }
+  
+  .comp-col {
+    padding: 1.2rem;
+  }
+}

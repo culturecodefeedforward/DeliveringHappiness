@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vở Bài Tập Thực Hành Lạc Quan ABCDE — Delivering Happiness</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="practice-abcde.css">
+</head>
+<body>
+
+  <div class="background-decor"></div>
+
+  <div class="wrapper">
+    <header class="header">
+      <div class="logo-area">
+        <a href="/">
+          <img src="assets/culturecode_logo_transparent.png" alt="CultureCode Logo" onerror="this.src='assets/culturecode-logo-dark.jpg'" />
+        </a>
+      </div>
+      <h1 class="title">Vở Bài Tập Thực Hành<br><span class="accent">Lạc Quan ABCDE</span></h1>
+      <p class="subtitle">Hãy biến Lạc Quan thành một phản xạ rèn luyện được mỗi ngày</p>
+    </header>
+
+    <main class="main-content">
+      
+      <!-- STEP 1: Select Case -->
+      <section class="section-card selection-card">
+        <label for="caseSelect" class="field-label">1. Chọn tình huống thực hành:</label>
+        <div class="select-wrapper">
+          <select id="caseSelect">
+            <option value="" disabled selected>-- Chọn một tình huống để bắt đầu --</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- STEP 2: Adversity Display & Inputs -->
+      <div id="practiceArea" class="hidden">
+        
+        <section class="section-card adversity-card">
+          <h2 class="card-title">🚨 A — Nghịch cảnh (Adversity)</h2>
+          <p id="adversityContent" class="adversity-text"></p>
+        </section>
+
+        <section class="section-card input-form-card">
+          <h2 class="card-title">📝 Bài làm của bạn</h2>
+          <p class="card-intro">Điền phân tích của bạn cho các bước tiếp theo bên dưới:</p>
+          
+          <div class="input-group">
+            <label for="inputB" class="input-label">💭 B — Niềm tin tiêu cực (Belief)</label>
+            <span class="input-hint">Suy nghĩ tiêu cực tự động nào xuất hiện ngay lập tức trong đầu bạn?</span>
+            <textarea id="inputB" placeholder="Ví dụ: Họ ghét mình, mình bất tài, mọi thứ thế là hết..."></textarea>
+          </div>
+
+          <div class="input-group">
+            <label for="inputC" class="input-label">⚡ C — Hậu quả (Consequence)</label>
+            <span class="input-hint">Cảm xúc tiêu cực và phản ứng hành vi của bạn là gì?</span>
+            <textarea id="inputC" placeholder="Ví dụ: Giận dữ, chán nản, muốn bỏ cuộc, im lặng né tránh..."></textarea>
+          </div>
+
+          <div class="input-group">
+            <label for="inputD" class="input-label">🛡️ D — Phản biện (Disputation)</label>
+            <span class="input-hint">Dùng các kỹ thuật: Bằng chứng thực tế? Cách giải thích khác? Giảm thảm họa? Lợi ích của suy nghĩ?</span>
+            <textarea id="inputD" placeholder="Ví dụ: Niềm tin này có đúng 100% không? Có cách giải thích nào khác khách quan hơn?..."></textarea>
+          </div>
+
+          <div class="input-group">
+            <label for="inputE" class="input-label">🌟 E — Năng lượng mới & Hành động (Effect & Energy)</label>
+            <span class="input-hint">Cảm xúc của bạn thay đổi ra sao và hành động mới, mang tính xây dựng là gì?</span>
+            <textarea id="inputE" placeholder="Ví dụ: Bình tĩnh lại, chủ động nói chuyện 1-on-1 để tháo gỡ khó khăn..."></textarea>
+          </div>
+
+          <div class="action-bar">
+            <button id="btnSubmit" class="btn-submit">
+              ✨ Xem Gợi ý & Đối chiếu
+            </button>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- STEP 3: Results Comparison -->
+      <div id="resultsArea" class="hidden">
+        
+        <section class="section-card comparison-header-card">
+          <h2 class="comparison-title">📊 Kết quả Đối chiếu & Gợi ý</h2>
+          <p class="comparison-desc">Hãy so sánh phân tích của bạn với các gợi ý thực tế được đúc kết từ khóa học</p>
+        </section>
+
+        <div class="comparison-grid">
+          
+          <!-- Column User -->
+          <div class="comp-col user-answers">
+            <h3 class="col-title">Bài làm của bạn</h3>
+            
+            <div class="comp-item">
+              <span class="comp-step">💭 B — Niềm tin</span>
+              <p id="resultUserB" class="comp-text"></p>
+            </div>
+
+            <div class="comp-item">
+              <span class="comp-step">⚡ C — Hậu quả</span>
+              <p id="resultUserC" class="comp-text"></p>
+            </div>
+
+            <div class="comp-item">
+              <span class="comp-step">🛡️ D — Phản biện</span>
+              <p id="resultUserD" class="comp-text"></p>
+            </div>
+
+            <div class="comp-item">
+              <span class="comp-step">🌟 E — Hành động mới</span>
+              <p id="resultUserE" class="comp-text"></p>
+            </div>
+          </div>
+
+          <!-- Column Suggestion -->
+          <div class="comp-col suggestion-answers">
+            <h3 class="col-title">Gợi ý áp dụng (Thư viện khóa học)</h3>
+            
+            <div class="comp-item">
+              <span class="comp-step">💭 B — Niềm tin</span>
+              <p id="resultSuggestB" class="comp-text"></p>
+            </div>
+
+            <div class="comp-item">
+              <span class="comp-step">⚡ C — Hậu quả</span>
+              <p id="resultSuggestC" class="comp-text"></p>
+            </div>
+
+            <div class="comp-item">
+              <span class="comp-step">🛡️ D — Phản biện</span>
+              <p id="resultSuggestD" class="comp-text"></p>
+            </div>
+
+            <div class="comp-item">
+              <span class="comp-step">🌟 E — Hành động mới</span>
+              <p id="resultSuggestE" class="comp-text"></p>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="bottom-action-bar">
+          <button id="btnReset" class="btn-reset">
+            🔄 Thực hành tình huống khác
+          </button>
+        </div>
+
+      </div>
+
+    </main>
+
+    <footer class="footer">
+      <p>© 2026 CultureCode Community · Sáng kiến phi lợi nhuận vì cộng đồng</p>
+    </footer>
+  </div>
+
+  <script src="practice-abcde.js"></script>
+</body>
+</html>
