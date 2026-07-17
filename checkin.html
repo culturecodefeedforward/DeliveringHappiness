@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check-in DH Masterclass - CultureCode</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="register.css">
+    <style>
+        .checkin-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .checkin-header h2 {
+            color: var(--warm-yellow);
+            margin-bottom: 0.5rem;
+        }
+        .greeting-msg {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            border-left: 4px solid var(--warm-yellow);
+        }
+        #fallbackEmailSection {
+            display: none;
+            background: rgba(255,80,80,0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px dashed rgba(255,80,80,0.3);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="form-card" id="formWrapper">
+        <a href="https://www.linkedin.com/company/culturecodecommunity" target="_blank" class="brand-logo-link">
+            <img src="assets/culturecode-logo-light.jpg" alt="CultureCode Logo" class="brand-logo">
+        </a>
+        <div class="header checkin-header">
+            <h1>Điểm danh & Nhận tài liệu</h1>
+            <h2>DH Masterclass (DHM8)</h2>
+            <p class="subtitle">Thứ Bảy, 18/07/2026 | Circle K, Nguyễn Gia Trí, TP.HCM</p>
+        </div>
+
+        <div id="greetingContainer" class="greeting-msg">
+            Chào bạn, vui lòng đợi hệ thống nhận diện...
+        </div>
+
+        <form id="checkinForm">
+            <input type="hidden" id="checkinEmail" name="email" value="">
+            <input type="hidden" name="event_id" value="DHM8_REG_180726">
+            <input type="hidden" name="isCheckin" value="true">
+
+            <div id="fallbackEmailSection">
+                <p style="margin-bottom: 10px; font-size: 0.95rem; color: #ffcccc;">Không tìm thấy thông tin cá nhân hóa. Vui lòng nhập Email bạn đã dùng để đăng ký:</p>
+                <div class="input-group" style="margin-bottom: 0;">
+                    <label>Email đăng ký *</label>
+                    <input type="email" id="fallbackEmailInput" placeholder="Nhập địa chỉ email...">
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <div class="input-group full-width" style="margin-bottom: 1rem;">
+                    <h3 style="color: #fff; font-size: 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem;">Thông tin bổ sung (Giúp CultureCode chuẩn bị tốt hơn)</h3>
+                </div>
+
+                <!-- Linkedin -->
+                <div class="input-group">
+                    <label>Linkedin Public profile & URL</label>
+                    <input type="text" name="linkedin" placeholder="https://linkedin.com/in/username...">
+                </div>
+
+                <!-- Company -->
+                <div class="input-group">
+                    <label>Tên công ty / Tổ chức hiện tại *</label>
+                    <input type="text" name="company" required placeholder="Nhập tên đơn vị công tác...">
+                </div>
+
+                <!-- Job Title -->
+                <div class="input-group">
+                    <label>Chức danh / Vị trí *</label>
+                    <input type="text" name="jobTitle" required placeholder="Nhập chức danh của bạn...">
+                </div>
+
+                <!-- Company Size -->
+                <div class="input-group full-width">
+                    <label>Quy mô công ty nơi bạn đang công tác</label>
+                    <div class="radio-group" style="grid-template-columns: repeat(2, 1fr);">
+                        <div class="radio-item"><input type="radio" id="size1" name="companySize" value="<50"><label for="size1">&lt;50 nhân sự</label></div>
+                        <div class="radio-item"><input type="radio" id="size2" name="companySize" value="50-200"><label for="size2">50-200 nhân sự</label></div>
+                        <div class="radio-item"><input type="radio" id="size3" name="companySize" value="200-1000"><label for="size3">200 - 1000 nhân sự</label></div>
+                        <div class="radio-item"><input type="radio" id="size4" name="companySize" value=">1000"><label for="size4">&gt;1000 nhân sự</label></div>
+                    </div>
+                </div>
+
+                <!-- Source of Hearing -->
+                <div class="input-group full-width">
+                    <label>Lần đầu bạn nghe thông tin chương trình từ đâu?</label>
+                    <div class="radio-group" style="grid-template-columns: 1fr 1fr;">
+                        <div class="radio-item"><input type="radio" id="src1" name="sourceHearing" value="CultureCode linkedin page"><label for="src1">CultureCode linkedin page</label></div>
+                        <div class="radio-item"><input type="radio" id="src2" name="sourceHearing" value="Nhóm zalo cộng đồng CultureCode"><label for="src2">Nhóm Zalo cộng đồng CultureCode</label></div>
+                        <div class="radio-item"><input type="radio" id="src3" name="sourceHearing" value="Nhóm zalo cộng đồng Delivering Happiness"><label for="src3">Nhóm Zalo Delivering Happiness</label></div>
+                        <div class="radio-item"><input type="radio" id="src4" name="sourceHearing" value="Nhóm cộng đồng khác"><label for="src4">Nhóm cộng đồng khác</label></div>
+                        <div class="radio-item"><input type="radio" id="src5" name="sourceHearing" value="Linkedin của giảng viên"><label for="src5">Linkedin của giảng viên</label></div>
+                        <div class="radio-item"><input type="radio" id="src6" name="sourceHearing" value="Bạn bè, người quen"><label for="src6">Bạn bè, người quen</label></div>
+                        <div class="radio-item full-width" style="grid-column: span 2; display: flex; align-items: center; gap: 10px;">
+                            <input type="radio" id="srcOther" name="sourceHearing" value="Khác">
+                            <label for="srcOther" style="white-space: nowrap; margin-bottom: 0;">Khác:</label>
+                            <input type="text" id="sourceHearingOther" name="sourceHearingOther" placeholder="Vui lòng nhập nguồn khác..." class="option-other-input" style="margin: 0; padding: 6px 12px; height: auto;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Attended Programs -->
+                <div class="input-group full-width">
+                    <label>Bạn đã tham gia chương trình nào của CultureCode?</label>
+                    <div class="radio-group" style="grid-template-columns: 1fr 1fr;">
+                        <div class="radio-item"><input type="checkbox" id="prog1" name="attendedPrograms" value="CultureCode CC101"><label for="prog1">CultureCode CC101</label></div>
+                        <div class="radio-item"><input type="checkbox" id="prog2" name="attendedPrograms" value="Trà Chiều"><label for="prog2">Trà Chiều</label></div>
+                        <div class="radio-item"><input type="checkbox" id="prog3" name="attendedPrograms" value="Blooming on"><label for="prog3">Blooming on</label></div>
+                        <div class="radio-item full-width" style="grid-column: span 2; display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="progOther" name="attendedPrograms" value="Khác">
+                            <label for="progOther" style="white-space: nowrap; margin-bottom: 0;">Khác:</label>
+                            <input type="text" id="attendedProgramsOther" name="attendedProgramsOther" placeholder="Nhập mục khác..." class="option-other-input" style="margin: 0; padding: 6px 12px; height: auto;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Purpose -->
+                <div class="input-group full-width">
+                    <label>Mục đích khi bạn đăng ký tham gia Masterclass?</label>
+                    <div class="radio-group" style="grid-template-columns: 1fr 1fr;">
+                        <div class="radio-item"><input type="checkbox" id="purp1" name="purpose" value="Học và áp dụng cho bản thân"><label for="purp1">Học và áp dụng cho bản thân</label></div>
+                        <div class="radio-item"><input type="checkbox" id="purp2" name="purpose" value="Xem xét áp dụng cho công ty/ tổ chức"><label for="purp2">Xem xét áp dụng cho công ty/ tổ chức</label></div>
+                        <div class="radio-item full-width" style="grid-column: span 2; display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="purpOther" name="purpose" value="Khác">
+                            <label for="purpOther" style="white-space: nowrap; margin-bottom: 0;">Khác:</label>
+                            <input type="text" id="purposeOther" name="purposeOther" placeholder="Nhập mục đích khác..." class="option-other-input" style="margin: 0; padding: 6px 12px; height: auto;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Happiness Knowledge -->
+                <div class="input-group full-width">
+                    <label>Bạn đã tìm hiểu gì về "Delivering Happiness" chưa?</label>
+                    <div class="radio-group" style="grid-template-columns: 1fr;">
+                        <div class="radio-item"><input type="radio" id="happy1" name="happinessKnowledge" value="Chưa từng nghe"><label for="happy1">Chưa từng nghe</label></div>
+                        <div class="radio-item"><input type="radio" id="happy2" name="happinessKnowledge" value="Đã biết sách nhưng chưa đọc"><label for="happy2">Đã biết về quyển sách "Tỷ phú bán giày" nhưng chưa đọc</label></div>
+                        <div class="radio-item"><input type="radio" id="happy3" name="happinessKnowledge" value="Đã đọc sách nhưng chưa biết cách áp dụng"><label for="happy3">Đã đọc sách "Tỷ phú bán giày" nhưng chưa hoàn toàn hiểu và biết cách áp dụng</label></div>
+                    </div>
+                </div>
+
+                <!-- Expectations -->
+                <div class="input-group full-width">
+                    <label>03 điều bạn mong đợi nhất sau khi kết thúc chương trình là gì?</label>
+                    <textarea name="expectations" rows="3" placeholder="Ví dụ: 1. Hiểu cách xây dựng văn hóa hạnh phúc; 2. ..."></textarea>
+                </div>
+            </div>
+
+            <div id="registrationError" style="display:none; background:rgba(255,80,80,0.15); border:1px solid rgba(255,80,80,0.4); border-radius:8px; padding:1rem; margin-bottom:1rem; color:#fff; font-size:0.9rem;"></div>
+
+            <button type="submit" class="btn-submit" id="submitBtn">
+                <span class="loading-spinner"></span>
+                <span class="btn-text">Gửi Check-in & Nhận tài liệu</span>
+            </button>
+        </form>
+
+        <div id="successMessage" style="display: none;">
+            <div style="font-size: 4rem; margin-bottom: 1rem; text-align: center;">🎉</div>
+            <h2 style="margin-bottom: 1rem; color: var(--warm-yellow); text-align: center;">Check-in thành công!</h2>
+            <p style="color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 1.5rem; text-align: center;">
+                Cảm ơn bạn đã cập nhật thông tin.<br>
+                Mời bạn di chuyển đến bàn Lễ tân để nhận thẻ tên và tài liệu chương trình nhé!
+            </p>
+        </div>
+    </div>
+
+    <script>
+        window.CUSTOM_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwynSXvhSbrM4YMvZbXaOFR8fW-BJ5frBiyWfwkUCH5CgcWM-gEA0uuJ4xSdXLrKbQMQg/exec";
+    </script>
+    <script src="checkin.js"></script>
+</body>
+</html>
