@@ -14,8 +14,9 @@ Lộ trình lưu trữ các cột mốc lịch sử phát triển và kế hoạ
 *   **Định tuyến tĩnh /dh8:** Tạo thư mục con tĩnh `/dh8` làm lối tắt chuyển hướng trang đăng ký.
 *   **Workspace MCP Integration:** Xác thực thành công tài khoản quản trị `culturecodeproject@gmail.com` với Workspace MCP để cho phép AI tự động hóa quản lý Sheets và gửi email thông báo qua Gmail API.
 
-### Phiên bản 3.0 (Tháng 07/2026) - Khảo sát Giá trị Cốt lõi & Tăng cường Bảo mật (Hiện tại)
+### Phiên bản 3.0 (Tháng 07/2026) - Khảo sát Giá trị Cốt lõi, Thực hành ABCDE & Tăng cường Bảo mật (Hiện tại)
 *   **Tích hợp La bàn Giá trị Cá nhân (Personal Value Compass):** Phát triển tính năng khảo sát 41 giá trị sống cốt lõi, cơ chế so sánh đúp Top 7, vẽ radar chart (Chart.js), xuất PDF (html2pdf.js) và gửi mail báo cáo tự động cho người dùng.
+*   **Trang thực hành Lạc quan ABCDE tương tác & RAG tri thức:** Phát triển trang thực hành tương tác độc lập (`practice-abcde.html`) cho phép học viên quét mã QR từ slide để điền bài làm và đối chiếu song song với 18 case study chuẩn (bao gồm 3 tình huống bóc băng trực tiếp từ file audio bài giảng) được lưu trữ dưới dạng cơ sở dữ liệu JSON tĩnh.
 *   **Cập nhật Đăng ký DHM9:** Mở rộng luồng dữ liệu sang phân hệ Delivering Happiness Masterclass 9 tại Hà Nội (`register_dh9_hanoi.html`).
 *   **Tăng cường Bảo mật & Chống Spam:**
     *   *Math Puzzle CAPTCHA:* Ngăn chặn bot spam API bằng phép cộng ngẫu nhiên và giải thuật mã hóa token ở cả client và backend.
@@ -23,7 +24,7 @@ Lộ trình lưu trữ các cột mốc lịch sử phát triển và kế hoạ
     *   *Email Quota Guard:* Tự động ngắt gửi email báo cáo khi quota hàng ngày của Google còn dưới 5 email để ưu tiên tài nguyên cho luồng đăng ký chính.
     *   *HTML Escaping:* Lọc sạch mã độc đầu vào (`XSS Protection`) trước khi đẩy vào CRM Sheets hoặc email.
 *   **Chuẩn hóa quy trình triển khai:** 
-    *   *Frontend:* Vercel CI/CD tự động deploy từ nhánh `main`.
+    *   *Frontend:* Vercel CI/CD tự động deploy từ nhánh `main` và cấu hình khóa cứng đường dẫn `/Artifacts/`, `/UAT/` trong `.vercelignore` để tránh lỗi nuốt thư mục con.
     *   *Backend:* Dùng công cụ `clasp` đẩy code trực tiếp lên Google Apps Script Web App thay thế quy trình copy/paste thủ công cũ.
 
 ## 2. Giai đoạn Tiếp theo (Future Milestones)

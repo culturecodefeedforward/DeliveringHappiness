@@ -100,6 +100,28 @@ sequenceDiagram
     end
 ```
 
+### D. Luồng Thực hành điền & đối chiếu Case Study qua QR (ABCDE Practice Sheet & Static RAG Flow)
+Luồng tương tác của trang thực hành độc lập, tự động tải dữ liệu tri thức tĩnh từ server và phân rã các bước bằng Regex để đối chiếu bài làm:
+
+```mermaid
+sequenceDiagram
+    participant User as Học viên (Browser)
+    participant Web as Landing Page (Vercel)
+    participant JSON as static DB (JSON file)
+
+    User->>Web: Quét QR mở /practice-abcde
+    Web->>JSON: Fetch /data/artifacts/knowledge_base_abcde.json
+    JSON-->>Web: Trả về danh sách 18 case studies (ID, Adversity, Suggestion)
+    Web->>User: Hiển thị danh sách tình huống trong Dropdown
+    
+    User->>Web: Chọn 1 case study
+    Web->>User: Hiển thị Nghịch cảnh A, mở các ô nhập B, C, D, E
+    
+    User->>Web: Điền bài làm & Nhấn "Xem gợi ý & Đối chiếu"
+    Note over Web: Sử dụng Regex bóc tách chuỗi gợi ý gốc<br/>thành các phần gợi ý B, C, D, E tương ứng
+    Web->>User: Hiển thị bảng đối chiếu song song song (Side-by-Side Grid)
+```
+
 ## 2. Các Thành phần Kỹ thuật (Technical Components)
 
 ### A. Giao diện Client (Frontend)

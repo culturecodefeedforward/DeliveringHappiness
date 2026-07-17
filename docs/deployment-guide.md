@@ -12,8 +12,10 @@ Giao diện trang web (HTML/CSS/JS tĩnh) được deploy tự động lên **Ve
     *   *Trang khảo sát giá trị:* `https://delivering-happiness.vercel.app/personal-value.html`
     *   *Trang đăng ký DHM8:* `https://delivering-happiness.vercel.app/register.html`
     *   *Trang đăng ký DHM9 Hà Nội:* `https://delivering-happiness.vercel.app/register_dh9_hanoi.html`
+    *   *Trang thực hành ABCDE:* `https://delivering-happiness.vercel.app/practice-abcde`
 2.  **Nhánh Preview/LMS (Bài học học viên):** Các cập nhật bài giảng cho học viên cũ được đẩy lên nhánh `07042026` và deploy lên môi trường Preview tương ứng.
 3.  **Cấu hình dự án:** Tệp cấu hình `vercel.json` ở thư mục gốc chứa các quy tắc chuyển hướng hoặc header bảo mật (nếu có).
+4.  **Cảnh báo .vercelignore:** Để tránh Vercel bỏ qua các thư mục con trùng tên (ví dụ: `data/artifacts` bị nhận diện nhầm do dòng `Artifacts/` trong file cấu hình), bắt buộc phải dùng dấu gạch chéo ở đầu để khóa cứng đường dẫn gốc (như `/Artifacts/`, `/UAT/`, `/Implementation Plan/`).
 
 ---
 

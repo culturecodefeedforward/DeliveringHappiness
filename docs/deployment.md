@@ -1,6 +1,6 @@
 # Deployment
 ## Platform: Vercel
-## URL: https://delivering-happiness.vercel.app (Production: https://delivering-happiness-h0j3i5hi7-vuhoang2708s-projects.vercel.app)
+## URL: https://delivering-happiness.vercel.app (Production: https://delivering-happiness-gl61i7rw9-vuhoang2708s-projects.vercel.app)
 ## Deploy Command: `vercel --prod`
 ## Environment Variables: 
 (None currently configured in Vercel. See `.env.production.local` for local references).
