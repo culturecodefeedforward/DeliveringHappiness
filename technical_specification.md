@@ -110,7 +110,6 @@ Hệ thống được kết nối với tài khoản Google `culturecodeproject@
 
 ---
 
-
 ## 🔗 Danh sách Link Tài nguyên
 
 | Thành phần | Link URL |
@@ -118,6 +117,7 @@ Hệ thống được kết nối với tài khoản Google `culturecodeproject@
 | **Landing Page (Official)** | [Link](https://culturecodefeedforward.github.io/DeliveringHappiness/) |
 | **Landing Page (Demo)** | [Link](https://vuhoang2708.github.io/culture_code_VN.DH/) |
 | **Google Sheet CRM** | [Link](https://docs.google.com/spreadsheets/d/1ZToRX6J5Vo6UghzYEE_eUxU0bVnsGxBRLt-8tduI5CA/edit) |
+| **Sheet Thực hành ABCDE** | [Link](https://docs.google.com/spreadsheets/d/1ZToRX6J5Vo6UghzYEE_eUxU0bVnsGxBRLt-8tduI5CA/edit#gid=ABCDE) |
 
 ---
 
@@ -130,6 +130,7 @@ Hệ thống được kết nối với tài khoản Google `culturecodeproject@
 | **07/04** | **Technical Audit** | Đồng bộ tài liệu với thực tế: Loại bỏ Smart Redirect, chuẩn hóa quy trình Two-File Index. |
 | **13/06** | **Open DHM8** | Mở link đăng ký cho Delivering Happiness Masterclass 8 ngày 04/07. |
 | **14/06** | **Reactivate Form & MCP** | Kích hoạt lại Form Native (`register.html`) tích hợp thanh toán kép (VietQR/Bank). Cấu hình định tuyến tĩnh `/dh8`. Xác thực thành công Workspace MCP với tài khoản `culturecodeproject@gmail.com` và hoàn thành kiểm thử Gmail API. |
+| **15/07** | **ABCDE Chatbox** | Tích hợp Chatbox thực hành Lạc quan ABCDE Socratic. Cài đặt Dynamic State Machine (AI điều khiển trạng thái), bộ lọc camera khách quan ở bước A (loại bỏ tâm lý nạn nhân), vòng lặp phản biện chẵn/lẻ bước D kèm Quick Replies tự đánh giá, và ký bảo mật HMAC-SHA256 chống replay attack sang Apps Script. |
 
 ---
-*Cập nhật bởi Antigravity v3.5 (Audit Mode) - 14/06/2026*
+*Cập nhật bởi Antigravity v3.5 (Audit Mode) - 15/07/2026*

@@ -438,8 +438,8 @@ function renderDuel() {
   duelB.innerText = pair[1].name;
   duelB.onclick = () => handleDuelClick(pair[1].id);
 
-  // Hiển thị tình huống giằng xé chi tiết
-  conflictScenario.innerHTML = `Giữa việc <strong style="color:var(--warm-orange);">${pair[0].context}</strong> và việc <strong style="color:var(--warm-orange);">${pair[1].context}</strong>, bạn sẽ nhượng bộ điều gì để giữ lại điều kia?`;
+  // Hiển thị câu hỏi Giữ lại giá trị nào (YC-2)
+  conflictScenario.innerHTML = `Giữa việc <strong style="color:var(--warm-orange);">${pair[0].context}</strong> và việc <strong style="color:var(--warm-orange);">${pair[1].context}</strong>, bạn sẽ <strong>GIỮ LẠI</strong> điều nào?`;
 }
 
 function handleDuelClick(winnerId) {
@@ -462,141 +462,82 @@ function finishDuel() {
   if (stepInfo) {
     stepInfo.classList.add('active');
   } else {
-    step4.classList.add('active');
-  }
-  
-  // Tính rank
-  const ranked = selectedTop7.map(item => {
-    return { ...item, score: duelScores[item.id] };
-  }).sort((a, b) => b.score - a.score); // Giảm dần
-  
-  latestRankedData = ranked;
-  // Không renderResults ngay mà chờ user submit form (hoặc sửa form)
-  initReportFormEvents();
-}
-
-function renderResults(ranked) {
-  const listEl = document.getElementById('resultRanking');
-  if (listEl) {
-    listEl.innerHTML = '';
-  }
-  
-  const labels = [];
-  const data = [];
-  
-  ranked.forEach((item, index) => {
-    labels.push(item.name);
-    data.push(item.score);
-    
-    if (listEl) {
-      listEl.innerHTML += `
-        <div class="rank-item">
-          <div class="rank-num">#${index + 1}</div>
-          <div class="rank-name">${item.name}</div>
-          <div class="rank-score">${item.score} điểm</div>
-        </div>
-      `;
-    }
-  });
-  
-  // Tính toán và hiển thị nhóm động lực Schwartz
-  renderSchwartzDimensions(ranked);
-  
-  // Vẽ Radar Chart - Bánh xe 7 đỉnh (Chủ đề sáng, sắc nét)
-  const ctx = document.getElementById('resultChart').getContext('2d');
-  new Chart(ctx, {
-    type: 'radar',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Sức mạnh Giá trị',
-        data: data,
-        backgroundColor: 'rgba(234, 88, 12, 0.2)', // gradient style color
-        borderColor: 'rgba(234, 88, 12, 1)',
-        borderWidth: 2.5,
-        pointBackgroundColor: '#fff',
-        pointBorderColor: 'rgba(234, 88, 12, 1)',
-        pointBorderWidth: 1.5,
-        pointRadius: 4,
-        pointHoverBackgroundColor: 'rgba(245, 158, 11, 1)',
-        pointHoverBorderColor: '#fff',
-        pointHoverRadius: 6,
-        fill: true
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      aspectRatio: 1.2,
-      scales: {
-        r: {
-          angleLines: { 
-            color: [
-              'rgba(28, 25, 23, 0.25)', 
-              'rgba(28, 25, 23, 0.25)',
-              'rgba(28, 25, 23, 0.25)',
-              'rgba(28, 25, 23, 0.25)',
-              'rgba(28, 25, 23, 0.25)',
-              'rgba(28, 25, 23, 0.25)',
-              'rgba(28, 25, 23, 0.25)'
-            ],
-            lineWidth: 1.5 
-          }, // Nan hoa sẫm màu chạy từ tâm ra
-          grid: { 
-            color: [
-              'rgba(234, 88, 12, 0.1)',   // vong 1
-              'rgba(234, 88, 12, 0.2)',   // vong 2
-              'rgba(234, 88, 12, 0.3)',   // vong 3
-              'rgba(234, 88, 12, 0.4)',   // vong 4
-              'rgba(234, 88, 12, 0.5)',   // vong 5
-              'rgba(234, 88, 12, 0.7)'    // vong 6
-            ], 
-            circular: false,
-            lineWidth: 2
-          }, // Vòng bánh xe đa giác có màu đậm dần
-          pointLabels: {
-            color: '#1c1917', // Tên trị cốt lõi màu sẫm rõ nét
-            font: { 
-              size: 14, 
-              family: "'Be Vietnam Pro', sans-serif", 
-              weight: 'bold' 
-            }
-          },
-          ticks: { 
-            display: true, 
-            stepSize: 1,
-            color: 'rgba(28, 25, 23, 0.7)',
-            backdropColor: 'transparent',
-            font: { size: 11, weight: 'bold' }
-          }, // Thể hiện số điểm toả ra từ tâm (0 -> 6)
-          suggestedMin: 0,
-          suggestedMax: 6
-        }
-      },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: 'rgba(28, 25, 23, 0.9)',
-          titleFont: { family: "'Be Vietnam Pro', sans-serif", size: 14, weight: 'bold' },
-          bodyFont: { family: "'Be Vietnam Pro', sans-serif", size: 14 },
-          padding: 12,
-          cornerRadius: 8,
-          displayColors: false
-        }
-      }
-    }
-  });
-
-  // Gọi hàm vẽ ma trận 7x7
-  renderMatrixTable(ranked);
-}
-
+    step4.classList.add('act/* [YC-1 DISABLED 2026-07-17] renderSchwartzDimensions đã được thay thế bằng card tĩnh trong HTML.
+   Giữ function để tham chiếu nếu cần khôi phục.
 function renderSchwartzDimensions(ranked) {
   const mapping = {
     "Thành tựu": "SE", "Sự thăng tiến": "SE", "Thu nhập cao": "SE", "Tính Độc Lập": "SE", "Lãnh đạo": "SE", "Được ghi nhận": "SE", "Thành công": "SE", "Nổi tiếng": "SE", "Độc lập": "SE", "Ảnh hưởng": "SE", "Sức mạnh": "SE", "Thanh thế": "SE", "Chất lượng làm việc": "SE", "Tài sản": "SE", "Cạnh tranh": "SE",
     "Phiêu lưu": "OC", "Sự tự chủ": "OC", "Sự sáng tạo": "OC", "Sự đa dạng": "OC", "Linh hoạt/Thích ứng": "OC", "Tự do": "OC", "Sự hài hước": "OC", "Học tập, phát triển": "OC", "Tự khám phá": "OC", "Niềm vui": "OC", "Tiến bộ": "OC", "Mạo hiểm": "OC", "Cảm nhận về nghệ thuật": "OC", "Sáng tạo": "OC", "Học văn": "OC", "Phát triển cá nhân": "OC", "Thoải mái": "OC",
-    "Tình cảm": "ST", "Sự cân bằng": "ST", "Gắn kết cộng đồng": "ST", "Gắn kết gia đình": "ST", "Sự phục vụ": "ST", "Làm việc nhóm": "ST", "Bao dung/Tha thứ": "ST", "Tình bạn": "ST", "Sự bình đẳng": "ST", "Sự cống hiến": "ST", "Lãng mạn": "ST", "Đóng góp": "ST", "Hợp tác": "ST", "Công bằng": "ST", "Hạnh phúc gia đình": "ST", "Tha thứ": "ST", "Giúp đỡ": "ST", "Lòng khoan dung": "ST", "Tính phong phú": "ST",
+    "Tình cảm": "ST", "Sự cân bằng": "ST", "Gắn kết cộng đồng": "ST", "Gắn kết gia đình": "ST", "Sự phục vụ": "ST", "Làm việc nhóm": "ST", "Bao dung/Tha thứ": "ST", "Tình bạn": "ST", "Sự bình đẳng": "ST", "Sự cống hướng": "ST", "Lãng mạn": "ST", "Đóng góp": "ST", "Hợp tác": "ST", "Công bằng": "ST", "Hạnh phúc gia đình": "ST", "Tha thứ": "ST", "Giúp đỡ": "ST", "Lòng khoan dung": "ST", "Tính phong phú": "ST",
     "Sự cam kết": "CO", "Sự tự tin": "CO", "Sức khoẻ": "CO", "Sức khỏe": "CO", "Sự trung thực": "CO", "Môi trường làm việc": "CO", "Năng suất": "CO", "Tôn giáo/Tín ngưỡng": "CO", "Sự an toàn": "CO", "An toàn": "CO", "Bình yên": "CO", "Trí tuệ": "CO", "Lòng dũng cảm": "CO", "Tính dũng cảm": "CO", "Tự kỷ luật": "CO", "Trách nhiệm": "CO", "Kiềm chế": "CO", "Bảo đảm kinh tế": "CO", "Sự tĩnh tâm": "CO", "Sự chính trực": "CO", "Trung thành": "CO", "Trật tự": "CO", "Tôn trọng bản thân": "CO", "Tâm linh": "CO", "Chính thống": "CO"
+  };
+
+  const scores = { ST: 0, SE: 0, OC: 0, CO: 0 };
+  let total = 0;
+
+  ranked.forEach(item => {
+    const dim = mapping[item.name];
+    if (dim) {
+      const val = Number(item.score);
+      scores[dim] += val;
+      total += val;
+    }
+  });
+
+  const percent = {
+    selfTranscendence: total > 0 ? Math.round((scores.ST / total) * 100) : 25,
+    selfEnhancement: total > 0 ? Math.round((scores.SE / total) * 100) : 25,
+    opennessToChange: total > 0 ? Math.round((scores.OC / total) * 100) : 25,
+    conservation: total > 0 ? Math.round((scores.CO / total) * 100) : 25
+  };
+
+  const container = document.getElementById('schwartzDimensionsCard');
+  if (container) {
+    container.innerHTML = `
+      <h3 style="color: var(--warm-orange); margin-top: 0; margin-bottom: 0.8rem; font-weight: 800; font-size: 1.15rem; border-bottom: 1.5px solid rgba(234, 88, 12, 0.1); padding-bottom: 0.5rem;">
+        📊 Nhóm Động Lực Chủ Đạo (Schwartz Values)
+      </h3>
+      <p style="color: var(--mid); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.2rem;">
+        Dựa trên 7 giá trị cốt lõi của bạn, hệ thống phân tích xu hướng phân bổ động lực tinh thần của bạn vào 4 nhóm chính theo Lý thuyết Giá trị Schwartz:
+      </p>
+      
+      <div style="display: grid; grid-template-columns: 1fr; gap: 0.8rem;">
+        <div style="padding: 0.8rem 1rem; border-radius: 12px; background: rgba(5, 150, 105, 0.05); border-left: 4px solid #059669;">
+          <div style="display: flex; justify-content: space-between; font-weight: 700; color: #059669; font-size: 0.95rem;">
+            <span>Vượt lên Bản thân (Self-Transcendence)</span>
+            <span>${percent.selfTranscendence}%</span>
+          </div>
+          <p style="margin: 0.2rem 0 0 0; font-size: 0.82rem; color: var(--mid);">Cam kết vì phúc lợi cộng đồng, học hỏi, cống hiến, tha thứ, tình bè bạn và tình yêu thương.</p>
+        </div>
+        
+        <div style="padding: 0.8rem 1rem; border-radius: 12px; background: rgba(234, 88, 12, 0.05); border-left: 4px solid #ea580c;">
+          <div style="display: flex; justify-content: space-between; font-weight: 700; color: #ea580c; font-size: 0.95rem;">
+            <span>Khẳng định Bản thân (Self-Enhancement)</span>
+            <span>${percent.selfEnhancement}%</span>
+          </div>
+          <p style="margin: 0.2rem 0 0 0; font-size: 0.82rem; color: var(--mid);">Theo đuổi vị thế, thành công, thăng tiến cá nhân, chất lượng công việc và sự ảnh hưởng.</p>
+        </div>
+        
+        <div style="padding: 0.8rem 1rem; border-radius: 12px; background: rgba(37, 99, 235, 0.05); border-left: 4px solid #2563eb;">
+          <div style="display: flex; justify-content: space-between; font-weight: 700; color: #2563eb; font-size: 0.95rem;">
+            <span>Sẵn sàng Thay đổi (Openness to Change)</span>
+            <span>${percent.opennessToChange}%</span>
+          </div>
+          <p style="margin: 0.2rem 0 0 0; font-size: 0.82rem; color: var(--mid);">Đề cao sự tự chủ, tư duy độc lập, sức sáng tạo, tự do cá nhân và trải nghiệm phiêu lưu.</p>
+        </div>
+        
+        <div style="padding: 0.8rem 1rem; border-radius: 12px; background: rgba(120, 113, 108, 0.05); border-left: 4px solid #78716c;">
+          <div style="display: flex; justify-content: space-between; font-weight: 700; color: #78716c; font-size: 0.95rem;">
+            <span>Duy trì Ổn định (Conservation)</span>
+            <span>${percent.conservation}%</span>
+          </div>
+          <p style="margin: 0.2rem 0 0 0; font-size: 0.82rem; color: var(--mid);">Trân trọng kỷ luật bản thân, môi trường làm việc, sự an toàn, trung thực và sức khỏe.</p>
+        </div>
+      </div>
+    `;
+  }
+}
+*/ực": "CO", "Môi trường làm việc": "CO", "Năng suất": "CO", "Tôn giáo/Tín ngưỡng": "CO", "Sự an toàn": "CO", "An toàn": "CO", "Bình yên": "CO", "Trí tuệ": "CO", "Lòng dũng cảm": "CO", "Tính dũng cảm": "CO", "Tự kỷ luật": "CO", "Trách nhiệm": "CO", "Kiềm chế": "CO", "Bảo đảm kinh tế": "CO", "Sự tĩnh tâm": "CO", "Sự chính trực": "CO", "Trung thành": "CO", "Trật tự": "CO", "Tôn trọng bản thân": "CO", "Tâm linh": "CO", "Chính thống": "CO"
   };
 
   const scores = { ST: 0, SE: 0, OC: 0, CO: 0 };

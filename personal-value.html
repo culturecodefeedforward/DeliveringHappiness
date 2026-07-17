@@ -335,22 +335,25 @@
       }
     }
     .duel-card {
-      flex: 1;
-      max-height: 220px;
-      min-height: 110px;
+      flex: 0 1 auto;
+      width: fit-content;
+      min-width: 130px;
+      max-width: 240px;
+      min-height: 80px;
+      max-height: 180px;
       background: #ffffff;
       border: 2.5px solid rgba(234, 88, 12, 0.18);
       border-radius: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.35rem;
+      font-size: 1.15rem;
       font-weight: 800;
       color: var(--dark, #1c1917);
       cursor: pointer;
       transition: all 0.22s cubic-bezier(0.4,0,0.2,1);
       text-align: center;
-      padding: 1.2rem 1.5rem;
+      padding: 0.8rem 1.2rem;
       box-shadow: 0 4px 18px rgba(234, 88, 12, 0.10), 0 1px 4px rgba(0,0,0,0.06);
       position: relative;
       overflow: hidden;
@@ -603,7 +606,19 @@
     <p style="text-align: center; padding: 0 1.5rem; color: var(--mid); font-size: 0.95rem; margin-top: 1rem;">
       Từ những giá trị bạn vừa chọn ở bước trước, hãy chọn lọc lại đúng <strong style="color:var(--warm-orange)">7 giá trị</strong> cốt lõi và đại diện nhất cho bạn.
     </p>
-    
+
+    <!-- [YC-3] Hình định nghĩa Giá trị Cốt lõi + text nhấn mạnh -->
+    <div style="padding: 0 1.5rem; max-width: 800px; margin: 0 auto 1.5rem auto; text-align: center;">
+      <img
+        src="assets/core_values_definition.png"
+        alt="Định nghĩa Giá trị Cốt lõi — Động cơ, Đạo đức, Chỉ dẫn, Tầm quan trọng, Hành động"
+        style="width: 100%; max-width: 680px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); display: block; margin: 0 auto 1rem auto;"
+      />
+      <p style="font-size: 0.95rem; color: var(--warm-orange, #ea580c); font-weight: 700; line-height: 1.6; background: rgba(245,158,11,0.06); border-left: 3px solid var(--warm-orange, #ea580c); padding: 0.8rem 1.2rem; border-radius: 0 12px 12px 0; text-align: left; margin: 0 auto; max-width: 680px;">
+        💡 Hãy xem lại những tiêu chí này khi chọn lựa giá trị cá nhân mà bạn tin rằng <strong>Rất quan trọng</strong> với bản thân mình
+      </p>
+    </div>
+
     <div id="topValuesList" class="selection-grid"></div>
     
     <div class="floating-action" style="background: linear-gradient(transparent, #fffbeb 40%);">
@@ -620,18 +635,18 @@
     <div class="progress-bar-container">
       <div class="progress-fill" style="width: 66%;"></div>
     </div>
-    <div class="progress-text" style="font-weight: bold; color: var(--dark);">Bước 3: Trực giác quyết định (<span id="duelCurrent">1</span>/21)</div>
+    <div class="progress-text" style="font-weight: bold; color: var(--dark);">Bước 3: Đây là lúc xác định những giá trị nào thật sự là quan trọng nhất của bạn (<span id="duelCurrent">1</span>/21)</div>
     <p style="text-align: center; padding: 0 1.5rem; color: var(--mid); font-size: 0.95rem; margin-top: 1rem;">
-      Nếu bắt buộc phải chọn 1, bạn sẽ giữ lại giá trị nào? (Hãy tin vào trực giác)
+      Bạn sẽ GIỮ LẠI giá trị nào? Hãy chọn theo trực giác — không cần suy nghĩ quá lâu.
     </p>
     
     <div class="duel-arena">
       <div id="duelA" class="duel-card">A</div>
       
       <div class="duel-scenario">
-        <div class="duel-vs" style="margin-bottom: 0.5rem; color: var(--warm-orange);">TÌNH HUỐNG GIẰNG XÉ</div>
+        <div class="duel-vs" style="margin-bottom: 0.5rem; color: var(--warm-orange);">GIỮ GIÁ TRỊ NÀO?</div>
         <div id="conflictScenario" style="font-size: 1.05rem; color: var(--dark); line-height: 1.6; font-style: italic;">
-          Nếu bạn phải hi sinh [A] để giữ được [B], bạn sẽ chọn bên nào?
+          Giữa việc [A] và việc [B], bạn sẽ GIỮ LẠI điều nào?
         </div>
       </div>
 
@@ -710,9 +725,19 @@
           </div>
         </div>
         
-        <!-- Nhóm động lực Schwartz (Được tính toán và hiển thị trực quan) -->
-        <div id="schwartzDimensionsCard" style="background: white; border: 1px solid rgba(0,0,0,0.04); border-radius: 20px; padding: 1.5rem; margin-bottom: 2rem; text-align: left; box-shadow: 0 4px 16px rgba(0,0,0,0.01);">
-          <!-- Dynamic details injected via JS -->
+        <!-- [YC-1] Ý Nghĩa La Bàn Giá Trị Cốt Lõi — thay thế Schwartz 2026-07-17 -->
+        <div class="pv-explanation-box" style="background: white; border: 1px solid rgba(0,0,0,0.04); border-radius: 20px; padding: 1.5rem 1.8rem; margin-bottom: 2rem; text-align: left; box-shadow: 0 4px 16px rgba(0,0,0,0.01);">
+          <h3 style="color: var(--warm-orange, #ea580c); margin-top: 0; margin-bottom: 1rem; font-weight: 800; font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+            💡 Ý Nghĩa La Bàn Giá Trị Của Bạn
+          </h3>
+          <p style="color: var(--mid, #44403c); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.2rem;">
+            Chúc mừng bạn đã hoàn thành cuộc đối thoại nội tâm sâu sắc. La bàn trên không chỉ là những từ ngữ hoa mỹ, mà là tấm bản đồ định hình cuộc sống của bạn dựa trên các nguyên lý cốt lõi của <strong>Delivering Happiness</strong>:
+          </p>
+          <ul style="padding-left: 1.2rem; margin: 0; color: var(--dark, #1c1917); font-size: 0.95rem; line-height: 1.65; display: flex; flex-direction: column; gap: 0.8rem;">
+            <li><strong>Con người thật vs. Giá trị tuyên bố:</strong> Bài test đối kháng bắt buộc bạn phải đưa ra lựa chọn thực tế thay vì những &ldquo;giá trị tuyên bố&rdquo; lý thuyết. Hãy nhớ công thức: <em>La bàn (Định hướng) + Đồng hồ (Thời gian) = Giá trị thực tế của bạn</em>. Thừa nhận giá trị thật giúp bạn cởi bỏ áp lực phải gồng mình diễn vai hoàn hảo trước kỳ vọng xã hội.</li>
+            <li><strong>Thời khắc quyết định (Critical Decision Moments):</strong> 21 trận đối kháng bạn vừa vượt qua chính là mô phỏng những tình huống giằng xé trong cuộc sống. Bản chất thực sự của chúng ta không bộc lộ qua lời nói lúc bình yên, mà phát lộ rõ ràng nhất khi ta buộc phải hy sinh điều này để giữ lại điều quan trọng hơn.</li>
+            <li><strong>Sự đồng bộ (Alignment) &amp; Cảm giác thuộc về chân thật:</strong> Thấu hiểu giá trị bản thân giúp bạn dễ dàng tìm kiếm điểm giao thoa (alignment) với giá trị của gia đình, tổ chức hay cộng đồng. Bạn không cần phải giống hệt môi trường xung quanh, mà chỉ cần tìm thấy sự đồng điệu để làm việc an vui và đạt được cảm giác thuộc về chân thật (True Belonging).</li>
+          </ul>
         </div>
 
         <!-- Call to Action -->

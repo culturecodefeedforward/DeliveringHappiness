@@ -1928,18 +1928,20 @@ function sendPersonalValuesEmail(recipientEmail, fullName, parsedRanked) {
            '</tr>';
   }).join('');
   
-  var dimensions = calculateSchwartzDimensions(parsedRanked);
-  
-  var dimensionsHtml = 
-    '<div style="margin: 20px 0; padding: 15px; background-color: #fffbeb; border-radius: 12px; border: 1.5px dashed #f59e0b;">' +
-    '<h3 style="color: #ea580c; margin-top: 0; margin-bottom: 10px;">📊 Định hình Nhóm Động Lực Chủ Đạo:</h3>' +
-    '<ul style="margin: 0; padding-left: 20px; line-height: 1.6;">' +
-    '<li><strong>Vượt lên Bản thân:</strong> ' + dimensions.selfTranscendence + '% (Học hỏi, cống hiến, giúp đỡ, yêu thương)</li>' +
-    '<li><strong>Tự khẳng định Bản thân:</strong> ' + dimensions.selfEnhancement + '% (Vị thế, thành công, thăng tiến, sức mạnh)</li>' +
-    '<li><strong>Sẵn sàng Thay đổi:</strong> ' + dimensions.opennessToChange + '% (Độc lập, sáng tạo, tự do, phiêu lưu)</li>' +
-    '<li><strong>Duy trì Ổn định:</strong> ' + dimensions.conservation + '% (Kỷ luật, an toàn, trật tự, truyền thống)</li>' +
+  // [YC-1 DISABLED 2026-07-17] Schwartz đã được thay thế bằng Ý Nghĩa La Bàn trong email
+  // var dimensions = calculateSchwartzDimensions(parsedRanked);
+  // var dimensionsHtml = '<div ...>...</div>';
+
+  // [YC-1 MỚI] Ý Nghĩa La Bàn Giá Trị — thay thế Schwartz
+  var explanationHtml =
+    '<div style="background-color: #ffffff; border: 1px solid #f3f3f3; border-radius: 12px; padding: 20px; margin-top: 25px; text-align: left; font-family: sans-serif; font-size: 14px; line-height: 1.6; color: #333333;">' +
+    '<h3 style="color: #ea580c; margin-top: 0; margin-bottom: 15px; font-size: 16px; font-weight: bold;">💡 Ý Nghĩa La Bàn Giá Trị Của Bạn</h3>' +
+    '<p style="margin-bottom: 15px;">Chúc mừng bạn đã hoàn thành cuộc đối thoại nội tâm sâu sắc. La bàn giá trị này định hình cuộc sống của bạn dựa trên các nguyên lý cốt lõi của Delivering Happiness:</p>' +
+    '<ul style="padding-left: 20px; margin: 0;">' +
+    '<li style="margin-bottom: 10px;"><strong>Con người thật vs. Giá trị tuyên bố:</strong> Bài test đối kháng bắt buộc bạn phải đưa ra lựa chọn thực tế thay vì những &ldquo;giá trị tuyên bố&rdquo; lý thuyết. Hãy nhớ công thức: <em>La bàn (Định hướng) + Đồng hồ (Thời gian) = Giá trị thực tế của bạn</em>. Thừa nhận giá trị thật giúp bạn cởi bỏ áp lực phải gồng mình diễn vai hoàn hảo.</li>' +
+    '<li style="margin-bottom: 10px;"><strong>Thời khắc quyết định (Critical Decision Moments):</strong> 21 trận đối kháng bạn vừa vượt qua chính là mô phỏng những tình huống giằng xé trong cuộc sống. Bản chất thực sự của chúng ta không bộc lộ qua lời nói lúc bình yên, mà phát lộ rõ ràng nhất khi ta buộc phải hy sinh điều này để giữ lại điều quan trọng hơn.</li>' +
+    '<li style="margin-bottom: 10px;"><strong>Sự đồng bộ (Alignment) &amp; Cảm giác thuộc về chân thật:</strong> Thấu hiểu giá trị bản thân giúp bạn dễ dàng tìm kiếm điểm giao thoa (alignment) với giá trị của gia đình, tổ chức hay cộng đồng để làm việc an vui và đạt được cảm giác thuộc về chân thật (True Belonging).</li>' +
     '</ul>' +
-    '<p style="margin: 10px 0 0 0; font-size: 0.85rem; color: #78716c; font-style: italic;">* Tỷ lệ thể hiện xu hướng ưu tiên năng lượng tinh thần của bạn dựa trên 7 giá trị dẫn đầu.</p>' +
     '</div>';
 
   var htmlBody = 
@@ -1949,7 +1951,7 @@ function sendPersonalValuesEmail(recipientEmail, fullName, parsedRanked) {
     '<p style="color: #78716c; font-size: 0.95rem; margin-top: 0;">Chào <strong>' + fullName + '</strong>, dưới đây là kết quả phân tích La bàn Giá trị của riêng bạn.</p>' +
     '</div>' +
     
-    dimensionsHtml +
+    explanationHtml +
     
     '<h3 style="color: #44403c; margin-bottom: 10px;">🏆 Bảng Xếp Hạng Top 7 Giá Trị Cốt Lõi:</h3>' +
     '<table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">' +
