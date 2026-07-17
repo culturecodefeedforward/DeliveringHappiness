@@ -5,7 +5,7 @@
 // ============================================================
 // CONFIG
 // ============================================================
-const DHM8_WEBAPP_URL = window.CUSTOM_WEBAPP_URL || "https://script.google.com/macros/s/AKfycbwynSXvhSbrM4YMvZbXaOFR8fW-BJ5frBiyWfwkUCH5CgcWM-gEA0uuJ4xSdXLrKbQMQg/exec";
+const DHM8_WEBAPP_URL = window.CUSTOM_WEBAPP_URL || "https://script.google.com/macros/s/AKfycbwpJIAXSoWOLhg_EeQOYRQJk4uzdsyk3R0X-d7y_blJny9FkIn_JV4ZqRmmNlLTDuyDyg/exec";
 const JSONP_MAX_ATTEMPTS = Number(window.DHM8_JSONP_MAX_ATTEMPTS) || 5;
 const JSONP_POLL_DELAY_MS = Number(window.DHM8_JSONP_POLL_DELAY_MS) || 3000;   // 3 giây giữa các lần thử
 const JSONP_TIMEOUT_MS = Number(window.DHM8_JSONP_TIMEOUT_MS) || 5000;      // 5 giây timeout mỗi request JSONP
