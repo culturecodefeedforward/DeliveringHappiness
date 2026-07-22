@@ -25,9 +25,10 @@ Thực hiện các mutation production đã được gọi tên trong gói phê 
    - `ABCDE_RAG_ENABLED=true`;
    - `DHM_PASSCODE=DHM8,DHM9,ABCDE`;
    - `ABCDE_APPS_SCRIPT_URL=https://script.google.com/macros/s/<NEW_DEPLOYMENT_ID>/exec`;
-   - `RAG_TOP_K=2`;
-   - `RAG_MIN_SCORE=0.4`.
-4. Deploy từ `C:\tmp\dh4hn-abcde-rag-release-20260721` bằng `vercel deploy --prod --yes`. Ghi deployment ID, URL, thời gian, function size và alias.
+   - `RAG_TOP_K=3`;
+   - `RAG_MIN_SCORE=0.075`;
+   - `RAG_MIN_COVERAGE=0.82`.
+4. Deploy từ `C:\tmp\dh4hn-abcde-rag-release-clean-20260722` bằng `vercel deploy --prod --yes`. Ghi deployment ID, URL, thời gian, function size và alias.
 5. API smoke test (kiểm tra nhanh):
    - 7 URL public nền trả 200 sau redirect;
    - Stable verify passcode và một lượt chat A không lỗi;
