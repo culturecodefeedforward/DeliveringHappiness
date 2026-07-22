@@ -1,0 +1,249 @@
+{
+  "version": "abcde-source-manifest-20260721-v2",
+  "reviewed_at": "2026-07-21T16:00:00+07:00",
+  "raw_source_policy": "Raw NotebookLM content stays in C:\\tmp and is never committed. Only approved, redacted chunks are written to the knowledge base.",
+  "notebooks": [
+    {
+      "notebook_id": "e9f7d3f6-036a-4c40-8580-66d688c7642f",
+      "label": "DH7",
+      "verified_source_count": 20
+    },
+    {
+      "notebook_id": "1601679f-ca32-40bb-bb8c-aaedc4e50906",
+      "label": "DHM3",
+      "verified_source_count": 15
+    },
+    {
+      "notebook_id": "83c60631-fcfc-4138-b96a-bc99826be158",
+      "label": "DHM4",
+      "verified_source_count": 16
+    },
+    {
+      "notebook_id": "6a4d1fae-d0e6-4934-94f5-34d916c929f7",
+      "label": "DH8",
+      "verified_source_count": 3
+    }
+  ],
+  "redactions": [
+    "Ngân",
+    "Hằng",
+    "Châu",
+    "Vũ",
+    "Hưng",
+    "Phượng",
+    "Hoàn"
+  ],
+  "case_insensitive_redactions": [
+    "phượng"
+  ],
+  "sources": [
+    {
+      "notebook_id": "e9f7d3f6-036a-4c40-8580-66d688c7642f",
+      "source_id": "e3886515-9c0d-4ce6-a6a7-0f7695d3697a",
+      "source_title": "REC_260404_145304.mp3",
+      "source_type": "audio",
+      "temp_filename": "dh7_optimism_audio.txt",
+      "sha256": "2C942049212ABBC2B42B0AACB612C482883054169F0CB9815822A7B1106207D5",
+      "decision": "approved",
+      "review_status": "approved",
+      "review_reason": "Bài giảng trực tiếp định nghĩa lạc quan, giải thích ABCDE, ví dụ công sở và kỹ thuật phản biện.",
+      "sections": [
+        {
+          "start_line": 55,
+          "end_line": 115,
+          "title": "Lạc quan là kỹ năng và cần neo vào thực tế",
+          "concept": "rational_optimism",
+          "abcde_step": "FOUNDATION"
+        },
+        {
+          "start_line": 115,
+          "end_line": 139,
+          "title": "Lạc quan khác ảo tưởng và đòi hỏi hành động",
+          "concept": "optimism_requires_action",
+          "abcde_step": "E"
+        },
+        {
+          "start_line": 139,
+          "end_line": 157,
+          "title": "Quan hệ A-B-C-D-E",
+          "concept": "abcde_stage_relationships",
+          "abcde_step": "ABCDE"
+        },
+        {
+          "start_line": 157,
+          "end_line": 181,
+          "title": "Ca công sở và cách phản biện niềm tin",
+          "concept": "workplace_disputation",
+          "abcde_step": "D"
+        }
+      ]
+    },
+    {
+      "notebook_id": "83c60631-fcfc-4138-b96a-bc99826be158",
+      "source_id": "bab07d7e-c3cb-4220-b2d9-1c5d6dbd15a1",
+      "source_title": "dhm4 lạc quan.m4a",
+      "source_type": "audio",
+      "temp_filename": "dhm4_lac_quan.txt",
+      "sha256": "CA9F7C059CB29B143027FCBDD593E5C134AFE217B03895F64087B9FCDFDB67A3",
+      "decision": "approved",
+      "review_status": "approved",
+      "review_reason": "Bài giảng và thảo luận lớp về sự kiện, suy diễn, hệ quả, phản biện và năng lượng mới.",
+      "sections": [
+        {
+          "start_line": 1,
+          "end_line": 133,
+          "title": "Ca gia đình: sự kiện chưa chắc chắn và nỗi sợ tương lai",
+          "concept": "family_adversity_case",
+          "abcde_step": "ABCDE"
+        },
+        {
+          "start_line": 253,
+          "end_line": 307,
+          "title": "Lý trí, hành động và các bước ABCDE",
+          "concept": "rational_action_and_stages",
+          "abcde_step": "ABCDE"
+        },
+        {
+          "start_line": 301,
+          "end_line": 343,
+          "title": "Niềm tin tạo hệ quả và vai trò của phản biện",
+          "concept": "belief_consequence_disputation",
+          "abcde_step": "BCD"
+        },
+        {
+          "start_line": 391,
+          "end_line": 451,
+          "title": "Tự vấn, viết nhật ký và giảm phóng đại",
+          "concept": "self_questioning_disputation",
+          "abcde_step": "D"
+        }
+      ]
+    },
+    {
+      "notebook_id": "1601679f-ca32-40bb-bb8c-aaedc4e50906",
+      "source_id": "141db32c-9642-47be-8a48-8f3e7a1b9ce7",
+      "source_title": "Dh tài liệu.pdf",
+      "source_type": "pdf",
+      "temp_filename": "dhm3_document.txt",
+      "sha256": "6B413598FD036E42F86EF66A3201FA31532A461CFC00985A6B5BC2ED44DEFA05",
+      "decision": "approved",
+      "review_status": "approved",
+      "review_reason": "Slide khóa học định nghĩa lạc quan, các công cụ tái diễn đạt và một ca ABCDE đầy đủ.",
+      "sections": [
+        {
+          "start_line": 1757,
+          "end_line": 1793,
+          "title": "Định nghĩa lạc quan bằng lý trí",
+          "concept": "rational_optimism",
+          "abcde_step": "FOUNDATION"
+        },
+        {
+          "start_line": 1823,
+          "end_line": 1903,
+          "title": "Từ cạm bẫy đến cơ hội và người bạn bên trong",
+          "concept": "reframing_tools",
+          "abcde_step": "D"
+        },
+        {
+          "start_line": 1921,
+          "end_line": 1953,
+          "title": "Ca ABCDE khi ý tưởng bị phản đối",
+          "concept": "meeting_idea_case",
+          "abcde_step": "ABCDE"
+        }
+      ]
+    },
+    {
+      "notebook_id": "e9f7d3f6-036a-4c40-8580-66d688c7642f",
+      "source_id": "a9cd8c59-f382-4264-934a-72d62f9e1917",
+      "source_title": "DHM4_HN_25.05.24_v2.pdf",
+      "source_type": "pdf",
+      "temp_filename": "dh7_deck_a.txt",
+      "sha256": "5F59A1EA531C8076F7EB4A931E5F1102AB5833979CD9135968A643B67B4AAFAA",
+      "decision": "approved",
+      "review_status": "approved",
+      "review_reason": "Bản slide trong notebook DH7 có phần thói quen lạc quan và bài thực hành ABCDE.",
+      "sections": [
+        {
+          "start_line": 1541,
+          "end_line": 1595,
+          "title": "Lạc quan là lựa chọn và kỹ năng",
+          "concept": "optimism_skill",
+          "abcde_step": "FOUNDATION"
+        },
+        {
+          "start_line": 1760,
+          "end_line": 1850,
+          "title": "Bài thực hành ABCDE",
+          "concept": "abcde_practice",
+          "abcde_step": "ABCDE"
+        }
+      ]
+    },
+    {
+      "notebook_id": "e9f7d3f6-036a-4c40-8580-66d688c7642f",
+      "source_id": "ec9047aa-990b-49c8-a1ac-b81eaa3ccafc",
+      "source_title": "Hành Trình Kiến Tạo Hệ Điều Hành Hạnh Phúc Bền Vững",
+      "source_type": "generated_text",
+      "temp_filename": "dh7_recap.txt",
+      "sha256": "58F45F1C66E2A1A29CC3891EA758C862CE745A63BBD073B73BF86C57B2994EF8",
+      "decision": "approved",
+      "review_status": "approved",
+      "review_reason": "Tóm tắt chương trình xác nhận ABCDE dùng để tái căn chỉnh niềm tin giới hạn.",
+      "sections": [
+        {
+          "start_line": 20,
+          "end_line": 36,
+          "title": "Vai trò ABCDE trong chương trình",
+          "concept": "course_context",
+          "abcde_step": "FOUNDATION"
+        }
+      ]
+    },
+    {
+      "notebook_id": "repo-local",
+      "source_id": "repo-abcde-cases",
+      "source_title": "data/abcde_cases_library.md",
+      "source_type": "case_study",
+      "repo_path": "data/abcde_cases_library.md",
+      "sha256": "567C3CB4458AFD612E0CA403A02E92A1D92AE78EBE81E323AEBA45204141E076",
+      "decision": "approved",
+      "review_status": "approved",
+      "ingest_mode": "preserve_case_studies",
+      "review_reason": "Giữ nguyên nội dung 18 tình huống CASE-01 đến CASE-18 để trang practice-abcde không bị rỗng khi thay KB; bỏ vector cũ, chuẩn hóa provenance và loại bốn chunk sách có citation trang chưa xác minh."
+    },
+    {
+      "notebook_id": "6a4d1fae-d0e6-4934-94f5-34d916c929f7",
+      "source_id": "3cc26276-ebdb-40f1-8d07-e304ae3edacc",
+      "source_title": "DH8-Audio-16k.mp3",
+      "source_type": "audio",
+      "temp_filename": "dh8_audio_a.txt",
+      "sha256": "FE1EA3D8BBBC37328EDF569C9C0E732F6E823FE1845BC5E330127EB52FA2E743",
+      "decision": "rejected",
+      "review_status": "rejected",
+      "review_reason": "Nội dung chủ yếu là họp chuẩn bị chương trình; không phải bài giảng ABCDE để dùng làm nguồn trả lời."
+    },
+    {
+      "notebook_id": "6a4d1fae-d0e6-4934-94f5-34d916c929f7",
+      "source_id": "d59a5eb7-c1ef-43af-be6b-eb0fc95f141b",
+      "source_title": "DH8-Audio-16k.mp3",
+      "source_type": "audio",
+      "temp_filename": "dh8_audio_b.txt",
+      "sha256": "6CB503C8C03C6B6FEAE1DA24D2A3837DA919163AF16BB5A457F65B2277A1D19A",
+      "decision": "rejected",
+      "review_status": "rejected",
+      "review_reason": "Bản gần trùng của cuộc họp chuẩn bị chương trình; không ingest."
+    },
+    {
+      "notebook_id": "6a4d1fae-d0e6-4934-94f5-34d916c929f7",
+      "source_id": "679974ec-1733-41c0-9c20-bdf6ff807606",
+      "source_title": "DH8-Audio.mp3",
+      "source_type": "audio",
+      "temp_filename": "dh8_audio_c.txt",
+      "sha256": "004DC8C9E1D69865ED74E6F2DF84BD63829B5CFD54852ECD8878DF04F9325B3B",
+      "decision": "rejected",
+      "review_status": "rejected",
+      "review_reason": "Bản gần trùng của cuộc họp chuẩn bị chương trình; không ingest."
+    }
+  ]
+}

@@ -1,129 +1,152 @@
-# 🧠 ĐẶC TẢ KỸ THUẬT CHATBOX ABCDE SOCRATIC (ABCDE SOCRATIC CHATBOX SPECIFICATION)
+# Đặc tả kỹ thuật Chatbox ABCDE Socratic
 
-Tài liệu này mô tả chi tiết giải pháp kỹ thuật, kiến trúc hệ thống, quy tắc điều khiển trạng thái nhận thức và cơ chế bảo mật của Chatbox thực hành Lạc quan ABCDE theo phương pháp Socratic trong chương trình Delivering Happiness.
+Tài liệu này là nguồn chuẩn (source of truth - nơi các agent cùng tham chiếu) cho hai phiên bản Chatbox ABCDE trên website Delivering Happiness. Trạng thái triển khai thật phải đọc từ báo cáo UAT và bằng chứng production; tài liệu kiến trúc không thay thế kiểm chứng live.
 
----
+## 1. Hai phiên bản
 
-## 🛠️ 1. Kiến trúc Hệ thống & Luồng Dữ liệu (System Architecture)
+| Phiên bản | Endpoint chat | Điều khiển bước | Tri thức truy xuất |
+| :--- | :--- | :--- | :--- |
+| Stable | api/chat-abcde.js | Gemini trả tag NEXT_STATE theo system instruction hiện hành | Không |
+| RAG Beta | api/chat-abcde-rag.js | lib/abcde-socratic-policy.js quyết định tất định | Chỉ ở bước D khi đủ A-B-C |
 
-Hệ thống được thiết kế theo mô hình **AI-driven State Control** (AI điều khiển trạng thái) kết hợp xác thực bảo mật nhiều lớp từ Frontend đến CRM Google Sheets qua API Vercel Serverless.
+Người học chọn phiên bản trước khi bắt đầu. Nếu Beta trả 502 hoặc 503, giao diện cho phép chuyển sang Stable mà không lặp tin nhắn hay mất bản nháp hiện tại. Beta chỉ bật khi ABCDE_RAG_ENABLED=true; biến thiếu hoặc mọi giá trị khác đều là trạng thái tắt an toàn của công tắc khẩn cấp (kill switch).
 
-```mermaid
-sequenceDiagram
-    participant FE as Frontend (chat-abcde.js)
-    participant API as Vercel API (Stable / RAG Beta)
-    participant VDB as Upstash Vector (REST/Local)
-    participant GEMINI as Gemini API (AI Studio)
-    participant GAS as Apps Script Web App
-    participant DB as Sheets (ABCDE_Data)
+Xác thực passcode và submit luôn đi qua Stable API. Beta chỉ xử lý hội thoại.
 
-    FE->>FE: Người dùng chọn phiên bản (Stable vs. RAG Beta)
-    FE->>API: Gửi tin nhắn + Passcode + state + chatVersion
-    Note over API: Kiểm tra Rate Limit (Redis)<br/>Xác thực passcode bằng SHA-256
-    
-    alt Phiên bản RAG Beta (Tại bước D)
-        API->>VDB: Truy vấn vector để tìm tri thức liên quan nhất
-        VDB-->>API: Trả về ngữ cảnh tri thức (Seligman / slide DH8 / transcript)
-        API->>GEMINI: Gửi Prompt + History + System Instruction + Ngữ cảnh Tri thức
-    else Phiên bản Stable (Hoặc các bước A-B-C-E)
-        API->>GEMINI: Gửi Prompt + History + System Instruction cứng
-    end
-    
-    GEMINI-->>API: Trả về câu trả lời + Tag [NEXT_STATE]
-    Note over API: Bóc tách tag NEXT_STATE<br/>Ký HMAC-SHA256 lên payload JSON (kèm chatVersion)
-    API-->>FE: Trả về cleanReply + nextState
-    Note over FE: Lưu dữ liệu bước cũ cục bộ
-    Note over FE: Khi hoàn thành bước E (SUBMIT)
-    FE->>API: Request SUBMIT (A, B, C, D, E)
-    API->>GAS: POST JSON (Kèm chữ ký Signature, Timestamp, Nonce)
-    Note over GAS: Xác thực chữ ký HMAC-SHA256<br/>Chống replay attack (Timestamp & Nonce)
-    GAS->>DB: Ghi dữ liệu vào Sheets
-    GAS->>GAS: Gửi email HTML tổng hợp cho học viên
-    GAS-->>API: Trả về success: true
-    API-->>FE: Hiển thị thông báo thành công
-```
+## 2. Luồng RAG Beta
 
-### Các thành phần chính:
-1.  **Frontend (`chat-abcde.js` & `chat-abcde.css`)**: 
-    - Nhúng trực tiếp vào Landing Page bằng mã HTML tĩnh. Giao diện thiết kế theo ngôn ngữ hiện đại (Glassmorphism), đáp ứng tốt trên cả máy tính (Desktop) và điện thoại (Mobile).
-    - Quản lý máy trạng thái cục bộ và lưu trữ tạm thời các câu trả lời của học viên qua từng bước.
-2.  **Vercel Serverless Function API (`api/chat-abcde.js`)**:
-    - Làm nhiệm vụ API Gateway trung gian kết nối sang Gemini API.
-    - Tích hợp bộ lọc Rate Limiting (chặn theo IP và Email học viên, hạn chế 20 requests/phút).
-    - Đóng vai trò ký xác thực bảo mật và bảo vệ API key tuyệt đối ở môi trường máy chủ.
-3.  **Google Apps Script Web App (`active_code_gs_final.js`)**:
-    - Nhận dữ liệu thực hành cuối cùng đã qua xác thực từ Vercel API.
-    - Lưu trữ trực tiếp dữ liệu vào bảng tính Google Sheets CRM `ABCDE_Practice` và tự động gửi email báo cáo HTML tổng hợp cho học viên.
+1. Frontend gửi state, message, history, practiceContext A-B-C-D-E và controlIntent.
+2. lib/abcde-socratic-policy.js chấm rubric của bước hiện tại.
+3. Chỉ ở STEP_D, khi A-B-C đều có dữ liệu, backend tạo query từ A + B + B + C + D hiện tại.
+4. Backend xếp hạng kho tri thức cục bộ bằng TF-IDF unigram/bigram và độ phủ corpus.
+5. Chỉ kết quả approved vượt cả ngưỡng điểm và ngưỡng độ phủ mới được trả về làm citation; backend dùng metadata chung để chọn một lăng kính Evidence, Alternatives, Implications hoặc Utility.
+6. Toàn văn kho tri thức, citation metadata và vector không được gửi tới Gemini; model chỉ nhận ngữ cảnh bài làm, rubric và tên lăng kính Socratic chung.
+7. Gemini trả JSON có cấu trúc, nhưng stageComplete và nextState cuối cùng vẫn lấy từ policy tất định.
+8. Frontend chỉ chuyển bước khi stageComplete=true.
 
----
+## 3. Rubric Socratic A-B-C-D-E
 
-## 🧠 2. Quy tắc Nhận thức & Logic dẫn dắt Socratic (Cognitive Logic & Socratic Guidance)
+Quy tắc chung cho Beta:
 
-### A. Bộ lọc Camera Khách quan ở Bước A (Objectivity Filter - Eliminating Victim Mentality)
-*   **Vấn đề nhận thức**: Học viên thường có xu hướng trộn lẫn sự phán xét chủ quan, đổ lỗi hoặc mang **tâm lý nạn nhân** (`victim mentality`) vào Nghịch cảnh (A). Sự bóp méo này khiến họ cảm thấy bế tắc và không thể phản biện hiệu quả ở bước D.
-*   **Giải pháp xử lý**:
-    - AI ở Backend đóng vai trò bộ lọc camera khách quan 100% (chỉ ghi nhận sự thật vật lý).
-    - Nếu phát hiện học viên trộn phán xét/suy diễn vào A, AI sẽ chỉ ra một cách thấu cảm và **chủ động gợi ý họ tạm "để dành" suy nghĩ tiêu cực đó cho bước B (Belief)**.
-    - AI trả về tag ẩn `[NEXT_STATE: STEP_A]` để giữ học viên lại bước này.
-    - Chỉ khi học viên mô tả được A một cách khách quan, trung tính, AI mới trả về `[NEXT_STATE: STEP_B]` để Frontend cho phép chuyển bước.
+- Mỗi lượt phản chiếu tối đa một câu rồi đặt đúng một câu hỏi mở.
+- Không trả lời hộ, không gán niềm tin, không phán xét và không hỏi dồn.
+- Quyết định stageComplete, nextState và assessmentCode do policy tất định tạo ra; model không được tự nhảy bước.
+- Khi A hoặc B hoàn tất, chỉ câu cuối đã được policy xác nhận được lưu; nháp bị từ chối không đi vào retrieval hoặc báo cáo.
+- C và E có thể được hoàn thành qua nhiều lượt; frontend gửi bản nháp cộng dồn trong practiceContext.
 
-### B. Tinh lọc Socratic & Kích hoạt Tự nhận diện ở Bước B (Socratic Extraction & Attribution Style Analysis)
-*   **Rào cản nhận thức**: Học viên rất khó tự nhận diện và gọi tên chính xác **Niềm tin tiêu cực tự động** (`Automatic Negative Thoughts` - ANT).
-*   **Giải pháp xử lý (Chiến lược gợi mở 3 hướng của AI)**:
-    - **Sử dụng chất liệu "để dành" từ bước A (Quan trọng)**: AI chủ động quét lại lịch sử hội thoại, trích xuất chính xác những suy diễn, đổ lỗi cảm tính mà học viên đã lỡ viết ra ở bước A (nhưng bị AI lọc và yêu cầu "để dành") để làm chất liệu xuất phát điểm cho bước B. Việc này giúp tối ưu hóa ngữ cảnh và chứng minh mối quan hệ giữa A và B trực quan cho học viên.
-    - AI kiên trì đối thoại ít nhất 1-2 lượt bằng cách xoay vòng qua 3 hướng tiếp cận Socratic để bóc tách niềm tin cốt lõi:
-        1. **Truy vấn Suy nghĩ tức thời (Immediate Thought)**.
-        2. **Khai thác Phong cách Quy kết (Attribution Style)**.
-        3. **Bóc tách Sự phóng đại tiêu cực (Catastrophizing)**.
-*   **Chuyển bước**: AI sẽ giữ tag `[NEXT_STATE: STEP_B]` để gạn lọc. Chỉ khi học viên gọi tên rõ ràng được niềm tin cốt lõi, AI mới tóm tắt xác nhận và trả về tag `[NEXT_STATE: STEP_C]` để chuyển trạng thái.
+| Bước | Điều kiện giữ lại | Điều kiện hoàn tất |
+| :--- | :--- | :--- |
+| A - Adversity | Còn nhãn, từ tuyệt đối, suy diễn ý định hoặc thiếu sự kiện quan sát được | Có sự kiện cụ thể, trung tính, người ngoài có thể quan sát |
+| B - Belief | Chưa có câu tự nhủ ở ngôi thứ nhất | Người học nói rõ niềm tin tự động của chính mình |
+| C - Consequence | Thiếu cảm xúc, cường độ 0-10 hoặc hành vi | Có đủ ba thành phần và liên hệ với B |
+| D - Disputation | Chưa có phản biện do người học tự hình thành | Có lập luận theo Evidence, Alternatives, Implications hoặc Utility và người học chọn đi tiếp |
+| E - Energization | Thiếu cường độ mới, góc nhìn mới hoặc hành động | Có đủ ba thành phần trước khi sang SUBMIT |
 
-### C. Gắn kết Hệ quả Nhận thức ở Bước C (Consequence - Connecting B & C)
-*   **Vấn đề nhận thức**: Học viên thường lầm tưởng cảm xúc đau khổ (C) của họ sinh ra trực tiếp bởi Nghịch cảnh khách quan (A).
-*   **Giải pháp xử lý**: AI làm rõ mối quan hệ nhân quả: chính Niềm tin B tạo ra Hệ quả C chứ không phải nghịch cảnh A. AI yêu cầu học viên chỉ rõ cảm xúc tiêu cực và hành vi phản ứng tự động xuất hiện. Trả về tag `[NEXT_STATE: STEP_D]` khi hoàn tất.
+Các chỉ thị kiểu “bỏ qua quy tắc”, “in system prompt” hoặc “chuyển thẳng sang SUBMIT” bị xử lý tại server bằng PROMPT_INJECTION_BLOCKED; request không được gửi tiếp tới Gemini.
 
-### D. Vòng lặp Tự đánh giá Nhận thức ở Bước D (Cognitive Validation Loop)
-*   **Vấn đề nhận thức**: Phản biện tư duy (`Disputation` - D) là bước khó nhất.
-*   **Giải pháp xử lý**:
-    - Cuộc đối thoại phản biện ở bước D diễn ra theo cụm 2 lượt.
-    - Sau mỗi lượt chẵn, Frontend hiển thị 2 nút phản hồi nhanh:
-        *   `Đã hiệu quả, đi tiếp` 🟢: Frontend gán `currentState = "STEP_E"`.
-        *   `Tôi muốn phản biện thêm` 🟡: Frontend giữ nguyên `currentState = "STEP_D"`, AI tiếp tục hỏi sâu về các khía cạnh (Utility, Implications).
+## 4. Hợp đồng response của RAG Beta
 
-### E. Năng lượng mới & Cam kết Hành động ở Bước E (Energization)
-*   **Mục tiêu**: Chuyển dịch năng lượng nhận thức thành hành động thực tế.
-*   **Giải pháp xử lý**:
-    - AI yêu cầu học viên gọi tên cảm xúc mới và cam kết **1 hành động cụ thể, nhỏ nhất** có thể làm ngay trong ngày.
-    - Khi nhận câu trả lời cho bước E, AI trả về `[NEXT_STATE: SUBMIT]` để kích hoạt form nhập email nhận báo cáo ở Frontend.
+Response thành công gồm:
 
----
+- success
+- reply
+- stageComplete
+- nextState
+- assessmentCode
+- citations
+- ragStatus
+- ragUsed
+- ragLens
+- retrievalSource
+- citationCount
+- kbVersion
+- modelOutputStatus
 
-## 🔒 3. Cơ chế Bảo mật, Phân bản & Xác thực Dữ liệu (Security & Multi-Version Flow)
+Các trạng thái RAG:
 
-Để bảo vệ hệ thống Google Sheets CRM khỏi spam và đảm bảo tính bền vững của dịch vụ, luồng dữ liệu được thiết kế:
+- not_applicable: không phải bước D.
+- needs_context: bước D nhưng thiếu A, B hoặc C đã xác nhận.
+- grounded: có kết quả vượt cổng độ tin cậy.
+- low_confidence: có kết quả sát ngưỡng nhưng chưa đủ để đưa vào prompt.
+- no_match: không có chunk phù hợp.
+- infrastructure_error: tệp kho tri thức hoặc artifact manifest cục bộ lỗi.
 
-1.  **Kiến trúc Song song Hai phiên bản (Dual-Version Architecture)**:
-    - **Bản ổn định - thực hành nhanh (Stable)**: Đi qua endpoint `api/chat-abcde.js`, sử dụng system instruction cứng.
-    - **Bản thử nghiệm - có tri thức lớp học (RAG Beta)**: Đi qua endpoint `api/chat-abcde-rag.js`. Tại bước D, hệ thống thực hiện truy vấn cơ sở dữ liệu véc-tơ để tìm kiếm tri thức chuyên sâu từ Martin Seligman và slide DH8.
-    - **Cơ chế Fallback thông minh**: Khi bản Beta gặp sự cố kết nối hoặc API bị tắt (qua kill switch `ABCDE_RAG_ENABLED=false`), Frontend sẽ hiển thị nút gợi ý học viên tự chuyển đổi về bản ổn định mà không bị mất lịch sử chat.
-2.  **Cơ chế RAG lai (Hybrid RAG & Local Fallback)**:
-    - **Upstash Vector DB**: Được gọi qua REST API nếu có cấu hình biến môi trường `UPSTASH_VECTOR_REST_URL`.
-    - **Local Vector Search (Embedding Cosine Similarity)**: Nếu chưa cấu hình Upstash, backend tự động đọc file véc-tơ tri thức nạp sẵn `data/artifacts/knowledge_base_abcde.json`, gọi Gemini Embedding API (`gemini-embedding-001`) để sinh véc-tơ tin nhắn học viên và tính toán Cosine Similarity trực tiếp trên serverless function nhằm tối ưu hóa chi phí và đảm bảo hoạt động 100% độc lập.
-3.  **Xác thực mật mã lớp học (Passcode Authentication)**:
-    - Học viên phải nhập mật mã lớp học (`DHM8`). Frontend băm mật mã bằng SHA-256 trước khi gửi lên API để bảo vệ mật mã gốc.
-4.  **Ký chữ ký điện tử HMAC-SHA256 & Theo dõi phiên bản (chatVersion)**:
-    - Khi Vercel API gửi kết quả submit sang Google Apps Script, nó đính kèm trường `chatVersion` (stable/beta) và ký chữ ký HMAC-SHA256 trên toàn bộ JSON payload (bao gồm cả `chatVersion` và `timestamp`/`nonce`).
-    - Apps Script ghi nhận thuộc tính `chatVersion` vào cột thứ 10 của bảng tính `ABCDE_Data` và hiển thị phiên bản này trong email báo cáo HTML gửi về cho học viên.
+ragUsed=true khi backend tìm được kết quả grounded và trả citation approved. Model không được chọn citationId; backend chọn tối đa hai citation đầu từ kết quả truy xuất cục bộ. Response không được chứa toàn văn chunk, vector hoặc score.
 
+## 5. Truy xuất và kho tri thức
 
----
+lib/abcde-rag-retrieval.js tạo chỉ mục TF-IDF cục bộ từ unigram và bigram, dùng lexical score để xếp hạng, sau đó loại trùng và ưu tiên khác nguồn. Điểm TF-IDF và độ phủ corpus là cổng tin cậy; truy xuất chỉ chạy khi câu hiện tại có ý định phản biện ở bước D.
 
-## 📊 4. Tài nguyên & Links liên quan
+Quy tắc truy xuất:
 
-*   **Đường dẫn mã nguồn**:
-    - Frontend JS: [chat-abcde.js](file:///C:/Users/vu.hoang/.gemini/antigravity/scratch/dh4hn-website/chat-abcde.js)
-    - Backend API: [api/chat-abcde.js](file:///C:/Users/vu.hoang/.gemini/antigravity/scratch/dh4hn-website/api/chat-abcde.js)
-    - Google Apps Script: [active_code_gs_final.js](file:///C:/Users/vu.hoang/.gemini/antigravity/scratch/dh4hn-website/Scripts/active_code_gs_final.js)
-*   **Google Sheet Thực hành**: [Sheet ABCDE_Practice](https://docs.google.com/spreadsheets/d/1ZToRX6J5Vo6UghzYEE_eUxU0bVnsGxBRLt-8tduI5CA/edit#gid=ABCDE)
+1. Chỉ dùng tệp local đã được đóng gói cùng Vercel Serverless Function.
+2. Không gọi Gemini Embedding API và không gọi vector database từ runtime.
+3. Chỉ chunk có review_status=approved được xếp hạng và hiển thị citation.
+4. KB chỉ được coi là healthy khi có artifact manifest, retrieval_model=local-tfidf-ngram-v1, vector_dimensions=0, toàn bộ chunk đã approved và SHA-256 của tệp khớp manifest.
+5. Câu hỏi ngoài miền hoặc thiếu ý định phản biện phải trả no_match và không có citation.
 
----
-*Cập nhật bởi Antigravity v3.5 (Audit Mode) - 15/07/2026*
+Các artifact:
+
+- data/sources/abcde_source_manifest.json: notebook/source ID, checksum, phạm vi review và quyết định approved/rejected.
+- Scripts/build_abcde_kb.py: redaction, semantic chunking, deduplicate, bảo toàn 18 case study và tạo artifact manifest; script không có đường gọi embedding bên ngoài.
+- data/artifacts/knowledge_base_abcde.json: văn bản và metadata dùng runtime, không chứa vector.
+- data/artifacts/knowledge_base_abcde_manifest.json: version, checksum, số chunk, số nguồn, retrieval model và vector_dimensions=0.
+
+Raw transcript NotebookLM chỉ nằm trong C:/tmp; không được commit. Corpus release gồm 61 chunk bài giảng đã ẩn danh từ 5 source thuộc 3 notebook và 18 case study đã có, tổng 79 chunk. Bốn chunk sách cũ có citation trang chưa xác minh không được đưa vào KB mới. Toàn bộ corpus không được xuất sang Gemini; runtime cũng không đưa nội dung chunk vào request chat.
+
+Trang practice-abcde vẫn dùng cùng KB và lọc đúng 18 record có source_type=case_study; build dừng nếu số case khác 18.
+
+## 6. Citation và giao diện
+
+Frontend render citation bằng DOM textContent, không chèn HTML từ metadata. Citation hiển thị title, source và location; giao diện có trạng thái cần thêm ngữ cảnh khi confidence thấp. Chỉ Beta dùng khối citation.
+
+Frontend chỉ ghi một bước vào currentPractice khi:
+
+- Stable trả nextState khác state hiện tại; hoặc
+- Beta trả stageComplete=true và nextState khác state hiện tại.
+
+Nút đi tiếp ở D gửi controlIntent=advance về backend; frontend không tự gán STEP_E. Khi chuyển Beta sang Stable vì lỗi, giao diện không lặp lại tin nhắn đã gửi.
+
+## 7. Submit, Sheet và email
+
+Submit đi qua api/chat-abcde.js. URL Apps Script được chọn theo thứ tự:
+
+1. ABCDE_APPS_SCRIPT_URL
+2. DHM8_APPS_SCRIPT_URL
+3. URL fallback trong code
+
+API tạo SHA-256 của riêng practiceData, rồi ký chuỗi timestamp.nonce.payloadHash bằng HMAC-SHA256. chatVersion, email và họ tên được gửi trong payload nhưng hiện không nằm trong phần hash đã ký. Apps Script version 69 chưa xác minh chữ ký này, vì vậy HMAC hiện chỉ là dữ liệu được tạo chứ chưa phải lớp kiểm soát truy cập có hiệu lực.
+
+Apps Script ghi vào tab ABCDE_Data, gồm cột ChatVersion, rồi gửi email HTML cho học viên.
+
+## 8. Biến môi trường
+
+| Biến | Mục đích |
+| :--- | :--- |
+| ABCDE_RAG_ENABLED | Bật hoặc tắt Beta |
+| GEMINI_API_KEY | Gọi Gemini chat; không dùng cho embedding |
+| GEMINI_MODEL | Model chat |
+| DHM_PASSCODE | Danh sách passcode phân tách bằng dấu phẩy |
+| ABCDE_APPS_SCRIPT_URL | Deployment Apps Script riêng cho submit ABCDE |
+| DHM8_APPS_SCRIPT_TOKEN | Token dùng để tạo HMAC; Apps Script v69 chưa xác minh |
+| RAG_TOP_K | Số chunk chẩn đoán tối đa, mặc định 3 và giới hạn 1-3 |
+| RAG_MIN_SCORE | Ngưỡng TF-IDF, mặc định 0.075 |
+| RAG_MIN_COVERAGE | Ngưỡng độ phủ corpus, mặc định 0.82 |
+| KV_REST_API_URL | Redis REST endpoint cho giới hạn tần suất phân tán |
+| KV_REST_API_TOKEN | Token Redis REST, không ghi vào log hoặc response |
+
+Không ghi giá trị secret vào tài liệu, log hoặc response.
+Nếu thiếu cặp KV, API dùng giới hạn tần suất trong bộ nhớ của từng function instance; cơ chế này không phải giới hạn phân tán toàn hệ thống.
+
+## 9. Kiểm thử và bằng chứng
+
+- Unit policy: tests/abcde-socratic-policy.test.js
+- Unit retrieval: tests/abcde-rag.test.js
+- Integration endpoint: tests/abcde-rag-endpoint.test.js
+- Sáu hành trình: data/evals/abcde-full-flow-cases.json
+- Golden retrieval: data/evals/abcde-rag-golden-cases.json
+- Runner: UAT/run_abcde_rag_quality_20260721.js
+- Báo cáo local: UAT/abcde_rag_quality_20260721.md
+- Báo cáo live: UAT/abcde_rag_hardening_live_20260721.md
+
+Không được claim Live done từ kiểm thử local. Live cần API probe, browser desktop/mobile, Sheet row ChatVersion=beta, email tự động và báo cáo Gmail cuối.

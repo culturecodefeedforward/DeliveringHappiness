@@ -1,0 +1,164 @@
+{
+  "version": "abcde-rag-golden-20260721-v1",
+  "description": "Bộ ca chuẩn để kiểm tra truy xuất nguồn theo toàn bộ ngữ cảnh A-B-C và phát hiện câu hỏi ngoài miền.",
+  "cases": [
+    {
+      "id": "urgent-deadline-workplace",
+      "inDomain": true,
+      "practiceContext": {
+        "A": "Sếp gửi email giao báo cáo gấp vào cuối ngày thứ Sáu.",
+        "B": "Tôi nghĩ rằng sếp không tin khả năng của mình và cố gây khó.",
+        "C": "Tôi lo 8/10, im lặng và tránh hỏi lại ưu tiên."
+      },
+      "currentMessage": "Tôi muốn kiểm tra bằng chứng và tìm một cách giải thích khác.",
+      "expectedSourceIds": ["e3886515-9c0d-4ce6-a6a7-0f7695d3697a"],
+      "expectedConcepts": ["workplace_disputation", "abcde_stage_relationships"]
+    },
+    {
+      "id": "meeting-idea-rejected",
+      "inDomain": true,
+      "practiceContext": {
+        "A": "Trong cuộc họp, hai đồng nghiệp phản đối ý tưởng tôi vừa trình bày.",
+        "B": "Tôi nghĩ rằng ý tưởng của mình tệ và mọi người không coi trọng mình.",
+        "C": "Tôi xấu hổ 8/10, rút lui và không nói thêm."
+      },
+      "currentMessage": "Có dữ kiện nào cho thấy một ý tưởng bị phản đối không đồng nghĩa tôi bất tài?",
+      "expectedSourceIds": ["141db32c-9642-47be-8a48-8f3e7a1b9ce7"],
+      "expectedConcepts": ["meeting_idea_case", "reframing_tools"]
+    },
+    {
+      "id": "family-future-fear",
+      "inDomain": true,
+      "practiceContext": {
+        "A": "Người thân chưa trả lời cuộc gọi theo lịch đã hẹn.",
+        "B": "Tôi nghĩ rằng có chuyện xấu xảy ra và tương lai sẽ tệ hơn.",
+        "C": "Tôi lo 9/10, mất ngủ và liên tục gọi lại."
+      },
+      "currentMessage": "Có thể còn khả năng nào khác phù hợp với dữ kiện hiện có?",
+      "expectedSourceIds": ["bab07d7e-c3cb-4220-b2d9-1c5d6dbd15a1"],
+      "expectedConcepts": ["family_adversity_case", "self_questioning_disputation"]
+    },
+    {
+      "id": "belief-creates-consequence",
+      "inDomain": true,
+      "practiceContext": {
+        "A": "Quản lý nói bản đề xuất cần sửa phần ngân sách.",
+        "B": "Tôi nghĩ rằng quản lý đã mất niềm tin vào mình.",
+        "C": "Tôi lo 8/10, im lặng và tránh hỏi thêm."
+      },
+      "currentMessage": "Niềm tin này đã tạo hệ quả ra sao và tôi có thể phản biện nó thế nào?",
+      "expectedChunkIds": ["CASE-13"],
+      "expectedSourceIds": ["bab07d7e-c3cb-4220-b2d9-1c5d6dbd15a1"],
+      "expectedConcepts": ["belief_consequence_disputation", "rational_action_and_stages"]
+    },
+    {
+      "id": "rational-optimism-requires-action",
+      "inDomain": true,
+      "practiceContext": {
+        "A": "Kế hoạch của nhóm bị chậm một tuần.",
+        "B": "Tôi nghĩ rằng dự án chắc chắn sẽ thất bại.",
+        "C": "Tôi thất vọng 7/10 và muốn bỏ cuộc."
+      },
+      "currentMessage": "Lạc quan bằng lý trí khác ảo tưởng thế nào và cần nối với hành động gì?",
+      "expectedSourceIds": [
+        "e3886515-9c0d-4ce6-a6a7-0f7695d3697a",
+        "141db32c-9642-47be-8a48-8f3e7a1b9ce7",
+        "a9cd8c59-f382-4264-934a-72d62f9e1917"
+      ],
+      "expectedConcepts": ["rational_optimism", "optimism_requires_action", "optimism_skill"]
+    },
+    {
+      "id": "abcde-practice-sequence",
+      "inDomain": true,
+      "practiceContext": {
+        "A": "Tôi nhận phản hồi rằng bài thuyết trình còn thiếu số liệu.",
+        "B": "Tôi nghĩ rằng mình không đủ năng lực.",
+        "C": "Tôi buồn 7/10 và tránh xem lại bài."
+      },
+      "currentMessage": "Tôi muốn dùng đủ các bước ABCDE để kiểm tra niềm tin này.",
+      "expectedSourceIds": [
+        "a9cd8c59-f382-4264-934a-72d62f9e1917",
+        "e3886515-9c0d-4ce6-a6a7-0f7695d3697a"
+      ],
+      "expectedConcepts": ["abcde_practice", "abcde_stage_relationships"]
+    },
+    {
+      "id": "coffee-machine-out-of-domain",
+      "inDomain": false,
+      "practiceContext": {
+        "A": "Máy pha cà phê hiển thị mã lỗi E17 sau khi bật nguồn.",
+        "B": "Tôi nghĩ cảm biến nước của máy đã hỏng.",
+        "C": "Tôi bực 4/10 và rút phích cắm."
+      },
+      "currentMessage": "Thông số điện trở chính xác của cảm biến E17 là bao nhiêu ôm?",
+      "expectedNoMatch": true,
+      "expectedSourceIds": [],
+      "expectedConcepts": []
+    },
+    {
+      "id": "medical-dosage-out-of-domain",
+      "inDomain": false,
+      "practiceContext": {
+        "A": "Tôi đọc thấy chỉ số đường huyết của mình cao hơn mức tham chiếu.",
+        "B": "Tôi nghĩ mình cần tự tăng liều thuốc ngay.",
+        "C": "Tôi lo 8/10 và định uống thêm thuốc."
+      },
+      "currentMessage": "Tôi phải dùng chính xác bao nhiêu miligam metformin mỗi ngày?",
+      "expectedNoMatch": true,
+      "expectedSourceIds": [],
+      "expectedConcepts": []
+    },
+    {
+      "id": "tax-law-out-of-domain",
+      "inDomain": false,
+      "practiceContext": {
+        "A": "Công ty nhận một hóa đơn điện tử có mã số thuế bị sai.",
+        "B": "Tôi nghĩ hóa đơn này chắc chắn không được khấu trừ.",
+        "C": "Tôi lo 6/10 và chưa kê khai."
+      },
+      "currentMessage": "Điều khoản VAT hiện hành nào quy định cách lập hóa đơn thay thế?",
+      "expectedNoMatch": true,
+      "expectedSourceIds": [],
+      "expectedConcepts": []
+    },
+    {
+      "id": "python-debug-out-of-domain",
+      "inDomain": false,
+      "practiceContext": {
+        "A": "Chương trình Python dừng với lỗi segmentation fault khi đọc tệp lớn.",
+        "B": "Tôi nghĩ thư viện native đang quản lý bộ nhớ sai.",
+        "C": "Tôi bực 5/10 và tạm dừng tiến trình."
+      },
+      "currentMessage": "Hãy chỉ chính xác dòng C extension gây tràn bộ nhớ và viết bản vá.",
+      "expectedNoMatch": true,
+      "expectedSourceIds": [],
+      "expectedConcepts": []
+    },
+    {
+      "id": "weather-forecast-out-of-domain",
+      "inDomain": false,
+      "practiceContext": {
+        "A": "Ứng dụng thời tiết báo có áp thấp gần bờ biển vào cuối tuần.",
+        "B": "Tôi nghĩ chuyến bay có thể bị ảnh hưởng.",
+        "C": "Tôi lo 6/10 và chưa đổi vé."
+      },
+      "currentMessage": "Tốc độ gió và lượng mưa chính xác tại Đà Nẵng lúc 15 giờ Chủ nhật là bao nhiêu?",
+      "expectedNoMatch": true,
+      "expectedSourceIds": [],
+      "expectedConcepts": []
+    },
+    {
+      "id": "recipe-out-of-domain",
+      "inDomain": false,
+      "practiceContext": {
+        "A": "Mẻ bánh mì đầu tiên nở ít và ruột còn ẩm.",
+        "B": "Tôi nghĩ nhiệt độ lò đang không đúng.",
+        "C": "Tôi thất vọng 4/10 và dừng nướng."
+      },
+      "currentMessage": "Cần chỉnh bao nhiêu gam men và nướng chính xác ở nhiệt độ nào?",
+      "expectedNoMatch": true,
+      "expectedSourceIds": [],
+      "expectedConcepts": []
+    }
+  ]
+}

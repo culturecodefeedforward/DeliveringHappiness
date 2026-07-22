@@ -66,42 +66,57 @@ Luồng tương tác khi học viên thực hành rèn luyện tư duy lạc qua
 sequenceDiagram
     participant User as Học viên (Browser)
     participant Web as Landing Page (Vercel)
-    participant Proxy as Backend Proxy (Vercel Node.js)
+    participant Stable as Stable API (Vercel Node.js)
+    participant Beta as RAG Beta API (Vercel Node.js)
+    participant KB as Local TF-IDF Knowledge Base
     participant Gemini as Gemini Socratic AI
     participant GAS as Google Apps Script (Webhook)
     participant Sheet as Google Sheets (ABCDE_Data)
     participant Gmail as Google Mail Service
 
-    User->>Web: Nhập passcode "DHM8" để mở khóa
-    Web->>Proxy: POST /api/chat-abcde (action: "verify_passcode")
-    Proxy-->>Web: Trả về success: true/false
+    User->>Web: Nhập passcode lớp học để mở khóa
+    Web->>Stable: POST /api/chat-abcde (action: "verify_passcode")
+    Stable-->>Web: Trả về success: true/false
     
     rect rgb(240, 240, 240)
         Note over User,Gemini: Vòng lặp đối thoại Socratic (A -> B -> C -> D -> E)
         User->>Web: Nhập nội dung (A/B/C/D/E)
-        Web->>Proxy: POST /api/chat-abcde (action: "chat", message, history)
-        Proxy->>Gemini: Gọi Gemini API (Socratic Prompt + System instruction)
-        Gemini-->>Proxy: Phản hồi kèm tag [NEXT_STATE: <STATE>]
-        Proxy-->>Web: Trả về nội dung hội thoại & trạng thái kế tiếp
+        alt Stable
+            Web->>Stable: chat + state + history
+            Stable->>Gemini: System instruction hiện hành
+            Gemini-->>Stable: Reply + NEXT_STATE
+            Stable-->>Web: reply + nextState
+        else RAG Beta
+            Web->>Beta: chat + state + history + practiceContext
+            Beta->>Beta: Chấm rubric tất định A-B-C-D-E
+            opt STEP_D và đủ A-B-C
+                Beta->>KB: TF-IDF retrieval từ source approved
+                KB-->>Beta: Tối đa 3 chunk, điểm, độ phủ và lăng kính Socratic
+            end
+            Note over Beta,KB: Nội dung chunk chỉ ở local, không gửi tới Gemini
+            Beta->>Gemini: Rubric + ngữ cảnh bài làm, không có corpus
+            Gemini-->>Beta: JSON có cấu trúc
+            Beta-->>Web: reply + stageComplete + nextState + citation
+        end
         Web-->>User: Hiển thị phản hồi AI & cập nhật form bước tiếp theo
     end
 
     rect rgb(230, 245, 230)
         Note over User,Gmail: Bước Submit cuối cùng (Nhận báo cáo qua Email)
         User->>Web: Điền Họ tên, Email & click "Nhận báo cáo qua Email"
-        Web->>Proxy: POST /api/chat-abcde (action: "submit", data: {A,B,C,D,E})
-        Note over Proxy: Ký bảo mật HMAC-SHA256<br/>bằng Shared Token & sinh nonce
-        Proxy->>GAS: POST Webhook (action: "submit_abcde", signature, data)
+        Web->>Stable: POST /api/chat-abcde (action: "submit", data, chatVersion)
+        Note over Stable: Ký timestamp.nonce.payloadHash<br/>payloadHash chỉ bao phủ practiceData
+        Stable->>GAS: POST submit_abcde + signature + chatVersion
         GAS->>Sheet: Lưu kết quả thực hành vào tab ABCDE_Data
         GAS->>Gmail: Gửi email báo cáo HTML đẹp mắt cho học viên
-        GAS-->>Proxy: Phản hồi success: true
-        Proxy-->>Web: Trả về success: true
+        GAS-->>Stable: Phản hồi success: true
+        Stable-->>Web: Trả về success: true
         Web-->>User: Hiển thị màn hình Hoàn thành thành công
     end
 ```
 
-### D. Luồng Thực hành điền & đối chiếu Case Study qua QR (ABCDE Practice Sheet & Static RAG Flow)
-Luồng tương tác của trang thực hành độc lập, tự động tải dữ liệu tri thức tĩnh từ server và phân rã các bước bằng Regex để đối chiếu bài làm:
+### D. Luồng Thực hành điền & đối chiếu Case Study qua QR (ABCDE Practice Sheet)
+Trang thực hành độc lập tải cùng knowledge base nhưng chỉ lọc 18 record có source_type=case_study. Build KB phải bảo toàn đủ CASE-01 đến CASE-18 để tránh làm rỗng dropdown:
 
 ```mermaid
 sequenceDiagram
@@ -111,7 +126,8 @@ sequenceDiagram
 
     User->>Web: Quét QR mở /practice-abcde
     Web->>JSON: Fetch /data/artifacts/knowledge_base_abcde.json
-    JSON-->>Web: Trả về danh sách 18 case studies (ID, Adversity, Suggestion)
+    JSON-->>Web: Trả về KB văn bản và 18 case studies
+    Note over Web: Lọc source_type=case_study
     Web->>User: Hiển thị danh sách tình huống trong Dropdown
     
     User->>Web: Chọn 1 case study
@@ -130,11 +146,13 @@ sequenceDiagram
 *   **JSONP & HTTP AJAX:** Gọi API chéo miền (cross-domain API) từ trình duyệt khách hàng tới Google Apps Script Web App và Vercel Backend.
 
 ### B. Vercel Backend Proxy (Serverless Functions)
-*   **API Route:** `/api/chat-abcde.js` (Node.js).
+*   **API Routes:** /api/chat-abcde.js cho Stable, verify và submit; /api/chat-abcde-rag.js cho hội thoại Beta.
 *   **Chức năng:** 
     1.  *Mật mã lớp học:* Kiểm tra passcode chống truy cập trái phép.
-    2.  *AI Socratic Integration:* Đóng vai trò cầu nối với Gemini API (`gemini-3.1-flash-lite`), gán System Prompt dẫn dắt, bóc tách tag trạng thái `[NEXT_STATE: <STATE>]` trả về phía client.
-    3.  *HMAC Signature Generator:* Tạo chữ ký bảo mật SHA-256 kèm timestamp và nonce duy nhất trên payload trước khi gửi sang Google Apps Script để ngăn chặn các cuộc tấn công phát lại (Replay Attacks) và đảm bảo dữ liệu đến từ nguồn tin cậy.
+    2.  *Stable Socratic:* Gọi Gemini bằng system instruction hiện hành và đọc tag NEXT_STATE.
+    3.  *Beta Socratic:* Chấm rubric A-B-C-D-E bằng policy tất định; chỉ dùng RAG tại D và yêu cầu JSON có cấu trúc.
+    4.  *Local Retrieval:* Dùng TF-IDF unigram/bigram cùng cổng điểm và độ phủ corpus; chỉ dùng chunk approved và không gửi nội dung kho tri thức ra dịch vụ embedding/chat.
+    5.  *HMAC Signature Generator:* Ký timestamp.nonce.payloadHash, trong đó payloadHash hiện chỉ là SHA-256 của practiceData, trước khi gửi Apps Script. Apps Script version 69 chưa xác minh chữ ký nên đây chưa phải lớp xác thực có hiệu lực.
 
 ### C. Google Apps Script Web App (Backend)
 *   **Chức năng:** Microservice xử lý yêu cầu JSON/JSONP, điều hướng ghi chép vào CRM Sheets (`DHM8_Data`, `DHM9_Data`, `PV_Data`, `ABCDE_Data`) theo cấu trúc cột chuẩn, đồng thời gửi email thông báo tự động.

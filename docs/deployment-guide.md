@@ -19,7 +19,112 @@ Giao diện trang web (HTML/CSS/JS tĩnh) được deploy tự động lên **Ve
 
 ---
 
-## 2. Triển khai Backend (Google Apps Script - clasp)
+## 2. Runbook phát hành ABCDE RAG Beta
+
+Luồng này là thay đổi production rủi ro cao. Không deploy từ working tree đang bẩn và không dùng kết quả local để claim live.
+
+### 2.1. Cổng local trước phát hành
+
+1. Chạy ba bộ test Node riêng:
+
+       node tests/abcde-socratic-policy.test.js
+       node tests/abcde-rag.test.js
+       node tests/abcde-rag-endpoint.test.js
+
+2. Dựng kho tri thức văn bản đã ẩn danh và chạy quality runner:
+
+       python Scripts/build_abcde_kb.py --source-dir C:/tmp/abcde-nlm-sources-20260721 --preserve-case-studies-from C:/tmp/abcde-kb-backup-20260721/knowledge_base_abcde.before.json
+       node UAT/run_abcde_rag_quality_20260721.js
+
+3. Corpus phải có:
+
+   - 61 chunk bài giảng mới đã ẩn danh.
+   - 18 case study CASE-01 đến CASE-18 được bảo toàn.
+   - Tổng 79 chunk, ít nhất 6 source IDs và 3 NotebookLM.
+   - 100% provenance approved, duplicate rate dưới 5%.
+   - Không chứa bốn chunk sách cũ có citation trang chưa xác minh.
+
+4. Build phải tạo retrieval_model=local-tfidf-ngram-v1, vector_dimensions=0 và external_corpus_exported=false. Không gọi Gemini Embedding API, không gửi nội dung chunk trong request Gemini chat và không commit raw transcript trong C:/tmp.
+
+5. vercel.json phải có includeFiles cho data/artifacts/knowledge_base_abcde*.json. rag_health phải báo manifestAvailable=true, retrievalModel=local-tfidf-ngram-v1, approvedCount bằng chunkCount, vectorDimensions=0 và SHA-256 khớp artifact manifest.
+
+### 2.2. Deployment Apps Script riêng cho ABCDE
+
+Deployment ABCDE không dùng chung deployment DHM8/DHM9. Target đã xác minh của lane này:
+
+- Script ID: 1qzwACGvT12j7rxoSW3w4OwpX5rt87Heh4CEA1qT85HJbTYe1yam6dwNS
+- Version nguồn: 69
+- Version 69 phải còn có ABCDE_Data, ChatVersion và sendAbcdeEmailReport_.
+
+Tạo deployment mới từ version 69; không clasp push source trong release này:
+
+    npx.cmd --yes @google/clasp deploy --versionNumber 69 --description "ABCDE submission dedicated deployment 20260721"
+
+Lệnh phải chạy trong thư mục clone có .clasp.json trỏ đúng Script ID trên. Nếu Script ID hoặc version khác, dừng; không tận dụng approval cũ.
+
+### 2.3. Biến môi trường Vercel
+
+Production cần các tên biến sau:
+
+- ABCDE_RAG_ENABLED=true
+- DHM_PASSCODE có passcode ABCDE cùng các passcode hiện hành
+- ABCDE_APPS_SCRIPT_URL trỏ deployment riêng vừa tạo
+- RAG_TOP_K=3
+- RAG_MIN_SCORE=0.075
+- RAG_MIN_COVERAGE=0.82
+- GEMINI_API_KEY và GEMINI_MODEL hiện hành
+- KV_REST_API_URL và KV_REST_API_TOKEN nếu đã có Redis REST; nếu thiếu, API chỉ dùng giới hạn tần suất trong từng function instance và báo cáo release phải ghi rõ rủi ro này
+
+Release này chỉ truy xuất local và không dùng Upstash Vector. Không ghi giá trị secret vào report hay terminal transcript.
+
+Apps Script version 69 hiện không kiểm tra HMAC do Vercel tạo. Vì vậy không được mô tả `DHM8_APPS_SCRIPT_TOKEN` như một lớp xác thực đang có hiệu lực; việc bổ sung verifier phía Apps Script phải là một release riêng có test hồi quy cho DHM8/DHM9.
+
+### 2.4. Gói deploy sạch
+
+1. Tạo gói tại C:/tmp/dh4hn-abcde-rag-release-clean-20260722 từ runtime production đã audit.
+2. Không copy .git, node_modules, file env, raw transcript, plan nội bộ hoặc secret. Chỉ giữ `.vercel/project.json` để khóa đúng project đã xác minh; không giữ cache/output Vercel.
+3. Đối chiếu public entrypoints và CTA trước deploy. Các URL bắt buộc:
+
+   - /
+   - /assessment.html
+   - /register.html
+   - /register_direct.html
+   - /register-test.html
+   - /dh8/
+   - /practice-abcde
+
+4. Link gói sạch tới đúng Vercel project đã xác minh, chạy build, rồi mới deploy:
+
+       vercel build
+       vercel deploy --prod --yes
+
+5. Production alias chuẩn là https://delivering-happiness.vercel.app.
+
+### 2.5. UAT live
+
+Sau deploy, phải có bằng chứng riêng cho từng bề mặt:
+
+- HTTP probe bảy URL bắt buộc.
+- Stable chat không hồi quy.
+- Beta giữ câu suy diễn ở A, hoàn thành đúng A-B-C-D-E, dùng A-B-C để truy xuất ở D và chỉ hiện citation approved.
+- Browser desktop 1440x900 và mobile 390x844; lưu screenshot, console và network evidence trong UAT/.
+- Trang practice-abcde có đúng 18 case study.
+- Một submit duy nhất có marker CODEX_UAT_ABCDE_RAG_20260721, email vuhoang2708@gmail.com và chatVersion=beta.
+- Xác minh riêng Sheet row, email tự động của Apps Script và Gmail báo cáo cuối.
+
+### 2.6. Quay lui
+
+Ưu tiên tắt Beta bằng ABCDE_RAG_ENABLED=false nếu Stable vẫn bình thường. Nếu cần quay toàn deployment:
+
+    vercel rollback https://delivering-happiness-cox2r4mqb-vuhoang2708s-projects.vercel.app
+
+Không xóa deployment Apps Script hoặc dòng UAT tự động. Giữ marker để đối soát.
+
+Mỗi thao tác commit, push, tạo Apps Script deployment, sửa env, Vercel production deploy, submit Sheet và gửi Gmail cần duyệt tác vụ rủi ro cao ngay trước lệnh cụ thể.
+
+---
+
+## 3. Triển khai Backend (Google Apps Script - clasp)
 
 Backend của hệ thống chạy trên nền tảng Google Apps Script (GAS) Web App. Để quản lý mã nguồn ngoại tuyến chuyên nghiệp, dự án sử dụng công cụ **clasp** (Command Line Apps Script Projects) của Google.
 
@@ -79,7 +184,7 @@ Không tự ý sửa URL trực tiếp trong mã nguồn backend. Mọi URL và 
 
 ---
 
-## 3. Cấu hình Script Properties bắt buộc trên Apps Script Console
+## 4. Cấu hình Script Properties bắt buộc trên Apps Script Console
 
 Để backend hoạt động chính xác và an toàn, cần thiết lập các thuộc tính biến môi trường (Script Properties) trong phần **Project Settings** của Apps Script Editor:
 

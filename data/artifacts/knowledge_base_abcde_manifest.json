@@ -1,0 +1,23 @@
+{
+  "version": "abcde-kb-20260721-v3",
+  "generated_at": "2026-07-22T04:04:40.713388+00:00",
+  "retrieval_model": "local-tfidf-ngram-v1",
+  "embedding_model": "none",
+  "vector_dimensions": 0,
+  "top_k": 3,
+  "min_tfidf_score": 0.075,
+  "min_corpus_coverage": 0.82,
+  "chunk_count": 79,
+  "approved_chunk_count": 79,
+  "new_notebook_chunk_count": 61,
+  "preserved_case_study_count": 18,
+  "source_count": 6,
+  "notebook_count": 3,
+  "duplicate_rate": 0.0,
+  "knowledge_base_sha256": "AD8AEDD79E9CA66BB96BC455234DBC9A4C797250B1F4066334D2443E77A60312",
+  "source_manifest_version": "abcde-source-manifest-20260721-v2",
+  "source_manifest_sha256": "19C70BD8A28C72CB13590DEC7D7956189B737B79CD5EF12B7478A771FA5F8074",
+  "raw_sources_committed": false,
+  "external_corpus_exported": false,
+  "unverified_legacy_book_chunks_included": false
+}

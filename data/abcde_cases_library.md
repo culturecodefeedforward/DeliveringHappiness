@@ -482,6 +482,6 @@ Xin lịch gặp tiếp theo để trả lời các câu hỏi còn bỏ ngỏ. 
 
 ---
 
-*File này là nguồn chuẩn để nạp vào RAG Knowledge Base (`knowledge_base_abcde.json`)*
-*Để chuyển thành vector: Chạy `Scripts/ingest_knowledge.py` với nguồn đầu vào là file này*
+*File này là nguồn chuẩn cho 18 tình huống được bảo toàn trong RAG Knowledge Base (`knowledge_base_abcde.json`).*
+*Kho release là văn bản không có vector; dùng `Scripts/build_abcde_kb.py` để dựng và kiểm tra artifact manifest.*
 *Cập nhật tiếp: Bổ sung transcript từ `lac_quan_abcde.mp3` sau khi transcribe*

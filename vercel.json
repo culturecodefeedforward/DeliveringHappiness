@@ -1,3 +1,8 @@
 {
-  "cleanUrls": true
+  "cleanUrls": true,
+  "functions": {
+    "api/chat-abcde-rag.js": {
+      "includeFiles": "data/artifacts/knowledge_base_abcde*.json"
+    }
+  }
 }

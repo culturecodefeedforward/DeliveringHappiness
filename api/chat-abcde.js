@@ -232,7 +232,9 @@ async function handler(req, res) {
       return sendJson(res, 400, { success: false, error: 'BAD_REQUEST', message: 'Thiếu thông tin người dùng.' });
     }
 
-    const appsScriptUrl = process.env.DHM8_APPS_SCRIPT_URL || DEFAULT_APPS_SCRIPT_URL;
+    const appsScriptUrl = process.env.ABCDE_APPS_SCRIPT_URL
+      || process.env.DHM8_APPS_SCRIPT_URL
+      || DEFAULT_APPS_SCRIPT_URL;
     const sharedToken = process.env.DHM8_APPS_SCRIPT_TOKEN || 'shared-token-key-2026';
 
     const timestamp = Math.floor(Date.now() / 1000);

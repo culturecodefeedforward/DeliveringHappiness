@@ -18,6 +18,7 @@
     D: "",
     E: ""
   };
+  let stageDrafts = { A: [], B: [], C: [], D: [], E: [] };
 
   // Focus management
   let _lastFocusedEl = null;
@@ -180,6 +181,45 @@
     chatBody.scrollTop = chatBody.scrollHeight;
   }
 
+  function appendCitations(citations) {
+    if (!Array.isArray(citations) || citations.length === 0) return;
+    const list = document.createElement("div");
+    list.className = "abcde-rag-citations";
+    list.setAttribute("aria-label", "Nguồn tri thức được sử dụng");
+    Object.assign(list.style, {
+      margin: "6px 0 12px 42px",
+      padding: "8px 10px",
+      maxWidth: "calc(100% - 54px)",
+      borderLeft: "3px solid #38bdf8",
+      background: "rgba(15, 23, 42, 0.72)",
+      color: "#cbd5e1",
+      fontSize: "0.75rem",
+      lineHeight: "1.4",
+      overflowWrap: "anywhere"
+    });
+    const label = document.createElement("div");
+    label.textContent = "Nguồn tham chiếu";
+    label.style.fontWeight = "600";
+    label.style.color = "#7dd3fc";
+    list.appendChild(label);
+    citations.forEach((citation) => {
+      const item = document.createElement("div");
+      const title = citation.title || "Nguồn ABCDE";
+      const source = citation.source && citation.source !== title ? ` — ${citation.source}` : "";
+      const location = citation.location ? ` (${citation.location})` : "";
+      item.textContent = `${title}${source}${location}`;
+      list.appendChild(item);
+    });
+    chatBody.appendChild(list);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
+
+  function appendRagStatus(status) {
+    if (status === "low_confidence" || status === "no_match" || status === "needs_context") {
+      appendMessage("system", "Chưa có nguồn đủ khớp; trợ lý đang hỏi thêm ngữ cảnh thay vì suy đoán.");
+    }
+  }
+
   function showTypingIndicator() {
     const indicator = document.createElement("div");
     indicator.className = "abcde-typing-indicator";
@@ -331,6 +371,10 @@
 
   // Start Practice
   function startPractice() {
+    currentPractice = { A: "", B: "", C: "", D: "", E: "" };
+    stageDrafts = { A: [], B: [], C: [], D: [], E: [] };
+    chatHistory = [];
+    disputationTurns = 0;
     currentState = "STEP_A";
     updateStatus("Bước A - Mô tả Nghịch cảnh", "A");
     
@@ -367,22 +411,31 @@
       appendMessage("system", "🔄 Đã chuyển sang Bản ổn định. Đang gửi lại phản hồi của bạn...");
       
       // Gửi lại tin nhắn
-      inputField.value = lastMessage;
-      handleUserMessage();
+      handleUserMessage({ message: lastMessage, skipDraft: true, retryExistingMessage: true });
     });
   }
 
   // Handling messages in Socratic loop
-  async function handleUserMessage() {
-    const text = inputField.value.trim();
+  async function handleUserMessage(options = {}) {
+    const settings = options && typeof options === "object" && (
+      options.controlIntent || options.message || options.skipDraft || options.retryExistingMessage
+    )
+      ? options
+      : {};
+    const text = (settings.message || inputField.value).trim();
     if (!text || btnSend.disabled) return;
 
     inputField.value = "";
-    appendMessage("user", text);
-
-    // Save step response to currentPractice object locally during disputation loop
-    if (currentState === "STEP_D") {
-      currentPractice.D += (currentPractice.D ? "\n" : "") + text;
+    if (!settings.retryExistingMessage) {
+      appendMessage("user", text);
+    }
+    const stageLetter = currentState.startsWith("STEP_") ? currentState.slice(-1) : null;
+    if (stageLetter && !settings.skipDraft && !settings.controlIntent) {
+      stageDrafts[stageLetter].push(text);
+    }
+    const practiceContext = { ...currentPractice };
+    if (stageLetter && stageDrafts[stageLetter].length) {
+      practiceContext[stageLetter] = stageDrafts[stageLetter].join("\n");
     }
 
     // Call Socratic Chat API
@@ -390,7 +443,9 @@
     inputField.disabled = true;
     showTypingIndicator();
 
-    chatHistory.push({ role: "user", content: text });
+    if (!settings.retryExistingMessage) {
+      chatHistory.push({ role: "user", content: text });
+    }
 
     try {
       const response = await fetch(activeApiEndpoint, {
@@ -401,7 +456,9 @@
           passcode: userPasscode,
           state: currentState,
           message: text,
-          history: chatHistory
+          history: chatHistory,
+          practiceContext: practiceContext,
+          controlIntent: settings.controlIntent || null
         })
       });
 
@@ -424,19 +481,36 @@
 
       if (result.success) {
         appendMessage("ai", result.reply);
-        chatHistory.push({ role: "ai", content: result.reply });
+        const injectionBlocked = result.assessmentCode === "PROMPT_INJECTION_BLOCKED";
+        if (injectionBlocked) {
+          if (stageLetter && stageDrafts[stageLetter].length) {
+            stageDrafts[stageLetter].pop();
+          }
+          const lastHistoryItem = chatHistory[chatHistory.length - 1];
+          if (lastHistoryItem && lastHistoryItem.role === "user" && lastHistoryItem.content === text) {
+            chatHistory.pop();
+          }
+        }
+        if (chatVersion === "beta") {
+          appendCitations(result.citations);
+          appendRagStatus(result.ragStatus);
+        }
+        if (!injectionBlocked) {
+          chatHistory.push({ role: "ai", content: result.reply });
+        }
         
         // Update state dynamically based on backend nextState decision
-        if (result.nextState && result.nextState !== currentState) {
+        const stageConfirmed = chatVersion === "stable"
+          ? Boolean(result.nextState && result.nextState !== currentState)
+          : result.stageComplete === true && result.nextState && result.nextState !== currentState;
+        if (stageConfirmed) {
           // Record completed step data
-          if (currentState === "STEP_A") {
-            currentPractice.A = text;
-          } else if (currentState === "STEP_B") {
-            currentPractice.B = text;
-          } else if (currentState === "STEP_C") {
-            currentPractice.C = text;
-          } else if (currentState === "STEP_E") {
-            currentPractice.E = text;
+          if (stageLetter) {
+            const cumulativeStage = stageLetter === "C" || stageLetter === "D" || stageLetter === "E";
+            currentPractice[stageLetter] = cumulativeStage
+              ? practiceContext[stageLetter] || text
+              : text;
+            stageDrafts[stageLetter] = [];
           }
 
           currentState = result.nextState;
@@ -459,7 +533,7 @@
             renderSubmitForm();
             return;
           }
-        } else if (currentState === "STEP_D") {
+        } else if (currentState === "STEP_D" && settings.controlIntent !== "advance") {
           // If state remains STEP_D (still in disputation loop), update turns and prompt decision if needed
           disputationTurns++;
           if (disputationTurns % 2 === 0) {
@@ -602,12 +676,10 @@
     document.getElementById("btnDisputeOk").addEventListener("click", () => {
       formEl.remove();
       inputArea.style.display = "flex";
-      currentState = "STEP_E";
-      updateStatus("Bước E - Thiết lập Năng lượng", "E");
-
-      // Gửi tin nhắn tự động kích hoạt AI sang bước E
-      inputField.value = "Tôi đã sẵn sàng chuyển sang bước E.";
-      handleUserMessage();
+      handleUserMessage({
+        controlIntent: "advance",
+        message: "Tôi đã sẵn sàng chuyển sang bước E."
+      });
     });
 
     document.getElementById("btnDisputeMore").addEventListener("click", () => {
@@ -617,8 +689,10 @@
       updateStatus("Bước D - Tranh biện/Phản biện (Lượt lẻ)", "D");
 
       // Gửi tin nhắn tự động để AI hỏi tiếp
-      inputField.value = "Tôi muốn phản biện sâu thêm.";
-      handleUserMessage();
+      handleUserMessage({
+        message: "Tôi muốn phản biện sâu thêm.",
+        skipDraft: true
+      });
     });
   }
 })();
