@@ -201,6 +201,39 @@ test('STEP_A follows deterministic Socratic state instead of model state', async
   );
 });
 
+test('incomplete STEP_C ignores a model question that drifts into STEP_D', async () => {
+  global.fetch = async () => geminiResponse({
+    reply: 'Bạn đã gọi tên cảm xúc và cường độ. Dữ kiện nào cho thấy quản lý cố tình gây khó cho bạn?',
+    stageComplete: true,
+    nextState: 'STEP_D',
+    assessmentCode: 'MODEL_OVERRIDE',
+    citationIds: []
+  });
+
+  const result = await invoke({
+    action: 'chat',
+    passcode: 'ABCDE',
+    state: 'STEP_C',
+    message: 'Tôi lo 8/10 và bực.',
+    practiceContext: {
+      A: 'Lúc 16 giờ thứ Sáu, sếp gửi email giao báo cáo trước sáng thứ Hai.',
+      B: 'Tôi nghĩ rằng sếp không tôn trọng thời gian cá nhân của mình.',
+      C: 'Tôi lo 8/10 và bực.'
+    },
+    history: []
+  }, 37);
+
+  assert.equal(result.statusCode, 200);
+  assert.equal(result.body.stageComplete, false);
+  assert.equal(result.body.nextState, 'STEP_C');
+  assert.equal(result.body.assessmentCode, 'C_NEEDS_BEHAVIOR');
+  assert.equal(
+    result.body.reply,
+    'Bạn đã gọi tên cảm xúc và cường độ. Khi có cảm xúc đó, bạn đã làm hoặc tránh làm điều gì?'
+  );
+  assert.equal(countQuestions(result.body.reply), 1);
+});
+
 test('prompt injection is handled locally without calling Gemini or retrieval', async () => {
   delete process.env.GEMINI_API_KEY;
   let fetchCalls = 0;
@@ -279,7 +312,7 @@ test('STEP_D keeps corpus text local and returns approved local citations', asyn
     if (url.includes('generateContent')) {
       requestPayload = JSON.parse(options.body);
       return geminiResponse({
-        reply: 'Bạn đang bắt đầu kiểm tra niềm tin. Dữ kiện nào đang ủng hộ niềm tin này? Có cách giải thích nào khác?',
+        reply: 'Bạn đang bắt đầu kiểm tra niềm tin. Cách giải thích nào khác cũng có thể phù hợp?',
         stageComplete: true,
         nextState: 'SUBMIT',
         assessmentCode: 'MODEL_OVERRIDE',
@@ -314,6 +347,10 @@ test('STEP_D keeps corpus text local and returns approved local citations', asyn
   assert.equal('vector' in result.body.citations[0], false);
   assert.equal('score' in result.body.citations[0], false);
   assert.equal(countQuestions(result.body.reply), 1);
+  assert.equal(
+    result.body.reply,
+    'Bạn đang bắt đầu kiểm tra niềm tin. Dữ kiện cụ thể nào đang ủng hộ hoặc bác bỏ niềm tin ban đầu của bạn?'
+  );
   assert.equal(calls.length, 1);
   assert.equal(calls.some(url => url.includes('embedContent') || url.includes('/query')), false);
   const outboundBody = JSON.stringify(requestPayload);

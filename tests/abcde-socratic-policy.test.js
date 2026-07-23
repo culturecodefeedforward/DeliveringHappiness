@@ -83,6 +83,16 @@ test('C accepts required details collected across multiple Socratic turns', () =
   assert.equal(assessment.nextState, 'STEP_D');
 });
 
+test('C recognizes common focus, irritability and procrastination behaviors', () => {
+  const assessment = assessStage(
+    'STEP_C',
+    'Tôi tức giận 8/10 và lo lắng 7/10; tôi mất tập trung, cáu gắt với gia đình và trì hoãn mở tài liệu báo cáo.'
+  );
+  assert.equal(assessment.stageComplete, true);
+  assert.equal(assessment.assessmentCode, 'READY_STEP_D');
+  assert.equal(assessment.nextState, 'STEP_D');
+});
+
 test('D stays until the learner creates a disputation and requests advance', () => {
   const first = assessStage('STEP_D', 'Có thể sếp đang chịu áp lực từ cấp trên.', {
     D: 'Có thể sếp đang chịu áp lực từ cấp trên.'
@@ -160,6 +170,19 @@ test('reply enforcement removes advice and leading questions', () => {
     'Dữ kiện cụ thể nào đang rõ nhất với bạn?'
   );
   assert.equal(reply, 'Dữ kiện cụ thể nào đang rõ nhất với bạn?');
+  assert.equal(countQuestions(reply), 1);
+});
+
+test('reply enforcement can force the current-stage question while keeping reflection', () => {
+  const reply = enforceSocraticReply(
+    'Bạn đã gọi tên cảm xúc và cường độ. Dữ kiện nào đang ủng hộ niềm tin này?',
+    'Khi có cảm xúc đó, bạn đã làm hoặc tránh làm điều gì?',
+    { forceFallbackQuestion: true }
+  );
+  assert.equal(
+    reply,
+    'Bạn đã gọi tên cảm xúc và cường độ. Khi có cảm xúc đó, bạn đã làm hoặc tránh làm điều gì?'
+  );
   assert.equal(countQuestions(reply), 1);
 });
 

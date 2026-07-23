@@ -31,6 +31,7 @@ Quy tắc chung cho Beta:
 - Mỗi lượt phản chiếu tối đa một câu rồi đặt đúng một câu hỏi mở.
 - Không trả lời hộ, không gán niềm tin, không phán xét và không hỏi dồn.
 - Quyết định stageComplete, nextState và assessmentCode do policy tất định tạo ra; model không được tự nhảy bước.
+- Khi policy xác định bước hiện tại chưa hoàn tất, backend giữ tối đa một câu phản chiếu an toàn từ model nhưng bắt buộc dùng câu hỏi tất định của chính bước đó; câu hỏi do model tạo không được lấn sang bước sau.
 - Khi A hoặc B hoàn tất, chỉ câu cuối đã được policy xác nhận được lưu; nháp bị từ chối không đi vào retrieval hoặc báo cáo.
 - C và E có thể được hoàn thành qua nhiều lượt; frontend gửi bản nháp cộng dồn trong practiceContext.
 
@@ -38,7 +39,7 @@ Quy tắc chung cho Beta:
 | :--- | :--- | :--- |
 | A - Adversity | Còn nhãn, từ tuyệt đối, suy diễn ý định hoặc thiếu sự kiện quan sát được | Có sự kiện cụ thể, trung tính, người ngoài có thể quan sát |
 | B - Belief | Chưa có câu tự nhủ ở ngôi thứ nhất | Người học nói rõ niềm tin tự động của chính mình |
-| C - Consequence | Thiếu cảm xúc, cường độ 0-10 hoặc hành vi | Có đủ ba thành phần và liên hệ với B |
+| C - Consequence | Thiếu cảm xúc, cường độ 0-10 hoặc hành vi | Có đủ ba thành phần và liên hệ với B; hành vi thường gặp gồm mất tập trung, cáu gắt và trì hoãn |
 | D - Disputation | Chưa có phản biện do người học tự hình thành | Có lập luận theo Evidence, Alternatives, Implications hoặc Utility và người học chọn đi tiếp |
 | E - Energization | Thiếu cường độ mới, góc nhìn mới hoặc hành động | Có đủ ba thành phần trước khi sang SUBMIT |
 

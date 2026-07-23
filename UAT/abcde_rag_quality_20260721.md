@@ -1,6 +1,6 @@
 # Báo cáo chất lượng ABCDE RAG
 
-- Thời điểm chạy: 2026-07-22T04:17:31.187Z
+- Thời điểm chạy: 2026-07-23T06:42:39.719Z
 - Chế độ: knowledge base văn bản với TF-IDF cục bộ
 - Baseline: 22 chunks
 - Kết luận local: VERIFIED các cổng có thể kiểm tra local

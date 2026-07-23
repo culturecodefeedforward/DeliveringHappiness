@@ -202,10 +202,13 @@ function fallbackReflection(assessmentCode) {
 }
 
 function resolveReply(modelOutput, assessment, fallbackQuestion = assessment.fallbackQuestion) {
+  const deterministicReply = `${fallbackReflection(assessment.assessmentCode)} ${fallbackQuestion}`;
   const rawReply = modelOutput && typeof modelOutput.reply === 'string'
     ? modelOutput.reply.slice(0, 4000)
-    : `${fallbackReflection(assessment.assessmentCode)} ${assessment.fallbackQuestion}`;
-  const reply = enforceSocraticReply(rawReply, fallbackQuestion);
+    : deterministicReply;
+  const reply = enforceSocraticReply(rawReply, fallbackQuestion, {
+    forceFallbackQuestion: !assessment.stageComplete
+  });
   return { reply };
 }
 
