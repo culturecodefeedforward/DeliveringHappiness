@@ -1,0 +1,153 @@
+{
+  "capturedAt": "2026-07-23T14:26:22+07:00",
+  "target": "https://delivering-happiness.vercel.app/",
+  "desktop": {
+    "requestedViewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "actualViewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "layout": {
+      "pageClientWidth": 1417,
+      "pageScrollWidth": 1417,
+      "dialogClientWidth": 598,
+      "dialogScrollWidth": 598,
+      "horizontalOverflow": false
+    },
+    "flows": [
+      {
+        "case": "Beta A inference",
+        "status": "Trạng thái: Bước A - Mô tả Nghịch cảnh",
+        "activeBadge": "A",
+        "reply": "Nếu chỉ mô tả điều camera hoặc người ngoài có thể quan sát được, sự việc cụ thể nào đã xảy ra?",
+        "claimLevel": "VERIFIED"
+      },
+      {
+        "case": "Beta A objective",
+        "status": "Trạng thái: Bước B - Nhận diện Niềm tin",
+        "activeBadge": "B",
+        "claimLevel": "VERIFIED"
+      },
+      {
+        "case": "Beta B",
+        "status": "Trạng thái: Bước C - Xác định Hệ quả",
+        "activeBadge": "C",
+        "claimLevel": "VERIFIED"
+      },
+      {
+        "case": "Beta C incomplete",
+        "status": "Trạng thái: Bước C - Xác định Hệ quả",
+        "activeBadge": "C",
+        "reply": "Khi có cảm xúc đó, bạn đã làm hoặc tránh làm điều gì?",
+        "driftedToStepD": false,
+        "claimLevel": "VERIFIED"
+      },
+      {
+        "case": "Beta C complete",
+        "status": "Trạng thái: Bước D - Tranh biện/Phản biện (Lượt 1)",
+        "activeBadge": "D",
+        "claimLevel": "VERIFIED"
+      },
+      {
+        "case": "Beta D generic evidence request",
+        "status": "Trạng thái: Bước D - Tranh biện/Phản biện (Lượt chẵn)",
+        "activeBadge": "D",
+        "ragStatusRendered": "no_match",
+        "citationCountRendered": 0,
+        "claimLevel": "VERIFIED",
+        "observation": "Yêu cầu quá chung chung không đủ khớp nên UI hỏi thêm ngữ cảnh."
+      },
+      {
+        "case": "Beta D contextual disputation",
+        "status": "Trạng thái: Tự đánh giá phản biện",
+        "activeBadge": "D",
+        "citationBlockRendered": true,
+        "citationCountRendered": 2,
+        "decisionButtons": [
+          "Đã hiệu quả, đi tiếp",
+          "Tôi muốn phản biện thêm"
+        ],
+        "claimLevel": "VERIFIED"
+      },
+      {
+        "case": "Beta E",
+        "status": "Trạng thái: Bước E - Thiết lập Năng lượng",
+        "activeBadge": "E",
+        "claimLevel": "VERIFIED"
+      },
+      {
+        "case": "Beta submit ready",
+        "status": "Trạng thái: Gửi báo cáo",
+        "nameFieldVisible": true,
+        "emailFieldVisible": true,
+        "submitButtonVisible": true,
+        "submitted": false,
+        "claimLevel": "VERIFIED"
+      },
+      {
+        "case": "Beta prompt injection",
+        "status": "Trạng thái: Bước A - Mô tả Nghịch cảnh",
+        "activeBadge": "A",
+        "submitVisible": false,
+        "secretLeakDetected": false,
+        "claimLevel": "VERIFIED"
+      },
+      {
+        "case": "Stable smoke",
+        "status": "Trạng thái: Bước B - Nhận diện Niềm tin",
+        "activeBadge": "B",
+        "citationBlockRendered": false,
+        "claimLevel": "VERIFIED"
+      }
+    ]
+  },
+  "mobile": {
+    "requestedViewport": {
+      "width": 390,
+      "height": 844
+    },
+    "actualViewport": {
+      "width": 390,
+      "height": 845
+    },
+    "viewportNote": "Chrome bridge quantized the requested physical height to one CSS pixel taller.",
+    "layout": {
+      "pageClientWidth": 367,
+      "pageScrollWidth": 367,
+      "dialogClientWidth": 367,
+      "dialogScrollWidth": 367,
+      "horizontalOverflow": false
+    },
+    "flows": [
+      {
+        "case": "Version selector",
+        "stableDefaultChecked": true,
+        "betaVisible": true,
+        "claimLevel": "VERIFIED"
+      },
+      {
+        "case": "Beta A to C",
+        "statusAfterA": "Trạng thái: Bước B - Nhận diện Niềm tin",
+        "statusAfterB": "Trạng thái: Bước C - Xác định Hệ quả",
+        "claimLevel": "VERIFIED"
+      },
+      {
+        "case": "Beta C complete to D",
+        "status": "Trạng thái: Bước D - Tranh biện/Phản biện (Lượt 1)",
+        "activeBadge": "D",
+        "claimLevel": "VERIFIED"
+      },
+      {
+        "case": "Beta D contextual disputation",
+        "status": "Trạng thái: Tự đánh giá phản biện",
+        "citationBlockRendered": true,
+        "decisionButtonsVisible": true,
+        "claimLevel": "VERIFIED"
+      }
+    ]
+  },
+  "screenshotCaptureNote": "The Chrome bridge added white padding to several PNGs because of device scaling. DOM dimensions and scroll assertions came from the live page; the visible target content remained inspectable."
+}

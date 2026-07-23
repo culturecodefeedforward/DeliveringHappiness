@@ -1,0 +1,72 @@
+{
+  "capturedAt": "2026-07-23T17:03:00+07:00",
+  "releaseCommit": "4418ec134f6b75df58436fd1e4bfbb2f9a46e86e",
+  "production": {
+    "deploymentId": "dpl_GN9i6HjuBiXprEw8mVFC2b1j8tRq",
+    "deploymentUrl": "https://delivering-happiness-h2po51hrf-vuhoang2708s-projects.vercel.app",
+    "alias": "https://delivering-happiness.vercel.app",
+    "target": "production",
+    "status": "Ready",
+    "createdAt": "2026-07-23T16:11:39+07:00",
+    "claimLevel": "VERIFIED",
+    "verification": "vercel inspect dpl_GN9i6HjuBiXprEw8mVFC2b1j8tRq"
+  },
+  "initialSubmissionObservation": {
+    "marker": "CODEX_UAT_ABCDE_RAG_20260723_4418ec1",
+    "deploymentId": "dpl_AkswPeqZwmhiCErJbyfsTSvb8C8d",
+    "httpStatus": 200,
+    "gmailMessageId": "19f8e2f26d76a5bc",
+    "automatedEmailIncludedChatVersion": false,
+    "intendedSpreadsheetHadAbcdeDataSheetAtObservationTime": false,
+    "diagnosis": "Production ABCDE_APPS_SCRIPT_URL was absent, so the API used the legacy fallback Apps Script URL.",
+    "resolution": "Updated production ABCDE_APPS_SCRIPT_URL to dedicated Apps Script version 69 and redeployed the same release package.",
+    "dataHandling": "The initial email and any legacy row were retained as audit evidence; no production data was deleted.",
+    "claimLevel": "VERIFIED"
+  },
+  "correctiveSubmission": {
+    "marker": "CODEX_UAT_ABCDE_RAG_20260723_4418ec1_FIX1",
+    "endpoint": "https://delivering-happiness.vercel.app/api/chat-abcde",
+    "requestCount": 1,
+    "httpStatus": 200,
+    "durationMs": 6238,
+    "response": {
+      "success": true,
+      "upstream": {
+        "success": true
+      }
+    },
+    "chatVersionSent": "beta",
+    "claimLevel": "VERIFIED"
+  },
+  "crmEvidence": {
+    "spreadsheetId": "1ZToRX6J5Vo6UgHzYEE_eUxU0bVnsGxBRLt-8tduI5CA",
+    "spreadsheetTitle": "DH4HN CRM Leads - Landing Page",
+    "sheet": "ABCDE_Data",
+    "rangeRead": "ABCDE_Data!A1:J50",
+    "rowIndex": 2,
+    "timestamp": "23/07/2026 16:58:23",
+    "marker": "CODEX_UAT_ABCDE_RAG_20260723_4418ec1_FIX1",
+    "markerCount": 1,
+    "chatVersionColumn": "J",
+    "chatVersion": "beta",
+    "claimLevel": "VERIFIED"
+  },
+  "automatedEmailEvidence": {
+    "gmailMessageId": "19f8e69795c45647",
+    "rfcMessageId": "<autogen-java-48571aea-5c76-4d4e-8a62-1ce288702cd0@google.com>",
+    "subject": "Báo cáo Thực hành Lạc quan ABCDE - CODEX_UAT_ABCDE_RAG_20260723_4418ec1_FIX1",
+    "from": "culturecodeproject@gmail.com",
+    "to": "vuhoang2708@gmail.com",
+    "date": "2026-07-23T09:58:23Z",
+    "markerPresent": true,
+    "practiceVersionLabelPresent": true,
+    "ragBetaLabelPresent": true,
+    "expectedPracticeVersionText": "Phiên bản thực hành: Bản thử nghiệm (Có tri thức lớp học RAG)",
+    "claimLevel": "VERIFIED"
+  },
+  "remainingGap": {
+    "case": "single-request browser fallback interception",
+    "claimLevel": "UNVERIFIED",
+    "reason": "The connected Chrome bridge did not expose request interception."
+  }
+}

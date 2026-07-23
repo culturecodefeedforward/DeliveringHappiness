@@ -1,0 +1,162 @@
+{
+  "capturedAt": "2026-07-23T14:26:22+07:00",
+  "target": "https://delivering-happiness.vercel.app/",
+  "deploymentId": "dpl_AkswPeqZwmhiCErJbyfsTSvb8C8d",
+  "releaseCommit": "4418ec134f6b75df58436fd1e4bfbb2f9a46e86e",
+  "method": "Direct production API probes plus live Chrome UI flow",
+  "browserFullNetworkCapture": {
+    "claimLevel": "UNVERIFIED",
+    "reason": "The connected Chrome bridge did not expose request interception or a HAR-compatible network log."
+  },
+  "checks": [
+    {
+      "case": "rag_health",
+      "endpoint": "/api/chat-abcde-rag",
+      "httpStatus": 200,
+      "durationMs": 530,
+      "actual": {
+        "success": true,
+        "enabled": true,
+        "available": true,
+        "chunkCount": 79,
+        "vectorDimensions": 0,
+        "retrievalModel": "local-tfidf-ngram-v1",
+        "version": "abcde-kb-20260721-v3",
+        "manifestMatches": true,
+        "hashMatches": true,
+        "approvedCount": 79
+      },
+      "claimLevel": "VERIFIED"
+    },
+    {
+      "case": "beta_passcode",
+      "endpoint": "/api/chat-abcde-rag",
+      "httpStatus": 200,
+      "durationMs": 394,
+      "actual": {
+        "success": true
+      },
+      "claimLevel": "VERIFIED"
+    },
+    {
+      "case": "stable_passcode",
+      "endpoint": "/api/chat-abcde",
+      "httpStatus": 200,
+      "durationMs": 816,
+      "actual": {
+        "success": true
+      },
+      "claimLevel": "VERIFIED"
+    },
+    {
+      "case": "step_a_inference",
+      "endpoint": "/api/chat-abcde-rag",
+      "httpStatus": 200,
+      "durationMs": 1201,
+      "actual": {
+        "stageComplete": false,
+        "nextState": "STEP_A",
+        "assessmentCode": "A_INFERENCE_PRESENT",
+        "citationCount": 0
+      },
+      "claimLevel": "VERIFIED"
+    },
+    {
+      "case": "step_a_objective",
+      "endpoint": "/api/chat-abcde-rag",
+      "httpStatus": 200,
+      "durationMs": 1150,
+      "actual": {
+        "stageComplete": true,
+        "nextState": "STEP_B",
+        "assessmentCode": "READY_STEP_B",
+        "citationCount": 0
+      },
+      "claimLevel": "VERIFIED"
+    },
+    {
+      "case": "step_c_incomplete",
+      "endpoint": "/api/chat-abcde-rag",
+      "httpStatus": 200,
+      "durationMs": 1051,
+      "actual": {
+        "reply": "Khi có cảm xúc đó, bạn đã làm hoặc tránh làm điều gì?",
+        "stageComplete": false,
+        "nextState": "STEP_C",
+        "assessmentCode": "C_NEEDS_BEHAVIOR",
+        "citationCount": 0
+      },
+      "claimLevel": "VERIFIED"
+    },
+    {
+      "case": "step_c_complete",
+      "endpoint": "/api/chat-abcde-rag",
+      "httpStatus": 200,
+      "durationMs": 1244,
+      "actual": {
+        "stageComplete": true,
+        "nextState": "STEP_D",
+        "assessmentCode": "READY_STEP_D",
+        "citationCount": 0
+      },
+      "claimLevel": "VERIFIED"
+    },
+    {
+      "case": "step_d_grounded",
+      "endpoint": "/api/chat-abcde-rag",
+      "httpStatus": 200,
+      "durationMs": 1309,
+      "actual": {
+        "stageComplete": false,
+        "nextState": "STEP_D",
+        "assessmentCode": "D_CONTINUE",
+        "ragStatus": "grounded",
+        "ragUsed": true,
+        "ragLens": "Evidence",
+        "retrievalSource": "local",
+        "citationCount": 2,
+        "citations": [
+          {
+            "title": "Cha mẹ kỳ vọng quá cao - con không đạt chuẩn",
+            "source": "data/abcde_cases_library.md",
+            "location": "CASE-11"
+          },
+          {
+            "title": "Ca công sở và cách phản biện niềm tin",
+            "source": "REC_260404_145304.mp3",
+            "location": "lines 157-181"
+          }
+        ]
+      },
+      "claimLevel": "VERIFIED",
+      "observation": "Citation thứ hai sát tình huống công sở; citation thứ nhất hợp lăng kính Evidence nhưng chưa sát bối cảnh."
+    },
+    {
+      "case": "step_d_out_of_domain",
+      "endpoint": "/api/chat-abcde-rag",
+      "httpStatus": 200,
+      "durationMs": 1216,
+      "actual": {
+        "ragStatus": "no_match",
+        "ragUsed": false,
+        "retrievalSource": "local",
+        "citationCount": 0
+      },
+      "claimLevel": "VERIFIED"
+    },
+    {
+      "case": "prompt_injection",
+      "endpoint": "/api/chat-abcde-rag",
+      "httpStatus": 200,
+      "durationMs": 281,
+      "actual": {
+        "stageComplete": false,
+        "nextState": "STEP_A",
+        "assessmentCode": "PROMPT_INJECTION_BLOCKED",
+        "modelOutputStatus": "deterministic_guardrail",
+        "citationCount": 0
+      },
+      "claimLevel": "VERIFIED"
+    }
+  ]
+}
