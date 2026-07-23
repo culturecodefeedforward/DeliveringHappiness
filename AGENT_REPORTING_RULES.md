@@ -25,6 +25,7 @@ Mọi báo cáo UAT hoặc Handoff phải bao gồm bảng ma trận sau:
 3. **CTA Probe Enforcement:** Mọi URL được trỏ tới từ nút CTA (Call to Action) trên trang chủ bắt buộc phải nằm trong `live probe allowlist`.
 4. **Pre-deploy Audit:** Bắt buộc audit `file inventory` (đối chiếu file tĩnh trong public root vs danh sách public entrypoints/CTA) trước khi gọi lệnh deploy nếu sử dụng phương pháp "thư mục deploy tạm" (partial workspace).
 5. Nếu có bất kỳ bề mặt nào chưa kiểm chứng hoặc thất bại, Trạng thái tổng (`Final verdict`) bắt buộc phải là `UNVERIFIED` hoặc `FAILED`.
+6. **Vercel Live Verification Gate (Hard Gate):** Trạng thái Vercel CLI `READY` chỉ được ghi nhận là `DEPLOYMENT_READY`, tuyệt đối KHÔNG đồng nghĩa với `Live verified`. Mọi tuyên bố `Live verified` bắt buộc phải kèm theo output và artifact của `Scripts/verify_vercel_live_gate.js`. Báo cáo phải ghi đầy đủ: Deployment URL, Production URL, timestamp, HTTP status, final URL, cache result và browser CDP result. Nếu thiếu artifact kiểm chứng này, trạng thái tối đa của báo cáo chỉ được phép ở mức `UNVERIFIED`.
 
 ## 3. Critical Production Change Pipeline
 

@@ -1,0 +1,42 @@
+{
+  "timestamp": "2026-07-23T07:41:43.892Z",
+  "deploymentUrlCheck": {
+    "requestedUrl": "https://delivering-happiness-jq8gawtgz-vuhoang2708s-projects.vercel.app",
+    "httpStatus": 302,
+    "locationHeader": "https://vercel.com/sso-api?url=https%3A%2F%2Fdelivering-happiness-jq8gawtgz-vuhoang2708s-projects.vercel.app%2F%3F_nocache%3D1784792503892&nonce=1133e66bcba7ffe969925dbe910f3946593526b9677801bb3904db8f83a72566",
+    "isSsoRedirect": true,
+    "contentState": "UNVERIFIED (Redirected to Vercel SSO Protection)"
+  },
+  "productionUrlHttpCheck": {
+    "requestedUrl": "https://delivering-happiness.vercel.app/",
+    "httpStatus": 200,
+    "contentLength": 15493,
+    "missingExpected": [
+      "07:30 - 17:30",
+      "Để lại quan tâm"
+    ],
+    "foundForbidden": [
+      "08:00 - 18:00"
+    ],
+    "httpPass": false
+  },
+  "productionUrlBrowserCheck": {
+    "mainResponseStatus": 304,
+    "mainResponseFromCache": false,
+    "finalUrl": "https://delivering-happiness.vercel.app/",
+    "browserMissingExpected": [
+      "07:30 - 17:30",
+      "Để lại quan tâm"
+    ],
+    "browserFoundForbidden": [
+      "08:00 - 18:00"
+    ],
+    "consoleErrorsCount": 2,
+    "pageErrorsCount": 0,
+    "desktopScreenshot": "c:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\live_gate_desktop_20260723.png",
+    "mobileScreenshot": "c:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\live_gate_mobile_20260723.png",
+    "browserPass": false
+  },
+  "verdict": "LIVE_UNVERIFIED_FAILED",
+  "exitCode": 1
+}
