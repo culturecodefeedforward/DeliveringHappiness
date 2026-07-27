@@ -1,0 +1,91 @@
+name: Verified production release
+
+on:
+  workflow_dispatch:
+    inputs:
+      deployment_url:
+        description: Staged Vercel deployment URL
+        required: true
+        type: string
+      release_id:
+        description: Immutable release ID
+        required: true
+        type: string
+      commit_sha:
+        description: Release commit SHA
+        required: true
+        type: string
+      manifest_hash:
+        description: Runtime manifest SHA-256
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  verify-staged:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit_sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - name: Verify staged deployment before promotion
+        env:
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: >-
+          node Scripts/verify_vercel_live_gate.js
+          --phase staged
+          --deployment-url "${{ inputs.deployment_url }}"
+          --spec release-specs/dhm10-homepage.json
+          --release-id "${{ inputs.release_id }}"
+          --commit "${{ inputs.commit_sha }}"
+          --manifest-hash "${{ inputs.manifest_hash }}"
+          --out-dir "UAT/releases/${{ inputs.release_id }}/staged"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: staged-uat-${{ inputs.release_id }}
+          path: UAT/releases/${{ inputs.release_id }}/staged
+
+  promote-production:
+    needs: verify-staged
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit_sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - run: npm install --global vercel@54.4.1
+      - name: Promote exact verified deployment
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel promote "${{ inputs.deployment_url }}" --token "$VERCEL_TOKEN" --yes
+      - name: Verify production after promotion
+        env:
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: >-
+          node Scripts/verify_vercel_live_gate.js
+          --phase production
+          --deployment-url "${{ inputs.deployment_url }}"
+          --production-url "https://delivering-happiness.vercel.app"
+          --spec release-specs/dhm10-homepage.json
+          --release-id "${{ inputs.release_id }}"
+          --commit "${{ inputs.commit_sha }}"
+          --manifest-hash "${{ inputs.manifest_hash }}"
+          --out-dir "UAT/releases/${{ inputs.release_id }}/production"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: production-uat-${{ inputs.release_id }}
+          path: UAT/releases/${{ inputs.release_id }}/production

@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "releaseName": "dhm10-homepage",
+  "project": {
+    "id": "prj_WmpFNOKRpCmjkhvKAWAWLaTZOK9I",
+    "orgId": "team_EYFhiG6AAZHxuxmOMgk4wsS7",
+    "name": "delivering-happiness"
+  },
+  "productionUrl": "https://delivering-happiness.vercel.app",
+  "routes": [
+    {
+      "path": "/",
+      "sourceFile": "index.html",
+      "expectedTexts": [
+        "DHM10 - TP.HCM",
+        "Sẽ thông báo sau khi CultureCode Team chốt lịch",
+        "07:30 - 17:30, Thứ Bảy 12/09/2026",
+        "interest.html"
+      ],
+      "forbiddenTexts": [
+        "DHM8 - TP.HCM",
+        "18/07/2026",
+        "Sẽ có thông báo sau",
+        "08:00 - 18:00, Thứ Bảy 12/09/2026"
+      ]
+    },
+    {
+      "path": "/assessment",
+      "sourceFile": "assessment.html",
+      "expectedTexts": ["Đánh giá Hệ điều hành Hạnh phúc — Delivering Happiness"],
+      "forbiddenTexts": []
+    },
+    {
+      "path": "/register",
+      "sourceFile": "register.html",
+      "expectedTexts": ["Đăng ký DH Masterclass - CultureCode", "crmForm"],
+      "forbiddenTexts": []
+    },
+    {
+      "path": "/register_direct",
+      "sourceFile": "register_direct.html",
+      "expectedTexts": ["Đăng ký DH Masterclass - CultureCode", "crmForm"],
+      "forbiddenTexts": []
+    },
+    {
+      "path": "/register-test",
+      "sourceFile": "register-test.html",
+      "expectedTexts": ["TEST - Đăng ký DH Masterclass - CultureCode", "crmForm"],
+      "forbiddenTexts": []
+    },
+    {
+      "path": "/dh8/",
+      "sourceFile": "dh8/index.html",
+      "expectedTexts": ["Đăng ký DH Masterclass - CultureCode", "crmForm"],
+      "forbiddenTexts": []
+    }
+  ]
+}
