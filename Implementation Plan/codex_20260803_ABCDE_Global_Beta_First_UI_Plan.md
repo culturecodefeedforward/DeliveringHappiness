@@ -1,0 +1,293 @@
+---
+title: "ABCDE Global Beta-First UI"
+artifact_slug: "abcde-global-beta-first-ui"
+description: "Đưa RAG Beta thành giao diện chính cho mọi người dùng ABCDE; Stable chỉ còn là fallback khi Beta lỗi."
+status: local_verified
+priority: P1
+effort: "0.5 ngày triển khai và staged UAT"
+branch: "codex/abcde-global-beta-first-20260803"
+tags: [feature, frontend, beta-first, uat]
+blockedBy: []
+blocks: []
+created: 2026-08-03
+---
+
+# Kế hoạch giao diện ABCDE ưu tiên RAG Beta cho mọi người dùng
+
+## Trạng thái và bề mặt claim
+
+- `LOCAL IMPLEMENTATION`: runtime/docs đã được sửa trong worktree cô lập; browser UAT local đang được hoàn thiện; chưa deploy.
+- `ck:plan CLI`: `VERIFIED AVAILABLE`; ClaudeKit global installation đã được sửa và `ck plan create/parse/validate` đã qua canary ngày 2026-08-03.
+- `docs/development-rules.md`: không tồn tại. Đã đọc `docs/codebase-summary.md`, `docs/code-standards.md`, `docs/design-guidelines.md`, `docs/system-architecture.md`.
+- Repo hiện bẩn và branch `main` đang sau `origin/main` 2 commit; không triển khai trực tiếp trong checkout này.
+
+## Annotation 1 được xử lý
+
+Không tạo `entry mode` riêng cho Ambassador. Vì lượng người dùng public hiện còn ít, cùng một giao diện Beta-first được áp dụng cho tất cả người dùng ABCDE:
+
+1. Người dùng vẫn chủ động mở chatbot từ nút hiện tại; không tự bật modal khi vừa vào landing page.
+2. Vẫn yêu cầu passcode `ABCDE`.
+3. Sau xác thực, RAG Beta là phiên bản chính và người dùng không phải chọn thủ công.
+4. Stable không còn là lựa chọn ngang hàng; chỉ xuất hiện khi Beta lỗi hoặc bị tắt.
+
+## Scope Challenge
+
+### Những gì đã có
+
+- `chat-abcde.js` đã có `openChatbox()`, passcode gate, selector Stable/Beta, `activeApiEndpoint`, `chatVersion` và `renderFallbackNotice()`.
+- Beta đã dùng `/api/chat-abcde-rag`; Stable dùng `/api/chat-abcde`.
+- Khi Beta lỗi, frontend đổi sang Stable và gửi lại tin nhắn cuối.
+- `chatVersion` đã được gửi cùng payload báo cáo.
+
+### Thay đổi tối thiểu
+
+- Bỏ selector hai phiên bản sau passcode.
+- Render màn hình Beta-first duy nhất cho mọi người dùng.
+- Thêm CSS class cho thẻ Beta-primary và thông báo fallback thay vì tăng inline style.
+- Cập nhật docs và UAT.
+- Không đổi API, kho tri thức, Apps Script, Sheet, email hoặc passcode.
+
+### Độ phức tạp
+
+- Logic runtime: 1 file JavaScript.
+- Giao diện: 1 file CSS.
+- Docs/UAT: 5-7 artifact, không phải logic production.
+- Không tạo service/class mới.
+- Chọn mode: `HOLD SCOPE` — đổi mặc định giao diện toàn cục, không mở rộng thành hệ thống token hoặc LMS.
+
+## Phương án đã đánh giá
+
+| Phương án | Ưu điểm | Rủi ro | Kết luận |
+|---|---|---|---|
+| Đổi global default sang Beta | Ít code; đúng hướng sản phẩm; không cần link đặc biệt | Mọi người dùng ABCDE đi qua Beta | **Chọn theo quyết định mới của User** |
+| Query-param scoped entry mode | Khoanh vùng Ambassador | Tăng nhánh logic và bước vận hành không cần thiết ở giai đoạn ít người dùng | Không chọn |
+| Tạo trang `/abcde-ambassador` riêng | Tách trải nghiệm rõ | Duplicated UI, route/package/docs nhiều hơn | Hoãn |
+
+## Thiết kế được đề xuất
+
+### Luồng chung
+
+1. Người dùng mở chatbot bằng nút hiện tại.
+2. Hiển thị passcode như hiện tại; focus và Escape/focus trap không đổi.
+3. Sau passcode thành công:
+   - không render hai card Stable/Beta ngang hàng;
+   - render một card “RAG Beta — phiên bản đang phát triển”;
+   - ghi rõ Stable sẽ tự xuất hiện nếu Beta lỗi;
+   - giữ nút “Bắt đầu thực hành” để người dùng chủ động bắt đầu.
+4. Khi bấm bắt đầu:
+   - `chatVersion="beta"`;
+   - `activeApiEndpoint="/api/chat-abcde-rag"`;
+   - gọi `startPractice()`.
+5. Nếu Beta lỗi, tái dùng nguyên `renderFallbackNotice(lastMessage)`.
+
+Không auto-start ngay sau passcode. Giữ một nút xác nhận giúp người học nhận biết họ đang vào Beta và duy trì accessibility (khả năng tiếp cận).
+
+Không tự mở modal trên landing page và không bỏ passcode trong thay đổi này.
+
+## File allowlist
+
+### Modify — runtime
+
+1. `C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\chat-abcde.js`
+   - Đổi `chatVersion` và endpoint mặc định sang Beta sau passcode.
+   - Thay selector hai phiên bản bằng một thẻ Beta-primary.
+   - Giữ nguyên `renderFallbackNotice()` để chuyển Stable khi có lỗi.
+2. `C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\chat-abcde.css`
+   - Thêm class cho Beta-primary card và mô tả fallback.
+   - Giữ touch target tối thiểu 44px và responsive mobile.
+
+### Modify — source of truth/docs
+
+3. `C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\docs\abcde_chatbox_spec.md`
+   - Ghi passcode boundary và Beta-first/Stable-fallback toàn cục.
+4. `C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\docs\deployment-guide.md`
+   - Ghi hành vi Beta-first và quy trình fallback/rollback.
+5. `C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\UAT\abcde_alumni_invite_test_guide_20260803.md`
+   - Bỏ bước chọn phiên bản; dùng URL trang chủ hiện tại.
+6. `C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\UAT\ambassador_abcde_invitation_feedback_20260803.md`
+   - Bỏ bước chọn Beta thủ công.
+7. `C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\UAT\gemini_20260803_ABCDE_Ambassador_Prelaunch_UAT_Prompt.md`
+   - Cập nhật expected result: Beta primary, Stable chỉ fallback.
+
+### Create — test/evidence
+
+8. `C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\UAT\abcde_global_beta_first_20260803.js`
+   - Browser test chạy trên local/staged target; target URL truyền qua env/argument, không hardcode production mutation.
+9. `C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\UAT\abcde-global-beta-first-20260803\`
+   - Report, screenshot, console/network summary và final verdict.
+
+### Derived release artifacts
+
+- Không sửa tay `release_package/` trước source.
+- Chỉ sinh package từ script đóng gói hiện hành sau khi source test đạt.
+- Manifest/hash phải chứng minh `chat-abcde.js` và `chat-abcde.css` trong package trùng source đã UAT.
+
+### Explicitly out of scope
+
+- Không sửa `api/chat-abcde.js` hoặc `api/chat-abcde-rag.js`.
+- Không đổi `DHM_PASSCODE`, env, token, Upstash, KB hoặc Apps Script.
+- Không thêm account, query mode, token mời cá nhân, expiry, revoke hoặc analytics backend.
+- Không gửi feedback form hoặc email thật trong implementation test mặc định.
+- Không tự mở modal khi vào landing page và không bỏ passcode.
+
+## Các giai đoạn triển khai
+
+### Giai đoạn 1 — Baseline, isolation và test-first
+
+1. Ghi `git status --short --branch`, `git log -5`, `origin/main` và live release identity.
+2. Vì checkout hiện bẩn, tạo worktree sạch từ commit đã xác minh; branch đề xuất `codex/abcde-global-beta-first-20260803`.
+3. Lưu hash baseline của `index.html`, `chat-abcde.js`, `chat-abcde.css`, API Stable/Beta và docs liên quan.
+4. Đọc plan RAG cũ:
+   - `Implementation Plan/260721-abcde-rag-production-hardening/plan.md` đang `pending` nhưng runtime hiện đã có Beta/fallback.
+   - Đánh dấu `RELATED / STATUS-CONFLICT`, không coi nó là blocker cho UI plan này.
+5. Viết browser test trước khi sửa source cho các hành vi:
+   - URL `/` không tự mở modal.
+   - Passcode vẫn bắt buộc.
+   - Sau passcode, Beta là primary và không còn selector Stable/Beta.
+   - Beta lỗi thì Stable xuất hiện và giữ lịch sử.
+
+**Cổng hoàn tất:** baseline và test kỳ vọng mới được ghi; chưa sửa runtime nếu target commit/live chưa xác định.
+
+### Giai đoạn 2 — UI implementation và documentation
+
+1. Đổi mặc định sau passcode sang Beta endpoint.
+2. Bỏ selector hai phiên bản và render Beta-primary panel cho mọi người.
+3. Giữ fallback function hiện tại; không nhân đôi retry logic.
+4. Thêm CSS class; giảm inline style trong phần mới.
+5. Cập nhật docs và ba tài liệu UAT.
+9. Chạy:
+   - `node --check chat-abcde.js`;
+   - `git diff --check`;
+   - grep Beta endpoint mặc định, submit contract và fallback;
+   - browser test local/preview không có mutation.
+
+**Cổng hoàn tất:** `VERIFIED LOCAL` ngày 2026-08-03; source/diff/browser UAT local đạt, không claim UI live.
+
+### Giai đoạn 3 — Staged UAT và release gate
+
+1. Build package sạch bằng script hiện hành; kiểm manifest/hash.
+2. Tạo staged deployment theo production lock:
+   - `vercel --prod --skip-domain` từ package sạch;
+   - không promote domain.
+3. Chạy UAT desktop 1440×900 và mobile 390×844 trên staged URL.
+4. Chạy regression luồng mở chatbot, passcode, Beta và fallback Stable.
+5. Mirror evidence vào thư mục UAT đã nêu.
+6. Chỉ khi final verdict đạt và User duyệt riêng mới:
+   - commit/push branch;
+   - promote deployment vào domain public.
+
+**Cổng hoàn tất:** staged browser evidence đạt; promotion vẫn là approval riêng.
+
+## Ma trận UAT bắt buộc
+
+| ID | Bề mặt | Test | Expected result |
+|---|---|---|---|
+| UI-01 | Landing page | Mở `/` | Modal không tự mở; nút mở chatbot hoạt động |
+| UI-02 | Access gate | Mở chatbot | Passcode vẫn bắt buộc; không thể vào A–E trước xác thực |
+| UI-03 | Sau passcode | Nhập `ABCDE` | Beta primary; không có hai lựa chọn ngang hàng |
+| UI-04 | Network | Bắt đầu bài | Request chat đầu tiên đi `/api/chat-abcde-rag` |
+| UI-05 | Fallback preview | Intercept Beta 503 trên local/staged | Hiện Stable fallback; lịch sử còn; gửi lại tin nhắn cuối |
+| UI-06 | Mobile | 390×844 | Không tràn; input/nút usable; touch target ≥44px |
+| UI-07 | Keyboard | Tab/Shift+Tab/Escape | Focus trap hoạt động; đóng modal trả focus hợp lý |
+| UI-08 | Submit contract | Trace payload trước submit | `chatVersion=beta`; payload cũ không bị phá vỡ |
+
+Không ép lỗi trên production. UI-05 dùng network interception trên local/staged hoặc mock route đã nêu trong UAT plan.
+
+## Acceptance criteria
+
+- Người dùng vẫn chủ động mở chatbot và passcode không bị bỏ qua.
+- Sau passcode, Beta là phiên bản chính cho tất cả người dùng; không phải chọn thủ công.
+- Stable chỉ xuất hiện khi Beta lỗi hoặc bị tắt.
+- Không đổi backend payload ngoài giá trị `chatVersion=beta` đã có.
+- Landing page `/` không tự bật modal.
+- Desktop/mobile/keyboard đạt bằng chứng trình duyệt.
+- Fallback giữ lịch sử và gửi lại tin nhắn cuối trên bề mặt staged/local.
+- Không có thay đổi backend, env, Sheet, email hoặc KB.
+- Docs/UAT khớp runtime mới.
+
+## Rủi ro và giảm thiểu
+
+| Rủi ro | Tác động | Giảm thiểu |
+|---|---|---|
+| Beta ảnh hưởng toàn bộ người dùng ABCDE | Lỗi Beta có blast radius rộng hơn | Stable fallback, staged UAT và giữ kill switch |
+| Beta bị tắt | Ambassador không bắt đầu được | Tái dùng Stable fallback; test staged |
+| Bỏ selector làm hỏng luồng mở bài | Không bắt đầu được A–E | Regression UI-01 đến UI-04 |
+| Inline style tiếp tục tăng | Khó bảo trì | Style phần mới qua class trong CSS |
+| Repo bẩn/behind | Commit nhầm hoặc mất thay đổi | Worktree sạch, file allowlist, backup/hash |
+| Live/staged lệch source | Claim sai | Release manifest/hash và 3-layer UAT |
+| Plan RAG cũ trạng thái pending nhưng live đã đổi | Dependency sai | Ghi status conflict; revalidate runtime, không auto-update plan cũ |
+
+## Rollback
+
+### Trước promote
+
+- Không promote staged deployment nếu bất kỳ UI-01 đến UI-08 fail.
+- Xóa staged deployment chỉ khi có approval riêng; không cần rollback domain vì domain chưa đổi.
+
+### Sau promote
+
+- Promote lại deployment public trước đó bằng exact deployment ID đã lưu trong release evidence.
+- Có thể tạm thời hướng dẫn người dùng dùng Stable fallback trong lúc rollback UI.
+- `ABCDE_RAG_ENABLED=false` là kill switch Beta nhưng đổi env/redeploy cần approval riêng; không dùng nó thay cho rollback UI nếu lỗi nằm ở frontend.
+
+### Source
+
+- Revert chỉ commit của branch UI sau khi đã backup diff; không reset/revert các thay đổi ngoài allowlist.
+
+## Approval boundaries
+
+### Cấp độ 2 — cần duyệt plan trước implementation
+
+Cho phép sửa đúng file allowlist, tạo test/evidence và chạy test local/staged đã mô tả.
+
+### Cấp độ 3 — luôn xin riêng
+
+- Tạo commit.
+- Push branch.
+- Tạo staged deployment `vercel --prod --skip-domain`.
+- Promote staged deployment vào `delivering-happiness.vercel.app`.
+- External submission ghi Sheet/email nếu UAT sau này cần.
+- Xóa staged deployment, test row hoặc artifact.
+
+Plan approval không tự cấp quyền cho các thao tác trên.
+
+## Docs impact
+
+`Docs touched`: `docs/abcde_chatbox_spec.md`, `docs/deployment-guide.md`, hai hướng dẫn Ambassador/tester và prompt Gemini UAT. Docs không thay browser/live evidence.
+
+## Files safe to stage — chỉ sau implementation và diff review
+
+- `chat-abcde.js`
+- `chat-abcde.css`
+- `docs/abcde_chatbox_spec.md`
+- `docs/deployment-guide.md`
+- Ba file UAT hiện có được plan nêu
+- Test/evidence mới thuộc plan
+
+Mọi file dirty khác là `Files not safe to stage` cho scope này.
+
+## Quyết định mặc định cần User duyệt
+
+1. Áp dụng Beta-first cho toàn bộ người dùng ABCDE tại URL hiện tại.
+2. Không tự mở modal và không auto-start bài.
+3. Beta-only primary panel sau passcode.
+4. Stable chỉ là fallback.
+5. Không tracking cohort/backend trong giai đoạn này.
+
+## Handoff sau khi plan được duyệt
+
+Implementation command gợi ý sau khi mở session sạch:
+
+```text
+/ck:cook C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\Implementation Plan\codex_20260803_ABCDE_Global_Beta_First_UI_Plan.md
+```
+
+Executor dùng ClaudeKit global workflow đã được kiểm chứng; commit, push, staged deploy và production promotion vẫn cần approval riêng.
+
+## Trạng thái thực thi 2026-08-03
+
+- Worktree sạch được tạo từ `origin/main` commit `0c7a3c23f5d655d4960c90ef3747c4aba7aa3acf` tại `C:\Users\vu.hoang\.gemini\antigravity\scratch\worktrees\dh4hn-abcde-global-beta-first-20260803`.
+- Runtime, docs và UAT trong allowlist đã được triển khai.
+- Browser UAT local UI-01 đến UI-08 đạt; evidence tại `UAT\abcde-global-beta-first-20260803\`.
+- Release package chưa build vì script chuẩn chỉ nhận committed source ref và từ chối dirty worktree. Không tạo commit để lách approval Cấp độ 3.
+- Commit, push, staged deploy và production promotion vẫn chưa được phép.

@@ -314,7 +314,7 @@
   }
 }
 
-/* Version Selector & Fallback UI */
+/* Beta-first entry & Stable fallback UI */
 .abcde-version-selector {
   width: 100%;
   max-width: 420px;
@@ -325,25 +325,81 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.abcde-version-card {
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(30, 41, 59, 0.3);
-  transition: all 0.2s ease;
+.abcde-beta-primary {
+  padding: 1.25rem;
+  border: 1px solid rgba(56, 189, 248, 0.55);
+  border-radius: 10px;
+  background: rgba(30, 41, 59, 0.55);
+  box-shadow: inset 3px 0 0 #38bdf8;
 }
 
-.abcde-version-card:hover {
-  border-color: #38bdf8;
-  background: rgba(30, 41, 59, 0.5);
+.abcde-beta-badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(56, 189, 248, 0.16);
+  color: #7dd3fc;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-.abcde-version-card.abcde-card-selected {
-  border-color: #38bdf8;
-  background: rgba(30, 41, 59, 0.6);
+.abcde-beta-title {
+  margin: 0.75rem 0 0;
+  color: #f8fafc;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.abcde-beta-description,
+.abcde-beta-fallback-note {
+  margin: 0.6rem 0 0;
+  color: #cbd5e1;
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.abcde-beta-fallback-note {
+  color: #fde68a;
+}
+
+.abcde-start-button {
+  width: 100%;
+  margin-top: 1.25rem;
+}
+
+.abcde-start-button:focus-visible,
+.abcde-fallback-button:focus-visible {
+  outline: 3px solid #fbbf24;
+  outline-offset: 3px;
 }
 
 .abcde-fallback-area {
+  display: flex;
+  justify-content: center;
   margin: 10px auto;
+  padding: 5px;
   text-align: center;
+}
+
+.abcde-fallback-button {
+  padding: 10px 20px;
+  background-color: #d97706;
+}
+
+.abcde-fallback-button:hover {
+  background-color: #b45309;
+}
+
+@media (max-width: 600px) {
+  .abcde-version-selector {
+    padding: 1rem;
+  }
+
+  .abcde-beta-primary {
+    padding: 1rem;
+  }
 }
 
 /* Screen-reader only — ẩn khỏi giao diện, chỉ screen reader đọc được */

@@ -1,0 +1,136 @@
+{
+  "generatedAt": "2026-08-03T10:11:21.168Z",
+  "target": "local-static-server",
+  "requests": [
+    {
+      "path": "/api/chat-abcde",
+      "action": "verify_passcode",
+      "state": null,
+      "chatVersion": null
+    },
+    {
+      "path": "/api/chat-abcde-rag",
+      "action": "chat",
+      "state": "STEP_A",
+      "chatVersion": null
+    },
+    {
+      "path": "/api/chat-abcde-rag",
+      "action": "chat",
+      "state": "STEP_B",
+      "chatVersion": null
+    },
+    {
+      "path": "/api/chat-abcde",
+      "action": "chat",
+      "state": "STEP_B",
+      "chatVersion": null
+    },
+    {
+      "path": "/api/chat-abcde",
+      "action": "verify_passcode",
+      "state": null,
+      "chatVersion": null
+    },
+    {
+      "path": "/api/chat-abcde-rag",
+      "action": "chat",
+      "state": "STEP_A",
+      "chatVersion": null
+    },
+    {
+      "path": "/api/chat-abcde-rag",
+      "action": "chat",
+      "state": "STEP_B",
+      "chatVersion": null
+    },
+    {
+      "path": "/api/chat-abcde-rag",
+      "action": "chat",
+      "state": "STEP_C",
+      "chatVersion": null
+    },
+    {
+      "path": "/api/chat-abcde-rag",
+      "action": "chat",
+      "state": "STEP_D",
+      "chatVersion": null
+    },
+    {
+      "path": "/api/chat-abcde-rag",
+      "action": "chat",
+      "state": "STEP_E",
+      "chatVersion": null
+    },
+    {
+      "path": "/api/chat-abcde",
+      "action": "submit",
+      "state": null,
+      "chatVersion": "beta"
+    },
+    {
+      "path": "/api/chat-abcde",
+      "action": "verify_passcode",
+      "state": null,
+      "chatVersion": null
+    }
+  ],
+  "checks": [
+    {
+      "id": "UI-01",
+      "passed": true,
+      "detail": "Modal không tự mở trên landing page."
+    },
+    {
+      "id": "UI-02",
+      "passed": true,
+      "detail": "Passcode chặn luồng trước Beta-primary."
+    },
+    {
+      "id": "UI-03A",
+      "passed": true,
+      "detail": "Có thẻ Beta-primary sau passcode."
+    },
+    {
+      "id": "UI-03B",
+      "passed": true,
+      "detail": "Không còn selector Stable/Beta."
+    },
+    {
+      "id": "UI-03C",
+      "passed": true,
+      "detail": "Copy nói rõ Stable chỉ xuất hiện khi Beta lỗi."
+    },
+    {
+      "id": "UI-04",
+      "passed": true,
+      "detail": "Tin nhắn đầu tiên đi qua RAG endpoint."
+    },
+    {
+      "id": "UI-05A",
+      "passed": true,
+      "detail": "Beta 503 hiển thị Stable fallback."
+    },
+    {
+      "id": "UI-05B",
+      "passed": true,
+      "detail": "Fallback gửi lại tin nhắn qua Stable endpoint."
+    },
+    {
+      "id": "UI-07",
+      "passed": true,
+      "detail": "Escape đóng modal và trả focus về nút mở."
+    },
+    {
+      "id": "UI-08",
+      "passed": true,
+      "detail": "Submit giữ chatVersion=beta trong payload hiện hành."
+    },
+    {
+      "id": "UI-06",
+      "passed": true,
+      "detail": "Mobile không tràn và nút đạt 44px."
+    }
+  ],
+  "status": "VERIFIED"
+}

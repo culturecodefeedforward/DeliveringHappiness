@@ -1,0 +1,37 @@
+﻿[
+    {
+        "Path":  "index.html",
+        "SHA256":  "E672607A8499FB621FF65A06E787F27FB3FF479328937F8BCF89D8B51E986D42",
+        "Length":  16324
+    },
+    {
+        "Path":  "chat-abcde.js",
+        "SHA256":  "3E7F388F24001769CB5D2DC68AE73F838470B4E138BD751A6C42D03E45A0DFE6",
+        "Length":  25854
+    },
+    {
+        "Path":  "chat-abcde.css",
+        "SHA256":  "98B80AD813E25D7445E45BCC478D3B9AAA82190080E86DA99B29DA050C31E884",
+        "Length":  7596
+    },
+    {
+        "Path":  "api\\chat-abcde.js",
+        "SHA256":  "26992C2AD16636E20139D87DDFF8F5D50EB6177E49961F3B8BF37FEEB8C970AA",
+        "Length":  14195
+    },
+    {
+        "Path":  "api\\chat-abcde-rag.js",
+        "SHA256":  "56087E550A3136F2DAFFD7A1CD453BEB5B4DA613F6F0B554090A7B875400B66B",
+        "Length":  14229
+    },
+    {
+        "Path":  "docs\\abcde_chatbox_spec.md",
+        "SHA256":  "A0CB12BAFA0005B2A0B318504A412A27B77FEF3B4449B1F7CD7B2C26818B33D0",
+        "Length":  11335
+    },
+    {
+        "Path":  "docs\\deployment-guide.md",
+        "SHA256":  "609C38481DA63E5A36A6BB633538C86D5A2B78E7FCCB4698A50B26C6EC940A0D",
+        "Length":  6358
+    }
+]

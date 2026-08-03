@@ -17,6 +17,14 @@ Giao diện trang web (HTML/CSS/JS tĩnh) được deploy tự động lên **Ve
 3.  **Cấu hình dự án:** Tệp cấu hình `vercel.json` ở thư mục gốc chứa các quy tắc chuyển hướng hoặc header bảo mật (nếu có).
 4.  **Cảnh báo .vercelignore:** Để tránh Vercel bỏ qua các thư mục con trùng tên (ví dụ: `data/artifacts` bị nhận diện nhầm do dòng `Artifacts/` trong file cấu hình), bắt buộc phải dùng dấu gạch chéo ở đầu để khóa cứng đường dẫn gốc (như `/Artifacts/`, `/UAT/`, `/Implementation Plan/`).
 
+### Phát hành giao diện ABCDE Beta-first
+
+- Runtime source gồm `chat-abcde.js` và `chat-abcde.css`; không sửa trực tiếp bản sao trong `release_package/`.
+- Sau passcode, RAG Beta là luồng chính cho mọi người dùng ABCDE. Stable chỉ xuất hiện khi Beta lỗi hoặc bị tắt; landing page không tự mở modal.
+- Thay đổi giao diện này không yêu cầu đổi API, passcode, Apps Script, Google Sheet, token hoặc biến môi trường.
+- Trước khi promote production, phải tạo package sạch, kiểm hash source/package và chạy browser UAT desktop/mobile cho passcode, Beta endpoint, fallback Stable và keyboard focus.
+- Staged deployment và production promotion là hai approval riêng. Nếu staged UAT fail, không promote. Nếu production cần rollback, promote lại deployment ID trước đó đã ghi trong release evidence.
+
 ---
 
 ## 2. Triển khai Backend (Google Apps Script - clasp)

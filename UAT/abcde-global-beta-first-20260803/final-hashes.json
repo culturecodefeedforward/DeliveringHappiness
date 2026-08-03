@@ -1,0 +1,47 @@
+﻿[
+    {
+        "Path":  "chat-abcde.js",
+        "SHA256":  "3D21A09FFB424E02F4EB47EA47597B841E07604BB1AEE4EAD2D282F5E653E2AA",
+        "Length":  23455
+    },
+    {
+        "Path":  "chat-abcde.css",
+        "SHA256":  "FCC2296865CE54093B57AA9915E603247ADBD843CE98913D639A49D85F3686F3",
+        "Length":  8503
+    },
+    {
+        "Path":  "docs\\abcde_chatbox_spec.md",
+        "SHA256":  "710E277AA7B00A9E6825F785EF87CB70B6957E077E8ECBBA896219FD842D1DF0",
+        "Length":  11725
+    },
+    {
+        "Path":  "docs\\deployment-guide.md",
+        "SHA256":  "3F270D2D73782D2D81151BC27F6641370498C648C2C689E9C555CE87BA404C54",
+        "Length":  7247
+    },
+    {
+        "Path":  "Implementation Plan\\codex_20260803_ABCDE_Global_Beta_First_UI_Plan.md",
+        "SHA256":  "A5ADCECC265B474DB33B4887DE28CD836FDBD7C8A7AA146E029FDCB722079BC8",
+        "Length":  15461
+    },
+    {
+        "Path":  "UAT\\abcde_alumni_invite_test_guide_20260803.md",
+        "SHA256":  "4278B18C4B9BC0B83FBBB319101259D73272810A8C3179D4F37307D6A06A84D7",
+        "Length":  9401
+    },
+    {
+        "Path":  "UAT\\ambassador_abcde_invitation_feedback_20260803.md",
+        "SHA256":  "0099D3B9F0C33F18573B62A6781420B09A32717E6FEF4EA570E611321336B2D0",
+        "Length":  11360
+    },
+    {
+        "Path":  "UAT\\gemini_20260803_ABCDE_Ambassador_Prelaunch_UAT_Prompt.md",
+        "SHA256":  "EF7ED37E33EF8C817BD2D19F25BC1AE75186DB2AFEB7973BBCEE02FDE5B2C1ED",
+        "Length":  13973
+    },
+    {
+        "Path":  "UAT\\abcde_global_beta_first_20260803.js",
+        "SHA256":  "A79283D15DADF7890410D63E81D518081C488257D8FC95A89F118129B2E634D6",
+        "Length":  9387
+    }
+]

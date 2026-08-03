@@ -9,8 +9,8 @@
   let currentState = "INIT"; // INIT, STEP_A, STEP_B, STEP_C, STEP_D, STEP_E, SUBMIT, COMPLETED
   let chatHistory = [];
   let disputationTurns = 0;
-  let chatVersion = "stable"; // stable hoặc beta
-  let activeApiEndpoint = "/api/chat-abcde";
+  let chatVersion = "beta"; // RAG Beta là luồng chính; Stable chỉ dùng khi fallback
+  let activeApiEndpoint = "/api/chat-abcde-rag";
   let currentPractice = {
     A: "",
     B: "",
@@ -249,7 +249,7 @@
         if (result.success) {
           userPasscode = code;
           formEl.remove();
-          renderVersionSelector(); // Chuyển sang màn hình chọn phiên bản thay vì start trực tiếp
+          renderBetaEntry(); // Beta là luồng chính; Stable chỉ xuất hiện nếu Beta lỗi
         } else {
           passError.innerText = result.message || "Mật mã không chính xác.";
           passError.style.display = "block";
@@ -265,68 +265,34 @@
     }
   }
 
-  // Render Version Selection DOM
-  function renderVersionSelector() {
-    updateStatus("Chọn phiên bản thực hành", null);
+  // Render màn hình xác nhận RAG Beta trước khi bắt đầu
+  function renderBetaEntry() {
+    updateStatus("Sẵn sàng thực hành", null);
     inputArea.style.display = "none";
 
-    const selectorEl = document.createElement("div");
-    selectorEl.className = "abcde-version-selector";
-    selectorEl.innerHTML = `
-      <p style="margin: 0 0 1.2rem; font-size: 0.95rem; color: #cbd5e1; text-align: center;">Chào mừng sếp Vũ! Hãy chọn phiên bản thực hành:</p>
-      <div class="abcde-version-options" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 1.5rem;">
-        <div class="abcde-version-card abcde-card-selected" id="cardStable" style="display: flex; align-items: flex-start; gap: 12px; padding: 14px; border: 2px solid #38bdf8; border-radius: 10px; cursor: pointer; transition: all 0.2s; background: rgba(30, 41, 59, 0.5);">
-          <input type="radio" name="abcdeVersion" value="stable" checked style="margin-top: 4px; pointer-events: none;" />
-          <div>
-            <div style="font-weight: 600; color: #f8fafc; font-size: 0.95rem;">Bản ổn định - thực hành nhanh</div>
-            <div style="font-size: 0.8rem; color: #94a3b8; margin-top: 4px; line-height: 1.35;">Phiên bản tiêu chuẩn, đối thoại mượt mà và phản hồi nhanh chóng.</div>
-          </div>
-        </div>
-        <div class="abcde-version-card" id="cardBeta" style="display: flex; align-items: flex-start; gap: 12px; padding: 14px; border: 1px solid #475569; border-radius: 10px; cursor: pointer; transition: all 0.2s; background: rgba(30, 41, 59, 0.3);">
-          <input type="radio" name="abcdeVersion" value="beta" style="margin-top: 4px; pointer-events: none;" />
-          <div>
-            <div style="font-weight: 600; color: #38bdf8; font-size: 0.95rem;">Bản thử nghiệm - có tri thức lớp học</div>
-            <div style="font-size: 0.8rem; color: #94a3b8; margin-top: 4px; line-height: 1.35;">Tích hợp cơ sở tri thức giảng dạy thực tế và sách Learned Optimism để phản biện sâu sắc.</div>
-          </div>
-        </div>
-      </div>
-      <button class="abcde-btn-send" id="btnStartPractice" style="width: 100%; font-weight: 600; padding: 12px;">Bắt đầu thực hành</button>
+    const entryEl = document.createElement("div");
+    entryEl.className = "abcde-version-selector";
+    entryEl.innerHTML = `
+      <section class="abcde-beta-primary" aria-labelledby="abcdeBetaTitle">
+        <span class="abcde-beta-badge">RAG Beta</span>
+        <h4 class="abcde-beta-title" id="abcdeBetaTitle">Phiên bản đang phát triển — có tri thức lớp học</h4>
+        <p class="abcde-beta-description">Kết hợp nội dung giảng dạy thực tế và sách Learned Optimism để hỗ trợ phản biện sâu hơn ở bước D.</p>
+        <p class="abcde-beta-fallback-note">Nếu RAG Beta gặp sự cố, Bản ổn định sẽ xuất hiện để bạn tiếp tục mà không mất lịch sử.</p>
+      </section>
+      <button class="abcde-btn-send abcde-start-button" id="btnStartPractice">Bắt đầu thực hành</button>
     `;
-    chatBody.appendChild(selectorEl);
+    chatBody.appendChild(entryEl);
 
-    const cardStable = document.getElementById("cardStable");
-    const cardBeta = document.getElementById("cardBeta");
-    const radioStable = cardStable.querySelector("input");
-    const radioBeta = cardBeta.querySelector("input");
-
-    cardStable.addEventListener("click", () => {
-      cardStable.style.borderColor = "#38bdf8";
-      cardStable.style.borderWidth = "2px";
-      cardBeta.style.borderColor = "#475569";
-      cardBeta.style.borderWidth = "1px";
-      radioStable.checked = true;
-    });
-
-    cardBeta.addEventListener("click", () => {
-      cardBeta.style.borderColor = "#38bdf8";
-      cardBeta.style.borderWidth = "2px";
-      cardStable.style.borderColor = "#475569";
-      cardStable.style.borderWidth = "1px";
-      radioBeta.checked = true;
-    });
+    chatVersion = "beta";
+    activeApiEndpoint = "/api/chat-abcde-rag";
 
     document.getElementById("btnStartPractice").addEventListener("click", () => {
-      const selectedVal = selectorEl.querySelector("input[name='abcdeVersion']:checked").value;
-      chatVersion = selectedVal;
-      if (chatVersion === "beta") {
-        activeApiEndpoint = "/api/chat-abcde-rag";
-      } else {
-        activeApiEndpoint = "/api/chat-abcde";
-      }
-      selectorEl.remove();
+      entryEl.remove();
       inputArea.style.display = "flex";
       startPractice();
     });
+
+    document.getElementById("btnStartPractice").focus();
   }
 
   // Start Practice
@@ -334,7 +300,7 @@
     currentState = "STEP_A";
     updateStatus("Bước A - Mô tả Nghịch cảnh", "A");
     
-    appendMessage("ai", `Chào mừng bạn đến với ${chatVersion === "beta" ? "Bản thử nghiệm RAG" : "Bản ổn định"}! Đầu tiên, hãy mô tả một nghịch cảnh hoặc sự việc bất lợi (Adversity - A) mà bạn vừa gặp phải gần đây (Ví dụ: Bị sếp chê ý tưởng trong cuộc họp, bị hủy chuyến đi chơi phút chót,...)`);
+    appendMessage("ai", `Chào mừng bạn đến với ${chatVersion === "beta" ? "RAG Beta" : "Bản ổn định"}! Đầu tiên, hãy mô tả một nghịch cảnh hoặc sự việc bất lợi (Adversity - A) mà bạn vừa gặp phải gần đây (Ví dụ: Bị sếp chê ý tưởng trong cuộc họp, bị hủy chuyến đi chơi phút chót,...)`);
     inputField.placeholder = "Mô tả Nghịch cảnh của bạn...";
     inputField.focus();
   }
@@ -345,12 +311,8 @@
     
     const fallbackEl = document.createElement("div");
     fallbackEl.className = "abcde-fallback-area";
-    fallbackEl.style.display = "flex";
-    fallbackEl.style.justify = "center";
-    fallbackEl.style.marginTop = "10px";
-    fallbackEl.style.padding = "5px";
     fallbackEl.innerHTML = `
-      <button class="abcde-btn-send" id="btnFallbackToStable" style="background-color: #d97706; padding: 10px 20px;">Chuyển về Bản ổn định</button>
+      <button class="abcde-btn-send abcde-fallback-button" id="btnFallbackToStable">Chuyển về Bản ổn định</button>
     `;
     chatBody.appendChild(fallbackEl);
     chatBody.scrollTop = chatBody.scrollHeight;
