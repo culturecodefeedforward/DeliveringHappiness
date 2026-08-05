@@ -9,10 +9,10 @@
 Đây là `soft invite` (liên kết mời kèm mã dùng chung), chưa phải liên kết cá nhân hóa theo từng người:
 
 - **Chatbot AI ABCDE:** https://delivering-happiness.vercel.app/
-- **Worksheet ABCDE tĩnh:** https://delivering-happiness.vercel.app/practice-abcde
+- **Bài tập ABCDE — Tự làm & đối chiếu:** https://delivering-happiness.vercel.app/practice-abcde
 - **Mã truy cập thử nghiệm:** `ABCDE`
 
-Khi mở trang chủ, bấm **“Thực hành Lạc quan ABCDE”** để mở chatbot. Mã `ABCDE` không phải bí mật cá nhân; chỉ gửi riêng trong nhóm học viên được mời và không đăng lên trang công khai.
+Khi mở trang chủ, chọn **“Trợ lý AI ABCDE — RAG Beta”** để mở chatbot. Mã `ABCDE` không phải bí mật cá nhân; chỉ gửi riêng trong nhóm học viên được mời và không đăng lên trang công khai. Nếu muốn tự làm và đối chiếu, chọn **“Bài tập ABCDE — Tự làm & đối chiếu”**; đây là luồng worksheet riêng, không phải Stable fallback.
 
 ### Tin nhắn mời copy/paste
 
@@ -32,6 +32,7 @@ Sau khi nhập mã, RAG Beta sẽ là phiên bản chính. Anh/chị bấm “B�
 - `VERIFIED`: `POST` (gửi yêu cầu dữ liệu) tới `/api/chat-abcde` với hành động `verify_passcode` và mã `ABCDE` trả `{"success":true}`; đây là kiểm tra trên `API` (Application Programming Interface - giao diện dịch vụ), không phải kiểm thử giao diện.
 - `VERIFIED`: phản hồi public mang mã phát hành `0c7a3c23f5d6` tại thời điểm kiểm tra.
 - `VERIFIED LOCAL`: browser UAT tại `UAT/abcde-global-beta-first-20260803/local-browser-result.json` xác nhận Beta-primary, RAG endpoint, Stable fallback, desktop/mobile và keyboard.
+- `VERIFIED LOCAL`: browser UAT entry point tại `UAT/abcde-worksheet-entry-20260805/local-browser-result.json` xác nhận link worksheet, phân cấp RAG Beta, modal, desktop/mobile và route worksheet.
 - `UNVERIFIED LIVE`: public URL chưa có giao diện mới; gửi email báo cáo đầu-cuối chưa được kiểm lại trong release này.
 
 ## 2. Cách sử dụng chatbot AI
@@ -40,7 +41,7 @@ Sau khi nhập mã, RAG Beta sẽ là phiên bản chính. Anh/chị bấm “B�
 
 1. Dùng Chrome, Edge hoặc Safari bản mới trên máy tính hoặc điện thoại.
 2. Mở liên kết chatbot ở trên.
-3. Bấm **Thực hành Lạc quan ABCDE**.
+3. Bấm **Trợ lý AI ABCDE — RAG Beta**.
 4. Nhập mã `ABCDE`, bấm **Xác nhận**.
 5. Xem thẻ **RAG Beta — phiên bản đang phát triển**, rồi bấm **Bắt đầu thực hành**. `RAG` (Retrieval-Augmented Generation - sinh câu trả lời có truy xuất nguồn) bổ sung tri thức lớp học chủ yếu tại bước D — Phản biện.
 
@@ -63,7 +64,7 @@ Nên dùng một tình huống thật nhưng không chứa thông tin mật. N�
 
 Khi hoàn tất, nhập tên và email nếu muốn nhận báo cáo. Chỉ dùng email mà anh/chị đồng ý cho hệ thống lưu và gửi báo cáo.
 
-### Cách dùng worksheet (phiếu bài tập) tĩnh
+### Cách dùng Bài tập ABCDE — Tự làm & đối chiếu
 
 1. Mở `/practice-abcde`.
 2. Chọn một tình huống.
@@ -82,7 +83,7 @@ Mỗi tester nên ghi `ID ca` trong feedback.
 | T03 | Hoàn thành ABCDE bằng RAG Beta | Chuyển đủ A → B → C → D → E; bước D có phản hồi dựa trên tri thức và cuối luồng hiện form nhận báo cáo |
 | T04 | Beta trả lỗi 502/503 | Có nút chuyển về bản ổn định; giữ lịch sử và gửi lại tin nhắn cuối |
 | T05 | Bỏ trống hoặc nhập câu quá ngắn | AI hỏi làm rõ, không tự bịa nội dung thay người học |
-| T06 | Worksheet tĩnh | Chọn case, nhập B–E và xem được đối chiếu |
+| T06 | Bài tập ABCDE — Tự làm & đối chiếu | Chọn tình huống, nhập B–E và xem được đối chiếu |
 | T07 | Gửi email báo cáo | Có thông báo kết quả; email đến đúng địa chỉ hoặc hiện lỗi rõ ràng |
 | T08 | Điện thoại | Không bị tràn giao diện, bàn phím không che ô nhập và nút vẫn bấm được |
 
@@ -117,7 +118,7 @@ Không gửi toàn bộ câu chuyện cá nhân vào nhóm chung. Có thể thay
 Mức độ: P1 / P2 / P3
 Ca kiểm thử: T__
 URL: / hoặc /practice-abcde
-Phiên bản: RAG Beta / Bản ổn định sau fallback / Worksheet
+Phiên bản: RAG Beta / Bản ổn định sau fallback / Bài tập ABCDE — Tự làm & đối chiếu
 Thiết bị + trình duyệt:
 Thời điểm (GMT+7):
 Bước thực hiện:

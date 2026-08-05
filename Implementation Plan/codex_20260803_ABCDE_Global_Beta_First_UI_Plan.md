@@ -2,7 +2,7 @@
 title: "ABCDE Global Beta-First UI"
 artifact_slug: "abcde-global-beta-first-ui"
 description: "Đưa RAG Beta thành giao diện chính cho mọi người dùng ABCDE; Stable chỉ còn là fallback khi Beta lỗi."
-status: local_verified
+status: in-progress
 priority: P1
 effort: "0.5 ngày triển khai và staged UAT"
 branch: "codex/abcde-global-beta-first-20260803"
@@ -291,3 +291,82 @@ Executor dùng ClaudeKit global workflow đã được kiểm chứng; commit, p
 - Browser UAT local UI-01 đến UI-08 đạt; evidence tại `UAT\abcde-global-beta-first-20260803\`.
 - Release package chưa build vì script chuẩn chỉ nhận committed source ref và từ chối dirty worktree. Không tạo commit để lách approval Cấp độ 3.
 - Commit, push, staged deploy và production promotion vẫn chưa được phép.
+
+## Trạng thái thực thi 2026-08-04 — Gemini independent live UAT
+
+- `VERIFIED`: deployment production đang phục vụ đúng release `2cfad112f2c5-08b69e028fca`; identity headers và release manifest khớp package evidence.
+- `VERIFIED`: Gemini đã kiểm chứng độc lập trên `https://delivering-happiness.vercel.app/` các ca PRE-01, UI-01, UI-02, UI-03, UI-04, UI-05, UI-07 và UI-08 bằng desktop/mobile browser evidence.
+- `VERIFIED-LIVE-ABCDE`: trạng thái này chỉ áp dụng cho core Beta-first practice flow (luồng thực hành Beta chính), không có nghĩa mọi điều kiện vận hành đã đóng.
+- `UNVERIFIED-LIVE`: UI-06 Stable fallback chưa được ép lỗi trên production, đúng ranh giới an toàn của prompt; không dùng kết quả local để thay live evidence.
+- `CONDITION`: `network_summary_20260803_abcde_global_beta_first_live.json` hiện chỉ chứa phản hồi favicon 404. Script có theo dõi request RAG để quyết định UI-04 nhưng chưa ghi request đó vào artifact mạng; cần Gemini mirror lại request URL/method/status mà không lưu request body trước khi coi evidence network là đầy đủ.
+- `CONDITION`: report Gemini hiện chỉ có ma trận 19 dòng và đường dẫn thư mục; chưa ghi metadata bắt buộc cho từng screenshot (URL, viewport, timestamp GMT+7, expected/observed). Cần bổ sung manifest hoặc bảng metadata để evidence có thể truy vết.
+- `CONDITION`: thư mục evidence có `node_modules/` và package metadata sinh ra trong lúc chạy UAT; các file này không thuộc allowlist release và chưa an toàn để stage.
+- Verdict chuẩn hóa của Codex: `GO WITH CONDITIONS`; được phép chuẩn bị quy trình Ambassador ở mức bản nháp, chưa được gửi lời mời ra ngoài.
+- Evidence report: `C:\Users\vu.hoang\.gemini\antigravity\scratch\worktrees\dh4hn-abcde-global-beta-first-20260803\UAT\abcde-global-beta-first-20260803\gemini-live\uat_report_20260803_abcde_global_beta_first_live.md`.
+- Final verdict JSON: `C:\Users\vu.hoang\.gemini\antigravity\scratch\worktrees\dh4hn-abcde-global-beta-first-20260803\UAT\abcde-global-beta-first-20260803\gemini-live\final_verdict_20260803_abcde_global_beta_first_live.json`.
+- Quy trình phát lời mời bản nháp: `C:\Users\vu.hoang\.gemini\antigravity\scratch\worktrees\dh4hn-abcde-global-beta-first-20260803\UAT\ambassador_20260804_abcde_global_beta_first_rollout_plan.md`.
+
+## Follow-up evidence 2026-08-04
+
+- `VERIFIED`: network metadata addendum ghi `POST /api/chat-abcde-rag`, HTTP 200, timestamp GMT+7, duration và response state; không có request body/PII. Artifact: `C:\Users\vu.hoang\.gemini\antigravity\scratch\worktrees\dh4hn-abcde-global-beta-first-20260803\UAT\abcde-global-beta-first-20260803\gemini-live\network_request_metadata_20260804_abcde_global_beta_first_live.json`.
+- `VERIFIED`: screenshot manifest đủ sáu ảnh và metadata bắt buộc tại evidence path chuẩn: `C:\Users\vu.hoang\.gemini\antigravity\scratch\worktrees\dh4hn-abcde-global-beta-first-20260803\UAT\abcde-global-beta-first-20260803\gemini-live\screenshot_manifest_20260804_abcde_global_beta_first_live.json`.
+- `ARCHIVE OUTSIDE REPO`: bản manifest trùng nằm dưới thư mục typo `...\UAT\abcde-global-beta-first-20260803\abcde-global-beta-first-20260308\gemini-live\`; không stage hoặc xóa nếu chưa có approval cleanup.
+- `VERIFIED`: Step 4/5 (independent live browser UAT) đã đóng cho core Beta-first flow với điều kiện UI-06; Step 5/5 chuyển sang chuẩn bị nội dung Ambassador, chưa external send.
+
+## Kế hoạch cập nhật 2026-08-05 — thêm entry point cho bài tập ABCDE tự làm
+
+### Quyết định sản phẩm
+
+Landing page sẽ có thêm một liên kết phụ tới `/practice-abcde`, nhưng RAG Beta vẫn là luồng thực hành chính. Không dùng các nhãn `Bản ổn định`, `Stable` hoặc `Phiếu tự luyện tĩnh` cho worksheet vì dễ làm người dùng nhầm với fallback của RAG Beta và nghe không tự nhiên.
+
+Nhãn người dùng đã chốt:
+
+- Primary: `🧠 Trợ lý AI ABCDE — RAG Beta` — luồng AI (Artificial Intelligence - trí tuệ nhân tạo) hỏi gợi mở, cần mã `ABCDE`, gọi `/api/chat-abcde-rag`.
+- Secondary: `📝 Bài tập ABCDE — Tự làm & đối chiếu` — chọn tình huống, điền B–E và xem gợi ý từ thư viện khóa học; hiện tải JSON tĩnh và không gọi endpoint chat.
+
+### Vị trí và hành vi UI
+
+- Giữ `id="btn-abcde-chat"` và hành vi mở modal hiện tại để không phá các test/UAT đã đạt.
+- Đổi copy hiển thị của nút chính thành `Trợ lý AI ABCDE — RAG Beta` hoặc thêm subtitle xác nhận đây là luồng chính.
+- Thêm thẻ `<a href="/practice-abcde">` ngay dưới hoặc cạnh nút chính trong khối CTA hiện tại tại `index.html` dòng 102–109.
+- Trên mobile, hai hành động phải xếp dọc; RAG Beta đứng trước và có visual hierarchy (phân cấp thị giác) cao hơn.
+- Trang worksheet giữ link logo quay về `/`; không đổi logic bài tập trong scope này.
+
+### Phạm vi file allowlist
+
+- Modify: `index.html` — copy và link entry point.
+- Modify nếu cần: `styles.css` — lớp layout/spacing/responsive cho nhóm hai CTA; không sửa `chat-abcde.css` nếu không cần.
+- Modify: `docs/abcde_chatbox_spec.md` — ghi rõ hai entry point và sự khác nhau giữa RAG Beta/worksheet.
+- Modify: `UAT/ambassador_abcde_invitation_feedback_20260803.md` và `UAT/abcde_alumni_invite_test_guide_20260803.md` — cập nhật hướng dẫn chọn đúng luồng.
+- External follow-up riêng: thêm lựa chọn `Bài tập ABCDE — Tự làm & đối chiếu` vào trường phiên bản của Google Form; không tự sửa Form trong scope implementation này.
+
+### Phases (giai đoạn thực hiện)
+
+1. **Implementation (triển khai):** thêm link và copy, giữ nguyên ID/event handler chatbot; không đổi API, passcode, RAG prompt hoặc Stable fallback.
+2. **Local verification (kiểm chứng local):** kiểm tra HTML link, route `/practice-abcde`, link quay về landing, không có duplicate CTA và không có lỗi console mới.
+3. **Browser UAT (UAT - kiểm thử nghiệm thu người dùng):** desktop `1440×900` và mobile `390×844`; xác nhận RAG Beta vẫn mở modal, worksheet điều hướng đúng, focus/keyboard/touch không lỗi.
+4. **Release gate:** build package từ commit đã duyệt, staged deploy rồi production promote chỉ sau approval Cấp độ 3; chạy live browser evidence độc lập cho cả hai entry point.
+
+### Acceptance criteria (tiêu chí nghiệm thu)
+
+- Landing hiển thị hai lựa chọn, RAG Beta đứng trước và được mô tả là luồng chính.
+- Link worksheet tới đúng `https://delivering-happiness.vercel.app/practice-abcde` và trả `HTTP 200`.
+- Worksheet hiển thị rõ `Bài tập ABCDE — Tự làm & đối chiếu`, không bị gọi là Stable/fallback.
+- Click RAG Beta vẫn yêu cầu passcode và gọi `/api/chat-abcde-rag` ở lượt thực hành bình thường.
+- Click worksheet không gọi `/api/chat-abcde` hoặc `/api/chat-abcde-rag`; chỉ tải dữ liệu worksheet cần thiết.
+- Desktop/mobile không tràn layout; Tab/Enter/Escape và focus visible (hiển thị focus) vẫn hoạt động.
+- Feedback documentation có thể phân biệt `RAG Beta`, `Stable fallback` và `Bài tập ABCDE — Tự làm & đối chiếu`.
+
+### Rollback và approval boundary
+
+- Rollback chỉ cần revert nhóm copy/link/CSS; không rollback API hoặc deployment cũ nếu lỗi chỉ nằm ở CTA.
+- Sửa local/docs được phép sau khi plan này được User duyệt; commit, push, staged deploy, production promote và external Form edit vẫn cần approval riêng.
+- Không stage các UAT runtime artifact (`node_modules`, package metadata hoặc thư mục typo) vào release.
+
+### Trạng thái
+
+`IMPLEMENTATION LOCAL VERIFIED — COMMIT/DEPLOY NOT APPROVED`. Browser UAT local đã xác nhận hai entry point, modal chatbot, route worksheet và responsive desktop/mobile; chưa được claim UI live hoặc production ready.
+
+Evidence local: `C:\Users\vu.hoang\.gemini\antigravity\scratch\worktrees\dh4hn-abcde-global-beta-first-20260803\UAT\abcde-worksheet-entry-20260805\local-browser-result.json` và screenshot desktop/mobile trong cùng thư mục.
+
+Residual local noise: worksheet còn request 404 tới `assets/culturecode_logo_transparent.png` và analytics báo lỗi khi chạy qua local HTTP server; đây là artifact/tài nguyên có sẵn ngoài thay đổi CTA, không phải lỗi route `/practice-abcde` hoặc layout mới.

@@ -1,0 +1,36 @@
+{
+  "target": "local-http://127.0.0.1:4173",
+  "landing": {
+    "href": "/practice-abcde",
+    "text": "📝 Bài tập ABCDE — Tự làm & đối chiếu",
+    "primaryText": "🧠 Trợ lý AI ABCDE — RAG Beta",
+    "noHorizontalOverflow": true,
+    "ctaVisible": true
+  },
+  "chat": {
+    "modalOpened": true,
+    "modalClosed": true
+  },
+  "mobile": {
+    "noHorizontalOverflow": true,
+    "linkVisible": true,
+    "ctaVisible": true
+  },
+  "worksheet": {
+    "status": 200,
+    "title": "Bài Tập Thực Hành Lạc Quan ABCDE — Delivering Happiness",
+    "heading": "Bài Tập Thực HànhLạc Quan ABCDE",
+    "backHref": "/",
+    "noHorizontalOverflow": true
+  },
+  "consoleErrors": [
+    "[Analytics] Tracking error JSHandle@error",
+    "Failed to load resource: the server responded with a status of 404 (File not found)"
+  ],
+  "responseErrors": [
+    {
+      "url": "http://127.0.0.1:4173/assets/culturecode_logo_transparent.png",
+      "status": 404
+    }
+  ]
+}

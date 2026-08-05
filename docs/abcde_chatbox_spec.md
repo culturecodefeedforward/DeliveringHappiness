@@ -115,6 +115,15 @@ sequenceDiagram
     - Khi Vercel API gửi kết quả submit sang Google Apps Script, nó đính kèm trường `chatVersion` (stable/beta) và ký chữ ký HMAC-SHA256 trên toàn bộ JSON payload (bao gồm cả `chatVersion` và `timestamp`/`nonce`).
     - Apps Script ghi nhận thuộc tính `chatVersion` vào cột thứ 10 của bảng tính `ABCDE_Data` và hiển thị phiên bản này trong email báo cáo HTML gửi về cho học viên.
 
+### 3.5. Hai entry point thực hành trên landing page
+
+Landing page có hai cách tiếp cận ABCDE, nhưng chỉ một luồng là trải nghiệm AI chính:
+
+- **Trợ lý AI ABCDE — RAG Beta**: nút `btn-abcde-chat` mở chatbox modal, yêu cầu passcode `ABCDE`, dẫn dắt A–B–C–D–E bằng AI và gửi lượt chat bình thường qua `/api/chat-abcde-rag`. Đây là luồng Beta-first.
+- **Bài tập ABCDE — Tự làm & đối chiếu**: liên kết `/practice-abcde` mở worksheet (trang bài tập), cho phép chọn tình huống, tự điền B–E và đối chiếu với gợi ý từ thư viện khóa học. Luồng này không phải Stable fallback và hiện không gọi endpoint chat.
+
+Không dùng các nhãn `Stable`, `Bản ổn định` hoặc `Phiếu tự luyện tĩnh` để gọi worksheet; Stable chỉ xuất hiện trong chatbox khi RAG Beta gặp lỗi.
+
 
 ---
 
