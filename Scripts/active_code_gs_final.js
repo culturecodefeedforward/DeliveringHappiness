@@ -39,6 +39,17 @@ var DHM9_REGISTRATION_CAP = 40;
 var DEFAULT_INTEREST_URL = 'https://delivering-happiness.vercel.app/interest.html';
 var DEFAULT_DH9_INTEREST_URL = 'https://delivering-happiness.vercel.app/interest_dh9.html';
 var CALLBACK_REGEX = /^dh(?:m8|9)Jsonp_[A-Za-z0-9]{16,40}$/;
+var PROGRAM_INTEREST_CALLBACK_REGEX = /^programInterestJsonp_[A-Za-z0-9]{16,40}$/;
+var PROGRAM_INTEREST_SHEET_NAME = 'Program Interest';
+var PROGRAM_INTEREST_EVENT_ID = 'PROGRAM_INTEREST_V1';
+var PROGRAM_INTEREST_HEADERS = [
+  'Timestamp', 'Interest UUID', 'Họ và tên', 'Email', 'Số điện thoại',
+  'Công ty', 'Vai trò', 'Khu vực mong muốn', 'Chương trình quan tâm',
+  'DHM8', 'DHM9', 'NVC', 'AI', 'DHM kỳ vọng', 'DHM khóa mong muốn',
+  'NVC tình huống', 'NVC mối quan hệ', 'NVC kỳ vọng',
+  'AI mức độ kinh nghiệm', 'AI nhu cầu ứng dụng', 'AI hình thức mong muốn',
+  'Ghi chú', 'Đồng ý liên hệ', 'Source', 'Event ID'
+];
 var DEFAULT_ENVIRONMENT = 'PRODUCTION';
 var DEFAULT_OFFICIAL_ACCOUNT_NUMBER = '8815369431';
 var LEGACY_SEPAY_WEBHOOK_TOKEN = 'DHM8_SECURE_2026';
@@ -674,6 +685,10 @@ function doPost(e) {
       return handleAdminConfigSet_(e, body);
     }
 
+    if (String(body.type || '').toUpperCase() === 'PROGRAM_INTEREST') {
+      return handleProgramInterest_(body);
+    }
+
     if (String(body.type || '').toUpperCase().indexOf('INTEREST') !== -1) {
       return handleInterestLead_(body, detectLaneKeyFromPayload_(body));
     }
@@ -761,6 +776,17 @@ function doGet(e) {
     // Condition 2: chỉ trả success, state, registrationUuid, error - KHÔNG trả PII
     var payload = JSON.stringify(result);
     return ContentService.createTextOutput(callback + '(' + payload + ');')
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+
+  if (action === 'checkProgramInterestStatus') {
+    if (!PROGRAM_INTEREST_CALLBACK_REGEX.test(callback)) {
+      return ContentService.createTextOutput('{"error":"INVALID_CALLBACK"}')
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    var interestStatus = getProgramInterestStatus_(e.parameter.interestUuid || e.parameter.uuid || '');
+    return ContentService
+      .createTextOutput(callback + '(' + JSON.stringify(interestStatus) + ');')
       .setMimeType(ContentService.MimeType.JAVASCRIPT);
   }
 
@@ -1166,6 +1192,252 @@ function handleInterestLead_(data, laneKey) {
 
   writeSystemLog(ss, 'INFO', isDuplicate ? 'Duplicate interest lead' : 'Interest lead saved', uuid);
   return jsonOut({ success: true, state: 'INTEREST_SAVED', interestUuid: uuid, duplicate: isDuplicate });
+}
+
+function isValidProgramInterestUuid_(value) {
+  var uuid = String(value || '').trim();
+  return /^[0-9a-f]{32}$/i.test(uuid) ||
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(uuid);
+}
+
+function sanitizeProgramInterestText_(value, maxLength) {
+  var normalized = String(value || '')
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, ' ')
+    .trim();
+  var limit = Math.max(1, parseInt(maxLength, 10) || 500);
+  if (normalized.length > limit) normalized = normalized.slice(0, limit);
+  if (/^[=+\-@]/.test(normalized)) normalized = "'" + normalized;
+  return normalized;
+}
+
+function normalizeProgramInterestPrograms_(value) {
+  var raw = Array.isArray(value) ? value : String(value || '').split(',');
+  var allowed = ['DHM8', 'DHM9', 'NVC', 'AI', 'PSYCHOLOGICAL_SAFETY', 'CULTURE101'];
+  var result = [];
+  raw.forEach(function(item) {
+    var program = String(item || '').trim().toUpperCase();
+    if (allowed.indexOf(program) !== -1 && result.indexOf(program) === -1) {
+      result.push(program);
+    }
+  });
+  return result;
+}
+
+function formatProgramInterestPrograms_(programs) {
+  return programs.map(function(program) {
+    if (program === 'PSYCHOLOGICAL_SAFETY') return 'An toàn tâm lý';
+    if (program === 'CULTURE101') return 'Culture101';
+    return program;
+  }).join(', ');
+}
+
+function isProgramInterestConsentGranted_(value) {
+  if (value === true) return true;
+  var normalized = String(value || '').trim().toLowerCase();
+  return normalized === 'true' || normalized === 'yes' || normalized === 'on' || normalized === '1';
+}
+
+function validateProgramInterestPayload_(data) {
+  var uuid = String(data.interestUuid || '').trim();
+  var email = String(data.email || '').trim().toLowerCase();
+  var phone = String(data.phone || '').trim();
+  var programs = normalizeProgramInterestPrograms_(data.interestedPrograms);
+  var phoneDigits = phone.replace(/\D/g, '');
+  var lengthLimits = {
+    fullName: 120,
+    email: 254,
+    phone: 24,
+    company: 160,
+    role: 120,
+    preferredLocation: 80,
+    dhmExpectation: 1000,
+    dhmPreferredCohort: 120,
+    nvcSituation: 1200,
+    nvcRelationship: 500,
+    nvcExpectation: 500,
+    aiExperienceLevel: 120,
+    aiUseCase: 1200,
+    aiPreferredFormat: 120,
+    note: 1200,
+    source: 120
+  };
+
+  for (var fieldName in lengthLimits) {
+    if (Object.prototype.hasOwnProperty.call(lengthLimits, fieldName) &&
+        String(data[fieldName] || '').length > lengthLimits[fieldName]) {
+      return { ok: false, error: 'FIELD_TOO_LONG', field: fieldName };
+    }
+  }
+
+  if (!isValidProgramInterestUuid_(uuid)) return { ok: false, error: 'INVALID_UUID' };
+  if (!String(data.fullName || '').trim()) return { ok: false, error: 'MISSING_FULL_NAME' };
+  if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return { ok: false, error: 'INVALID_EMAIL' };
+  }
+  if (!/^[0-9+().\s-]{8,24}$/.test(phone) || phoneDigits.length < 8 || phoneDigits.length > 15) {
+    return { ok: false, error: 'INVALID_PHONE' };
+  }
+  if (!programs.length) return { ok: false, error: 'MISSING_PROGRAM' };
+  if (!isProgramInterestConsentGranted_(data.consent)) {
+    return { ok: false, error: 'CONSENT_REQUIRED' };
+  }
+
+  if (programs.indexOf('NVC') !== -1 &&
+      (!String(data.nvcSituation || '').trim() ||
+       !String(data.nvcRelationship || '').trim() ||
+       !String(data.nvcExpectation || '').trim())) {
+    return { ok: false, error: 'MISSING_NVC_DETAILS' };
+  }
+
+  if (programs.indexOf('AI') !== -1 &&
+      (!String(data.aiExperienceLevel || '').trim() ||
+       !String(data.aiUseCase || '').trim() ||
+       !String(data.aiPreferredFormat || '').trim())) {
+    return { ok: false, error: 'MISSING_AI_DETAILS' };
+  }
+
+  if ((programs.indexOf('DHM8') !== -1 || programs.indexOf('DHM9') !== -1) &&
+      (!String(data.dhmExpectation || '').trim() ||
+       !String(data.dhmPreferredCohort || '').trim())) {
+    return { ok: false, error: 'MISSING_DHM_DETAILS' };
+  }
+
+  var dhmCohort = String(data.dhmPreferredCohort || '').trim();
+  var allowedDhmCohorts = ['DHM8 TP.HCM', 'DHM9 Hà Nội', 'Chương trình tiếp theo'];
+  if (dhmCohort && allowedDhmCohorts.indexOf(dhmCohort) === -1) {
+    return { ok: false, error: 'INVALID_DHM_COHORT' };
+  }
+  if (programs.indexOf('DHM8') !== -1 && programs.indexOf('DHM9') === -1 && dhmCohort === 'DHM9 Hà Nội') {
+    return { ok: false, error: 'DHM_COHORT_MISMATCH' };
+  }
+  if (programs.indexOf('DHM9') !== -1 && programs.indexOf('DHM8') === -1 && dhmCohort === 'DHM8 TP.HCM') {
+    return { ok: false, error: 'DHM_COHORT_MISMATCH' };
+  }
+
+  return {
+    ok: true,
+    uuid: uuid,
+    email: email,
+    phone: phone,
+    programs: programs
+  };
+}
+
+function ensureProgramInterestSheet_(ss) {
+  var sheet = ss.getSheetByName(PROGRAM_INTEREST_SHEET_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(PROGRAM_INTEREST_SHEET_NAME);
+    sheet.appendRow(PROGRAM_INTEREST_HEADERS);
+    sheet.getRange('1:1').setFontWeight('bold').setBackground('#dbeafe');
+    sheet.setFrozenRows(1);
+    return sheet;
+  }
+
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(PROGRAM_INTEREST_HEADERS);
+    sheet.getRange('1:1').setFontWeight('bold').setBackground('#dbeafe');
+    sheet.setFrozenRows(1);
+    return sheet;
+  }
+
+  var existingHeaders = sheet.getRange(1, 1, 1, PROGRAM_INTEREST_HEADERS.length).getValues()[0];
+  for (var i = 0; i < PROGRAM_INTEREST_HEADERS.length; i++) {
+    if (String(existingHeaders[i] || '').trim() !== PROGRAM_INTEREST_HEADERS[i]) {
+      throw new Error('PROGRAM_INTEREST_SCHEMA_MISMATCH');
+    }
+  }
+  return sheet;
+}
+
+function handleProgramInterest_(data) {
+  var validation = validateProgramInterestPayload_(data || {});
+  if (!validation.ok) return jsonOut({ success: false, state: 'error', error: validation.error });
+
+  var ss = getSpreadsheet();
+  var lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  var isDuplicate = false;
+
+  try {
+    var sheet = ensureProgramInterestSheet_(ss);
+    var lastRow = sheet.getLastRow();
+    if (lastRow > 1) {
+      var existingUuids = sheet.getRange(2, 2, lastRow - 1, 1).getValues();
+      for (var i = 0; i < existingUuids.length; i++) {
+        if (String(existingUuids[i][0] || '').trim() === validation.uuid) {
+          isDuplicate = true;
+          break;
+        }
+      }
+    }
+
+    if (!isDuplicate) {
+      var programs = validation.programs;
+      sheet.appendRow([
+        new Date(),
+        validation.uuid,
+        sanitizeProgramInterestText_(data.fullName, 120),
+        sanitizeProgramInterestText_(validation.email, 254),
+        sanitizeProgramInterestText_(validation.phone, 24),
+        sanitizeProgramInterestText_(data.company, 160),
+        sanitizeProgramInterestText_(data.role, 120),
+        sanitizeProgramInterestText_(data.preferredLocation, 80),
+        formatProgramInterestPrograms_(programs),
+        programs.indexOf('DHM8') !== -1 ? 'TRUE' : 'FALSE',
+        programs.indexOf('DHM9') !== -1 ? 'TRUE' : 'FALSE',
+        programs.indexOf('NVC') !== -1 ? 'TRUE' : 'FALSE',
+        programs.indexOf('AI') !== -1 ? 'TRUE' : 'FALSE',
+        sanitizeProgramInterestText_(data.dhmExpectation, 1000),
+        sanitizeProgramInterestText_(data.dhmPreferredCohort, 120),
+        sanitizeProgramInterestText_(data.nvcSituation, 1200),
+        sanitizeProgramInterestText_(data.nvcRelationship, 500),
+        sanitizeProgramInterestText_(data.nvcExpectation, 500),
+        sanitizeProgramInterestText_(data.aiExperienceLevel, 120),
+        sanitizeProgramInterestText_(data.aiUseCase, 1200),
+        sanitizeProgramInterestText_(data.aiPreferredFormat, 120),
+        sanitizeProgramInterestText_(data.note, 1200),
+        'TRUE',
+        'Web_Program_Interest',
+        PROGRAM_INTEREST_EVENT_ID
+      ]);
+    }
+  } finally {
+    lock.releaseLock();
+  }
+
+  writeSystemLog(
+    ss,
+    'INFO',
+    isDuplicate ? 'Duplicate program interest' : 'Program interest saved',
+    validation.uuid
+  );
+  return jsonOut({
+    success: true,
+    state: 'recorded',
+    interestUuid: validation.uuid,
+    duplicate: isDuplicate
+  });
+}
+
+function getProgramInterestStatus_(interestUuid) {
+  var uuid = String(interestUuid || '').trim();
+  if (!isValidProgramInterestUuid_(uuid)) {
+    return { success: false, state: 'error', error: 'INVALID_UUID' };
+  }
+
+  var ss = getSpreadsheet();
+  var sheet = ss.getSheetByName(PROGRAM_INTEREST_SHEET_NAME);
+  if (!sheet || sheet.getLastRow() <= 1) {
+    return { success: true, state: 'not_found', interestUuid: uuid };
+  }
+
+  var existingUuids = sheet.getRange(2, 2, sheet.getLastRow() - 1, 1).getValues();
+  for (var i = 0; i < existingUuids.length; i++) {
+    if (String(existingUuids[i][0] || '').trim() === uuid) {
+      return { success: true, state: 'recorded', interestUuid: uuid };
+    }
+  }
+  return { success: true, state: 'not_found', interestUuid: uuid };
 }
 
 // ─── HANDLE SEPAY WEBHOOK ─────────────────────────────────────

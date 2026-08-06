@@ -54,6 +54,12 @@
       "sourceFile": "dh8/index.html",
       "expectedTexts": ["Đăng ký DH Masterclass - CultureCode", "crmForm"],
       "forbiddenTexts": []
+    },
+    {
+      "path": "/program-interest",
+      "sourceFile": "program-interest.html",
+      "expectedTexts": ["id=\"interest-form\"", "PROGRAM_INTEREST_V1", "checkProgramInterestStatus"],
+      "forbiddenTexts": []
     }
   ]
 }
