@@ -669,6 +669,17 @@
       function showStatus(message, state) {
         statusBox.textContent = message;
         statusBox.className = 'status is-visible is-' + state;
+        if (state !== 'error') delete statusBox.dataset.errorCode;
+      }
+
+      function createStatusError(code) {
+        var error = new Error(code);
+        error.code = code;
+        return error;
+      }
+
+      function getErrorCode(error) {
+        return error && (error.code || error.message) || 'STATUS_ERROR';
       }
 
       function createHexToken() {
@@ -745,11 +756,12 @@
         });
       }
 
-      function requestProgramInterestStatus(uuid) {
+      function requestProgramInterestStatus(uuid, timeoutMilliseconds) {
         return new Promise(function (resolve, reject) {
           var callbackName = 'programInterestJsonp_' + createHexToken();
           var script = document.createElement('script');
           var settled = false;
+          var requestTimeout = Math.min(8000, Math.max(1, timeoutMilliseconds || 8000));
 
           function cleanup() {
             window.clearTimeout(timeoutId);
@@ -773,12 +785,12 @@
           };
 
           script.onerror = function () {
-            finish(reject, new Error('STATUS_NETWORK_ERROR'));
+            finish(reject, createStatusError('STATUS_NETWORK_ERROR'));
           };
 
           var timeoutId = window.setTimeout(function () {
-            finish(reject, new Error('STATUS_TIMEOUT'));
-          }, 8000);
+            finish(reject, createStatusError('STATUS_TIMEOUT'));
+          }, requestTimeout);
 
           var query = new URLSearchParams({
             action: 'checkProgramInterestStatus',
@@ -792,23 +804,57 @@
       }
 
       async function confirmRecorded(uuid) {
-        for (var attempt = 0; attempt < 5; attempt++) {
+        var maxAttempts = 4;
+        var confirmationBudget = 45000;
+        var startedAt = Date.now();
+        var lastError = null;
+        var attempts = 0;
+
+        for (var attempt = 0; attempt < maxAttempts; attempt++) {
+          var remaining = confirmationBudget - (Date.now() - startedAt);
+          if (remaining <= 0) break;
+          attempts = attempt + 1;
+          showStatus('Đang gửi thông tin và xác nhận lần ' + attempts + '/' + maxAttempts + '.', 'pending');
+
           try {
-            var result = await requestProgramInterestStatus(uuid);
+            var result = await requestProgramInterestStatus(uuid, remaining);
             if (result && result.state === 'recorded' && result.interestUuid === uuid) return true;
             if (result && result.state === 'recorded' && result.interestUuid !== uuid) {
-              throw new Error('STATUS_UUID_MISMATCH');
+              var mismatchError = createStatusError('STATUS_UUID_MISMATCH');
+              mismatchError.attempts = attempts;
+              throw mismatchError;
             }
-            if (result && result.state === 'error') throw new Error(result.error || 'STATUS_ERROR');
+            if (result && result.state === 'error') {
+              var resultCode = String(result.error || 'STATUS_ERROR');
+              if (resultCode === 'INVALID_UUID') {
+                var invalidUuidError = createStatusError(resultCode);
+                invalidUuidError.attempts = attempts;
+                throw invalidUuidError;
+              }
+              lastError = createStatusError(resultCode);
+            } else if (result && result.state === 'not_found') {
+              lastError = createStatusError('STATUS_NOT_FOUND');
+            } else {
+              lastError = createStatusError('STATUS_UNKNOWN_RESPONSE');
+            }
           } catch (error) {
-            if (error && (error.message === 'STATUS_UUID_MISMATCH' || error.message === 'STATUS_ERROR' || error.message === 'STATUS_TIMEOUT')) {
+            var errorCode = getErrorCode(error);
+            if (errorCode === 'STATUS_UUID_MISMATCH' || errorCode === 'INVALID_UUID') {
               throw error;
             }
-            if (attempt === 4) throw error;
+            lastError = createStatusError(errorCode);
           }
-          await wait(1200 + attempt * 500);
+
+          remaining = confirmationBudget - (Date.now() - startedAt);
+          if (attempt < maxAttempts - 1 && remaining > 0) {
+            await wait(Math.min(1200 + attempt * 500, remaining));
+          }
         }
-        return false;
+
+        var unavailable = createStatusError('CONFIRMATION_UNAVAILABLE');
+        unavailable.lastStatusCode = lastError ? getErrorCode(lastError) : 'STATUS_TIMEOUT';
+        unavailable.attempts = attempts;
+        throw unavailable;
       }
 
       programInputs.forEach(function (input) {
@@ -846,15 +892,19 @@
         showStatus('Đang gửi thông tin và chờ hệ thống xác nhận ghi nhận.', 'pending');
 
         try {
-          await fetch(WEBAPP_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
+          try {
+            await fetch(WEBAPP_URL, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+          } catch (postError) {
+            // no-cors không cho đọc response; vẫn xác nhận theo cùng UUID vì backend có thể đã ghi.
+            console.warn({ code: 'POST_NETWORK_ERROR', attempts: 0 });
+          }
 
-          var recorded = await confirmRecorded(uuid);
-          if (!recorded) throw new Error('NOT_CONFIRMED');
+          await confirmRecorded(uuid);
 
           form.reset();
           pendingInterestUuid = '';
@@ -863,7 +913,16 @@
           showStatus('CultureCode Team đã ghi nhận thông tin quan tâm của bạn. Chúng tôi sẽ liên hệ khi có chương trình phù hợp.', 'success');
           statusBox.focus();
         } catch (error) {
-          showStatus('Hệ thống chưa xác nhận đã ghi nhận. Vui lòng kiểm tra kết nối và thử gửi lại; CultureCode chưa coi lượt này là thành công.', 'error');
+          var errorCode = getErrorCode(error);
+          statusBox.dataset.errorCode = errorCode;
+          console.warn({ code: errorCode, attempts: error && error.attempts || undefined });
+          if (errorCode === 'INVALID_UUID') {
+            showStatus('Hệ thống không thể xác nhận mã gửi. Vui lòng tải lại trang và thử lại.', 'error');
+          } else if (errorCode === 'STATUS_UUID_MISMATCH') {
+            showStatus('Hệ thống trả về mã xác nhận không khớp. Vui lòng thử lại; mã hiện tại vẫn được giữ để tránh tạo dòng trùng.', 'error');
+          } else {
+            showStatus('Hệ thống chưa kiểm tra được trạng thái ghi nhận. Bạn có thể bấm gửi lại; hệ thống sẽ dùng cùng mã và không tạo dòng trùng.', 'error');
+          }
           statusBox.focus();
         } finally {
           submitButton.disabled = false;

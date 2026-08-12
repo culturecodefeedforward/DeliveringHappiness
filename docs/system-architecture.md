@@ -122,6 +122,41 @@ sequenceDiagram
     Web->>User: Hiển thị bảng đối chiếu song song song (Side-by-Side Grid)
 ```
 
+### E. Luồng Program Interest (xác nhận ghi nhận quan tâm)
+
+Form [`program-interest.html`](../program-interest.html) gửi `POST` (yêu cầu ghi
+dữ liệu) tới Google Apps Script bằng `no-cors` (gửi khác miền nhưng không đọc
+được phản hồi trực tiếp), sau đó hỏi trạng thái bằng `JSONP` (gọi kiểm tra khác
+miền qua thẻ script) theo cùng `interestUuid` (mã định danh lượt gửi).
+
+```mermaid
+sequenceDiagram
+    participant User as Người dùng (Browser)
+    participant Web as Vercel /program-interest
+    participant GAS as Google Apps Script Web App
+    participant Sheet as Google Sheets / Program Interest
+
+    User->>Web: Submit payload + interestUuid
+    Web->>GAS: POST no-cors (PROGRAM_INTEREST)
+    GAS->>Sheet: Kiểm tra UUID rồi append nếu chưa tồn tại
+    User->>GAS: JSONP checkProgramInterestStatus (cùng UUID)
+    GAS->>Sheet: Đọc cột UUID
+    GAS-->>User: recorded / not_found / error
+    Note over User: Retry tối đa 4 lần trong ngân sách 45 giây
+    Note over User: INVALID_UUID và UUID mismatch dừng ngay
+    User-->>User: Hết ngân sách hiển thị “chưa kiểm tra được”
+```
+
+Luồng này giữ nguyên UUID khi gửi lại cùng payload để backend thực thi
+`idempotency` (gửi lại không tạo dòng trùng). Vì `no-cors` không quan sát được
+phản hồi `POST`, việc xác nhận trạng thái vẫn chạy ngay cả khi lời gọi `POST`
+phát sinh lỗi mạng. Frontend chỉ ghi `errorCode` (mã lỗi) và số lần thử vào
+DOM/console; không ghi họ tên, email hoặc số điện thoại vào URL/log.
+
+Backend hiện hành và schema không đổi: Apps Script deployment `@69`, tab
+`Program Interest`, 25 cột. Thay đổi Option A chỉ nằm ở máy trạng thái gửi/xác
+nhận của frontend.
+
 ## 2. Các Thành phần Kỹ thuật (Technical Components)
 
 ### A. Giao diện Client (Frontend)

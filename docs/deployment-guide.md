@@ -13,9 +13,31 @@ Giao diện trang web (HTML/CSS/JS tĩnh) được deploy tự động lên **Ve
     *   *Trang đăng ký DHM8:* `https://delivering-happiness.vercel.app/register.html`
     *   *Trang đăng ký DHM9 Hà Nội:* `https://delivering-happiness.vercel.app/register_dh9_hanoi.html`
     *   *Trang thực hành ABCDE:* `https://delivering-happiness.vercel.app/practice-abcde`
+    *   *Form Program Interest:* `https://delivering-happiness.vercel.app/program-interest`
 2.  **Nhánh Preview/LMS (Bài học học viên):** Các cập nhật bài giảng cho học viên cũ được đẩy lên nhánh `07042026` và deploy lên môi trường Preview tương ứng.
 3.  **Cấu hình dự án:** Tệp cấu hình `vercel.json` ở thư mục gốc chứa các quy tắc chuyển hướng hoặc header bảo mật (nếu có).
 4.  **Cảnh báo .vercelignore:** Để tránh Vercel bỏ qua các thư mục con trùng tên (ví dụ: `data/artifacts` bị nhận diện nhầm do dòng `Artifacts/` trong file cấu hình), bắt buộc phải dùng dấu gạch chéo ở đầu để khóa cứng đường dẫn gốc (như `/Artifacts/`, `/UAT/`, `/Implementation Plan/`).
+
+### Kiểm thử xác nhận Program Interest trước phát hành
+
+Sau khi sửa frontend, chạy regression test (kiểm thử hồi quy) local từ worktree
+sạch:
+
+```text
+node UAT/program_interest_confirmation_reliability_20260812.js
+```
+
+Test phải chứng minh timeout/network vẫn retry, `POST` lỗi vẫn kiểm tra trạng
+thái, lỗi `INVALID_UUID`/UUID mismatch dừng ngay, fallback UUID là 32 ký tự hex,
+gửi lại dùng cùng UUID và không có PII (Personally Identifiable Information - dữ
+liệu định danh cá nhân) trong URL/console. Ca desktop dùng viewport 1440x900 và
+mobile dùng 390x844.
+
+Staged deployment (bản triển khai thử) phải được kiểm tra route
+`/program-interest` trước khi xin promote (đưa bản thử lên production). Live UAT
+ghi đúng một dòng dữ liệu giả có UUID mới vào tab `Program Interest`, đọc lại
+trạng thái `recorded`, sau đó gửi lại cùng UUID để xác nhận số dòng không tăng.
+Không xóa dòng UAT; không sửa Apps Script, token, env hoặc schema trong Option A.
 
 ---
 
