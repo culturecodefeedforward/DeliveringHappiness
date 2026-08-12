@@ -20,24 +20,48 @@ Giao diện trang web (HTML/CSS/JS tĩnh) được deploy tự động lên **Ve
 
 ### Kiểm thử xác nhận Program Interest trước phát hành
 
-Sau khi sửa frontend, chạy regression test (kiểm thử hồi quy) local từ worktree
-sạch:
+Đích ghi runtime là [CRM Google Sheet — tab Program Interest](https://docs.google.com/spreadsheets/d/1ZToRX6J5Vo6UgHzYEE_eUxU0bVnsGxBRLt-8tduI5CA/edit?gid=903619227#gid=903619227).
+Không dùng `.clasp.json.parentId` để suy ra Sheet; runtime target phải khớp
+`SPREADSHEET_ID` trong `Script Properties` hoặc read-back có thẩm quyền.
+Frontend gọi Apps Script deployment `@69` qua endpoint
+`AKfycbxMi_bQBceGxVK_TjbcU5rQNAaLyUXOMuQJHyYWCwdeoWlsccq2kFkhRYVG2meySCsPdA/exec`;
+không đổi endpoint trong Option A2.
+
+Sau khi sửa frontend, chạy `regression test` (kiểm thử hồi quy) local từ
+`worktree` (nhánh làm việc tách biệt) sạch:
 
 ```text
 node UAT/program_interest_confirmation_reliability_20260812.js
 ```
 
-Test phải chứng minh timeout/network vẫn retry, `POST` lỗi vẫn kiểm tra trạng
-thái, lỗi `INVALID_UUID`/UUID mismatch dừng ngay, fallback UUID là 32 ký tự hex,
-gửi lại dùng cùng UUID và không có PII (Personally Identifiable Information - dữ
-liệu định danh cá nhân) trong URL/console. Ca desktop dùng viewport 1440x900 và
-mobile dùng 390x844.
+Test A2 phải chứng minh:
 
-Staged deployment (bản triển khai thử) phải được kiểm tra route
-`/program-interest` trước khi xin promote (đưa bản thử lên production). Live UAT
-ghi đúng một dòng dữ liệu giả có UUID mới vào tab `Program Interest`, đọc lại
-trạng thái `recorded`, sau đó gửi lại cùng UUID để xác nhận số dòng không tăng.
-Không xóa dòng UAT; không sửa Apps Script, token, env hoặc schema trong Option A.
+1. 10 lần polling, timeout 12 giây/lần và delay 4 giây; timeout/network không
+   làm mất UUID.
+2. UUID, payload fingerprint dạng hash và phase nằm trong `sessionStorage`
+   (bộ nhớ theo phiên trình duyệt), nhưng payload/PII (Personally Identifiable
+   Information - dữ liệu định danh cá nhân) không nằm trong storage, URL hoặc console.
+3. Reload tự poll cùng UUID và không POST.
+4. Submit lại cùng payload luôn preflight trước POST; nếu đã `recorded` thì
+   không POST, nếu chưa xác nhận thì POST cùng UUID.
+5. Nút **Kiểm tra lại** chỉ poll; số POST không tăng.
+6. `INVALID_UUID` và UUID mismatch dừng ngay; UUID fallback vẫn là 32 hex.
+7. Chrome desktop 1440×900, Brave mobile 390×844 và Chrome ẩn danh đều đạt;
+   mọi request Apps Script thật bị request interception chặn, nên external
+   writes phải là `NONE` và `Apps Script requests continued` phải bằng `0`.
+
+Sau local gate, tạo `release package` (gói phát hành) từ đúng commit bất biến và
+chạy staged deployment (bản triển khai thử) bằng `vercel --prod --skip-domain`.
+Không dùng checkout bẩn và không gắn production domain ở bước này. Kiểm tra
+`/program-interest` cùng toàn bộ route contract, source hash, project ID,
+deployment ID và provenance trước khi xin promote (đưa bản thử lên production).
+
+Chỉ sau khi production alias trỏ đúng release và có phê duyệt Cấp độ 3, live
+UAT ghi đúng một dòng giả với UUID mới vào tab `Program Interest`, đọc lại
+`recorded`, rồi POST lại cùng UUID để chứng minh số dòng ở tab không tăng.
+Không xóa dòng UAT. Option A2 không sửa Apps Script, token, env, schema hoặc
+panel khóa học. Rollback frontend là promote lại deployment production liền
+trước; không rollback Apps Script vì backend không đổi.
 
 ---
 
@@ -91,13 +115,18 @@ Không tự ý sửa URL trực tiếp trong mã nguồn backend. Mọi URL và 
 1.  Truy cập bảng điều khiển Vercel của dự án.
 2.  Cấu hình các biến môi trường sau:
     *   `DHM8_APPS_SCRIPT_URL`: URL Web App mới deploy ở Bước 3.
-    *   `DHM8_APPS_SCRIPT_TOKEN`: Token dùng để ký mã HMAC (Ví dụ: `shared-token-key-2026`).
-    *   `GEMINI_API_KEY`: API Key của Google Gemini dùng để chạy chatbot Socratic.
+    *   `DHM8_APPS_SCRIPT_TOKEN`: Token ký mã HMAC; giá trị thật chỉ nằm trong
+        Vercel secret store, không ghi vào repo/tài liệu.
+    *   `GEMINI_API_KEY`: Khóa API của Google Gemini; giá trị thật chỉ nằm trong
+        secret store, không ghi vào repo/tài liệu.
     *   `GEMINI_MODEL`: Model sử dụng (mặc định: `gemini-3.1-flash-lite`).
-3.  Chạy deploy lại dự án để áp dụng các biến môi trường mới:
+3.  Tạo staged deployment để áp dụng các biến môi trường mới; chưa gắn production
+    domain cho tới khi UAT 3 lớp và provenance đạt:
     ```bash
-    vercel --prod --yes
+    vercel --prod --skip-domain --yes
     ```
+4.  Chỉ chạy `vercel promote <deployment-url-or-id>` sau phê duyệt Cấp độ 3 cho
+    deployment ID cụ thể và rollback target cụ thể.
 
 ---
 
@@ -110,7 +139,7 @@ Không tự ý sửa URL trực tiếp trong mã nguồn backend. Mọi URL và 
 | `ENVIRONMENT` | `PRODUCTION` hoặc `STAGING` |
 | `SPREADSHEET_ID` | ID của Google Sheet CRM chính |
 | `SEPAY_WEBHOOK_TOKEN` | Token bí mật dùng để xác thực webhook thanh toán từ SePay |
-| `OFFICIAL_ACCOUNT_NUMBER` | Số tài khoản ngân hàng chính thức nhận tiền (`8815369431`) |
+| `OFFICIAL_ACCOUNT_NUMBER` | Số tài khoản vận hành; đọc từ runtime property, không ghi giá trị vào repo |
 | `KILL_SWITCH_EMAIL` | Đặt là `true` để tạm dừng tất cả các hoạt động gửi email |
 | `KILL_SWITCH_REGISTRATION` | Đặt là `true` để tạm dừng nhận đăng ký mới |
 | `KILL_SWITCH_PV` | Đặt là `true` để đóng cổng khảo sát Giá trị Cốt lõi |

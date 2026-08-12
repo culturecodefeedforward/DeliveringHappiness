@@ -1,0 +1,241 @@
+{
+  "verdict": "LOCAL_A2_UAT_VERIFIED",
+  "sourceRoot": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\worktrees\\dh4hn-website\\program-interest-a2-20260812",
+  "formSha256": "db3e57621fa0461e5af0b7f424c1245bae4d669c639a3a2e3ea48bcd99d8d34f",
+  "externalWrites": "NONE",
+  "appsScriptRequestsContinued": 0,
+  "results": [
+    {
+      "id": "AT-A2-01",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 2,
+      "appsScriptRequestsContinued": 0
+    },
+    {
+      "id": "AT-A2-02",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 1,
+      "appsScriptRequestsContinued": 0
+    },
+    {
+      "id": "AT-A2-03",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 10,
+      "appsScriptRequestsContinued": 0,
+      "retryButton": true,
+      "screenshot": "chrome-retry-desktop-1440x900.png"
+    },
+    {
+      "id": "AT-A2-04",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 11,
+      "appsScriptRequestsContinued": 0,
+      "postDelta": 0,
+      "statusDelta": 1
+    },
+    {
+      "id": "AT-A2-05",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 11,
+      "appsScriptRequestsContinued": 0,
+      "postDeltaAfterReload": 0,
+      "recoveredUuid": "8818ab2c-44d6-42c3-9f32-7d05b1263ad0"
+    },
+    {
+      "id": "AT-A2-06",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 11,
+      "appsScriptRequestsContinued": 0,
+      "postDelta": 0
+    },
+    {
+      "id": "AT-A2-07",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 2,
+      "statusCount": 12,
+      "appsScriptRequestsContinued": 0,
+      "sameUuid": true
+    },
+    {
+      "id": "AT-A2-08",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 2,
+      "statusCount": 11,
+      "appsScriptRequestsContinued": 0,
+      "newUuid": true
+    },
+    {
+      "id": "AT-A2-09-invalid",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 11,
+      "appsScriptRequestsContinued": 0,
+      "errorCode": "INVALID_UUID",
+      "postDelta": 0
+    },
+    {
+      "id": "AT-A2-09-mismatch",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 11,
+      "appsScriptRequestsContinued": 0,
+      "errorCode": "STATUS_UUID_MISMATCH",
+      "postDelta": 0
+    },
+    {
+      "id": "AT-A2-10",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 10,
+      "appsScriptRequestsContinued": 0,
+      "storageKeys": [
+        "PROGRAM_INTEREST_pending_v2"
+      ]
+    },
+    {
+      "id": "AT-A2-G01",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 1,
+      "appsScriptRequestsContinued": 0,
+      "fallbackUuidFormat": "32_HEX"
+    },
+    {
+      "id": "AT-A2-G02",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 10,
+      "appsScriptRequestsContinued": 0,
+      "sanitizedErrorCode": "CONFIRMATION_UNAVAILABLE"
+    },
+    {
+      "id": "AT-A2-11-chrome",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 1,
+      "appsScriptRequestsContinued": 0,
+      "screenshot": "chrome-desktop-1440x900.png",
+      "fallbackUuidFormat": null
+    },
+    {
+      "id": "AT-A2-11-brave",
+      "browser": "brave",
+      "browserVersion": "Chrome/151.0.7922.108",
+      "incognito": false,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "postCount": 1,
+      "statusCount": 1,
+      "appsScriptRequestsContinued": 0,
+      "screenshot": "brave-mobile-390x844.png",
+      "fallbackUuidFormat": "32_HEX"
+    },
+    {
+      "id": "AT-A2-11-chrome-incognito",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "postCount": 1,
+      "statusCount": 1,
+      "appsScriptRequestsContinued": 0,
+      "screenshot": null,
+      "fallbackUuidFormat": "32_HEX"
+    }
+  ]
+}

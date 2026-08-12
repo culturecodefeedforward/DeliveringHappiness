@@ -1,0 +1,8 @@
+{
+  "verdict": "EXPECTED_BASELINE_FAILURE",
+  "baselineLabel": "b9b18c0c860e059ef616ce9df5dcb0b3d054d301",
+  "currentTest": "AT-A2-03 ten attempts and AT-A2-04 check only retry",
+  "sourceRoot": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\worktrees\\dh4hn_program_interest_fix_20260812",
+  "error": "4 == 10",
+  "externalWrites": "NONE"
+}

@@ -122,40 +122,86 @@ sequenceDiagram
     Web->>User: Hiển thị bảng đối chiếu song song song (Side-by-Side Grid)
 ```
 
-### E. Luồng Program Interest (xác nhận ghi nhận quan tâm)
+### E. Luồng ghi nhận quan tâm nhiều chương trình (Program Interest)
 
-Form [`program-interest.html`](../program-interest.html) gửi `POST` (yêu cầu ghi
-dữ liệu) tới Google Apps Script bằng `no-cors` (gửi khác miền nhưng không đọc
-được phản hồi trực tiếp), sau đó hỏi trạng thái bằng `JSONP` (gọi kiểm tra khác
-miền qua thẻ script) theo cùng `interestUuid` (mã định danh lượt gửi).
+`program-interest.html` là form ghi nhận quan tâm cho DHM8, DHM9, NVC, AI,
+An toàn tâm lý và Culture101. Đây không phải form giữ chỗ, đăng ký chính thức
+hay thanh toán.
+
+**Đích dữ liệu thật:** [CRM Google Sheet — tab Program Interest](https://docs.google.com/spreadsheets/d/1ZToRX6J5Vo6UgHzYEE_eUxU0bVnsGxBRLt-8tduI5CA/edit?gid=903619227#gid=903619227).
+
+- Spreadsheet ID: `1ZToRX6J5Vo6UgHzYEE_eUxU0bVnsGxBRLt-8tduI5CA`.
+- Tab: `Program Interest`; `gid=903619227`.
+- Frontend endpoint: Google Apps Script deployment `@69`, ID
+  `AKfycbxMi_bQBceGxVK_TjbcU5rQNAaLyUXOMuQJHyYWCwdeoWlsccq2kFkhRYVG2meySCsPdA`.
+- Giá trị `SPREADSHEET_ID` chạy thật nằm trong `Script Properties` (thuộc tính
+  runtime của Apps Script). `parentId` trong `.clasp.json` chỉ là metadata của
+  Apps Script container, không phải bằng chứng cho đích ghi runtime.
 
 ```mermaid
 sequenceDiagram
-    participant User as Người dùng (Browser)
+    participant User as Người dùng
     participant Web as Vercel /program-interest
-    participant GAS as Google Apps Script Web App
-    participant Sheet as Google Sheets / Program Interest
+    participant Session as sessionStorage
+    participant GAS as Google Apps Script @69
+    participant Sheet as Google Sheet / Program Interest
 
-    User->>Web: Submit payload + interestUuid
-    Web->>GAS: POST no-cors (PROGRAM_INTEREST)
-    GAS->>Sheet: Kiểm tra UUID rồi append nếu chưa tồn tại
-    User->>GAS: JSONP checkProgramInterestStatus (cùng UUID)
-    GAS->>Sheet: Đọc cột UUID
-    GAS-->>User: recorded / not_found / error
-    Note over User: Retry tối đa 4 lần trong ngân sách 45 giây
-    Note over User: INVALID_UUID và UUID mismatch dừng ngay
-    User-->>User: Hết ngân sách hiển thị “chưa kiểm tra được”
+    User->>Web: Điền form và chọn chương trình
+    Web->>Web: Tạo interestUuid + payload fingerprint 64 hex
+    Web->>Session: Lưu UUID, hash, phase; không lưu payload/PII
+    alt Payload đang pending từ lần trước
+        Web->>GAS: JSONP preflight theo cùng UUID
+        GAS->>Sheet: Tìm UUID ở cột B
+        GAS-->>Web: recorded / not_found / error
+        alt recorded và UUID khớp
+            Web-->>User: Thành công; không POST lại
+        else chưa xác nhận hoặc lỗi tạm thời
+            Web->>GAS: POST no-cors cùng UUID (PROGRAM_INTEREST)
+        end
+    else Payload mới
+        Web->>GAS: POST no-cors (PROGRAM_INTEREST)
+    end
+    GAS->>Sheet: Lock, kiểm tra UUID cột B, append 25 cột nếu chưa có
+    loop Tối đa 10 lần, timeout 12 giây, cách 4 giây
+        Web->>GAS: JSONP checkProgramInterestStatus
+        GAS->>Sheet: Đọc cột B theo UUID
+        GAS-->>Web: recorded / not_found / error
+    end
+    alt recorded và UUID khớp
+        Web->>Session: Xóa pending state
+        Web-->>User: CultureCode Team đã ghi nhận
+    else chưa kiểm tra được
+        Web-->>User: Hiện nút Kiểm tra lại
+        User->>Web: Bấm Kiểm tra lại
+        Web->>GAS: Chỉ JSONP polling; không POST
+    end
 ```
 
-Luồng này giữ nguyên UUID khi gửi lại cùng payload để backend thực thi
-`idempotency` (gửi lại không tạo dòng trùng). Vì `no-cors` không quan sát được
-phản hồi `POST`, việc xác nhận trạng thái vẫn chạy ngay cả khi lời gọi `POST`
-phát sinh lỗi mạng. Frontend chỉ ghi `errorCode` (mã lỗi) và số lần thử vào
-DOM/console; không ghi họ tên, email hoặc số điện thoại vào URL/log.
+#### Hợp đồng dữ liệu (data contract - cấu trúc dữ liệu chuẩn)
 
-Backend hiện hành và schema không đổi: Apps Script deployment `@69`, tab
-`Program Interest`, 25 cột. Thay đổi Option A chỉ nằm ở máy trạng thái gửi/xác
-nhận của frontend.
+| Vùng cột | Nội dung | Quy tắc |
+|---|---|---|
+| A | Timestamp | Apps Script tạo khi ghi |
+| B | Interest UUID | Khóa `idempotency` (gửi lại không tạo dòng trùng); 32 hex hoặc UUID chuẩn |
+| C–H | Họ tên, email, điện thoại, công ty, vai trò, khu vực | Chuẩn hóa và giới hạn độ dài ở backend |
+| I | Chương trình quan tâm | Danh sách mã chương trình hợp lệ |
+| J–M | Cờ DHM8, DHM9, NVC, AI | Backend tạo từ danh sách chương trình |
+| N–U | Câu trả lời chi tiết theo chương trình | Chỉ ghi phần tương ứng chương trình đã chọn |
+| V–W | Ghi chú, đồng ý liên hệ | `consent` bắt buộc |
+| X–Y | Source, Event ID | `Web_Program_Interest`, `PROGRAM_INTEREST_V1` |
+
+Option A2 chỉ thay đổi frontend. Fingerprint dùng SHA-256 khi Web Crypto khả dụng
+và fallback về hash 64 hex không chứa payload thô. `sessionStorage` lưu đúng một state gồm version,
+UUID, fingerprint 64 ký tự hex, phase và timestamp; không lưu họ tên, email,
+điện thoại, ghi chú hoặc payload thô. Reload tự kiểm tra UUID đang pending và
+không tự POST. `INVALID_UUID`/UUID mismatch dừng ngay; timeout, lỗi mạng,
+`not_found` và lỗi upstream tạm thời mới được thử lại.
+
+Backend và `schema` (cấu trúc dữ liệu chuẩn) 25 cột không đổi. Apps Script dùng
+`LockService`, tìm UUID ở cột B trước `appendRow`; POST lại cùng UUID không tạo
+dòng Program Interest thứ hai. Handler này không gọi luồng email, thanh toán hay
+giữ chỗ. Kết quả A2 hiện mới được kiểm chứng local bằng request interception;
+ghi/read-back Sheet thật phải chờ phê duyệt Cấp độ 3 của release A2.
 
 ## 2. Các Thành phần Kỹ thuật (Technical Components)
 

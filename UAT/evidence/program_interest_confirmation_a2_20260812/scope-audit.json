@@ -1,0 +1,16 @@
+{
+  "claimLevel": "VERIFIED",
+  "sourceBaseline": "b9b18c0c860e059ef616ce9df5dcb0b3d054d301",
+  "sourceBaselinePath": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\worktrees\\dh4hn_program_interest_fix_20260812\\program-interest.html",
+  "a2SourcePath": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\worktrees\\dh4hn-website\\program-interest-a2-20260812\\program-interest.html",
+  "a2SourceSha256": "db3e57621fa0461e5af0b7f424c1245bae4d669c639a3a2e3ea48bcd99d8d34f",
+  "panelMarkupSha256Baseline": "A19B5528E501EE333B58B0075B6907E8593ABA265DC654BFEF13B465529848CF",
+  "panelMarkupSha256A2": "A19B5528E501EE333B58B0075B6907E8593ABA265DC654BFEF13B465529848CF",
+  "panelMarkupUnchanged": true,
+  "backendFilesChanged": false,
+  "appsScriptChanged": false,
+  "schemaChanged": false,
+  "envChanged": false,
+  "externalWrites": "NONE",
+  "appsScriptRequestsContinued": 0
+}

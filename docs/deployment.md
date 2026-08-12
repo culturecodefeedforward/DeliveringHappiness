@@ -25,10 +25,14 @@ Tên `projectName` trong `.vercel/project.json` có thể là display name cũ s
 4. Deploy staged production target nhưng không gắn domain:
 
    ```powershell
-   vercel --cwd "<absolute-clean-output-dir>" --prod --skip-domain --yes
+   vercel --cwd "<absolute-clean-output-dir>" `
+     --project prj_WmpFNOKRpCmjkhvKAWAWLaTZOK9I `
+     --scope team_EYFhiG6AAZHxuxmOMgk4wsS7 `
+     --prod --skip-domain --yes
    ```
 
-5. Chạy staged UAT cho đủ 6 routes, header provenance và browser desktop/mobile:
+5. Chạy staged UAT cho đủ 7 routes (6 route lõi và `/program-interest`), header
+   provenance và browser desktop/mobile:
 
    ```powershell
    node Scripts/verify_vercel_live_gate.js `

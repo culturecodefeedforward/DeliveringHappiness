@@ -378,6 +378,24 @@
     .status.is-error { color: #7b1f1f; background: #fdeaea; }
     .status.is-success { color: #0f5435; background: #e2f4ea; }
 
+    .retry-confirmation-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      margin-top: 12px;
+      padding: 9px 16px;
+      color: #7b1f1f;
+      background: #fff;
+      border: 2px solid currentColor;
+      border-radius: 9px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .retry-confirmation-button:disabled { cursor: wait; opacity: 0.65; }
+
     .form-footer {
       padding: 20px clamp(22px, 5vw, 48px);
       color: #e7ecfb;
@@ -608,8 +626,14 @@
       var submitButton = document.getElementById('submit-button');
       var statusBox = document.getElementById('form-status');
       var programError = document.getElementById('program-error');
+      var PENDING_STATE_KEY = 'PROGRAM_INTEREST_pending_v2';
+      var PENDING_STATE_VERSION = 2;
+      var STATUS_MAX_ATTEMPTS = 10;
+      var STATUS_TIMEOUT_MS = 12000;
+      var STATUS_POLL_DELAY_MS = 4000;
       var pendingInterestUuid = '';
       var pendingPayloadFingerprint = '';
+      var confirmationRunning = false;
       var programInputs = Array.from(document.querySelectorAll('input[name="program"]'));
       var panelConfig = [
         { id: 'dhm-details', programs: ['DHM8', 'DHM9'] },
@@ -679,7 +703,9 @@
       }
 
       function getErrorCode(error) {
-        return error && (error.code || error.message) || 'STATUS_ERROR';
+        var rawCode = error && (error.code || error.message) || 'STATUS_ERROR';
+        var normalizedCode = String(rawCode).toUpperCase();
+        return /^[A-Z0-9_]{1,64}$/.test(normalizedCode) ? normalizedCode : 'STATUS_ERROR';
       }
 
       function createHexToken() {
@@ -744,10 +770,100 @@
         };
       }
 
-      function getPayloadFingerprint(payload) {
+      function getPayloadFingerprintSource(payload) {
         var copy = Object.assign({}, payload);
         copy.interestUuid = '';
         return JSON.stringify(copy);
+      }
+
+      function createFallbackFingerprint(value) {
+        var hashes = [
+          2166136261, 2246822507, 3266489909, 668265263,
+          374761393, 1274126177, 2654435761, 1597334677
+        ];
+        for (var i = 0; i < value.length; i++) {
+          var code = value.charCodeAt(i);
+          for (var j = 0; j < hashes.length; j++) {
+            hashes[j] = Math.imul(hashes[j] ^ code ^ j, 16777619 + j * 2);
+            hashes[j] ^= hashes[j] >>> 13;
+          }
+        }
+        return hashes.map(function (hash, index) {
+          hash = Math.imul(hash ^ (value.length + index), 2246822519);
+          hash ^= hash >>> 16;
+          return (hash >>> 0).toString(16).padStart(8, '0');
+        }).join('');
+      }
+
+      async function getPayloadFingerprint(payload) {
+        var source = getPayloadFingerprintSource(payload);
+        if (window.crypto && window.crypto.subtle && typeof window.TextEncoder === 'function') {
+          try {
+            var digest = await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(source));
+            return Array.from(new Uint8Array(digest)).map(function (value) {
+              return value.toString(16).padStart(2, '0');
+            }).join('');
+          } catch (error) {
+            console.warn({ code: 'FINGERPRINT_CRYPTO_UNAVAILABLE', attempts: 0 });
+          }
+        }
+        return createFallbackFingerprint(source);
+      }
+
+      function isValidStoredInterestUuid(uuid) {
+        return /^[0-9a-f]{32}$/i.test(String(uuid || '')) ||
+          /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(uuid || ''));
+      }
+
+      function readPendingState() {
+        try {
+          var rawState = window.sessionStorage.getItem(PENDING_STATE_KEY);
+          if (!rawState) return null;
+          var state = JSON.parse(rawState);
+          if (!state || state.version !== PENDING_STATE_VERSION ||
+              !isValidStoredInterestUuid(state.interestUuid) ||
+              !/^[0-9a-f]{64}$/i.test(String(state.payloadFingerprint || ''))) {
+            window.sessionStorage.removeItem(PENDING_STATE_KEY);
+            pendingInterestUuid = '';
+            pendingPayloadFingerprint = '';
+            return null;
+          }
+          pendingInterestUuid = state.interestUuid;
+          pendingPayloadFingerprint = state.payloadFingerprint;
+          return state;
+        } catch (error) {
+          console.warn({ code: 'PENDING_STATE_READ_ERROR', attempts: 0 });
+          return null;
+        }
+      }
+
+      function writePendingState(uuid, payloadFingerprint, phase, createdAt) {
+        pendingInterestUuid = uuid;
+        pendingPayloadFingerprint = payloadFingerprint;
+        var state = {
+          version: PENDING_STATE_VERSION,
+          interestUuid: uuid,
+          payloadFingerprint: payloadFingerprint,
+          phase: phase || 'pending',
+          createdAt: createdAt || Date.now(),
+          updatedAt: Date.now()
+        };
+        try {
+          window.sessionStorage.setItem(PENDING_STATE_KEY, JSON.stringify(state));
+        } catch (error) {
+          console.warn({ code: 'PENDING_STATE_WRITE_ERROR', attempts: 0 });
+        }
+        return state;
+      }
+
+      function clearPendingState() {
+        pendingInterestUuid = '';
+        pendingPayloadFingerprint = '';
+        try {
+          window.sessionStorage.removeItem(PENDING_STATE_KEY);
+        } catch (error) {
+          console.warn({ code: 'PENDING_STATE_CLEAR_ERROR', attempts: 0 });
+        }
       }
 
       function wait(milliseconds) {
@@ -761,7 +877,7 @@
           var callbackName = 'programInterestJsonp_' + createHexToken();
           var script = document.createElement('script');
           var settled = false;
-          var requestTimeout = Math.min(8000, Math.max(1, timeoutMilliseconds || 8000));
+          var requestTimeout = Math.max(1, timeoutMilliseconds || STATUS_TIMEOUT_MS);
 
           function cleanup() {
             window.clearTimeout(timeoutId);
@@ -803,57 +919,53 @@
         });
       }
 
-      async function confirmRecorded(uuid) {
-        var maxAttempts = 4;
-        var confirmationBudget = 45000;
-        var startedAt = Date.now();
-        var lastError = null;
-        var attempts = 0;
+      function isPermanentStatusCode(code) {
+        return code === 'STATUS_UUID_MISMATCH' || code === 'INVALID_UUID';
+      }
 
-        for (var attempt = 0; attempt < maxAttempts; attempt++) {
-          var remaining = confirmationBudget - (Date.now() - startedAt);
-          if (remaining <= 0) break;
-          attempts = attempt + 1;
-          showStatus('Đang gửi thông tin và xác nhận lần ' + attempts + '/' + maxAttempts + '.', 'pending');
+      function inspectStatusResult(result, uuid) {
+        if (result && result.state === 'recorded' && result.interestUuid === uuid) return true;
+        if (result && result.state === 'recorded' && result.interestUuid !== uuid) {
+          throw createStatusError('STATUS_UUID_MISMATCH');
+        }
+        if (result && result.state === 'error') {
+          throw createStatusError(String(result.error || 'STATUS_ERROR'));
+        }
+        if (result && result.state === 'not_found') {
+          throw createStatusError('STATUS_NOT_FOUND');
+        }
+        throw createStatusError('STATUS_UNKNOWN_RESPONSE');
+      }
+
+      async function checkRecordedOnce(uuid) {
+        var result = await requestProgramInterestStatus(uuid, STATUS_TIMEOUT_MS);
+        return inspectStatusResult(result, uuid);
+      }
+
+      async function confirmRecorded(uuid) {
+        var lastError = null;
+
+        for (var attempt = 0; attempt < STATUS_MAX_ATTEMPTS; attempt++) {
+          var attempts = attempt + 1;
+          showStatus('Đang xác nhận thông tin lần ' + attempts + '/' + STATUS_MAX_ATTEMPTS + '.', 'pending');
 
           try {
-            var result = await requestProgramInterestStatus(uuid, remaining);
-            if (result && result.state === 'recorded' && result.interestUuid === uuid) return true;
-            if (result && result.state === 'recorded' && result.interestUuid !== uuid) {
-              var mismatchError = createStatusError('STATUS_UUID_MISMATCH');
-              mismatchError.attempts = attempts;
-              throw mismatchError;
-            }
-            if (result && result.state === 'error') {
-              var resultCode = String(result.error || 'STATUS_ERROR');
-              if (resultCode === 'INVALID_UUID') {
-                var invalidUuidError = createStatusError(resultCode);
-                invalidUuidError.attempts = attempts;
-                throw invalidUuidError;
-              }
-              lastError = createStatusError(resultCode);
-            } else if (result && result.state === 'not_found') {
-              lastError = createStatusError('STATUS_NOT_FOUND');
-            } else {
-              lastError = createStatusError('STATUS_UNKNOWN_RESPONSE');
-            }
+            if (await checkRecordedOnce(uuid)) return true;
           } catch (error) {
             var errorCode = getErrorCode(error);
-            if (errorCode === 'STATUS_UUID_MISMATCH' || errorCode === 'INVALID_UUID') {
-              throw error;
-            }
-            lastError = createStatusError(errorCode);
+            error.attempts = attempts;
+            if (isPermanentStatusCode(errorCode)) throw error;
+            lastError = error;
           }
 
-          remaining = confirmationBudget - (Date.now() - startedAt);
-          if (attempt < maxAttempts - 1 && remaining > 0) {
-            await wait(Math.min(1200 + attempt * 500, remaining));
+          if (attempt < STATUS_MAX_ATTEMPTS - 1) {
+            await wait(STATUS_POLL_DELAY_MS);
           }
         }
 
         var unavailable = createStatusError('CONFIRMATION_UNAVAILABLE');
         unavailable.lastStatusCode = lastError ? getErrorCode(lastError) : 'STATUS_TIMEOUT';
-        unavailable.attempts = attempts;
+        unavailable.attempts = STATUS_MAX_ATTEMPTS;
         throw unavailable;
       }
 
@@ -861,8 +973,89 @@
         input.addEventListener('change', syncProgramPanels);
       });
 
+      function setSubmissionBusy(isBusy, label) {
+        submitButton.disabled = isBusy;
+        submitButton.textContent = label || (isBusy ? 'Đang xác nhận...' : 'Gửi thông tin quan tâm');
+      }
+
+      function completeRecordedSubmission() {
+        form.reset();
+        clearPendingState();
+        syncProgramPanels();
+        showStatus('CultureCode Team đã ghi nhận thông tin quan tâm của bạn. Chúng tôi sẽ liên hệ khi có chương trình phù hợp.', 'success');
+        statusBox.focus();
+      }
+
+      function showRetryConfirmationButton(uuid) {
+        var retryButton = document.createElement('button');
+        retryButton.id = 'retry-confirmation-button';
+        retryButton.className = 'retry-confirmation-button';
+        retryButton.type = 'button';
+        retryButton.textContent = 'Kiểm tra lại';
+        retryButton.addEventListener('click', function () {
+          runCheckOnly(uuid);
+        });
+        statusBox.appendChild(document.createElement('br'));
+        statusBox.appendChild(retryButton);
+      }
+
+      function showConfirmationError(error, uuid) {
+        var errorCode = getErrorCode(error);
+        console.warn({ code: errorCode, attempts: error && error.attempts || undefined });
+        if (isPermanentStatusCode(errorCode)) {
+          clearPendingState();
+          if (errorCode === 'INVALID_UUID') {
+            showStatus('Hệ thống không thể xác nhận mã gửi. Vui lòng tải lại trang và thử lại.', 'error');
+          } else {
+            showStatus('Hệ thống trả về mã xác nhận không khớp. Vui lòng tải lại trang trước khi thử lại.', 'error');
+          }
+        } else {
+          var pendingState = readPendingState();
+          if (pendingState) {
+            writePendingState(uuid, pendingState.payloadFingerprint, 'unconfirmed', pendingState.createdAt);
+          }
+          showStatus('Hệ thống chưa kiểm tra được trạng thái ghi nhận. Vui lòng bấm “Kiểm tra lại”; thao tác này không gửi lại dữ liệu.', 'error');
+          showRetryConfirmationButton(uuid);
+        }
+        statusBox.dataset.errorCode = errorCode;
+        statusBox.focus();
+      }
+
+      async function runCheckOnly(uuid) {
+        if (confirmationRunning || !isValidStoredInterestUuid(uuid)) return;
+        confirmationRunning = true;
+        setSubmissionBusy(true, 'Đang kiểm tra trạng thái...');
+        var pendingState = readPendingState();
+        if (pendingState) {
+          writePendingState(uuid, pendingState.payloadFingerprint, 'checking', pendingState.createdAt);
+        }
+        try {
+          await confirmRecorded(uuid);
+          completeRecordedSubmission();
+        } catch (error) {
+          showConfirmationError(error, uuid);
+        } finally {
+          confirmationRunning = false;
+          setSubmissionBusy(false);
+        }
+      }
+
+      async function preflightRepeatedPayload(uuid) {
+        showStatus('Đang kiểm tra lượt gửi trước khi gửi lại dữ liệu.', 'pending');
+        try {
+          return await checkRecordedOnce(uuid);
+        } catch (error) {
+          var errorCode = getErrorCode(error);
+          error.attempts = 1;
+          if (isPermanentStatusCode(errorCode)) throw error;
+          console.warn({ code: 'PREFLIGHT_STATUS_UNAVAILABLE', attempts: 1 });
+          return false;
+        }
+      }
+
       form.addEventListener('submit', async function (event) {
         event.preventDefault();
+        if (confirmationRunning) return;
         var selectedPrograms = getSelectedPrograms();
 
         if (!selectedPrograms.length) {
@@ -877,21 +1070,39 @@
           return;
         }
 
-        var uuid = pendingInterestUuid || createInterestUuid();
-        var payload = buildPayload(uuid, selectedPrograms);
-        var payloadFingerprint = getPayloadFingerprint(payload);
-        if (pendingInterestUuid && pendingPayloadFingerprint && pendingPayloadFingerprint !== payloadFingerprint) {
-          uuid = createInterestUuid();
-          payload = buildPayload(uuid, selectedPrograms);
-          payloadFingerprint = getPayloadFingerprint(payload);
-        }
-        pendingInterestUuid = uuid;
-        pendingPayloadFingerprint = payloadFingerprint;
-        submitButton.disabled = true;
-        submitButton.textContent = 'Đang gửi và xác nhận...';
-        showStatus('Đang gửi thông tin và chờ hệ thống xác nhận ghi nhận.', 'pending');
+        confirmationRunning = true;
+        setSubmissionBusy(true, 'Đang gửi và xác nhận...');
 
         try {
+          var storedState = readPendingState();
+          if (!storedState && pendingInterestUuid && pendingPayloadFingerprint) {
+            storedState = {
+              interestUuid: pendingInterestUuid,
+              payloadFingerprint: pendingPayloadFingerprint,
+              createdAt: Date.now()
+            };
+          }
+          var provisionalUuid = storedState ? storedState.interestUuid : createInterestUuid();
+          var provisionalPayload = buildPayload(provisionalUuid, selectedPrograms);
+          var payloadFingerprint = await getPayloadFingerprint(provisionalPayload);
+          var isRepeatedPayload = Boolean(storedState && storedState.payloadFingerprint === payloadFingerprint);
+          var uuid = isRepeatedPayload
+            ? storedState.interestUuid
+            : (storedState ? createInterestUuid() : provisionalUuid);
+          var payload = Object.assign({}, provisionalPayload, { interestUuid: uuid });
+
+          if (isRepeatedPayload && await preflightRepeatedPayload(uuid)) {
+            completeRecordedSubmission();
+            return;
+          }
+
+          var pendingState = writePendingState(
+            uuid,
+            payloadFingerprint,
+            'posting',
+            isRepeatedPayload ? storedState.createdAt : undefined
+          );
+          showStatus('Đang gửi thông tin và chờ hệ thống xác nhận ghi nhận.', 'pending');
           try {
             await fetch(WEBAPP_URL, {
               method: 'POST',
@@ -904,33 +1115,22 @@
             console.warn({ code: 'POST_NETWORK_ERROR', attempts: 0 });
           }
 
+          writePendingState(uuid, payloadFingerprint, 'confirming', pendingState.createdAt);
           await confirmRecorded(uuid);
-
-          form.reset();
-          pendingInterestUuid = '';
-          pendingPayloadFingerprint = '';
-          syncProgramPanels();
-          showStatus('CultureCode Team đã ghi nhận thông tin quan tâm của bạn. Chúng tôi sẽ liên hệ khi có chương trình phù hợp.', 'success');
-          statusBox.focus();
+          completeRecordedSubmission();
         } catch (error) {
-          var errorCode = getErrorCode(error);
-          statusBox.dataset.errorCode = errorCode;
-          console.warn({ code: errorCode, attempts: error && error.attempts || undefined });
-          if (errorCode === 'INVALID_UUID') {
-            showStatus('Hệ thống không thể xác nhận mã gửi. Vui lòng tải lại trang và thử lại.', 'error');
-          } else if (errorCode === 'STATUS_UUID_MISMATCH') {
-            showStatus('Hệ thống trả về mã xác nhận không khớp. Vui lòng thử lại; mã hiện tại vẫn được giữ để tránh tạo dòng trùng.', 'error');
-          } else {
-            showStatus('Hệ thống chưa kiểm tra được trạng thái ghi nhận. Bạn có thể bấm gửi lại; hệ thống sẽ dùng cùng mã và không tạo dòng trùng.', 'error');
-          }
-          statusBox.focus();
+          showConfirmationError(error, pendingInterestUuid || '');
         } finally {
-          submitButton.disabled = false;
-          submitButton.textContent = 'Gửi thông tin quan tâm';
+          confirmationRunning = false;
+          setSubmissionBusy(false);
         }
       });
 
       syncProgramPanels();
+      var recoveredState = readPendingState();
+      if (recoveredState) {
+        runCheckOnly(recoveredState.interestUuid);
+      }
     }());
   </script>
 </body>

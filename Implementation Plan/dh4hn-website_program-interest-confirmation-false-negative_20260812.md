@@ -1,7 +1,7 @@
 # Incident + Implementation Plan: Program Interest báo thất bại giả khi xác nhận ghi nhận
 
 Created: 2026-08-12, Asia/Bangkok  
-Status: `OPTION A APPROVED — LOCAL IMPLEMENTATION/UAT IN PROGRESS`  
+Status: `OPTION A2 APPROVED — LOCAL IMPLEMENTATION/UAT VERIFIED; AWAITING CẤP ĐỘ 3`
 Scope: `/program-interest` — chỉ sửa cơ chế gửi/xác nhận và khả năng chẩn đoán lỗi; không sửa nội dung/panel khóa học
 
 ## Terminology Notes
@@ -16,15 +16,29 @@ Scope: `/program-interest` — chỉ sửa cơ chế gửi/xác nhận và khả
 
 ## 1. Executive Summary
 
-Form hiện gửi `POST` tới Google Apps Script bằng `no-cors`, sau đó dùng JSONP để hỏi lại theo `interestUuid`. Hàm `confirmRecorded()` có vòng lặp 5 lần nhưng lại ném lỗi ngay khi lần đầu gặp `STATUS_TIMEOUT`; vì vậy vòng retry không chạy đúng ý đồ. Tất cả lỗi gửi/xác nhận sau đó bị gom vào một thông báo duy nhất.
+Bản trước Option A gửi `POST` tới Google Apps Script bằng `no-cors`, sau đó dùng JSONP để hỏi lại theo `interestUuid`. Hàm `confirmRecorded()` khi đó có vòng lặp 5 lần nhưng lại ném lỗi ngay khi lần đầu gặp `STATUS_TIMEOUT`; vì vậy vòng retry không chạy đúng ý đồ. Tất cả lỗi gửi/xác nhận sau đó bị gom vào một thông báo duy nhất.
 
-Phương án được đề nghị phê duyệt là **Option A — sửa máy trạng thái xác nhận ở frontend**:
+Option A đã sửa lỗi retry dừng sớm và đã lên production ở release
+`b9b18c0c860e-938d7d5324a7`, nhưng ảnh lỗi thật ngày 12/08 cho thấy cơ chế đó
+vẫn chưa đủ bền: UUID và fingerprint chỉ tồn tại trong RAM, reload làm mất
+trạng thái, bấm gửi lại luôn POST trước khi hỏi trạng thái, và chỉ poll 4 lần.
 
-1. Lỗi tạm thời (`not_found`, timeout, lỗi tải JSONP, lỗi máy chủ tạm thời) phải retry trong ngân sách thời gian hữu hạn.
-2. Lỗi vĩnh viễn (`INVALID_UUID`, UUID phản hồi không khớp) dừng ngay.
-3. Dù `fetch()` báo lỗi mạng, frontend vẫn phải kiểm tra trạng thái theo UUID vì backend có thể đã ghi trước khi kết nối bị ngắt.
-4. Kết quả hết thời gian được hiển thị là “chưa kiểm tra được” thay vì khẳng định “chưa ghi”; giữ nguyên UUID để người dùng gửi lại mà không tạo dòng trùng.
-5. Gắn mã lỗi không chứa dữ liệu cá nhân vào DOM/console để lần sau xác định đúng điểm hỏng.
+Phương án hiện hành đã được phê duyệt là **Option A2 — áp dụng cơ chế phục hồi
+của DHM9 cho Program Interest**:
+
+1. Lưu UUID, fingerprint dạng hash và trạng thái pending vào `sessionStorage`
+   (bộ nhớ theo phiên trình duyệt); không lưu payload chứa dữ liệu cá nhân.
+2. Trước mọi POST lại của cùng payload, hỏi trạng thái theo UUID trước; nếu đã
+   `recorded` thì hoàn tất mà không POST.
+3. Lỗi tạm thời (`not_found`, timeout, lỗi tải JSONP, lỗi máy chủ tạm thời) phải
+   retry tối đa 10 lần, timeout 12 giây/lần và cách nhau 4 giây.
+4. Nút “Kiểm tra lại” chỉ poll, tuyệt đối không POST.
+5. Khi reload, tự đọc pending state và tiếp tục kiểm tra cùng UUID, không POST tự động.
+6. Lỗi vĩnh viễn (`INVALID_UUID`, UUID phản hồi không khớp) dừng ngay.
+7. Dù `fetch()` báo lỗi mạng, frontend vẫn kiểm tra trạng thái theo UUID vì
+   backend có thể đã ghi trước khi kết nối bị ngắt.
+8. Hết lượt thử chỉ báo “chưa kiểm tra được”, giữ UUID và hiện nút kiểm tra lại.
+9. Gắn mã lỗi không chứa dữ liệu cá nhân vào DOM/console để lần sau xác định đúng điểm hỏng.
 
 Không sửa UUID fallback vì bản hiện hành đã sinh 32 ký tự hex hợp lệ. Không sửa Google Apps Script, tên tab hoặc schema 25 cột.
 
@@ -43,6 +57,10 @@ Không sửa UUID fallback vì bản hiện hành đã sinh 32 ký tự hex hợ
 - `confirmRecorded()` hiện coi `STATUS_TIMEOUT` là lỗi dừng ngay, mâu thuẫn với vòng lặp retry bao quanh.
 - `catch` cuối của submit chỉ hiển thị một thông báo chung, không lưu loại lỗi.
 - Working tree hiện rất bẩn và branch local đang `behind`; implementation không được thực hiện trực tiếp trên checkout này.
+- Option A production hiện dùng 4 lần poll trong tối đa 45 giây và chỉ giữ
+  `pendingInterestUuid`/fingerprint trong RAM; đây là baseline của A2.
+- Clean worktree A2 được khóa trực tiếp từ commit Option A
+  `b9b18c0c860e059ef616ce9df5dcb0b3d054d301`; không copy `.env` hay file bẩn.
 
 ## 4. Evidence Collected
 
@@ -72,6 +90,12 @@ Không sửa UUID fallback vì bản hiện hành đã sinh 32 ký tự hex hợ
 
 Nhánh `catch` cuối gom mọi lỗi vào một thông báo. Không có `errorCode`, số lần thử hoặc trạng thái cuối để phân biệt lỗi ghi với lỗi xác nhận.
 
+### RC-4 — HIGH — Trạng thái pending không bền qua reload/resubmit
+
+Option A chỉ giữ UUID/fingerprint trong biến JavaScript của trang. Reload làm
+mất khóa idempotency phía client; bấm gửi lại không có preflight và có thể POST
+lại trước khi biết dòng cũ đã tồn tại. Đây là khoảng cách chính so với DHM9.
+
 ### Không phải root cause hiện tại
 
 - Không phải fallback UUID base36: source local/public hiện không có logic đó.
@@ -94,34 +118,46 @@ Nếu kênh đầu hoàn thành nhưng kênh thứ hai chậm hoặc gián đo�
 | File | Hành động | Nội dung |
 |---|---|---|
 | `program-interest.html` | Modify | Sửa state machine gửi/xác nhận, phân loại lỗi, retry hữu hạn và thông báo không khẳng định sai |
-| `UAT/program_interest_confirmation_reliability_20260812.js` | Create | Regression test bằng browser/request interception |
-| `UAT/program_interest_confirmation_reliability_20260812.md` | Create | Báo cáo evidence local/staged/live |
+| `UAT/program_interest_confirmation_reliability_20260812.js` | Modify | Mở rộng regression test cho persistence/preflight/reload/Chrome/Brave/incognito |
+| `UAT/program_interest_confirmation_reliability_20260812.md` | Modify | Báo cáo evidence A2 local/staged/live |
 | `docs/system-architecture.md` | Modify | Cập nhật luồng retry và trạng thái “chưa kiểm tra được” |
 | `docs/deployment-guide.md` | Modify | Cập nhật ca UAT xác nhận timeout/idempotency |
+| `docs/deployment.md` | Modify | Khóa project/org Vercel trong runbook release provenance |
 | `Implementation Plan/dh4hn-website_program-interest-confirmation-false-negative_20260812.md` | Already created | Plan phê duyệt và nguồn quyết định |
 
 `Scripts/active_code_gs_final.js`, `.clasp.json`, Sheet và Apps Script deployment là **read-only/out of scope** cho Option A.
 
 ### Thay đổi logic bắt buộc
 
-1. `requestProgramInterestStatus()` tiếp tục timeout từng request ở 8 giây nhưng phải trả mã lỗi có cấu trúc.
-2. `confirmRecorded()` dùng tối đa 4 lần thử, tổng ngân sách không quá 45 giây:
+1. `requestProgramInterestStatus()` timeout từng request ở 12 giây và trả mã lỗi có cấu trúc.
+2. `confirmRecorded()` dùng tối đa 10 lần thử, cách nhau 4 giây:
    - `recorded` + đúng UUID: thành công.
    - `not_found`, `STATUS_TIMEOUT`, `STATUS_NETWORK_ERROR` và lỗi upstream tạm thời: retry với backoff hữu hạn.
    - `INVALID_UUID`, `STATUS_UUID_MISMATCH`: dừng ngay.
-3. Nếu `fetch()` throw, không dừng ngay; vẫn chạy xác nhận theo UUID.
-4. Cùng payload và cùng trang phải giữ nguyên `pendingInterestUuid` cho mọi lần retry/resubmit.
-5. Khi hết ngân sách xác nhận:
+3. Ghi pending state vào `sessionStorage` trước POST, gồm version, UUID,
+   fingerprint dạng hash, phase và thời điểm; cấm lưu payload thô/PII.
+4. Cùng payload phải giữ nguyên UUID qua retry, resubmit và reload.
+5. Trước POST lại cùng fingerprint, poll một lần:
+   - `recorded` + UUID khớp: success, không POST.
+   - chưa xác nhận/lỗi tạm thời: POST lại cùng UUID rồi chạy polling đầy đủ.
+   - lỗi vĩnh viễn: dừng, không POST.
+6. Nếu `fetch()` throw, không dừng ngay; vẫn chạy xác nhận theo UUID.
+7. Khi hết lượt xác nhận:
    - Không hiển thị “chưa ghi nhận”.
    - Hiển thị: “Hệ thống chưa kiểm tra được trạng thái ghi nhận. Bạn có thể bấm gửi lại; hệ thống sẽ dùng cùng mã và không tạo dòng trùng.”
-6. Gắn `statusBox.dataset.errorCode` và `console.warn` chỉ với `{ code, attempts }`; cấm log payload, email, điện thoại, họ tên hoặc nội dung người dùng.
-7. Không đổi layout, panel chi tiết, danh sách chương trình hoặc data contract.
+8. Hiện nút “Kiểm tra lại”; handler của nút chỉ gọi status polling và không có
+   đường chạy tới POST.
+9. Khi load trang, nếu pending state hợp lệ thì tự poll cùng UUID; không POST tự động.
+10. Chuẩn hóa `errorCode` về allowlist ký tự `[A-Z0-9_]` trước khi ghi DOM/console;
+    chỉ log `{ code, attempts }`, cấm log payload, email, điện thoại, họ tên hoặc nội dung người dùng.
+11. Không đổi panel chi tiết, danh sách chương trình hoặc data contract.
 
 ## 8. Implementation Options
 
-### Option A — Recommended và nằm trong phạm vi phê duyệt
+### Option A — Đã triển khai, giữ làm baseline lịch sử
 
-Sửa frontend state machine như Mục 7.
+Đã sửa frontend state machine 4 lần/45 giây ở release
+`b9b18c0c860e-938d7d5324a7`, nhưng chưa có persistence/preflight/reload recovery.
 
 Ưu điểm:
 
@@ -130,10 +166,17 @@ Sửa frontend state machine như Mục 7.
 - Có thể rollback bằng một file frontend.
 - Giữ nguyên idempotency hiện hành.
 
-Giới hạn:
+Giới hạn đã được ảnh lỗi thật làm lộ ra:
 
 - Vẫn phụ thuộc JSONP cho xác nhận cuối cùng.
 - Không đọc trực tiếp được response của POST.
+
+### Option A2 — Approved và là phạm vi thực thi hiện hành
+
+Giữ nguyên backend Option A, bổ sung `sessionStorage`, fingerprint dạng hash,
+preflight trước POST lại, polling 10 × 12 giây cách 4 giây, nút “Kiểm tra lại”
+không POST và tự phục hồi sau reload. Đây là thay đổi frontend có rollback một
+commit, không cần proxy, token, env hay schema mới.
 
 ### Option B — Deferred, không nằm trong approval này
 
@@ -146,111 +189,134 @@ Nhược điểm: thêm API production, kiểm soát spam/rate limit, cấu hìn
 
 | Rủi ro | Mức | Giảm thiểu |
 |---|---|---|
-| Người dùng chờ lâu hơn | MEDIUM | Giới hạn tổng <=45 giây; hiển thị trạng thái “đang xác nhận lần n” |
-| Polling quá nhiều Apps Script | MEDIUM | Tối đa 4 lần, backoff, dừng ngay khi recorded/permanent error |
+| Người dùng chờ lâu hơn | MEDIUM | Tối đa 10 lần; hiển thị trạng thái “đang xác nhận lần n”; có nút kiểm tra lại |
+| Polling nhiều Apps Script | MEDIUM | 12 giây/lần, cách 4 giây, dừng ngay khi recorded/permanent error, khóa poll đồng thời |
 | Gửi lại tạo trùng | LOW | Giữ cùng UUID; backend đã kiểm tra cột UUID trước append |
+| PII nằm trong sessionStorage | HIGH | Chỉ lưu fingerprint hash; test cấm họ tên/email/điện thoại trong storage |
 | Lộ dữ liệu cá nhân qua log | HIGH | Chỉ log code/attempt count; test cấm payload/PII trong console và URL |
-| Trộn nhầm dirty worktree | HIGH | Thực hiện trong clean worktree từ commit `origin/main` đã khóa; stage allowlist tuyệt đối |
+| Trộn nhầm dirty worktree | HIGH | Thực hiện trong clean worktree khóa từ commit rollback Option A `b9b18c0c860e059ef616ce9df5dcb0b3d054d301`; stage allowlist tuyệt đối |
 | Local test đạt nhưng live vẫn lỗi | HIGH | Staged browser UAT và một live write/read-back có phê duyệt Cấp độ 3 riêng |
 | Thay đổi ngoài scope panel/UI | MEDIUM | Diff gate cấm sửa markup/CSS/panelConfig ngoài phần submit/status |
 
 ## 10. Expected Outputs
 
-- Một patch frontend khu trú trong các hàm gửi/xác nhận/trạng thái.
-- Regression suite chứng minh retry chạy thật và không tạo UUID mới.
+- Một patch frontend khu trú trong các hàm gửi/xác nhận/trạng thái và style của nút retry.
+- Regression suite chứng minh persistence, preflight, reload recovery và retry không POST.
 - Báo cáo UAT có ma trận `Local files / Browser / Apps Script / Sheet / Public URL`.
 - Docs mô tả đúng hành vi sau sửa.
 - Không có Apps Script version mới, schema mới, email, payment hoặc thay đổi panel.
 
-### Acceptance Tests bắt buộc
+### Acceptance Tests A2 bắt buộc
 
 | ID | Ca kiểm thử | Kết quả mong đợi |
 |---|---|---|
-| AT-01 | Lần status đầu timeout, lần sau `recorded` | UI success; cùng UUID; không throw ở timeout đầu |
-| AT-02 | POST throw nhưng status trả `recorded` | UI success, chứng minh không báo thất bại giả |
-| AT-03 | `not_found -> not_found -> recorded` | Retry rồi success trong ngân sách |
-| AT-04 | Mọi lần đều timeout/network | UI “chưa kiểm tra được”; có mã `CONFIRMATION_UNAVAILABLE`; không khẳng định chưa ghi |
-| AT-05 | Backend trả `INVALID_UUID` | Dừng ngay, không retry vô ích |
-| AT-06 | Backend trả UUID khác | Dừng ngay với `STATUS_UUID_MISMATCH`; không báo success |
-| AT-07 | Ép tắt `crypto.randomUUID()` | UUID fallback đúng 32 hex |
-| AT-08 | Người dùng bấm gửi lại cùng payload | Hai POST dùng cùng UUID; backend idempotency không thêm dòng trùng |
-| AT-09 | Console/URL audit | Không có PII trong URL/log |
-| AT-10 | Desktop 1440x900 và mobile 390x844 | Form gửi đúng; không đổi panel/layout ngoài scope |
-| AT-11 | Staged deployment | Route `/program-interest` và các route release contract đều đạt gate |
-| AT-12 | Live UAT có kiểm soát | Đúng một UUID được ghi; status `recorded`; gửi lại cùng UUID không tăng số dòng |
+| AT-A2-01 | `timeout -> recorded` | UI success; 2 status request; cùng UUID |
+| AT-A2-02 | POST throw nhưng status `recorded` | UI success; không báo thất bại giả |
+| AT-A2-03 | 10 lần đều timeout/network | Đúng 10 status request; timeout cấu hình 12 giây, delay 4 giây; hiện retry |
+| AT-A2-04 | Bấm “Kiểm tra lại” | Chỉ phát status request; số POST không tăng; recorded thì success |
+| AT-A2-05 | Reload khi pending | Tự poll cùng UUID; không POST; recorded thì clear storage |
+| AT-A2-06 | Submit lại cùng payload đã recorded | Preflight success; không POST lại |
+| AT-A2-07 | Submit lại cùng payload chưa recorded | Preflight trước; POST cùng UUID; không tạo UUID mới |
+| AT-A2-08 | Payload đổi | Fingerprint đổi và dùng UUID mới |
+| AT-A2-09 | `INVALID_UUID` hoặc UUID mismatch | Dừng ngay; không POST ở preflight lỗi vĩnh viễn |
+| AT-A2-10 | Privacy audit | Storage/URL/console không chứa họ tên, email, điện thoại hoặc payload thô |
+| AT-A2-11 | Chrome, Brave và incognito; desktop/mobile | Tất cả chạy local với request interception; không gọi Apps Script thật |
+| AT-A2-G02 | Backend trả error string bất thường | `errorCode` được chuẩn hóa; không leak chuỗi vào DOM/console |
+| AT-A2-12 | Staged/live có kiểm soát | Route đúng release; đúng một UUID ghi một dòng và read-back `recorded` |
 
-AT-12 là Sheet mutation thật và chỉ chạy sau phê duyệt Cấp độ 3 riêng.
+AT-A2-12 là Sheet mutation thật và chỉ chạy sau phê duyệt Cấp độ 3 riêng.
 
 ## 11. Execution Plan After Approval
 
 ### Phase 0 — Isolation và baseline
 
-1. Tạo clean worktree/branch từ commit `origin/main` hiện hành sau khi fetch read-only.
-2. Ghi commit SHA, endpoint `@69`, public hash và baseline status vào UAT report.
+1. Tạo clean worktree/branch trực tiếp từ commit Option A `b9b18c0c...`.
+2. Ghi commit SHA, endpoint `@69`, file hash và baseline status vào UAT report.
 3. Xác nhận allowlist; không copy dirty files ngoài phạm vi từ checkout hiện tại.
 
 ### Phase 1 — Regression tests trước sửa
 
-1. Tạo test AT-01 đến AT-10 bằng Playwright/request interception.
-2. Chạy trên source trước sửa và lưu bằng chứng ít nhất AT-01/AT-02 thất bại đúng nguyên nhân.
+1. Mở rộng harness thành AT-A2-01 đến AT-A2-11 bằng Puppeteer/request interception.
+2. Chạy test A2 trên baseline Option A để chứng minh persistence/reload/preflight còn thiếu.
 
-### Phase 2 — Implement Option A
+### Phase 2 — Implement Option A2
 
-1. Sửa riêng state machine trong `program-interest.html`.
+1. Sửa riêng state machine và style nút retry trong `program-interest.html`.
 2. Không sửa Apps Script hoặc UUID generator ngoài việc giữ regression guard.
 3. Rà diff theo allowlist và kiểm tra UTF-8.
 
 ### Phase 3 — Local verification
 
-1. Chạy syntax check và toàn bộ AT-01 đến AT-10.
-2. Chạy browser desktop/mobile trên local HTTP server.
+1. Chạy syntax check và toàn bộ AT-A2-01 đến AT-A2-11.
+2. Chạy Chrome, Brave và incognito ở desktop/mobile trên local HTTP server.
 3. Ghi report và evidence repo-visible.
 
 ### Phase 4 — Documentation impact
 
-1. Cập nhật `docs/system-architecture.md` và `docs/deployment-guide.md`.
+1. Cập nhật `docs/system-architecture.md`, `docs/deployment-guide.md` và
+   `docs/deployment.md`.
 2. Đối chiếu docs với code/test; docs không thay runtime UAT.
 
 ### Phase 5 — Handoff trước production
 
 1. Chụp `git status --short --branch` trong clean worktree.
 2. Phân loại file stage được và file ngoài scope.
-3. Dừng xin Cấp độ 3 riêng cho từng nhóm: commit, push, staged deploy, promote production và AT-12 Sheet write.
+3. Dừng xin một block Cấp độ 3 tự đủ cho commit, push, staged deploy, promote
+   production có gate, và đúng một AT-A2-12 Sheet write/read-back.
 
 ## 12. Open Questions
 
-Không còn câu hỏi thiết kế chặn Option A. Trigger chính xác của lượt 11/08 vẫn không thể hồi cứu do source cũ không lưu error code; mục tiêu của plan là sửa lỗi đã xác nhận và tạo evidence để lần sau không mất nguyên nhân.
+Không còn câu hỏi thiết kế chặn Option A2. Trigger chính xác của lượt 11/08 vẫn không thể hồi cứu do source cũ không lưu error code; mục tiêu của plan là sửa lỗi đã xác nhận và tạo evidence để lần sau không mất nguyên nhân.
 
 ## 13. Notes for Other Agents
 
 - Không áp dụng plan UUID fallback của Gemini trong brain; public hiện đã dùng 32 hex.
 - Không sửa panel chi tiết theo yêu cầu User.
-- Không claim fixed/live nếu mới đạt local AT-01 đến AT-10.
+- Không claim fixed/live nếu mới đạt local AT-A2-01 đến AT-A2-11.
 - Không dùng checkout dirty hiện tại làm release source.
 - Không được coi plan approval là quyền commit/push/deploy/Sheet write.
 
 ## 14. Final Assessment
 
-**Khuyến nghị rà soát:** `APPROVE OPTION A`.
+**Phán quyết rà soát:** `OPTION A2 APPROVED`.
 
-Option A sửa trực tiếp lỗi retry và false-negative classification đã được chứng minh trong source, có blast radius nhỏ và rollback rõ. Option B chỉ được xem xét bằng plan mới nếu sau Option A vẫn có tái phát kèm evidence.
+Option A2 đóng khoảng trống persistence/preflight/reload còn lại của Option A,
+giữ blast radius ở frontend và rollback rõ. Option B chỉ được xem xét bằng plan
+mới nếu A2 vẫn tái phát kèm network/runtime evidence thật.
 
-**Operational authorization:** User đã trực tiếp phê duyệt Option A và phạm vi
+**Operational authorization:** User đã trực tiếp phê duyệt Option A2 và phạm vi
 implementation/UAT trong phiên hiện tại. Các thao tác Cấp độ 3
 (commit/push/deploy/promote và ghi Google Sheet thật) vẫn phải dừng ngay trước
 từng lệnh để xác nhận exact command (lệnh cụ thể), target (đích tác động) và
 rollback (kế hoạch quay lui) theo shared rules. Không dùng approval này để sửa
 Apps Script, token, env, schema hoặc panel khóa học.
 
-## 15. Execution checkpoint (2026-08-12)
+## 15. Historical Option A checkpoint (2026-08-12; STALE/ARCHIVE)
 
-- Clean worktree: `C:\Users\vu.hoang\.gemini\antigravity\worktrees\dh4hn_program_interest_fix_20260812`
-- Source baseline: `origin/main` at `a0b4b6f4cdcdf22582e4245ccba797752a37323b`
+- Historical clean worktree: `C:\Users\vu.hoang\.gemini\antigravity\worktrees\dh4hn_program_interest_fix_20260812`
+- Historical source baseline: `origin/main` at `a0b4b6f4cdcdf22582e4245ccba797752a37323b`
 - Implemented: `program-interest.html` Option A state machine.
 - Added regression harness: `UAT/program_interest_confirmation_reliability_20260812.js`.
 - Docs touched: `docs/system-architecture.md`, `docs/deployment-guide.md`.
 - Local UAT: AT-01 through AT-10 passed in the harness; evidence is mirrored in
   `UAT/program_interest_confirmation_reliability_20260812.md`.
-- Remaining gates: commit, push, staged deployment, one real Sheet UAT row/read-back,
-  and production promote require their exact-operation approvals and fresh
-  evidence. Apps Script deployment remains read-only at `@69`.
+- Historical remaining gates at that checkpoint: commit, push, staged deployment,
+  one real Sheet UAT row/read-back, and production promote. They are superseded by
+  the A2 checkpoint below; Apps Script deployment remains read-only at `@69`.
+
+## 16. Option A2 checkpoint (2026-08-12)
+
+- Clean worktree: `C:\Users\vu.hoang\.gemini\antigravity\worktrees\dh4hn-website\program-interest-a2-20260812`
+- Branch: `fix/program-interest-confirmation-a2-20260812`
+- Immutable rollback/source commit: `b9b18c0c860e059ef616ce9df5dcb0b3d054d301`
+- A2 SHA-256 `program-interest.html` after final local run:
+  `db3e57621fa0461e5af0b7f424c1245bae4d669c639a3a2e3ea48bcd99d8d34f`
+- User approval: Option A2 local implementation plus local Chrome/Brave/incognito
+  UAT with all Apps Script requests intercepted; no external writes.
+- Implemented: persistent UUID/hash/phase state, preflight before repeat POST,
+  10 × 12-second polling with 4-second delay, check-only retry and reload recovery.
+- Local UAT: `LOCAL_A2_UAT_VERIFIED`; Chrome, Brave and Chrome incognito passed;
+  fallback UUID guard and error-code sanitization passed; 16 result records;
+  `Apps Script requests continued: 0`, external writes `NONE`.
+- Evidence: `UAT/evidence/program_interest_confirmation_a2_20260812/`.
+- Cấp độ 3 remains required for commit, push, deployment and one real Sheet row.
