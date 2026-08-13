@@ -150,9 +150,10 @@ sequenceDiagram
     Web->>Web: Tạo interestUuid + payload fingerprint 64 hex
     Web->>Session: Lưu UUID, hash, phase; không lưu payload/PII
     alt Payload đang pending từ lần trước
-        Web->>GAS: JSONP preflight theo cùng UUID
+        Web->>GAS: fetch GET preflight theo cùng UUID
         GAS->>Sheet: Tìm UUID ở cột B
-        GAS-->>Web: recorded / not_found / error
+        GAS-->>Web: HTTP 302 → 200, JSONP text
+        Web->>Web: Parse callback text → recorded / not_found / error
         alt recorded và UUID khớp
             Web-->>User: Thành công; không POST lại
         else chưa xác nhận hoặc lỗi tạm thời
@@ -161,12 +162,12 @@ sequenceDiagram
     else Payload mới
         Web->>GAS: POST no-cors (PROGRAM_INTEREST)
     end
-    Note over Web,GAS: A3-FE: POST fire-and-observe (gửi không chờ phản hồi); status polling bắt đầu ngay
+    Note over Web,GAS: A4-FE giữ POST fire-and-observe; fetch GET status bắt đầu ngay
     GAS->>Sheet: Lock, kiểm tra UUID cột B, append 25 cột nếu chưa có
     loop Tối đa 10 lần, timeout 12 giây, cách 4 giây
-        Web->>GAS: JSONP checkProgramInterestStatus
+        Web->>GAS: fetch GET checkProgramInterestStatus
         GAS->>Sheet: Đọc cột B theo UUID
-        GAS-->>Web: recorded / not_found / error
+        GAS-->>Web: HTTP 200 JSONP text; state + UUID
     end
     alt recorded và UUID khớp
         Web->>Session: Xóa pending state
@@ -174,7 +175,7 @@ sequenceDiagram
     else chưa kiểm tra được
         Web-->>User: Hiện nút Kiểm tra lại
         User->>Web: Bấm Kiểm tra lại
-        Web->>GAS: Chỉ JSONP polling; không POST
+        Web->>GAS: Chỉ fetch GET polling; không POST
     end
 ```
 
@@ -191,25 +192,39 @@ sequenceDiagram
 | V–W | Ghi chú, đồng ý liên hệ | `consent` bắt buộc |
 | X–Y | Source, Event ID | `Web_Program_Interest`, `PROGRAM_INTEREST_V1` |
 
-Option A2 và A3-FE chỉ thay đổi frontend. Fingerprint dùng SHA-256 khi Web Crypto khả dụng
-và fallback về hash 64 hex không chứa payload thô. `sessionStorage` lưu đúng một state gồm version,
-UUID, fingerprint 64 ký tự hex, phase và timestamp; không lưu họ tên, email,
-điện thoại, ghi chú hoặc payload thô. Reload tự kiểm tra UUID đang pending và
-không tự POST. `INVALID_UUID`/UUID mismatch dừng ngay; timeout, lỗi mạng,
-`not_found` và lỗi upstream tạm thời mới được thử lại.
+Option A2, A3-FE và A4-FE chỉ thay đổi frontend. Fingerprint dùng SHA-256 khi Web
+Crypto khả dụng và fallback về hash 64 hex không chứa payload thô.
+`sessionStorage` lưu đúng một state gồm version, UUID, fingerprint 64 ký tự hex,
+phase và timestamp; không lưu họ tên, email, điện thoại, ghi chú hoặc payload
+thô. Reload tự kiểm tra UUID đang pending và không tự POST. `INVALID_UUID`/UUID
+mismatch dừng ngay; timeout, lỗi mạng, `not_found` và lỗi upstream tạm thời mới
+được thử lại.
 
-A3-FE gửi đúng một POST cho mỗi lượt submit, gắn rejection observer (bộ bắt lỗi
-promise) nhưng không chờ POST resolve trước khi bắt đầu JSONP polling. Vì vậy
-status `recorded` cùng UUID khớp có thể hoàn tất giao diện trong khi POST vẫn đang
-chờ; `not_found` trước `appendRow` không được coi là thất bại và không kích hoạt
-POST thứ hai. Đây là tối ưu độ trễ cảm nhận (client-perceived latency), không phải
-cam kết Apps Script/Google Sheets backend nhanh hơn.
+A3-FE thiết lập cơ chế gửi đúng một POST cho mỗi lượt submit, gắn rejection
+observer (bộ bắt lỗi promise) nhưng không chờ POST resolve trước khi bắt đầu
+kiểm tra trạng thái. A4-FE giữ nguyên state machine (máy trạng thái), UUID,
+retry, manual retry và reload recovery đó, nhưng đổi riêng transport xác nhận từ
+thẻ `<script>` sang `fetch GET`. Fetch dùng `cache: no-store`,
+`credentials: omit`, `redirect: follow` và `AbortController` timeout; frontend
+đọc response dạng text, kiểm tra đúng tên callback và hậu tố `);`, rồi mới
+`JSON.parse` mà không thực thi nội dung trả về. Chỉ `state=recorded` cùng UUID
+khớp tuyệt đối mới hoàn tất giao diện.
+
+Nhờ giữ cơ chế overlap (chạy chồng thời gian), trạng thái `recorded` có thể hoàn
+tất giao diện trong khi POST vẫn đang chờ; `not_found` trước `appendRow` không
+được coi là thất bại và không kích hoạt POST thứ hai. Đây là tối ưu độ trễ cảm
+nhận (client-perceived latency), không phải cam kết Apps Script/Google Sheets
+backend nhanh hơn.
 
 Backend và `schema` (cấu trúc dữ liệu chuẩn) 25 cột không đổi. Apps Script dùng
 `LockService`, tìm UUID ở cột B trước `appendRow`; POST lại cùng UUID không tạo
 dòng Program Interest thứ hai. Handler này không gọi luồng email, thanh toán hay
-giữ chỗ. Kết quả A3-FE hiện mới được kiểm chứng local bằng request interception;
-ghi/read-back Sheet thật phải chờ phê duyệt Cấp độ 3 của release A3.
+giữ chỗ. A4-FE đã được kiểm chứng local bằng mock regression và kiểm chứng
+trình duyệt read-only trên endpoint thật bằng một UUID đã tồn tại ở Chrome,
+Chrome ẩn danh và Brave; mọi phương thức ghi bị chặn cứng và không có Sheet
+mutation. Bằng chứng này chỉ xác nhận bề mặt local/read-only của A4, không chứng
+minh A4 đã được deploy lên production và không thay thế UAT ghi Sheet cần phê
+duyệt Cấp độ 3 riêng.
 
 ## 2. Các Thành phần Kỹ thuật (Technical Components)
 

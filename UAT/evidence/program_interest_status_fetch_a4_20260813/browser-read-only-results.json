@@ -1,0 +1,196 @@
+{
+  "verdict": "A4_BROWSER_READ_ONLY_VERIFIED",
+  "testedAt": "2026-08-13T13:03:08.333Z",
+  "sourceRoot": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\worktrees\\dh4hn-website\\program-interest-a4-20260813",
+  "sourceSha256": "1f82d097fb56fc0a527072ae60e600c1ea66ee99d2214b130bacbfcd330978ba",
+  "pageTarget": "LOCAL_HARNESS",
+  "targetMode": "LOCAL_READ_ONLY",
+  "targetPhase": "local",
+  "protectionBypass": "NOT_SET",
+  "expectedRelease": {
+    "id": "",
+    "commit": "",
+    "manifest": ""
+  },
+  "routeVerification": null,
+  "endpoint": "https://script.google.com/macros/s/AKfycbxMi_bQBceGxVK_TjbcU5rQNAaLyUXOMuQJHyYWCwdeoWlsccq2kFkhRYVG2meySCsPdA/exec",
+  "recordedUuid": "cb5016c3-e6e2-4a3d-bb67-8ab7db47b063",
+  "externalWrites": "NONE",
+  "sheetMutation": "NONE",
+  "results": [
+    {
+      "id": "A4-BROWSER-CHROME-DESKTOP",
+      "browserName": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "requests": [
+        {
+          "method": "GET",
+          "url": "https://script.google.com/macros/s/AKfycbxMi_bQBceGxVK_TjbcU5rQNAaLyUXOMuQJHyYWCwdeoWlsccq2kFkhRYVG2meySCsPdA/exec?action=checkProgramInterestStatus&interestUuid=cb5016c3-e6e2-4a3d-bb67-8ab7db47b063&callback=programInterestJsonp_b1c68d175355365d41909683a529fab2&_=1786626166137"
+        }
+      ],
+      "responses": [
+        {
+          "status": 302,
+          "contentType": "application/binary",
+          "url": "https://script.google.com/macros/s/AKfycbxMi_bQBceGxVK_TjbcU5rQNAaLyUXOMuQJHyYWCwdeoWlsccq2kFkhRYVG2meySCsPdA/exec?action=checkProgramInterestStatus&interestUuid=cb5016c3-e6e2-4a3d-bb67-8ab7db47b063&callback=programInterestJsonp_b1c68d175355365d41909683a529fab2&_=1786626166137"
+        },
+        {
+          "status": 200,
+          "contentType": "text/javascript; charset=utf-8",
+          "url": "https://script.googleusercontent.com/macros/echo"
+        }
+      ],
+      "failedRequests": [],
+      "blockedWrites": [],
+      "consoleErrors": [],
+      "pageErrors": [],
+      "page": {
+        "requestedUrl": "http://127.0.0.1:49912/program-interest.html",
+        "finalUrl": "http://127.0.0.1:49912/program-interest.html",
+        "status": 200,
+        "releaseHeaders": {
+          "id": null,
+          "commit": null,
+          "manifest": null
+        }
+      },
+      "elapsedMs": 7849,
+      "ui": {
+        "text": "CultureCode Team đã ghi nhận thông tin quan tâm của bạn. Chúng tôi sẽ liên hệ khi có chương trình phù hợp.",
+        "className": "status is-visible is-success",
+        "pendingStateCleared": true
+      },
+      "statusPayloads": [
+        {
+          "status": 200,
+          "state": "recorded",
+          "interestUuid": "cb5016c3-e6e2-4a3d-bb67-8ab7db47b063"
+        }
+      ],
+      "transientStatusConsoleErrors": [],
+      "screenshot": "chrome-desktop-read-only-1440x900.png",
+      "verdict": "VERIFIED_READ_ONLY"
+    },
+    {
+      "id": "A4-BROWSER-CHROME-INCOGNITO-MOBILE",
+      "browserName": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "requests": [
+        {
+          "method": "GET",
+          "url": "https://script.google.com/macros/s/AKfycbxMi_bQBceGxVK_TjbcU5rQNAaLyUXOMuQJHyYWCwdeoWlsccq2kFkhRYVG2meySCsPdA/exec?action=checkProgramInterestStatus&interestUuid=cb5016c3-e6e2-4a3d-bb67-8ab7db47b063&callback=programInterestJsonp_e99f8c2880998b3095dd731fb461bf90&_=1786626175554"
+        }
+      ],
+      "responses": [
+        {
+          "status": 302,
+          "contentType": "application/binary",
+          "url": "https://script.google.com/macros/s/AKfycbxMi_bQBceGxVK_TjbcU5rQNAaLyUXOMuQJHyYWCwdeoWlsccq2kFkhRYVG2meySCsPdA/exec?action=checkProgramInterestStatus&interestUuid=cb5016c3-e6e2-4a3d-bb67-8ab7db47b063&callback=programInterestJsonp_e99f8c2880998b3095dd731fb461bf90&_=1786626175554"
+        },
+        {
+          "status": 200,
+          "contentType": "text/javascript; charset=utf-8",
+          "url": "https://script.googleusercontent.com/macros/echo"
+        }
+      ],
+      "failedRequests": [],
+      "blockedWrites": [],
+      "consoleErrors": [],
+      "pageErrors": [],
+      "page": {
+        "requestedUrl": "http://127.0.0.1:49912/program-interest.html",
+        "finalUrl": "http://127.0.0.1:49912/program-interest.html",
+        "status": 200,
+        "releaseHeaders": {
+          "id": null,
+          "commit": null,
+          "manifest": null
+        }
+      },
+      "elapsedMs": 3723,
+      "ui": {
+        "text": "CultureCode Team đã ghi nhận thông tin quan tâm của bạn. Chúng tôi sẽ liên hệ khi có chương trình phù hợp.",
+        "className": "status is-visible is-success",
+        "pendingStateCleared": true
+      },
+      "statusPayloads": [
+        {
+          "status": 200,
+          "state": "recorded",
+          "interestUuid": "cb5016c3-e6e2-4a3d-bb67-8ab7db47b063"
+        }
+      ],
+      "transientStatusConsoleErrors": [],
+      "screenshot": "chrome-incognito-read-only-390x844.png",
+      "verdict": "VERIFIED_READ_ONLY"
+    },
+    {
+      "id": "A4-BROWSER-BRAVE-MOBILE",
+      "browserName": "brave",
+      "browserVersion": "Chrome/151.0.7922.137",
+      "incognito": false,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "requests": [
+        {
+          "method": "GET",
+          "url": "https://script.google.com/macros/s/AKfycbxMi_bQBceGxVK_TjbcU5rQNAaLyUXOMuQJHyYWCwdeoWlsccq2kFkhRYVG2meySCsPdA/exec?action=checkProgramInterestStatus&interestUuid=cb5016c3-e6e2-4a3d-bb67-8ab7db47b063&callback=programInterestJsonp_a88b218955d81170066cd90a34265266&_=1786626181278"
+        }
+      ],
+      "responses": [
+        {
+          "status": 302,
+          "contentType": "application/binary",
+          "url": "https://script.google.com/macros/s/AKfycbxMi_bQBceGxVK_TjbcU5rQNAaLyUXOMuQJHyYWCwdeoWlsccq2kFkhRYVG2meySCsPdA/exec?action=checkProgramInterestStatus&interestUuid=cb5016c3-e6e2-4a3d-bb67-8ab7db47b063&callback=programInterestJsonp_a88b218955d81170066cd90a34265266&_=1786626181278"
+        },
+        {
+          "status": 200,
+          "contentType": "text/javascript; charset=utf-8",
+          "url": "https://script.googleusercontent.com/macros/echo"
+        }
+      ],
+      "failedRequests": [],
+      "blockedWrites": [],
+      "consoleErrors": [],
+      "pageErrors": [],
+      "page": {
+        "requestedUrl": "http://127.0.0.1:49912/program-interest.html",
+        "finalUrl": "http://127.0.0.1:49912/program-interest.html",
+        "status": 200,
+        "releaseHeaders": {
+          "id": null,
+          "commit": null,
+          "manifest": null
+        }
+      },
+      "elapsedMs": 6628,
+      "ui": {
+        "text": "CultureCode Team đã ghi nhận thông tin quan tâm của bạn. Chúng tôi sẽ liên hệ khi có chương trình phù hợp.",
+        "className": "status is-visible is-success",
+        "pendingStateCleared": true
+      },
+      "statusPayloads": [
+        {
+          "status": 200,
+          "state": "recorded",
+          "interestUuid": "cb5016c3-e6e2-4a3d-bb67-8ab7db47b063"
+        }
+      ],
+      "transientStatusConsoleErrors": [],
+      "screenshot": "brave-read-only-390x844.png",
+      "verdict": "VERIFIED_READ_ONLY"
+    }
+  ]
+}

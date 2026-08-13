@@ -25,7 +25,7 @@ Không dùng `.clasp.json.parentId` để suy ra Sheet; runtime target phải kh
 `SPREADSHEET_ID` trong `Script Properties` hoặc read-back có thẩm quyền.
 Frontend gọi Apps Script deployment `@69` qua endpoint
 `AKfycbxMi_bQBceGxVK_TjbcU5rQNAaLyUXOMuQJHyYWCwdeoWlsccq2kFkhRYVG2meySCsPdA/exec`;
-Không đổi endpoint trong A3-FE; Apps Script, schema, token và environment vẫn giữ
+Không đổi endpoint trong A4-FE; Apps Script, schema, token và environment vẫn giữ
 nguyên.
 
 Sau khi sửa frontend, chạy `regression test` (kiểm thử hồi quy) local từ
@@ -35,7 +35,7 @@ Sau khi sửa frontend, chạy `regression test` (kiểm thử hồi quy) local 
 node UAT/program_interest_confirmation_reliability_20260812.js
 ```
 
-Test A2 regression + A3-FE phải chứng minh:
+Test A2 regression + A3-FE + A4-FE phải chứng minh:
 
 1. 10 lần polling, timeout 12 giây/lần và delay 4 giây; timeout/network không
    làm mất UUID.
@@ -47,9 +47,10 @@ Test A2 regression + A3-FE phải chứng minh:
    không POST, nếu chưa xác nhận thì POST cùng UUID.
 5. Nút **Kiểm tra lại** chỉ poll; số POST không tăng.
 6. `INVALID_UUID` và UUID mismatch dừng ngay; UUID fallback vẫn là 32 hex.
-7. Chrome desktop 1440×900, Brave mobile 390×844 và Chrome ẩn danh đều đạt;
-   mọi request Apps Script thật bị request interception chặn, nên external
-   writes phải là `NONE` và `Apps Script requests continued` phải bằng `0`.
+7. Trong local mock regression, Chrome desktop 1440×900, Brave mobile 390×844
+   và Chrome ẩn danh đều đạt; mọi request Apps Script thật bị request
+   interception chặn, nên external writes phải là `NONE` và
+   `Apps Script requests continued` phải bằng `0`.
 8. A3-FE: status polling bắt đầu không quá 100 ms sau POST start trong harness;
    `recorded` trước khi POST resolve vẫn báo thành công và tổng số POST là 1.
 9. A3-FE: `not_found` trước `appendRow` tiếp tục retry cùng UUID; không phát sinh
@@ -58,6 +59,34 @@ Test A2 regression + A3-FE phải chứng minh:
     `UAT/evidence/program_interest_confirmation_a3_20260812/latency-baseline.json`;
     báo cáo tách p50/p95/max status latency khỏi write latency và không claim
     backend đã tối ưu.
+11. A4-FE không còn dùng thẻ `<script>` cho status transport. Frontend phải gọi
+    `fetch GET` với `cache: no-store`, `credentials: omit`,
+    `redirect: follow`, timeout bằng `AbortController`, rồi parse nghiêm chuỗi
+    JSONP trả về; POST `no-cors` và state machine A3 giữ nguyên.
+
+Mock-only không đủ để duyệt A4-FE vì không đi qua redirect thật của Apps Script.
+Phải chạy thêm browser UAT read-only trên endpoint thật bằng UUID đã tồn tại,
+preseed pending state trong `sessionStorage`, không submit form và chặn cứng
+POST/PUT/PATCH/DELETE. Gate chỉ đạt khi cả Chrome desktop 1440×900, Chrome ẩn
+danh mobile 390×844 và Brave mobile 390×844 đều quan sát chuỗi chuyển hướng
+HTTP 302 → 200, nội dung `text/javascript`, `state=recorded`, UUID khớp, pending
+state được xóa và không có external write. Evidence lưu tại
+`UAT/evidence/program_interest_status_fetch_a4_20260813/browser-read-only-results.json`;
+báo cáo tổng tại `UAT/program_interest_status_fetch_a4_20260813.md`.
+
+Khi chạy lại trên staged deployment, truyền URL bằng
+`PROGRAM_INTEREST_TARGET_URL`, phase bằng `PROGRAM_INTEREST_TARGET_PHASE=staged`
+và ba giá trị provenance (nguồn gốc bản phát
+hành) bằng `PROGRAM_INTEREST_EXPECTED_RELEASE_ID`,
+`PROGRAM_INTEREST_EXPECTED_RELEASE_COMMIT` và
+`PROGRAM_INTEREST_EXPECTED_RELEASE_MANIFEST`. Nếu Vercel Protection cần bypass,
+UAT chỉ gắn `VERCEL_AUTOMATION_BYPASS_SECRET` vào request cùng origin với staged
+URL; tuyệt đối không gắn header này vào request Apps Script hoặc tài nguyên bên
+thứ ba, và không ghi giá trị secret vào report. Ở chế độ staged, cùng script
+kiểm tra đủ bảy route trong `release-specs/dhm10-homepage.json`, ba release
+header, rồi mới chạy Program Interest trên Chrome, Chrome ẩn danh và Brave.
+Verdict bắt buộc là `STAGED_RELEASE_VERIFIED_A4`; sau production promote, chạy
+lại với phase `production` và chỉ chấp nhận `LIVE_VERIFIED_A4`.
 
 Sau local gate, tạo `release package` (gói phát hành) từ đúng commit bất biến và
 chạy staged deployment (bản triển khai thử) bằng `vercel --prod --skip-domain`.

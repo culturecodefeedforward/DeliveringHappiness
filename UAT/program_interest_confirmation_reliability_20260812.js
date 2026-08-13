@@ -12,11 +12,11 @@ const ROOT = process.env.PROGRAM_INTEREST_ROOT
 const FORM_PATH = path.join(ROOT, 'program-interest.html');
 const EVIDENCE_DIR = process.env.PROGRAM_INTEREST_EVIDENCE_DIR
   ? path.resolve(process.env.PROGRAM_INTEREST_EVIDENCE_DIR)
-  : path.join(__dirname, 'evidence', 'program_interest_confirmation_a3_20260812');
+  : path.join(__dirname, 'evidence', 'program_interest_status_fetch_a4_20260813');
 const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxMi_bQBceGxVK_TjbcU5rQNAaLyUXOMuQJHyYWCwdeoWlsccq2kFkhRYVG2meySCsPdA/exec';
 const TEST_VALUES = {
-  fullName: 'UAT Program Interest A3',
-  email: 'uat-program-interest-a3@example.invalid',
+  fullName: 'UAT Program Interest A4',
+  email: 'uat-program-interest-a4@example.invalid',
   phone: '0000000000',
   note: 'UAT note must never enter storage or logs'
 };
@@ -191,6 +191,10 @@ async function createBrowserHarness({
       await request.respond({
         status: 200,
         contentType: 'application/javascript; charset=utf-8',
+        headers: {
+          'access-control-allow-origin': '*',
+          'cache-control': 'no-store'
+        },
         body: `${callback}(${JSON.stringify(responseFor(kind, uuid))});`
       });
     } catch (error) {
@@ -297,6 +301,30 @@ function safeResult(id, harness, extra = {}) {
       : null,
     appsScriptRequestsContinued: harness.trace.appsScriptRequestsContinued
   }, extra);
+}
+
+function scenarioFetchTransportGuard(results) {
+  currentTest = 'AT-A4-01 fetch transport source guard';
+  const source = fs.readFileSync(FORM_PATH, 'utf8');
+  const match = source.match(
+    /async function requestProgramInterestStatus[\s\S]*?\n\s*function isPermanentStatusCode/
+  );
+  assert.ok(match, 'STATUS_TRANSPORT_FUNCTION_NOT_FOUND');
+  const transport = match[0];
+  assert.match(transport, /fetch\(WEBAPP_URL \+ '\?' \+ query\.toString\(\)/);
+  assert.match(transport, /method: 'GET'/);
+  assert.match(transport, /mode: 'cors'/);
+  assert.match(transport, /credentials: 'omit'/);
+  assert.match(transport, /redirect: 'follow'/);
+  assert.match(transport, /STATUS_BAD_JSONP/);
+  assert.doesNotMatch(transport, /document\.createElement\(['"]script['"]\)/);
+  results.push({
+    id: 'AT-A4-01',
+    transport: 'FETCH_GET_JSONP_TEXT',
+    scriptTagStatusTransport: false,
+    appsScriptRequestsContinued: 0,
+    externalWrites: 'NONE'
+  });
 }
 
 async function scenarioTimeoutThenRecorded(results) {
@@ -556,6 +584,7 @@ async function main() {
   uatPort = server.address().port;
   const results = [];
   try {
+    scenarioFetchTransportGuard(results);
     await scenarioTimeoutThenRecorded(results);
     await scenarioPostFailure(results);
     await scenarioStatusRunsBeforePostResolves(results);
@@ -571,7 +600,7 @@ async function main() {
     await scenarioBrowserMatrix(results);
 
     const report = {
-      verdict: 'LOCAL_A3_UAT_VERIFIED',
+      verdict: 'LOCAL_A4_UAT_VERIFIED',
       sourceRoot: ROOT,
       formSha256: require('crypto').createHash('sha256').update(fs.readFileSync(FORM_PATH)).digest('hex'),
       externalWrites: 'NONE',
@@ -588,7 +617,7 @@ async function main() {
 main().catch((error) => {
   fs.mkdirSync(EVIDENCE_DIR, { recursive: true });
   const failure = {
-    verdict: process.env.PROGRAM_INTEREST_BASELINE_LABEL ? 'EXPECTED_BASELINE_FAILURE' : 'LOCAL_A2_UAT_FAILED',
+    verdict: process.env.PROGRAM_INTEREST_BASELINE_LABEL ? 'EXPECTED_BASELINE_FAILURE' : 'LOCAL_A4_UAT_FAILED',
     baselineLabel: process.env.PROGRAM_INTEREST_BASELINE_LABEL || null,
     currentTest,
     sourceRoot: ROOT,

@@ -872,51 +872,62 @@
         });
       }
 
-      function requestProgramInterestStatus(uuid, timeoutMilliseconds) {
-        return new Promise(function (resolve, reject) {
-          var callbackName = 'programInterestJsonp_' + createHexToken();
-          var script = document.createElement('script');
-          var settled = false;
-          var requestTimeout = Math.max(1, timeoutMilliseconds || STATUS_TIMEOUT_MS);
-
-          function cleanup() {
-            window.clearTimeout(timeoutId);
-            if (script.parentNode) script.parentNode.removeChild(script);
-            try {
-              delete window[callbackName];
-            } catch (error) {
-              window[callbackName] = undefined;
-            }
-          }
-
-          function finish(handler, value) {
-            if (settled) return;
-            settled = true;
-            cleanup();
-            handler(value);
-          }
-
-          window[callbackName] = function (response) {
-            finish(resolve, response || { state: 'error' });
-          };
-
-          script.onerror = function () {
-            finish(reject, createStatusError('STATUS_NETWORK_ERROR'));
-          };
-
-          var timeoutId = window.setTimeout(function () {
-            finish(reject, createStatusError('STATUS_TIMEOUT'));
-          }, requestTimeout);
-
-          var query = new URLSearchParams({
-            action: 'checkProgramInterestStatus',
-            interestUuid: uuid,
-            callback: callbackName,
-            _: String(Date.now())
-          });
-          script.src = WEBAPP_URL + '?' + query.toString();
-          document.head.appendChild(script);
+      async function requestProgramInterestStatus(uuid, timeoutMilliseconds) {
+        var callbackName = 'programInterestJsonp_' + createHexToken();
+        var requestTimeout = Math.max(1, timeoutMilliseconds || STATUS_TIMEOUT_MS);
+        var controller = typeof window.AbortController === 'function'
+          ? new window.AbortController()
+          : null;
+        var timeoutId;
+        var query = new URLSearchParams({
+          action: 'checkProgramInterestStatus',
+          interestUuid: uuid,
+          callback: callbackName,
+          _: String(Date.now())
         });
+
+        var timeoutPromise = new Promise(function (_, reject) {
+          timeoutId = window.setTimeout(function () {
+            if (controller) controller.abort();
+            reject(createStatusError('STATUS_TIMEOUT'));
+          }, requestTimeout);
+        });
+
+        var fetchPromise = fetch(WEBAPP_URL + '?' + query.toString(), {
+          method: 'GET',
+          mode: 'cors',
+          cache: 'no-store',
+          credentials: 'omit',
+          redirect: 'follow',
+          signal: controller ? controller.signal : undefined
+        });
+
+        try {
+          var response = await Promise.race([fetchPromise, timeoutPromise]);
+          var responseText = await response.text();
+          if (!response.ok) {
+            throw createStatusError('STATUS_HTTP_' + String(response.status || 'ERROR'));
+          }
+
+          var prefix = callbackName + '(';
+          if (responseText.indexOf(prefix) !== 0 || responseText.slice(-2) !== ');') {
+            throw createStatusError('STATUS_BAD_JSONP');
+          }
+
+          try {
+            return JSON.parse(responseText.slice(prefix.length, -2));
+          } catch (error) {
+            throw createStatusError('STATUS_BAD_JSONP');
+          }
+        } catch (error) {
+          if (error && error.code) throw error;
+          if (controller && controller.signal.aborted) {
+            throw createStatusError('STATUS_TIMEOUT');
+          }
+          throw createStatusError('STATUS_NETWORK_ERROR');
+        } finally {
+          window.clearTimeout(timeoutId);
+        }
       }
 
       function isPermanentStatusCode(code) {
