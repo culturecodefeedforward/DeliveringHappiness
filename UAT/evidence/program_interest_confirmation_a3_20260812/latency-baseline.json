@@ -1,0 +1,28 @@
+{
+  "verdict": "READ_ONLY_STATUS_PROBE_VERIFIED",
+  "claimSurface": "status endpoint read-only; does not prove POST/write latency",
+  "endpoint": "https://script.google.com/macros/s/AKfycbxMi_bQBceGxVK_TjbcU5rQNAaLyUXOMuQJHyYWCwdeoWlsccq2kFkhRYVG2meySCsPdA/exec",
+  "startedAt": "2026-08-13T10:05:31.033Z",
+  "completedAt": "2026-08-13T10:06:08.773Z",
+  "sampleCount": 8,
+  "timeoutMs": 45000,
+  "externalWrites": "NONE",
+  "postRequests": 0,
+  "successfulStatusSamples": 8,
+  "metricsMs": {
+    "min": 2262,
+    "p50": 2760,
+    "p95": 12098.3,
+    "max": 14843
+  },
+  "samples": [
+    { "index": 1, "elapsedMs": 14843, "httpStatus": 200, "state": "not_found", "interestUuidMatches": true },
+    { "index": 2, "elapsedMs": 3391, "httpStatus": 200, "state": "not_found", "interestUuidMatches": true },
+    { "index": 3, "elapsedMs": 3019, "httpStatus": 200, "state": "not_found", "interestUuidMatches": true },
+    { "index": 4, "elapsedMs": 7001, "httpStatus": 200, "state": "not_found", "interestUuidMatches": true },
+    { "index": 5, "elapsedMs": 2322, "httpStatus": 200, "state": "not_found", "interestUuidMatches": true },
+    { "index": 6, "elapsedMs": 2501, "httpStatus": 200, "state": "not_found", "interestUuidMatches": true },
+    { "index": 7, "elapsedMs": 2262, "httpStatus": 200, "state": "not_found", "interestUuidMatches": true },
+    { "index": 8, "elapsedMs": 2397, "httpStatus": 200, "state": "not_found", "interestUuidMatches": true }
+  ]
+}

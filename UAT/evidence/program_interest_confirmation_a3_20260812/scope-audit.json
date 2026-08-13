@@ -1,0 +1,23 @@
+{
+  "baseCommit": "d7ef9d37669fafe7d533340ca201f8b5bf469e97",
+  "implementationWorktree": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\worktrees\\dh4hn-website\\program-interest-a3-20260813",
+  "changedFiles": [
+    "program-interest.html",
+    "UAT/program_interest_confirmation_reliability_20260812.js",
+    "UAT/program_interest_confirmation_latency_a3_20260812.js",
+    "UAT/program_interest_confirmation_latency_a3_20260812.md",
+    "UAT/program_interest_confirmation_a3_20260812.md",
+    "docs/system-architecture.md",
+    "docs/deployment-guide.md"
+  ],
+  "forbiddenTrackedChanges": [],
+  "appsScriptSourceChanged": false,
+  "schemaChanged": false,
+  "tokenOrEnvChanged": false,
+  "coursePanelHash": {
+    "baseline": "8B533EAEBFD505425548397A3A519C38E923EA1B3455207FA963FE825E6B44AC",
+    "current": "8B533EAEBFD505425548397A3A519C38E923EA1B3455207FA963FE825E6B44AC",
+    "equal": true
+  },
+  "externalWrites": "NONE"
+}

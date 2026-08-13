@@ -161,6 +161,7 @@ sequenceDiagram
     else Payload mới
         Web->>GAS: POST no-cors (PROGRAM_INTEREST)
     end
+    Note over Web,GAS: A3-FE: POST fire-and-observe (gửi không chờ phản hồi); status polling bắt đầu ngay
     GAS->>Sheet: Lock, kiểm tra UUID cột B, append 25 cột nếu chưa có
     loop Tối đa 10 lần, timeout 12 giây, cách 4 giây
         Web->>GAS: JSONP checkProgramInterestStatus
@@ -190,18 +191,25 @@ sequenceDiagram
 | V–W | Ghi chú, đồng ý liên hệ | `consent` bắt buộc |
 | X–Y | Source, Event ID | `Web_Program_Interest`, `PROGRAM_INTEREST_V1` |
 
-Option A2 chỉ thay đổi frontend. Fingerprint dùng SHA-256 khi Web Crypto khả dụng
+Option A2 và A3-FE chỉ thay đổi frontend. Fingerprint dùng SHA-256 khi Web Crypto khả dụng
 và fallback về hash 64 hex không chứa payload thô. `sessionStorage` lưu đúng một state gồm version,
 UUID, fingerprint 64 ký tự hex, phase và timestamp; không lưu họ tên, email,
 điện thoại, ghi chú hoặc payload thô. Reload tự kiểm tra UUID đang pending và
 không tự POST. `INVALID_UUID`/UUID mismatch dừng ngay; timeout, lỗi mạng,
 `not_found` và lỗi upstream tạm thời mới được thử lại.
 
+A3-FE gửi đúng một POST cho mỗi lượt submit, gắn rejection observer (bộ bắt lỗi
+promise) nhưng không chờ POST resolve trước khi bắt đầu JSONP polling. Vì vậy
+status `recorded` cùng UUID khớp có thể hoàn tất giao diện trong khi POST vẫn đang
+chờ; `not_found` trước `appendRow` không được coi là thất bại và không kích hoạt
+POST thứ hai. Đây là tối ưu độ trễ cảm nhận (client-perceived latency), không phải
+cam kết Apps Script/Google Sheets backend nhanh hơn.
+
 Backend và `schema` (cấu trúc dữ liệu chuẩn) 25 cột không đổi. Apps Script dùng
 `LockService`, tìm UUID ở cột B trước `appendRow`; POST lại cùng UUID không tạo
 dòng Program Interest thứ hai. Handler này không gọi luồng email, thanh toán hay
-giữ chỗ. Kết quả A2 hiện mới được kiểm chứng local bằng request interception;
-ghi/read-back Sheet thật phải chờ phê duyệt Cấp độ 3 của release A2.
+giữ chỗ. Kết quả A3-FE hiện mới được kiểm chứng local bằng request interception;
+ghi/read-back Sheet thật phải chờ phê duyệt Cấp độ 3 của release A3.
 
 ## 2. Các Thành phần Kỹ thuật (Technical Components)
 

@@ -1103,19 +1103,23 @@
             isRepeatedPayload ? storedState.createdAt : undefined
           );
           showStatus('Đang gửi thông tin và chờ hệ thống xác nhận ghi nhận.', 'pending');
+          writePendingState(uuid, payloadFingerprint, 'confirming', pendingState.createdAt);
           try {
-            await fetch(WEBAPP_URL, {
+            // Gửi bất đồng bộ; POST (gửi dữ liệu) và xác nhận trạng thái chạy song song.
+            fetch(WEBAPP_URL, {
               method: 'POST',
               mode: 'no-cors',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(payload)
+            }).catch(function () {
+              // no-cors không cho đọc response; vẫn xác nhận theo cùng UUID vì backend có thể đã ghi.
+              console.warn({ code: 'POST_NETWORK_ERROR', attempts: 0 });
             });
           } catch (postError) {
             // no-cors không cho đọc response; vẫn xác nhận theo cùng UUID vì backend có thể đã ghi.
             console.warn({ code: 'POST_NETWORK_ERROR', attempts: 0 });
           }
 
-          writePendingState(uuid, payloadFingerprint, 'confirming', pendingState.createdAt);
           await confirmRecorded(uuid);
           completeRecordedSubmission();
         } catch (error) {

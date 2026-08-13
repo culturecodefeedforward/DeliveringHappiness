@@ -1,0 +1,272 @@
+{
+  "verdict": "LOCAL_A3_UAT_VERIFIED",
+  "sourceRoot": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\worktrees\\dh4hn-website\\program-interest-a3-20260813",
+  "formSha256": "409b38cb9f76f5fc53b9e47393b1953474797c3a727ef5e8a17bb7f784eb8852",
+  "externalWrites": "NONE",
+  "appsScriptRequestsContinued": 0,
+  "results": [
+    {
+      "id": "AT-A2-01",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 2,
+      "postToStatusStartMs": 5,
+      "appsScriptRequestsContinued": 0
+    },
+    {
+      "id": "AT-A2-02",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 1,
+      "postToStatusStartMs": 2,
+      "appsScriptRequestsContinued": 0
+    },
+    {
+      "id": "AT-A3-02",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 1,
+      "postToStatusStartMs": 2,
+      "appsScriptRequestsContinued": 0,
+      "successBeforePostResolved": true
+    },
+    {
+      "id": "AT-A2-03",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 10,
+      "postToStatusStartMs": 0,
+      "appsScriptRequestsContinued": 0,
+      "retryButton": true,
+      "screenshot": "chrome-retry-desktop-1440x900.png"
+    },
+    {
+      "id": "AT-A2-04",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 11,
+      "postToStatusStartMs": 0,
+      "appsScriptRequestsContinued": 0,
+      "postDelta": 0,
+      "statusDelta": 1
+    },
+    {
+      "id": "AT-A2-05",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 11,
+      "postToStatusStartMs": 2,
+      "appsScriptRequestsContinued": 0,
+      "postDeltaAfterReload": 0,
+      "recoveredUuid": "1c2ce16b-2b3d-4ed6-918f-b5f902862676"
+    },
+    {
+      "id": "AT-A2-06",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 11,
+      "postToStatusStartMs": 2,
+      "appsScriptRequestsContinued": 0,
+      "postDelta": 0
+    },
+    {
+      "id": "AT-A2-07",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 2,
+      "statusCount": 12,
+      "postToStatusStartMs": 2,
+      "appsScriptRequestsContinued": 0,
+      "sameUuid": true
+    },
+    {
+      "id": "AT-A2-08",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 2,
+      "statusCount": 11,
+      "postToStatusStartMs": 2,
+      "appsScriptRequestsContinued": 0,
+      "newUuid": true
+    },
+    {
+      "id": "AT-A2-09-invalid",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 11,
+      "postToStatusStartMs": 8,
+      "appsScriptRequestsContinued": 0,
+      "errorCode": "INVALID_UUID",
+      "postDelta": 0
+    },
+    {
+      "id": "AT-A2-09-mismatch",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 11,
+      "postToStatusStartMs": 2,
+      "appsScriptRequestsContinued": 0,
+      "errorCode": "STATUS_UUID_MISMATCH",
+      "postDelta": 0
+    },
+    {
+      "id": "AT-A2-10",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 10,
+      "postToStatusStartMs": 6,
+      "appsScriptRequestsContinued": 0,
+      "storageKeys": [
+        "PROGRAM_INTEREST_pending_v2"
+      ]
+    },
+    {
+      "id": "AT-A2-G01",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 1,
+      "postToStatusStartMs": 0,
+      "appsScriptRequestsContinued": 0,
+      "fallbackUuidFormat": "32_HEX"
+    },
+    {
+      "id": "AT-A2-G02",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 10,
+      "postToStatusStartMs": 2,
+      "appsScriptRequestsContinued": 0,
+      "sanitizedErrorCode": "CONFIRMATION_UNAVAILABLE"
+    },
+    {
+      "id": "AT-A2-11-chrome",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "postCount": 1,
+      "statusCount": 1,
+      "postToStatusStartMs": 2,
+      "appsScriptRequestsContinued": 0,
+      "screenshot": "chrome-desktop-1440x900.png",
+      "fallbackUuidFormat": null
+    },
+    {
+      "id": "AT-A2-11-brave",
+      "browser": "brave",
+      "browserVersion": "Chrome/151.0.7922.137",
+      "incognito": false,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "postCount": 1,
+      "statusCount": 1,
+      "postToStatusStartMs": 0,
+      "appsScriptRequestsContinued": 0,
+      "screenshot": "brave-mobile-390x844.png",
+      "fallbackUuidFormat": "32_HEX"
+    },
+    {
+      "id": "AT-A2-11-chrome-incognito",
+      "browser": "chrome",
+      "browserVersion": "Chrome/151.0.7922.76",
+      "incognito": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "postCount": 1,
+      "statusCount": 1,
+      "postToStatusStartMs": 0,
+      "appsScriptRequestsContinued": 0,
+      "screenshot": null,
+      "fallbackUuidFormat": "32_HEX"
+    }
+  ]
+}

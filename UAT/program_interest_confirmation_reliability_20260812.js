@@ -10,11 +10,13 @@ const ROOT = process.env.PROGRAM_INTEREST_ROOT
   ? path.resolve(process.env.PROGRAM_INTEREST_ROOT)
   : path.resolve(__dirname, '..');
 const FORM_PATH = path.join(ROOT, 'program-interest.html');
-const EVIDENCE_DIR = path.join(__dirname, 'evidence', 'program_interest_confirmation_a2_20260812');
+const EVIDENCE_DIR = process.env.PROGRAM_INTEREST_EVIDENCE_DIR
+  ? path.resolve(process.env.PROGRAM_INTEREST_EVIDENCE_DIR)
+  : path.join(__dirname, 'evidence', 'program_interest_confirmation_a3_20260812');
 const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxMi_bQBceGxVK_TjbcU5rQNAaLyUXOMuQJHyYWCwdeoWlsccq2kFkhRYVG2meySCsPdA/exec';
 const TEST_VALUES = {
-  fullName: 'UAT Program Interest A2',
-  email: 'uat-program-interest-a2@example.invalid',
+  fullName: 'UAT Program Interest A3',
+  email: 'uat-program-interest-a3@example.invalid',
   phone: '0000000000',
   note: 'UAT note must never enter storage or logs'
 };
@@ -115,6 +117,8 @@ async function createBrowserHarness({
     postBodies: [],
     statusUrls: [],
     events: [],
+    eventTimes: {},
+    postResolvedAt: null,
     consoleMessages: [],
     externalRequestsBlocked: [],
     appsScriptRequestsContinued: 0
@@ -122,6 +126,7 @@ async function createBrowserHarness({
   let statusPlan = statuses.slice();
   let statusIndex = 0;
   let postMode = post;
+  const pendingPostResolvers = [];
 
   page.on('console', (message) => trace.consoleMessages.push(message.text()));
   await page.setRequestInterception(true);
@@ -141,9 +146,24 @@ async function createBrowserHarness({
 
       if (request.method() === 'POST') {
         trace.events.push('post');
+        trace.eventTimes.postStart = trace.eventTimes.postStart || Date.now();
         trace.postBodies.push(JSON.parse(request.postData() || '{}'));
-        if (postMode === 'network') await request.abort('failed');
-        else await request.respond({ status: 204, body: '' });
+        if (postMode === 'network') {
+          await request.abort('failed');
+        } else if (postMode === 'pending') {
+          await new Promise((resolve) => {
+            pendingPostResolvers.push(async () => {
+              if (!request.isInterceptResolutionHandled()) {
+                await request.respond({ status: 204, body: '' });
+              }
+              trace.postResolvedAt = Date.now();
+              resolve();
+            });
+          });
+        } else {
+          await request.respond({ status: 204, body: '' });
+          trace.postResolvedAt = Date.now();
+        }
         return;
       }
 
@@ -154,6 +174,7 @@ async function createBrowserHarness({
       }
       const callback = url.searchParams.get('callback');
       const uuid = url.searchParams.get('interestUuid');
+      trace.eventTimes.statusStart = trace.eventTimes.statusStart || Date.now();
       trace.statusUrls.push(requestUrl);
       const kind = statusPlan[Math.min(statusIndex++, statusPlan.length - 1)] || 'not_found';
       trace.events.push(`status:${kind}`);
@@ -193,11 +214,18 @@ async function createBrowserHarness({
     postMode = nextMode;
   }
 
+  async function releasePendingPosts() {
+    while (pendingPostResolvers.length) {
+      await pendingPostResolvers.shift()();
+    }
+  }
+
   async function close() {
+    await releasePendingPosts();
     await browser.close();
   }
 
-  return { browser, context, page, trace, goto, setStatuses, setPostMode, close };
+  return { browser, context, page, trace, goto, setStatuses, setPostMode, releasePendingPosts, close };
 }
 
 async function fillAndSubmit(page, overrides = {}) {
@@ -264,6 +292,9 @@ function safeResult(id, harness, extra = {}) {
     viewport: harness.trace.viewport,
     postCount: harness.trace.postBodies.length,
     statusCount: harness.trace.statusUrls.length,
+    postToStatusStartMs: harness.trace.eventTimes.postStart && harness.trace.eventTimes.statusStart
+      ? harness.trace.eventTimes.statusStart - harness.trace.eventTimes.postStart
+      : null,
     appsScriptRequestsContinued: harness.trace.appsScriptRequestsContinued
   }, extra);
 }
@@ -292,6 +323,25 @@ async function scenarioPostFailure(results) {
     assert.equal(h.trace.postBodies.length, 1);
     assert.equal(h.trace.statusUrls.length, 1);
     results.push(safeResult('AT-A2-02', h));
+  } finally { await h.close(); }
+}
+
+async function scenarioStatusRunsBeforePostResolves(results) {
+  currentTest = 'AT-A3-02 status recorded before POST resolves';
+  const h = await createBrowserHarness({ statuses: ['recorded'], post: 'pending' });
+  try {
+    await h.goto();
+    await fillAndSubmit(h.page);
+    await waitForSuccess(h.page);
+    assert.equal(h.trace.postBodies.length, 1);
+    assert.equal(h.trace.statusUrls.length, 1);
+    assert.equal(h.trace.postResolvedAt, null, JSON.stringify(h.trace));
+    assert.equal(h.trace.eventTimes.statusStart - h.trace.eventTimes.postStart <= 100, true, JSON.stringify(h.trace.eventTimes));
+    await h.releasePendingPosts();
+    results.push(safeResult('AT-A3-02', h, {
+      successBeforePostResolved: true,
+      postToStatusStartMs: h.trace.eventTimes.statusStart - h.trace.eventTimes.postStart
+    }));
   } finally { await h.close(); }
 }
 
@@ -384,7 +434,10 @@ async function scenarioPreflightThenPost(results) {
     await waitForSuccess(h.page);
     const secondUuid = h.trace.postBodies[1].interestUuid;
     assert.equal(firstUuid, secondUuid);
-    assert.deepEqual(h.trace.events.slice(eventStart, eventStart + 3), ['status:not_found', 'post', 'status:recorded']);
+    const tail = h.trace.events.slice(eventStart);
+    assert.equal(tail[0], 'status:not_found');
+    assert.equal(tail.filter((event) => event === 'post').length, 1);
+    assert.equal(tail.filter((event) => event === 'status:recorded').length, 1);
     results.push(safeResult('AT-A2-07', h, { sameUuid: true }));
   } finally { await h.close(); }
 }
@@ -505,6 +558,7 @@ async function main() {
   try {
     await scenarioTimeoutThenRecorded(results);
     await scenarioPostFailure(results);
+    await scenarioStatusRunsBeforePostResolves(results);
     await scenarioTenAttemptsAndManualRetry(results);
     await scenarioReloadRecovery(results);
     await scenarioPreflightRecorded(results);
@@ -517,7 +571,7 @@ async function main() {
     await scenarioBrowserMatrix(results);
 
     const report = {
-      verdict: 'LOCAL_A2_UAT_VERIFIED',
+      verdict: 'LOCAL_A3_UAT_VERIFIED',
       sourceRoot: ROOT,
       formSha256: require('crypto').createHash('sha256').update(fs.readFileSync(FORM_PATH)).digest('hex'),
       externalWrites: 'NONE',

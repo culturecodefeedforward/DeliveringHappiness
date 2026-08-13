@@ -1,0 +1,8 @@
+{
+  "verdict": "EXPECTED_BASELINE_FAILURE",
+  "baselineLabel": "A2_EXPECTED_A3_FAILURE",
+  "currentTest": "AT-A3-02 status recorded before POST resolves",
+  "sourceRoot": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\worktrees\\dh4hn-website\\program-interest-a2-20260812",
+  "error": "Waiting failed: 8000ms exceeded",
+  "externalWrites": "NONE"
+}

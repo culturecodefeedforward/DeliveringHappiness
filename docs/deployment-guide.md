@@ -25,7 +25,8 @@ Không dùng `.clasp.json.parentId` để suy ra Sheet; runtime target phải kh
 `SPREADSHEET_ID` trong `Script Properties` hoặc read-back có thẩm quyền.
 Frontend gọi Apps Script deployment `@69` qua endpoint
 `AKfycbxMi_bQBceGxVK_TjbcU5rQNAaLyUXOMuQJHyYWCwdeoWlsccq2kFkhRYVG2meySCsPdA/exec`;
-không đổi endpoint trong Option A2.
+Không đổi endpoint trong A3-FE; Apps Script, schema, token và environment vẫn giữ
+nguyên.
 
 Sau khi sửa frontend, chạy `regression test` (kiểm thử hồi quy) local từ
 `worktree` (nhánh làm việc tách biệt) sạch:
@@ -34,7 +35,7 @@ Sau khi sửa frontend, chạy `regression test` (kiểm thử hồi quy) local 
 node UAT/program_interest_confirmation_reliability_20260812.js
 ```
 
-Test A2 phải chứng minh:
+Test A2 regression + A3-FE phải chứng minh:
 
 1. 10 lần polling, timeout 12 giây/lần và delay 4 giây; timeout/network không
    làm mất UUID.
@@ -49,6 +50,14 @@ Test A2 phải chứng minh:
 7. Chrome desktop 1440×900, Brave mobile 390×844 và Chrome ẩn danh đều đạt;
    mọi request Apps Script thật bị request interception chặn, nên external
    writes phải là `NONE` và `Apps Script requests continued` phải bằng `0`.
+8. A3-FE: status polling bắt đầu không quá 100 ms sau POST start trong harness;
+   `recorded` trước khi POST resolve vẫn báo thành công và tổng số POST là 1.
+9. A3-FE: `not_found` trước `appendRow` tiếp tục retry cùng UUID; không phát sinh
+   POST thứ hai trong cùng submit attempt.
+10. Baseline status-only read-only được lưu tại
+    `UAT/evidence/program_interest_confirmation_a3_20260812/latency-baseline.json`;
+    báo cáo tách p50/p95/max status latency khỏi write latency và không claim
+    backend đã tối ưu.
 
 Sau local gate, tạo `release package` (gói phát hành) từ đúng commit bất biến và
 chạy staged deployment (bản triển khai thử) bằng `vercel --prod --skip-domain`.
@@ -59,7 +68,7 @@ deployment ID và provenance trước khi xin promote (đưa bản thử lên pr
 Chỉ sau khi production alias trỏ đúng release và có phê duyệt Cấp độ 3, live
 UAT ghi đúng một dòng giả với UUID mới vào tab `Program Interest`, đọc lại
 `recorded`, rồi POST lại cùng UUID để chứng minh số dòng ở tab không tăng.
-Không xóa dòng UAT. Option A2 không sửa Apps Script, token, env, schema hoặc
+Không xóa dòng UAT. A3-FE không sửa Apps Script, token, env, schema hoặc
 panel khóa học. Rollback frontend là promote lại deployment production liền
 trước; không rollback Apps Script vì backend không đổi.
 
