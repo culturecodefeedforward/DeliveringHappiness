@@ -1,0 +1,43 @@
+{
+  "harness": "program_interest_dhm9_core_port_a6_20260814",
+  "timestamp": "2026-08-14T07:18:49.786Z",
+  "target": "local 127.0.0.1 only",
+  "externalWrites": "NONE",
+  "static": [
+    {
+      "id": "S-01-source-contract",
+      "status": "failed",
+      "durationMs": 3,
+      "error": "POST_HELPER_MISSING"
+    }
+  ],
+  "browsers": [
+    {
+      "id": "chrome-desktop",
+      "browser": "Chrome/151.0.7922.138",
+      "status": "completed",
+      "cases": [
+        {
+          "id": "B-01-valid-submit-sequential",
+          "status": "failed",
+          "durationMs": 11946,
+          "error": "Waiting failed: 7000ms exceeded"
+        },
+        {
+          "id": "B-02-invalid-phone-blocked",
+          "status": "failed",
+          "durationMs": 2131,
+          "error": "INVALID_PHONE_MUST_NOT_POST"
+        },
+        {
+          "id": "B-03-pending-retry-get-only",
+          "status": "failed",
+          "durationMs": 1867,
+          "error": "EXTERNAL_REQUEST_DETECTED"
+        }
+      ]
+    }
+  ],
+  "verdict": "LOCAL_A6_UAT_FAILED",
+  "failureCount": 4
+}

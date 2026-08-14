@@ -1,0 +1,43 @@
+{
+  "harness": "program_interest_dhm9_core_port_a6_20260814",
+  "timestamp": "2026-08-14T07:19:45.901Z",
+  "target": "local 127.0.0.1 only",
+  "externalWrites": "NONE",
+  "static": [
+    {
+      "id": "S-01-source-contract",
+      "status": "failed",
+      "durationMs": 2,
+      "error": "POST_HELPER_MISSING"
+    }
+  ],
+  "browsers": [
+    {
+      "id": "chrome-desktop",
+      "browser": "Chrome/151.0.7922.138",
+      "status": "completed",
+      "cases": [
+        {
+          "id": "B-01-valid-submit-sequential",
+          "status": "failed",
+          "durationMs": 10452,
+          "error": "Waiting failed: 7000ms exceeded; posts=[{\"interestUuid\":\"4cd4facf-6718-49b0-a8a8-6915824f29cf\",\"type\":\"PROGRAM_INTEREST\",\"phone\":\"0000000000\",\"email\":\"uat-a6@example.invalid\",\"parseError\":false}]; gets=[{\"uuid\":\"4cd4facf-6718-49b0-a8a8-6915824f29cf\",\"beforePostSettled\":true,\"recorded\":false}]; events=[{\"type\":\"POST_RECEIVED\",\"at\":1786691989850},{\"type\":\"GET_STATUS\",\"at\":1786691989853,\"beforePostSettled\":true},{\"type\":\"POST_SETTLED\",\"at\":1786691990109}]"
+        },
+        {
+          "id": "B-02-invalid-phone-blocked",
+          "status": "failed",
+          "durationMs": 2241,
+          "error": "INVALID_PHONE_MUST_NOT_POST"
+        },
+        {
+          "id": "B-03-pending-retry-get-only",
+          "status": "failed",
+          "durationMs": 2076,
+          "error": "EXTERNAL_REQUEST_DETECTED https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap,https://fonts.gstatic.com/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSQI281Rb0.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm81Rb0.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSQI287Rb0bcw.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSQI286Rb0bcw.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm87Rb0bcw.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm86Rb0bcw.woff2,https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap,https://fonts.gstatic.com/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm86Rb0bcw.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm87Rb0bcw.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm81Rb0.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSQI286Rb0bcw.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSQI287Rb0bcw.woff2,https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSQI281Rb0.woff2"
+        }
+      ]
+    }
+  ],
+  "verdict": "LOCAL_A6_UAT_FAILED",
+  "failureCount": 4
+}

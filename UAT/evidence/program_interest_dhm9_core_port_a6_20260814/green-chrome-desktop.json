@@ -1,0 +1,59 @@
+{
+  "harness": "program_interest_dhm9_core_port_a6_20260814",
+  "timestamp": "2026-08-14T07:21:41.411Z",
+  "target": "local 127.0.0.1 only",
+  "externalWrites": "NONE",
+  "static": [
+    {
+      "id": "S-01-source-contract",
+      "status": "passed",
+      "durationMs": 1,
+      "details": {
+        "source": "program-interest.html"
+      }
+    }
+  ],
+  "browsers": [
+    {
+      "id": "chrome-desktop",
+      "browser": "Chrome/151.0.7922.138",
+      "status": "completed",
+      "cases": [
+        {
+          "id": "B-01-valid-submit-sequential",
+          "status": "passed",
+          "durationMs": 4094,
+          "details": {
+            "postCount": 1,
+            "getCount": 1,
+            "ui": {
+              "status": "CultureCode Team đã ghi nhận thông tin quan tâm của bạn. Chúng tôi sẽ liên hệ khi có chương trình phù hợp.",
+              "fullName": "",
+              "pending": null
+            }
+          }
+        },
+        {
+          "id": "B-02-invalid-phone-blocked",
+          "status": "passed",
+          "durationMs": 3415,
+          "details": {
+            "postCount": 0,
+            "errorText": "Số điện thoại cần có 8–15 chữ số và chỉ dùng các ký tự hợp lệ."
+          }
+        },
+        {
+          "id": "B-03-pending-retry-get-only",
+          "status": "passed",
+          "durationMs": 2445,
+          "details": {
+            "postCount": 0,
+            "getCount": 2
+          }
+        }
+      ]
+    }
+  ],
+  "verdict": "LOCAL_A6_UAT_VERIFIED",
+  "failureCount": 0
+}

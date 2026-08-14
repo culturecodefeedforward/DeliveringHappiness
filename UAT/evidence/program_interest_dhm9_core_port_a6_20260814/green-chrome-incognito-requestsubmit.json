@@ -1,0 +1,68 @@
+{
+  "harness": "program_interest_dhm9_core_port_a6_20260814",
+  "timestamp": "2026-08-14T07:31:49.505Z",
+  "target": "local 127.0.0.1 only",
+  "externalWrites": "NONE",
+  "static": [
+    {
+      "id": "S-01-source-contract",
+      "status": "passed",
+      "durationMs": 1,
+      "details": {
+        "source": "program-interest.html"
+      }
+    }
+  ],
+  "browsers": [
+    {
+      "id": "chrome-incognito-mobile",
+      "browser": "Chrome/151.0.7922.138",
+      "status": "completed",
+      "cases": [
+        {
+          "id": "B-01-valid-submit-sequential",
+          "status": "failed",
+          "durationMs": 7747,
+          "error": "POST_NOT_RECEIVED; runtime={\"status\":\"\",\"statusClass\":\"status\",\"phoneValidity\":\"\",\"submitDisabled\":false,\"formValid\":true,\"selectedProgram\":false,\"consent\":true,\"email\":\"uat-a6@example.invalid\"}; requests=[{\"method\":\"GET\",\"url\":\"http://127.0.0.1:64211/program-interest.html\"},{\"method\":\"GET\",\"url\":\"https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap\"},{\"method\":\"GET\",\"url\":\"http://127.0.0.1:64211/assets/culturecode-logo-dark.jpg\"},{\"method\":\"GET\",\"url\":\"http://127.0.0.1:64211/favicon.ico\"}]; console=[{\"type\":\"error\",\"text\":\"Failed to load resource: net::ERR_FAILED\"}]"
+        },
+        {
+          "id": "B-02-invalid-phone-blocked",
+          "status": "passed",
+          "durationMs": 2328,
+          "details": {
+            "postCount": 0,
+            "errorText": "Số điện thoại cần có 8–15 chữ số và chỉ dùng các ký tự hợp lệ.",
+            "screenshot": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\worktrees\\dh4hn-website\\program-interest-a6-20260814\\UAT\\evidence\\program_interest_dhm9_core_port_a6_20260814\\chrome-incognito-mobile-invalid-phone.png",
+            "blockedExternalReads": 1
+          }
+        },
+        {
+          "id": "B-03-pending-retry-get-only",
+          "status": "passed",
+          "durationMs": 2470,
+          "details": {
+            "postCount": 0,
+            "getCount": 2,
+            "screenshot": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\worktrees\\dh4hn-website\\program-interest-a6-20260814\\UAT\\evidence\\program_interest_dhm9_core_port_a6_20260814\\chrome-incognito-mobile-pending-retry-success.png",
+            "blockedExternalReads": 2
+          }
+        },
+        {
+          "id": "B-04-field-blur-isolation",
+          "status": "passed",
+          "durationMs": 1811,
+          "details": {
+            "postCount": 0,
+            "errors": {
+              "phone": "",
+              "email": ""
+            },
+            "blockedExternalReads": 1
+          }
+        }
+      ]
+    }
+  ],
+  "verdict": "LOCAL_A6_UAT_FAILED",
+  "failureCount": 1
+}

@@ -147,8 +147,13 @@ sequenceDiagram
     participant Sheet as Google Sheet / Program Interest
 
     User->>Web: Điền form và chọn chương trình
-    Web->>Web: Tạo interestUuid + payload fingerprint 64 hex
-    Web->>Session: Lưu UUID, hash, phase; không lưu payload/PII
+    Web->>Web: HTML validity + adapter A6 kiểm họ tên/email/điện thoại theo contract backend
+    alt Dữ liệu chưa hợp lệ
+        Web-->>User: Hiện lỗi ngay tại field; không POST
+    else Dữ liệu hợp lệ
+        Web->>Web: Tạo interestUuid + payload fingerprint 64 hex
+        Web->>Session: Lưu UUID, hash, phase; không lưu payload/PII
+    end
     alt Payload đang pending từ lần trước
         Web->>GAS: fetch GET preflight theo cùng UUID
         GAS->>Sheet: Tìm UUID ở cột B
@@ -158,11 +163,12 @@ sequenceDiagram
             Web-->>User: Thành công; không POST lại
         else chưa xác nhận hoặc lỗi tạm thời
             Web->>GAS: POST no-cors cùng UUID (PROGRAM_INTEREST)
+            Note over Web,GAS: A6 await POST settle/catch; response vẫn opaque
         end
     else Payload mới
         Web->>GAS: POST no-cors (PROGRAM_INTEREST)
+        Note over Web,GAS: A6 await POST settle/catch; response vẫn opaque
     end
-    Note over Web,GAS: A4-FE giữ POST fire-and-observe; fetch GET status bắt đầu ngay
     GAS->>Sheet: Lock, kiểm tra UUID cột B, append 25 cột nếu chưa có
     loop Tối đa 10 lần, timeout 12 giây, cách 4 giây
         Web->>GAS: fetch GET checkProgramInterestStatus
@@ -173,7 +179,7 @@ sequenceDiagram
         Web->>Session: Xóa pending state
         Web-->>User: CultureCode Team đã ghi nhận
     else chưa kiểm tra được
-        Web-->>User: Hiện nút Kiểm tra lại
+        Web-->>User: Hiện nút Kiểm tra lại khi lần xác nhận trước đã cleanup
         User->>Web: Bấm Kiểm tra lại
         Web->>GAS: Chỉ fetch GET polling; không POST
     end
@@ -192,7 +198,7 @@ sequenceDiagram
 | V–W | Ghi chú, đồng ý liên hệ | `consent` bắt buộc |
 | X–Y | Source, Event ID | `Web_Program_Interest`, `PROGRAM_INTEREST_V1` |
 
-Option A2, A3-FE và A4-FE chỉ thay đổi frontend. Fingerprint dùng SHA-256 khi Web
+Option A2, A3-FE, A4-FE và A6 chỉ thay đổi frontend. Fingerprint dùng SHA-256 khi Web
 Crypto khả dụng và fallback về hash 64 hex không chứa payload thô.
 `sessionStorage` lưu đúng một state gồm version, UUID, fingerprint 64 ký tự hex,
 phase và timestamp; không lưu họ tên, email, điện thoại, ghi chú hoặc payload
@@ -200,31 +206,34 @@ thô. Reload tự kiểm tra UUID đang pending và không tự POST. `INVALID_U
 mismatch dừng ngay; timeout, lỗi mạng, `not_found` và lỗi upstream tạm thời mới
 được thử lại.
 
-A3-FE thiết lập cơ chế gửi đúng một POST cho mỗi lượt submit, gắn rejection
-observer (bộ bắt lỗi promise) nhưng không chờ POST resolve trước khi bắt đầu
-kiểm tra trạng thái. A4-FE giữ nguyên state machine (máy trạng thái), UUID,
-retry, manual retry và reload recovery đó, nhưng đổi riêng transport xác nhận từ
-thẻ `<script>` sang `fetch GET`. Fetch dùng `cache: no-store`,
+A3-FE từng gửi POST nền và bắt đầu polling ngay. A4-FE giữ state machine (máy
+trạng thái), UUID, retry, manual retry và reload recovery, nhưng đổi transport
+xác nhận từ thẻ `<script>` sang `fetch GET`. A6 port lại thứ tự lõi DHM9:
+frontend kiểm contract họ tên/email/điện thoại trước POST, `await` POST `no-cors` cho
+đến khi request settle hoặc catch, rồi mới gọi polling với cùng UUID. Response
+POST vẫn opaque (không thể đọc status/body), nên settle không được coi là ghi
+thành công; chỉ `state=recorded` cùng UUID khớp mới hoàn tất giao diện. Fetch
+status dùng `cache: no-store`,
 `credentials: omit`, `redirect: follow` và `AbortController` timeout; frontend
 đọc response dạng text, kiểm tra đúng tên callback và hậu tố `);`, rồi mới
-`JSON.parse` mà không thực thi nội dung trả về. Chỉ `state=recorded` cùng UUID
-khớp tuyệt đối mới hoàn tất giao diện.
+`JSON.parse` mà không thực thi nội dung trả về.
 
-Nhờ giữ cơ chế overlap (chạy chồng thời gian), trạng thái `recorded` có thể hoàn
-tất giao diện trong khi POST vẫn đang chờ; `not_found` trước `appendRow` không
-được coi là thất bại và không kích hoạt POST thứ hai. Đây là tối ưu độ trễ cảm
-nhận (client-perceived latency), không phải cam kết Apps Script/Google Sheets
-backend nhanh hơn.
+`not_found` trước `appendRow` không được coi là thất bại và không kích hoạt POST
+thứ hai. Pending state giữ nguyên sau timeout/lỗi mạng để reload và nút “Kiểm
+tra lại” chỉ gọi `fetch GET`; nút này disabled cho đến khi confirmation run trước
+đã kết thúc, tránh click sớm bị bỏ qua. A6 không cam kết Apps Script/Google
+Sheets backend nhanh hơn; nó loại bỏ race giữa dispatch POST và kiểm tra status.
 
 Backend và `schema` (cấu trúc dữ liệu chuẩn) 25 cột không đổi. Apps Script dùng
 `LockService`, tìm UUID ở cột B trước `appendRow`; POST lại cùng UUID không tạo
 dòng Program Interest thứ hai. Handler này không gọi luồng email, thanh toán hay
-giữ chỗ. A4-FE đã được kiểm chứng local bằng mock regression và kiểm chứng
-trình duyệt read-only trên endpoint thật bằng một UUID đã tồn tại ở Chrome,
-Chrome ẩn danh và Brave; mọi phương thức ghi bị chặn cứng và không có Sheet
-mutation. Bằng chứng này chỉ xác nhận bề mặt local/read-only của A4, không chứng
-minh A4 đã được deploy lên production và không thay thế UAT ghi Sheet cần phê
-duyệt Cấp độ 3 riêng.
+giữ chỗ. A6 đã được kiểm chứng local qua endpoint Apps Script giả lập trên Chrome
+desktop, Chrome ẩn danh mobile và Brave mobile: valid submit là 1 POST rồi 1 GET
+sau settlement, phone/họ tên sai là 0 POST, pending retry là GET-only, và blur một field
+không gây lỗi cho field khác. Evidence ở
+`UAT/evidence/program_interest_dhm9_core_port_a6_20260814/rerun-20260814.json`. Đây chỉ
+xác nhận bề mặt local/browser; không chứng minh production hoặc Sheet thật và
+không thay thế UAT ghi Sheet cần phê duyệt Cấp độ 3 riêng.
 
 ## 2. Các Thành phần Kỹ thuật (Technical Components)
 

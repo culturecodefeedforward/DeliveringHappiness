@@ -32,10 +32,18 @@ Sau khi sửa frontend, chạy `regression test` (kiểm thử hồi quy) local 
 `worktree` (nhánh làm việc tách biệt) sạch:
 
 ```text
+node UAT/program_interest_dhm9_core_port_a6_20260814.js
+```
+
+Sau đó chạy compatibility regression (kiểm thử tương thích) A2/A4/A6, lưu
+evidence dưới lane A6 để không trộn vào artifact cũ:
+
+```text
+$env:PROGRAM_INTEREST_EVIDENCE_DIR = 'UAT\evidence\program_interest_dhm9_core_port_a6_20260814\compat-a2-a4'
 node UAT/program_interest_confirmation_reliability_20260812.js
 ```
 
-Test A2 regression + A3-FE + A4-FE phải chứng minh:
+Test A2 regression + A3-FE + A4-FE + A6 phải chứng minh:
 
 1. 10 lần polling, timeout 12 giây/lần và delay 4 giây; timeout/network không
    làm mất UUID.
@@ -47,22 +55,28 @@ Test A2 regression + A3-FE + A4-FE phải chứng minh:
    không POST, nếu chưa xác nhận thì POST cùng UUID.
 5. Nút **Kiểm tra lại** chỉ poll; số POST không tăng.
 6. `INVALID_UUID` và UUID mismatch dừng ngay; UUID fallback vẫn là 32 hex.
-7. Trong local mock regression, Chrome desktop 1440×900, Brave mobile 390×844
-   và Chrome ẩn danh đều đạt; mọi request Apps Script thật bị request
-   interception chặn, nên external writes phải là `NONE` và
-   `Apps Script requests continued` phải bằng `0`.
-8. A3-FE: status polling bắt đầu không quá 100 ms sau POST start trong harness;
-   `recorded` trước khi POST resolve vẫn báo thành công và tổng số POST là 1.
-9. A3-FE: `not_found` trước `appendRow` tiếp tục retry cùng UUID; không phát sinh
-   POST thứ hai trong cùng submit attempt.
-10. Baseline status-only read-only được lưu tại
+7. A6: valid submit gửi đúng một POST giả lập, chờ POST settle/catch rồi mới
+   phát GET status; `state=recorded` cùng UUID mới reset form và xóa pending.
+8. A6: họ tên/email/điện thoại không khớp contract backend bị chặn tại field trước
+   mạng; số POST bằng 0.
+9. A6: reload/pending và nút **Kiểm tra lại** chỉ GET; retry button chỉ enabled
+   sau khi confirmation run trước cleanup, không có click sớm bị bỏ qua.
+10. A6: Chrome desktop 1440×900, Chrome ẩn danh mobile 390×844 và Brave mobile
+    390×844 đều đạt local fake-service UAT; mọi request định tuyến tới
+    `127.0.0.1`, external writes là `NONE`. Evidence:
+    `UAT/evidence/program_interest_dhm9_core_port_a6_20260814/rerun-20260814.json`.
+11. Baseline status-only read-only được lưu tại
     `UAT/evidence/program_interest_confirmation_a3_20260812/latency-baseline.json`;
     báo cáo tách p50/p95/max status latency khỏi write latency và không claim
     backend đã tối ưu.
-11. A4-FE không còn dùng thẻ `<script>` cho status transport. Frontend phải gọi
+12. A4-FE không còn dùng thẻ `<script>` cho status transport. Frontend phải gọi
     `fetch GET` với `cache: no-store`, `credentials: omit`,
     `redirect: follow`, timeout bằng `AbortController`, rồi parse nghiêm chuỗi
-    JSONP trả về; POST `no-cors` và state machine A3 giữ nguyên.
+    JSONP trả về; A6 thay đổi riêng thứ tự POST/polling, còn endpoint/payload,
+    `schema`, Apps Script và state idempotency giữ nguyên.
+13. Compatibility regression phải trả `LOCAL_A6_COMPAT_UAT_VERIFIED`: khi POST
+    còn pending, status GET chưa được phát; sau settlement mới có đúng một GET.
+    Evidence mới: `UAT/evidence/program_interest_dhm9_core_port_a6_20260814/compat-a2-a4/local-results-rerun/local-results.json`.
 
 Mock-only không đủ để duyệt A4-FE vì không đi qua redirect thật của Apps Script.
 Phải chạy thêm browser UAT read-only trên endpoint thật bằng UUID đã tồn tại,

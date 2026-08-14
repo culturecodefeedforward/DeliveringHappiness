@@ -1,0 +1,63 @@
+{
+  "harness": "program_interest_dhm9_core_port_a6_20260814",
+  "timestamp": "2026-08-14T07:30:37.068Z",
+  "target": "local 127.0.0.1 only",
+  "externalWrites": "NONE",
+  "static": [
+    {
+      "id": "S-01-source-contract",
+      "status": "passed",
+      "durationMs": 1,
+      "details": {
+        "source": "program-interest.html"
+      }
+    }
+  ],
+  "browsers": [
+    {
+      "id": "chrome-incognito-mobile",
+      "browser": "Chrome/151.0.7922.138",
+      "status": "completed",
+      "cases": [
+        {
+          "id": "B-01-valid-submit-sequential",
+          "status": "failed",
+          "durationMs": 7875,
+          "error": "POST_NOT_RECEIVED; runtime={\"status\":\"\",\"statusClass\":\"status\",\"phoneValidity\":\"\",\"submitDisabled\":false}; requests=[{\"method\":\"GET\",\"url\":\"http://127.0.0.1:59664/program-interest.html\"},{\"method\":\"GET\",\"url\":\"https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap\"},{\"method\":\"GET\",\"url\":\"http://127.0.0.1:59664/assets/culturecode-logo-dark.jpg\"},{\"method\":\"GET\",\"url\":\"http://127.0.0.1:59664/favicon.ico\"}]; console=[{\"type\":\"error\",\"text\":\"Failed to load resource: net::ERR_FAILED\"}]"
+        },
+        {
+          "id": "B-02-invalid-phone-blocked",
+          "status": "passed",
+          "durationMs": 2178,
+          "details": {
+            "postCount": 0,
+            "errorText": "Số điện thoại cần có 8–15 chữ số và chỉ dùng các ký tự hợp lệ.",
+            "screenshot": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\worktrees\\dh4hn-website\\program-interest-a6-20260814\\UAT\\evidence\\program_interest_dhm9_core_port_a6_20260814\\chrome-incognito-mobile-invalid-phone.png",
+            "blockedExternalReads": 1
+          }
+        },
+        {
+          "id": "B-03-pending-retry-get-only",
+          "status": "failed",
+          "durationMs": 17070,
+          "error": "RETRY_SUCCESS_TIMEOUT; runtime={\"status\":\"Hệ thống chưa kiểm tra được trạng thái ghi nhận. Vui lòng bấm “Kiểm tra lại”; thao tác này không gửi lại dữ liệu.Kiểm tra lại\",\"statusClass\":\"status is-visible is-error\",\"pending\":\"{\\\"version\\\":2,\\\"interestUuid\\\":\\\"4a9f139b-a911-40c3-9552-03fda729492a\\\",\\\"payloadFingerprint\\\":\\\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\\",\\\"phase\\\":\\\"unconfirmed\\\",\\\"createdAt\\\":1786692649359,\\\"updatedAt\\\":1786692649416}\"}; gets=[{\"uuid\":\"4a9f139b-a911-40c3-9552-03fda729492a\",\"beforePostSettled\":true,\"recorded\":false}]; requests=[{\"method\":\"GET\",\"url\":\"http://127.0.0.1:51705/program-interest.html\"},{\"method\":\"GET\",\"url\":\"https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap\"},{\"method\":\"GET\",\"url\":\"http://127.0.0.1:51705/assets/culturecode-logo-dark.jpg\"},{\"method\":\"GET\",\"url\":\"http://127.0.0.1:51705/favicon.ico\"},{\"method\":\"GET\",\"url\":\"http://127.0.0.1:51705/program-interest.html\"},{\"method\":\"GET\",\"url\":\"https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap\"},{\"method\":\"GET\",\"url\":\"http://127.0.0.1:51705/assets/culturecode-logo-dark.jpg\"},{\"method\":\"GET\",\"url\":\"http://127.0.0.1:51704/exec?action=checkProgramInterestStatus&interestUuid=4a9f139b-a911-40c3-9552-03fda729492a&callback=programInterestJsonp_3069c22176525076cbd401bbc1b7e6f4&_=1786692649401\"},{\"method\":\"GET\",\"url\":\"http://127.0.0.1:51705/favicon.ico\"}]; console=[{\"type\":\"error\",\"text\":\"Failed to load resource: net::ERR_FAILED\"},{\"type\":\"error\",\"text\":\"Failed to load resource: net::ERR_FAILED\"},{\"type\":\"warning\",\"text\":\"JSHandle@object\"}]"
+        },
+        {
+          "id": "B-04-field-blur-isolation",
+          "status": "passed",
+          "durationMs": 1992,
+          "details": {
+            "postCount": 0,
+            "errors": {
+              "phone": "",
+              "email": ""
+            },
+            "blockedExternalReads": 1
+          }
+        }
+      ]
+    }
+  ],
+  "verdict": "LOCAL_A6_UAT_FAILED",
+  "failureCount": 2
+}

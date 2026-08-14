@@ -264,6 +264,15 @@ async function waitForError(page, expectedCode) {
   }, { timeout: 8000 }, expectedCode || '');
 }
 
+async function waitForTrace(predicate, message, timeoutMilliseconds = 2000) {
+  const deadline = Date.now() + timeoutMilliseconds;
+  while (Date.now() < deadline) {
+    if (predicate()) return;
+    await new Promise((resolve) => setTimeout(resolve, 10));
+  }
+  throw new Error(message);
+}
+
 async function readUiState(page) {
   return page.evaluate(() => {
     const box = document.querySelector('#form-status');
@@ -354,20 +363,27 @@ async function scenarioPostFailure(results) {
   } finally { await h.close(); }
 }
 
-async function scenarioStatusRunsBeforePostResolves(results) {
-  currentTest = 'AT-A3-02 status recorded before POST resolves';
+async function scenarioStatusRunsAfterPostResolves(results) {
+  currentTest = 'AT-A6-01 status starts only after POST settles';
   const h = await createBrowserHarness({ statuses: ['recorded'], post: 'pending' });
   try {
     await h.goto();
     await fillAndSubmit(h.page);
-    await waitForSuccess(h.page);
+    await waitForTrace(() => h.trace.postBodies.length === 1, 'POST_NOT_INTERCEPTED');
+    // The harness accelerates the production 12-second timeout to 120 ms.
+    // Sample before that accelerated timeout so the assertion proves that
+    // status polling cannot start while the POST is still pending.
+    await new Promise((resolve) => setTimeout(resolve, 50));
     assert.equal(h.trace.postBodies.length, 1);
-    assert.equal(h.trace.statusUrls.length, 1);
+    assert.equal(h.trace.statusUrls.length, 0, JSON.stringify(h.trace));
     assert.equal(h.trace.postResolvedAt, null, JSON.stringify(h.trace));
-    assert.equal(h.trace.eventTimes.statusStart - h.trace.eventTimes.postStart <= 100, true, JSON.stringify(h.trace.eventTimes));
     await h.releasePendingPosts();
-    results.push(safeResult('AT-A3-02', h, {
-      successBeforePostResolved: true,
+    await waitForSuccess(h.page);
+    assert.equal(h.trace.statusUrls.length, 1);
+    assert.ok(h.trace.postResolvedAt !== null, JSON.stringify(h.trace));
+    assert.ok(h.trace.eventTimes.statusStart >= h.trace.postResolvedAt, JSON.stringify(h.trace.eventTimes));
+    results.push(safeResult('AT-A6-01', h, {
+      statusBeforePostResolved: false,
       postToStatusStartMs: h.trace.eventTimes.statusStart - h.trace.eventTimes.postStart
     }));
   } finally { await h.close(); }
@@ -397,6 +413,10 @@ async function scenarioTenAttemptsAndManualRetry(results) {
     h.setStatuses(['recorded']);
     const postCountBeforeRetry = h.trace.postBodies.length;
     const statusCountBeforeRetry = h.trace.statusUrls.length;
+    await h.page.waitForFunction(() => {
+      const retry = document.querySelector('#retry-confirmation-button');
+      return retry && !retry.disabled;
+    }, { timeout: 8000 });
     await h.page.click('#retry-confirmation-button');
     await waitForSuccess(h.page);
     assert.equal(h.trace.postBodies.length, postCountBeforeRetry);
@@ -587,7 +607,7 @@ async function main() {
     scenarioFetchTransportGuard(results);
     await scenarioTimeoutThenRecorded(results);
     await scenarioPostFailure(results);
-    await scenarioStatusRunsBeforePostResolves(results);
+    await scenarioStatusRunsAfterPostResolves(results);
     await scenarioTenAttemptsAndManualRetry(results);
     await scenarioReloadRecovery(results);
     await scenarioPreflightRecorded(results);
@@ -600,7 +620,7 @@ async function main() {
     await scenarioBrowserMatrix(results);
 
     const report = {
-      verdict: 'LOCAL_A4_UAT_VERIFIED',
+      verdict: 'LOCAL_A6_COMPAT_UAT_VERIFIED',
       sourceRoot: ROOT,
       formSha256: require('crypto').createHash('sha256').update(fs.readFileSync(FORM_PATH)).digest('hex'),
       externalWrites: 'NONE',
@@ -617,7 +637,7 @@ async function main() {
 main().catch((error) => {
   fs.mkdirSync(EVIDENCE_DIR, { recursive: true });
   const failure = {
-    verdict: process.env.PROGRAM_INTEREST_BASELINE_LABEL ? 'EXPECTED_BASELINE_FAILURE' : 'LOCAL_A4_UAT_FAILED',
+    verdict: process.env.PROGRAM_INTEREST_BASELINE_LABEL ? 'EXPECTED_BASELINE_FAILURE' : 'LOCAL_A6_COMPAT_UAT_FAILED',
     baselineLabel: process.env.PROGRAM_INTEREST_BASELINE_LABEL || null,
     currentTest,
     sourceRoot: ROOT,

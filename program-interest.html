@@ -302,6 +302,20 @@
 
     .program-error.is-visible { display: block; }
 
+    .field.is-invalid input,
+    .field.is-invalid select,
+    .field.is-invalid textarea { border-color: var(--danger); }
+
+    .field-error-message {
+      display: none;
+      margin: 7px 0 0;
+      color: var(--danger);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .field-error-message.is-visible { display: block; }
+
     .detail-panel {
       margin-top: 20px;
       padding: clamp(18px, 4vw, 28px);
@@ -626,11 +640,15 @@
       var submitButton = document.getElementById('submit-button');
       var statusBox = document.getElementById('form-status');
       var programError = document.getElementById('program-error');
+      var fullNameInput = document.getElementById('fullName');
+      var phoneInput = document.getElementById('phone');
+      var emailInput = document.getElementById('email');
       var PENDING_STATE_KEY = 'PROGRAM_INTEREST_pending_v2';
       var PENDING_STATE_VERSION = 2;
       var STATUS_MAX_ATTEMPTS = 10;
       var STATUS_TIMEOUT_MS = 12000;
       var STATUS_POLL_DELAY_MS = 4000;
+      var POST_DISPATCH_TIMEOUT_MS = 12000;
       var pendingInterestUuid = '';
       var pendingPayloadFingerprint = '';
       var confirmationRunning = false;
@@ -732,6 +750,77 @@
       function readValue(name) {
         var field = form.elements.namedItem(name);
         return field ? String(field.value || '').trim() : '';
+      }
+
+      function showInputError(input, errorId, message) {
+        if (!input) return;
+        var field = input.closest('.field');
+        var error = document.getElementById(errorId);
+        if (!error && field) {
+          error = document.createElement('p');
+          error.id = errorId;
+          error.className = 'field-error-message';
+          error.setAttribute('role', 'alert');
+          field.appendChild(error);
+        }
+        input.setAttribute('aria-invalid', 'true');
+        input.setAttribute('aria-describedby', errorId);
+        input.setCustomValidity(message);
+        if (field) field.classList.add('is-invalid');
+        if (error) {
+          error.textContent = message;
+          error.classList.add('is-visible');
+        }
+      }
+
+      function clearInputError(input, errorId) {
+        if (!input) return;
+        var field = input.closest('.field');
+        var error = document.getElementById(errorId);
+        input.removeAttribute('aria-invalid');
+        input.removeAttribute('aria-describedby');
+        input.setCustomValidity('');
+        if (field) field.classList.remove('is-invalid');
+        if (error) {
+          error.textContent = '';
+          error.classList.remove('is-visible');
+        }
+      }
+
+      function validateProgramInterestSubmission(selectedPrograms, options) {
+        var settings = Object.assign({
+          validateFullName: true,
+          validateEmail: true,
+          validatePhone: true,
+          validateProgramSelection: true
+        }, options || {});
+        var fullName = readValue('fullName');
+        var email = readValue('email');
+        var phone = readValue('phone');
+        var phoneDigits = phone.replace(/\D/g, '');
+        var isValid = true;
+
+        if (settings.validateFullName) clearInputError(fullNameInput, 'full-name-input-error');
+        if (settings.validateEmail) clearInputError(emailInput, 'email-input-error');
+        if (settings.validatePhone) clearInputError(phoneInput, 'phone-input-error');
+
+        if (settings.validateFullName && !fullName) {
+          showInputError(fullNameInput, 'full-name-input-error', 'Vui lòng nhập họ và tên để CultureCode Team có thể liên hệ.');
+          isValid = false;
+        }
+        if (settings.validateEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          showInputError(emailInput, 'email-input-error', 'Vui lòng nhập email hợp lệ để CultureCode Team có thể liên hệ.');
+          isValid = false;
+        }
+        if (settings.validatePhone && (!/^[0-9+().\s-]{8,24}$/.test(phone) || phoneDigits.length < 8 || phoneDigits.length > 15)) {
+          showInputError(phoneInput, 'phone-input-error', 'Số điện thoại cần có 8–15 chữ số và chỉ dùng các ký tự hợp lệ.');
+          isValid = false;
+        }
+        if (settings.validateProgramSelection && !selectedPrograms.length) {
+          programError.classList.add('is-visible');
+          isValid = false;
+        }
+        return isValid;
       }
 
       function buildPayload(uuid, selectedPrograms) {
@@ -987,6 +1076,8 @@
       function setSubmissionBusy(isBusy, label) {
         submitButton.disabled = isBusy;
         submitButton.textContent = label || (isBusy ? 'Đang xác nhận...' : 'Gửi thông tin quan tâm');
+        var retryButton = document.getElementById('retry-confirmation-button');
+        if (retryButton) retryButton.disabled = isBusy;
       }
 
       function completeRecordedSubmission() {
@@ -1003,6 +1094,7 @@
         retryButton.className = 'retry-confirmation-button';
         retryButton.type = 'button';
         retryButton.textContent = 'Kiểm tra lại';
+        retryButton.disabled = confirmationRunning;
         retryButton.addEventListener('click', function () {
           runCheckOnly(uuid);
         });
@@ -1064,6 +1156,36 @@
         }
       }
 
+      async function postProgramInterest(payload) {
+        var controller = typeof window.AbortController === 'function'
+          ? new window.AbortController()
+          : null;
+        var timeoutId;
+        var timeoutPromise = new Promise(function (_, reject) {
+          timeoutId = window.setTimeout(function () {
+            if (controller) controller.abort();
+            reject(createStatusError('POST_DISPATCH_TIMEOUT'));
+          }, POST_DISPATCH_TIMEOUT_MS);
+        });
+        try {
+          await Promise.race([
+            fetch(WEBAPP_URL, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload),
+              signal: controller ? controller.signal : undefined
+            }),
+            timeoutPromise
+          ]);
+        } catch (postError) {
+          // no-cors không cho đọc response; tiếp tục kiểm cùng UUID vì backend có thể đã ghi.
+          console.warn({ code: getErrorCode(postError), attempts: 0 });
+        } finally {
+          window.clearTimeout(timeoutId);
+        }
+      }
+
       form.addEventListener('submit', async function (event) {
         event.preventDefault();
         if (confirmationRunning) return;
@@ -1076,6 +1198,9 @@
         }
 
         syncProgramPanels();
+        if (!validateProgramInterestSubmission(selectedPrograms)) {
+          return;
+        }
         if (!form.checkValidity()) {
           form.reportValidity();
           return;
@@ -1114,23 +1239,8 @@
             isRepeatedPayload ? storedState.createdAt : undefined
           );
           showStatus('Đang gửi thông tin và chờ hệ thống xác nhận ghi nhận.', 'pending');
+          await postProgramInterest(payload);
           writePendingState(uuid, payloadFingerprint, 'confirming', pendingState.createdAt);
-          try {
-            // Gửi bất đồng bộ; POST (gửi dữ liệu) và xác nhận trạng thái chạy song song.
-            fetch(WEBAPP_URL, {
-              method: 'POST',
-              mode: 'no-cors',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
-            }).catch(function () {
-              // no-cors không cho đọc response; vẫn xác nhận theo cùng UUID vì backend có thể đã ghi.
-              console.warn({ code: 'POST_NETWORK_ERROR', attempts: 0 });
-            });
-          } catch (postError) {
-            // no-cors không cho đọc response; vẫn xác nhận theo cùng UUID vì backend có thể đã ghi.
-            console.warn({ code: 'POST_NETWORK_ERROR', attempts: 0 });
-          }
-
           await confirmRecorded(uuid);
           completeRecordedSubmission();
         } catch (error) {
@@ -1140,6 +1250,45 @@
           setSubmissionBusy(false);
         }
       });
+
+      if (phoneInput) {
+        phoneInput.addEventListener('input', function () {
+          clearInputError(phoneInput, 'phone-input-error');
+        });
+        phoneInput.addEventListener('blur', function () {
+          validateProgramInterestSubmission(getSelectedPrograms(), {
+            validateFullName: false,
+            validateEmail: false,
+            validateProgramSelection: false
+          });
+        });
+      }
+
+      if (fullNameInput) {
+        fullNameInput.addEventListener('input', function () {
+          clearInputError(fullNameInput, 'full-name-input-error');
+        });
+        fullNameInput.addEventListener('blur', function () {
+          validateProgramInterestSubmission(getSelectedPrograms(), {
+            validateEmail: false,
+            validatePhone: false,
+            validateProgramSelection: false
+          });
+        });
+      }
+
+      if (emailInput) {
+        emailInput.addEventListener('input', function () {
+          clearInputError(emailInput, 'email-input-error');
+        });
+        emailInput.addEventListener('blur', function () {
+          validateProgramInterestSubmission(getSelectedPrograms(), {
+            validateFullName: false,
+            validatePhone: false,
+            validateProgramSelection: false
+          });
+        });
+      }
 
       syncProgramPanels();
       var recoveredState = readPendingState();
