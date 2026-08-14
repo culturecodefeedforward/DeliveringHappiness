@@ -12,7 +12,7 @@ const ROOT = process.env.PROGRAM_INTEREST_ROOT
 const FORM_PATH = path.join(ROOT, 'program-interest.html');
 const EVIDENCE_DIR = process.env.PROGRAM_INTEREST_EVIDENCE_DIR
   ? path.resolve(process.env.PROGRAM_INTEREST_EVIDENCE_DIR)
-  : path.join(__dirname, 'evidence', 'program_interest_status_fetch_a4_20260813');
+  : path.join(__dirname, 'evidence', 'program_interest_dhm9_core_port_a6_20260814', 'compat-a2-a4');
 const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxMi_bQBceGxVK_TjbcU5rQNAaLyUXOMuQJHyYWCwdeoWlsccq2kFkhRYVG2meySCsPdA/exec';
 const TEST_VALUES = {
   fullName: 'UAT Program Interest A4',

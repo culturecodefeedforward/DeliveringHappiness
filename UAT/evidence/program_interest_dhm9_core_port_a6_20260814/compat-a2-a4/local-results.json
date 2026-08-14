@@ -1,7 +1,7 @@
 {
   "verdict": "LOCAL_A6_COMPAT_UAT_VERIFIED",
   "sourceRoot": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\worktrees\\dh4hn-website\\program-interest-a6-20260814",
-  "formSha256": "625d16786b0eab2681051264b11b66d21d55aa9f409c567bfc0103c096ef54ce",
+  "formSha256": "8081f225e93471aa8a987f2b693967c73b554c4a99e07e6cd1bc4fbaa679af26",
   "externalWrites": "NONE",
   "appsScriptRequestsContinued": 0,
   "results": [
@@ -23,7 +23,7 @@
       },
       "postCount": 1,
       "statusCount": 2,
-      "postToStatusStartMs": 10,
+      "postToStatusStartMs": 15,
       "appsScriptRequestsContinued": 0
     },
     {
@@ -37,7 +37,7 @@
       },
       "postCount": 1,
       "statusCount": 1,
-      "postToStatusStartMs": 51,
+      "postToStatusStartMs": 13,
       "appsScriptRequestsContinued": 0
     },
     {
@@ -51,7 +51,7 @@
       },
       "postCount": 1,
       "statusCount": 1,
-      "postToStatusStartMs": 159,
+      "postToStatusStartMs": 68,
       "appsScriptRequestsContinued": 0,
       "statusBeforePostResolved": false
     },
@@ -66,7 +66,7 @@
       },
       "postCount": 1,
       "statusCount": 10,
-      "postToStatusStartMs": 9,
+      "postToStatusStartMs": 10,
       "appsScriptRequestsContinued": 0,
       "retryButton": true,
       "screenshot": "chrome-retry-desktop-1440x900.png"
@@ -82,7 +82,7 @@
       },
       "postCount": 1,
       "statusCount": 11,
-      "postToStatusStartMs": 9,
+      "postToStatusStartMs": 10,
       "appsScriptRequestsContinued": 0,
       "postDelta": 0,
       "statusDelta": 1
@@ -98,10 +98,10 @@
       },
       "postCount": 1,
       "statusCount": 11,
-      "postToStatusStartMs": 48,
+      "postToStatusStartMs": 16,
       "appsScriptRequestsContinued": 0,
       "postDeltaAfterReload": 0,
-      "recoveredUuid": "0e2db362-309d-459b-ad0f-12387693c393"
+      "recoveredUuid": "9afb3dbd-0b34-4bec-aff2-27ce0152ff60"
     },
     {
       "id": "AT-A2-06",
@@ -114,7 +114,7 @@
       },
       "postCount": 1,
       "statusCount": 11,
-      "postToStatusStartMs": 9,
+      "postToStatusStartMs": 17,
       "appsScriptRequestsContinued": 0,
       "postDelta": 0
     },
@@ -129,7 +129,7 @@
       },
       "postCount": 2,
       "statusCount": 12,
-      "postToStatusStartMs": 19,
+      "postToStatusStartMs": 9,
       "appsScriptRequestsContinued": 0,
       "sameUuid": true
     },
@@ -144,7 +144,7 @@
       },
       "postCount": 2,
       "statusCount": 11,
-      "postToStatusStartMs": 19,
+      "postToStatusStartMs": 4,
       "appsScriptRequestsContinued": 0,
       "newUuid": true
     },
@@ -159,7 +159,7 @@
       },
       "postCount": 1,
       "statusCount": 11,
-      "postToStatusStartMs": 19,
+      "postToStatusStartMs": 7,
       "appsScriptRequestsContinued": 0,
       "errorCode": "INVALID_UUID",
       "postDelta": 0
@@ -175,7 +175,7 @@
       },
       "postCount": 1,
       "statusCount": 11,
-      "postToStatusStartMs": 16,
+      "postToStatusStartMs": 34,
       "appsScriptRequestsContinued": 0,
       "errorCode": "STATUS_UUID_MISMATCH",
       "postDelta": 0
@@ -191,7 +191,7 @@
       },
       "postCount": 1,
       "statusCount": 10,
-      "postToStatusStartMs": 26,
+      "postToStatusStartMs": 161,
       "appsScriptRequestsContinued": 0,
       "storageKeys": [
         "PROGRAM_INTEREST_pending_v2"
@@ -208,7 +208,7 @@
       },
       "postCount": 1,
       "statusCount": 1,
-      "postToStatusStartMs": 16,
+      "postToStatusStartMs": 15,
       "appsScriptRequestsContinued": 0,
       "fallbackUuidFormat": "32_HEX"
     },
@@ -223,7 +223,7 @@
       },
       "postCount": 1,
       "statusCount": 10,
-      "postToStatusStartMs": 24,
+      "postToStatusStartMs": 7,
       "appsScriptRequestsContinued": 0,
       "sanitizedErrorCode": "CONFIRMATION_UNAVAILABLE"
     },
@@ -238,7 +238,7 @@
       },
       "postCount": 1,
       "statusCount": 1,
-      "postToStatusStartMs": 18,
+      "postToStatusStartMs": 16,
       "appsScriptRequestsContinued": 0,
       "screenshot": "chrome-desktop-1440x900.png",
       "fallbackUuidFormat": null
@@ -254,7 +254,7 @@
       },
       "postCount": 1,
       "statusCount": 1,
-      "postToStatusStartMs": 10,
+      "postToStatusStartMs": 7,
       "appsScriptRequestsContinued": 0,
       "screenshot": "brave-mobile-390x844.png",
       "fallbackUuidFormat": "32_HEX"
@@ -270,7 +270,7 @@
       },
       "postCount": 1,
       "statusCount": 1,
-      "postToStatusStartMs": 14,
+      "postToStatusStartMs": 8,
       "appsScriptRequestsContinued": 0,
       "screenshot": null,
       "fallbackUuidFormat": "32_HEX"

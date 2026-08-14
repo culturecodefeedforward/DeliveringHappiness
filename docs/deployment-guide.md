@@ -42,6 +42,9 @@ evidence dưới lane A6 để không trộn vào artifact cũ:
 $env:PROGRAM_INTEREST_EVIDENCE_DIR = 'UAT\evidence\program_interest_dhm9_core_port_a6_20260814\compat-a2-a4'
 node UAT/program_interest_confirmation_reliability_20260812.js
 ```
+Nếu không truyền biến môi trường trên, harness vẫn mặc định ghi vào cùng lane
+`UAT/evidence/program_interest_dhm9_core_port_a6_20260814/compat-a2-a4`; không
+được dùng lại thư mục evidence A4.
 
 Test A2 regression + A3-FE + A4-FE + A6 phải chứng minh:
 
