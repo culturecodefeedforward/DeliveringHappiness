@@ -76,6 +76,33 @@
             font-weight: 600;
         }
 
+        .event-meta-box {
+            margin-top: 1.5rem;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 1.1rem 1.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            display: inline-flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            text-align: left;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .event-meta-item {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            line-height: 1.5;
+        }
+
+        .event-meta-label {
+            color: var(--accent-soft);
+            font-weight: 700;
+        }
+
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -343,6 +370,16 @@
             h1 {
                 font-size: 1.6rem;
             }
+
+            .event-meta-box {
+                padding: 0.9rem 1rem;
+                width: 100%;
+            }
+
+            .event-meta-item {
+                font-size: 0.88rem;
+                flex-wrap: wrap;
+            }
         }
 
         /* Brand Logo Style */
@@ -389,6 +426,14 @@
                 <em>Từ trái tim đến trái tim</em><br>
                 Một trải nghiệm ngắn để chạm vào cảm giác kết nối thật sự
             </p>
+            <div class="event-meta-box">
+                <div class="event-meta-item">
+                    <span class="event-meta-label">⏰ Thời gian chương trình:</span> 20:00 - 22:00 - Thứ Sáu 04/09/2026
+                </div>
+                <div class="event-meta-item">
+                    <span class="event-meta-label">💻 Hình thức:</span> Online Zoom Meeting
+                </div>
+            </div>
         </div>
 
         <form id="crmForm">
