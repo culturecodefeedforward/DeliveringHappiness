@@ -63,12 +63,34 @@ var DEFAULT_PAYMENT_HOLDER = 'HA NGOC HOAN';
 var DEFAULT_PAYMENT_HOLDER_DISPLAY = 'Hà Ngọc Hoàn';
 var DEFAULT_PUBLIC_REGISTER_URL = 'https://delivering-happiness.vercel.app/register.html';
 var DEFAULT_DH9_PUBLIC_REGISTER_URL = 'https://delivering-happiness.vercel.app/register_dh9_hanoi.html';
+var DEFAULT_DHL_PUBLIC_REGISTER_URL = 'https://delivering-happiness.vercel.app/leadership_rsvp.html';
 var DEFAULT_DHM8_ZALO_GROUP_URL = 'https://zalo.me/g/hpf7qu45j6qkft6hpghx';
 var DEFAULT_DH9_ZALO_GROUP_URL = 'https://zalo.me/g/3wrsaoygrfcjubr0ie44';
+var DEFAULT_DHL_ZALO_GROUP_URL = 'https://zalo.me/g/awqtf1ayfblnrwi1y4bq';
+var DHL_REGISTRATION_CAP = 25;
 
 function getLaneKey_(value) {
   var normalized = String(value || '').toLowerCase();
-  return (normalized === 'dh9' || normalized === 'dhm9') ? 'dh9' : 'dh8';
+  if (normalized === 'dh9' || normalized === 'dhm9') return 'dh9';
+  if (normalized === 'dhl' || normalized === 'leadership') return 'dhl';
+  return 'dh8';
+}
+
+function isDhlToken_(value) {
+  var normalized = normalizePaymentCodeToken(value || '');
+  return normalized.indexOf('DHL') === 0;
+}
+
+function containsDhlToken_(value) {
+  var raw = String(value || '').toUpperCase();
+  var tokens = raw.split(/[^A-Z0-9]+/)
+    .map(function(token) { return normalizePaymentCodeToken(token); })
+    .filter(function(token) { return token !== ''; });
+  var stripped = normalizePaymentCodeToken(raw);
+  if (stripped && tokens.indexOf(stripped) === -1) {
+    tokens.push(stripped);
+  }
+  return tokens.some(function(token) { return isDhlToken_(token); });
 }
 
 function isDhm9Token_(value) {
@@ -89,6 +111,7 @@ function containsDhm9Token_(value) {
 }
 
 function detectLaneKeyFromPaymentCode_(paymentCode) {
+  if (isDhlToken_(paymentCode)) return 'dhl';
   if (isDhm9Token_(paymentCode)) return 'dh9';
   return 'dh8';
 }
@@ -96,6 +119,7 @@ function detectLaneKeyFromPaymentCode_(paymentCode) {
 function detectLaneKeyFromPayload_(data) {
   var laneCandidate = String((data && (data.lane || data.registrationLane || data.eventLane)) || '').toLowerCase();
   if (laneCandidate === 'dh9' || laneCandidate === 'dhm9') return 'dh9';
+  if (laneCandidate === 'dhl' || laneCandidate === 'leadership') return 'dhl';
   var eventId = String((data && data.event_id) || '').toUpperCase();
   var type = String((data && data.type) || '').toUpperCase();
   var source = String((data && data.source) || '').toUpperCase();
@@ -107,6 +131,12 @@ function detectLaneKeyFromPayload_(data) {
     data.paymentCode,
     data.code
   ].join(' ').toUpperCase() : '';
+  if (eventId.indexOf('DHL') !== -1 || eventId.indexOf('LEADERSHIP') !== -1 ||
+      type.indexOf('DHL') !== -1 || type.indexOf('LEADERSHIP') !== -1 ||
+      source.indexOf('DHL') !== -1 || source.indexOf('LEADERSHIP') !== -1 ||
+      containsDhlToken_(content)) {
+    return 'dhl';
+  }
   if (eventId.indexOf('DH9') !== -1 || eventId.indexOf('DHM9') !== -1 ||
       type.indexOf('DH9') !== -1 || type.indexOf('DHM9') !== -1 ||
       source.indexOf('DH9') !== -1 || source.indexOf('DHM9') !== -1 ||
@@ -142,6 +172,32 @@ function getLaneConfig_(laneKey) {
       defaultLeadSource: 'Web_DHM9_Hanoi_Official',
       defaultInterestType: 'DHM9_INTEREST',
       defaultInterestSource: 'Web_DHM9_Interest'
+    };
+  }
+
+  if (resolvedLane === 'dhl') {
+    return {
+      laneKey: 'dhl',
+      paymentPrefix: 'DHL',
+      paymentPrefixes: ['DHL'],
+      registrationCap: parseInt(props.getProperty('DHL_REGISTRATION_CAP'), 10) || DHL_REGISTRATION_CAP,
+      dataSheetName: 'DHL_Data',
+      paymentsSheetName: 'DHL_Payments',
+      outboxSheetName: 'DHL_Email_Outbox',
+      inboxSheetName: 'DHL_Inbox',
+      interestSheetName: 'DHL_Interest',
+      interestUrl: '',
+      publicRegisterUrl: (props.getProperty('DHL_PUBLIC_REGISTER_URL') || DEFAULT_DHL_PUBLIC_REGISTER_URL).trim(),
+      titleShort: 'Leadership Workshop',
+      classLabel: 'Team Happiness Starts With Your Leadership',
+      cityLabel: 'TP.HCM',
+      zaloGroupUrl: (props.getProperty('DHL_ZALO_GROUP_URL') || DEFAULT_DHL_ZALO_GROUP_URL).trim(),
+      defaultEventId: 'LEADERSHIP_200926_HCM',
+      defaultInterestEventId: 'DHL_INTEREST',
+      defaultLeadType: 'EVENT_LEAD_LEADERSHIP',
+      defaultLeadSource: 'Web_Leadership_RSVP',
+      defaultInterestType: 'DHL_INTEREST',
+      defaultInterestSource: 'Web_Leadership_Interest'
     };
   }
 
@@ -716,6 +772,11 @@ function doPost(e) {
     // --- THỰC HÀNH LẠC QUAN ABCDE ---
     if (body.action === 'submit_abcde') {
       return jsonOut(handleAbcdeSubmission(body));
+    }
+
+    // --- FORM ĐIỂM DANH ---
+    if (body.isCheckin === 'true' || body.isCheckin === true) {
+      return handleCheckin(body, detectLaneKeyFromPayload_(body));
     }
 
     // --- FORM ĐĂNG KÝ ---
@@ -1896,10 +1957,54 @@ function getRegistrationEmailData_(ss, regUuid, laneKey) {
 
 function renderEmailShell_(title, preheader, bodyHtml) {
   return '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">' +
-    '<style>body{font-family:Arial,sans-serif;line-height:1.6;color:#1f2937;background:#f8fafc;margin:0;padding:0}.container{max-width:640px;margin:20px auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden}.header{background:#0f766e;color:#fff;padding:24px}.header h1{font-size:22px;margin:0}.content{padding:24px}.box{background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;padding:16px;margin:16px 0}.success{background:#ecfdf5;border-color:#a7f3d0}.warning{background:#fffbeb;border-color:#fde68a}.code{font-family:Consolas,monospace;font-weight:700;background:#e5e7eb;border-radius:6px;padding:3px 7px;color:#b91c1c}.btn{display:inline-block;background:#0068ff;color:#fff!important;text-decoration:none;font-weight:700;border-radius:9px;padding:12px 18px}.footer{font-size:12px;color:#6b7280;background:#f3f4f6;padding:16px;text-align:center}</style></head><body>' +
-    '<div class="container"><div class="header"><h1>' + escapeHtml_(title) + '</h1><div style="opacity:.9">' + escapeHtml_(preheader) + '</div></div><div class="content">' +
-    bodyHtml +
-    '</div><div class="footer">Email này được gửi tự động từ hệ thống đăng ký Delivering Happiness.</div></div></body></html>';
+    '<style>' +
+    'body { font-family: "Segoe UI", Arial, sans-serif; line-height: 1.6; color: #333333; margin: 0; padding: 0; background-color: #eae6df; } ' +
+    '.container { max-width: 600px; margin: 30px auto; background: #ffffff; border-radius: 12px; border: 1px solid #d1c9bd; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); } ' +
+    '.header { background-color: #1a1a1a; padding: 35px 25px; text-align: center; color: #ffffff; } ' +
+    '.header img { width: 120px; height: auto; display: block; margin: 0 auto; border-radius: 8px; } ' +
+    '.header h1 { margin: 15px 0 0 0; font-size: 22px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; } ' +
+    '.header p { margin: 8px 0 0 0; opacity: 0.8; font-size: 13px; font-weight: 500; line-height: 1.5; color: #aaaaaa; } ' +
+    '.content { padding: 35px 30px; background-color: #ffffff; } ' +
+    '.greeting { font-size: 16px; font-weight: bold; margin-bottom: 15px; color: #1a1a1a; } ' +
+    '.paragraph { margin-bottom: 15px; text-align: justify; font-size: 14.5px; color: #444444; } ' +
+    '.event-box { background-color: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 20px; margin: 25px 0; position: relative; } ' +
+    '.event-badge { display: inline-block; font-size: 10px; font-weight: bold; text-transform: uppercase; background-color: #dbeafe; color: #1e40af; padding: 3px 8px; border-radius: 4px; margin-bottom: 10px; } ' +
+    '.event-title { font-size: 18px; font-weight: bold; color: #1d4ed8; margin: 0 0 10px 0; } ' +
+    '.event-detail { font-size: 14px; margin: 6px 0; color: #374151; } ' +
+    '.event-detail strong { color: #111827; } ' +
+    '.event-link { display: inline-block; margin-top: 12px; color: #1d4ed8; font-weight: bold; text-decoration: underline; font-size: 13.5px; } ' +
+    '.footer { background-color: #ffffff; padding: 20px 30px 35px 30px; border-top: 1px solid #f3f4f6; } ' +
+    '.footer-table { width: 100%; border-collapse: collapse; } ' +
+    '.footer-left { text-align: left; vertical-align: bottom; } ' +
+    '.footer-right { text-align: right; vertical-align: bottom; width: 100px; } ' +
+    '.footer-logo { width: 90px; height: auto; display: block; margin-left: auto; border-radius: 4px; } ' +
+    '.closing { font-size: 14.5px; font-weight: bold; color: #1a1a1a; margin: 0; } ' +
+    '.team-name { font-size: 14.5px; font-weight: bold; color: #1a1a1a; margin: 4px 0 0 0; } ' +
+    '.box { background:#f8fafc; border:1px solid #e5e7eb; border-radius:10px; padding:16px; margin:16px 0; } ' +
+    '.success { background:#ecfdf5; border-color:#a7f3d0; } ' +
+    '.warning { background:#fffbeb; border-color:#fde68a; } ' +
+    '.code { font-family:Consolas,monospace; font-weight:700; background:#e5e7eb; border-radius:6px; padding:3px 7px; color:#b91c1c; } ' +
+    '.btn { display:inline-block; background:#0068ff; color:#fff!important; text-decoration:none; font-weight:700; border-radius:9px; padding:12px 18px; }' +
+    '</style></head><body>' +
+    '<div class="container">' +
+      '<div class="header">' +
+        '<img src="https://delivering-happiness.vercel.app/assets/culturecode-logo-dark.jpg" alt="CultureCode Logo" />' +
+        '<h1>' + escapeHtml_(title) + '</h1>' +
+        '<p>' + escapeHtml_(preheader) + '</p>' +
+      '</div>' +
+      '<div class="content">' + bodyHtml + '</div>' +
+      '<div class="footer">' +
+        '<table class="footer-table"><tr>' +
+          '<td class="footer-left">' +
+            '<p class="closing">Trân trọng,</p>' +
+            '<p class="team-name">CultureCode Team</p>' +
+          '</td>' +
+          '<td class="footer-right">' +
+            '<img src="https://delivering-happiness.vercel.app/assets/culturecode-logo-light.jpg" alt="CultureCode Small Logo" class="footer-logo" />' +
+          '</td>' +
+        '</tr></table>' +
+      '</div>' +
+    '</div></body></html>';
 }
 
 // ─── EMAIL RENDERER (PII Minimization) ───────────────────────
@@ -1914,17 +2019,29 @@ function renderEmailBody(ss, emailType, regUuid, laneKey) {
   var paymentQrUrl = escapeHtml_(buildPaymentQrUrl_(data.paymentCode || '', lane.laneKey));
   var paymentResumeUrl = escapeHtml_(buildPaymentResumeUrl_(regUuid, data.paymentCode || '', lane.laneKey));
 
+  if (emailType === 'CHECKIN') {
+    var checkinUrl = 'https://delivering-happiness.vercel.app/checkin.html?email=' + encodeURIComponent(data.email) + '&name=' + encodeURIComponent(name);
+    return renderEmailShell_(
+      lane.titleShort + ' - Check-in & Cập nhật thông tin',
+      'Chuẩn bị cho ' + lane.titleShort,
+      '<div class="greeting">Thân gửi Anh/Chị ' + name + ',</div>' +
+      '<p class="paragraph">Chỉ còn chút thời gian nữa là sự kiện ' + escapeHtml_(lane.titleShort) + ' sẽ chính thức diễn ra. Để quá trình đón tiếp và nhận tài liệu tại Lễ tân được nhanh chóng, Anh/Chị vui lòng dành 1 phút để hoàn tất thông tin Check-in cá nhân hóa tại đường link dưới đây:</p>' +
+      '<p><a class="btn" href="' + checkinUrl + '" target="_blank">Hoàn tất Check-in & Nhận tài liệu</a></p>' +
+      '<div class="event-box" style="margin-top: 25px;"><div class="event-title">📌 Lưu ý:</div><div class="event-detail">Những thông tin này rất quan trọng để BTC hiểu rõ kỳ vọng của Anh/Chị và chuẩn bị tài liệu học tập phù hợp nhất.</div></div>'
+    );
+  }
+
   if (emailType === 'PENDING') {
     return renderEmailShell_(
       lane.titleShort + ' - Xác nhận đăng ký',
-      'BTC đã nhận được thông tin đăng ký của bạn',
-      '<p>Xin chào <strong>' + name + '</strong>,</p>' +
-      '<p>BTC đã nhận được thông tin đăng ký ' + escapeHtml_(lane.classLabel) + ' của bạn.</p>' +
-      '<div class="box warning"><strong>Bước tiếp theo:</strong><br>Vui lòng hoàn tất chi phí hậu cần theo thông tin dưới đây.</div>' +
-      '<div class="box">' +
-      '<p><strong>Số tiền:</strong> ' + paymentAmountLabel + '</p>' +
-      '<p><strong>Đích nhận tiền:</strong> ' + paymentAccountLabel + '</p>' +
-      '<p><strong>Nội dung chuyển khoản:</strong> <span class="code">' + paymentCode + '</span></p>' +
+      'BTC đã nhận được thông tin đăng ký của Anh/Chị',
+      '<div class="greeting">Thân gửi Anh/Chị ' + name + ',</div>' +
+      '<p class="paragraph">BTC đã nhận được thông tin đăng ký ' + escapeHtml_(lane.classLabel) + ' của Anh/Chị.</p>' +
+      '<div class="event-box" style="background-color: #fffbeb; border-color: #fde68a;"><div class="event-title" style="color: #b45309;">Bước tiếp theo:</div><div class="event-detail">Vui lòng hoàn tất chi phí hậu cần theo thông tin dưới đây.</div></div>' +
+      '<div class="event-box" style="background-color: #f8fafc; border-color: #e5e7eb;">' +
+      '<div class="event-detail"><strong>Số tiền:</strong> ' + paymentAmountLabel + '</div>' +
+      '<div class="event-detail"><strong>Đích nhận tiền:</strong> ' + paymentAccountLabel + '</div>' +
+      '<div class="event-detail"><strong>Nội dung chuyển khoản:</strong> <span class="code">' + paymentCode + '</span></div>' +
       '</div>' +
       (paymentQrUrl
         ? '<div style="text-align:center; margin:20px 0;">' +
@@ -1932,13 +2049,9 @@ function renderEmailBody(ss, emailType, regUuid, laneKey) {
           '</div>'
         : '') +
       '<p><a class="btn" href="' + paymentResumeUrl + '" target="_blank">Mở lại trang thanh toán</a></p>' +
-      '<p style="font-size:13px; color:#6b7280;">Bạn có thể mở link này trên thiết bị khác để xem lại QR và trạng thái thanh toán.</p>' +
-      '<p>Sau khi hệ thống ghi nhận thanh toán, bạn sẽ nhận email xác nhận giữ chỗ chính thức và link tham gia nhóm Zalo lớp ' + escapeHtml_(lane.titleShort) + ' ' + escapeHtml_(lane.cityLabel) + '.</p>' +
-      '<div style="margin-top: 20px; border-top: 1px solid #e5e7eb; padding-top: 15px;">' +
-      '<p>Trân trọng,<br><strong>Ban tổ chức ' + escapeHtml_(lane.titleShort) + '</strong></p>' +
-      '<img src="https://delivering-happiness.vercel.app/culturecode_logo_transparent.png" alt="CultureCode" style="width: 90px; height: 90px; margin-top: 10px; display: block; border-radius: 8px;">' +
-      '<p style="margin-top: 5px;"><a href="https://www.linkedin.com/company/culturecodecommunity" style="color: #0f766e; text-decoration: none; font-size: 14px;">Cập nhật thông tin mới nhất trên LinkedIn CultureCode</a></p>' +
-      '</div>'
+      '<p style="font-size:13px; color:#6b7280; font-style: italic;">Anh/Chị có thể mở link này trên thiết bị khác để xem lại QR và trạng thái thanh toán.</p>' +
+      '<p class="paragraph">Sau khi hệ thống ghi nhận thanh toán, Anh/Chị sẽ nhận email xác nhận giữ chỗ chính thức và link tham gia nhóm Zalo lớp ' + escapeHtml_(lane.titleShort) + ' ' + escapeHtml_(lane.cityLabel) + '.</p>' +
+      '<p style="margin-top: 15px;"><a href="https://www.linkedin.com/company/culturecodecommunity" style="color: #1d4ed8; text-decoration: underline; font-size: 14px; font-weight: bold;">📍 Cập nhật thông tin mới nhất trên LinkedIn CultureCode</a></p>'
     );
   }
   if (emailType === 'PAID') {
@@ -1985,6 +2098,69 @@ function renderEmailBody(ss, emailType, regUuid, laneKey) {
 function jsonOut(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ─── CHECKIN SERVICES ────────────────────────────────────────
+function handleCheckin(data, laneKey) {
+  var lane = getLaneConfig_(laneKey);
+  var ss = getSpreadsheet();
+  var sheet = ss.getSheetByName(lane.dataSheetName);
+  if (!sheet) return jsonOut({ success: false, error: 'SHEET_NOT_FOUND' });
+
+  var email = (data.email || '').toString().trim().toLowerCase();
+  if (!email) return jsonOut({ success: false, error: 'MISSING_EMAIL' });
+
+  var lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    var dataRows = sheet.getDataRange().getValues();
+    var rowIndex = -1;
+    for (var i = 1; i < dataRows.length; i++) {
+      if (String(dataRows[i][2]).trim().toLowerCase() === email) {
+        rowIndex = i + 1;
+        break;
+      }
+    }
+
+    if (rowIndex === -1) {
+      return jsonOut({ success: false, error: 'EMAIL_NOT_FOUND' });
+    }
+
+    if (data.linkedin) sheet.getRange(rowIndex, 5).setValue(data.linkedin);
+    if (data.company) sheet.getRange(rowIndex, 6).setValue(data.company);
+    if (data.jobTitle) sheet.getRange(rowIndex, 7).setValue(data.jobTitle);
+    if (data.companySize) sheet.getRange(rowIndex, 8).setValue(data.companySize);
+    if (data.sourceHearing) sheet.getRange(rowIndex, 9).setValue(data.sourceHearing);
+    if (data.attendedPrograms) sheet.getRange(rowIndex, 10).setValue(data.attendedPrograms);
+    if (data.purpose) sheet.getRange(rowIndex, 11).setValue(data.purpose);
+    if (data.happinessKnowledge) sheet.getRange(rowIndex, 12).setValue(data.happinessKnowledge);
+    if (data.expectations) sheet.getRange(rowIndex, 13).setValue(data.expectations);
+
+    return jsonOut({ success: true, message: 'CHECKIN_SUCCESS' });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function sendPersonalizedEmails(laneKey) {
+  var lane = getLaneConfig_(laneKey || 'dh8');
+  var ss = getSpreadsheet();
+  var sheet = ss.getSheetByName(lane.dataSheetName);
+  if (!sheet) return 'Sheet not found';
+  
+  var dataRows = sheet.getDataRange().getValues();
+  var count = 0;
+  for (var i = 1; i < dataRows.length; i++) {
+    var email = String(dataRows[i][2]).trim();
+    var status = String(dataRows[i][15]).trim().toUpperCase(); 
+    var uuid = String(dataRows[i][17]).trim(); 
+    
+    if (email && status === 'PAID') {
+      enqueueEmail(ss, uuid, 'CHECKIN', email, 'Thông tin Check-in ' + lane.titleShort + ' (Vui lòng điền trước sự kiện)', lane.laneKey);
+      count++;
+    }
+  }
+  return 'Đã đưa ' + count + ' email check-in vào hàng đợi.';
 }
 
 // ─── PERSONAL VALUES ASSESSMENT SERVICES ─────────────────────
@@ -2362,4 +2538,23 @@ function sendAbcdeEmailReport_(email, fullName, data, chatVersion) {
     subject: subject,
     htmlBody: htmlBody
   });
+}
+
+function testSendCheckinEmailToLastRow() {
+  var laneKey = 'dh8';
+  var lane = getLaneConfig_(laneKey);
+  var ss = getSpreadsheet();
+  var sheet = ss.getSheetByName(lane.dataSheetName);
+  var dataRows = sheet.getDataRange().getValues();
+  
+  if (dataRows.length <= 1) return 'Không có dữ liệu học viên để test';
+  
+  var lastRow = dataRows[dataRows.length - 1];
+  var email = String(lastRow[2]).trim();
+  var uuid = String(lastRow[17]).trim();
+  
+  if (!email || !uuid) return 'Dòng cuối thiếu email hoặc uuid, không thể test.';
+  
+  enqueueEmail(ss, uuid, 'CHECKIN', email, '[TEST] Thông tin Check-in ' + lane.titleShort, laneKey);
+  return 'Đã đưa email check-in của dòng cuối (' + email + ') vào hàng đợi test. Vui lòng chờ 1 phút hoặc chạy thủ công processEmailQueue để xem kết quả.';
 }

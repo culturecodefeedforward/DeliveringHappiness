@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác nhận tham gia Khóa học Leadership - CultureCode</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="register.css">
+    <style>
+        :root {
+            --primary-blue: #1e3a8a;
+            --accent-green: #16a34a;
+            --accent-green-hover: #15803d;
+            --badge-bg: rgba(245, 158, 11, 0.15);
+            --badge-color: #f59e0b;
+        }
+
+        .rsvp-card {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .badge-invite {
+            display: inline-block;
+            background: var(--badge-bg);
+            color: var(--badge-color);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        .event-highlight {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .event-highlight-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .event-highlight-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .event-highlight-icon {
+            font-size: 1.2rem;
+            line-height: 1.4;
+        }
+
+        .user-info-box {
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .user-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .user-info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .user-info-label {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .rsvp-input {
+            width: 100%;
+            padding: 11px 14px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .rsvp-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: rgba(255, 255, 255, 0.14);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+        }
+
+        .rsvp-input::placeholder {
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .payment-code-box {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px dashed rgba(245, 158, 11, 0.4);
+            border-radius: 10px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .btn-confirm {
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+            color: #ffffff;
+            border: none;
+            width: 100%;
+            padding: 1.1rem;
+            font-size: 1.05rem;
+            font-weight: 700;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 10px 25px -5px rgba(22, 163, 74, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px -5px rgba(22, 163, 74, 0.5);
+            filter: brightness(1.08);
+        }
+
+        .btn-decline {
+            background: transparent;
+            color: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            width: 100%;
+            padding: 0.8rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-decline:hover {
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.4);
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        /* Step 2: Payment Container */
+        .step-container {
+            display: none;
+        }
+
+        .step-container.active {
+            display: block;
+        }
+
+        .qr-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 20px;
+            display: inline-block;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            margin-bottom: 1.5rem;
+        }
+
+        .qr-card img {
+            width: 240px;
+            height: 240px;
+            display: block;
+            border-radius: 8px;
+        }
+
+        .bank-details-table {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .bank-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.92rem;
+        }
+
+        .bank-row:last-child {
+            border-bottom: none;
+        }
+
+        .bank-label {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .bank-val-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bank-val {
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .bank-val.highlight {
+            color: #f59e0b;
+            font-size: 1.05rem;
+        }
+
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .copy-btn.copied {
+            background: #16a34a;
+            border-color: #16a34a;
+        }
+
+        .pulse-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #60a5fa;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .pulse-dot {
+            width: 10px;
+            height: 10px;
+            background: #3b82f6;
+            border-radius: 50%;
+            animation: pulse-ring 1.5s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+
+        /* Step 3: Success Box */
+        .zalo-box {
+            background: linear-gradient(135deg, rgba(0, 104, 255, 0.12), rgba(0, 104, 255, 0.04));
+            border: 1px solid rgba(0, 104, 255, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .zalo-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #0068ff;
+            color: #ffffff !important;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-top: 1.25rem;
+            box-shadow: 0 8px 20px rgba(0, 104, 255, 0.35);
+            transition: all 0.25s;
+        }
+
+        .zalo-btn:hover {
+            transform: translateY(-2px);
+            background: #0056d6;
+            box-shadow: 0 12px 25px rgba(0, 104, 255, 0.45);
+        }
+
+        .zalo-qr-wrap {
+            margin: 1.25rem auto 0.5rem auto;
+            display: inline-block;
+            background: #ffffff;
+            padding: 12px;
+            border-radius: 16px;
+        }
+
+        .zalo-qr-wrap img {
+            width: 160px;
+            height: 160px;
+            display: block;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-card rsvp-card">
+        <a href="https://www.linkedin.com/company/culturecodecommunity" target="_blank" class="brand-logo-link">
+            <img src="assets/culturecode-logo-light.jpg" alt="CultureCode Logo" class="brand-logo">
+        </a>
+
+        <!-- ============================================================ -->
+        <!-- STEP 1: XÁC NHẬN / NHẬP DỮ LIỆU HỌC VIÊN                     -->
+        <!-- ============================================================ -->
+        <div id="step1" class="step-container active">
+            <div class="header" style="margin-bottom: 1.5rem;">
+                <span class="badge-invite">By Invitation Only · 25 Suất Đặc Quyền</span>
+                <h1 style="font-size: 1.75rem; margin-bottom: 0.5rem;">Team Happiness Starts With Your Leadership</h1>
+                <p class="subtitle">Khóa học đặc quyền dành riêng cho học viên và đối tác được lựa chọn</p>
+            </div>
+
+            <!-- User Info Input / Pre-filled Box -->
+            <div class="user-info-box">
+                <div style="font-size: 0.95rem; font-weight: 700; color: #60a5fa; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                    <span>👤 Thông tin học viên (Được pre-fill từ thư mời hoặc nhập trực tiếp):</span>
+                </div>
+                <div class="user-info-grid">
+                    <div>
+                        <label class="user-info-label" for="inputName">Họ và tên học viên *</label>
+                        <input type="text" id="inputName" class="rsvp-input" placeholder="Ví dụ: Hoàng Công Nguyên Vũ">
+                    </div>
+                    <div>
+                        <label class="user-info-label" for="inputEmail">Email nhận vé & thông báo *</label>
+                        <input type="email" id="inputEmail" class="rsvp-input" placeholder="Ví dụ: vuhoang2708@gmail.com">
+                    </div>
+                    <div>
+                        <label class="user-info-label" for="inputPhone">Số điện thoại di động *</label>
+                        <input type="tel" id="inputPhone" class="rsvp-input" placeholder="Ví dụ: 0903477883">
+                    </div>
+                    <div>
+                        <label class="user-info-label">Mã thanh toán SePay tự động</label>
+                        <div class="payment-code-box">
+                            <span id="valPaymentCodePreview" style="color: #f59e0b; font-weight: 800; font-size: 1.05rem;">DHL...</span>
+                            <span style="font-size: 0.75rem; color: rgba(255,255,255,0.5);">Tự tạo theo SĐT</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event Highlight Box -->
+            <div class="event-highlight">
+                <div class="event-highlight-item">
+                    <span class="event-highlight-icon">🗓️</span>
+                    <div><strong>Thời gian:</strong> 08:00 – 17:00, Chủ Nhật ngày 20/09/2026 (Có mặt lúc 07:45 để check-in).</div>
+                </div>
+                <div class="event-highlight-item">
+                    <span class="event-highlight-icon">📍</span>
+                    <div><strong>Địa điểm:</strong> Apollo Training Room, Phạm Ngọc Thạch, Quận 3, TP.HCM.</div>
+                </div>
+                <div class="event-highlight-item">
+                    <span class="event-highlight-icon">🎓</span>
+                    <div><strong>Dẫn giảng chính:</strong> Chị Hà Minh Châu.</div>
+                </div>
+                <div class="event-highlight-item">
+                    <span class="event-highlight-icon">🎁</span>
+                    <div><strong>Chi phí đào tạo:</strong> Được CultureCode Team tài trợ 100%.</div>
+                </div>
+                <div class="event-highlight-item">
+                    <span class="event-highlight-icon">☕</span>
+                    <div><strong>Fee in ấn tài liệu & catering:</strong> 250,000 VNĐ / học viên (trà sáng, ăn trưa, trà chiều).</div>
+                </div>
+            </div>
+
+            <div class="input-group full-width" style="margin-bottom: 1.5rem;">
+                <label for="rsvpNote" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600; margin-bottom: 6px; display: block;">Ghi chú hoặc kỳ vọng của bạn cho khóa học (Tùy chọn):</label>
+                <textarea id="rsvpNote" rows="2" placeholder="Chia sẻ câu hỏi hoặc kỳ vọng của bạn gửi tới Chị Hà Minh Châu..."></textarea>
+            </div>
+
+            <button type="button" id="btnProceedToPayment" class="btn-confirm">
+                👉 Xác nhận tham dự & Quét mã nộp phí 250.000đ
+            </button>
+
+            <button type="button" id="btnDecline" class="btn-decline">
+                Rất tiếc tôi bận vào ngày này, xin nhường suất cho người khác
+            </button>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- STEP 2: NỘP PHÍ QUA VIETQR SEPAY (250.000đ)                  -->
+        <!-- ============================================================ -->
+        <div id="step2" class="step-container">
+            <div class="header" style="margin-bottom: 1.5rem;">
+                <h1 style="font-size: 1.6rem; margin-bottom: 0.5rem;">Quét Mã Chuyển Phí Catering</h1>
+                <p class="subtitle">Mở ứng dụng ngân hàng và quét mã VietQR tự động dưới đây</p>
+            </div>
+
+            <div style="text-align: center;">
+                <div class="qr-card">
+                    <img id="sepayQrImg" src="" alt="VietQR SePay">
+                </div>
+            </div>
+
+            <div class="pulse-status">
+                <div class="pulse-dot"></div>
+                <span>Hệ thống đang tự động lắng nghe giao dịch...</span>
+            </div>
+
+            <div class="bank-details-table">
+                <div class="bank-row">
+                    <span class="bank-label">Số tiền chuyển:</span>
+                    <div class="bank-val-wrap">
+                        <span class="bank-val highlight" id="qrAmountDisplay">250.000đ</span>
+                        <button type="button" class="copy-btn" onclick="copyText('250000', this)">Copy</button>
+                    </div>
+                </div>
+                <div class="bank-row">
+                    <span class="bank-label">Nội dung chuyển khoản (Bắt buộc):</span>
+                    <div class="bank-val-wrap">
+                        <span class="bank-val highlight" id="qrContentDisplay">DHL...</span>
+                        <button type="button" class="copy-btn" id="btnCopyContent" onclick="copyContent(this)">Copy</button>
+                    </div>
+                </div>
+                <div class="bank-row">
+                    <span class="bank-label">Số tài khoản thụ hưởng:</span>
+                    <div class="bank-val-wrap">
+                        <span class="bank-val" id="qrAccountDisplay">96247CULTURECODE</span>
+                        <button type="button" class="copy-btn" onclick="copyText('96247CULTURECODE', this)">Copy</button>
+                    </div>
+                </div>
+                <div class="bank-row">
+                    <span class="bank-label">Ngân hàng:</span>
+                    <span class="bank-val" id="qrBankDisplay">BIDV</span>
+                </div>
+                <div class="bank-row">
+                    <span class="bank-label">Chủ tài khoản:</span>
+                    <span class="bank-val" id="qrHolderDisplay">Hà Ngọc Hoàn</span>
+                </div>
+            </div>
+
+            <button type="button" id="btnCheckPaymentNow" class="btn-confirm" style="background: #3b82f6; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);">
+                🔄 Tôi đã chuyển khoản, kiểm tra ngay
+            </button>
+            
+            <button type="button" id="btnBackToStep1" class="btn-decline" style="margin-top: 10px;">
+                ← Quay lại sửa thông tin
+            </button>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- STEP 3: HOÀN TẤT & THAM GIA NHÓM ZALO                        -->
+        <!-- ============================================================ -->
+        <div id="step3" class="step-container">
+            <div class="header" style="margin-bottom: 1.5rem; text-align: center;">
+                <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">🎉</div>
+                <h1 style="font-size: 1.75rem; margin-bottom: 0.5rem;">Xác Nhận Tham Dự Thành Công!</h1>
+                <p class="subtitle">Hẹn gặp lại Anh/Chị vào lúc 08:00 sáng Chủ Nhật ngày 20/09/2026 tại Apollo Training Room</p>
+            </div>
+
+            <div class="user-info-box" style="border-color: rgba(34, 197, 94, 0.4); background: rgba(34, 197, 94, 0.08);">
+                <div class="user-info-grid">
+                    <div>
+                        <div class="user-info-label">Học viên</div>
+                        <div class="user-info-value" id="successName">...</div>
+                    </div>
+                    <div>
+                        <div class="user-info-label">Mã xác nhận</div>
+                        <div class="user-info-value" id="successCode" style="color: #f59e0b; font-weight: bold;">...</div>
+                    </div>
+                    <div>
+                        <div class="user-info-label">Khoản phí đã nhận</div>
+                        <div class="user-info-value" style="color: #4ade80; font-weight: bold;">250.000đ (Đã thanh toán)</div>
+                    </div>
+                    <div>
+                        <div class="user-info-label">Tài liệu & Catering</div>
+                        <div class="user-info-value">Đã hoàn tất đặt chỗ</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Zalo Group Access Box -->
+            <div class="zalo-box">
+                <h3 style="color: #ffffff; font-size: 1.25rem; margin-bottom: 0.5rem;">📱 Gia Nhập Nhóm Zalo Lớp Leadership 20/09</h3>
+                <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.95rem; line-height: 1.5;">
+                    Quét mã QR hoặc bấm nút bên dưới để tham gia nhóm Zalo nội bộ của lớp học nhằm nhận tài liệu và hướng dẫn vị trí phòng học:
+                </p>
+
+                <div class="zalo-qr-wrap">
+                    <img id="zaloQrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fzalo.me%2Fg%2Fawqtf1ayfblnrwi1y4bq" alt="QR Nhóm Zalo Leadership">
+                </div>
+
+                <div>
+                    <a id="btnJoinZalo" href="https://zalo.me/g/awqtf1ayfblnrwi1y4bq" target="_blank" class="zalo-btn">
+                        👉 Bấm vào đây để tham gia Nhóm Zalo
+                    </a>
+                </div>
+            </div>
+
+            <a href="/" class="back-home" style="margin-top: 2rem;">← Quay về trang chủ CultureCode</a>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- STEP DECLINED: TỪ CHỐI THAM GIA                              -->
+        <!-- ============================================================ -->
+        <div id="stepDeclined" class="step-container">
+            <div class="header" style="margin-bottom: 1.5rem; text-align: center;">
+                <div style="font-size: 3rem; margin-bottom: 0.5rem;">🙏</div>
+                <h1 style="font-size: 1.6rem; margin-bottom: 0.5rem;">Đã Ghi Nhận Phản Hồi Của Bạn</h1>
+                <p class="subtitle">CultureCode Team xin chân thành cảm ơn bạn đã phản hồi sớm để CultureCode Team kịp thời trao cơ hội tham dự cho nhân sự khác trong danh sách chờ.</p>
+            </div>
+
+            <p style="text-align: center; color: rgba(255, 255, 255, 0.7); font-size: 0.95rem; line-height: 1.6;">
+                Hẹn gặp lại bạn trong các chương trình đào tạo và chia sẻ tiếp theo của Delivering Happiness!
+            </p>
+
+            <a href="/" class="back-home" style="margin-top: 2rem;">← Quay về trang chủ CultureCode</a>
+        </div>
+    </div>
+
+    <!-- Script Configuration -->
+    <script>
+        window.CUSTOM_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxMi_bQBceGxVK_TjbcU5rQNAaLyUXOMuQJHyYWCwdeoWlsccq2kFkhRYVG2meySCsPdA/exec";
+        window.DHM_LEAD_PAYMENT_AMOUNT = 250000;
+        window.DHM_LEAD_PAYMENT_ACCOUNT = "96247CULTURECODE";
+        window.DHM_LEAD_PAYMENT_BANK = "BIDV";
+        window.DHM_LEAD_PAYMENT_HOLDER = "HA NGOC HOAN";
+        window.DHM_LEAD_PAYMENT_HOLDER_DISPLAY = "Hà Ngọc Hoàn";
+        window.DHM_LEAD_PAYMENT_PREFIX = "DHL";
+        window.DHM_LEAD_ZALO_URL = "https://zalo.me/g/awqtf1ayfblnrwi1y4bq";
+    </script>
+    <script src="leadership_rsvp.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333333; margin: 0; padding: 0; background-color: #eae6df; }
+    .container { max-width: 600px; margin: 30px auto; background: #ffffff; border-radius: 12px; border: 1px solid #d1c9bd; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .header { background-color: #1a1a1a; padding: 35px 25px; text-align: center; color: #ffffff; }
+    .header img { width: 120px; height: auto; display: block; margin: 0 auto; border-radius: 8px; }
+    .header h1 { margin: 15px 0 0 0; font-size: 20px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; line-height: 1.3; }
+    .header p { margin: 8px 0 0 0; opacity: 0.8; font-size: 13px; font-weight: 500; line-height: 1.5; color: #aaaaaa; }
+    .content { padding: 35px 30px; background-color: #ffffff; }
+    .greeting { font-size: 16px; font-weight: bold; margin-bottom: 15px; color: #1a1a1a; }
+    .paragraph { margin-bottom: 15px; text-align: justify; font-size: 14.5px; color: #444444; }
+    
+    .badge-congrats { display: inline-block; background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 700; margin-bottom: 18px; text-transform: uppercase; letter-spacing: 0.5px; }
+    
+    /* Box Sự Kiện */
+    .event-box { background-color: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 20px; margin: 25px 0; position: relative; }
+    .event-badge { display: inline-block; font-size: 10px; font-weight: bold; text-transform: uppercase; background-color: #dbeafe; color: #1e40af; padding: 3px 8px; border-radius: 4px; margin-bottom: 10px; }
+    .event-title { font-size: 17px; font-weight: bold; color: #1d4ed8; margin: 0 0 10px 0; }
+    .event-detail { font-size: 14px; margin: 6px 0; color: #374151; }
+    .event-detail strong { color: #111827; }
+    
+    .quote-box { background-color: #f8fafc; border-left: 4px solid #3b82f6; padding: 14px 18px; margin: 20px 0; font-style: italic; color: #475569; font-size: 14px; border-radius: 0 8px 8px 0; }
+    .quote-author { font-style: normal; font-weight: bold; text-align: right; margin-top: 6px; font-size: 13px; color: #64748b; }
+
+    .sessions-box { background-color: #fafafa; border: 1px solid #e5e7eb; border-radius: 8px; padding: 18px 20px; margin: 20px 0; font-size: 14px; }
+    .session-title { font-weight: bold; color: #111827; margin-top: 10px; margin-bottom: 4px; }
+    .session-title:first-child { margin-top: 0; }
+    .session-items { margin: 0 0 10px 0; padding-left: 20px; color: #4b5563; }
+    
+    .action-box { background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 22px; margin: 25px 0; text-align: center; }
+    .action-btn { display: inline-block; background-color: #16a34a; color: #ffffff !important; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-size: 15px; font-weight: bold; margin-top: 12px; box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3); }
+    .action-note { font-size: 13px; color: #65a30d; margin-top: 10px; }
+
+    .footer { background-color: #ffffff; padding: 20px 30px 35px 30px; border-top: 1px solid #f3f4f6; }
+    .footer-table { width: 100%; border-collapse: collapse; }
+    .footer-left { text-align: left; vertical-align: bottom; }
+    .footer-right { text-align: right; vertical-align: bottom; width: 100px; }
+    .footer-logo { width: 90px; height: auto; display: block; margin-left: auto; border-radius: 4px; }
+    .closing { font-size: 14.5px; font-weight: bold; color: #1a1a1a; margin: 0; }
+    .team-name { font-size: 14.5px; font-weight: bold; color: #1a1a1a; margin: 4px 0 0 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="https://delivering-happiness.vercel.app/assets/culturecode-logo-dark.jpg" alt="CultureCode Logo" />
+      <h1>Team Happiness Starts With Your Leadership</h1>
+      <p>By Invitation Only | Delivering Happiness Special Edition</p>
+    </div>
+    
+    <div class="content">
+      <div class="greeting">Thân gửi Anh/Chị {TEN_NGUOI_NHAN},</div>
+
+      <div class="badge-congrats">
+        🎉 Chúc mừng Anh/Chị đã được lựa chọn tham gia khóa học Leadership
+      </div>
+      
+      <p class="paragraph">
+        <strong>CultureCode Team</strong> trân trọng chúc mừng Anh/Chị là một trong 25 nhân sự đặc biệt nhận được Thư mời tham dự chương trình đào tạo chuyên sâu: <strong>Team Happiness Starts With Your Leadership</strong> diễn ra vào ngày 20/09/2026 tại TP.HCM.
+      </p>
+
+      <p class="paragraph">
+        Chương trình là đặc quyền giới hạn (<em>By Invitation Only</em>) dành riêng cho Ban Giảng huấn, các thành viên tích cực lan tỏa giá trị, cựu học viên có bài thực hành/reflection xuất sắc và đối tác đồng hành.
+      </p>
+
+      <div class="quote-box">
+        "Nếu bạn nghĩ mình quá bé nhỏ để tạo sự khác biệt, ắt hẳn bạn chưa ngủ với muỗi bao giờ."
+        <div class="quote-author">– Michelle Walker</div>
+      </div>
+
+      <p class="paragraph">
+        Chúng ta thường nghĩ văn hóa được tạo ra bởi những chiến lược lớn, những chương trình lớn hay những quyết định lớn. Nhưng thực tế, văn hóa được hình thành từ những điều rất nhỏ diễn ra mỗi ngày:
+      </p>
+
+      <ul style="font-size: 14.5px; color: #444444; line-height: 1.6; margin-bottom: 15px; padding-left: 20px;">
+        <li>Cảm giác tiến bộ thông qua một lời ghi nhận.</li>
+        <li>Cảm giác kết nối thông qua một cuộc đối thoại hay một phản hồi.</li>
+        <li>Cảm giác tự chủ thông qua một nhận định.</li>
+      </ul>
+
+      <p class="paragraph">
+        Những khoảnh khắc tưởng chừng rất nhỏ ấy lại quyết định nhân viên có cảm thấy được lắng nghe, được tin tưởng và muốn cống hiến hay không.
+      </p>
+
+      <div class="sessions-box">
+        <div style="font-weight: bold; color: #1e40af; margin-bottom: 10px; font-size: 15px;">Trong 3 phiên học, Anh/Chị sẽ cùng khám phá:</div>
+        
+        <div class="session-title">01. MINDSET</div>
+        <ul class="session-items">
+          <li>Leadership Grid</li>
+          <li>Leadership Shadow</li>
+        </ul>
+
+        <div class="session-title">02. SKILL SET</div>
+        <ul class="session-items">
+          <li>GROW</li>
+          <li>SBI</li>
+          <li>TKI</li>
+        </ul>
+
+        <div class="session-title">03. TOOL SET</div>
+        <ul class="session-items">
+          <li>Social Styles</li>
+          <li>Giao tiếp kết nối</li>
+          <li>An toàn tâm lý</li>
+        </ul>
+
+        <p style="margin: 10px 0 0 0; font-size: 13.5px; color: #374151; font-style: italic;">
+          Từ tư duy, kỹ năng đến công cụ thực hành, chương trình giúp Anh/Chị chuyển hóa vai trò lãnh đạo thành những trải nghiệm tích cực cho đội ngũ mỗi ngày.<br>
+          Vì câu hỏi quan trọng nhất của người lãnh đạo không phải là: <em>"Tôi đang quản lý đội ngũ tốt đến đâu?"</em>, mà là: <strong>"Tôi đang tạo ra văn hóa nào mỗi ngày?"</strong>
+        </p>
+      </div>
+
+      <div class="event-box">
+        <span class="event-badge">Thông tin tổ chức</span>
+        <div class="event-title">📍 Địa điểm & Thời gian</div>
+        <div class="event-detail"><strong>Địa điểm học:</strong> Apollo Training Room, Phạm Ngọc Thạch, TP.HCM.</div>
+        <div class="event-detail"><strong>Thời gian:</strong> 08:00 – 17:00, Chủ Nhật ngày 20/09/2026.</div>
+        <div class="event-detail"><strong>Dẫn giảng chính:</strong> Chị Hà Minh Châu.</div>
+        <div class="event-detail"><strong>Chi phí đào tạo:</strong> CultureCode Team tài trợ 100%.</div>
+        <div class="event-detail"><strong>Fee in ấn tài liệu và catering:</strong> 250,000 VNĐ / học viên.</div>
+      </div>
+
+      <div class="action-box">
+        <div style="font-size: 15px; font-weight: bold; color: #166534; margin-bottom: 8px;">
+          BƯỚC QUAN TRỌNG: XÁC NHẬN THAM GIA & NỘP PHÍ CATERING
+        </div>
+        <p style="font-size: 14px; color: #374151; margin: 0 0 12px 0;">
+          Để CultureCode Team kịp in ấn tài liệu cá nhân hóa và đặt catering, Anh/Chị vui lòng bấm vào nút bên dưới để xác nhận tham dự, và quét mã chuyển phí 250.000đ:
+        </p>
+        <a href="{LINK_XAC_NHAN}" target="_blank" class="action-btn">
+          👉 XÁC NHẬN THAM DỰ & NỘP PHÍ 250.000Đ
+        </a>
+        <div class="action-note">
+          *Ngay sau khi quét mã chuyển phí hoàn tất, màn hình sẽ hiển thị Mã QR để Anh/Chị gia nhập Nhóm Zalo lớp học.
+        </div>
+      </div>
+
+      <p class="paragraph" style="margin-top: 25px; font-weight: bold; color: #1a1a1a;">
+        CultureCode Team rất mong được đón tiếp Anh/Chị!
+      </p>
+    </div>
+    
+    <div class="footer">
+      <table class="footer-table">
+        <tr>
+          <td class="footer-left">
+            <p class="closing">Trân trọng,</p>
+            <p class="team-name">CultureCode Team</p>
+          </td>
+          <td class="footer-right">
+            <img src="https://delivering-happiness.vercel.app/assets/culturecode-logo-light.jpg" alt="CultureCode Small Logo" class="footer-logo" />
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
