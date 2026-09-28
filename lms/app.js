@@ -423,7 +423,7 @@ document.addEventListener("DOMContentLoaded", () => {
             authUserDetected.classList.add("hidden");
             passwordGroup.classList.remove("hidden");
             phoneOnboardingGroup.classList.add("hidden");
-            passwordGuide.classList.remove("hidden");
+            if (passwordGuide) passwordGuide.classList.remove("hidden");
             btnSubmitText.textContent = "Vào Học Ngay";
             return;
         }
@@ -438,14 +438,14 @@ document.addEventListener("DOMContentLoaded", () => {
             loginPasswordInput.removeAttribute("required");
             phoneOnboardingGroup.classList.remove("hidden");
             onboardingPhoneInput.setAttribute("required", "true");
-            passwordGuide.classList.add("hidden");
+            if (passwordGuide) passwordGuide.classList.add("hidden");
             btnSubmitText.textContent = "Kích Hoạt & Vào Học";
         } else {
             passwordGroup.classList.remove("hidden");
             loginPasswordInput.setAttribute("required", "true");
             phoneOnboardingGroup.classList.add("hidden");
             onboardingPhoneInput.removeAttribute("required");
-            passwordGuide.classList.remove("hidden");
+            if (passwordGuide) passwordGuide.classList.remove("hidden");
             btnSubmitText.textContent = "Vào Học Ngay";
         }
     }

@@ -1,3 +1,7 @@
 {
-  "cleanUrls": true
+  "cleanUrls": true,
+  "redirects": [
+    { "source": "/login", "destination": "/lms", "permanent": true },
+    { "source": "/login.html", "destination": "/lms", "permanent": true }
+  ]
 }
