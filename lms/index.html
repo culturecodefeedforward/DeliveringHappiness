@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Delivering Happiness Movement — Micro-Learning Journey</title>
+    <meta name="description" content="Trải nghiệm Mini-LMS học tập khoa học hạnh phúc tự thân theo lộ trình cá nhân hóa." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <!-- TOP NAVIGATION -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="brand">
+                <span>🌟 Delivering Happiness</span>
+                <span class="brand-badge">Mini-LMS</span>
+            </a>
+            <div class="nav-right">
+                <span class="user-badge" id="learner-badge">Học viên: Khách trải nghiệm</span>
+                <a href="admin.html" class="btn-landing" style="background: rgba(245, 158, 11, 0.15); border-color: var(--primary-yellow); color: var(--primary-yellow); font-weight: 600;">🛡️ Cổng Giảng Viên / Admin ➔</a>
+                <a href="https://delivering-happiness.vercel.app/" target="_blank" class="btn-landing">Trang chủ DHM ↗</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="hero-section">
+        <span class="hero-tag">🚀 Micro-Learning Journey (90 phút)</span>
+        <h1 class="hero-title">Hành Trình Chuyển Hóa Hạnh Phúc</h1>
+        <p class="hero-desc">
+            Không cần nhồi nhét lý thuyết cồng kềnh. Mỗi chặng 10-15 phút gồm Video ngắn, trắc nghiệm phản xạ và bài tập thực hành chuyển hóa tâm thế tức thì.
+        </p>
+
+        <!-- PROGRESS TRACKER -->
+        <div class="progress-card">
+            <div class="progress-header">
+                <span id="progress-status">Đang tải tiến trình...</span>
+                <span id="progress-text" style="color: var(--primary-yellow);">0%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ROADMAP JOURNEY CONTAINER -->
+    <main class="roadmap-container">
+
+        <!-- STAGE 1: 3 CẤP ĐỘ HẠNH PHÚC -->
+        <article class="stage-card active open" id="stage-1">
+            <div class="stage-header">
+                <div class="stage-header-left">
+                    <div class="node-badge">1</div>
+                    <div class="stage-meta">
+                        <h3>Khoa Học Hạnh Phúc & 3 Cấp Độ</h3>
+                        <p>Giảng viên: Anh Vũ • Thời lượng: ~25 phút</p>
+                    </div>
+                </div>
+                <span class="stage-status-badge status-active">Đang mở</span>
+            </div>
+
+            <div class="stage-body">
+                <!-- Video bài giảng ngắn -->
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/fJ9rUzIMcZQ?si=demo" title="Bài giảng: 3 Cấp độ Hạnh phúc" allowfullscreen></iframe>
+                </div>
+
+                <div class="content-summary">
+                    <strong>💡 Đúc kết cốt lõi:</strong> Hạnh phúc có 3 cấp độ theo Martin Seligman:
+                    <br>1. <em>Thú vui (Pleasure):</em> Nhanh nguội lạnh do não bộ thích nghi rất nhanh.
+                    <br>2. <em>Đam mê (Passion):</em> Trạng thái tập trung cao độ, "Phiêu" (Flow) khi làm việc.
+                    <br>3. <em>Mục đích cao cả (Higher Purpose):</em> Bền vững nhất, khi thấy mình cống hiến cho điều lớn lao.
+                </div>
+
+                <!-- QUIZ TƯƠNG TÁC -->
+                <div class="section-subtitle">🎯 Câu hỏi phản xạ nhanh</div>
+
+                <div class="quiz-card">
+                    <p class="quiz-question">Câu 1: Theo triết lý DHM, cấp độ hạnh phúc nào có tính bền vững lâu dài nhất?</p>
+                    <div class="quiz-options">
+                        <button type="button" class="quiz-option" onclick="handleOptionSelect(this, 'q1', false, '')">A. Thú vui (Pleasure) từ việc sắm đồ mới, đổi xe, ăn ngon</button>
+                        <button type="button" class="quiz-option" onclick="handleOptionSelect(this, 'q1', false, '')">B. Đam mê (Passion) khi tập trung giải quyết việc khó</button>
+                        <button type="button" class="quiz-option" onclick="handleOptionSelect(this, 'q1', true, 'Chính xác! Thú vui nguội rất nhanh. Chỉ khi gắn với Mục đích cao cả (Higher Purpose), hạnh phúc mới bền vững.')">C. Mục đích cao cả (Higher Purpose / Meaning) cống hiến cho điều lớn lao hơn bản thân</button>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                </div>
+
+                <div class="quiz-card">
+                    <p class="quiz-question">Câu 2: Ẩn dụ "Ba tầng lầu" của học giả Phong Tử Khải tương ứng thế nào?</p>
+                    <div class="quiz-options">
+                        <button type="button" class="quiz-option" onclick="handleOptionSelect(this, 'q2', true, 'Đúng! Tầng 1: Vật chất (Thú vui) — Tầng 2: Tinh thần (Đam mê) — Tầng 3: Tâm hồn (Mục đích cao cả).')">A. Tầng 1: Đời sống vật chất — Tầng 2: Tinh thần — Tầng 3: Tâm hồn</button>
+                        <button type="button" class="quiz-option" onclick="handleOptionSelect(this, 'q2', false, '')">B. Tầng 1: Tiền bạc — Tầng 2: Quyền lực — Tầng 3: Danh vọng</button>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                </div>
+
+                <!-- FORM PHẢN TƯ -->
+                <div class="section-subtitle">✍️ Phản tư cá nhân</div>
+                <div class="form-group">
+                    <label class="form-label" for="stage1-reflection">Khoảnh khắc bạn cảm thấy mãn nguyện và ý nghĩa nhất trong công việc gần đây thuộc cấp độ nào? Vì sao?</label>
+                    <textarea class="form-control" id="stage1-reflection" rows="3" placeholder="Chia sẻ suy nghĩ ngắn của bạn tại đây..."></textarea>
+                </div>
+
+                <button type="button" class="btn-complete" onclick="completeStage1()">Hoàn thành Chặng 1 & Mở khóa Chặng 2 ➔</button>
+            </div>
+        </article>
+
+        <!-- STAGE 2: LA BÀN VÀ ĐỒNG HỒ -->
+        <article class="stage-card locked" id="stage-2">
+            <div class="stage-header">
+                <div class="stage-header-left">
+                    <div class="node-badge">2</div>
+                    <div class="stage-meta">
+                        <h3>Định Vị Bản Thân: La Bàn Gặp Đồng Hồ</h3>
+                        <p>Giảng viên: Chị Châu & Anh Vũ • Thời lượng: ~30 phút</p>
+                    </div>
+                </div>
+                <span class="stage-status-badge status-locked">🔒 Chưa mở</span>
+            </div>
+
+            <div class="stage-body">
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/fJ9rUzIMcZQ?si=demo" title="Bài giảng: La bàn gặp đồng hồ" allowfullscreen></iframe>
+                </div>
+
+                <div class="content-summary">
+                    <strong>💡 Đúc kết cốt lõi:</strong> Đồng hồ là lịch trình và những việc khẩn cấp hàng ngày. La bàn là phương hướng và giá trị cốt lõi (Me Values & We Values). Nếu chỉ chạy theo đồng hồ mà quên la bàn, ta sẽ kiệt sức mà không tới đích.
+                </div>
+
+                <div class="section-subtitle">🧭 Chọn 3 Giá Trị Cốt Lõi Cá Nhân (La bàn của bạn)</div>
+                <div class="values-grid">
+                    <div class="value-pill" onclick="toggleValuePill(this, 'Chân thật & Trung thực')">Chân thật & Trung thực</div>
+                    <div class="value-pill" onclick="toggleValuePill(this, 'Học hỏi liên tục')">Học hỏi liên tục</div>
+                    <div class="value-pill" onclick="toggleValuePill(this, 'Tận tâm & Đồng hành')">Tận tâm & Đồng hành</div>
+                    <div class="value-pill" onclick="toggleValuePill(this, 'Bình an & Gia đình')">Bình an & Gia đình</div>
+                    <div class="value-pill" onclick="toggleValuePill(this, 'Sáng tạo & Tự do')">Sáng tạo & Tự do</div>
+                    <div class="value-pill" onclick="toggleValuePill(this, 'Vị nhân & Cống hiến')">Vị nhân & Cống hiến</div>
+                    <div class="value-pill" onclick="toggleValuePill(this, 'Lạc quan & Yêu đời')">Lạc quan & Yêu đời</div>
+                    <div class="value-pill" onclick="toggleValuePill(this, 'Xuất sắc & Kỷ luật')">Xuất sắc & Kỷ luật</div>
+                </div>
+
+                <button type="button" class="btn-complete" onclick="completeStage2()">Hoàn thành Chặng 2 & Mở khóa Chặng 3 ➔</button>
+            </div>
+        </article>
+
+        <!-- STAGE 3: CHUYỂN HÓA NGHỊCH CẢNH ABCDE -->
+        <article class="stage-card locked" id="stage-3">
+            <div class="stage-header">
+                <div class="stage-header-left">
+                    <div class="node-badge">3</div>
+                    <div class="stage-meta">
+                        <h3>Chuyển Hóa Nghịch Cảnh: Framework ABCDE</h3>
+                        <p>Giảng viên: Anh Vũ • Thời lượng: ~35 phút</p>
+                    </div>
+                </div>
+                <span class="stage-status-badge status-locked">🔒 Chưa mở</span>
+            </div>
+
+            <div class="stage-body">
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/fJ9rUzIMcZQ?si=demo" title="Bài giảng: Framework ABCDE" allowfullscreen></iframe>
+                </div>
+
+                <div class="content-summary">
+                    <strong>💡 Đúc kết cốt lõi:</strong> Nghịch cảnh (A) kích hoạt Niềm tin giới hạn (B) dẫn đến Hậu quả tiêu cực (C). Chìa khóa chuyển hóa nằm ở chữ **D (Dispute - Phản biện niềm tin)** bằng kỹ thuật <em>Stop – Breathe – Ask</em> để tạo ra Hành động tích cực mới (E).
+                </div>
+
+                <div class="section-subtitle">📋 Bài tập thực hành ABCDE trực tiếp</div>
+                <div class="form-group">
+                    <label class="form-label" for="abcde-a">A (Adversity) — Nghịch cảnh hoặc tình huống khó khăn vừa xảy ra:</label>
+                    <input type="text" class="form-control" id="abcde-a" placeholder="Ví dụ: Bị sếp phê bình ý tưởng trong cuộc họp..." />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="abcde-b">B (Belief) — Tiếng nói tiêu cực tự động trong đầu:</label>
+                    <input type="text" class="form-control" id="abcde-b" placeholder="Ví dụ: Sếp không công bằng, ghét mình..." />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="abcde-c">C (Consequence) — Cảm xúc và phản ứng tiêu cực ban đầu:</label>
+                    <input type="text" class="form-control" id="abcde-c" placeholder="Ví dụ: Bực bội, im lặng thu mình..." />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="abcde-d">D (Dispute) — Phản biện lý trí (Stop - Breathe - Ask):</label>
+                    <textarea class="form-control" id="abcde-d" rows="2" placeholder="Niềm tin đó có đúng 100% không? Sếp góp ý vì muốn dự án tốt hơn hay vì ghét mình?"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="abcde-e">E (Effect & Action) — Cảm xúc mới và Hành động tích cực tiếp theo:</label>
+                    <textarea class="form-control" id="abcde-e" rows="2" placeholder="Hành động cụ thể bạn sẽ làm: Hẹn gặp 1:1 làm rõ góc nhìn, bổ sung dữ liệu..."></textarea>
+                </div>
+
+                <button type="button" class="btn-complete" onclick="completeStage3()">Nộp Bài & Hoàn Tất Khóa Học 🎉</button>
+            </div>
+        </article>
+
+        <!-- CELEBRATION & NEXT STEP -->
+        <section class="celebration-card" id="celebration-card">
+            <div class="celebration-icon">🎓</div>
+            <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: var(--accent-emerald);">Chúc Mừng Bạn Đã Hoàn Thành!</h2>
+            <p style="color: #CBD5E1; max-width: 600px; margin: 0 auto 1.5rem;">
+                Bạn đã hoàn thành trọn vẹn 3 chặng học cốt lõi của Delivering Happiness Movement (DHM). Các bài phản tư và bài tập ABCDE của bạn đã được ghi nhận vào hồ sơ học viên.
+            </p>
+
+            <div style="background: rgba(255,255,255,0.05); padding: 1.2rem; border-radius: 12px; max-width: 500px; margin: 0 auto 1.5rem; text-align: left;">
+                <h4 style="color: var(--primary-yellow); margin-bottom: 6px;">📅 Bước tiếp theo: Buổi Live Reflection & Q&A</h4>
+                <p style="font-size: 0.9rem; color: #94A3B8; margin-bottom: 0;">
+                    Sau 2–4 tuần thực hành các thói quen này trong công việc, Ban giảng huấn (Vũ, Châu, Hưng) sẽ tổ chức một buổi kết nối trực tuyến trực tiếp qua Zoom để cùng giải đáp các tình huống thực tế của bạn.
+                </p>
+            </div>
+
+            <a href="https://delivering-happiness.vercel.app/" class="btn-landing" style="display: inline-block; padding: 10px 24px; font-weight: 700; background: var(--accent-emerald); color: #000; border: none;">
+                Quay lại Trang Chủ Delivering Happiness
+            </a>
+        </section>
+
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
