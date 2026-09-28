@@ -100,7 +100,40 @@ sequenceDiagram
     end
 ```
 
-### D. Luồng Thực hành điền & đối chiếu Case Study qua QR (ABCDE Practice Sheet & Static RAG Flow)
+### D. Luồng Xác thực Micro-LMS v2 & Onboarding Số điện thoại Tự phục vụ (Micro-LMS v2 Auth & Self-Service Onboarding Flow)
+Luồng đăng nhập thông minh và bổ sung thông tin tự phục vụ dành cho học viên Delivering Happiness Masterclass:
+
+```mermaid
+sequenceDiagram
+    participant Learner as Học viên (Browser)
+    participant LMS as Micro-LMS v2 (lms/index.html)
+    participant Engine as LMS Controller (lms/app.js)
+    participant Local as localStorage (Trình duyệt)
+    participant GAS as Google Apps Script Webhook
+    participant Sheet as CRM / Google Sheet BTC
+
+    Learner->>LMS: Nhập Email học viên
+    LMS->>Engine: input event (kiểm tra real-time)
+    Engine->>Engine: Tra cứu Email trong authorized_roster.json & overrides
+    
+    alt Trường hợp 1: Học viên đã có SĐT (hoặc đã Onboard trước đó)
+        Engine-->>LMS: Hiển thị form Mật khẩu (4 số cuối SĐT)
+        Learner->>LMS: Nhập 4 số cuối & bấm "Vào Học Ngay"
+        Engine->>Engine: verifyPassword (so khớp 4 số cuối)
+        Engine->>Local: Lưu dhm_lms_auth_user
+        Engine-->>LMS: Đóng Modal, mở Dashboard 3 Chặng Học
+    else Trường hợp 2: Học viên thiếu SĐT (16 học viên DHM9)
+        Engine-->>LMS: Ẩn mật khẩu, hiện form Onboarding: "Nhập 10 số điện thoại"
+        Learner->>LMS: Nhập 10 số SĐT & bấm "Kích Hoạt & Vào Học Ngay"
+        Engine->>Engine: Kiểm tra Regex SĐT Việt Nam (/^0[35789]\d{8}$/)
+        Engine->>Local: 1. Lưu phone vào dhm_roster_overrides & dhm_lms_auth_user
+        Engine-)GAS: 2. POST Webhook ngầm (action: update_phone, email, name, phone, cohort)
+        GAS->>Sheet: Ghi thông tin học viên & SĐT mới
+        Engine-->>LMS: 3. Vào Dashboard học ngay tức thì (4 số cuối là pass cho lần sau)
+    end
+```
+
+### E. Luồng Thực hành điền & đối chiếu Case Study qua QR (ABCDE Practice Sheet & Static RAG Flow)
 Luồng tương tác của trang thực hành độc lập, tự động tải dữ liệu tri thức tĩnh từ server và phân rã các bước bằng Regex để đối chiếu bài làm:
 
 ```mermaid
@@ -245,6 +278,14 @@ Các lớp CAPTCHA và giới hạn tần suất được áp dụng theo từng
 ### D. Workspace MCP Server (Quản trị & Tự động hóa)
 *   **Mục đích:** Tích hợp với tác nhân AI để truy xuất CRM Sheet hoặc thực hiện quy trình Gmail/Sheets có phê duyệt.
 *   **Xác thực:** Dùng Google OAuth; credential nằm ngoài repository và tuyệt đối không được ghi vào tài liệu, log hoặc artifact.
+
+### E. Phân hệ Micro-LMS v2 & Master Learner Registry
+*   **Mục đích:** Cung cấp trải nghiệm học tập số hóa tương tác (90 phút) cho học viên Delivering Happiness Masterclass, đảm bảo phân quyền danh bạ chính xác, lưu giữ phản tư cá nhân (I•A•M), và tự động bổ sung số điện thoại tự phục vụ.
+*   **Các thành phần cốt lõi:**
+    1.  *Giao diện LMS Web (`lms/index.html`):* SPA (Single Page Application) hiện đại xây dựng trên Tailwind CSS Glassmorphism, 3 chặng học tuần tự, bài tập trắc nghiệm tự chấm điểm, la bàn Me Values tương tác, và công cụ chuyển hóa nghịch cảnh ABCDE.
+    2.  *Bộ điều khiển Client (`lms/app.js`):* Quản lý phiên làm việc (`dhm_lms_auth_user`), nhận diện học viên thời gian thực, cơ chế Onboarding SĐT lưu đè `localStorage` (`dhm_roster_overrides`), và đồng bộ nền (background sync) dữ liệu học viên & phản tư về Google Apps Script qua `GOOGLE_APPS_SCRIPT_URL`.
+    3.  *Danh bạ phân quyền (`lms/authorized_roster.json`):* 117 tài khoản được ủy quyền (Coach, DHM8, DHM9, Đăng ký mới).
+    4.  *Cơ sở dữ liệu học viên tổng quát (`master_learners_roster.json` & `.csv`):* Chuẩn hóa cấu trúc 117 học viên kèm mã định danh `learner_id`, trạng thái số điện thoại (`verified`, `legacy_partial`, `missing`), và phân loại doanh nghiệp/tổ chức tự động từ email domain. Chi tiết cấu trúc xem tại [LEARNER_DATA_SCHEMA.md](file:///C:/Users/vu.hoang/.gemini/antigravity/scratch/Teaching%20DH/Artifacts/LEARNER_DATA_SCHEMA.md).
 
 ## 3. Ma trận Ranh giới Kiểm chứng
 

@@ -13,7 +13,9 @@ Thư mục gốc chứa các trang tĩnh, API serverless, mã Apps Script, tài 
 *   `practice-abcde.html`: Trang thực hành Lạc quan ABCDE tương tác độc lập dành cho học viên quét mã QR từ slide bài giảng.
 *   `program-interest.html`: Trang trung tâm ghi nhận quan tâm cho DHM8, DHM9, NVC và AI. Người dùng nhập thông tin chung một lần, chọn một hoặc nhiều chương trình và mở phần câu hỏi riêng; đây không phải đăng ký chính thức, giữ chỗ hay thanh toán.
 *   `interest.html` / `interest_dh9.html`: Trang ghi nhận thông tin bày tỏ sự quan tâm của học viên khi các lớp học đã đủ chỉ tiêu (Closed).
-*   `lms_dashboard.html` / `login.html`: Bề mặt LMS tĩnh; cơ chế phân quyền live chưa được xác nhận trong tài liệu này.
+*   `lms/index.html`: Giao diện ứng dụng Micro-LMS v2 (Hành Trình Chuyển Hóa Hạnh Phúc 90 phút). Tích hợp modal đăng nhập xác thực Email + 4 số cuối SĐT, nhận diện học viên thời gian thực, form Onboarding bổ sung SĐT tự phục vụ cho học viên thiếu số, và khung phản tư I•A•M.
+*   `lms/admin.html`: Cổng quản trị Coach Portal phục vụ giảng viên kiểm tra tiến độ, xem phản tư học viên và điều phối lớp học.
+*   `lms_dashboard.html` / `login.html`: Bề mặt LMS tĩnh cũ (đã được thay thế bởi `lms/index.html`).
 *   `checkin.html`: Giao diện QR check-in bằng camera; hành vi đọc/ghi Sheet live cần UAT riêng.
 *   `dh8/index.html`: Định tuyến tĩnh cho lối tắt `/dh8`.
 
@@ -25,6 +27,10 @@ Thư mục gốc chứa các trang tĩnh, API serverless, mã Apps Script, tài 
 *   `personal-value.js`: Xử lý logic khảo sát La bàn Giá trị Cá nhân.
 *   `chat-abcde.js`: Quản lý luồng máy trạng thái hội thoại ABCDE phía client, hiển thị giao diện chat bong bóng và giao tiếp với API backend proxy.
 *   `practice-abcde.js`: Xử lý logic hiển thị tình huống thực hành, bóc tách Regex phần B-C-D-E và so sánh side-by-side kết quả với gợi ý chuẩn.
+*   `lms/app.js`: Bộ điều khiển trung tâm (Core Controller) của Micro-LMS v2. Quản lý xác thực học viên qua Email + 4 số cuối SĐT, nhận diện học viên thời gian thực, form Onboarding bổ sung SĐT tự phục vụ lưu `localStorage` và gửi Webhook ngầm, máy trạng thái 3 chặng học, bài tập trắc nghiệm, bài tập Me Values, bộ công cụ ABCDE, lưu vết phản tư I•A•M (Insight - Action - Meaning), và đồng bộ hai chiều với Google Apps Script.
+*   `lms/authorized_roster.json`: Danh bạ xác thực 117 học viên được phân quyền truy cập LMS (BTC/Coach, DHM8, DHM9, Registration).
+*   `lms/master_learners_roster.json`: Cơ sở dữ liệu học viên tổng quát đã chuẩn hóa của Delivering Happiness (gồm mã `learner_id`, phân loại doanh nghiệp/tổ chức từ email domain, phân loại trạng thái SĐT `verified` / `legacy_partial` / `missing`).
+*   `lms/curriculum_data.json`: Dữ liệu giáo trình Micro-LMS 3 chặng học, cấu trúc bài giảng video, câu hỏi trắc nghiệm, và 3 bộ câu hỏi phản tư I•A•M.
 *   `script.js`: Xử lý các hiệu ứng động trên trang chủ (cuộn trang mượt, tương tác micro-animations).
 *   `tracking.js`: Bộ theo dõi phân tích hành vi cuộn trang và lượt truy cập của người dùng.
 *   `dh4hn_uat.js`: Kịch bản kiểm thử tự động phục vụ UAT trên môi trường local.

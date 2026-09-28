@@ -162,6 +162,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const authForm = document.getElementById("auth-form");
     const loginIdentityInput = document.getElementById("login-identity");
     const loginPasswordInput = document.getElementById("login-password");
+    const passwordGroup = document.getElementById("password-group");
+    const phoneOnboardingGroup = document.getElementById("phone-onboarding-group");
+    const onboardingPhoneInput = document.getElementById("onboarding-phone");
+    const passwordGuide = document.getElementById("password-guide");
+    const btnSubmitText = document.getElementById("btn-submit-text");
     const btnTogglePwd = document.getElementById("btn-toggle-pwd");
     const authErrorBanner = document.getElementById("auth-error-banner");
     const authErrorTitle = document.getElementById("auth-error-title");
@@ -269,35 +274,73 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    function getRosterOverrides() {
+        try {
+            return JSON.parse(localStorage.getItem("dhm_roster_overrides") || "{}");
+        } catch (e) {
+            return {};
+        }
+    }
+
     function findLearner(rawIdentity) {
-        const norm = normalizeIdentity(rawIdentity);
+        const norm = (rawIdentity || "").trim().toLowerCase();
         if (!norm) return null;
 
-        return authorizedRoster.find(item => {
-            const itemEmail = (item.email || "").toLowerCase();
-            const itemPhone = normalizePhone(item.phone);
-
-            if (norm.includes("@")) {
-                return itemEmail === norm;
-            }
-            return itemPhone === norm || itemPhone.endsWith(norm) || (item.phone && item.phone.includes(norm));
+        const base = authorizedRoster.find(item => {
+            const itemEmail = (item.email || "").toLowerCase().trim();
+            return itemEmail === norm;
         });
+
+        if (!base) return null;
+
+        // Apply local roster overrides (e.g. newly onboarded phone)
+        const overrides = getRosterOverrides();
+        if (overrides[norm] && overrides[norm].phone) {
+            return Object.assign({}, base, { phone: overrides[norm].phone });
+        }
+        return base;
+    }
+
+    function updateAuthModeForLearner(learner) {
+        if (!learner) {
+            if (passwordGroup) passwordGroup.classList.remove("hidden");
+            if (phoneOnboardingGroup) phoneOnboardingGroup.classList.add("hidden");
+            if (passwordGuide) passwordGuide.classList.remove("hidden");
+            if (loginPasswordInput) loginPasswordInput.setAttribute("required", "required");
+            if (onboardingPhoneInput) onboardingPhoneInput.removeAttribute("required");
+            if (btnSubmitText) btnSubmitText.textContent = "Vào Học Ngay";
+            return;
+        }
+
+        const normPhone = normalizePhone(learner.phone);
+        // If learner has no valid phone (missing or less than 4 digits)
+        if (!normPhone || normPhone.length < 4) {
+            if (passwordGroup) passwordGroup.classList.add("hidden");
+            if (phoneOnboardingGroup) phoneOnboardingGroup.classList.remove("hidden");
+            if (passwordGuide) passwordGuide.classList.add("hidden");
+            if (loginPasswordInput) loginPasswordInput.removeAttribute("required");
+            if (onboardingPhoneInput) onboardingPhoneInput.setAttribute("required", "required");
+            if (btnSubmitText) btnSubmitText.textContent = "Kích Hoạt & Vào Học Ngay";
+        } else {
+            if (passwordGroup) passwordGroup.classList.remove("hidden");
+            if (phoneOnboardingGroup) phoneOnboardingGroup.classList.add("hidden");
+            if (passwordGuide) passwordGuide.classList.remove("hidden");
+            if (loginPasswordInput) loginPasswordInput.setAttribute("required", "required");
+            if (onboardingPhoneInput) onboardingPhoneInput.removeAttribute("required");
+            if (btnSubmitText) btnSubmitText.textContent = "Vào Học Ngay";
+        }
     }
 
     function verifyPassword(learner, inputPassword) {
         const p = (inputPassword || "").trim();
         if (!p) return false;
 
-        // Master passwords for all learners
-        const masterPasses = ["dhm2026", "dh2026", "dhm", "123456"];
-        if (masterPasses.includes(p.toLowerCase())) return true;
-
-        // Coach PIN
-        if ((learner.role === "Coach" || learner.cohort.includes("BTC")) && p === "1979") {
+        // Coach PIN fallback
+        if ((learner.role === "Coach" || (learner.cohort && learner.cohort.includes("BTC"))) && p === "1979") {
             return true;
         }
 
-        // 4 last digits of phone
+        // Standard authentication: 4 last digits of registered phone number
         const normPhone = normalizePhone(learner.phone);
         if (normPhone && normPhone.length >= 4) {
             const last4 = normPhone.slice(-4);
@@ -329,20 +372,22 @@ document.addEventListener("DOMContentLoaded", () => {
         authModal.classList.add("hidden");
     }
 
-    // Real-time identification helper as user types
+    // Real-time identification helper as user types email
     loginIdentityInput.addEventListener("input", () => {
-        const val = loginIdentityInput.value.trim();
-        if (val.length >= 3) {
+        const val = loginIdentityInput.value.trim().toLowerCase();
+        if (val.includes("@") && val.length >= 5) {
             const matched = findLearner(val);
             if (matched) {
                 detectedUserName.textContent = matched.name;
                 detectedUserCohort.textContent = matched.cohort;
                 authUserDetected.classList.remove("hidden");
                 authErrorBanner.classList.add("hidden");
+                updateAuthModeForLearner(matched);
                 return;
             }
         }
         authUserDetected.classList.add("hidden");
+        updateAuthModeForLearner(null);
     });
 
     // Toggle password reveal
@@ -358,25 +403,86 @@ document.addEventListener("DOMContentLoaded", () => {
 
     authForm.addEventListener("submit", (e) => {
         e.preventDefault();
-        const rawIdentity = loginIdentityInput.value.trim();
-        const rawPassword = loginPasswordInput.value.trim();
-
-        if (!rawIdentity || !rawPassword) return;
+        const rawIdentity = loginIdentityInput.value.trim().toLowerCase();
+        if (!rawIdentity) return;
 
         const learner = findLearner(rawIdentity);
 
         if (!learner) {
-            authErrorTitle.textContent = "Không tìm thấy thông tin học viên";
-            authErrorDesc.innerHTML = `Email hoặc Số điện thoại <strong>"${rawIdentity}"</strong> chưa có trong danh sách học viên DHM. Vui lòng kiểm tra lại thông tin đã đăng ký hoặc liên hệ Zalo BTC (0913.503.505) để được kích hoạt.`;
+            authErrorTitle.textContent = "Không tìm thấy email học viên";
+            authErrorDesc.innerHTML = `Email <strong>"${rawIdentity}"</strong> chưa có trong danh sách học viên Delivering Happiness Masterclass. Vui lòng kiểm tra lại email đã đăng ký hoặc liên hệ Zalo BTC (0913.503.505) để được kích hoạt.`;
             authErrorBanner.classList.remove("hidden");
             return;
         }
 
-        if (!verifyPassword(learner, rawPassword)) {
-            authErrorTitle.textContent = "Mật khẩu chưa chính xác";
-            authErrorDesc.innerHTML = `Vui lòng nhập mật khẩu mặc định: <code class="bg-brand-dark px-1 rounded text-brand-amber font-mono">dhm2026</code> hoặc <strong>4 số cuối</strong> của Số điện thoại bạn đã đăng ký.`;
-            authErrorBanner.classList.remove("hidden");
-            return;
+        const normPhone = normalizePhone(learner.phone);
+        const isMissingPhone = !normPhone || normPhone.length < 4;
+
+        if (isMissingPhone) {
+            // Validate Onboarding Phone
+            const rawPhone = (onboardingPhoneInput ? onboardingPhoneInput.value : "").trim();
+            const cleanP = normalizePhone(rawPhone);
+
+            // Valid VN phone: exactly 10 digits starting with 0 (03, 05, 07, 08, 09)
+            const isValidVnPhone = /^0[35789]\d{8}$/.test(cleanP);
+            if (!isValidVnPhone) {
+                authErrorTitle.textContent = "Số điện thoại chưa hợp lệ";
+                authErrorDesc.innerHTML = `Vui lòng nhập chính xác <strong>10 chữ số</strong> của số điện thoại Việt Nam (ví dụ: 0912345678, bắt đầu bằng 03, 05, 07, 08, 09) để kích hoạt tài khoản.`;
+                authErrorBanner.classList.remove("hidden");
+                if (onboardingPhoneInput) onboardingPhoneInput.focus();
+                return;
+            }
+
+            // Save phone to overrides in localStorage
+            const overrides = getRosterOverrides();
+            overrides[rawIdentity] = {
+                phone: cleanP,
+                name: learner.name,
+                updated_at: new Date().toISOString()
+            };
+            try {
+                localStorage.setItem("dhm_roster_overrides", JSON.stringify(overrides));
+            } catch (err) {
+                console.warn("Could not save roster override", err);
+            }
+
+            // Update learner's phone
+            learner.phone = cleanP;
+
+            // Trigger background webhook sync to Google Apps Script
+            try {
+                fetch(GOOGLE_APPS_SCRIPT_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams({
+                        action: "update_phone",
+                        email: learner.email,
+                        name: learner.name,
+                        phone: cleanP,
+                        cohort: learner.cohort || "DHM9",
+                        timestamp: new Date().toISOString()
+                    })
+                }).catch(err => console.warn("Background phone sync error:", err));
+            } catch (err) {
+                console.warn("Background phone sync failed:", err);
+            }
+        } else {
+            // Normal authentication: check password (last 4 digits of phone)
+            const rawPassword = loginPasswordInput.value.trim();
+            if (!rawPassword) {
+                authErrorTitle.textContent = "Thiếu mật khẩu truy cập";
+                authErrorDesc.innerHTML = `Vui lòng nhập mật khẩu là <strong>4 số cuối của Số điện thoại</strong> bạn đã đăng ký với Ban tổ chức.`;
+                authErrorBanner.classList.remove("hidden");
+                loginPasswordInput.focus();
+                return;
+            }
+
+            if (!verifyPassword(learner, rawPassword)) {
+                authErrorTitle.textContent = "Mật khẩu chưa chính xác";
+                authErrorDesc.innerHTML = `Mật khẩu là <strong>4 số cuối của Số điện thoại</strong> bạn đã đăng ký với Ban tổ chức. Vui lòng thử lại hoặc liên hệ Zalo BTC (0913.503.505).`;
+                authErrorBanner.classList.remove("hidden");
+                return;
+            }
         }
 
         // Login Success
@@ -401,7 +507,12 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.removeItem("dhm_lms_auth_user");
             currentUser = null;
             userChip.classList.add("hidden");
+            loginIdentityInput.value = "";
             loginPasswordInput.value = "";
+            if (onboardingPhoneInput) onboardingPhoneInput.value = "";
+            authUserDetected.classList.add("hidden");
+            authErrorBanner.classList.add("hidden");
+            updateAuthModeForLearner(null);
             showAuthModal();
         }
     });
