@@ -270,11 +270,61 @@ document.addEventListener("DOMContentLoaded", () => {
         // Also push to global registry for coach portal viewing
         recordLearnerInDirectory();
 
-        saveStatusIndicator.textContent = "✓ Đã tự động lưu";
+        // Sync to Google Sheets via Webhook
+        syncToGoogleSheets();
+
+        saveStatusIndicator.textContent = "✓ Đã tự động lưu & đồng bộ";
         saveStatusIndicator.className = "text-brand-green font-medium";
         setTimeout(() => {
             saveStatusIndicator.textContent = "Đã lưu";
         }, 2000);
+    }
+
+    const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxMi_bQBceGxVK_TjbcU5rQNAaLyUXOMuQJHyYWCwdeoWlsccq2kFkhRYVG2meySCsPdA/exec";
+
+    function syncToGoogleSheets() {
+        if (!currentUser) return;
+        
+        const s3 = learnerProgress.stageData["stage-3"]?.abcde || {};
+        const s2 = learnerProgress.stageData["stage-2"]?.selectedValues || [];
+        const s1 = learnerProgress.stageData["stage-1"] || {};
+        
+        const emailVal = currentUser.identity.includes("@") 
+            ? currentUser.identity 
+            : `${currentUser.identity}@dhm.vn`;
+
+        // Sync whenever user has completed a stage or filled reflection/ABCDE
+        if (s3.A || s3.D || s2.length > 0 || learnerProgress.completedStages.length > 0) {
+            try {
+                fetch(GOOGLE_APPS_SCRIPT_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        action: "submit_abcde",
+                        fullName: currentUser.name,
+                        email: emailVal,
+                        passcode: "LMS",
+                        chatVersion: "lms-v2",
+                        data: {
+                            A: s3.A || "",
+                            B: s3.B || "",
+                            C: s3.C || "",
+                            D: s3.D || "",
+                            E: s3.E || "",
+                            values: s2.join(", "),
+                            quizScore: s1.score || 0,
+                            reflection1: s1.reflection || "",
+                            reflection2: learnerProgress.stageData["stage-2"]?.reflection || "",
+                            reflection3: learnerProgress.stageData["stage-3"]?.reflection || "",
+                            completedStages: learnerProgress.completedStages.join(", ")
+                        }
+                    })
+                }).catch(e => console.log("Google Sheets sync background:", e));
+            } catch(err) {
+                console.error("Sync error:", err);
+            }
+        }
     }
 
     function recordLearnerInDirectory() {
