@@ -468,9 +468,22 @@
                 modalLearnerName.textContent = learner.name;
                 modalLearnerIdentity.textContent = learner.identity;
 
+                function formatReflection(stageObj, defaultText) {
+                    if (stageObj && stageObj.iam && (stageObj.iam.I || stageObj.iam.A || stageObj.iam.M)) {
+                        return `
+                            <div class="space-y-1.5 text-xs not-italic">
+                                <div><strong class="text-brand-amber">I (Tâm đắc nhất):</strong> <span class="text-slate-200">${stageObj.iam.I || "Chưa điền"}</span></div>
+                                <div><strong class="text-brand-orange">A (Hành động áp dụng):</strong> <span class="text-slate-200">${stageObj.iam.A || "Chưa điền"}</span></div>
+                                <div><strong class="text-emerald-400">M (Ý nghĩa sâu sắc):</strong> <span class="text-slate-200">${stageObj.iam.M || "Chưa điền"}</span></div>
+                            </div>
+                        `;
+                    }
+                    return stageObj?.reflection || defaultText;
+                }
+
                 const s1 = learner.data?.stageData?.["stage-1"] || {};
                 modalC1Status.textContent = s1.passed ? "✓ Đã vượt qua Quiz" : "Chưa hoàn tất";
-                modalC1Reflection.textContent = s1.reflection || "Học viên chưa nhập bài phản tư.";
+                modalC1Reflection.innerHTML = formatReflection(s1, "Học viên chưa nhập bài phản tư.");
 
                 const s2 = learner.data?.stageData?.["stage-2"] || {};
                 const vals = s2.selectedValues || [];
@@ -485,7 +498,7 @@
                 } else {
                     modalC2ValuesTags.innerHTML = '<span class="text-slate-500 text-xs">Chưa chọn giá trị nào.</span>';
                 }
-                modalC2Reflection.textContent = s2.reflection || "Chưa có phản tư xung đột La bàn vs Đồng hồ.";
+                modalC2Reflection.innerHTML = formatReflection(s2, "Chưa có phản tư La bàn & 3 Đòn bẩy Tự Quyết.");
 
                 const s3 = learner.data?.stageData?.["stage-3"] || {};
                 const abcde = s3.abcde || {};

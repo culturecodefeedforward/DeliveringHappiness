@@ -11,9 +11,14 @@
       "subtitle": "Thú vui (Pleasure) → Đam mê (Passion) → Mục đích cao cả (Higher Purpose)",
       "instructor": "Giảng viên Vũ",
       "estimatedMinutes": 25,
-      "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "videoUrl": "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
       "videoDuration": "6 phút 30 giây",
-      "summary": "Mọi hành động con người đều hội tụ về đích đến là Hạnh phúc (Aristotle). Tuy nhiên, não bộ rất nhanh thích nghi với Thú vui ngắn hạn. Để bền vững, ta cần nâng cấp lên trạng thái Phiêu (Passion) và Mục đích cao cả (Higher Purpose).",
+      "summary": "Mọi hành động con người đều hội tụ về đích đến là Hạnh phúc (Aristotle). Tuy nhiên, não bộ rất nhanh thích nghi với Thú vui ngắn hạn do cơ chế thích nghi khoái lạc (Hedonic Adaptation). Để bền vững, ta cần nâng cấp lên trạng thái Phiêu (Passion / Flow) và Mục đích cao cả (Higher Purpose) khi cống hiến cho điều lớn lao hơn bản thân.",
+      "insights": [
+        { "title": "Cấp độ 1: Thú vui (Pleasure)", "desc": "Nhanh nguội lạnh do cơ chế thích nghi khoái lạc. Tiền bạc, tiện nghi vật chất chỉ đem lại thỏa mãn nhất thời." },
+        { "title": "Cấp độ 2: Đam mê (Passion / Flow)", "desc": "Trạng thái Dòng chảy (Flow) khi tập trung giải quyết thử thách phù hợp với năng lực. Thời gian như ngừng trôi." },
+        { "title": "Cấp độ 3: Mục đích cao cả (Higher Purpose)", "desc": "Cấp độ bền vững nhất. Thấy công việc của mình có ý nghĩa, phụng sự và đóng góp giá trị cho cộng đồng." }
+      ],
       "quizzes": [
         {
           "id": "q1",
@@ -40,18 +45,36 @@
           "explanation": "Đúng! Đời người có ba tầng lầu: Tầng 1 là vật chất (thú vui), Tầng 2 là tinh thần (đam mê sáng tạo), Tầng 3 là tâm hồn (mục đích cao cả cống hiến)."
         }
       ],
-      "reflectionPrompt": "Hãy nhớ lại một khoảnh khắc bạn cảm thấy thực sự hạnh phúc và mãn nguyện nhất trong công việc hoặc cuộc sống. Khoảnh khắc đó thuộc cấp độ nào (Thú vui, Đam mê, hay Mục đích cao cả)? Tại sao?"
+      "iam": {
+        "I": "Bạn tâm đắc nhất với điều gì từ nội dung 3 Cấp độ Hạnh phúc & Ẩn dụ 3 Tầng Lầu của Phong Tử Khải?",
+        "A": "Bạn sẽ áp dụng điều này như thế nào để chuyển dịch dần từ Thú vui ngắn hạn (Pleasure) sang Đam mê (Passion) và Mục đích cao cả (Higher Purpose)?",
+        "M": "Tại sao nhận thức này lại có ý nghĩa sâu sắc đối với bạn ở thời điểm hiện tại?"
+      }
     },
     {
       "id": "stage-2",
       "stageNumber": 2,
-      "title": "Định Vị Bản Thân: La Bàn Gặp Đồng Hồ",
-      "subtitle": "Căn chỉnh Giá trị cá nhân (Me Values) với Giá trị tổ chức (We Values)",
+      "title": "Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc",
+      "subtitle": "Cảm giác Kết nối • Cảm giác Tự chủ • Cảm giác Tiến bộ & La Bàn Me–We",
       "instructor": "Giảng viên Châu & Vũ",
       "estimatedMinutes": 30,
-      "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "videoUrl": "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
       "videoDuration": "8 phút",
-      "summary": "Đồng hồ biểu trưng cho lịch trình, thời gian và những việc bận rộn hàng ngày. La bàn biểu trưng cho phương hướng, giá trị cốt lõi và đích đến cuộc đời. Nếu chỉ nhìn đồng hồ mà quên la bàn, ta sẽ chạy rất nhanh nhưng sai hướng.",
+      "summary": "Thuyết Tự Quyết (Self-Determination Theory - Deci & Ryan, 2000) khẳng định 3 nhu cầu tâm lý cốt lõi tạo nên động lực nội tại (Intrinsic Motivation) và hạnh phúc bền vững ở nơi làm việc: Cảm giác Kết nối, Cảm giác Tự chủ, và Cảm giác Tiến bộ. Chiếc Đồng hồ đại diện cho lịch trình bận rộn; Chiếc La bàn đại diện cho giá trị cốt lõi Me-We dẫn lối.",
+      "insights": [
+        {
+          "title": "Đòn bẩy #1: Cảm giác Kết nối",
+          "desc": "Sống hoà ái với bản thân, với người khác và với thiên nhiên. Xây dựng môi trường an toàn tâm lý và sự đồng cảm chân thành trong đội ngũ."
+        },
+        {
+          "title": "Đòn bẩy #2: Cảm giác Tự chủ",
+          "desc": "Khả năng là gì nếu không sợ? Quyền tự chủ trong hành động, can đảm lựa chọn và ra quyết định nhất quán theo La bàn giá trị cốt lõi."
+        },
+        {
+          "title": "Đòn bẩy #3: Cảm giác Tiến bộ",
+          "desc": "Tiến bộ là cảm giác tiến lên phía trước. Khi tích lũy kỹ năng mới & đạt Chiến thắng Nhỏ (Small Wins), não giải phóng Dopamine tự nhiên, tạo Cảm giác Tự hào Bản thân — nền tảng của Hạnh phúc Bền vững (Eudaimonia). Thiếu tiến bộ sẽ rơi vào Bất lực tích tụ (Learned Helplessness)."
+        }
+      ],
       "valueOptions": [
         "Chân thật & Trung thực (Integrity)",
         "Học hỏi & Đổi mới liên tục (Continuous Learning)",
@@ -62,7 +85,11 @@
         "Hiệu suất & Xuất sắc (Excellence)",
         "Lạc quan & Niềm vui sống (Optimism & Joy)"
       ],
-      "reflectionPrompt": "Khi có xung đột giữa việc hoàn thành gấp một deadline (Đồng hồ) và việc giữ đúng giá trị cốt lõi của bản thân (La bàn), bạn thường xử lý như thế nào?"
+      "iam": {
+        "I": "Trong 3 Đòn bẩy (Cảm giác Kết nối, Cảm giác Tự chủ, Cảm giác Tiến bộ), đòn bẩy nào bạn thấy tâm đắc nhất và vì sao?",
+        "A": "Bạn sẽ thiết lập Chiến thắng Nhỏ (Small Wins) nào trong tuần này để nuôi dưỡng cảm giác tiến bộ tự thân mỗi ngày?",
+        "M": "Tại sao đòn bẩy và 3 giá trị La Bàn bạn vừa chọn lại có ý nghĩa then chốt đối với sự phát triển cá nhân và đội ngũ của bạn?"
+      }
     },
     {
       "id": "stage-3",
@@ -71,16 +98,26 @@
       "subtitle": "Kỹ thuật phản biện niềm tin giới hạn để kiến tạo hành động tích cực",
       "instructor": "Giảng viên Vũ",
       "estimatedMinutes": 35,
-      "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      "videoDuration": "9 phút 15 giây",
-      "summary": "Lạc quan không phải là ảo tưởng màu hồng phớt lờ thực tế. Lạc quan là tối ưu hóa các lựa chọn bằng hành động dựa trên framework ABCDE của Martin Seligman. Chìa khóa chuyển hóa nằm ở chữ D (Dispute - Phản biện niềm tin giới hạn).",
+      "videoUrl": "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
+      "videoDuration": "9 phút 40 giây",
+      "summary": "Lạc quan không phải là ảo tưởng màu hồng phớt lờ thực tế. Lạc quan theo khoa học là tối ưu hóa các lựa chọn hành động dựa trên mô hình ABCDE của Martin Seligman. Nghịch cảnh (A) kích hoạt Niềm tin tiêu cực tự động (B) sinh ra Hậu quả tê liệt (C). Chìa khóa chuyển hóa nằm ở chữ D (Dispute - Phản biện lý trí bằng Stop-Breathe-Ask) để mở ra Hành động tích cực mới (E).",
+      "insights": [
+        { "title": "A - B - C là cơ chế tự động", "desc": "Khi sự cố xảy ra, não bộ sinh tồn có xu hướng thổi phồng thảm họa và tự phán xét bản thân tiêu cực." },
+        { "title": "D - Dispute là kỹ năng ý thức", "desc": "Thực hành 'Stop - Breathe - Ask': Niềm tin B có đúng 100% không? Bằng chứng ngược lại là gì? Có góc nhìn khách quan nào khác?" },
+        { "title": "E - Effect & Action là sức bật", "desc": "Chuyển hóa năng lượng lo âu thành hành động cụ thể, dù là hành động nhỏ nhất để tái lập quyền kiểm soát bối cảnh." }
+      ],
       "abcdeSteps": [
-        {"key": "A", "label": "Adversity (Nghịch cảnh)", "placeholder": "Mô tả sự việc khó khăn, thất bại hoặc tình huống gây ức chế vừa xảy ra..."},
-        {"key": "B", "label": "Belief (Niềm tin tự động)", "placeholder": "Tiếng nói tiêu cực tự động trong đầu bạn là gì? (Ví dụ: Mình kém cỏi, sếp ghét mình...)"},
-        {"key": "C", "label": "Consequence (Hậu quả cảm xúc)", "placeholder": "Bạn cảm thấy thế nào và đã phản ứng tiêu cực ra sao? (Ví dụ: Chán nản, im lặng, muốn bỏ cuộc...)"},
-        {"key": "D", "label": "Dispute (Phản biện lý trí - QUAN TRỌNG)", "placeholder": "Sử dụng kỹ thuật Stop-Breathe-Ask: Niềm tin trên có đúng 100% không? Bằng chứng ngược lại là gì? Có góc nhìn khách quan nào khác?"},
-        {"key": "E", "label": "Effect & Action (Hành động tích cực mới)", "placeholder": "Sau khi phản biện, cảm xúc mới của bạn là gì? Bạn sẽ làm hành động cụ thể nào để thay đổi bối cảnh?"}
-      ]
+        {"key": "A", "label": "A — Adversity (Nghịch cảnh)", "placeholder": "Mô tả sự việc khó khăn, thất bại hoặc tình huống gây ức chế/áp lực vừa xảy ra..."},
+        {"key": "B", "label": "B — Belief (Niềm tin tự động)", "placeholder": "Tiếng nói tiêu cực, phán xét tự động trong đầu bạn lúc đó là gì? (Ví dụ: Mình kém cỏi, sếp không tin mình...)"},
+        {"key": "C", "label": "C — Consequence (Hậu quả cảm xúc)", "placeholder": "Cảm xúc và phản ứng tiêu cực ban đầu của bạn là gì? (Ví dụ: Lo sợ, tim đập nhanh, thu mình, muốn bỏ cuộc...)"},
+        {"key": "D", "label": "D — Dispute (Phản biện lý trí - QUAN TRỌNG)", "placeholder": "Áp dụng kỹ thuật Stop-Breathe-Ask: Niềm tin B có đúng 100% không? Bằng chứng ngược lại là gì? Có cách giải thích khách quan nào khác?"},
+        {"key": "E", "label": "E — Effect & Action (Hành động mới)", "placeholder": "Sau khi phản biện, cảm xúc mới của bạn là gì? Bạn sẽ làm hành động cụ thể nào ngay bây giờ để giải quyết vấn đề?"}
+      ],
+      "iam": {
+        "I": "Bạn tâm đắc nhất với nguyên lý nào trong cơ chế A→B→C→D→E của Martin Seligman?",
+        "A": "Khi gặp một tình huống áp lực tiếp theo trong công việc, bạn sẽ thực hiện kỹ năng Stop - Breathe - Ask ở chữ D như thế nào?",
+        "M": "Khả năng làm chủ chữ D mang lại ý nghĩa gì cho sự bình an nội tại và năng lực vượt khó của bạn?"
+      }
     }
   ]
 }

@@ -1,8 +1,8 @@
 // Delivering Happiness Movement (DHM) — Modern Course Player Engine
-// Supports User Auth, Two-Column Course Navigation, Quiz, Value Picker, ABCDE Worksheet & Progress Persistence
+// Supports Authorized Roster Auth, Password & Phone PIN, IAM Reflection Framework, Two-Column Course Navigation, Quiz, Value Picker, ABCDE Worksheet & Google Sheets Webhook Sync
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. EMBEDDED CURRICULUM FALLBACK (Ensures 100% reliability even if fetch fails)
+    // 1. EMBEDDED CURRICULUM FALLBACK (Ensures 100% offline/CDN resilience)
     const DEFAULT_CURRICULUM = {
         courseTitle: "Delivering Happiness Movement (DHM) — Micro-Learning Journey",
         stages: [
@@ -11,29 +11,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 stageNumber: 1,
                 title: "Khoa Học Hạnh Phúc & 3 Cấp Độ",
                 subtitle: "Thú vui (Pleasure) → Đam mê (Passion) → Mục đích cao cả (Higher Purpose)",
-                instructor: "Anh Vũ",
+                instructor: "Giảng viên Vũ",
                 estimatedMinutes: 25,
                 videoTitle: "Bài Giảng: 3 Cấp Độ Hạnh Phúc Theo Martin Seligman & Ẩn Dụ 3 Tầng Lầu",
                 videoDuration: "06:30",
                 videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
-                summaryText: "Mọi hành động con người đều hội tụ về đích đến là Hạnh phúc (Aristotle). Não bộ thích nghi rất nhanh với Thú vui ngắn hạn (Pleasure). Để duy trì hạnh phúc bền vững, con người bắt buộc phải nâng cấp lên trạng thái Phiêu (Passion / Flow) và cao nhất là Mục đích cao cả (Higher Purpose) khi cống hiến cho điều lớn lao hơn bản thân.",
+                summaryText: "Mọi hành động con người đều hội tụ về đích đến là Hạnh phúc (Aristotle). Tuy nhiên, não bộ rất nhanh thích nghi với Thú vui ngắn hạn do cơ chế thích nghi khoái lạc (Hedonic Adaptation). Để bền vững, ta cần nâng cấp lên trạng thái Phiêu (Passion / Flow) và Mục đích cao cả (Higher Purpose) khi cống hiến cho điều lớn lao hơn bản thân.",
                 insights: [
-                    { title: "Cấp độ 1: Thú vui", desc: "Nhanh nguội lạnh do cơ chế thích nghi khoái lạc (Hedonic adaptation). Tiền bạc, đồ chơi mới chỉ đem lại thỏa mãn nhất thời." },
-                    { title: "Cấp độ 2: Đam mê", desc: "Trạng thái Dòng chảy (Flow) khi tập trung giải quyết thử thách phù hợp với kỹ năng. Thời gian như ngừng trôi." },
-                    { title: "Cấp độ 3: Mục đích cao cả", desc: "Cấp độ bền vững nhất. Thấy công việc của mình có ý nghĩa, phụng sự và đóng góp giá trị cho cộng đồng." }
+                    { title: "Cấp độ 1: Thú vui (Pleasure)", desc: "Nhanh nguội lạnh do cơ chế thích nghi khoái lạc. Tiền bạc, tiện nghi vật chất chỉ đem lại thỏa mãn nhất thời." },
+                    { title: "Cấp độ 2: Đam mê (Passion / Flow)", desc: "Trạng thái Dòng chảy (Flow) khi tập trung giải quyết thử thách phù hợp với năng lực. Thời gian như ngừng trôi." },
+                    { title: "Cấp độ 3: Mục đích cao cả (Higher Purpose)", desc: "Cấp độ bền vững nhất. Thấy công việc của mình có ý nghĩa, phụng sự và đóng góp giá trị cho cộng đồng." }
                 ],
                 quizzes: [
                     {
                         id: "q1",
                         question: "Theo nghiên cứu của Martin Seligman và triết lý DHM, cấp độ hạnh phúc nào có tính bền vững lâu dài nhất?",
                         options: [
-                            "Thú vui (Pleasure) từ việc mua sắm đồ mới, đổi xe, ăn ngon",
-                            "Đam mê (Passion) khi tập trung giải quyết công việc",
-                            "Mục đích cao cả (Higher Purpose) khi cống hiến cho điều lớn lao hơn bản thân",
-                            "Sự thoải mái khi không có áp lực công việc"
+                            "Thú vui (Pleasure) từ việc sở hữu vật chất (mua xe mới, mua điện thoại mới)",
+                            "Đam mê (Passion) khi tập trung cao độ vào công việc yêu thích",
+                            "Mục đích cao cả (Higher Purpose / Meaning) khi thấy mình là một phần của điều gì đó lớn lao hơn bản thân",
+                            "Niềm vui sau mỗi bữa tiệc tùng cuối tuần"
                         ],
                         correctIndex: 2,
-                        explanation: "Chính xác! Thú vui nguội lạnh rất nhanh. Chỉ có Mục đích cao cả mới duy trì cảm xúc trọn vẹn và bền vững nhất qua thời gian."
+                        explanation: "Chính xác! Thú vui nguội lạnh rất nhanh do hiện tượng thích nghi tâm lý. Chỉ khi gắn với Mục đích cao cả (Higher Purpose), cảm giác hạnh phúc mới duy trì bền vững."
                     },
                     {
                         id: "q2",
@@ -41,60 +41,75 @@ document.addEventListener("DOMContentLoaded", () => {
                         options: [
                             "Tầng 1: Đam mê — Tầng 2: Vật chất — Tầng 3: Danh vọng",
                             "Tầng 1: Đời sống vật chất (Thú vui) — Tầng 2: Đời sống tinh thần (Đam mê) — Tầng 3: Đời sống tâm hồn (Mục đích cao cả)",
-                            "Tầng 1: Gia đình — Tầng 2: Công việc — Tầng 3: Bạn bè",
-                            "Tầng 1: Học tập — Tầng 2: Trải nghiệm — Tầng 3: Nghỉ ngơi"
+                            "Tầng 1: Gia đình — Tầng 2: Bạn bè — Tầng 3: Công việc",
+                            "Tầng 1: Kiến thức — Tầng 2: Kỹ năng — Tầng 3: Thái độ"
                         ],
                         correctIndex: 1,
-                        explanation: "Đúng! Đời người có ba tầng lầu: Tầng 1 là vật chất, Tầng 2 là tinh thần nghệ thuật/trí tuệ, Tầng 3 là tâm linh/mục đích cao cả phụng sự."
+                        explanation: "Đúng! Đời người có ba tầng lầu: Tầng 1 là vật chất (thú vui), Tầng 2 là tinh thần (đam mê sáng tạo), Tầng 3 là tâm hồn (mục đích cao cả cống hiến)."
                     }
                 ],
-                reflectionPromptTitle: "Khoảnh khắc mãn nguyện nhất của bạn",
-                reflectionPromptDesc: "Hãy nhớ lại một khoảnh khắc bạn cảm thấy thực sự hạnh phúc trong công việc gần đây. Khoảnh khắc đó thuộc cấp độ nào (Thú vui, Đam mê, hay Mục đích cao cả)? Tại sao?"
+                iam: {
+                    I: "Bạn tâm đắc nhất với điều gì từ nội dung 3 Cấp độ Hạnh phúc & Ẩn dụ 3 Tầng Lầu của Phong Tử Khải?",
+                    A: "Bạn sẽ áp dụng điều này như thế nào để chuyển dịch dần từ Thú vui ngắn hạn (Pleasure) sang Đam mê (Passion) và Mục đích cao cả (Higher Purpose)?",
+                    M: "Tại sao nhận thức này lại có ý nghĩa sâu sắc đối với bạn ở thời điểm hiện tại?"
+                }
             },
             {
                 id: "stage-2",
                 stageNumber: 2,
-                title: "Định Vị Bản Thân: La Bàn Gặp Đồng Hồ",
-                subtitle: "Căn chỉnh Giá trị cá nhân (Me Values) với Giá trị tổ chức (We Values)",
-                instructor: "Chị Châu & Anh Vũ",
+                title: "Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc",
+                subtitle: "Cảm giác Kết nối • Cảm giác Tự chủ • Cảm giác Tiến bộ & La Bàn Me–We",
+                instructor: "Giảng viên Châu & Vũ",
                 estimatedMinutes: 30,
-                videoTitle: "Bài Giảng: Khi Đồng Hồ Bận Rộn Lấn Át Chiếc La Bàn Cuộc Đời",
+                videoTitle: "Bài Giảng: Khi Đồng Hồ Bận Rộn Lấn Át Chiếc La Bàn Cuộc Đời & 3 Đòn Bẩy SDT",
                 videoDuration: "08:15",
                 videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
-                summaryText: "Đồng hồ biểu trưng cho lịch trình, thời hạn (deadline) và các việc khẩn cấp mỗi ngày. La bàn biểu trưng cho phương hướng, nguyên tắc và giá trị cốt lõi cuộc đời. Khi chỉ cắm đầu nhìn đồng hồ mà bỏ quên la bàn, ta có thể chạy rất nhanh nhưng lại tới nhầm đích.",
+                summaryText: "Thuyết Tự Quyết (Self-Determination Theory - Deci & Ryan, 2000) khẳng định 3 nhu cầu tâm lý cốt lõi tạo nên động lực nội tại (Intrinsic Motivation) và hạnh phúc bền vững ở nơi làm việc: Cảm giác Kết nối, Cảm giác Tự chủ, và Cảm giác Tiến bộ. Chiếc Đồng hồ đại diện cho lịch trình bận rộn; Chiếc La bàn đại diện cho giá trị cốt lõi Me-We dẫn lối.",
                 insights: [
-                    { title: "Bẫy chiếc Đồng hồ", desc: "Sự bận rộn giả tạo. Càng xử lý nhiều việc khẩn cấp không tên, ta càng thấy kiệt sức và mất phương hướng." },
-                    { title: "Sức mạnh chiếc La bàn", desc: "Bộ lọc ra quyết định. Giúp bạn can đảm nói 'Không' với những thứ nằm ngoài giá trị cốt lõi của mình." },
-                    { title: "Hòa nhịp Me & We", desc: "Tìm ra điểm giao thoa giữa giá trị cá nhân (Me Values) và văn hóa tổ chức/đội ngũ (We Values)." }
+                    {
+                        title: "Đòn bẩy #1: Cảm giác Kết nối",
+                        desc: "Sống hoà ái với bản thân, với người khác và với thiên nhiên. Xây dựng môi trường an toàn tâm lý và sự đồng cảm chân thành trong đội ngũ."
+                    },
+                    {
+                        title: "Đòn bẩy #2: Cảm giác Tự chủ",
+                        desc: "Khả năng là gì nếu không sợ? Quyền tự chủ trong hành động, can đảm lựa chọn và ra quyết định nhất quán theo La bàn giá trị cốt lõi."
+                    },
+                    {
+                        title: "Đòn bẩy #3: Cảm giác Tiến bộ",
+                        desc: "Tiến bộ là cảm giác tiến lên phía trước. Khi tích lũy kỹ năng mới & đạt Chiến thắng Nhỏ (Small Wins), não giải phóng Dopamine tự nhiên, tạo Cảm giác Tự hào Bản thân — nền tảng của Hạnh phúc Bền vững (Eudaimonia). Thiếu tiến bộ sẽ rơi vào Bất lực tích tụ (Learned Helplessness)."
+                    }
                 ],
                 valueOptions: [
                     "Chân thật & Trung thực (Integrity)",
-                    "Học hỏi & Đổi mới (Continuous Learning)",
-                    "Đồng hành & Tận tâm (Empathy & Care)",
-                    "Bình an & Gia đình (Peace & Family)",
+                    "Học hỏi & Đổi mới liên tục (Continuous Learning)",
+                    "Đồng hành & Tận tâm (Commitment & Empathy)",
+                    "Gia đình & Bình an (Family & Peace)",
                     "Tự do & Sáng tạo (Freedom & Creativity)",
                     "Vị nhân & Cống hiến (Altruism & Service)",
-                    "Kỷ luật & Xuất sắc (Excellence)",
-                    "Lạc quan & Yêu đời (Joy & Positivity)"
+                    "Hiệu suất & Xuất sắc (Excellence)",
+                    "Lạc quan & Niềm vui sống (Optimism & Joy)"
                 ],
-                reflectionPromptTitle: "Giải quyết xung đột giữa Đồng hồ và La bàn",
-                reflectionPromptDesc: "Khi có xung đột giữa áp lực deadline gấp (Đồng hồ) và việc giữ đúng giá trị cốt lõi của bản thân (La bàn), bạn đã hoặc sẽ hành xử như thế nào?"
+                iam: {
+                    I: "Trong 3 Đòn bẩy (Cảm giác Kết nối, Cảm giác Tự chủ, Cảm giác Tiến bộ), đòn bẩy nào bạn thấy tâm đắc nhất và vì sao?",
+                    A: "Bạn sẽ thiết lập Chiến thắng Nhỏ (Small Wins) nào trong tuần này để nuôi dưỡng cảm giác tiến bộ tự thân mỗi ngày?",
+                    M: "Tại sao đòn bẩy và 3 giá trị La Bàn bạn vừa chọn lại có ý nghĩa then chốt đối với sự phát triển cá nhân và đội ngũ của bạn?"
+                }
             },
             {
                 id: "stage-3",
                 stageNumber: 3,
                 title: "Chuyển Hóa Nghịch Cảnh: Framework ABCDE",
                 subtitle: "Kỹ thuật phản biện niềm tin giới hạn để kiến tạo hành động tích cực",
-                instructor: "Anh Vũ",
+                instructor: "Giảng viên Vũ",
                 estimatedMinutes: 35,
                 videoTitle: "Bài Giảng: Cơ Chế A→B→C & Kỹ Thuật Phản Biện Chữ D (Stop-Breathe-Ask)",
                 videoDuration: "09:40",
                 videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
-                summaryText: "Lạc quan không phải là ảo tưởng màu hồng phớt lờ thực tế. Lạc quan theo khoa học là tối ưu hóa các lựa chọn hành động dựa trên mô hình ABCDE của Martin Seligman. Nghịch cảnh (A) kích hoạt Niềm tin tiêu cực (B) dẫn đến Hậu quả tê liệt (C). Chìa khóa hóa giải nằm ở chữ D (Dispute - Phản biện lý trí).",
+                summaryText: "Lạc quan không phải là ảo tưởng màu hồng phớt lờ thực tế. Lạc quan theo khoa học là tối ưu hóa các lựa chọn hành động dựa trên mô hình ABCDE của Martin Seligman. Nghịch cảnh (A) kích hoạt Niềm tin tiêu cực tự động (B) sinh ra Hậu quả tê liệt (C). Chìa khóa chuyển hóa nằm ở chữ D (Dispute - Phản biện lý trí bằng Stop-Breathe-Ask) để mở ra Hành động tích cực mới (E).",
                 insights: [
-                    { title: "A - B - C là tự động", desc: "Não bộ có xu hướng trầm trọng hóa vấn đề khi gặp sự cố, tự động sinh ra tiếng nói chỉ trích bản thân." },
-                    { title: "D - Dispute là ý thức", desc: "Chủ động 'Stop - Breathe - Ask': Niềm tin này có đúng 100% không? Bằng chứng ngược lại là gì? Có giải pháp nào khác?" },
-                    { title: "E - Effect & Action", desc: "Chuyển hóa năng lượng tiêu cực thành hành động cụ thể, dù là hành động nhỏ nhất để tái lập quyền kiểm soát." }
+                    { title: "A - B - C là cơ chế tự động", desc: "Khi sự cố xảy ra, não bộ sinh tồn có xu hướng thổi phồng thảm họa và tự phán xét bản thân tiêu cực." },
+                    { title: "D - Dispute là kỹ năng ý thức", desc: "Thực hành 'Stop - Breathe - Ask': Niềm tin B có đúng 100% không? Bằng chứng ngược lại là gì? Có góc nhìn khách quan nào khác?" },
+                    { title: "E - Effect & Action là sức bật", desc: "Chuyển hóa năng lượng lo âu thành hành động cụ thể, dù là hành động nhỏ nhất để tái lập quyền kiểm soát bối cảnh." }
                 ],
                 abcdeSteps: [
                     { key: "A", name: "A — Adversity (Nghịch cảnh)", hint: "Sự việc khó khăn, thất bại hoặc tình huống gây áp lực cụ thể vừa xảy ra là gì?", placeholder: "Ví dụ: Dự án bị trễ hạn, khách hàng phàn nàn gay gắt..." },
@@ -103,8 +118,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     { key: "D", name: "D — Dispute (Phản biện lý trí - QUAN TRỌNG NHẤT)", hint: "Áp dụng 'Stop - Breathe - Ask': Niềm tin B có thật sự đúng 100% không? Có góc nhìn khách quan nào khác?", placeholder: "Ví dụ: Đây chỉ là sự cố kỹ thuật khách quan, các phần khác vẫn tốt. Khách phàn nàn vì họ cần việc gấp, không phải ghét cá nhân mình..." },
                     { key: "E", name: "E — Effect & Action (Hành động tích cực mới)", hint: "Cảm xúc mới sau khi phản biện là gì? Bạn sẽ làm hành động cụ thể nào ngay bây giờ?", placeholder: "Ví dụ: Cảm thấy bình tĩnh lại. Hành động: Gọi điện xin lỗi khách và gửi lộ trình xử lý trong 2 tiếng tới..." }
                 ],
-                reflectionPromptTitle: "Bài học chuyển hóa sâu sắc nhất của bạn",
-                reflectionPromptDesc: "Sau khi hoàn thành bài tập ABCDE, bạn thấy góc nhìn của mình về những áp lực trong công việc đã thay đổi như thế nào?"
+                iam: {
+                    I: "Bạn tâm đắc nhất với nguyên lý nào trong cơ chế A→B→C→D→E của Martin Seligman?",
+                    A: "Khi gặp một tình huống áp lực tiếp theo trong công việc, bạn sẽ thực hiện kỹ năng Stop - Breathe - Ask ở chữ D như thế nào?",
+                    M: "Khả năng làm chủ chữ D mang lại ý nghĩa gì cho sự bình an nội tại và năng lực vượt khó của bạn?"
+                }
             }
         ]
     };
@@ -113,13 +131,14 @@ document.addEventListener("DOMContentLoaded", () => {
     let curriculum = DEFAULT_CURRICULUM;
     let currentStageIndex = 0;
     let currentUser = null;
+    let authorizedRoster = [];
 
     let learnerProgress = {
         completedStages: [],
         stageData: {
-            "stage-1": { quizAnswers: {}, score: 0, passed: false, reflection: "" },
-            "stage-2": { selectedValues: [], reflection: "" },
-            "stage-3": { abcde: { A: "", B: "", C: "", D: "", E: "" }, reflection: "" }
+            "stage-1": { quizAnswers: {}, score: 0, passed: false, iam: { I: "", A: "", M: "" }, reflection: "" },
+            "stage-2": { selectedValues: [], iam: { I: "", A: "", M: "" }, reflection: "" },
+            "stage-3": { abcde: { A: "", B: "", C: "", D: "", E: "" }, iam: { I: "", A: "", M: "" }, reflection: "" }
         }
     };
 
@@ -138,10 +157,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const userDisplayName = document.getElementById("user-display-name");
     const btnLogout = document.getElementById("btn-logout");
 
+    // Auth Elements
     const authModal = document.getElementById("auth-modal");
     const authForm = document.getElementById("auth-form");
-    const loginNameInput = document.getElementById("login-name");
     const loginIdentityInput = document.getElementById("login-identity");
+    const loginPasswordInput = document.getElementById("login-password");
+    const btnTogglePwd = document.getElementById("btn-toggle-pwd");
+    const authErrorBanner = document.getElementById("auth-error-banner");
+    const authErrorTitle = document.getElementById("auth-error-title");
+    const authErrorDesc = document.getElementById("auth-error-desc");
+    const authUserDetected = document.getElementById("auth-user-detected");
+    const detectedUserName = document.getElementById("detected-user-name");
+    const detectedUserCohort = document.getElementById("detected-user-cohort");
 
     const completionModal = document.getElementById("completion-modal");
     const btnCloseCompletion = document.getElementById("btn-close-completion");
@@ -182,10 +209,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const practiceAbcdeSection = document.getElementById("practice-abcde-section");
     const abcdeStepsContainer = document.getElementById("abcde-steps-container");
 
-    const reflectionInput = document.getElementById("reflection-input");
-    const reflectionPromptTitle = document.getElementById("reflection-prompt-title");
-    const reflectionPromptDesc = document.getElementById("reflection-prompt-desc");
-    const reflectionCharCount = document.getElementById("reflection-char-count");
+    // IAM Reflection Elements
+    const promptLabelI = document.getElementById("prompt-label-i");
+    const promptLabelA = document.getElementById("prompt-label-a");
+    const promptLabelM = document.getElementById("prompt-label-m");
+    const reflectionI = document.getElementById("reflection-i");
+    const reflectionA = document.getElementById("reflection-a");
+    const reflectionM = document.getElementById("reflection-m");
+    const countI = document.getElementById("count-i");
+    const countA = document.getElementById("count-a");
+    const countM = document.getElementById("count-m");
     const saveStatusIndicator = document.getElementById("save-status-indicator");
 
     // Bottom Navigation
@@ -193,7 +226,87 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnNextLesson = document.getElementById("btn-next-lesson");
     const btnManualSave = document.getElementById("btn-manual-save");
 
-    // 4. INITIALIZATION & AUTHENTICATION FLOW
+    // 4. PHONE & IDENTITY NORMALIZATION UTILS
+    function normalizePhone(str) {
+        if (!str) return "";
+        let digits = String(str).replace(/\D/g, "");
+        if (digits.startsWith("84") && digits.length > 8) {
+            digits = "0" + digits.slice(2);
+        } else if (digits.length === 9 && !digits.startsWith("0")) {
+            digits = "0" + digits;
+        }
+        return digits;
+    }
+
+    function normalizeIdentity(val) {
+        if (!val) return "";
+        const trimmed = val.trim();
+        if (trimmed.includes("@")) {
+            return trimmed.toLowerCase();
+        }
+        return normalizePhone(trimmed);
+    }
+
+    // 5. ROSTER INITIALIZATION & AUTHENTICATION
+    async function loadRoster() {
+        try {
+            const res = await fetch("/lms/authorized_roster.json");
+            if (res.ok) {
+                authorizedRoster = await res.json();
+            }
+        } catch (e) {
+            console.warn("Could not fetch remote roster, using local fallback if needed", e);
+        }
+
+        // Built-in fallback if roster empty (ensures test & BTC always work)
+        if (!authorizedRoster || authorizedRoster.length === 0) {
+            authorizedRoster = [
+                { name: "Vũ Hoàng", email: "vuhoang2708@gmail.com", phone: "0912345678", cohort: "BTC / Coach", role: "Coach" },
+                { name: "Hà Ngọc Hoàn", email: "chauhm71@gmail.com", phone: "0913503505", cohort: "BTC / Coach", role: "Coach" },
+                { name: "Nguyễn Văn Hoàn", email: "hoanhn.edu.vn@gmail.com", phone: "0988888888", cohort: "BTC / Coach", role: "Coach" },
+                { name: "Học viên Test", email: "hocvien.test@gmail.com", phone: "0901234567", cohort: "DHM_Test", role: "Learner" }
+            ];
+        }
+    }
+
+    function findLearner(rawIdentity) {
+        const norm = normalizeIdentity(rawIdentity);
+        if (!norm) return null;
+
+        return authorizedRoster.find(item => {
+            const itemEmail = (item.email || "").toLowerCase();
+            const itemPhone = normalizePhone(item.phone);
+
+            if (norm.includes("@")) {
+                return itemEmail === norm;
+            }
+            return itemPhone === norm || itemPhone.endsWith(norm) || (item.phone && item.phone.includes(norm));
+        });
+    }
+
+    function verifyPassword(learner, inputPassword) {
+        const p = (inputPassword || "").trim();
+        if (!p) return false;
+
+        // Master passwords for all learners
+        const masterPasses = ["dhm2026", "dh2026", "dhm", "123456"];
+        if (masterPasses.includes(p.toLowerCase())) return true;
+
+        // Coach PIN
+        if ((learner.role === "Coach" || learner.cohort.includes("BTC")) && p === "1979") {
+            return true;
+        }
+
+        // 4 last digits of phone
+        const normPhone = normalizePhone(learner.phone);
+        if (normPhone && normPhone.length >= 4) {
+            const last4 = normPhone.slice(-4);
+            if (p === last4) return true;
+        }
+
+        return false;
+    }
+
     function initAuth() {
         const savedUserStr = localStorage.getItem("dhm_lms_auth_user");
         if (savedUserStr) {
@@ -216,16 +329,69 @@ document.addEventListener("DOMContentLoaded", () => {
         authModal.classList.add("hidden");
     }
 
+    // Real-time identification helper as user types
+    loginIdentityInput.addEventListener("input", () => {
+        const val = loginIdentityInput.value.trim();
+        if (val.length >= 3) {
+            const matched = findLearner(val);
+            if (matched) {
+                detectedUserName.textContent = matched.name;
+                detectedUserCohort.textContent = matched.cohort;
+                authUserDetected.classList.remove("hidden");
+                authErrorBanner.classList.add("hidden");
+                return;
+            }
+        }
+        authUserDetected.classList.add("hidden");
+    });
+
+    // Toggle password reveal
+    btnTogglePwd.addEventListener("click", () => {
+        if (loginPasswordInput.type === "password") {
+            loginPasswordInput.type = "text";
+            btnTogglePwd.textContent = "🙈 Ẩn mật khẩu";
+        } else {
+            loginPasswordInput.type = "password";
+            btnTogglePwd.textContent = "👁️ Hiện mật khẩu";
+        }
+    });
+
     authForm.addEventListener("submit", (e) => {
         e.preventDefault();
-        const name = loginNameInput.value.trim();
-        const identity = loginIdentityInput.value.trim().toLowerCase();
+        const rawIdentity = loginIdentityInput.value.trim();
+        const rawPassword = loginPasswordInput.value.trim();
 
-        if (!name || !identity) return;
+        if (!rawIdentity || !rawPassword) return;
 
-        currentUser = { name, identity, loginTime: new Date().toISOString() };
+        const learner = findLearner(rawIdentity);
+
+        if (!learner) {
+            authErrorTitle.textContent = "Không tìm thấy thông tin học viên";
+            authErrorDesc.innerHTML = `Email hoặc Số điện thoại <strong>"${rawIdentity}"</strong> chưa có trong danh sách học viên DHM. Vui lòng kiểm tra lại thông tin đã đăng ký hoặc liên hệ Zalo BTC (0913.503.505) để được kích hoạt.`;
+            authErrorBanner.classList.remove("hidden");
+            return;
+        }
+
+        if (!verifyPassword(learner, rawPassword)) {
+            authErrorTitle.textContent = "Mật khẩu chưa chính xác";
+            authErrorDesc.innerHTML = `Vui lòng nhập mật khẩu mặc định: <code class="bg-brand-dark px-1 rounded text-brand-amber font-mono">dhm2026</code> hoặc <strong>4 số cuối</strong> của Số điện thoại bạn đã đăng ký.`;
+            authErrorBanner.classList.remove("hidden");
+            return;
+        }
+
+        // Login Success
+        authErrorBanner.classList.add("hidden");
+        currentUser = {
+            name: learner.name,
+            identity: learner.email || learner.phone,
+            email: learner.email,
+            phone: learner.phone,
+            cohort: learner.cohort,
+            role: learner.role || "Learner",
+            loginTime: new Date().toISOString()
+        };
+
         localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
-
         hideAuthModal();
         applyUserSession();
     });
@@ -235,6 +401,7 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.removeItem("dhm_lms_auth_user");
             currentUser = null;
             userChip.classList.add("hidden");
+            loginPasswordInput.value = "";
             showAuthModal();
         }
     });
@@ -242,7 +409,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function applyUserSession() {
         if (!currentUser) return;
 
-        userDisplayName.textContent = currentUser.name;
+        userDisplayName.textContent = `${currentUser.name} (${currentUser.cohort || "Học viên"})`;
         userAvatar.textContent = currentUser.name.charAt(0).toUpperCase();
         userChip.classList.remove("hidden");
 
@@ -257,6 +424,18 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
+        // Ensure IAM structure exists in all stages
+        ["stage-1", "stage-2", "stage-3"].forEach(sid => {
+            if (!learnerProgress.stageData[sid]) {
+                learnerProgress.stageData[sid] = {};
+            }
+            if (!learnerProgress.stageData[sid].iam) {
+                // Migrate legacy single reflection if present
+                const legacy = learnerProgress.stageData[sid].reflection || "";
+                learnerProgress.stageData[sid].iam = { I: legacy, A: "", M: "" };
+            }
+        });
+
         renderSyllabus();
         loadStage(currentStageIndex);
         updateGlobalProgress();
@@ -267,7 +446,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const progressKey = `dhm_lms_progress_${currentUser.identity}`;
         localStorage.setItem(progressKey, JSON.stringify(learnerProgress));
 
-        // Also push to global registry for coach portal viewing
+        // Push to global registry for coach portal viewing
         recordLearnerInDirectory();
 
         // Sync to Google Sheets via Webhook
@@ -284,150 +463,158 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function syncToGoogleSheets() {
         if (!currentUser) return;
-        
+
         const s3 = learnerProgress.stageData["stage-3"]?.abcde || {};
         const s2 = learnerProgress.stageData["stage-2"]?.selectedValues || [];
         const s1 = learnerProgress.stageData["stage-1"] || {};
-        
-        const emailVal = currentUser.identity.includes("@") 
-            ? currentUser.identity 
-            : `${currentUser.identity}@dhm.vn`;
 
-        // Sync whenever user has completed a stage or filled reflection/ABCDE
-        if (s3.A || s3.D || s2.length > 0 || learnerProgress.completedStages.length > 0) {
-            try {
-                fetch(GOOGLE_APPS_SCRIPT_URL, {
-                    method: "POST",
-                    mode: "no-cors",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        action: "submit_abcde",
-                        fullName: currentUser.name,
-                        email: emailVal,
-                        passcode: "LMS",
-                        chatVersion: "lms-v2",
-                        data: {
-                            A: s3.A || "",
-                            B: s3.B || "",
-                            C: s3.C || "",
-                            D: s3.D || "",
-                            E: s3.E || "",
-                            values: s2.join(", "),
-                            quizScore: s1.score || 0,
-                            reflection1: s1.reflection || "",
-                            reflection2: learnerProgress.stageData["stage-2"]?.reflection || "",
-                            reflection3: learnerProgress.stageData["stage-3"]?.reflection || "",
-                            completedStages: learnerProgress.completedStages.join(", ")
-                        }
-                    })
-                }).catch(e => console.log("Google Sheets sync background:", e));
-            } catch(err) {
-                console.error("Sync error:", err);
-            }
+        const emailVal = currentUser.email || (currentUser.identity.includes("@") ? currentUser.identity : `${currentUser.identity}@dhm.vn`);
+        const phoneVal = currentUser.phone || currentUser.identity;
+
+        const payload = {
+            action: "submit_abcde",
+            full_name: currentUser.name,
+            email: emailVal,
+            phone: phoneVal,
+            cohort: currentUser.cohort || "DHM_LMS",
+            selected_values: s2.join(", "),
+            stage1_passed: s1.passed ? "Pass" : "Not yet",
+            completed_stages_count: learnerProgress.completedStages.length,
+            iam_stage1: JSON.stringify(learnerProgress.stageData["stage-1"]?.iam || {}),
+            iam_stage2: JSON.stringify(learnerProgress.stageData["stage-2"]?.iam || {}),
+            iam_stage3: JSON.stringify(learnerProgress.stageData["stage-3"]?.iam || {}),
+            a_adversity: s3.A || "",
+            b_belief: s3.B || "",
+            c_consequence: s3.C || "",
+            d_dispute: s3.D || "",
+            e_energy_action: s3.E || "",
+            timestamp: new Date().toISOString()
+        };
+
+        try {
+            fetch(GOOGLE_APPS_SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                console.log("✓ Webhook synced to Google Sheets successfully");
+            }).catch(err => {
+                console.warn("Webhook background sync notice (may be offline)", err);
+            });
+        } catch (e) {
+            console.warn("Webhook sync error", e);
         }
     }
 
     function recordLearnerInDirectory() {
         if (!currentUser) return;
-        const registryKey = "dhm_lms_all_learners_registry";
-        let registry = [];
+        const REGISTRY_KEY = "dhm_lms_all_learners_directory";
+        let directory = [];
         try {
-            const raw = localStorage.getItem(registryKey);
-            if (raw) registry = JSON.parse(raw);
-        } catch (e) {}
+            const raw = localStorage.getItem(REGISTRY_KEY);
+            directory = raw ? JSON.parse(raw) : [];
+        } catch (e) {
+            directory = [];
+        }
 
-        const existingIdx = registry.findIndex(item => item.identity === currentUser.identity);
-        const record = {
+        const idx = directory.findIndex(l => l.identity === currentUser.identity);
+        const learnerRecord = {
             name: currentUser.name,
             identity: currentUser.identity,
+            email: currentUser.email || "",
+            phone: currentUser.phone || "",
+            cohort: currentUser.cohort || "",
             lastActive: new Date().toISOString(),
             completedStagesCount: learnerProgress.completedStages.length,
             stage1Passed: !!learnerProgress.stageData["stage-1"]?.passed,
-            stage2ValuesCount: learnerProgress.stageData["stage-2"]?.selectedValues?.length || 0,
-            stage3AbcdeFilled: !!(learnerProgress.stageData["stage-3"]?.abcde?.D),
+            stage2ValuesCount: (learnerProgress.stageData["stage-2"]?.selectedValues || []).length,
+            stage3AbcdeFilled: !!learnerProgress.stageData["stage-3"]?.abcde?.D,
             data: learnerProgress
         };
 
-        if (existingIdx >= 0) {
-            registry[existingIdx] = record;
+        if (idx >= 0) {
+            directory[idx] = { ...directory[idx], ...learnerRecord };
         } else {
-            registry.push(record);
+            directory.push(learnerRecord);
         }
 
-        localStorage.setItem(registryKey, JSON.stringify(registry));
+        localStorage.setItem(REGISTRY_KEY, JSON.stringify(directory));
     }
 
-    // 5. RENDER SYLLABUS SIDEBAR
+    // 6. SYLLABUS & SIDEBAR NAVIGATION
     function renderSyllabus() {
         syllabusList.innerHTML = "";
 
         curriculum.stages.forEach((stage, idx) => {
+            const isCurrent = (idx === currentStageIndex);
             const isCompleted = learnerProgress.completedStages.includes(stage.id);
-            const isCurrent = idx === currentStageIndex;
-            // Locked if previous stage not completed (Stage 0 is always open)
-            const isLocked = idx > 0 && !learnerProgress.completedStages.includes(curriculum.stages[idx - 1].id);
 
-            const card = document.createElement("div");
-            card.className = `p-3.5 rounded-xl border transition-all cursor-pointer ${
-                isCurrent
-                    ? "bg-brand-card border-brand-amber/60 shadow-md shadow-amber-500/10"
-                    : isCompleted
-                    ? "bg-brand-surface border-brand-green/30 hover:border-brand-green/60"
-                    : isLocked
-                    ? "opacity-50 cursor-not-allowed bg-brand-surface/40 border-brand-border"
-                    : "bg-brand-surface border-brand-border hover:border-slate-600"
-            }`;
+            const li = document.createElement("li");
 
-            card.innerHTML = `
-                <div class="flex items-start justify-between gap-2">
-                    <div class="flex items-center gap-2">
-                        <span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                            isCompleted
-                                ? "bg-brand-green/20 text-brand-green"
-                                : isCurrent
-                                ? "bg-brand-amber text-black"
-                                : "bg-brand-card text-slate-400"
-                        }">
-                            ${isCompleted ? "✓" : stage.stageNumber}
-                        </span>
-                        <span class="text-xs font-bold text-slate-200">Chặng ${stage.stageNumber}</span>
-                    </div>
-                    <span class="text-[10px] font-semibold px-2 py-0.5 rounded ${
-                        isCompleted
-                            ? "bg-brand-green/10 text-brand-green"
-                            : isCurrent
-                            ? "bg-brand-amber/15 text-brand-amber"
-                            : "bg-brand-dark text-slate-500"
-                    }">
-                        ${isCompleted ? "Đã xong" : isCurrent ? "Đang học" : isLocked ? "🔒 Khóa" : "Mở"}
-                    </span>
-                </div>
-                <h4 class="text-xs font-bold text-slate-100 mt-2 line-clamp-1">${stage.title}</h4>
-                <div class="flex items-center justify-between text-[11px] text-slate-400 mt-2 pt-2 border-t border-brand-border/40">
-                    <span>⏱ ${stage.estimatedMinutes} phút</span>
-                    <span>${stage.instructor}</span>
-                </div>
-            `;
-
-            if (!isLocked) {
-                card.addEventListener("click", () => {
-                    currentStageIndex = idx;
-                    loadStage(currentStageIndex);
-                    renderSyllabus();
-                    // Close mobile sidebar
-                    closeMobileSidebar();
-                });
+            let borderStyle = isCurrent ? "border-brand-amber bg-brand-amber/10" : "border-brand-border bg-brand-card/40 hover:bg-brand-card/80";
+            if (isCompleted && !isCurrent) {
+                borderStyle = "border-brand-green/30 bg-brand-green/5 hover:bg-brand-card/60";
             }
 
-            syllabusList.appendChild(card);
+            let statusIcon = `<div class="w-6 h-6 rounded-full border border-slate-600 flex items-center justify-center text-[11px] font-bold text-slate-400">${idx + 1}</div>`;
+            if (isCompleted) {
+                statusIcon = `<div class="w-6 h-6 rounded-full bg-brand-green/20 border border-brand-green text-brand-green flex items-center justify-center text-xs font-bold">✓</div>`;
+            } else if (isCurrent) {
+                statusIcon = `<div class="w-6 h-6 rounded-full bg-brand-amber text-black flex items-center justify-center text-xs font-bold animate-pulse">▶</div>`;
+            }
+
+            li.innerHTML = `
+                <button class="w-full text-left p-3 rounded-xl border ${borderStyle} transition-all flex items-start gap-3 group" data-stage-idx="${idx}">
+                    ${statusIcon}
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between text-[11px] text-slate-400 mb-0.5">
+                            <span class="font-medium text-brand-amber">Chặng ${stage.stageNumber}</span>
+                            <span>${stage.estimatedMinutes} phút</span>
+                        </div>
+                        <h4 class="text-xs font-bold text-slate-100 truncate group-hover:text-brand-amber transition-colors">${stage.title}</h4>
+                        <p class="text-[11px] text-slate-400 truncate mt-0.5">${stage.subtitle}</p>
+                    </div>
+                </button>
+            `;
+
+            li.querySelector("button").addEventListener("click", () => {
+                currentStageIndex = idx;
+                loadStage(idx);
+                renderSyllabus();
+
+                // On mobile, close sidebar after pick
+                if (window.innerWidth < 1024) {
+                    toggleSidebar(false);
+                }
+            });
+
+            syllabusList.appendChild(li);
         });
 
-        const completedCount = learnerProgress.completedStages.length;
-        sidebarBadgeCompleted.textContent = `${completedCount}/${curriculum.stages.length} Xong`;
+        // Update badge
+        sidebarBadgeCompleted.textContent = `${learnerProgress.completedStages.length}/${curriculum.stages.length} Hoàn tất`;
     }
 
-    // 6. LOAD ACTIVE STAGE
+    function toggleSidebar(forceState) {
+        const isHidden = sidebar.classList.contains("-translate-x-full");
+        const nextState = forceState !== undefined ? forceState : isHidden;
+
+        if (nextState) {
+            sidebar.classList.remove("-translate-x-full");
+            sidebarBackdrop.classList.remove("hidden");
+        } else {
+            sidebar.classList.add("-translate-x-full");
+            sidebarBackdrop.classList.add("hidden");
+        }
+    }
+
+    sidebarToggle.addEventListener("click", () => toggleSidebar());
+    sidebarBackdrop.addEventListener("click", () => toggleSidebar(false));
+
+    // 7. LESSON LOADER
     function loadStage(stageIdx) {
+        currentStageIndex = stageIdx;
         const stage = curriculum.stages[stageIdx];
         if (!stage) return;
 
@@ -436,15 +623,14 @@ document.addEventListener("DOMContentLoaded", () => {
         videoFrameContainer.classList.add("hidden");
         videoIframe.src = "";
 
-        // Header info
+        // Breadcrumbs & Header
         breadcrumbStage.textContent = `Chặng ${stage.stageNumber}`;
         breadcrumbLesson.textContent = stage.title;
+        lessonInstructorBadge.textContent = `Giảng viên: ${stage.instructor}`;
+        lessonDurationBadge.textContent = `${stage.estimatedMinutes} phút`;
         lessonMainTitle.textContent = stage.title;
         lessonSubtitle.textContent = stage.subtitle;
-        lessonInstructorBadge.textContent = `👨‍🏫 Giảng viên: ${stage.instructor}`;
-        lessonDurationBadge.textContent = `⏱ ${stage.estimatedMinutes} phút`;
 
-        // Video info
         videoInfoTitle.textContent = stage.videoTitle;
         videoInfoTime.textContent = `Thời lượng: ${stage.videoDuration}`;
 
@@ -488,11 +674,25 @@ document.addEventListener("DOMContentLoaded", () => {
             renderStage3Abcde(stage, stageData);
         }
 
-        // Reflection section
-        reflectionPromptTitle.textContent = `✍️ Phản tư cá nhân: ${stage.reflectionPromptTitle}`;
-        reflectionPromptDesc.textContent = stage.reflectionPromptDesc;
-        reflectionInput.value = stageData.reflection || "";
-        reflectionCharCount.textContent = `${reflectionInput.value.length} ký tự`;
+        // Setup 3 Achievements: I • A • M Reflection
+        const iamPrompts = stage.iam || {
+            I: "Bạn tâm đắc nhất điều gì từ bài học?",
+            A: "Bạn sẽ áp dụng điều này vào thực tế như thế nào?",
+            M: "Tại sao điều này lại có ý nghĩa quan trọng với bạn?"
+        };
+
+        promptLabelI.textContent = `1. Interested — ${iamPrompts.I}`;
+        promptLabelA.textContent = `2. Actionable — ${iamPrompts.A}`;
+        promptLabelM.textContent = `3. Meaningful — ${iamPrompts.M}`;
+
+        const savedIam = stageData.iam || {};
+        reflectionI.value = savedIam.I || "";
+        reflectionA.value = savedIam.A || "";
+        reflectionM.value = savedIam.M || "";
+
+        countI.textContent = `${reflectionI.value.length} ký tự`;
+        countA.textContent = `${reflectionA.value.length} ký tự`;
+        countM.textContent = `${reflectionM.value.length} ký tự`;
 
         // Bottom Navigation Buttons
         btnPrevLesson.disabled = (stageIdx === 0);
@@ -503,7 +703,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // 7. STAGE 1: QUIZ ENGINE
+    // 8. STAGE 1: QUIZ ENGINE
     function renderStage1Quiz(stage, stageData) {
         quizItemsContainer.innerHTML = "";
         const savedAnswers = stageData.quizAnswers || {};
@@ -600,7 +800,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // 8. STAGE 2: VALUES PICKER
+    // 9. STAGE 2: VALUES PICKER
     function renderStage2Values(stage, stageData) {
         valuesGrid.innerHTML = "";
         const selected = stageData.selectedValues || [];
@@ -608,28 +808,26 @@ document.addEventListener("DOMContentLoaded", () => {
         stage.valueOptions.forEach(val => {
             const isSelected = selected.includes(val);
             const card = document.createElement("button");
-            card.type = "button";
-            card.className = `p-3.5 rounded-xl border text-left text-xs font-semibold transition-all relative flex flex-col justify-between h-20 ${
-                isSelected
-                    ? "bg-brand-amber/15 border-brand-amber text-brand-amber shadow-md shadow-amber-500/10"
-                    : "bg-brand-card/50 border-brand-border text-slate-300 hover:border-slate-500"
-            }`;
 
+            let cardStyle = isSelected
+                ? "border-brand-amber bg-brand-amber/15 text-white shadow-md shadow-amber-500/10"
+                : "border-brand-border bg-brand-card/50 text-slate-300 hover:border-slate-500";
+
+            card.className = `p-3.5 rounded-xl border text-left transition-all flex items-center justify-between group ${cardStyle}`;
             card.innerHTML = `
-                <span>${val}</span>
-                <div class="flex items-center justify-between mt-2 pt-2 border-t border-brand-border/30 text-[10px]">
-                    <span class="text-slate-500">Me Value</span>
-                    ${isSelected ? '<span class="font-bold text-brand-amber">✓ Đã chọn</span>' : '<span class="text-slate-500">+ Chọn</span>'}
-                </div>
+                <span class="text-xs font-semibold leading-snug">${val}</span>
+                <span class="w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${isSelected ? "bg-brand-amber text-black" : "border border-brand-border text-transparent"}">
+                    ${isSelected ? "✓" : ""}
+                </span>
             `;
 
             card.addEventListener("click", () => {
                 let cur = learnerProgress.stageData["stage-2"].selectedValues || [];
                 if (cur.includes(val)) {
-                    cur = cur.filter(item => item !== val);
+                    cur = cur.filter(x => x !== val);
                 } else {
                     if (cur.length >= 3) {
-                        alert("Bạn chỉ được chọn tối đa 3 giá trị làm La bàn cốt lõi nhất!");
+                        alert("Bạn chỉ được chọn tối đa 3 giá trị cốt lõi để làm chiếc La Bàn chuẩn xác nhất!");
                         return;
                     }
                     cur.push(val);
@@ -643,59 +841,60 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         valuesCountBadge.textContent = `${selected.length}/3 Đã chọn`;
-        if (selected.length === 3) {
-            valuesCountBadge.className = "text-xs px-2.5 py-1 rounded bg-brand-green/20 text-brand-green font-bold border border-brand-green/30";
-        } else {
-            valuesCountBadge.className = "text-xs px-2.5 py-1 rounded bg-brand-amber/20 text-brand-amber font-bold border border-brand-amber/30";
-        }
     }
 
-    // 9. STAGE 3: ABCDE WORKSHEET
+    // 10. STAGE 3: ABCDE WORKSHEET
     function renderStage3Abcde(stage, stageData) {
         abcdeStepsContainer.innerHTML = "";
-        const abcdeState = stageData.abcde || { A: "", B: "", C: "", D: "", E: "" };
+        const savedAbcde = stageData.abcde || {};
 
         stage.abcdeSteps.forEach(step => {
-            const stepBox = document.createElement("div");
-            const isDispute = (step.key === "D");
+            const card = document.createElement("div");
+            card.className = "p-4 rounded-xl bg-brand-card/40 border border-brand-border space-y-2";
 
-            stepBox.className = `p-4 rounded-xl border transition-all ${
-                isDispute
-                    ? "bg-brand-card border-brand-amber/70 shadow-lg shadow-amber-500/10"
-                    : "bg-brand-card/40 border-brand-border"
-            }`;
+            const isKeyStep = (step.key === "D");
+            const keyColor = isKeyStep ? "text-brand-amber" : "text-white";
+            const borderColor = isKeyStep ? "border-brand-amber/40 focus:border-brand-amber" : "border-brand-border focus:border-brand-amber";
 
-            stepBox.innerHTML = `
-                <div class="flex items-center justify-between mb-1.5">
-                    <span class="text-xs font-bold ${isDispute ? "text-brand-amber" : "text-slate-200"}">
+            card.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <label class="text-xs font-bold ${keyColor}" for="abcde-${step.key}">
                         ${step.name}
-                    </span>
-                    ${isDispute ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-brand-amber text-black uppercase tracking-wider">Trọng tâm chuyển hóa</span>' : ''}
+                    </label>
+                    ${isKeyStep ? '<span class="text-[10px] px-2 py-0.5 rounded bg-brand-amber/20 text-brand-amber font-bold">Kỹ thuật mấu chốt</span>' : ''}
                 </div>
-                <p class="text-[11px] text-slate-400 mb-2">${step.hint}</p>
-                <textarea rows="2" class="abcde-input w-full bg-brand-dark border border-brand-border rounded-lg p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber transition-colors" data-step="${step.key}" placeholder="${step.placeholder}">${abcdeState[step.key] || ""}</textarea>
+                <p class="text-[11px] text-slate-400 leading-relaxed">${step.hint}</p>
+                <textarea id="abcde-${step.key}" rows="2" class="w-full bg-brand-dark ${borderColor} border rounded-lg p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-brand-amber transition-all" placeholder="${step.placeholder}">${savedAbcde[step.key] || ""}</textarea>
             `;
 
-            stepBox.querySelector(".abcde-input").addEventListener("input", (e) => {
-                const k = e.target.getAttribute("data-step");
+            card.querySelector("textarea").addEventListener("input", (e) => {
                 if (!learnerProgress.stageData["stage-3"].abcde) {
                     learnerProgress.stageData["stage-3"].abcde = {};
                 }
-                learnerProgress.stageData["stage-3"].abcde[k] = e.target.value;
+                learnerProgress.stageData["stage-3"].abcde[step.key] = e.target.value;
                 debouncedSave();
             });
 
-            abcdeStepsContainer.appendChild(stepBox);
+            abcdeStepsContainer.appendChild(card);
         });
     }
 
-    // 10. REFLECTION ESSAY LISTENER
-    reflectionInput.addEventListener("input", () => {
-        reflectionCharCount.textContent = `${reflectionInput.value.length} ký tự`;
-        const currentStageId = curriculum.stages[currentStageIndex].id;
-        learnerProgress.stageData[currentStageId].reflection = reflectionInput.value;
-        debouncedSave();
-    });
+    // 11. I • A • M REFLECTION LISTENERS
+    function handleIamInput(type, inputElem, countElem) {
+        inputElem.addEventListener("input", () => {
+            countElem.textContent = `${inputElem.value.length} ký tự`;
+            const currentStageId = curriculum.stages[currentStageIndex].id;
+            if (!learnerProgress.stageData[currentStageId].iam) {
+                learnerProgress.stageData[currentStageId].iam = { I: "", A: "", M: "" };
+            }
+            learnerProgress.stageData[currentStageId].iam[type] = inputElem.value;
+            debouncedSave();
+        });
+    }
+
+    handleIamInput("I", reflectionI, countI);
+    handleIamInput("A", reflectionA, countA);
+    handleIamInput("M", reflectionM, countM);
 
     let saveTimeout = null;
     function debouncedSave() {
@@ -709,10 +908,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     btnManualSave.addEventListener("click", () => {
         saveLearnerProgress();
-        alert("Tiến độ và bài làm của bạn đã được lưu an toàn!");
+        alert("Tiến độ và bài phản tư I • A • M của bạn đã được lưu an toàn!");
     });
 
-    // 11. NAVIGATION CONTROLS
+    // 12. NAVIGATION CONTROLS
     btnPrevLesson.addEventListener("click", () => {
         if (currentStageIndex > 0) {
             currentStageIndex--;
@@ -771,47 +970,36 @@ document.addEventListener("DOMContentLoaded", () => {
         globalProgressText.textContent = `${pct}% (${completed}/${total} Chặng)`;
     }
 
-    // 12. TAB SWITCHING
+    // 13. TAB SWITCHING
     tabBtns.forEach(btn => {
         btn.addEventListener("click", () => {
             tabBtns.forEach(b => {
                 b.classList.remove("active");
                 b.classList.remove("text-brand-amber");
                 b.classList.add("text-slate-400");
+                b.classList.remove("border-brand-amber");
                 b.classList.add("border-transparent");
             });
 
             btn.classList.add("active");
-            btn.classList.add("text-brand-amber");
             btn.classList.remove("text-slate-400");
+            btn.classList.add("text-brand-amber");
             btn.classList.remove("border-transparent");
+            btn.classList.add("border-brand-amber");
 
-            const target = btn.getAttribute("data-tab");
-            tabContents.forEach(c => {
-                if (c.id === target) {
-                    c.classList.remove("hidden");
+            const targetTab = btn.getAttribute("data-tab");
+            tabContents.forEach(content => {
+                if (content.id === targetTab || content.id === `tab-${targetTab}`) {
+                    content.classList.remove("hidden");
                 } else {
-                    c.classList.add("hidden");
+                    content.classList.add("hidden");
                 }
             });
         });
     });
 
-    // 13. MOBILE SIDEBAR TOGGLE
-    sidebarToggle.addEventListener("click", () => {
-        sidebar.classList.toggle("-translate-x-full");
-        sidebarBackdrop.classList.toggle("hidden");
+    // 14. INITIAL BOOTSTRAP
+    loadRoster().then(() => {
+        initAuth();
     });
-
-    sidebarBackdrop.addEventListener("click", () => {
-        closeMobileSidebar();
-    });
-
-    function closeMobileSidebar() {
-        sidebar.classList.add("-translate-x-full");
-        sidebarBackdrop.classList.add("hidden");
-    }
-
-    // START
-    initAuth();
 });
