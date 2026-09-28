@@ -10,13 +10,21 @@ document.addEventListener("DOMContentLoaded", () => {
             {
                 id: "stage-1",
                 stageNumber: 1,
-                badge: "Pre-Class • Online",
-                title: "Gieo Thông Điệp & Định Vị La Bàn",
-                subtitle: "Khoa học Hạnh phúc • 3 Cấp độ • Giá trị Me Values • Thuyết Tự Quyết (SDT)",
+                badge: "Mini Step 1 • Online",
+                title: "Mini step 1 • ONLINE – Gieo Thông điệp",
+                subtitle: "Khoa học Hạnh phúc • 3 Cấp độ • Định vị La Bàn (Me Values) • Thuyết Tự Quyết (SDT)",
                 instructor: "Giảng viên Vũ",
                 estimatedMinutes: 30,
-                videoDuration: "6:30",
-                videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
+                videoDuration: "7:27",
+                videoUrl: "data/artifacts/the_explainer.mp4",
+                videoTitle: "Video Explainer: Delivering Happiness Movement (Hệ Điều Hành Hạnh Phúc)",
+                videoType: "mp4",
+                subSections: [
+                    { id: "sub-1-1", title: "Mục 1.1: Video Explainer & Kho Audio Bài Giảng", target: "video-player-container", tab: "tab-summary" },
+                    { id: "sub-1-2", title: "Mục 1.2: Khoa Học Hạnh Phúc & 3 Cấp Độ (Seligman)", target: "stage1-mod-1-1", tab: "tab-practice" },
+                    { id: "sub-1-3", title: "Mục 1.3: Định Vị La Bàn — Giá Trị Cốt Lõi Cá Nhân (Me Values)", target: "stage1-mod-1-2", tab: "tab-practice" },
+                    { id: "sub-1-4", title: "Mục 1.4: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc", target: "stage1-mod-1-3", tab: "tab-practice" }
+                ],
                 audios: [
                     { id: "a1-0", title: "0. Lời dẫn & Giới thiệu tổng quan", file: "data/artifacts/dh4_overview.mp3", duration: "2:45" },
                     { id: "a1-1", title: "1. Khoa học Hạnh phúc & Nền tảng tâm lý", file: "data/artifacts/khoa_hoc_hanh_phuc.mp3", duration: "41:30" },
@@ -144,11 +152,20 @@ document.addEventListener("DOMContentLoaded", () => {
             {
                 id: "stage-2",
                 stageNumber: 2,
-                badge: "Workshop Live • Offline",
-                title: "Gieo Thói Quen — Xưởng Thực Hành 5 Thói Quen Tại Lớp",
-                subtitle: "Sổ tay thực hành số hóa 10 tiếng tại lớp: 3 Đòn bẩy & 5 Thói quen Hạnh phúc",
+                badge: "Mini Step 2 • Offline",
+                title: "Mini step 2 • OFFLINE – Gieo Thói quen",
+                subtitle: "Workshop Live tại lớp • Xưởng thực hành 5 Thói quen Hạnh phúc & I•A•M",
                 instructor: "Ban Giảng Huấn DHM (Châu, Hưng, Hoàn, Vũ)",
                 estimatedMinutes: 120,
+                videoUrl: null,
+                subSections: [
+                    { id: "sub-2-1", title: "Mục 2.1: Thói Quen 1 — Biết Ơn (Gratitude Card + IAM)", target: "habit-panel-gratitude", habit: "gratitude", tab: "tab-practice" },
+                    { id: "sub-2-2", title: "Mục 2.2: Thói Quen 2 — Tỉnh Thức (SBA & Body Scan + IAM)", target: "habit-panel-mindfulness", habit: "mindfulness", tab: "tab-practice" },
+                    { id: "sub-2-3", title: "Mục 2.3: Thói Quen 3 — Lạc Quan Học Được (ABCDE + IAM)", target: "habit-panel-optimism", habit: "optimism", tab: "tab-practice" },
+                    { id: "sub-2-4", title: "Mục 2.4: Thói Quen 4 — Phiêu / Flow (Thách thức vs Kỹ năng + IAM)", target: "habit-panel-flow", habit: "flow", tab: "tab-practice" },
+                    { id: "sub-2-5", title: "Mục 2.5: Thói Quen 5 — Vị Nhân (Adam Grant Style + IAM)", target: "habit-panel-altruism", habit: "altruism", tab: "tab-practice" },
+                    { id: "sub-2-6", title: "Mục 2.6: Thu Hoạch Tổng Lực Ngày Học (Capstone IAM)", target: "stage2-capstone-card", tab: "tab-practice" }
+                ],
                 audios: [
                     { id: "a2-1", title: "Đòn bẩy Tự chủ: 70.000 giờ làm việc", file: "data/artifacts/70000_gio_lam_viec.mp3", duration: "39:50" },
                     { id: "a2-2", title: "Đòn bẩy Kết nối: Thỏa thuận văn hóa", file: "data/artifacts/thoa_thuan_van_hoa.mp3", duration: "38:20" },
@@ -177,13 +194,18 @@ document.addEventListener("DOMContentLoaded", () => {
             {
                 id: "stage-3",
                 stageNumber: 3,
-                badge: "Post-Class • Online",
-                title: "Focus on I • A • M & Hành Trình Đồng Hành 21 Ngày",
-                subtitle: "Kế thừa toàn bộ chất liệu Chặng 1 & 2 để nuôi dưỡng thói quen chuyển hóa bền vững",
+                badge: "Mini Step 3 • Online",
+                title: "Mini step 3 • ONLINE – Focus on I • A • M",
+                subtitle: "Nuôi dưỡng Thói quen Chuyển hóa • Kế thừa Toàn bộ Chất liệu • Đồng hành 21 ngày",
                 instructor: "Đội ngũ Coach DHM Đồng Hành",
                 estimatedMinutes: 21,
-                videoUrl: "data/artifacts/the_explainer.mp4",
-                videoDuration: "3:45",
+                videoUrl: null,
+                subSections: [
+                    { id: "sub-3-1", title: "Mục 3.1: Bảng Vinh Danh Chất Liệu Đã Gieo (Recap Dashboard)", target: "stage3-recap-section", tab: "tab-practice" },
+                    { id: "sub-3-2", title: "Mục 3.2: Bảng Điểm Danh 5 Thói Quen 21 Ngày (Habit Tracker)", target: "stage3-tracker-section", tab: "tab-practice" },
+                    { id: "sub-3-3", title: "Mục 3.3: Đúc Kết Tuần (Weekly Check-in I • A • M)", target: "stage3-weekly-section", tab: "tab-practice" },
+                    { id: "sub-3-4", title: "Mục 3.4: Kho Tài Liệu Đính Kèm (Delivering Happiness Artifacts)", target: "tab-resources", tab: "tab-resources" }
+                ],
                 resources: [
                     { title: "Bản Thiết Kế Văn Hóa Tổ Chức (Culture Blueprint)", type: "pdf", url: "data/artifacts/culture_blueprint.pdf", icon: "📑" },
                     { title: "Báo cáo Dòng Chảy & Quản Trị Con Người", type: "markdown", url: "data/artifacts/report_dong_chay.md", icon: "📄" },
@@ -251,8 +273,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const lessonSubtitle = document.getElementById("lesson-subtitle");
 
     // Video Player
+    const videoPlayerContainer = document.getElementById("video-player-container");
     const videoPoster = document.getElementById("video-poster");
     const videoFrameContainer = document.getElementById("video-frame-container");
+    const videoElement = document.getElementById("video-element");
+    const videoSource = document.getElementById("video-source");
     const videoIframe = document.getElementById("video-iframe");
     const btnPlayVideo = document.getElementById("btn-play-video");
     const videoInfoTitle = document.getElementById("video-info-title");
@@ -584,12 +609,15 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (e) {}
     }
 
-    // 6. SYLLABUS RENDERER
+    // 6. SYLLABUS RENDERER (Supports Sub-items Navigation)
     function renderSyllabus() {
         syllabusList.innerHTML = "";
         curriculum.stages.forEach((stage, idx) => {
             const isCompleted = learnerProgress.completedStages.includes(stage.id);
             const isActive = idx === currentStageIndex;
+
+            const stageBlock = document.createElement("div");
+            stageBlock.className = "space-y-1";
 
             const item = document.createElement("button");
             item.className = `w-full text-left p-3.5 rounded-xl border transition-all flex items-start gap-3 ${
@@ -624,10 +652,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
             item.addEventListener("click", () => {
                 loadStage(idx);
+                renderSyllabus();
                 toggleSidebar(false);
             });
 
-            syllabusList.appendChild(item);
+            stageBlock.appendChild(item);
+
+            // Subsections / Mục con tree for Active Stage
+            if (stage.subSections && stage.subSections.length > 0 && isActive) {
+                const subContainer = document.createElement("div");
+                subContainer.className = "ml-4 pl-3 border-l-2 border-brand-amber/40 space-y-1 py-1";
+
+                stage.subSections.forEach(sub => {
+                    const subBtn = document.createElement("button");
+                    subBtn.className = "w-full text-left px-2.5 py-1.5 rounded-lg text-[11px] text-slate-300 hover:text-brand-amber hover:bg-brand-card/80 transition-all flex items-center gap-2 group";
+                    subBtn.innerHTML = `
+                        <span class="w-1.5 h-1.5 rounded-full bg-brand-amber/50 group-hover:bg-brand-amber shrink-0 transition-colors"></span>
+                        <span class="truncate flex-1">${sub.title}</span>
+                    `;
+
+                    subBtn.addEventListener("click", (e) => {
+                        e.stopPropagation();
+                        if (currentStageIndex !== idx) {
+                            loadStage(idx);
+                            renderSyllabus();
+                        }
+                        if (sub.tab) {
+                            const tabTarget = document.querySelector(`.tab-btn[data-tab="${sub.tab}"]`);
+                            if (tabTarget) tabTarget.click();
+                        }
+                        if (sub.habit) {
+                            const habitTab = document.querySelector(`.habit-tab[data-habit="${sub.habit}"]`);
+                            if (habitTab) habitTab.click();
+                        }
+                        setTimeout(() => {
+                            const el = document.getElementById(sub.target);
+                            if (el) {
+                                el.scrollIntoView({ behavior: "smooth", block: "start" });
+                            }
+                        }, 120);
+                        toggleSidebar(false);
+                    });
+
+                    subContainer.appendChild(subBtn);
+                });
+
+                stageBlock.appendChild(subContainer);
+            }
+
+            syllabusList.appendChild(stageBlock);
         });
 
         const completedCount = learnerProgress.completedStages.length;
@@ -655,10 +728,62 @@ document.addEventListener("DOMContentLoaded", () => {
         const stage = curriculum.stages[stageIdx];
         if (!stage) return;
 
-        // Reset Video
-        videoPoster.classList.remove("hidden");
-        videoFrameContainer.classList.add("hidden");
-        videoIframe.src = "";
+        // Video Setup & Reset
+        if (stage.videoUrl) {
+            if (videoPlayerContainer) videoPlayerContainer.classList.remove("hidden");
+            if (videoPoster) videoPoster.classList.remove("hidden");
+            if (videoFrameContainer) videoFrameContainer.classList.add("hidden");
+            if (videoElement) {
+                videoElement.pause();
+                videoElement.classList.add("hidden");
+                if (videoSource) videoSource.src = "";
+            }
+            if (videoIframe) {
+                videoIframe.classList.add("hidden");
+                videoIframe.src = "";
+            }
+
+            if (videoInfoTitle) videoInfoTitle.textContent = stage.videoTitle || stage.title;
+            if (videoInfoTime) videoInfoTime.textContent = `Thời lượng: ${stage.videoDuration || 'Khoảng 7-10 phút'}`;
+
+            if (btnPlayVideo) {
+                btnPlayVideo.onclick = () => {
+                    if (videoPoster) videoPoster.classList.add("hidden");
+                    if (videoFrameContainer) videoFrameContainer.classList.remove("hidden");
+                    if (stage.videoUrl.endsWith('.mp4') || stage.videoType === 'mp4') {
+                        if (videoIframe) {
+                            videoIframe.classList.add("hidden");
+                            videoIframe.src = "";
+                        }
+                        if (videoElement && videoSource) {
+                            videoElement.classList.remove("hidden");
+                            videoSource.src = stage.videoUrl;
+                            videoElement.load();
+                            videoElement.play().catch(e => console.log("Video auto play prevented:", e));
+                        }
+                    } else {
+                        if (videoElement) {
+                            videoElement.pause();
+                            videoElement.classList.add("hidden");
+                        }
+                        if (videoIframe) {
+                            videoIframe.classList.remove("hidden");
+                            videoIframe.src = `${stage.videoUrl}?autoplay=1`;
+                        }
+                    }
+                };
+            }
+        } else {
+            if (videoPlayerContainer) videoPlayerContainer.classList.add("hidden");
+            if (videoElement) {
+                videoElement.pause();
+                videoElement.classList.add("hidden");
+            }
+            if (videoIframe) {
+                videoIframe.classList.add("hidden");
+                videoIframe.src = "";
+            }
+        }
 
         // Breadcrumbs & Header
         breadcrumbStage.textContent = stage.badge || `Chặng ${stage.stageNumber}`;
@@ -667,15 +792,6 @@ document.addEventListener("DOMContentLoaded", () => {
         lessonDurationBadge.textContent = `⏱ ${stage.estimatedMinutes || 30} phút`;
         lessonMainTitle.textContent = stage.title;
         lessonSubtitle.textContent = stage.subtitle;
-
-        videoInfoTitle.textContent = stage.title;
-        videoInfoTime.textContent = `Thời lượng: ${stage.videoDuration || 'Khoảng 10-15 phút'}`;
-
-        btnPlayVideo.onclick = () => {
-            videoPoster.classList.add("hidden");
-            videoFrameContainer.classList.remove("hidden");
-            videoIframe.src = `${stage.videoUrl}?autoplay=1`;
-        };
 
         // Populate Audio Tracks Dropdown
         setupAudioPlayer(stage);

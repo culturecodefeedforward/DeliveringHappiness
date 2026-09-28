@@ -7,13 +7,41 @@
     {
       "id": "stage-1",
       "stageNumber": 1,
-      "badge": "Pre-Class • Online",
-      "title": "Gieo Thông Điệp & Định Vị La Bàn",
-      "subtitle": "Khoa học Hạnh phúc • 3 Cấp độ • Giá trị Me Values • Thuyết Tự Quyết (SDT)",
+      "badge": "Mini Step 1 • Online",
+      "title": "Mini step 1 • ONLINE – Gieo Thông điệp",
+      "subtitle": "Khoa học Hạnh phúc • 3 Cấp độ • Định vị La Bàn (Me Values) • Thuyết Tự Quyết (SDT)",
       "instructor": "Giảng viên Vũ",
       "estimatedMinutes": 30,
-      "videoUrl": "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
-      "videoDuration": "6 phút 30 giây",
+      "videoUrl": "data/artifacts/the_explainer.mp4",
+      "videoTitle": "Video Explainer: Delivering Happiness Movement (Hệ Điều Hành Hạnh Phúc)",
+      "videoDuration": "7 phút 27 giây",
+      "videoType": "mp4",
+      "subSections": [
+        {
+          "id": "sub-1-1",
+          "title": "Mục 1.1: Video Explainer & Kho Audio Bài Giảng",
+          "target": "video-player-container",
+          "tab": "tab-summary"
+        },
+        {
+          "id": "sub-1-2",
+          "title": "Mục 1.2: Khoa Học Hạnh Phúc & 3 Cấp Độ (Seligman)",
+          "target": "stage1-mod-1-1",
+          "tab": "tab-practice"
+        },
+        {
+          "id": "sub-1-3",
+          "title": "Mục 1.3: Định Vị La Bàn — Giá Trị Cốt Lõi Cá Nhân (Me Values)",
+          "target": "stage1-mod-1-2",
+          "tab": "tab-practice"
+        },
+        {
+          "id": "sub-1-4",
+          "title": "Mục 1.4: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc",
+          "target": "stage1-mod-1-3",
+          "tab": "tab-practice"
+        }
+      ],
       "audios": [
         {
           "id": "a1-0",
@@ -234,11 +262,55 @@
     {
       "id": "stage-2",
       "stageNumber": 2,
-      "badge": "Workshop Live • Offline",
-      "title": "Gieo Thói Quen — Xưởng Thực Hành 5 Thói Quen Tại Lớp",
-      "subtitle": "Sổ tay thực hành số hóa 10 tiếng tại lớp: 3 Đòn bẩy & 5 Thói quen Hạnh phúc",
+      "badge": "Mini Step 2 • Offline",
+      "title": "Mini step 2 • OFFLINE – Gieo Thói quen",
+      "subtitle": "Workshop Live tại lớp • Xưởng thực hành 5 Thói quen Hạnh phúc & I•A•M",
       "instructor": "Ban Giảng Huấn DHM (Châu, Hưng, Hoàn, Vũ)",
       "estimatedMinutes": 120,
+      "videoUrl": null,
+      "subSections": [
+        {
+          "id": "sub-2-1",
+          "title": "Mục 2.1: Thói Quen 1 — Biết Ơn (Gratitude Card + IAM)",
+          "target": "habit-panel-gratitude",
+          "habit": "gratitude",
+          "tab": "tab-practice"
+        },
+        {
+          "id": "sub-2-2",
+          "title": "Mục 2.2: Thói Quen 2 — Tỉnh Thức (SBA & Body Scan + IAM)",
+          "target": "habit-panel-mindfulness",
+          "habit": "mindfulness",
+          "tab": "tab-practice"
+        },
+        {
+          "id": "sub-2-3",
+          "title": "Mục 2.3: Thói Quen 3 — Lạc Quan Học Được (ABCDE + IAM)",
+          "target": "habit-panel-optimism",
+          "habit": "optimism",
+          "tab": "tab-practice"
+        },
+        {
+          "id": "sub-2-4",
+          "title": "Mục 2.4: Thói Quen 4 — Phiêu / Flow (Thách thức vs Kỹ năng + IAM)",
+          "target": "habit-panel-flow",
+          "habit": "flow",
+          "tab": "tab-practice"
+        },
+        {
+          "id": "sub-2-5",
+          "title": "Mục 2.5: Thói Quen 5 — Vị Nhân (Adam Grant Style + IAM)",
+          "target": "habit-panel-altruism",
+          "habit": "altruism",
+          "tab": "tab-practice"
+        },
+        {
+          "id": "sub-2-6",
+          "title": "Mục 2.6: Thu Hoạch Tổng Lực Ngày Học (Capstone IAM)",
+          "target": "stage2-capstone-card",
+          "tab": "tab-practice"
+        }
+      ],
       "audios": [
         {
           "id": "a2-1",
@@ -551,14 +623,38 @@
     {
       "id": "stage-3",
       "stageNumber": 3,
-      "badge": "Post-Class • Online",
-      "title": "Focus on I • A • M & Hành Trình Đồng Hành 21 Ngày",
-      "subtitle": "Kế thừa toàn bộ chất liệu Chặng 1 & 2 để nuôi dưỡng thói quen chuyển hóa bền vững",
+      "badge": "Mini Step 3 • Online",
+      "title": "Mini step 3 • ONLINE – Focus on I • A • M",
+      "subtitle": "Nuôi dưỡng Thói quen Chuyển hóa • Kế thừa Toàn bộ Chất liệu • Đồng hành 21 ngày",
       "instructor": "Đội ngũ Coach DHM Đồng Hành",
       "estimatedMinutes": 21,
-      "videoUrl": "data/artifacts/the_explainer.mp4",
-      "videoDuration": "3 phút 45 giây",
-      "videoType": "mp4",
+      "videoUrl": null,
+      "subSections": [
+        {
+          "id": "sub-3-1",
+          "title": "Mục 3.1: Bảng Vinh Danh Chất Liệu Đã Gieo (Recap Dashboard)",
+          "target": "stage3-recap-section",
+          "tab": "tab-practice"
+        },
+        {
+          "id": "sub-3-2",
+          "title": "Mục 3.2: Bảng Điểm Danh 5 Thói Quen 21 Ngày (Habit Tracker)",
+          "target": "stage3-tracker-section",
+          "tab": "tab-practice"
+        },
+        {
+          "id": "sub-3-3",
+          "title": "Mục 3.3: Đúc Kết Tuần (Weekly Check-in I • A • M)",
+          "target": "stage3-weekly-section",
+          "tab": "tab-practice"
+        },
+        {
+          "id": "sub-3-4",
+          "title": "Mục 3.4: Kho Tài Liệu Đính Kèm (Delivering Happiness Artifacts)",
+          "target": "tab-resources",
+          "tab": "tab-resources"
+        }
+      ],
       "features": {
         "recapDashboard": true,
         "habitTracker21Days": true,
