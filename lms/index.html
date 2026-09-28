@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Delivering Happiness Movement — Micro-LMS Learning Journey</title>
-    <meta name="description" content="Trình học tập khoa học hạnh phúc tự thân và chuyển hóa nghịch cảnh theo chuẩn EdTech hiện đại." />
+    <title>Delivering Happiness Movement — Blended Micro-LMS</title>
+    <meta name="description" content="Cổng đồng hành học tập số Delivering Happiness theo chuẩn Blended Learning: Online Pre-class → Offline Workshop Live 5 Thói quen → Online Post-class 21 Ngày." />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -40,7 +40,6 @@
     </script>
 
     <style>
-        /* Custom LMS Scrollbar and UI tweaks */
         body {
             font-family: 'Be Vietnam Pro', sans-serif;
             background-color: #0B0F19;
@@ -77,6 +76,13 @@
             border-bottom: 2px solid #F59E0B;
             background-color: rgba(245, 158, 11, 0.05);
         }
+
+        .habit-tab.active {
+            background: linear-gradient(135deg, #F97316 0%, #F59E0B 100%);
+            color: #000;
+            font-weight: 700;
+            border-color: #F59E0B;
+        }
     </style>
 </head>
 
@@ -85,7 +91,7 @@
     <!-- TOP HEADER -->
     <header class="sticky top-0 z-40 bg-brand-surface/95 backdrop-blur-md border-b border-brand-border px-4 lg:px-8 py-3.5 flex items-center justify-between">
         <div class="flex items-center gap-4">
-            <button id="sidebar-toggle" class="lg:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-brand-card focus:outline-none">
+            <button id="sidebar-toggle" class="lg:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-brand-card focus:outline-none" aria-label="Mở menu">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
             </button>
             <a href="https://delivering-happiness.vercel.app/" class="flex items-center gap-2.5 group">
@@ -95,9 +101,9 @@
                 <div>
                     <div class="font-bold text-sm tracking-tight text-white flex items-center gap-1.5">
                         Delivering Happiness
-                        <span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-brand-amber/20 text-brand-amber border border-brand-amber/30">Micro-LMS</span>
+                        <span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-brand-amber/20 text-brand-amber border border-brand-amber/30">Blended LMS</span>
                     </div>
-                    <div class="text-[11px] text-slate-400 hidden sm:block">Hành Trình Chuyển Hóa Hạnh Phúc (90 Phút)</div>
+                    <div class="text-[11px] text-slate-400 hidden sm:block">Cổng Đồng Hành Học Tập Số (Online • Workshop Live • 21 Ngày)</div>
                 </div>
             </a>
         </div>
@@ -106,8 +112,8 @@
         <div class="hidden md:flex items-center gap-4 flex-1 max-w-md mx-8">
             <div class="w-full">
                 <div class="flex justify-between text-xs mb-1 font-medium">
-                    <span class="text-slate-400">Tiến độ khóa học</span>
-                    <span id="global-progress-text" class="text-brand-amber font-bold">0%</span>
+                    <span class="text-slate-400">Tiến độ hành trình Blended</span>
+                    <span id="global-progress-text" class="text-brand-amber font-bold">0% (0/3 Chặng)</span>
                 </div>
                 <div class="w-full h-2 bg-brand-card rounded-full overflow-hidden border border-brand-border">
                     <div id="global-progress-bar" class="h-full bg-gradient-to-r from-brand-orange to-brand-amber rounded-full transition-all duration-500 w-0"></div>
@@ -136,7 +142,7 @@
             <div class="p-4 border-b border-brand-border flex items-center justify-between">
                 <div>
                     <h2 class="text-xs uppercase tracking-wider font-bold text-slate-400">Giáo Trình Khóa Học</h2>
-                    <p class="text-xs text-slate-500">3 Chặng Chuyển Hóa Cốt Lõi</p>
+                    <p class="text-xs text-brand-amber font-semibold">Blended Learning Journey</p>
                 </div>
                 <span class="text-xs font-semibold px-2 py-0.5 rounded bg-brand-card text-slate-300 border border-brand-border" id="sidebar-badge-completed">0/3 Xong</span>
             </div>
@@ -147,8 +153,8 @@
 
             <!-- SIDEBAR FOOTER -->
             <div class="p-3 border-t border-brand-border bg-brand-dark/50 text-[11px] text-slate-400 flex items-center justify-between">
-                <span>Nguồn: Gỡ băng cuộc họp 25/09</span>
-                <span class="text-brand-amber font-semibold">90 phút tự học</span>
+                <span>DHM • Standard Architecture</span>
+                <span class="text-brand-amber font-semibold">3 Chặng Chuyển Hóa</span>
             </div>
         </aside>
 
@@ -162,24 +168,24 @@
             <div class="border-b border-brand-border bg-brand-surface/50 px-6 lg:px-10 py-5">
                 <div class="flex flex-wrap items-center justify-between gap-4 mb-2">
                     <div class="flex items-center gap-2 text-xs">
-                        <span id="breadcrumb-stage" class="text-brand-amber font-semibold uppercase tracking-wider">Chặng 1</span>
+                        <span id="breadcrumb-stage" class="text-brand-amber font-semibold uppercase tracking-wider">Chặng 1 • Pre-Class</span>
                         <span class="text-slate-500">›</span>
-                        <span id="breadcrumb-lesson" class="text-slate-300">Bài 1: Video Bài Giảng</span>
+                        <span id="breadcrumb-lesson" class="text-slate-300">Gieo Thông Điệp & Định Vị La Bàn</span>
                     </div>
                     <div class="flex items-center gap-2">
                         <span id="lesson-instructor-badge" class="px-2.5 py-0.5 rounded-full bg-brand-card border border-brand-border text-xs text-slate-300">
                             👨‍🏫 Giảng viên: Anh Vũ
                         </span>
                         <span id="lesson-duration-badge" class="px-2.5 py-0.5 rounded-full bg-brand-amber/10 border border-brand-amber/30 text-xs text-brand-amber font-medium">
-                            ⏱ 25 phút
+                            ⏱ 30 phút
                         </span>
                     </div>
                 </div>
                 <h1 id="lesson-main-title" class="text-xl lg:text-2xl font-extrabold text-white tracking-tight">
-                    Khoa Học Hạnh Phúc & 3 Cấp Độ Martin Seligman
+                    Gieo Thông Điệp & Định Vị La Bàn
                 </h1>
                 <p id="lesson-subtitle" class="text-sm text-slate-400 mt-1 max-w-3xl">
-                    Thú vui (Pleasure) → Đam mê (Passion) → Mục đích cao cả (Higher Purpose)
+                    Khoa học Hạnh phúc • 3 Cấp độ • Giá trị Me Values • Thuyết Tự Quyết (SDT)
                 </p>
             </div>
 
@@ -187,23 +193,23 @@
             <div class="flex-1 p-6 lg:p-10 max-w-5xl mx-auto w-full space-y-8 pb-28">
 
                 <!-- VIDEO PLAYER CONTAINER (16:9) -->
-                <div class="rounded-2xl overflow-hidden bg-brand-surface border border-brand-border shadow-2xl shadow-black/80 glow-amber relative group">
+                <div id="video-player-container" class="rounded-2xl overflow-hidden bg-brand-surface border border-brand-border shadow-2xl shadow-black/80 glow-amber relative group">
                     <div class="aspect-video w-full relative bg-slate-900 flex items-center justify-center overflow-hidden">
                         <!-- Custom Video Poster / Player UI -->
                         <div id="video-poster" class="absolute inset-0 bg-cover bg-center flex flex-col justify-between p-6 bg-gradient-to-t from-black via-black/40 to-transparent">
                             <div class="flex items-center justify-between">
                                 <span class="px-3 py-1 rounded-md bg-black/60 backdrop-blur-md text-xs font-semibold text-brand-amber border border-brand-amber/30 flex items-center gap-1.5">
                                     <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                                    Delivering Happiness Lecture Video
+                                    Delivering Happiness Video Lecture
                                 </span>
-                                <span class="text-xs text-slate-300 bg-black/50 px-2 py-1 rounded backdrop-blur">Unlisted High-Def</span>
+                                <span class="text-xs text-slate-300 bg-black/50 px-2 py-1 rounded backdrop-blur">HD 1080p</span>
                             </div>
 
                             <div class="text-center my-auto">
                                 <button id="btn-play-video" class="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-tr from-brand-orange to-brand-amber text-black flex items-center justify-center pl-1 mx-auto shadow-xl shadow-orange-500/40 hover:scale-110 active:scale-95 transition-all duration-200">
                                     <svg class="w-8 h-8 lg:w-10 lg:h-10 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                                 </button>
-                                <p class="text-xs text-slate-300 font-medium mt-3 tracking-wide drop-shadow">Nhấp để phát bài giảng gỡ băng</p>
+                                <p class="text-xs text-slate-300 font-medium mt-3 tracking-wide drop-shadow">Nhấp để phát video bài giảng</p>
                             </div>
 
                             <div class="flex items-center justify-between text-xs text-slate-300 bg-black/60 backdrop-blur px-4 py-2 rounded-xl border border-white/10">
@@ -212,10 +218,32 @@
                             </div>
                         </div>
 
-                        <!-- Embedded Player Frame (Initially hidden until user hits play) -->
+                        <!-- Embedded Player Frame -->
                         <div id="video-frame-container" class="hidden absolute inset-0 w-full h-full">
                             <iframe id="video-iframe" class="w-full h-full" src="" title="Bài giảng DHM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
+                    </div>
+                </div>
+
+                <!-- AUDIO PLAYER SECTION (Integrated 16 Audio Tracks from data/artifacts/) -->
+                <div id="audio-player-card" class="rounded-2xl bg-brand-surface/90 border border-brand-border p-4 lg:p-5 shadow-xl space-y-3">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-lg bg-brand-amber/20 text-brand-amber flex items-center justify-center text-sm font-bold">🎧</span>
+                            <div>
+                                <h3 class="text-xs font-bold text-white uppercase tracking-wider">Kho Audio Bài Giảng Gỡ Băng</h3>
+                                <p id="audio-track-subtitle" class="text-[11px] text-slate-400">Chọn tệp âm thanh bài giảng để lắng nghe chuyên sâu</p>
+                            </div>
+                        </div>
+                        <select id="audio-track-select" class="bg-brand-dark border border-brand-border rounded-xl px-3 py-1.5 text-xs text-brand-amber font-semibold focus:outline-none focus:border-brand-amber max-w-xs truncate cursor-pointer">
+                            <!-- Dynamic tracks injected via JS -->
+                        </select>
+                    </div>
+                    <div class="p-3 rounded-xl bg-brand-dark/80 border border-brand-border flex items-center gap-3">
+                        <audio id="main-audio-player" class="w-full h-8" controls preload="none">
+                            <source id="main-audio-source" src="" type="audio/mpeg">
+                            Trình duyệt của bạn không hỗ trợ phát âm thanh.
+                        </audio>
                     </div>
                 </div>
 
@@ -227,11 +255,11 @@
                             <span>📖 Tóm Tắt & Đúc Kết Cốt Lõi</span>
                         </button>
                         <button class="tab-btn px-5 py-3.5 text-sm font-semibold text-slate-400 hover:text-slate-200 flex items-center gap-2 transition-colors border-b-2 border-transparent" data-tab="tab-practice">
-                            <span>🎯 Thực Hành & Phản Tư</span>
+                            <span>🎯 Thực Hành & Phản Tư (I • A • M)</span>
                             <span id="tab-practice-badge" class="w-2 h-2 rounded-full bg-brand-amber"></span>
                         </button>
                         <button class="tab-btn px-5 py-3.5 text-sm font-semibold text-slate-400 hover:text-slate-200 flex items-center gap-2 transition-colors border-b-2 border-transparent" data-tab="tab-resources">
-                            <span>📂 Tài Liệu Đính Kèm</span>
+                            <span>📂 Tài Liệu Đính Kèm (Artifacts)</span>
                         </button>
                     </div>
 
@@ -243,7 +271,7 @@
                                 <div>
                                     <h4 class="text-sm font-bold text-brand-amber uppercase tracking-wider mb-1">Luận Điểm Cốt Lõi (Core Philosophy)</h4>
                                     <p id="summary-core-text" class="text-sm text-slate-300 leading-relaxed">
-                                        Mọi hành động con người đều hội tụ về đích đến là Hạnh phúc (Aristotle). Tuy nhiên, não bộ rất nhanh thích nghi với Thú vui ngắn hạn. Để bền vững, ta cần nâng cấp lên trạng thái Phiêu (Passion) và Mục đích cao cả (Higher Purpose).
+                                        Mọi hành động con người đều hội tụ về đích đến là Hạnh phúc (Aristotle). Tuy nhiên, não bộ rất nhanh thích nghi với Thú vui ngắn hạn do cơ chế thích nghi khoái lạc (Hedonic Adaptation). Để bền vững, ta cần nâng cấp lên trạng thái Phiêu (Passion / Flow) và Mục đích cao cả (Higher Purpose) khi cống hiến cho điều lớn lao hơn bản thân.
                                     </p>
                                 </div>
                             </div>
@@ -254,114 +282,448 @@
                         </div>
                     </div>
 
-                    <!-- TAB 2: INTERACTIVE PRACTICE & QUIZ & WORKSHEET -->
+                    <!-- TAB 2: INTERACTIVE PRACTICE & WORKSHEETS -->
                     <div id="tab-practice" class="tab-content hidden p-6 lg:p-8 space-y-8">
 
-                        <!-- SECTION A: QUIZ COMPONENT (For Stage 1) -->
-                        <div id="practice-quiz-section" class="space-y-6">
-                            <div class="flex items-center justify-between">
-                                <h3 class="text-base font-bold text-white flex items-center gap-2">
-                                    <span>⚡ Trắc Nghiệm Phản Xạ Nhanh</span>
-                                    <span class="text-xs font-normal text-slate-400">(Kiểm tra khả năng phân biệt tức thì)</span>
-                                </h3>
-                                <span id="quiz-score-badge" class="text-xs px-2.5 py-1 rounded bg-brand-card text-brand-amber font-mono font-bold border border-brand-border">Chưa làm</span>
-                            </div>
-                            <div id="quiz-items-container" class="space-y-5">
-                                <!-- Dynamic Quiz questions injected via JS -->
-                            </div>
-                        </div>
-
-                        <!-- SECTION B: VALUES PICKER (For Stage 2) -->
-                        <div id="practice-values-section" class="hidden space-y-6">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h3 class="text-base font-bold text-white">🎯 La Bàn Giá Trị Cá Nhân (Me Values)</h3>
-                                    <p class="text-xs text-slate-400">Chọn tối đa 3 giá trị bạn xem là La Bàn định hướng cuộc sống hàng ngày</p>
+                        <!-- ================= STAGE 1: PRE-CLASS PRACTICE ================= -->
+                        <div id="stage1-practice-container" class="space-y-8">
+                            <!-- Module 1.1: Quiz & IAM 1.1 -->
+                            <div class="p-5 rounded-2xl bg-brand-card/30 border border-brand-border space-y-5">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                        <span>⚡ Bài 1.1: Trắc Nghiệm Phản Xạ 3 Cấp Độ Hạnh Phúc</span>
+                                    </h3>
+                                    <span id="quiz-score-badge" class="text-xs px-2.5 py-1 rounded bg-brand-card text-brand-amber font-mono font-bold border border-brand-border">Chưa làm</span>
                                 </div>
-                                <span id="values-count-badge" class="text-xs px-2.5 py-1 rounded bg-brand-amber/20 text-brand-amber font-bold border border-brand-amber/30">0/3 Đã chọn</span>
+                                <div id="quiz-items-container" class="space-y-4">
+                                    <!-- Dynamic Quiz questions injected via JS -->
+                                </div>
+                                <!-- IAM 1.1 Box -->
+                                <div class="pt-4 border-t border-brand-border/60 space-y-3">
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px]">I • A • M 1.1</span>
+                                        <span class="text-xs font-bold text-brand-amber">Đúc kết Khoa Học Hạnh Phúc & 3 Cấp Độ</span>
+                                    </div>
+                                    <div class="grid grid-cols-1 gap-3">
+                                        <div>
+                                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">I (Interested) — Bạn tâm đắc nhất điều gì từ 3 Cấp độ Hạnh phúc & Ẩn dụ Ba Tầng Lầu?</label>
+                                            <textarea id="iam-1-1-i" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber" placeholder="Ghi nhận điểm tâm đắc..."></textarea>
+                                        </div>
+                                        <div>
+                                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">A (Actionable) — Bạn sẽ áp dụng chuyển dịch từ Thú vui sang Đam mê/Mục đích cao cả ra sao?</label>
+                                            <textarea id="iam-1-1-a" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber" placeholder="Hành động cụ thể..."></textarea>
+                                        </div>
+                                        <div>
+                                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">M (Meaningful) — Nhận thức này có ý nghĩa gì đối với cuộc sống hiện tại của bạn?</label>
+                                            <textarea id="iam-1-1-m" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber" placeholder="Ý nghĩa sâu sắc..."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div id="values-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                                <!-- Dynamic 8 value cards -->
-                            </div>
-                        </div>
 
-                        <!-- SECTION C: ABCDE WORKSHEET (For Stage 3) -->
-                        <div id="practice-abcde-section" class="hidden space-y-6">
-                            <div>
-                                <h3 class="text-base font-bold text-white">🛠️ Sổ Tay Chuyển Hóa Nghịch Cảnh ABCDE (Martin Seligman)</h3>
-                                <p class="text-xs text-slate-400 mt-1">Ghi lại một tình huống áp lực thực tế vừa diễn ra trong công việc để thực hành phản biện chữ D</p>
+                            <!-- Module 1.2: Me Values (41 values from personal_values.docx) & IAM 1.2 -->
+                            <div class="p-5 rounded-2xl bg-brand-card/30 border border-brand-border space-y-5">
+                                <div class="flex items-center justify-between flex-wrap gap-2">
+                                    <div>
+                                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                            <span>🎯 Bài 1.2: Định Vị La Bàn — Giá Trị Cốt Lõi Cá Nhân (Me Values)</span>
+                                        </h3>
+                                        <p class="text-xs text-slate-400 mt-0.5">Chọn các giá trị cốt lõi làm chiếc La Bàn nội tâm dẫn lối (Không giới hạn số lượng, trích xuất từ 41 giá trị chuẩn personal_values.docx)</p>
+                                    </div>
+                                    <span id="values-count-badge" class="text-xs px-2.5 py-1 rounded bg-brand-amber/20 text-brand-amber font-bold border border-brand-amber/30">0 Đã chọn</span>
+                                </div>
+                                <div id="values-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 max-h-80 overflow-y-auto pr-1">
+                                    <!-- Dynamic 41 value cards -->
+                                </div>
+                                <!-- IAM 1.2 Box -->
+                                <div class="pt-4 border-t border-brand-border/60 space-y-3">
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px]">I • A • M 1.2</span>
+                                        <span class="text-xs font-bold text-brand-amber">Đúc kết Định Vị La Bàn Giá Trị</span>
+                                    </div>
+                                    <div class="grid grid-cols-1 gap-3">
+                                        <div>
+                                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">I (Interested) — Bạn tâm đắc nhất với giá trị La Bàn nào bạn vừa lựa chọn?</label>
+                                            <textarea id="iam-1-2-i" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber" placeholder="Giá trị tâm đắc nhất..."></textarea>
+                                        </div>
+                                        <div>
+                                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">A (Actionable) — Giá trị này định hướng cho 1 quyết định khó khăn sắp tới của bạn ra sao?</label>
+                                            <textarea id="iam-1-2-a" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber" placeholder="Hành động theo La Bàn..."></textarea>
+                                        </div>
+                                        <div>
+                                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">M (Meaningful) — Nếu sống đúng với La Bàn này, bạn trở thành phiên bản như thế nào?</label>
+                                            <textarea id="iam-1-2-m" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber" placeholder="Ý nghĩa nhân bản..."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div id="abcde-steps-container" class="space-y-4">
-                                <!-- Dynamic ABCDE 5 input cards -->
-                            </div>
-                        </div>
 
-                        <!-- SECTION D: 3 THÀNH TỰU: I • A • M (HẠNH PHÚC BẮT ĐẦU TỪ TÔI) -->
-                        <div class="pt-6 border-t border-brand-border space-y-5">
-                            <div class="p-4 rounded-2xl bg-gradient-to-r from-brand-amber/10 via-brand-orange/5 to-transparent border border-brand-amber/30">
-                                <div class="flex items-center gap-2 mb-1.5">
-                                    <span class="px-2 py-0.5 rounded-full bg-brand-amber text-black font-extrabold text-[10px] uppercase tracking-wider">3 THÀNH TỰU: I • A • M</span>
-                                    <h4 class="text-sm font-bold text-white">Hạnh Phúc Bắt Đầu Từ TÔI — Sổ Tay Phản Tư</h4>
+                            <!-- Module 1.3: SDT & IAM 1.3 -->
+                            <div class="p-5 rounded-2xl bg-brand-card/30 border border-brand-border space-y-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="px-2 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px]">I • A • M 1.3</span>
+                                    <h3 class="text-sm font-bold text-white">Bài 1.3: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc (Deci & Ryan)</h3>
                                 </div>
                                 <p class="text-xs text-slate-300 leading-relaxed">
-                                    Khung phản tư chuyển hóa 3 bước theo tài liệu chính thức của Delivering Happiness Masterclass:
-                                    <strong>Interested</strong> (Tâm đắc nhất) → <strong>Actionable</strong> (Hành động áp dụng) → <strong>Meaningful</strong> (Ý nghĩa sâu sắc).
+                                    3 nhu cầu tâm lý cốt lõi: <strong>Cảm giác Kết nối</strong> (Relatedness) • <strong>Cảm giác Tự chủ</strong> (Autonomy) • <strong>Cảm giác Tiến bộ</strong> (Competence/Small Wins).
+                                </p>
+                                <div class="grid grid-cols-1 gap-3">
+                                    <div>
+                                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">I (Interested) — Trong 3 đòn bẩy, đòn bẩy nào bạn đang thấy thiếu hụt và muốn kích hoạt nhất?</label>
+                                        <textarea id="iam-1-3-i" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber" placeholder="Đòn bẩy tâm đắc..."></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">A (Actionable) — Bạn sẽ thiết lập Chiến thắng Nhỏ (Small Win) nào ngay tuần này?</label>
+                                        <textarea id="iam-1-3-a" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber" placeholder="Chiến thắng nhỏ tuần này..."></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">M (Meaningful) — Đòn bẩy đó giúp ích gì cho sự gắn kết của bạn với tổ chức?</label>
+                                        <textarea id="iam-1-3-m" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber" placeholder="Ý nghĩa gắn kết..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ================= STAGE 2: WORKSHOP LIVE 5 HABITS PRACTICE ================= -->
+                        <div id="stage2-practice-container" class="hidden space-y-6">
+                            <div class="p-4 rounded-2xl bg-gradient-to-r from-brand-amber/15 via-brand-orange/10 to-transparent border border-brand-amber/30">
+                                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                    <span>🛠️ Xưởng Thực Hành 5 Thói Quen Hạnh Phúc (10 Tiếng Tại Lớp)</span>
+                                </h3>
+                                <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+                                    Thao tác trực tiếp trên điện thoại/laptop theo từng chuyên đề giảng dạy. Mỗi thói quen đều có bài tập công cụ riêng và form I•A•M chuyên biệt riêng.
                                 </p>
                             </div>
 
-                            <!-- I Card -->
-                            <div class="p-4 rounded-xl bg-brand-card/70 border border-brand-border space-y-2">
-                                <label for="reflection-i" class="block text-xs font-bold text-brand-amber flex items-center justify-between">
-                                    <span id="prompt-label-i">1. Interested — Bạn tâm đắc nhất với điều gì từ bài học?</span>
-                                    <span class="text-[11px] font-normal text-slate-400" id="count-i">0 ký tự</span>
-                                </label>
-                                <textarea id="reflection-i" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber transition-all" placeholder="Ghi lại luận điểm, câu nói hoặc phát hiện bạn thấy tâm đắc nhất..."></textarea>
+                            <!-- 5 HABIT PILL NAVIGATION -->
+                            <div class="flex gap-2 overflow-x-auto pb-2" id="habit-nav-tabs">
+                                <button class="habit-tab active px-3.5 py-2 rounded-xl text-xs font-semibold border border-brand-border bg-brand-card whitespace-nowrap flex items-center gap-1.5 transition-all" data-habit="gratitude">
+                                    <span>🙏 1. Biết Ơn</span>
+                                </button>
+                                <button class="habit-tab px-3.5 py-2 rounded-xl text-xs font-semibold border border-brand-border bg-brand-card text-slate-400 whitespace-nowrap flex items-center gap-1.5 transition-all" data-habit="mindfulness">
+                                    <span>🌿 2. Tỉnh Thức</span>
+                                </button>
+                                <button class="habit-tab px-3.5 py-2 rounded-xl text-xs font-semibold border border-brand-border bg-brand-card text-slate-400 whitespace-nowrap flex items-center gap-1.5 transition-all" data-habit="optimism">
+                                    <span>☀️ 3. Lạc Quan (ABCDE)</span>
+                                </button>
+                                <button class="habit-tab px-3.5 py-2 rounded-xl text-xs font-semibold border border-brand-border bg-brand-card text-slate-400 whitespace-nowrap flex items-center gap-1.5 transition-all" data-habit="flow">
+                                    <span>🌀 4. Phiêu (Flow)</span>
+                                </button>
+                                <button class="habit-tab px-3.5 py-2 rounded-xl text-xs font-semibold border border-brand-border bg-brand-card text-slate-400 whitespace-nowrap flex items-center gap-1.5 transition-all" data-habit="altruism">
+                                    <span>🤝 5. Vị Nhân</span>
+                                </button>
                             </div>
 
-                            <!-- A Card -->
-                            <div class="p-4 rounded-xl bg-brand-card/70 border border-brand-border space-y-2">
-                                <label for="reflection-a" class="block text-xs font-bold text-brand-orange flex items-center justify-between">
-                                    <span id="prompt-label-a">2. Actionable — Bạn sẽ áp dụng điều này vào thực tế như thế nào?</span>
-                                    <span class="text-[11px] font-normal text-slate-400" id="count-a">0 ký tự</span>
-                                </label>
-                                <textarea id="reflection-a" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-all" placeholder="Một hành động cụ thể, thói quen nhỏ (Small Win) bạn sẽ thực hiện ngay tuần này..."></textarea>
+                            <!-- HABIT 1: GRATITUDE -->
+                            <div id="habit-panel-gratitude" class="habit-panel p-5 rounded-2xl bg-brand-card/40 border border-brand-border space-y-5">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                                        <span>🙏 Thói Quen 1: Biết Ơn Bền Vững (Robert Emmons)</span>
+                                    </h4>
+                                    <button class="btn-play-habit-audio text-xs text-brand-amber hover:underline flex items-center gap-1" data-audio="data/artifacts/audio_biet_on.mp3">
+                                        <span>▶ Nghe Audio Biết Ơn</span>
+                                    </button>
+                                </div>
+                                <div class="space-y-3">
+                                    <label class="block text-xs font-semibold text-slate-300">Viết 4 điều biết ơn sâu sắc hôm nay:</label>
+                                    <input type="text" id="gratitude-1" class="w-full bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500" placeholder="1. Về bản thân hoặc sức khỏe..." />
+                                    <input type="text" id="gratitude-2" class="w-full bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500" placeholder="2. Về một cơ hội học hỏi / công việc..." />
+                                    <input type="text" id="gratitude-3" class="w-full bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500" placeholder="3. Về một người đồng đội hỗ trợ bạn..." />
+                                    <input type="text" id="gratitude-4" class="w-full bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500" placeholder="4. Về một nghịch cảnh đã giúp bạn trưởng thành..." />
+                                </div>
+                                <div class="space-y-2 pt-2 border-t border-brand-border/60">
+                                    <label class="block text-xs font-semibold text-brand-amber">Soạn thiệp cảm ơn (Gratitude Card) gửi đồng nghiệp / người thân:</label>
+                                    <input type="text" id="gratitude-card-to" class="w-full bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500 mb-2" placeholder="Gửi đến: (Tên đồng nghiệp / người thân)..." />
+                                    <textarea id="gratitude-card-msg" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500" placeholder="Nội dung lời cảm ơn chân thành..."></textarea>
+                                </div>
+                                <!-- DEDICATED IAM GRATITUDE -->
+                                <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
+                                    <div class="text-xs font-bold text-brand-amber">I • A • M — Thói Quen Biết Ơn</div>
+                                    <input type="text" id="iam-gratitude-i" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="I: Điểm chạm sâu sắc nhất về lòng biết ơn..." />
+                                    <input type="text" id="iam-gratitude-a" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="A: Bạn sẽ thiết lập thói quen cảm ơn ai ngay sau lớp..." />
+                                    <input type="text" id="iam-gratitude-m" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="M: Lòng biết ơn nuôi dưỡng bình an ra sao..." />
+                                </div>
                             </div>
 
-                            <!-- M Card -->
-                            <div class="p-4 rounded-xl bg-brand-card/70 border border-brand-border space-y-2">
-                                <label for="reflection-m" class="block text-xs font-bold text-emerald-400 flex items-center justify-between">
-                                    <span id="prompt-label-m">3. Meaningful — Tại sao điều này lại có ý nghĩa quan trọng với bạn?</span>
-                                    <span class="text-[11px] font-normal text-slate-400" id="count-m">0 ký tự</span>
-                                </label>
-                                <textarea id="reflection-m" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all" placeholder="Vì sao điều này có ý nghĩa đối với bạn, gia đình hoặc đội ngũ của bạn?"></textarea>
+                            <!-- HABIT 2: MINDFULNESS -->
+                            <div id="habit-panel-mindfulness" class="habit-panel hidden p-5 rounded-2xl bg-brand-card/40 border border-brand-border space-y-5">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                                        <span>🌿 Thói Quen 2: Sống Tỉnh Thức & Kỹ Thuật SBA</span>
+                                    </h4>
+                                    <button class="btn-play-habit-audio text-xs text-brand-amber hover:underline flex items-center gap-1" data-audio="data/artifacts/audio_mindful.mp3">
+                                        <span>▶ Nghe Audio Tỉnh Thức</span>
+                                    </button>
+                                </div>
+                                <div class="p-3.5 rounded-xl bg-brand-dark/70 border border-brand-border space-y-2 text-xs text-slate-300">
+                                    <div class="font-bold text-brand-amber">Thực hành khoảng dừng SBA khi áp lực:</div>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" id="sba-check-s" class="rounded bg-brand-card text-brand-amber focus:ring-0">
+                                        <span><strong>S — STOP:</strong> Dừng lại 3 giây khi nhận thấy cảm xúc tiêu cực</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" id="sba-check-b" class="rounded bg-brand-card text-brand-amber focus:ring-0">
+                                        <span><strong>B — BREATHE:</strong> Hít thở sâu 3 nhịp vào bụng dưới</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" id="sba-check-a" class="rounded bg-brand-card text-brand-amber focus:ring-0">
+                                        <span><strong>A — ASK:</strong> Tự hỏi 'Điều gì thực sự quan trọng và có ý nghĩa nhất lúc này?'</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-1">Tình huống cụ thể nào trong công việc bạn sẽ đặt chuông nhắc SBA?</label>
+                                    <textarea id="sba-situation" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500" placeholder="Ví dụ: Trước khi bấm gửi email căng thẳng, trước cuộc họp giao ban..."></textarea>
+                                </div>
+                                <!-- DEDICATED IAM MINDFULNESS -->
+                                <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
+                                    <div class="text-xs font-bold text-brand-amber">I • A • M — Thói Quen Tỉnh Thức</div>
+                                    <input type="text" id="iam-mindfulness-i" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="I: Bạn nhận ra điều gì về phản xạ vô thức khi gặp căng thẳng..." />
+                                    <input type="text" id="iam-mindfulness-a" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="A: Tình huống cụ thể bạn cam kết kích hoạt SBA..." />
+                                    <input type="text" id="iam-mindfulness-m" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="M: Tỉnh thức bảo vệ an toàn tâm lý cho đội ngũ ra sao..." />
+                                </div>
                             </div>
 
-                            <div class="flex items-center justify-between text-xs text-slate-500 pt-1">
-                                <span>🔒 Bài làm được tự động lưu vào tài khoản học viên và gửi tới Ban Giảng Huấn.</span>
-                                <span id="save-status-indicator" class="text-brand-green font-medium">✓ Đã tự động lưu</span>
+                            <!-- HABIT 3: OPTIMISM ABCDE -->
+                            <div id="habit-panel-optimism" class="habit-panel hidden p-5 rounded-2xl bg-brand-card/40 border border-brand-border space-y-5">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                                        <span>☀️ Thói Quen 3: Lạc Quan Học Được & Framework ABCDE</span>
+                                    </h4>
+                                    <button class="btn-play-habit-audio text-xs text-brand-amber hover:underline flex items-center gap-1" data-audio="data/artifacts/lac_quan_abcde.mp3">
+                                        <span>▶ Nghe Audio ABCDE</span>
+                                    </button>
+                                </div>
+                                <div class="space-y-3">
+                                    <div>
+                                        <label class="block text-xs font-bold text-white mb-1">A — Adversity (Nghịch cảnh có thật vừa xảy ra):</label>
+                                        <textarea id="abcde-a" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200" placeholder="Mô tả sự việc khó khăn, thất bại hoặc áp lực..."></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-white mb-1">B — Belief (Tiếng nói tiêu cực, phán xét tự động trong đầu):</label>
+                                        <textarea id="abcde-b" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200" placeholder="Tiếng nói phán xét tự động lúc đó là gì..."></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-white mb-1">C — Consequence (Hậu quả cảm xúc ban đầu):</label>
+                                        <textarea id="abcde-c" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200" placeholder="Cảm xúc tê liệt, muốn bỏ cuộc..."></textarea>
+                                    </div>
+                                    <div class="p-3.5 rounded-xl bg-brand-amber/10 border border-brand-amber/40">
+                                        <label class="block text-xs font-bold text-brand-amber mb-1">D — Dispute (Phản biện lý trí bằng Stop-Breathe-Ask - QUAN TRỌNG NHẤT):</label>
+                                        <textarea id="abcde-d" rows="2" class="w-full bg-brand-dark border border-brand-amber/50 rounded-xl p-2.5 text-xs text-slate-200" placeholder="Niềm tin B có đúng 100% không? Bằng chứng ngược lại là gì? Góc nhìn khách quan khác?"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-brand-green mb-1">E — Effect & Action (Cảm xúc mới & Hành động cụ thể giải quyết vấn đề):</label>
+                                        <textarea id="abcde-e" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200" placeholder="Hành động cụ thể bạn sẽ làm ngay bây giờ..."></textarea>
+                                    </div>
+                                </div>
+                                <!-- DEDICATED IAM OPTIMISM -->
+                                <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
+                                    <div class="text-xs font-bold text-brand-amber">I • A • M — Thói Quen Lạc Quan ABCDE</div>
+                                    <input type="text" id="iam-optimism-i" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="I: Bài học lớn nhất khi nhìn rõ cơ chế ABC vs sức mạnh chữ D..." />
+                                    <input type="text" id="iam-optimism-a" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="A: Hành động mới (E) bạn cam kết thực hiện đầu tiên..." />
+                                    <input type="text" id="iam-optimism-m" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="M: Bẻ gãy niềm tin giới hạn mang lại ý nghĩa gì cho sự kiên cường..." />
+                                </div>
                             </div>
+
+                            <!-- HABIT 4: FLOW -->
+                            <div id="habit-panel-flow" class="habit-panel hidden p-5 rounded-2xl bg-brand-card/40 border border-brand-border space-y-5">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                                        <span>🌀 Thói Quen 4: Thói Quen Phiêu & Trạng Thái Dòng Chảy</span>
+                                    </h4>
+                                    <button class="btn-play-habit-audio text-xs text-brand-amber hover:underline flex items-center gap-1" data-audio="data/artifacts/audio_flow.mp3">
+                                        <span>▶ Nghe Audio Flow</span>
+                                    </button>
+                                </div>
+                                <div class="space-y-3">
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-300 mb-1">Một công việc buồn tẻ / lặp đi lặp lại bạn phải làm trong tuần:</label>
+                                        <input type="text" id="flow-boring-task" class="w-full bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200" placeholder="Ví dụ: Nhập liệu báo cáo tuần, lọc email..." />
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-brand-amber mb-1">Tái thiết kế công việc đó thành thử thách thú vị (Microflow / Tận dụng AI):</label>
+                                        <textarea id="flow-redesign" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200" placeholder="Ví dụ: Dùng AI viết script tự động hóa trong 20 phút, bấm giờ thi đua hoàn thành..."></textarea>
+                                    </div>
+                                </div>
+                                <!-- DEDICATED IAM FLOW -->
+                                <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
+                                    <div class="text-xs font-bold text-brand-amber">I • A • M — Thói Quen Phiêu (Flow)</div>
+                                    <input type="text" id="iam-flow-i" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="I: Điều kiện tiên quyết nào giúp bạn bước vào Flow..." />
+                                    <input type="text" id="iam-flow-a" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="A: Bạn sẽ loại bỏ xao lãng nào để đạt Flow tuần tới..." />
+                                    <input type="text" id="iam-flow-m" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="M: Flow mang lại giá trị gì cho hiệu suất và niềm hứng khởi..." />
+                                </div>
+                            </div>
+
+                            <!-- HABIT 5: ALTRUISM -->
+                            <div id="habit-panel-altruism" class="habit-panel hidden p-5 rounded-2xl bg-brand-card/40 border border-brand-border space-y-5">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                                        <span>🤝 Thói Quen 5: Vị Nhân & Trao Giá Trị Không Vụ Lợi</span>
+                                    </h4>
+                                    <button class="btn-play-habit-audio text-xs text-brand-amber hover:underline flex items-center gap-1" data-audio="data/artifacts/audio_vi_nhan.mp3">
+                                        <span>▶ Nghe Audio Vị Nhân</span>
+                                    </button>
+                                </div>
+                                <div class="space-y-3">
+                                    <label class="block text-xs font-semibold text-slate-300">Tự nhận diện phong cách tương tác theo Adam Grant:</label>
+                                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                                        <label class="p-3 rounded-xl border border-brand-border bg-brand-dark flex items-center gap-2 cursor-pointer text-xs">
+                                            <input type="radio" name="altruism-style" value="Giver" class="text-brand-amber focus:ring-0">
+                                            <span><strong>Giver:</strong> Sẵn lòng cho đi không toan tính</span>
+                                        </label>
+                                        <label class="p-3 rounded-xl border border-brand-border bg-brand-dark flex items-center gap-2 cursor-pointer text-xs">
+                                            <input type="radio" name="altruism-style" value="Matcher" class="text-brand-amber focus:ring-0">
+                                            <span><strong>Matcher:</strong> Sòng phẳng có qua có lại</span>
+                                        </label>
+                                        <label class="p-3 rounded-xl border border-brand-border bg-brand-dark flex items-center gap-2 cursor-pointer text-xs">
+                                            <input type="radio" name="altruism-style" value="Taker" class="text-brand-amber focus:ring-0">
+                                            <span><strong>Taker:</strong> Tìm kiếm lợi ích cá nhân trước</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-brand-amber mb-1">Một hành động vị nhân cụ thể bạn cam kết giúp đồng đội/khách hàng trong 48h tới:</label>
+                                        <textarea id="altruism-act" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200" placeholder="Hành động giúp đỡ cụ thể không vì vụ lợi..."></textarea>
+                                    </div>
+                                </div>
+                                <!-- DEDICATED IAM ALTRUISM -->
+                                <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
+                                    <div class="text-xs font-bold text-brand-amber">I • A • M — Thói Quen Vị Nhân</div>
+                                    <input type="text" id="iam-altruism-i" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="I: Nhận thức sâu sắc nhất về Smart Giver (Vị nhân thông thái)..." />
+                                    <input type="text" id="iam-altruism-a" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="A: Hành động cụ thể giúp đồng nghiệp không cần đền đáp..." />
+                                    <input type="text" id="iam-altruism-m" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="M: Tinh thần vị nhân kiến tạo niềm tin đội ngũ ra sao..." />
+                                </div>
+                            </div>
+
+                            <!-- CAPSTONE WORKSHOP IAM & SYNC -->
+                            <div class="p-5 rounded-2xl bg-gradient-to-r from-brand-amber/10 via-brand-orange/5 to-transparent border border-brand-amber/40 space-y-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="px-2 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px]">CAPSTONE IAM</span>
+                                    <h4 class="text-sm font-bold text-white">Đúc Kết Tổng Lực Cuối Ngày Học (10 Tiếng Tại Lớp)</h4>
+                                </div>
+                                <div class="grid grid-cols-1 gap-3">
+                                    <div>
+                                        <label class="block text-[11px] font-semibold text-brand-amber mb-1">I (Interested) — Điều tâm đắc và lay động lớn nhất sau 1 ngày học?</label>
+                                        <textarea id="iam-capstone-i" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200" placeholder="Điều lay động lớn nhất..."></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[11px] font-semibold text-brand-orange mb-1">A (Actionable) — 3 cam kết hành động mang về thực hiện tại doanh nghiệp / gia đình?</label>
+                                        <textarea id="iam-capstone-a" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200" placeholder="3 cam kết hành động cụ thể..."></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[11px] font-semibold text-emerald-400 mb-1">M (Meaningful) — Khóa học thay đổi định nghĩa hạnh phúc của bạn thế nào?</label>
+                                        <textarea id="iam-capstone-m" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200" placeholder="Ý nghĩa sâu sắc nhất..."></textarea>
+                                    </div>
+                                </div>
+                                <div class="pt-2 flex items-center justify-between">
+                                    <span class="text-xs text-slate-400 italic">Dữ liệu được gửi trực tiếp về Google Sheets cho Giảng viên & Coach</span>
+                                    <button id="btn-sync-workshop" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber hover:from-orange-600 hover:to-amber-600 text-black font-extrabold text-xs shadow-lg shadow-orange-500/20 active:scale-95 transition-all">
+                                        ⚡ Lưu & Đồng Bộ Về Ban Giảng Huấn
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ================= STAGE 3: POST-CLASS 21-DAY DASHBOARD ================= -->
+                        <div id="stage3-practice-container" class="hidden space-y-8">
+                            <!-- Hero Recap Banner -->
+                            <div class="p-5 rounded-2xl bg-gradient-to-r from-brand-amber/20 via-brand-orange/10 to-transparent border border-brand-amber/40">
+                                <div class="flex items-center justify-between flex-wrap gap-2">
+                                    <div>
+                                        <span class="px-2.5 py-0.5 rounded-full bg-brand-amber text-black font-extrabold text-[10px] uppercase tracking-wider">Hành Trình Chuyển Hóa 21 Ngày</span>
+                                        <h3 class="text-base font-extrabold text-white mt-1">Focus on I • A • M — Nuôi Dưỡng 5 Thói Quen Hạnh Phúc</h3>
+                                        <p class="text-xs text-slate-300 mt-1">Hệ thống tự động khôi phục toàn bộ chất liệu bạn đã gieo từ Chặng 1 & Chặng 2 để làm điểm tựa mỗi ngày.</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-xs text-slate-400">Tỷ lệ rèn luyện</span>
+                                        <div id="tracker-summary-percent" class="text-xl font-extrabold text-brand-amber">0%</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- CARDS RECAP MATERIAL FROM STAGE 1 & 2 -->
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                                <!-- Card 1: Me Values -->
+                                <div class="p-4 rounded-xl bg-brand-card/60 border border-brand-border space-y-2">
+                                    <div class="text-xs font-bold text-brand-amber flex items-center gap-1.5">
+                                        <span>🎯</span> La Bàn Me Values (Từ Chặng 1)
+                                    </div>
+                                    <div id="recap-me-values-list" class="space-y-1 text-xs text-slate-300">
+                                        <span class="text-slate-500 italic">Đang tải giá trị...</span>
+                                    </div>
+                                </div>
+
+                                <!-- Card 2: ABCDE Script -->
+                                <div class="p-4 rounded-xl bg-brand-card/60 border border-brand-border space-y-2">
+                                    <div class="text-xs font-bold text-brand-orange flex items-center gap-1.5">
+                                        <span>☀️</span> Kịch Bản ABCDE (Từ Chặng 2)
+                                    </div>
+                                    <div id="recap-abcde-content" class="text-xs text-slate-300 space-y-1">
+                                        <span class="text-slate-500 italic">Đang tải kịch bản...</span>
+                                    </div>
+                                </div>
+
+                                <!-- Card 3: 5 Habits IAM -->
+                                <div class="p-4 rounded-xl bg-brand-card/60 border border-brand-border space-y-2">
+                                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+                                        <span>🌿</span> 5 Đúc Kết I • A • M (Từ Chặng 2)
+                                    </div>
+                                    <div id="recap-iam-content" class="text-xs text-slate-300 space-y-1 max-h-36 overflow-y-auto pr-1">
+                                        <span class="text-slate-500 italic">Đang tải đúc kết...</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 21-DAY HABIT TRACKER GRID -->
+                            <div class="p-5 rounded-2xl bg-brand-card/40 border border-brand-border space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                                            <span>📅 Bảng Điểm Danh 5 Thói Quen 21 Ngày</span>
+                                        </h4>
+                                        <p class="text-xs text-slate-400">Tích chọn các thói quen bạn đã thực hành mỗi ngày (Dữ liệu lưu tự động)</p>
+                                    </div>
+                                    <span id="tracker-count-badge" class="text-xs px-2.5 py-1 rounded bg-brand-amber/20 text-brand-amber font-bold border border-brand-amber/30">0/105 Lượt</span>
+                                </div>
+                                <div id="habit-tracker-grid" class="grid grid-cols-3 sm:grid-cols-7 gap-2">
+                                    <!-- Dynamic 21 Day Cards injected via JS -->
+                                </div>
+                            </div>
+
+                            <!-- WEEKLY CHECK-IN IAM -->
+                            <div class="p-5 rounded-2xl bg-brand-card/40 border border-brand-border space-y-4">
+                                <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                                    <span>📝 Weekly Check-in I • A • M (Sau 7 Ngày, 14 Ngày, 21 Ngày)</span>
+                                </h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                    <div class="p-3.5 rounded-xl bg-brand-dark/70 border border-brand-border space-y-2">
+                                        <div class="text-xs font-bold text-brand-amber">Tuần 1 (Ngày 7)</div>
+                                        <textarea id="weekly-checkin-1" rows="3" class="w-full bg-brand-surface border border-brand-border rounded-lg p-2 text-xs text-slate-200" placeholder="Hành động (A) đã triển khai đến đâu? Cảm nhận (M) thay đổi ra sao..."></textarea>
+                                    </div>
+                                    <div class="p-3.5 rounded-xl bg-brand-dark/70 border border-brand-border space-y-2">
+                                        <div class="text-xs font-bold text-brand-orange">Tuần 2 (Ngày 14)</div>
+                                        <textarea id="weekly-checkin-2" rows="3" class="w-full bg-brand-surface border border-brand-border rounded-lg p-2 text-xs text-slate-200" placeholder="Tiến độ tuần 2 & đòn bẩy nào phát huy tốt nhất..."></textarea>
+                                    </div>
+                                    <div class="p-3.5 rounded-xl bg-brand-dark/70 border border-brand-border space-y-2">
+                                        <div class="text-xs font-bold text-emerald-400">Tuần 3 (Ngày 21)</div>
+                                        <textarea id="weekly-checkin-3" rows="3" class="w-full bg-brand-surface border border-brand-border rounded-lg p-2 text-xs text-slate-200" placeholder="Tổng kết chuyển hóa sau 21 ngày rèn luyện..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- GLOBAL SAVE INDICATOR -->
+                        <div class="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-brand-border">
+                            <span>🔒 Dữ liệu thực hành được lưu tự động trên thiết bị và đồng bộ về Ban Giảng Huấn.</span>
+                            <span id="save-status-indicator" class="text-brand-green font-medium">✓ Đã tự động lưu</span>
                         </div>
 
                     </div>
 
-                    <!-- TAB 3: DOWNLOADABLE RESOURCES -->
+                    <!-- TAB 3: DOWNLOADABLE RESOURCES (Artifacts) -->
                     <div id="tab-resources" class="tab-content hidden p-6 lg:p-8 space-y-4">
-                        <h3 class="text-base font-bold text-white">📂 Tài Liệu Bài Giảng & Công Cụ Tự Thực Hành</h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <a href="#" class="p-4 rounded-xl bg-brand-card/70 border border-brand-border hover:border-brand-amber/50 transition-all flex items-center gap-3.5 group">
-                                <div class="w-10 h-10 rounded-lg bg-brand-amber/10 text-brand-amber flex items-center justify-center font-bold text-lg">📄</div>
-                                <div>
-                                    <div class="text-sm font-bold text-slate-200 group-hover:text-brand-amber transition-colors">Slide Đúc Kết 3 Cấp Độ Hạnh Phúc</div>
-                                    <div class="text-xs text-slate-400">Tài liệu PDF tóm tắt • 1.2 MB</div>
-                                </div>
-                            </a>
-                            <a href="#" class="p-4 rounded-xl bg-brand-card/70 border border-brand-border hover:border-brand-amber/50 transition-all flex items-center gap-3.5 group">
-                                <div class="w-10 h-10 rounded-lg bg-brand-orange/10 text-brand-orange flex items-center justify-center font-bold text-lg">📊</div>
-                                <div>
-                                    <div class="text-sm font-bold text-slate-200 group-hover:text-brand-orange transition-colors">Biểu Mẫu Thực Hành ABCDE 1 Trang</div>
-                                    <div class="text-xs text-slate-400">Worksheet PDF in sẵn • 850 KB</div>
-                                </div>
-                            </a>
+                        <h3 class="text-base font-bold text-white">📂 Tài Liệu Bài Giảng & Công Cụ Tự Thực Hành (Artifacts)</h3>
+                        <div id="resources-grid-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Injected dynamically via JS from stage.resources -->
                         </div>
                     </div>
                 </div>
@@ -371,7 +733,7 @@
             <!-- STICKY BOTTOM ACTION BAR -->
             <div class="sticky bottom-0 z-20 bg-brand-surface/95 backdrop-blur-md border-t border-brand-border px-6 lg:px-10 py-4 flex items-center justify-between">
                 <button id="btn-prev-lesson" class="px-4 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-300 text-sm font-semibold border border-brand-border transition-all flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed">
-                    <span>⬅ Bài trước</span>
+                    <span>⬅ Chặng trước</span>
                 </button>
 
                 <div class="flex items-center gap-3">
@@ -486,22 +848,22 @@
             <div class="text-5xl animate-bounce">🏆</div>
             <div>
                 <span class="text-xs uppercase tracking-widest font-extrabold text-brand-amber">Chúc mừng bạn đã hoàn thành</span>
-                <h2 class="text-2xl font-extrabold text-white mt-1">Hành Trình Chuyển Hóa Hạnh Phúc</h2>
+                <h2 class="text-2xl font-extrabold text-white mt-1">Hành Trình Blended Learning DHM</h2>
                 <p class="text-xs text-slate-300 mt-2 leading-relaxed">
-                    Bạn đã xuất sắc vượt qua cả 3 chặng học, làm rõ 3 cấp độ hạnh phúc, chọn xong la bàn 3 giá trị Me Values và nắm vững công cụ chuyển hóa nghịch cảnh ABCDE.
+                    Bạn đã xuất sắc vượt qua Chặng 1 (Định vị La Bàn), hoàn thành Xưởng thực hành 5 Thói quen tại Chặng 2 và kích hoạt Hành trình Đồng hành 21 Ngày tại Chặng 3.
                 </p>
             </div>
 
             <div class="p-4 rounded-2xl bg-brand-card/70 border border-brand-border text-left space-y-2 text-xs">
                 <div class="font-bold text-slate-200">🚀 Bước tiếp theo: Buổi Live Reflection & Q&A trực tiếp</div>
                 <p class="text-slate-400">
-                    Sau 2–4 tuần thực hành thói quen trong công việc, Ban giảng huấn (Anh Vũ & Chị Châu) sẽ tổ chức buổi kết nối trực tuyến qua Zoom để cùng giải đáp các tình huống thực tế của bạn.
+                    Sau 2–4 tuần thực hành thói quen, Ban giảng huấn (Anh Vũ & Chị Châu) sẽ tổ chức buổi kết nối trực tuyến qua Zoom để cùng giải đáp các tình huống thực tế của bạn.
                 </p>
             </div>
 
             <div class="flex items-center gap-3 justify-center pt-2">
                 <button id="btn-close-completion" class="px-5 py-2.5 rounded-xl bg-brand-card hover:bg-brand-border text-slate-200 text-xs font-semibold border border-brand-border transition-colors">
-                    Xem lại bài học
+                    Xem lại hành trình
                 </button>
                 <a href="https://delivering-happiness.vercel.app/" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-black font-extrabold text-xs shadow-lg transition-transform hover:scale-105">
                     Trang chủ DHM ↗

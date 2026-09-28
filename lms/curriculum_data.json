@@ -1,123 +1,589 @@
 {
-  "courseTitle": "Delivering Happiness Movement (DHM) — Micro-Learning Journey",
-  "courseDescription": "Hành trình trải nghiệm khoa học hạnh phúc và chuyển hóa thói quen trong 90 phút.",
-  "targetAudience": "Học viên cá nhân và doanh nghiệp quan tâm đến văn hóa hạnh phúc tự thân",
+  "courseTitle": "Delivering Happiness Movement (DHM) — Blended Learning Journey",
+  "courseDescription": "Hành trình số đồng hành chuyển hóa hạnh phúc tự thân theo chuẩn Blended Learning: Gieo thông điệp Online → Gieo thói quen Offline tại lớp → Focus on I•A•M đồng hành 21 ngày.",
+  "targetAudience": "Học viên cá nhân và doanh nghiệp quan tâm đến văn hóa hạnh phúc tự thân (DHM8, DHM9, DHM10, In-house)",
   "totalDurationMinutes": 90,
   "stages": [
     {
       "id": "stage-1",
       "stageNumber": 1,
-      "title": "Khoa Học Hạnh Phúc & 3 Cấp Độ",
-      "subtitle": "Thú vui (Pleasure) → Đam mê (Passion) → Mục đích cao cả (Higher Purpose)",
+      "badge": "Pre-Class • Online",
+      "title": "Gieo Thông Điệp & Định Vị La Bàn",
+      "subtitle": "Khoa học Hạnh phúc • 3 Cấp độ • Giá trị Me Values • Thuyết Tự Quyết (SDT)",
       "instructor": "Giảng viên Vũ",
-      "estimatedMinutes": 25,
+      "estimatedMinutes": 30,
       "videoUrl": "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
       "videoDuration": "6 phút 30 giây",
-      "summary": "Mọi hành động con người đều hội tụ về đích đến là Hạnh phúc (Aristotle). Tuy nhiên, não bộ rất nhanh thích nghi với Thú vui ngắn hạn do cơ chế thích nghi khoái lạc (Hedonic Adaptation). Để bền vững, ta cần nâng cấp lên trạng thái Phiêu (Passion / Flow) và Mục đích cao cả (Higher Purpose) khi cống hiến cho điều lớn lao hơn bản thân.",
-      "insights": [
-        { "title": "Cấp độ 1: Thú vui (Pleasure)", "desc": "Nhanh nguội lạnh do cơ chế thích nghi khoái lạc. Tiền bạc, tiện nghi vật chất chỉ đem lại thỏa mãn nhất thời." },
-        { "title": "Cấp độ 2: Đam mê (Passion / Flow)", "desc": "Trạng thái Dòng chảy (Flow) khi tập trung giải quyết thử thách phù hợp với năng lực. Thời gian như ngừng trôi." },
-        { "title": "Cấp độ 3: Mục đích cao cả (Higher Purpose)", "desc": "Cấp độ bền vững nhất. Thấy công việc của mình có ý nghĩa, phụng sự và đóng góp giá trị cho cộng đồng." }
-      ],
-      "quizzes": [
+      "audios": [
         {
-          "id": "q1",
-          "question": "Theo nghiên cứu của Martin Seligman và triết lý DHM, cấp độ hạnh phúc nào có tính bền vững lâu dài nhất?",
-          "options": [
-            "Thú vui (Pleasure) từ việc sở hữu vật chất (mua xe mới, mua điện thoại mới)",
-            "Đam mê (Passion) khi tập trung cao độ vào công việc yêu thích",
-            "Mục đích cao cả (Higher Purpose / Meaning) khi thấy mình là một phần của điều gì đó lớn lao hơn bản thân",
-            "Niềm vui sau mỗi bữa tiệc tùng cuối tuần"
-          ],
-          "correctIndex": 2,
-          "explanation": "Chính xác! Thú vui nguội lạnh rất nhanh do hiện tượng thích nghi tâm lý. Chỉ khi gắn với Mục đích cao cả (Higher Purpose), cảm giác hạnh phúc mới duy trì bền vững."
+          "id": "a1-0",
+          "title": "0. Lời dẫn & Giới thiệu tổng quan",
+          "file": "data/artifacts/dh4_overview.mp3",
+          "duration": "2:45"
         },
         {
-          "id": "q2",
-          "question": "Ẩn dụ 'Ba tầng lầu' của Phong Tử Khải tương ứng thế nào với 3 cấp độ hạnh phúc?",
-          "options": [
-            "Tầng 1: Đam mê — Tầng 2: Vật chất — Tầng 3: Danh vọng",
-            "Tầng 1: Đời sống vật chất (Thú vui) — Tầng 2: Đời sống tinh thần (Đam mê) — Tầng 3: Đời sống tâm hồn (Mục đích cao cả)",
-            "Tầng 1: Gia đình — Tầng 2: Bạn bè — Tầng 3: Công việc",
-            "Tầng 1: Kiến thức — Tầng 2: Kỹ năng — Tầng 3: Thái độ"
-          ],
-          "correctIndex": 1,
-          "explanation": "Đúng! Đời người có ba tầng lầu: Tầng 1 là vật chất (thú vui), Tầng 2 là tinh thần (đam mê sáng tạo), Tầng 3 là tâm hồn (mục đích cao cả cống hiến)."
+          "id": "a1-1",
+          "title": "1. Khoa học Hạnh phúc & Nền tảng tâm lý",
+          "file": "data/artifacts/khoa_hoc_hanh_phuc.mp3",
+          "duration": "41:30"
+        },
+        {
+          "id": "a1-2",
+          "title": "2. Ba cấp độ hạnh phúc bền vững",
+          "file": "data/artifacts/ba_cap_do_ben_vung.mp3",
+          "duration": "39:50"
+        },
+        {
+          "id": "a1-3",
+          "title": "3. Ẩn dụ Ba tầng lầu & Case Study Zappos",
+          "file": "data/artifacts/ba_tang_zappos.mp3",
+          "duration": "40:15"
+        },
+        {
+          "id": "a1-4",
+          "title": "4. Hạnh phúc không khẩu hiệu",
+          "file": "data/artifacts/hanh_phuc_khong_khau_hieu.mp3",
+          "duration": "38:40"
         }
       ],
-      "iam": {
-        "I": "Bạn tâm đắc nhất với điều gì từ nội dung 3 Cấp độ Hạnh phúc & Ẩn dụ 3 Tầng Lầu của Phong Tử Khải?",
-        "A": "Bạn sẽ áp dụng điều này như thế nào để chuyển dịch dần từ Thú vui ngắn hạn (Pleasure) sang Đam mê (Passion) và Mục đích cao cả (Higher Purpose)?",
-        "M": "Tại sao nhận thức này lại có ý nghĩa sâu sắc đối với bạn ở thời điểm hiện tại?"
-      }
+      "summary": "Mọi hành động con người đều hội tụ về đích đến là Hạnh phúc (Aristotle). Tuy nhiên, não bộ rất nhanh thích nghi với Thú vui ngắn hạn do cơ chế thích nghi khoái lạc (Hedonic Adaptation). Để bền vững, ta cần nâng cấp lên trạng thái Phiêu (Passion / Flow) và Mục đích cao cả (Higher Purpose) khi cống hiến cho điều lớn lao hơn bản thân.",
+      "insights": [
+        {
+          "title": "Cấp độ 1: Thú vui (Pleasure)",
+          "desc": "Nhanh nguội lạnh do cơ chế thích nghi khoái lạc. Tiền bạc, tiện nghi vật chất chỉ đem lại thỏa mãn nhất thời."
+        },
+        {
+          "title": "Cấp độ 2: Đam mê (Passion / Flow)",
+          "desc": "Trạng thái Dòng chảy (Flow) khi tập trung giải quyết thử thách phù hợp với năng lực. Thời gian như ngừng trôi."
+        },
+        {
+          "title": "Cấp độ 3: Mục đích cao cả (Higher Purpose)",
+          "desc": "Cấp độ bền vững nhất. Thấy công việc của mình có ý nghĩa, phụng sự và đóng góp giá trị cho cộng đồng."
+        }
+      ],
+      "modules": [
+        {
+          "id": "mod-1-1",
+          "title": "Bài 1.1: Khoa học Hạnh phúc & 3 Cấp độ (Seligman)",
+          "quizzes": [
+            {
+              "id": "bk-q1",
+              "question": "Trong mô hình 3 cấp độ hạnh phúc, cấp độ nào được đánh giá là có khả năng duy trì bền lâu nhất theo thời gian?",
+              "options": [
+                "Thú vui (Pleasure)",
+                "Đam mê (Passion)",
+                "Mục đích cao cả (Higher Purpose)",
+                "Sự tự chủ (Autonomy)"
+              ],
+              "correctIndex": 2,
+              "explanation": "Đáp án đúng là lựa chọn số 3 theo giáo trình Delivering Happiness."
+            },
+            {
+              "id": "bk-q2",
+              "question": "Theo lý thuyết được trình bày, sự khác biệt chính giữa 'thú vui sở hữu' và 'thú vui trải nghiệm' là gì?",
+              "options": [
+                "Thú vui sở hữu tốn nhiều chi phí hơn thú vui trải nghiệm.",
+                "Thú vui trải nghiệm có khả năng duy trì cảm giác hạnh phúc lâu hơn sở hữu.",
+                "Chỉ có thú vui trải nghiệm mới được coi là một cấp độ hạnh phúc thực sự.",
+                "Thú vui sở hữu là nền tảng bắt buộc để đạt được thú vui trải nghiệm."
+              ],
+              "correctIndex": 1,
+              "explanation": "Đáp án đúng là lựa chọn số 2 theo giáo trình Delivering Happiness."
+            },
+            {
+              "id": "bk-q3",
+              "question": "Ba đòn bẩy hạnh phúc (Progress, Control, Connectedness) được phát triển dựa trên lý thuyết tâm lý học nào?",
+              "options": [
+                "Lý thuyết tháp nhu cầu của Maslow",
+                "Lý thuyết tự quyết (Self-Determination Theory)",
+                "Lý thuyết tâm lý học tích cực của Martin Seligman",
+                "Lý thuyết dòng chảy (Flow Theory)"
+              ],
+              "correctIndex": 1,
+              "explanation": "Đáp án đúng là lựa chọn số 2 theo giáo trình Delivering Happiness."
+            }
+          ],
+          "iam": {
+            "id": "iam_1_1",
+            "title": "Đúc kết I • A • M 1.1 — 3 Cấp Độ Hạnh Phúc",
+            "I": "Bạn tâm đắc nhất với điều gì từ nội dung 3 Cấp độ Hạnh phúc & Ẩn dụ 3 Tầng Lầu của Phong Tử Khải?",
+            "A": "Bạn sẽ áp dụng điều này như thế nào để chuyển dịch dần từ Thú vui ngắn hạn (Pleasure) sang Đam mê (Passion) và Mục đích cao cả (Higher Purpose)?",
+            "M": "Tại sao nhận thức này lại có ý nghĩa sâu sắc đối với bạn ở thời điểm hiện tại?"
+          }
+        },
+        {
+          "id": "mod-1-2",
+          "title": "Bài 1.2: Định Vị La Bàn — Giá Trị Cốt Lõi Cá Nhân (Me Values)",
+          "description": "Lựa chọn các giá trị quan trọng nhất từ danh mục chuẩn mực để thiết lập chiếc La Bàn nội tâm dẫn lối trước khi đến lớp.",
+          "valueOptions": [
+            "Tiến bộ (luôn tiến lên phía trước, phát triển không ngừng)",
+            "Thành công (đạt kết quả, hoàn thành nhiệm vụ)",
+            "Sáng tạo (nhạy cảm, nhiều sáng kiến, kinh nghiệm)",
+            "Sự chính trực (trung thực, chân thành, sống theo giá trị của mình)",
+            "Hợp tác (làm việc theo tập thể, làm việc tốt với mọi người)",
+            "Trách nhiệm (có trách nhiệm, luôn đáng tin và chín chắn)",
+            "Giúp đỡ (hỗ trợ những người xung quanh và cải thiện xã hội)",
+            "Sự tĩnh tâm (luôn bình thản thư giãn trong lòng)",
+            "Hạnh phúc gia đình (chung sống hòa thuận và coi trọng mọi thành viên)",
+            "Tình bạn (mật thiết, quan tâm và những mối quan hệ thân thuộc)",
+            "Học vấn (cam kết luôn lắng nghe, học hỏi)",
+            "Đóng góp (tạo sự khác biệt, luôn cống hiến)",
+            "Độc lập (tự quản, không chịu sự quản lý của ai)",
+            "Công bằng (đưa ra cơ hội đối với tất cả mọi người)",
+            "Sức khỏe (cơ thể khỏe mạnh, đầy sinh lực và không có bệnh)",
+            "Tha thứ (luôn sẵn sàng và rộng lượng)",
+            "Trung thành (trách nhiệm, trung thành, tôn trọng)",
+            "Tính cân bằng (quan tâm sâu sắc đến từng lĩnh vực cuộc sống)",
+            "Phát triển cá nhân (tăng trưởng, sử dụng mọi tiềm lực bản thân)",
+            "Chất lượng làm việc (xuất sắc, toàn diện, mắc rất ít lỗi)",
+            "Tôn trọng bản thân (tự hào về bản thân mình)",
+            "Lòng khoan dung (coi trọng quan điểm và giá trị của người xung quanh)",
+            "Tâm linh (có niềm tin mạnh mẽ, sức mạnh đạo đức đề cao)",
+            "Yêu thiên nhiên (thoải mái hơn khi bước ra thiên nhiên)",
+            "Thoải mái (hài lòng, thích thú, nhiều niềm vui và hạnh phúc)",
+            "Kiềm chế (chịu trách nhiệm, tự chủ cảm xúc)",
+            "An toàn (cảm thấy an tâm về mọi chuyện)",
+            "Sự công nhận (về vị thế, sự tôn trọng và thừa nhận của người khác)",
+            "Ảnh hưởng (ý tưởng độc đáo, lan tỏa quy trình tích cực)",
+            "Tính đa dạng (đa dạng trong hành động và kinh nghiệm sống)",
+            "Tính phong phú (hiểu cuộc sống xung quanh, ứng xử công minh)",
+            "Trật tự (sự tuân thủ, kiên quyết với những sai trái)",
+            "Bảo đảm kinh tế (độc lập về những vấn đề tài chính)",
+            "Mạo hiểm (những mạo hiểm mới, đầy thách thức, hồi hộp)",
+            "Cạnh tranh (giành chiến thắng, luôn muốn vươn lên)",
+            "Cảm nhận về nghệ thuật (ca kịch, vẽ, văn học)",
+            "Nổi tiếng (được nhiều người biết đến)",
+            "Thanh thế (thể hiện qua sự thành công, địa vị, vị thế)",
+            "Sức mạnh (sự điều khiển, quyền lực, sức ảnh hưởng)",
+            "Chính thống (coi trọng quá khứ, phong tục tập quán)",
+            "Tài sản (giàu có, sung túc và đầy đủ)"
+          ],
+          "iam": {
+            "id": "iam_1_2",
+            "title": "Đúc kết I • A • M 1.2 — La Bàn Giá Trị Sống",
+            "I": "Bạn tâm đắc nhất với giá trị La Bàn nào bạn vừa lựa chọn?",
+            "A": "Giá trị này sẽ định hướng cho một quyết định khó khăn hoặc hành vi sắp tới của bạn như thế nào?",
+            "M": "Nếu kiên định sống đúng với La Bàn này, bạn sẽ kiến tạo phiên bản tốt đẹp hơn của chính mình ra sao?"
+          }
+        },
+        {
+          "id": "mod-1-3",
+          "title": "Bài 1.3: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc",
+          "quizzes": [
+            {
+              "id": "bk-q4",
+              "question": "Đòn bẩy 'Cảm giác tiến bộ' (Sense of Progress) nhấn mạnh vào yếu tố nào sau đây để duy trì hạnh phúc?",
+              "options": [
+                "Phải đạt được những thành tựu vĩ đại và có sức ảnh hưởng lớn ngay lập tức.",
+                "Ghi nhận và trân trọng những chiến thắng nhỏ (small wins) hàng ngày.",
+                "Chỉ dựa vào sự vinh danh và khen thưởng từ cấp trên hoặc người ngoài.",
+                "Loại bỏ hoàn toàn các sai lầm và thất bại trong quá trình làm việc."
+              ],
+              "correctIndex": 1,
+              "explanation": "Đáp án đúng là lựa chọn số 2 theo giáo trình Delivering Happiness."
+            },
+            {
+              "id": "bk-q5",
+              "question": "Trạng thái 'Tỉnh thức' (Mindfulness) trong 5 thói quen hạnh phúc được định nghĩa như thế nào?",
+              "options": [
+                "Là việc loại bỏ hoàn toàn mọi suy nghĩ tiêu cực ra khỏi tâm trí.",
+                "Tập trung chú ý vào khoảnh khắc hiện tại một cách có ý thức và không phán xét.",
+                "Dành ít nhất 2 giờ mỗi ngày để ngồi thiền trong không gian yên tĩnh.",
+                "Suy ngẫm về những bài học trong quá khứ để không lặp lại sai lầm."
+              ],
+              "correctIndex": 1,
+              "explanation": "Đáp án đúng là lựa chọn số 2 theo giáo trình Delivering Happiness."
+            }
+          ],
+          "iam": {
+            "id": "iam_1_3",
+            "title": "Đúc kết I • A • M 1.3 — 3 Đòn Bẩy (Kết Nối • Tự Chủ • Tiến Bộ)",
+            "I": "Trong 3 Đòn bẩy (Cảm giác Kết nối, Cảm giác Tự chủ, Cảm giác Tiến bộ), đòn bẩy nào bạn thấy tâm đắc nhất và đang cần kích hoạt nhất?",
+            "A": "Bạn sẽ thiết lập Chiến thắng Nhỏ (Small Wins) nào trong tuần này để nuôi dưỡng cảm giác tiến bộ tự thân mỗi ngày?",
+            "M": "Đòn bẩy bạn vừa chọn có ý nghĩa như thế nào đối với sự phát triển cá nhân và gắn kết đội ngũ của bạn?"
+          }
+        }
+      ],
+      "resources": [
+        {
+          "title": "Đồ họa thông tin: Bí Quyết 3 Cấp Độ Hạnh Phúc",
+          "type": "image",
+          "url": "data/artifacts/infographic_bi_quyet.png",
+          "icon": "🖼️"
+        },
+        {
+          "title": "Đồ họa thông tin: Kim Tự Tháp Hạnh Phúc",
+          "type": "image",
+          "url": "data/artifacts/infographic.png",
+          "icon": "📊"
+        },
+        {
+          "title": "Báo cáo: Khoa học Hạnh phúc & Dòng chảy Tổ chức",
+          "type": "markdown",
+          "url": "data/artifacts/report_dong_chay.md",
+          "icon": "📄"
+        },
+        {
+          "title": "Thẻ ghi nhớ tương tác: Flashcards Hạnh Phúc",
+          "type": "html",
+          "url": "data/artifacts/flashcards",
+          "icon": "🃏"
+        }
+      ]
     },
     {
       "id": "stage-2",
       "stageNumber": 2,
-      "title": "Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc",
-      "subtitle": "Cảm giác Kết nối • Cảm giác Tự chủ • Cảm giác Tiến bộ & La Bàn Me–We",
-      "instructor": "Giảng viên Châu & Vũ",
-      "estimatedMinutes": 30,
-      "videoUrl": "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
-      "videoDuration": "8 phút",
-      "summary": "Thuyết Tự Quyết (Self-Determination Theory - Deci & Ryan, 2000) khẳng định 3 nhu cầu tâm lý cốt lõi tạo nên động lực nội tại (Intrinsic Motivation) và hạnh phúc bền vững ở nơi làm việc: Cảm giác Kết nối, Cảm giác Tự chủ, và Cảm giác Tiến bộ. Chiếc Đồng hồ đại diện cho lịch trình bận rộn; Chiếc La bàn đại diện cho giá trị cốt lõi Me-We dẫn lối.",
-      "insights": [
+      "badge": "Workshop Live • Offline",
+      "title": "Gieo Thói Quen — Xưởng Thực Hành 5 Thói Quen Tại Lớp",
+      "subtitle": "Sổ tay thực hành số hóa 10 tiếng tại lớp: 3 Đòn bẩy & 5 Thói quen Hạnh phúc",
+      "instructor": "Ban Giảng Huấn DHM (Châu, Hưng, Hoàn, Vũ)",
+      "estimatedMinutes": 120,
+      "audios": [
         {
-          "title": "Đòn bẩy #1: Cảm giác Kết nối",
-          "desc": "Sống hoà ái với bản thân, với người khác và với thiên nhiên. Xây dựng môi trường an toàn tâm lý và sự đồng cảm chân thành trong đội ngũ."
+          "id": "a2-1",
+          "title": "Đòn bẩy Tự chủ: 70.000 giờ làm việc",
+          "file": "data/artifacts/70000_gio_lam_viec.mp3",
+          "duration": "39:50"
         },
         {
-          "title": "Đòn bẩy #2: Cảm giác Tự chủ",
-          "desc": "Khả năng là gì nếu không sợ? Quyền tự chủ trong hành động, can đảm lựa chọn và ra quyết định nhất quán theo La bàn giá trị cốt lõi."
+          "id": "a2-2",
+          "title": "Đòn bẩy Kết nối: Thỏa thuận văn hóa",
+          "file": "data/artifacts/thoa_thuan_van_hoa.mp3",
+          "duration": "38:20"
         },
         {
-          "title": "Đòn bẩy #3: Cảm giác Tiến bộ",
-          "desc": "Tiến bộ là cảm giác tiến lên phía trước. Khi tích lũy kỹ năng mới & đạt Chiến thắng Nhỏ (Small Wins), não giải phóng Dopamine tự nhiên, tạo Cảm giác Tự hào Bản thân — nền tảng của Hạnh phúc Bền vững (Eudaimonia). Thiếu tiến bộ sẽ rơi vào Bất lực tích tụ (Learned Helplessness)."
+          "id": "a2-3",
+          "title": "Thói quen 1 (Biết ơn): Âm thanh thực hành",
+          "file": "data/artifacts/audio_biet_on.mp3",
+          "duration": "33:50"
+        },
+        {
+          "id": "a2-4",
+          "title": "Thói quen 1 (Biết ơn): Biết ơn & Hiệu suất",
+          "file": "data/artifacts/biet_on_hieu_suat.mp3",
+          "duration": "41:10"
+        },
+        {
+          "id": "a2-5",
+          "title": "Thói quen 2 (Tỉnh thức): Âm thanh SBA",
+          "file": "data/artifacts/audio_mindful.mp3",
+          "duration": "35:10"
+        },
+        {
+          "id": "a2-6",
+          "title": "Thói quen 3 (Lạc quan): Tư duy lạc quan",
+          "file": "data/artifacts/audio_lac_quan.mp3",
+          "duration": "24:25"
+        },
+        {
+          "id": "a2-7",
+          "title": "Thói quen 3 (Lạc quan): Bài giảng ABCDE",
+          "file": "data/artifacts/lac_quan_abcde.mp3",
+          "duration": "41:35"
+        },
+        {
+          "id": "a2-8",
+          "title": "Thói quen 4 (Flow): Trạng thái phiêu",
+          "file": "data/artifacts/audio_flow.mp3",
+          "duration": "31:45"
+        },
+        {
+          "id": "a2-9",
+          "title": "Thói quen 4 (Flow): Làm việc 'phiêu'",
+          "file": "data/artifacts/lam_viec_phieu.mp3",
+          "duration": "41:30"
+        },
+        {
+          "id": "a2-10",
+          "title": "Thói quen 5 (Vị nhân): Trái tim vị nhân",
+          "file": "data/artifacts/audio_vi_nhan.mp3",
+          "duration": "30:55"
+        },
+        {
+          "id": "a2-11",
+          "title": "Thói quen 5 (Vị nhân): Người vị nhân & Nghịch lý tử tế",
+          "file": "data/artifacts/nguoi_vi_nhan.mp3",
+          "duration": "41:30"
         }
       ],
-      "valueOptions": [
-        "Chân thật & Trung thực (Integrity)",
-        "Học hỏi & Đổi mới liên tục (Continuous Learning)",
-        "Đồng hành & Tận tâm (Commitment & Empathy)",
-        "Gia đình & Bình an (Family & Peace)",
-        "Tự do & Sáng tạo (Freedom & Creativity)",
-        "Vị nhân & Cống hiến (Altruism & Service)",
-        "Hiệu suất & Xuất sắc (Excellence)",
-        "Lạc quan & Niềm vui sống (Optimism & Joy)"
+      "habits": [
+        {
+          "id": "habit-gratitude",
+          "number": 1,
+          "name": "Biết Ơn (Gratitude)",
+          "title": "Thói quen 1: Biết Ơn Bền Vững (Robert Emmons)",
+          "icon": "🙏",
+          "description": "Ghi nhận 4 điều biết ơn mỗi ngày và lan tỏa sự trân trọng đến đồng nghiệp thông qua văn hóa ghi nhận (Kudos).",
+          "audioTrack": "data/artifacts/audio_biet_on.mp3",
+          "tool": {
+            "type": "gratitude_tool",
+            "prompts": [
+              "Điều biết ơn #1 (Về bản thân hoặc sức khỏe):",
+              "Điều biết ơn #2 (Về một cơ hội học hỏi / công việc):",
+              "Điều biết ơn #3 (Về một người đồng đội hỗ trợ bạn):",
+              "Điều biết ơn #4 (Về một nghịch cảnh đã giúp bạn trưởng thành):"
+            ],
+            "cardPrompt": "Gửi 1 lời cảm ơn chân thành đến 1 người cụ thể (Đồng nghiệp / Người thân):"
+          },
+          "quizzes": [
+            {
+              "id": "bk-q8",
+              "question": "Thói quen 'Biết ơn' (Gratitude) được thực hành thông qua hành động cụ thể nào theo gợi ý của chuyên gia Robert Emmons?",
+              "options": [
+                "Viết thư cảm ơn cho tất cả những người mình đã từng gặp trong đời.",
+                "Chỉ biết ơn khi nhận được những món quà hoặc lợi ích lớn lao.",
+                "Nhìn thấy những điều mọi người làm đúng và trân trọng những điều tích cực hiện có.",
+                "Khoe khoang về những thành công của mình để người khác ngưỡng mộ."
+              ],
+              "correctIndex": 2,
+              "explanation": "Đáp án đúng là lựa chọn số 3 theo giáo trình Delivering Happiness."
+            }
+          ],
+          "iam": {
+            "id": "iam_gratitude",
+            "title": "Đúc kết I • A • M — Thói Quen Biết Ơn",
+            "I": "Điểm chạm sâu sắc nhất của bạn về sức mạnh chuyển hóa của Lòng biết ơn là gì?",
+            "A": "Bạn sẽ thiết lập thói quen ghi nhận và gửi lời cảm ơn ai ngay sau khóa học?",
+            "M": "Lòng biết ơn nuôi dưỡng sự bình an và các mối quan hệ của bạn như thế nào?"
+          }
+        },
+        {
+          "id": "habit-mindfulness",
+          "number": 2,
+          "name": "Tỉnh Thức (Mindfulness)",
+          "title": "Thói quen 2: Sống Tỉnh Thức & Kỹ Thuật SBA",
+          "icon": "🌿",
+          "description": "Thực hành khoảng dừng SBA (Stop – Breathe – Ask) để ngắt phản xạ tự động của não bộ khi gặp áp lực.",
+          "audioTrack": "data/artifacts/audio_mindful.mp3",
+          "tool": {
+            "type": "mindfulness_tool",
+            "steps": [
+              {
+                "step": "S — STOP",
+                "desc": "Dừng lại 3 giây khi nhận thấy cảm xúc tiêu cực dâng trào (giận dữ, lo lắng, muốn phản ứng ngay)."
+              },
+              {
+                "step": "B — BREATHE",
+                "desc": "Hít thở sâu 3 nhịp vào bụng dưới, cảm nhận hơi thở đưa oxy nuôi dưỡng tế bào não."
+              },
+              {
+                "step": "A — ASK",
+                "desc": "Tự hỏi: 'Điều gì thực sự quan trọng và có ý nghĩa nhất đối với mình lúc này?'"
+              }
+            ],
+            "checkinQuestion": "Tình huống cụ thể nào trong công việc hàng ngày bạn sẽ đặt chuông nhắc SBA?"
+          },
+          "quizzes": [
+            {
+              "id": "bk-q5",
+              "question": "Trạng thái 'Tỉnh thức' (Mindfulness) trong 5 thói quen hạnh phúc được định nghĩa như thế nào?",
+              "options": [
+                "Là việc loại bỏ hoàn toàn mọi suy nghĩ tiêu cực ra khỏi tâm trí.",
+                "Tập trung chú ý vào khoảnh khắc hiện tại một cách có ý thức và không phán xét.",
+                "Dành ít nhất 2 giờ mỗi ngày để ngồi thiền trong không gian yên tĩnh.",
+                "Suy ngẫm về những bài học trong quá khứ để không lặp lại sai lầm."
+              ],
+              "correctIndex": 1,
+              "explanation": "Đáp án đúng là lựa chọn số 2 theo giáo trình Delivering Happiness."
+            }
+          ],
+          "iam": {
+            "id": "iam_mindfulness",
+            "title": "Đúc kết I • A • M — Thói Quen Tỉnh Thức",
+            "I": "Bạn nhận ra điều gì về phản xạ vô thức của mình khi gặp căng thẳng trước đây?",
+            "A": "Tình huống cụ thể nào trong ngày bạn cam kết sẽ kích hoạt kỹ thuật Stop – Breathe – Ask?",
+            "M": "Năng lực tỉnh thức giúp bạn làm chủ cảm xúc và bảo vệ an toàn tâm lý cho đội ngũ ra sao?"
+          }
+        },
+        {
+          "id": "habit-optimism",
+          "number": 3,
+          "name": "Lạc Quan (Optimism & ABCDE)",
+          "title": "Thói quen 3: Lạc Quan Học Được & Framework ABCDE",
+          "icon": "☀️",
+          "description": "Lạc quan bằng lý trí thông qua mô hình ABCDE của Martin Seligman: Dùng chữ D (Dispute) để bẻ gãy niềm tin tiêu cực.",
+          "audioTrack": "data/artifacts/lac_quan_abcde.mp3",
+          "tool": {
+            "type": "abcde_tool",
+            "fields": [
+              {
+                "key": "A",
+                "label": "A — Adversity (Nghịch cảnh)",
+                "placeholder": "Mô tả sự việc khó khăn, thất bại hoặc tình huống gây áp lực thật đang xảy ra..."
+              },
+              {
+                "key": "B",
+                "label": "B — Belief (Niềm tin tự động)",
+                "placeholder": "Tiếng nói tiêu cực, phán xét tự động trong đầu bạn lúc đó là gì?"
+              },
+              {
+                "key": "C",
+                "label": "C — Consequence (Hậu quả cảm xúc)",
+                "placeholder": "Cảm xúc và phản ứng tiêu cực ban đầu của bạn (lo sợ, thu mình, tê liệt)..."
+              },
+              {
+                "key": "D",
+                "label": "D — Dispute (Phản biện lý trí - QUAN TRỌNG)",
+                "placeholder": "Stop-Breathe-Ask: Niềm tin B có đúng 100% không? Bằng chứng ngược lại là gì? Có góc nhìn khách quan nào khác?"
+              },
+              {
+                "key": "E",
+                "label": "E — Effect & Action (Hành động mới)",
+                "placeholder": "Cảm xúc tích cực mới? Hành động cụ thể nào bạn sẽ làm ngay để giải quyết vấn đề?"
+              }
+            ]
+          },
+          "quizzes": [
+            {
+              "id": "bk-q18",
+              "question": "Tại sao việc thực hiện 'Mục đích cao cả' lại giúp con người vượt qua được những khó khăn thường nhật?",
+              "options": [
+                "Vì nó làm cho khó khăn hoàn toàn biến mất khỏi cuộc sống.",
+                "Vì ý nghĩa của mục đích giúp cá nhân cảm thấy những nỗ lực của mình là xứng đáng và có giá trị.",
+                "Vì khi đó họ sẽ nhận được sự trợ giúp đặc biệt từ cộng đồng.",
+                "Vì mục đích cao cả luôn đi kèm với sự giàu sang về tiền bạc."
+              ],
+              "correctIndex": 1,
+              "explanation": "Đáp án đúng là lựa chọn số 2 theo giáo trình Delivering Happiness."
+            }
+          ],
+          "iam": {
+            "id": "iam_optimism",
+            "title": "Đúc kết I • A • M — Thói Quen Lạc Quan ABCDE",
+            "I": "Bài học lớn nhất khi bạn nhìn rõ cơ chế tự động A-B-C so với sức mạnh phản biện ở chữ D?",
+            "A": "Hành động mới (E) bạn cam kết thực hiện đầu tiên vào tuần tới là gì?",
+            "M": "Khả năng bẻ gãy niềm tin giới hạn mang lại ý nghĩa gì cho sự kiên cường của bạn?"
+          }
+        },
+        {
+          "id": "habit-flow",
+          "number": 4,
+          "name": "Phiêu (Flow & Microflow)",
+          "title": "Thói quen 4: Thói Quen Phiêu & Trạng Thái Dòng Chảy",
+          "icon": "🌀",
+          "description": "Thiết lập trạng thái đắm chìm tối ưu (Optimal Experience) khi cân bằng giữa Thử thách và Kỹ năng (Mihaly Csikszentmihalyi).",
+          "audioTrack": "data/artifacts/audio_flow.mp3",
+          "tool": {
+            "type": "microflow_tool",
+            "boringTaskLabel": "Một công việc buồn tẻ / lặp đi lặp lại bạn phải làm tuần này:",
+            "redesignLabel": "Tái thiết kế công việc đó thành thử thách thú vị (Microflow / Dùng công cụ AI hỗ trợ):"
+          },
+          "quizzes": [
+            {
+              "id": "bk-q6",
+              "question": "Theo Mihaly Csikszentmihalyi, điều kiện then chốt để trạng thái 'Phiêu' (Flow) diễn ra là gì?",
+              "options": [
+                "Nhiệm vụ phải cực kỳ dễ dàng để không gây ra sự căng thẳng.",
+                "Sự cân bằng giữa thách thức của nhiệm vụ và kỹ năng của người thực hiện.",
+                "Phải có sự hỗ trợ liên tục từ đồng nghiệp trong quá trình làm việc.",
+                "Mục tiêu cuối cùng phải là phần thưởng tài chính hấp dẫn."
+              ],
+              "correctIndex": 1,
+              "explanation": "Đáp án đúng là lựa chọn số 2 theo giáo trình Delivering Happiness."
+            }
+          ],
+          "iam": {
+            "id": "iam_flow",
+            "title": "Đúc kết I • A • M — Thói Quen Phiêu (Flow)",
+            "I": "Điều kiện tiên quyết nào giúp bạn bước vào trạng thái Dòng chảy (Flow)?",
+            "A": "Bạn sẽ loại bỏ sự xao lãng nào hoặc tái thiết kế công việc nào để đạt Flow trong tuần tới?",
+            "M": "Trạng thái Flow mang lại giá trị gì cho hiệu suất và niềm hứng khởi trong công việc của bạn?"
+          }
+        },
+        {
+          "id": "habit-altruism",
+          "number": 5,
+          "name": "Vị Nhân (Altruism)",
+          "title": "Thói quen 5: Vị Nhân & Trao Giá Trị Không Vụ Lợi",
+          "icon": "🤝",
+          "description": "Sống và hành động vì mục tiêu chung lớn nhất theo triết lý Smart Giver của Adam Grant.",
+          "audioTrack": "data/artifacts/audio_vi_nhan.mp3",
+          "tool": {
+            "type": "altruism_tool",
+            "giverStyles": [
+              {
+                "value": "Giver",
+                "label": "Giver (Người cho đi): Sẵn lòng giúp đỡ không toan tính"
+              },
+              {
+                "value": "Matcher",
+                "label": "Matcher (Người sòng phẳng): Giúp đỡ khi có đi có lại"
+              },
+              {
+                "value": "Taker",
+                "label": "Taker (Người nhận): Tìm kiếm lợi ích cá nhân trước"
+              }
+            ],
+            "actOfKindness": "Hành động vị nhân cụ thể (giúp đỡ đồng nghiệp/khách hàng) bạn sẽ làm trong 48h tới:"
+          },
+          "quizzes": [
+            {
+              "id": "bk-q15",
+              "question": "Trong thói quen 'Tỉnh thức', khái niệm 'Chụp mũ' (Presence) được hiểu như thế nào?",
+              "options": [
+                "Là việc áp đặt ý kiến của mình lên người khác một cách nhanh chóng.",
+                "Sự hiện diện trọn vẹn, không bị chi phối bởi quá khứ hay lo sợ về tương lai.",
+                "Việc luôn luôn phải có mặt ở mọi sự kiện của công ty.",
+                "Cố gắng đoán trước những gì sắp xảy ra để chuẩn bị."
+              ],
+              "correctIndex": 1,
+              "explanation": "Đáp án đúng là lựa chọn số 2 theo giáo trình Delivering Happiness."
+            }
+          ],
+          "iam": {
+            "id": "iam_altruism",
+            "title": "Đúc kết I • A • M — Thói Quen Vị Nhân",
+            "I": "Nhận thức sâu sắc nhất của bạn về tinh thần Vị nhân thông thái (Smart Giver)?",
+            "A": "Hành động cụ thể nào bạn sẽ làm để giúp đỡ một đồng nghiệp mà không cần họ đền đáp?",
+            "M": "Tinh thần Vị nhân kiến tạo niềm tin và văn hóa hạnh phúc trong tổ chức của bạn thế nào?"
+          }
+        }
       ],
-      "iam": {
-        "I": "Trong 3 Đòn bẩy (Cảm giác Kết nối, Cảm giác Tự chủ, Cảm giác Tiến bộ), đòn bẩy nào bạn thấy tâm đắc nhất và vì sao?",
-        "A": "Bạn sẽ thiết lập Chiến thắng Nhỏ (Small Wins) nào trong tuần này để nuôi dưỡng cảm giác tiến bộ tự thân mỗi ngày?",
-        "M": "Tại sao đòn bẩy và 3 giá trị La Bàn bạn vừa chọn lại có ý nghĩa then chốt đối với sự phát triển cá nhân và đội ngũ của bạn?"
+      "capstoneIam": {
+        "id": "iam_capstone",
+        "title": "Đúc Kết Tổng Lực Cuối Ngày Học (Workshop Capstone IAM)",
+        "I": "Điều tâm đắc và lay động lớn nhất đối với bạn sau trọn vẹn 1 ngày trải nghiệm tại lớp?",
+        "A": "Ba cam kết hành động cụ thể nhất bạn sẽ mang về thực hiện tại doanh nghiệp / gia đình?",
+        "M": "Khóa học này đã thay đổi định nghĩa về Hạnh phúc và Văn hóa đội ngũ của bạn như thế nào?"
       }
     },
     {
       "id": "stage-3",
       "stageNumber": 3,
-      "title": "Chuyển Hóa Nghịch Cảnh: Framework ABCDE",
-      "subtitle": "Kỹ thuật phản biện niềm tin giới hạn để kiến tạo hành động tích cực",
-      "instructor": "Giảng viên Vũ",
-      "estimatedMinutes": 35,
-      "videoUrl": "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
-      "videoDuration": "9 phút 40 giây",
-      "summary": "Lạc quan không phải là ảo tưởng màu hồng phớt lờ thực tế. Lạc quan theo khoa học là tối ưu hóa các lựa chọn hành động dựa trên mô hình ABCDE của Martin Seligman. Nghịch cảnh (A) kích hoạt Niềm tin tiêu cực tự động (B) sinh ra Hậu quả tê liệt (C). Chìa khóa chuyển hóa nằm ở chữ D (Dispute - Phản biện lý trí bằng Stop-Breathe-Ask) để mở ra Hành động tích cực mới (E).",
-      "insights": [
-        { "title": "A - B - C là cơ chế tự động", "desc": "Khi sự cố xảy ra, não bộ sinh tồn có xu hướng thổi phồng thảm họa và tự phán xét bản thân tiêu cực." },
-        { "title": "D - Dispute là kỹ năng ý thức", "desc": "Thực hành 'Stop - Breathe - Ask': Niềm tin B có đúng 100% không? Bằng chứng ngược lại là gì? Có góc nhìn khách quan nào khác?" },
-        { "title": "E - Effect & Action là sức bật", "desc": "Chuyển hóa năng lượng lo âu thành hành động cụ thể, dù là hành động nhỏ nhất để tái lập quyền kiểm soát bối cảnh." }
-      ],
-      "abcdeSteps": [
-        {"key": "A", "label": "A — Adversity (Nghịch cảnh)", "placeholder": "Mô tả sự việc khó khăn, thất bại hoặc tình huống gây ức chế/áp lực vừa xảy ra..."},
-        {"key": "B", "label": "B — Belief (Niềm tin tự động)", "placeholder": "Tiếng nói tiêu cực, phán xét tự động trong đầu bạn lúc đó là gì? (Ví dụ: Mình kém cỏi, sếp không tin mình...)"},
-        {"key": "C", "label": "C — Consequence (Hậu quả cảm xúc)", "placeholder": "Cảm xúc và phản ứng tiêu cực ban đầu của bạn là gì? (Ví dụ: Lo sợ, tim đập nhanh, thu mình, muốn bỏ cuộc...)"},
-        {"key": "D", "label": "D — Dispute (Phản biện lý trí - QUAN TRỌNG)", "placeholder": "Áp dụng kỹ thuật Stop-Breathe-Ask: Niềm tin B có đúng 100% không? Bằng chứng ngược lại là gì? Có cách giải thích khách quan nào khác?"},
-        {"key": "E", "label": "E — Effect & Action (Hành động mới)", "placeholder": "Sau khi phản biện, cảm xúc mới của bạn là gì? Bạn sẽ làm hành động cụ thể nào ngay bây giờ để giải quyết vấn đề?"}
-      ],
-      "iam": {
-        "I": "Bạn tâm đắc nhất với nguyên lý nào trong cơ chế A→B→C→D→E của Martin Seligman?",
-        "A": "Khi gặp một tình huống áp lực tiếp theo trong công việc, bạn sẽ thực hiện kỹ năng Stop - Breathe - Ask ở chữ D như thế nào?",
-        "M": "Khả năng làm chủ chữ D mang lại ý nghĩa gì cho sự bình an nội tại và năng lực vượt khó của bạn?"
-      }
+      "badge": "Post-Class • Online",
+      "title": "Focus on I • A • M & Hành Trình Đồng Hành 21 Ngày",
+      "subtitle": "Kế thừa toàn bộ chất liệu Chặng 1 & 2 để nuôi dưỡng thói quen chuyển hóa bền vững",
+      "instructor": "Đội ngũ Coach DHM Đồng Hành",
+      "estimatedMinutes": 21,
+      "videoUrl": "data/artifacts/the_explainer.mp4",
+      "videoDuration": "3 phút 45 giây",
+      "videoType": "mp4",
+      "features": {
+        "recapDashboard": true,
+        "habitTracker21Days": true,
+        "weeklyIamCheckin": true
+      },
+      "resources": [
+        {
+          "title": "Bản Thiết Kế Văn Hóa Tổ Chức (Culture Blueprint)",
+          "type": "pdf",
+          "url": "data/artifacts/culture_blueprint.pdf",
+          "icon": "📑"
+        },
+        {
+          "title": "Báo cáo Dòng Chảy & Quản Trị Con Người",
+          "type": "markdown",
+          "url": "data/artifacts/report_dong_chay.md",
+          "icon": "📄"
+        },
+        {
+          "title": "Ngân Hàng 50+ Tình Huống Thực Chiến ABCDE",
+          "type": "json",
+          "url": "data/artifacts/knowledge_base_abcde.json",
+          "icon": "💡"
+        }
+      ]
     }
   ]
 }
