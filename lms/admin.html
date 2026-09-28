@@ -1,604 +1,601 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" class="dark">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin & Coach Portal — Delivering Happiness Movement</title>
-    <meta name="description" content="Cổng quản lý học viên và giám sát bài tập thực hành dành cho Ban giảng huấn và Admin." />
+    <title>Coach & Admin Portal — Delivering Happiness Movement</title>
+    <meta name="description" content="Cổng quản trị dành cho Ban Giảng Huấn và Quản lý theo dõi tiến độ, chấm bài tập ABCDE và đồng bộ học viên." />
 
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#F97316',
+                            amber: '#F59E0B',
+                            green: '#10B981',
+                            dark: '#0B0F19',
+                            surface: '#111827',
+                            card: '#161F33',
+                            border: '#1E293B',
+                            muted: '#94A3B8'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Be Vietnam Pro"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
 
     <style>
-        .admin-container {
-            max-width: 1100px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #0B0F19;
+            color: #F8FAFC;
         }
 
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.2rem;
-            margin-bottom: 2rem;
-        }
-
-        .metric-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 14px;
-            padding: 1.4rem;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .metric-label {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .metric-val {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--text-white);
-        }
-
-        .metric-sub {
-            font-size: 0.75rem;
-            color: var(--accent-emerald);
-        }
-
-        /* DATA TABLE */
-        .table-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            overflow: hidden;
-            margin-bottom: 2rem;
-        }
-
-        .table-header-bar {
-            padding: 1.2rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--card-border);
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .table-title {
-            font-size: 1.15rem;
-            font-weight: 700;
-        }
-
-        .table-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn-action {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid var(--card-border);
-            color: var(--text-white);
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-action:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .btn-action.primary {
-            background: var(--primary-yellow);
-            color: #000;
-            border: none;
-        }
-
-        .custom-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 0.9rem;
-        }
-
-        .custom-table th {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 12px 16px;
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            border-bottom: 1px solid var(--card-border);
-        }
-
-        .custom-table td {
-            padding: 14px 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-            vertical-align: middle;
-        }
-
-        .custom-table tr:hover td {
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .status-pill {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .pill-active {
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--accent-emerald);
-        }
-
-        .pill-pending {
-            background: rgba(245, 158, 11, 0.15);
-            color: var(--primary-yellow);
-        }
-
-        .progress-mini {
-            width: 100px;
+        ::-webkit-scrollbar {
+            width: 6px;
             height: 6px;
-            background: rgba(255, 255, 255, 0.1);
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0F19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1E293B;
             border-radius: 4px;
-            overflow: hidden;
-            display: inline-block;
-            vertical-align: middle;
-            margin-right: 8px;
-        }
-
-        .progress-mini-fill {
-            height: 100%;
-            background: var(--accent-emerald);
-            border-radius: 4px;
-        }
-
-        /* MODAL */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            padding: 20px;
-        }
-
-        .modal-overlay.open {
-            display: flex;
-        }
-
-        .modal-box {
-            background: #111827;
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            max-width: 680px;
-            width: 100%;
-            max-height: 85vh;
-            overflow-y: auto;
-            padding: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--card-border);
-            padding-bottom: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        .submission-section {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            padding: 1.2rem;
-            margin-bottom: 1.2rem;
-        }
-
-        .submission-title {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--primary-yellow);
-            margin-bottom: 8px;
-        }
-
-        .submission-content {
-            font-size: 0.9rem;
-            color: #E2E8F0;
-            line-height: 1.6;
         }
     </style>
 </head>
 
-<body>
+<body class="min-h-screen bg-brand-dark text-slate-100 flex flex-col">
 
-    <!-- TOP NAVIGATION -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="admin.html" class="brand">
-                <span>🛡️ Delivering Happiness</span>
-                <span class="brand-badge" style="background: var(--accent-blue);">Coach & Admin</span>
-            </a>
-            <div class="nav-right">
-                <span class="user-badge">Đang đăng nhập: <strong>Giảng viên Vũ / Coach</strong></span>
-                <a href="index.html" class="btn-landing">👁️ Xem vai trò Học viên ➔</a>
+    <!-- TOP NAV -->
+    <nav class="sticky top-0 z-30 bg-brand-surface/95 backdrop-blur-md border-b border-brand-border px-6 lg:px-10 py-3.5 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-brand-orange to-brand-amber flex items-center justify-center text-black font-extrabold text-sm shadow-md">
+                DH
             </div>
+            <div>
+                <div class="font-extrabold text-sm text-white flex items-center gap-2">
+                    Coach & Admin Portal
+                    <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-brand-amber/20 text-brand-amber border border-brand-amber/30">Ban Giảng Huấn</span>
+                </div>
+                <div class="text-[11px] text-slate-400">Giám sát bài tập & Khai vấn học viên DHM</div>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <a href="index.html" class="px-3.5 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-slate-300 text-xs font-semibold border border-brand-border transition-colors flex items-center gap-1.5">
+                <span>🎓 Giao diện Học viên</span>
+            </a>
+            <button id="btn-lock-portal" class="px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-semibold border border-red-500/30 transition-colors">
+                🔒 Khóa Cổng
+            </button>
         </div>
     </nav>
 
-    <div class="admin-container">
+    <!-- PIN SECURITY GATE (Initially overlay if locked) -->
+    <div id="pin-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
+        <div class="bg-brand-surface border border-brand-border rounded-2xl p-6 lg:p-8 max-w-sm w-full shadow-2xl text-center space-y-5">
+            <div class="w-12 h-12 rounded-2xl bg-brand-amber/15 text-brand-amber flex items-center justify-center text-2xl mx-auto border border-brand-amber/30">
+                🛡️
+            </div>
+            <div>
+                <h3 class="text-lg font-bold text-white">Xác Thực Quyền Giảng Viên</h3>
+                <p class="text-xs text-slate-400 mt-1">Vui lòng nhập Mã PIN của Ban Giảng Huấn để truy cập danh sách học viên và bài tập.</p>
+            </div>
 
-        <!-- HEADER -->
-        <div style="margin-bottom: 2rem;">
-            <h1 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 0.4rem;">Bảng Quản Trị & Giám Sát Học Viên</h1>
-            <p style="color: var(--text-muted); font-size: 0.95rem;">
-                Theo dõi tiến độ, xem bài tập thực hành ABCDE và phân tích dữ liệu trước buổi Live Reflection & Q&A.
-            </p>
-        </div>
-
-        <!-- METRICS -->
-        <div class="metrics-grid">
-            <div class="metric-card">
-                <span class="metric-label">Tổng số học viên</span>
-                <span class="metric-val" id="total-learners">42</span>
-                <span class="metric-sub">↑ 8 học viên mới tuần này</span>
-            </div>
-            <div class="metric-card">
-                <span class="metric-label">Hoàn thành 3 chặng</span>
-                <span class="metric-val" id="completed-learners">29</span>
-                <span class="metric-sub" style="color: var(--primary-yellow);">Tỷ lệ hoàn thành: 69%</span>
-            </div>
-            <div class="metric-card">
-                <span class="metric-label">Bài thực hành ABCDE</span>
-                <span class="metric-val" id="abcde-submissions">31</span>
-                <span class="metric-sub">Đã sẵn sàng cho buổi Clinic</span>
-            </div>
-            <div class="metric-card">
-                <span class="metric-label">Cổng thanh toán SePay</span>
-                <span class="metric-val" style="color: var(--accent-emerald);">Hoạt động</span>
-                <span class="metric-sub">Tự động kích hoạt qua VietQR</span>
-            </div>
-        </div>
-
-        <!-- LEARNER MANAGEMENT TABLE -->
-        <div class="table-card">
-            <div class="table-header-bar">
-                <div class="table-title">📋 Danh Sách Học Viên Khóa DHM</div>
-                <div class="table-actions">
-                    <button class="btn-action" onclick="exportToCSV()">📥 Xuất Excel / CSV</button>
-                    <button class="btn-action primary" onclick="addNewLearnerPrompt()">+ Thêm Học Viên B2B</button>
+            <form id="pin-form" class="space-y-4">
+                <div>
+                    <input type="password" id="pin-input" autofocus maxlength="6" placeholder="Mã PIN (Mặc định: 1979)" class="w-full text-center tracking-widest text-lg font-mono bg-brand-dark border border-brand-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-amber transition-colors" />
+                    <p id="pin-error" class="text-xs text-red-400 mt-1.5 hidden">Mã PIN không đúng, vui lòng thử lại!</p>
                 </div>
+                <button type="submit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber hover:from-orange-600 hover:to-amber-600 text-black font-extrabold text-xs shadow-lg transition-transform active:scale-95">
+                    Mở Khóa Quản Trị ➔
+                </button>
+            </form>
+
+            <div class="text-[11px] text-slate-500 pt-2 border-t border-brand-border">
+                <a href="index.html" class="hover:text-slate-300">Quay lại trải nghiệm học viên</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <main class="flex-1 p-6 lg:p-10 max-w-7xl mx-auto w-full space-y-8">
+
+        <!-- STATS CARDS -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1 shadow-lg">
+                <div class="text-xs text-slate-400 font-medium">Tổng số học viên</div>
+                <div id="stat-total-learners" class="text-2xl lg:text-3xl font-extrabold text-white">0</div>
+                <div class="text-[11px] text-slate-500">Đã đăng ký tham gia Mini-LMS</div>
             </div>
 
-            <div style="overflow-x: auto;">
-                <table class="custom-table">
+            <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1 shadow-lg">
+                <div class="text-xs text-slate-400 font-medium">Hoàn thành Chặng 1</div>
+                <div id="stat-stage1-completed" class="text-2xl lg:text-3xl font-extrabold text-brand-amber">0%</div>
+                <div class="text-[11px] text-slate-500">Đã vượt qua Quiz 3 Cấp độ</div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1 shadow-lg">
+                <div class="text-xs text-slate-400 font-medium">Đã chọn La bàn Me Values</div>
+                <div id="stat-stage2-values" class="text-2xl lg:text-3xl font-extrabold text-blue-400">0</div>
+                <div class="text-[11px] text-slate-500">Học viên đã định vị 3 giá trị</div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1 shadow-lg">
+                <div class="text-xs text-slate-400 font-medium">Bài tập ABCDE Đã Nộp</div>
+                <div id="stat-stage3-abcde" class="text-2xl lg:text-3xl font-extrabold text-brand-green">0</div>
+                <div class="text-[11px] text-slate-500">Đã phân tích phản biện chữ D</div>
+            </div>
+        </div>
+
+        <!-- CONTROLS & SEARCH BAR -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-brand-surface border border-brand-border">
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+                <div class="relative w-full sm:w-72">
+                    <input type="text" id="search-input" placeholder="Tìm theo tên hoặc Email/SĐT..." class="w-full bg-brand-dark border border-brand-border rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-amber" />
+                    <svg class="w-4 h-4 text-slate-500 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+
+                <select id="filter-status" class="bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-brand-amber">
+                    <option value="all">Tất cả học viên</option>
+                    <option value="completed">Đã hoàn thành cả 3 chặng</option>
+                    <option value="learning">Đang học dở dang</option>
+                </select>
+            </div>
+
+            <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+                <button id="btn-seed-sample" class="px-3 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-300 text-xs font-semibold border border-brand-border transition-colors">
+                    ➕ Thêm Dữ Liệu Mẫu
+                </button>
+                <button id="btn-export-csv" class="px-4 py-2 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-black text-xs font-extrabold shadow-md hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5">
+                    <span>📥 Xuất Báo Cáo CSV (Excel)</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- LEARNERS TABLE -->
+        <div class="bg-brand-surface border border-brand-border rounded-2xl overflow-hidden shadow-xl">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
                     <thead>
-                        <tr>
-                            <th>Họ và tên</th>
-                            <th>Thông tin liên hệ</th>
-                            <th>Nguồn / Lớp</th>
-                            <th>Tiến độ</th>
-                            <th>Trạng thái</th>
-                            <th>Hành động</th>
+                        <tr class="bg-brand-dark/70 border-b border-brand-border text-slate-400 font-semibold uppercase tracking-wider text-[11px]">
+                            <th class="p-4">Học Viên</th>
+                            <th class="p-4">Tiến Độ</th>
+                            <th class="p-4">Quiz Chặng 1</th>
+                            <th class="p-4">La Bàn Me Values</th>
+                            <th class="p-4">Sổ Tay ABCDE</th>
+                            <th class="p-4">Hoạt Động Cuối</th>
+                            <th class="p-4 text-right">Hành Động</th>
                         </tr>
                     </thead>
-                    <tbody id="learner-tbody">
-                        <!-- Data rows dynamically rendered by JS -->
+                    <tbody id="learners-table-body" class="divide-y divide-brand-border/50 text-slate-300">
+                        <!-- Injected via JavaScript -->
                     </tbody>
                 </table>
             </div>
+
+            <!-- EMPTY STATE -->
+            <div id="table-empty" class="p-12 text-center text-slate-500 space-y-2 hidden">
+                <div class="text-3xl">📭</div>
+                <div class="text-sm font-semibold">Chưa có dữ liệu học viên</div>
+                <div class="text-xs">Bấm "Thêm Dữ Liệu Mẫu" hoặc làm bài từ giao diện học viên để ghi nhận.</div>
+            </div>
         </div>
 
-    </div>
+    </main>
 
-    <!-- MODAL: CHI TIẾT BÀI TẬP HỌC VIÊN -->
-    <div class="modal-overlay" id="submission-modal">
-        <div class="modal-box">
-            <div class="modal-header">
+    <!-- DETAIL INSPECTION MODAL -->
+    <div id="detail-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 hidden">
+        <div class="bg-brand-surface border border-brand-border rounded-3xl p-6 lg:p-8 max-w-3xl w-full shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-start justify-between border-b border-brand-border pb-4">
                 <div>
-                    <h3 style="font-size: 1.25rem; font-weight: 700;" id="modal-learner-name">Hồ Sơ Học Viên</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-muted);" id="modal-learner-meta"></p>
+                    <span class="text-[10px] uppercase font-bold tracking-widest text-brand-amber">Chi Tiết Hồ Sơ Học Viên</span>
+                    <h3 id="modal-learner-name" class="text-xl font-extrabold text-white mt-0.5">Nguyễn Văn A</h3>
+                    <p id="modal-learner-identity" class="text-xs text-slate-400 font-mono">an@gmail.com</p>
                 </div>
-                <button class="modal-close" onclick="closeModal()">&times;</button>
+                <button id="btn-close-detail" class="text-slate-400 hover:text-white p-2 rounded-lg bg-brand-card">✕</button>
             </div>
 
-            <!-- CHẶNG 1 REFLECTION -->
-            <div class="submission-section">
-                <div class="submission-title">Chặng 1: Phản tư về 3 Cấp độ Hạnh phúc</div>
-                <div class="submission-content" id="modal-stage1-reflection">Đang tải...</div>
-            </div>
-
-            <!-- CHẶNG 2 VALUES -->
-            <div class="submission-section">
-                <div class="submission-title">Chặng 2: 3 Giá trị cốt lõi đã chọn (La bàn)</div>
-                <div class="submission-content" id="modal-stage2-values">Đang tải...</div>
-            </div>
-
-            <!-- CHẶNG 3 ABCDE WORKSHEET -->
-            <div class="submission-section">
-                <div class="submission-title">Chặng 3: Bảng Thực Chiến ABCDE (Chuyển hóa nghịch cảnh)</div>
-                <div class="submission-content" id="modal-stage3-abcde">
-                    <!-- Populated dynamically -->
+            <!-- CHẶNG 1 INSPECTION -->
+            <div class="p-4 rounded-2xl bg-brand-card/50 border border-brand-border space-y-3">
+                <div class="flex items-center justify-between text-xs font-bold text-brand-amber">
+                    <span>CHẶNG 1: 3 CẤP ĐỘ HẠNH PHÚC</span>
+                    <span id="modal-c1-status" class="px-2 py-0.5 rounded bg-brand-dark text-slate-300">Đã học</span>
+                </div>
+                <div class="text-xs text-slate-300 space-y-1">
+                    <span class="font-semibold text-slate-400">Bài tập Phản tư khoảnh khắc mãn nguyện:</span>
+                    <p id="modal-c1-reflection" class="p-3 rounded-xl bg-brand-dark/70 border border-brand-border/60 text-slate-200 italic leading-relaxed">
+                        Chưa có nội dung phản tư.
+                    </p>
                 </div>
             </div>
 
-            <!-- COACH NOTE FORM -->
-            <div style="margin-top: 1.5rem;">
-                <label class="form-label">Ghi chú của Giảng viên (Chuẩn bị cho buổi Live Q&A):</label>
-                <textarea class="form-control" id="coach-notes" rows="3" placeholder="Ghi chú điểm cần nhắc hoặc khai vấn riêng cho học viên này..."></textarea>
-                <button class="btn-action primary" style="margin-top: 10px; width: 100%; justify-content: center;" onclick="saveCoachNote()">Lưu Ghi Chú Giảng Viên</button>
+            <!-- CHẶNG 2 INSPECTION -->
+            <div class="p-4 rounded-2xl bg-brand-card/50 border border-brand-border space-y-3">
+                <div class="flex items-center justify-between text-xs font-bold text-blue-400">
+                    <span>CHẶNG 2: LA BÀN GẶP ĐỒNG HỒ</span>
+                    <span id="modal-c2-status" class="px-2 py-0.5 rounded bg-brand-dark text-slate-300">Đã chọn</span>
+                </div>
+                <div>
+                    <span class="text-xs font-semibold text-slate-400 block mb-1.5">3 Giá trị cốt lõi cá nhân đã chọn (Me Values):</span>
+                    <div id="modal-c2-values-tags" class="flex flex-wrap gap-2">
+                        <!-- Injected badges -->
+                    </div>
+                </div>
+                <div class="text-xs text-slate-300 space-y-1">
+                    <span class="font-semibold text-slate-400">Phản tư xử lý xung đột La bàn vs Đồng hồ:</span>
+                    <p id="modal-c2-reflection" class="p-3 rounded-xl bg-brand-dark/70 border border-brand-border/60 text-slate-200 italic leading-relaxed">
+                        Chưa có nội dung.
+                    </p>
+                </div>
+            </div>
+
+            <!-- CHẶNG 3 INSPECTION -->
+            <div class="p-4 rounded-2xl bg-brand-card/50 border border-brand-border space-y-3">
+                <div class="flex items-center justify-between text-xs font-bold text-brand-green">
+                    <span>CHẶNG 3: MÔ HÌNH CHUYỂN HÓA NGHỊCH CẢNH ABCDE</span>
+                    <span id="modal-c3-status" class="px-2 py-0.5 rounded bg-brand-dark text-slate-300">Đã nộp</span>
+                </div>
+                <div id="modal-c3-abcde-grid" class="space-y-2 text-xs">
+                    <!-- ABCDE step details -->
+                </div>
+            </div>
+
+            <!-- COACH NOTES SECTION -->
+            <div class="p-4 rounded-2xl bg-brand-dark border border-brand-amber/40 space-y-2">
+                <label for="coach-notes-input" class="block text-xs font-bold text-brand-amber uppercase tracking-wider">
+                    📝 Ghi Chú Khai Vấn Của Coach (Coach Notes):
+                </label>
+                <textarea id="coach-notes-input" rows="3" class="w-full bg-brand-surface border border-brand-border rounded-xl p-3 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber" placeholder="Nhập ghi chú nhận xét hoặc các câu hỏi gợi mở cho buổi Live Q&A sắp tới..."></textarea>
+                <div class="flex justify-end">
+                    <button id="btn-save-coach-notes" class="px-4 py-1.5 rounded-lg bg-brand-amber hover:bg-amber-600 text-black font-bold text-xs transition-colors">
+                        Lưu Ghi Chú
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- LOGIC SCRIPT -->
     <script>
-        // MOCK & REAL LOCAL STORAGE INTEGRATION
-        const DEFAULT_LEARNERS = [
-            {
-                id: "lrn_01",
-                name: "Nguyễn Thu Hà",
-                email: "thuha.nguyen@apollo.edu.vn",
-                phone: "0983 124 556",
-                source: "B2B Apollo",
-                progress: 100,
-                status: "Đã kích hoạt",
-                stage1_reflection: "Khoảnh khắc mãn nguyện nhất là khi tôi đồng hành cùng giáo viên vượt qua đợt kiểm định chất lượng gắt gao. Đó là Mục đích cao cả vì chúng tôi cùng kiến tạo giá trị cho học sinh.",
-                stage2_values: ["Tận tâm & Đồng hành", "Học hỏi liên tục", "Vị nhân & Cống hiến"],
-                abcde: {
-                    A: "Phụ huynh phàn nàn gay gắt về tiến độ học của con trong buổi họp phụ huynh",
-                    B: "Mình làm quản lý chương trình quá tệ, phụ huynh đang công kích cá nhân mình",
-                    C: "Cảm giác tủi thân, phòng thủ, định né tránh không tiếp xúc phụ huynh đó nữa",
-                    D: "Stop - Breathe - Ask: Phụ huynh phàn nàn vì họ đang lo lắng cho tương lai của con, không phải họ ghét mình. Đây là cơ hội để minh bạch hóa lộ trình hỗ trợ con.",
-                    E: "Chủ động mời phụ huynh uống cà phê 1:1, phân tích kết quả bài test và lên lộ trình gia sư kèm riêng 2 tuần."
-                },
-                coach_note: "Case rất hay về giáo dục, có thể mời chị Hà chia sẻ trong buổi Live Clinic."
-            },
-            {
-                id: "lrn_02",
-                name: "Trần Minh Quang",
-                email: "quang.tm@fpt.com",
-                phone: "0904 889 123",
-                source: "B2C VietQR (SePay)",
-                progress: 66,
-                status: "Đang học (Chặng 3)",
-                stage1_reflection: "Tôi thường rơi vào bẫy Thú vui khi mua sắm đồ công nghệ mới, vui được vài ngày là hết. Tôi muốn tìm lại cảm giác Flow khi lập trình.",
-                stage2_values: ["Sáng tạo & Tự do", "Chân thật & Trung thực", "Xuất sắc & Kỷ luật"],
-                abcde: null,
-                coach_note: "Nhắc Quang hoàn thành bảng ABCDE trước ngày 05/10."
-            },
-            {
-                id: "lrn_03",
-                name: "Lê Hoàng Yến",
-                email: "hoangyen@ktcvietnam.com",
-                phone: "0918 334 778",
-                source: "B2B KTC Vietnam",
-                progress: 100,
-                status: "Đã kích hoạt",
-                stage1_reflection: "Hạnh phúc khi giúp công ty xây dựng được văn hóa ghi nhận Hey/Kudos hàng tuần.",
-                stage2_values: ["Chân thật & Trung thực", "Đồng hành & Tận tâm", "Bình an & Gia đình"],
-                abcde: {
-                    A: "Dự án chuyển đổi số bị chậm tiến độ 1 tháng do lỗi tích hợp hệ thống",
-                    B: "Cả ban giám đốc sẽ đánh giá năng lực của ban dự án yếu kém",
-                    C: "Không khí phòng ban căng thẳng, mọi người đổ lỗi cho nhau",
-                    D: "Thất bại là một phần của đổi mới (Fail mindfully). Sếp luôn khuyến khích ăn mừng bài học kinh nghiệm.",
-                    E: "Tổ chức họp Post-mortem không chỉ trích, lập WBS phân rã lại công việc và báo cáo minh bạch cho Ban Giám đốc."
-                },
-                coach_note: "Ví dụ kinh điển về việc ăn mừng bài học sai sót (Celebrate errors)."
-            }
-        ];
+        document.addEventListener("DOMContentLoaded", () => {
+            const COACH_PIN = "1979";
+            const PIN_SESSION_KEY = "dhm_lms_coach_unlocked";
+            const REGISTRY_KEY = "dhm_lms_all_learners_registry";
 
-        let learners = [];
-        const LEARNERS_KEY = "dhm_admin_learners_list";
+            // PIN Gate Logic
+            const pinModal = document.getElementById("pin-modal");
+            const pinForm = document.getElementById("pin-form");
+            const pinInput = document.getElementById("pin-input");
+            const pinError = document.getElementById("pin-error");
+            const btnLockPortal = document.getElementById("btn-lock-portal");
 
-        function initLearners() {
-            const saved = localStorage.getItem(LEARNERS_KEY);
-            if (saved) {
-                try {
-                    learners = JSON.parse(saved);
-                } catch (e) {
-                    learners = DEFAULT_LEARNERS;
+            function checkPinSession() {
+                if (sessionStorage.getItem(PIN_SESSION_KEY) === "true") {
+                    pinModal.classList.add("hidden");
+                    loadDashboard();
+                } else {
+                    pinModal.classList.remove("hidden");
                 }
-            } else {
-                learners = DEFAULT_LEARNERS;
-                localStorage.setItem(LEARNERS_KEY, JSON.stringify(learners));
             }
 
-            // Sync with current learner's active submission if any
-            const localLearnerState = localStorage.getItem("dhm_lms_learner_state");
-            if (localLearnerState) {
+            pinForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                if (pinInput.value.trim() === COACH_PIN) {
+                    sessionStorage.setItem(PIN_SESSION_KEY, "true");
+                    pinModal.classList.add("hidden");
+                    pinError.classList.add("hidden");
+                    loadDashboard();
+                } else {
+                    pinError.classList.remove("hidden");
+                    pinInput.value = "";
+                }
+            });
+
+            btnLockPortal.addEventListener("click", () => {
+                sessionStorage.removeItem(PIN_SESSION_KEY);
+                pinModal.classList.remove("hidden");
+            });
+
+            // Dashboard State
+            let allLearners = [];
+            let activeLearnerIdentity = null;
+
+            // DOM Stats
+            const statTotalLearners = document.getElementById("stat-total-learners");
+            const statStage1Completed = document.getElementById("stat-stage1-completed");
+            const statStage2Values = document.getElementById("stat-stage2-values");
+            const statStage3Abcde = document.getElementById("stat-stage3-abcde");
+
+            const searchInput = document.getElementById("search-input");
+            const filterStatus = document.getElementById("filter-status");
+            const tableBody = document.getElementById("learners-table-body");
+            const tableEmpty = document.getElementById("table-empty");
+
+            const btnSeedSample = document.getElementById("btn-seed-sample");
+            const btnExportCsv = document.getElementById("btn-export-csv");
+
+            // Modal elements
+            const detailModal = document.getElementById("detail-modal");
+            const btnCloseDetail = document.getElementById("btn-close-detail");
+            const modalLearnerName = document.getElementById("modal-learner-name");
+            const modalLearnerIdentity = document.getElementById("modal-learner-identity");
+            const modalC1Status = document.getElementById("modal-c1-status");
+            const modalC1Reflection = document.getElementById("modal-c1-reflection");
+            const modalC2Status = document.getElementById("modal-c2-status");
+            const modalC2ValuesTags = document.getElementById("modal-c2-values-tags");
+            const modalC2Reflection = document.getElementById("modal-c2-reflection");
+            const modalC3Status = document.getElementById("modal-c3-status");
+            const modalC3AbcdeGrid = document.getElementById("modal-c3-abcde-grid");
+            const coachNotesInput = document.getElementById("coach-notes-input");
+            const btnSaveCoachNotes = document.getElementById("btn-save-coach-notes");
+
+            function loadDashboard() {
                 try {
-                    const st = JSON.parse(localLearnerState);
-                    if (st.completedStages && st.completedStages.length > 0) {
-                        let me = learners.find(l => l.id === "me_active");
-                        if (!me) {
-                            me = {
-                                id: "me_active",
-                                name: "Học Viên Trải Nghiệm (Local)",
-                                email: "local.tester@dhm.vn",
-                                phone: "0900 000 000",
-                                source: "Web Trực Tiếp",
-                                progress: Math.round((st.completedStages.length / 3) * 100),
-                                status: "Đang học",
-                                stage1_reflection: st.stageData?.["stage-1"]?.reflection || "Chưa có",
-                                stage2_values: st.stageData?.["stage-2"]?.selectedValues || [],
-                                abcde: st.stageData?.["stage-3"]?.abcde || null,
-                                coach_note: ""
-                            };
-                            learners.unshift(me);
-                        } else {
-                            me.progress = Math.round((st.completedStages.length / 3) * 100);
-                            me.stage1_reflection = st.stageData?.["stage-1"]?.reflection || me.stage1_reflection;
-                            me.stage2_values = st.stageData?.["stage-2"]?.selectedValues || me.stage2_values;
-                            me.abcde = st.stageData?.["stage-3"]?.abcde || me.abcde;
+                    const raw = localStorage.getItem(REGISTRY_KEY);
+                    allLearners = raw ? JSON.parse(raw) : [];
+                } catch (e) {
+                    allLearners = [];
+                }
+
+                renderStats();
+                renderTable();
+            }
+
+            function renderStats() {
+                const total = allLearners.length;
+                statTotalLearners.textContent = total;
+
+                if (total === 0) {
+                    statStage1Completed.textContent = "0%";
+                    statStage2Values.textContent = "0";
+                    statStage3Abcde.textContent = "0";
+                    return;
+                }
+
+                const s1Passed = allLearners.filter(l => l.stage1Passed).length;
+                const s2Done = allLearners.filter(l => l.stage2ValuesCount > 0).length;
+                const s3Filled = allLearners.filter(l => l.stage3AbcdeFilled).length;
+
+                statStage1Completed.textContent = `${Math.round((s1Passed / total) * 100)}%`;
+                statStage2Values.textContent = `${s2Done} HV`;
+                statStage3Abcde.textContent = `${s3Filled} bài`;
+            }
+
+            function renderTable() {
+                const query = searchInput.value.toLowerCase().trim();
+                const filter = filterStatus.value;
+
+                const filtered = allLearners.filter(l => {
+                    const matchQ = l.name.toLowerCase().includes(query) || l.identity.toLowerCase().includes(query);
+                    if (!matchQ) return false;
+
+                    if (filter === "completed") return l.completedStagesCount >= 3;
+                    if (filter === "learning") return l.completedStagesCount < 3;
+                    return true;
+                });
+
+                tableBody.innerHTML = "";
+
+                if (filtered.length === 0) {
+                    tableEmpty.classList.remove("hidden");
+                    return;
+                }
+                tableEmpty.classList.add("hidden");
+
+                filtered.forEach(learner => {
+                    const tr = document.createElement("tr");
+                    tr.className = "hover:bg-brand-card/40 transition-colors";
+
+                    const pct = Math.round((learner.completedStagesCount / 3) * 100);
+                    const valuesList = learner.data?.stageData?.["stage-2"]?.selectedValues || [];
+                    const abcdeDone = !!learner.data?.stageData?.["stage-3"]?.abcde?.D;
+
+                    const dateStr = learner.lastActive ? new Date(learner.lastActive).toLocaleDateString("vi-VN", { hour: '2-digit', minute: '2-digit' }) : "Mới đây";
+
+                    tr.innerHTML = `
+                        <td class="p-4">
+                            <div class="font-bold text-white">${learner.name}</div>
+                            <div class="text-[11px] text-slate-500 font-mono">${learner.identity}</div>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex items-center gap-2">
+                                <div class="w-16 h-1.5 bg-brand-dark rounded-full overflow-hidden border border-brand-border">
+                                    <div class="h-full bg-brand-amber rounded-full" style="width: ${pct}%"></div>
+                                </div>
+                                <span class="font-mono text-xs font-bold text-slate-300">${pct}%</span>
+                            </div>
+                            <div class="text-[10px] text-slate-500 mt-0.5">${learner.completedStagesCount}/3 Chặng</div>
+                        </td>
+                        <td class="p-4">
+                            ${learner.stage1Passed 
+                                ? '<span class="px-2 py-0.5 rounded bg-brand-green/15 text-brand-green font-semibold">✓ 2/2 Đúng</span>' 
+                                : '<span class="px-2 py-0.5 rounded bg-brand-card text-slate-400">Chưa xong</span>'}
+                        </td>
+                        <td class="p-4">
+                            <div class="text-xs text-slate-300 truncate max-w-[150px]" title="${valuesList.join(', ')}">
+                                ${valuesList.length > 0 ? valuesList.join(', ') : '<span class="text-slate-500">Chưa chọn</span>'}
+                            </div>
+                        </td>
+                        <td class="p-4">
+                            ${abcdeDone 
+                                ? '<span class="px-2 py-0.5 rounded bg-brand-green/15 text-brand-green font-semibold">✓ Đã nộp</span>' 
+                                : '<span class="px-2 py-0.5 rounded bg-brand-amber/15 text-brand-amber font-semibold">Đang viết</span>'}
+                        </td>
+                        <td class="p-4 text-slate-400 font-mono text-[11px]">${dateStr}</td>
+                        <td class="p-4 text-right">
+                            <button class="btn-inspect px-3 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-brand-amber hover:text-white border border-brand-border font-semibold transition-colors" data-id="${learner.identity}">
+                                👁️ Xem Bài Làm
+                            </button>
+                        </td>
+                    `;
+
+                    tableBody.appendChild(tr);
+                });
+
+                document.querySelectorAll(".btn-inspect").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const id = btn.getAttribute("data-id");
+                        openDetailModal(id);
+                    });
+                });
+            }
+
+            function openDetailModal(identity) {
+                const learner = allLearners.find(l => l.identity === identity);
+                if (!learner) return;
+
+                activeLearnerIdentity = identity;
+                modalLearnerName.textContent = learner.name;
+                modalLearnerIdentity.textContent = learner.identity;
+
+                const s1 = learner.data?.stageData?.["stage-1"] || {};
+                modalC1Status.textContent = s1.passed ? "✓ Đã vượt qua Quiz" : "Chưa hoàn tất";
+                modalC1Reflection.textContent = s1.reflection || "Học viên chưa nhập bài phản tư.";
+
+                const s2 = learner.data?.stageData?.["stage-2"] || {};
+                const vals = s2.selectedValues || [];
+                modalC2ValuesTags.innerHTML = "";
+                if (vals.length > 0) {
+                    vals.forEach(v => {
+                        const b = document.createElement("span");
+                        b.className = "px-2.5 py-1 rounded-md bg-blue-500/20 text-blue-300 text-[11px] font-semibold border border-blue-500/30";
+                        b.textContent = `★ ${v}`;
+                        modalC2ValuesTags.appendChild(b);
+                    });
+                } else {
+                    modalC2ValuesTags.innerHTML = '<span class="text-slate-500 text-xs">Chưa chọn giá trị nào.</span>';
+                }
+                modalC2Reflection.textContent = s2.reflection || "Chưa có phản tư xung đột La bàn vs Đồng hồ.";
+
+                const s3 = learner.data?.stageData?.["stage-3"] || {};
+                const abcde = s3.abcde || {};
+                modalC3AbcdeGrid.innerHTML = `
+                    <div class="p-2.5 rounded-lg bg-brand-dark/70 border border-brand-border/60"><strong class="text-slate-300">A (Nghịch cảnh):</strong> <span class="text-slate-200">${abcde.A || "Chưa điền"}</span></div>
+                    <div class="p-2.5 rounded-lg bg-brand-dark/70 border border-brand-border/60"><strong class="text-slate-300">B (Niềm tin tự động):</strong> <span class="text-slate-200">${abcde.B || "Chưa điền"}</span></div>
+                    <div class="p-2.5 rounded-lg bg-brand-dark/70 border border-brand-border/60"><strong class="text-slate-300">C (Hậu quả cảm xúc):</strong> <span class="text-slate-200">${abcde.C || "Chưa điền"}</span></div>
+                    <div class="p-2.5 rounded-lg bg-brand-dark/70 border border-brand-amber/50 bg-amber-500/5"><strong class="text-brand-amber">D (Phản biện lý trí):</strong> <span class="text-slate-100 font-medium">${abcde.D || "Chưa điền"}</span></div>
+                    <div class="p-2.5 rounded-lg bg-brand-dark/70 border border-brand-border/60"><strong class="text-brand-green">E (Hành động mới):</strong> <span class="text-slate-200">${abcde.E || "Chưa điền"}</span></div>
+                `;
+
+                coachNotesInput.value = learner.coachNotes || "";
+                detailModal.classList.remove("hidden");
+            }
+
+            btnCloseDetail.addEventListener("click", () => {
+                detailModal.classList.add("hidden");
+            });
+
+            btnSaveCoachNotes.addEventListener("click", () => {
+                if (!activeLearnerIdentity) return;
+                const idx = allLearners.findIndex(l => l.identity === activeLearnerIdentity);
+                if (idx >= 0) {
+                    allLearners[idx].coachNotes = coachNotesInput.value;
+                    localStorage.setItem(REGISTRY_KEY, JSON.stringify(allLearners));
+                    alert("Đã lưu ghi chú khai vấn của Coach thành công!");
+                }
+            });
+
+            // Filter & Search events
+            searchInput.addEventListener("input", renderTable);
+            filterStatus.addEventListener("change", renderTable);
+
+            // Seed Sample Data (Allows Coach to see rich state immediately)
+            btnSeedSample.addEventListener("click", () => {
+                const sampleUsers = [
+                    {
+                        name: "Nguyễn Thị Phương Thảo",
+                        identity: "thao.nguyen@company.com",
+                        lastActive: new Date().toISOString(),
+                        completedStagesCount: 3,
+                        stage1Passed: true,
+                        stage2ValuesCount: 3,
+                        stage3AbcdeFilled: true,
+                        coachNotes: "Học viên nắm bài rất sâu sắc. Đã đặt câu hỏi rất hay về xung đột chữ D với sếp trực tiếp.",
+                        data: {
+                            stageData: {
+                                "stage-1": { passed: true, score: 2, reflection: "Khoảnh khắc mãn nguyện nhất là khi cùng cả team hoàn thành dự án lớn và khách hàng khen ngợi. Đó là Mục đích cao cả vì đem lại giá trị cho người khác." },
+                                "stage-2": { selectedValues: ["Chân thật & Trung thực (Integrity)", "Học hỏi & Đổi mới (Continuous Learning)", "Đồng hành & Tận tâm (Empathy & Care)"], reflection: "Trước đây mình thường để chiếc đồng hồ cuốn đi. Giờ mình ưu tiên trao đổi thẳng thắn (Chân thật) nếu deadline gây ảnh hưởng chất lượng." },
+                                "stage-3": { abcde: { A: "Dự án bị lỗi release cuối tuần", B: "Team nghĩ mình là leader bất tài", C: "Lo âu, mất ngủ cả đêm thứ 7", D: "Dừng lại và thở: Lỗi release là do server bảo trì đột xuất, không phải lỗi năng lực cá nhân. Đội ngũ đã phối hợp sửa xong trong 30 phút.", E: "Bình tĩnh gửi báo cáo hậu sự cố và lên kế hoạch phòng ngừa." } }
+                            }
+                        }
+                    },
+                    {
+                        name: "Trần Minh Quân",
+                        identity: "0982345678",
+                        lastActive: new Date(Date.now() - 3600000).toISOString(),
+                        completedStagesCount: 2,
+                        stage1Passed: true,
+                        stage2ValuesCount: 3,
+                        stage3AbcdeFilled: false,
+                        coachNotes: "",
+                        data: {
+                            stageData: {
+                                "stage-1": { passed: true, score: 2, reflection: "Nhận ra bản thân đang tìm kiếm quá nhiều thú vui ngắn hạn thay vì theo đuổi đam mê." },
+                                "stage-2": { selectedValues: ["Kỷ luật & Xuất sắc (Excellence)", "Tự do & Sáng tạo (Freedom & Creativity)"], reflection: "Đang cố gắng cân bằng giữa sáng tạo và deadline hàng tuần." },
+                                "stage-3": { abcde: {} }
+                            }
                         }
                     }
-                } catch(e) {}
-            }
+                ];
 
-            renderTable();
-        }
-
-        function renderTable() {
-            const tbody = document.getElementById("learner-tbody");
-            tbody.innerHTML = "";
-
-            learners.forEach(l => {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td><strong>${l.name}</strong></td>
-                    <td style="color: var(--text-muted); font-size: 0.85rem;">
-                        ${l.email}<br><span>${l.phone}</span>
-                    </td>
-                    <td><span class="status-pill pill-active">${l.source}</span></td>
-                    <td>
-                        <div class="progress-mini">
-                            <div class="progress-mini-fill" style="width: ${l.progress}%;"></div>
-                        </div>
-                        <span style="font-weight: 700; font-size: 0.85rem;">${l.progress}%</span>
-                    </td>
-                    <td><span class="status-pill ${l.progress === 100 ? 'pill-active' : 'pill-pending'}">${l.status}</span></td>
-                    <td>
-                        <button class="btn-action" onclick="viewSubmission('${l.id}')">👁️ Xem bài nộp</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
+                localStorage.setItem(REGISTRY_KEY, JSON.stringify(sampleUsers));
+                loadDashboard();
+                alert("Đã tạo 2 hồ sơ học viên mẫu hoàn chỉnh để kiểm thử giao diện chấm bài!");
             });
 
-            document.getElementById("total-learners").textContent = learners.length;
-            const completedCount = learners.filter(l => l.progress === 100).length;
-            document.getElementById("completed-learners").textContent = completedCount;
-            document.getElementById("abcde-submissions").textContent = learners.filter(l => l.abcde && l.abcde.A).length;
-        }
+            // Export to CSV with UTF-8 BOM
+            btnExportCsv.addEventListener("click", () => {
+                if (allLearners.length === 0) {
+                    alert("Chưa có dữ liệu học viên để xuất!");
+                    return;
+                }
 
-        let currentActiveId = null;
+                let csv = "\uFEFF"; // UTF-8 BOM for Excel
+                csv += "Họ và tên,Email/SĐT,Tiến độ %,Chặng hoàn thành,Quiz Chặng 1,Me Values Chặng 2,ABCDE Chặng 3,Ghi chú Coach,Hoạt động cuối\n";
 
-        window.viewSubmission = function(id) {
-            currentActiveId = id;
-            const l = learners.find(item => item.id === id);
-            if (!l) return;
+                allLearners.forEach(l => {
+                    const pct = Math.round((l.completedStagesCount / 3) * 100);
+                    const q1 = l.stage1Passed ? "Đạt" : "Chưa đạt";
+                    const vals = (l.data?.stageData?.["stage-2"]?.selectedValues || []).join(" | ").replace(/"/g, '""');
+                    const abcde = l.stage3AbcdeFilled ? "Đã nộp" : "Chưa nộp";
+                    const notes = (l.coachNotes || "").replace(/"/g, '""');
+                    const time = l.lastActive || "";
 
-            document.getElementById("modal-learner-name").textContent = l.name;
-            document.getElementById("modal-learner-meta").textContent = `${l.email} • ${l.phone} • Nguồn: ${l.source}`;
+                    csv += `"${l.name}","${l.identity}","${pct}%","${l.completedStagesCount}/3","${q1}","${vals}","${abcde}","${notes}","${time}"\n`;
+                });
 
-            document.getElementById("modal-stage1-reflection").textContent = l.stage1_reflection || "Học viên chưa làm bài phản tư này.";
-
-            const valsContainer = document.getElementById("modal-stage2-values");
-            if (l.stage2_values && l.stage2_values.length > 0) {
-                valsContainer.innerHTML = l.stage2_values.map(v => `<span class="value-pill selected" style="display:inline-block; margin:2px;">${v}</span>`).join(" ");
-            } else {
-                valsContainer.textContent = "Chưa chọn giá trị cốt lõi.";
-            }
-
-            const abcdeBox = document.getElementById("modal-stage3-abcde");
-            if (l.abcde && l.abcde.A) {
-                abcdeBox.innerHTML = `
-                    <p><strong>A (Nghịch cảnh):</strong> ${l.abcde.A}</p>
-                    <p><strong>B (Niềm tin tự động):</strong> ${l.abcde.B || 'Không ghi'}</p>
-                    <p><strong>C (Hậu quả cảm xúc):</strong> ${l.abcde.C || 'Không ghi'}</p>
-                    <p style="color: var(--primary-yellow);"><strong>D (Phản biện lý trí):</strong> ${l.abcde.D}</p>
-                    <p style="color: var(--accent-emerald);"><strong>E (Hành động mới):</strong> ${l.abcde.E}</p>
-                `;
-            } else {
-                abcdeBox.innerHTML = `<span style="color: var(--text-muted);">Học viên chưa hoàn thành bài tập ABCDE.</span>`;
-            }
-
-            document.getElementById("coach-notes").value = l.coach_note || "";
-            document.getElementById("submission-modal").classList.add("open");
-        };
-
-        window.closeModal = function() {
-            document.getElementById("submission-modal").classList.remove("open");
-        };
-
-        window.saveCoachNote = function() {
-            if (!currentActiveId) return;
-            const note = document.getElementById("coach-notes").value.trim();
-            const l = learners.find(item => item.id === currentActiveId);
-            if (l) {
-                l.coach_note = note;
-                localStorage.setItem(LEARNERS_KEY, JSON.stringify(learners));
-                alert("Đã lưu ghi chú của Giảng viên thành công!");
-                closeModal();
-            }
-        };
-
-        window.addNewLearnerPrompt = function() {
-            const name = prompt("Nhập họ và tên học viên B2B mới:");
-            if (!name) return;
-            const email = prompt("Nhập email học viên:");
-            if (!email) return;
-            const org = prompt("Nhập tên doanh nghiệp đối tác (Ví dụ: Apollo, KTC, LPBS):", "Apollo");
-
-            const newLearner = {
-                id: "lrn_" + Date.now(),
-                name: name,
-                email: email,
-                phone: "09xx xxx xxx",
-                source: "B2B " + (org || "Doanh nghiệp"),
-                progress: 0,
-                status: "Mới kích hoạt",
-                stage1_reflection: "",
-                stage2_values: [],
-                abcde: null,
-                coach_note: ""
-            };
-
-            learners.push(newLearner);
-            localStorage.setItem(LEARNERS_KEY, JSON.stringify(learners));
-            renderTable();
-            alert(`Đã thêm thành công học viên ${name} vào danh sách lớp!`);
-        };
-
-        window.exportToCSV = function() {
-            let csv = "ID,Họ và tên,Email,Số điện thoại,Nguồn,Tiến độ (%),Trạng thái,Ghi chú Giảng viên\n";
-            learners.forEach(l => {
-                csv += `"${l.id}","${l.name}","${l.email}","${l.phone}","${l.source}","${l.progress}","${l.status}","${(l.coach_note || '').replace(/"/g, '""')}"\n`;
+                const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `DHM_LMS_HocVien_${new Date().toISOString().slice(0, 10)}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
             });
 
-            const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = `Danh_Sach_Hoc_Vien_DHM_${new Date().toISOString().slice(0, 10)}.csv`;
-            a.click();
-        };
-
-        document.addEventListener("DOMContentLoaded", initLearners);
+            // Run
+            checkPinSession();
+        });
     </script>
-
 </body>
 
 </html>
