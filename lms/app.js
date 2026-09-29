@@ -328,6 +328,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Stage 1 Practice Elements
     const quizItemsContainer = document.getElementById("quiz-items-container");
     const quizScoreBadge = document.getElementById("quiz-score-badge");
+    const quizAttemptBadge = document.getElementById("quiz-attempt-badge");
+    const quizSummaryContainer = document.getElementById("quiz-summary-container");
     const valuesGrid = document.getElementById("values-grid");
     const valuesCountBadge = document.getElementById("values-count-badge");
 
@@ -922,11 +924,47 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderStage1View(stage) {
         const sData = learnerProgress.stageData["stage-1"] || {};
 
-        // 9.1 Render Quiz
+        // 9.1 Render Quiz (Sát Hạch Đầu Vào - 20 Câu - Đạt ≥70% - Tối đa 3 lần thử)
         quizItemsContainer.innerHTML = "";
         const mod1 = (stage.modules && stage.modules[0]) ? stage.modules[0] : null;
         const quizzes = (mod1 && mod1.quizzes) ? mod1.quizzes : [];
         const savedAnswers = sData.quizAnswers || {};
+        const maxAttempts = 3;
+        const attempts = sData.quizAttempts !== undefined ? sData.quizAttempts : (Object.keys(savedAnswers).length > 0 ? 1 : 0);
+        const answeredCount = Object.keys(savedAnswers).length;
+        const isCompleted = quizzes.length > 0 && answeredCount === quizzes.length;
+
+        // Calculate score
+        let correct = 0;
+        quizzes.forEach(item => {
+            if (savedAnswers[item.id] === item.correctIndex) correct++;
+        });
+        const percent = quizzes.length > 0 ? Math.round((correct / quizzes.length) * 100) : 0;
+        const passed = percent >= 70;
+
+        // Update badges
+        if (quizAttemptBadge) {
+            quizAttemptBadge.textContent = `Lần thử: ${attempts}/${maxAttempts}`;
+        }
+
+        if (answeredCount === 0) {
+            quizScoreBadge.textContent = "Chưa làm";
+            quizScoreBadge.className = "text-xs px-2.5 py-1 rounded bg-brand-card text-brand-amber font-mono font-bold border border-brand-border";
+        } else if (!isCompleted) {
+            quizScoreBadge.textContent = `Đang làm: ${answeredCount}/${quizzes.length}`;
+            quizScoreBadge.className = "text-xs px-2.5 py-1 rounded bg-brand-card text-brand-amber font-mono font-bold border border-brand-border";
+        } else {
+            if (passed) {
+                quizScoreBadge.textContent = `✓ ĐẠT ĐIỀU KIỆN OFFLINE: ${correct}/${quizzes.length} (${percent}%)`;
+                quizScoreBadge.className = "text-xs px-2.5 py-1 rounded bg-brand-green/20 text-brand-green font-mono font-bold border border-brand-green/40 shadow-sm shadow-green-500/20";
+            } else {
+                quizScoreBadge.textContent = `✕ CHƯA ĐẠT: ${correct}/${quizzes.length} (${percent}%) — Lần ${attempts}/${maxAttempts}`;
+                quizScoreBadge.className = "text-xs px-2.5 py-1 rounded bg-red-500/20 text-red-400 font-mono font-bold border border-red-500/40";
+            }
+        }
+
+        const canRetry = attempts < maxAttempts && !passed;
+        const isLockedOut = attempts >= maxAttempts && !passed;
 
         quizzes.forEach((q, qIndex) => {
             const qBox = document.createElement("div");
@@ -943,8 +981,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         btnClass = "border-red-500 bg-red-500/10 text-red-400";
                     }
                 }
+                const disabledAttr = isLockedOut ? "disabled" : "";
                 optionsHtml += `
-                    <button class="quiz-opt-btn w-full text-left p-3 rounded-lg border text-xs transition-all flex items-start gap-2.5 ${btnClass}" data-qid="${q.id}" data-optidx="${optIdx}">
+                    <button class="quiz-opt-btn w-full text-left p-3 rounded-lg border text-xs transition-all flex items-start gap-2.5 ${btnClass}" data-qid="${q.id}" data-optidx="${optIdx}" ${disabledAttr}>
                         <span class="w-5 h-5 rounded flex items-center justify-center font-bold text-[10px] bg-brand-card border border-brand-border">
                             ${String.fromCharCode(65 + optIdx)}
                         </span>
@@ -960,29 +999,94 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="space-y-2 mt-2">${optionsHtml}</div>
             `;
 
-            qBox.querySelectorAll(".quiz-opt-btn").forEach(btn => {
-                btn.addEventListener("click", () => {
-                    const qId = btn.getAttribute("data-qid");
-                    const optIdx = parseInt(btn.getAttribute("data-optidx"));
-                    if (!learnerProgress.stageData["stage-1"].quizAnswers) {
-                        learnerProgress.stageData["stage-1"].quizAnswers = {};
-                    }
-                    learnerProgress.stageData["stage-1"].quizAnswers[qId] = optIdx;
+            if (!isLockedOut) {
+                qBox.querySelectorAll(".quiz-opt-btn").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const qId = btn.getAttribute("data-qid");
+                        const optIdx = parseInt(btn.getAttribute("data-optidx"));
+                        if (!learnerProgress.stageData["stage-1"].quizAnswers) {
+                            learnerProgress.stageData["stage-1"].quizAnswers = {};
+                        }
+                        learnerProgress.stageData["stage-1"].quizAnswers[qId] = optIdx;
+                        if (!learnerProgress.stageData["stage-1"].quizAttempts) {
+                            learnerProgress.stageData["stage-1"].quizAttempts = 1;
+                        }
 
-                    let correct = 0;
-                    quizzes.forEach(item => {
-                        if (learnerProgress.stageData["stage-1"].quizAnswers[item.id] === item.correctIndex) correct++;
+                        let currCorrect = 0;
+                        quizzes.forEach(item => {
+                            if (learnerProgress.stageData["stage-1"].quizAnswers[item.id] === item.correctIndex) currCorrect++;
+                        });
+                        const currPct = Math.round((currCorrect / quizzes.length) * 100);
+                        learnerProgress.stageData["stage-1"].score = currCorrect;
+                        learnerProgress.stageData["stage-1"].totalQuestions = quizzes.length;
+                        learnerProgress.stageData["stage-1"].percentage = currPct;
+                        learnerProgress.stageData["stage-1"].passed = (currPct >= 70);
+
+                        saveLearnerProgress();
+                        renderStage1View(stage);
                     });
-                    learnerProgress.stageData["stage-1"].score = correct;
-                    learnerProgress.stageData["stage-1"].passed = (correct === quizzes.length);
-
-                    saveLearnerProgress();
-                    renderStage1View(stage);
                 });
-            });
+            }
 
             quizItemsContainer.appendChild(qBox);
         });
+
+        // 9.1.1 Render Quiz Summary & Retry Container
+        if (quizSummaryContainer) {
+            if (isCompleted) {
+                quizSummaryContainer.classList.remove("hidden");
+                if (passed) {
+                    quizSummaryContainer.className = "p-5 rounded-2xl bg-brand-green/10 border border-brand-green/40 space-y-3";
+                    quizSummaryContainer.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl">🎉</span>
+                            <div>
+                                <h4 class="text-sm font-extrabold text-brand-green">CHÚC MỪNG BẠN ĐÃ ĐỦ ĐIỀU KIỆN (QUALIFIED) LÊN LỚP OFFLINE!</h4>
+                                <p class="text-xs text-slate-300 mt-0.5">Kết quả bài sát hạch: <strong class="text-white">${correct}/${quizzes.length} câu đúng (${percent}%)</strong> — Đạt chuẩn ≥70% sau lần thử ${attempts}/${maxAttempts}.</p>
+                            </div>
+                        </div>
+                    `;
+                } else if (canRetry) {
+                    quizSummaryContainer.className = "p-5 rounded-2xl bg-amber-500/10 border border-amber-500/40 space-y-3";
+                    quizSummaryContainer.innerHTML = `
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div class="space-y-1">
+                                <h4 class="text-sm font-extrabold text-brand-amber">CHƯA ĐẠT TIÊU CHUẨN ĐẦU VÀO (≥70%)</h4>
+                                <p class="text-xs text-slate-300">Bạn đạt <strong>${correct}/${quizzes.length} câu (${percent}%)</strong>. Tiêu chuẩn để qualify lên lớp Offline là tối thiểu <strong>14/20 câu (≥70%)</strong>.</p>
+                                <p class="text-xs text-slate-400">Bạn còn <strong class="text-white">${maxAttempts - attempts} lần thử lại</strong>. Hãy xem lại các đáp án tô đỏ ở trên trước khi bấm thử lại.</p>
+                            </div>
+                            <button id="btn-quiz-retry" class="px-5 py-3 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-black font-extrabold text-xs shadow-lg shadow-orange-500/20 active:scale-95 transition-all whitespace-nowrap flex items-center justify-center gap-1.5 self-start sm:self-center">
+                                <span>🔄</span> Thử lại lần ${attempts + 1}/${maxAttempts}
+                            </button>
+                        </div>
+                    `;
+                    const btnRetry = document.getElementById("btn-quiz-retry");
+                    if (btnRetry) {
+                        btnRetry.addEventListener("click", () => {
+                            learnerProgress.stageData["stage-1"].quizAnswers = {};
+                            learnerProgress.stageData["stage-1"].quizAttempts = attempts + 1;
+                            learnerProgress.stageData["stage-1"].passed = false;
+                            saveLearnerProgress();
+                            renderStage1View(stage);
+                            quizItemsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        });
+                    }
+                } else {
+                    quizSummaryContainer.className = "p-5 rounded-2xl bg-red-500/10 border border-red-500/40 space-y-3";
+                    quizSummaryContainer.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl">⚠️</span>
+                            <div>
+                                <h4 class="text-sm font-extrabold text-red-400">ĐÃ HẾT ${maxAttempts} LẦN THỬ — CHƯA ĐẠT 70%</h4>
+                                <p class="text-xs text-slate-300 mt-0.5">Bạn đạt <strong>${correct}/${quizzes.length} câu (${percent}%)</strong> sau 3 lượt thử. Vui lòng liên hệ Ban Giảng Huấn / Coach để được hướng dẫn ôn tập trước khi lên lớp Offline.</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            } else {
+                quizSummaryContainer.classList.add("hidden");
+            }
+        }
 
         // 9.2 Render Me Values (41 Values - NO LIMIT of 3!)
         valuesGrid.innerHTML = "";
@@ -1926,6 +2030,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     btnNextLesson.onclick = () => {
         const curStage = curriculum.stages[currentStageIndex];
+
+        // Gate for Stage 1: Must pass the qualifying quiz (>= 70%) unless Coach/Admin
+        if (curStage && curStage.id === "stage-1") {
+            const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
+            const isCoach = currentUser && (
+                currentUser.cohort === "COACH" || 
+                currentUser.cohort === "BTC / Coach" || 
+                currentUser.role === "admin" || 
+                currentUser.role === "Coach"
+            );
+            if (!s1Data.passed && !isCoach) {
+                alert("⚠️ Bạn cần hoàn thành và đạt tối thiểu 70% (14/20 câu) ở Bài 1.1 Kiểm tra Sát Hạch Đầu Vào để đủ điều kiện (qualify) hoàn thành Chặng 1 và bước vào Lớp Offline Chặng 2!");
+                const practiceTabBtn = document.querySelector('[data-tab="tab-practice"]');
+                if (practiceTabBtn) practiceTabBtn.click();
+                const quizSec = document.getElementById("stage1-mod-1-1");
+                if (quizSec) quizSec.scrollIntoView({ behavior: "smooth" });
+                return;
+            }
+        }
+
         if (!learnerProgress.completedStages.includes(curStage.id)) {
             learnerProgress.completedStages.push(curStage.id);
         }

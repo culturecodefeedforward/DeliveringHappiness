@@ -295,14 +295,25 @@
                         <div id="stage1-practice-container" class="space-y-8">
                             <!-- Module 1.1: Quiz & IAM 1.1 -->
                             <div id="stage1-mod-1-1" class="p-5 rounded-2xl bg-brand-card/30 border border-brand-border space-y-5">
-                                <div class="flex items-center justify-between">
-                                    <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                                        <span>⚡ Bài 1.1: Trắc Nghiệm Phản Xạ 3 Cấp Độ Hạnh Phúc</span>
-                                    </h3>
-                                    <span id="quiz-score-badge" class="text-xs px-2.5 py-1 rounded bg-brand-card text-brand-amber font-mono font-bold border border-brand-border">Chưa làm</span>
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                    <div>
+                                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                            <span>⚡ Bài 1.1: Bài Kiểm Tra Sát Hạch Đầu Vào (20 Câu)</span>
+                                        </h3>
+                                        <p class="text-[11px] text-slate-400 mt-1">
+                                            Yêu cầu đạt tối thiểu <strong>14/20 câu (≥70%)</strong> sau tối đa <strong>3 lần thử</strong> để đủ điều kiện lên lớp Offline.
+                                        </p>
+                                    </div>
+                                    <div class="flex items-center gap-2 self-start sm:self-auto">
+                                        <span id="quiz-attempt-badge" class="text-xs px-2.5 py-1 rounded bg-brand-dark text-slate-400 font-mono text-[11px] border border-brand-border">Lần thử: 0/3</span>
+                                        <span id="quiz-score-badge" class="text-xs px-2.5 py-1 rounded bg-brand-card text-brand-amber font-mono font-bold border border-brand-border">Chưa làm</span>
+                                    </div>
                                 </div>
                                 <div id="quiz-items-container" class="space-y-4">
                                     <!-- Dynamic Quiz questions injected via JS -->
+                                </div>
+                                <div id="quiz-summary-container" class="hidden p-4 rounded-xl border space-y-3">
+                                    <!-- Dynamic Summary and Retry injected via JS -->
                                 </div>
                                 <!-- IAM 1.1 Box -->
                                 <div class="pt-4 border-t border-brand-border/60 space-y-3">
