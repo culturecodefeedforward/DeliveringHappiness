@@ -1,8 +1,25 @@
 [
   {
     "learner_id": "COACH-001",
-    "full_name": "Hà Ngọc Hoàn",
+    "full_name": "Hà Minh Châu",
     "email": "chauhm71@gmail.com",
+    "phone_raw": "",
+    "phone_full": "",
+    "phone_last4": "",
+    "phone_status": "missing",
+    "cohort": "BTC / Coach",
+    "role": "Coach",
+    "organization": "",
+    "auth_provider": "email_password",
+    "status": "active",
+    "created_at": "2026-09-28T00:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
+    "notes": "Chờ bổ sung SĐT qua LMS Onboarding"
+  },
+  {
+    "learner_id": "COACH-002",
+    "full_name": "Hà Ngọc Hoàn",
+    "email": "hoanhn.edu.vn@gmail.com",
     "phone_raw": "0913503505",
     "phone_full": "0913503505",
     "phone_last4": "3505",
@@ -13,33 +30,16 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
-    "notes": ""
-  },
-  {
-    "learner_id": "COACH-002",
-    "full_name": "Nguyễn Văn Hoàn",
-    "email": "hoanhn.edu.vn@gmail.com",
-    "phone_raw": "0988888888",
-    "phone_full": "0988888888",
-    "phone_last4": "8888",
-    "phone_status": "verified",
-    "cohort": "BTC / Coach",
-    "role": "Coach",
-    "organization": "",
-    "auth_provider": "email_password",
-    "status": "active",
-    "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
     "learner_id": "COACH-003",
     "full_name": "Vũ Hoàng",
     "email": "vuhoang2708@gmail.com",
-    "phone_raw": "0912345678",
-    "phone_full": "0912345678",
-    "phone_last4": "5678",
+    "phone_raw": "0983453145",
+    "phone_full": "0983453145",
+    "phone_last4": "3145",
     "phone_status": "verified",
     "cohort": "BTC / Coach",
     "role": "Coach",
@@ -47,7 +47,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -64,7 +64,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": "Dữ liệu gốc có 4 số (dùng 1731 làm pass)"
   },
   {
@@ -81,7 +81,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -98,7 +98,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -115,7 +115,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -132,7 +132,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -149,7 +149,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -166,7 +166,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -183,7 +183,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -200,7 +200,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -217,7 +217,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -234,7 +234,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -251,7 +251,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -268,7 +268,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -285,7 +285,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -302,7 +302,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -319,7 +319,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -336,7 +336,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -353,7 +353,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -370,7 +370,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -387,7 +387,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -404,7 +404,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -421,7 +421,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -438,7 +438,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -455,7 +455,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -472,7 +472,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": "Dữ liệu gốc có 6 số (dùng 9900 làm pass)"
   },
   {
@@ -489,7 +489,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -506,7 +506,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -523,7 +523,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -540,7 +540,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": "Dữ liệu gốc có 6 số (dùng 8823 làm pass)"
   },
   {
@@ -557,7 +557,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -574,7 +574,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": "Dữ liệu gốc có 8 số (dùng 0035 làm pass)"
   },
   {
@@ -591,7 +591,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -608,7 +608,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -625,7 +625,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -642,7 +642,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -659,7 +659,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -676,7 +676,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -693,7 +693,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -710,7 +710,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -727,7 +727,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -744,7 +744,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -761,7 +761,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -778,7 +778,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -795,7 +795,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -812,7 +812,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -829,7 +829,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -846,7 +846,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -863,7 +863,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -880,7 +880,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -897,7 +897,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -914,7 +914,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -931,7 +931,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -948,7 +948,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -965,7 +965,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -982,7 +982,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -999,7 +999,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": "Chờ bổ sung SĐT qua LMS Onboarding"
   },
   {
@@ -1016,28 +1016,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": "Dữ liệu gốc có 9 số (dùng 9989 làm pass)"
   },
   {
     "learner_id": "DHM9-003",
-    "full_name": "Codex Live Test DHM9 20260707",
-    "email": "vuhoang2708+codexdhm9test202607072249@gmail.com",
-    "phone_raw": "",
-    "phone_full": "",
-    "phone_last4": "",
-    "phone_status": "missing",
-    "cohort": "DHM9",
-    "role": "Learner",
-    "organization": "",
-    "auth_provider": "email_password",
-    "status": "active",
-    "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
-    "notes": "Chờ bổ sung SĐT qua LMS Onboarding"
-  },
-  {
-    "learner_id": "DHM9-004",
     "full_name": "Dương Thị Hậu",
     "email": "hau.duong@mht.masangroup.com",
     "phone_raw": "0357835626",
@@ -1050,11 +1033,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
-    "learner_id": "DHM9-005",
+    "learner_id": "DHM9-004",
     "full_name": "Hoa Trần",
     "email": "hoatran1183@gmail.com",
     "phone_raw": "0985557923",
@@ -1067,11 +1050,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
-    "learner_id": "DHM9-006",
+    "learner_id": "DHM9-005",
     "full_name": "Hong Duong",
     "email": "parentslearn2012@gmail.com",
     "phone_raw": "0912254650",
@@ -1084,11 +1067,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
-    "learner_id": "DHM9-007",
+    "learner_id": "DHM9-006",
     "full_name": "Hoàng Khánh Ly",
     "email": "lyole96@gmail.com",
     "phone_raw": "",
@@ -1101,11 +1084,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": "Chờ bổ sung SĐT qua LMS Onboarding"
   },
   {
-    "learner_id": "DHM9-008",
+    "learner_id": "DHM9-007",
     "full_name": "Hoàng Ngọc Vi Anh",
     "email": "ngocanh92.ftu@gmail.com",
     "phone_raw": "",
@@ -1118,11 +1101,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": "Chờ bổ sung SĐT qua LMS Onboarding"
   },
   {
-    "learner_id": "DHM9-009",
+    "learner_id": "DHM9-008",
     "full_name": "Ly Ngoc Anh",
     "email": "lna.temp@gmail.com",
     "phone_raw": "0983081176",
@@ -1135,11 +1118,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
-    "learner_id": "DHM9-010",
+    "learner_id": "DHM9-009",
     "full_name": "Lê thị kim bình",
     "email": "kekimbinh07@gmail.com",
     "phone_raw": "0986256995",
@@ -1152,11 +1135,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
-    "learner_id": "DHM9-011",
+    "learner_id": "DHM9-010",
     "full_name": "Nguyen Kien",
     "email": "ngayemradi_239@yahoo.com",
     "phone_raw": "0987115600",
@@ -1169,11 +1152,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
-    "learner_id": "DHM9-012",
+    "learner_id": "DHM9-011",
     "full_name": "Nguyễn Bích Thủy",
     "email": "mamnonsea2023@gmail.com",
     "phone_raw": "",
@@ -1186,11 +1169,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": "Chờ bổ sung SĐT qua LMS Onboarding"
   },
   {
-    "learner_id": "DHM9-013",
+    "learner_id": "DHM9-012",
     "full_name": "Nguyễn Hà Giang",
     "email": "giangnguyenha0905@gmail.com",
     "phone_raw": "",
@@ -1203,11 +1186,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": "Chờ bổ sung SĐT qua LMS Onboarding"
   },
   {
-    "learner_id": "DHM9-014",
+    "learner_id": "DHM9-013",
     "full_name": "Nguyễn Hồng Minh",
     "email": "nguyenhongminh.021@gmail.com",
     "phone_raw": "",
@@ -1220,11 +1203,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": "Chờ bổ sung SĐT qua LMS Onboarding"
   },
   {
-    "learner_id": "DHM9-015",
+    "learner_id": "DHM9-014",
     "full_name": "Nguyễn Quý Khoa",
     "email": "support@keyperson.vn",
     "phone_raw": "0961695771",
@@ -1237,11 +1220,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
-    "learner_id": "DHM9-016",
+    "learner_id": "DHM9-015",
     "full_name": "Nguyễn Quỳnh Anh",
     "email": "anh.nq@gemsgroup.edu.vn",
     "phone_raw": "0983038396",
@@ -1254,11 +1237,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
-    "learner_id": "DHM9-017",
+    "learner_id": "DHM9-016",
     "full_name": "Nguyễn Thanh Xuân",
     "email": "xuannguyen24297@gmail.com",
     "phone_raw": "0967369742",
@@ -1271,11 +1254,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
-    "learner_id": "DHM9-018",
+    "learner_id": "DHM9-017",
     "full_name": "Nguyễn Thị Thanh Huyền",
     "email": "huyenhao2008@gmail.com",
     "phone_raw": "0988079798",
@@ -1288,11 +1271,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
-    "learner_id": "DHM9-019",
+    "learner_id": "DHM9-018",
     "full_name": "Nguyễn Thị Thanh Nga",
     "email": "nga.nguyen@mht.masangroup.com",
     "phone_raw": "0903477883",
@@ -1305,11 +1288,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
-    "learner_id": "DHM9-020",
+    "learner_id": "DHM9-019",
     "full_name": "Nguyễn Thị Thu Hương",
     "email": "thuhuongvp0331@gmail.com",
     "phone_raw": "",
@@ -1322,11 +1305,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": "Chờ bổ sung SĐT qua LMS Onboarding"
   },
   {
-    "learner_id": "DHM9-021",
+    "learner_id": "DHM9-020",
     "full_name": "Nguyễn Tuyết Lê",
     "email": "le.nt@gemsgroup.edu.vn",
     "phone_raw": "0931416813",
@@ -1339,11 +1322,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
-    "learner_id": "DHM9-022",
+    "learner_id": "DHM9-021",
     "full_name": "Nguyễn Vân Anh",
     "email": "nguyenvananh.sptak32@gmail.com",
     "phone_raw": "",
@@ -1356,11 +1339,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": "Chờ bổ sung SĐT qua LMS Onboarding"
   },
   {
-    "learner_id": "DHM9-023",
+    "learner_id": "DHM9-022",
     "full_name": "Nguyễn Văn Đại",
     "email": "dai.nguyen@mht.masangroup.com",
     "phone_raw": "0987566984",
@@ -1373,11 +1356,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
-    "learner_id": "DHM9-024",
+    "learner_id": "DHM9-023",
     "full_name": "Ngọc Anh Đinh",
     "email": "ngocanh.hrbp@gmail.com",
     "phone_raw": "0983725791",
@@ -1390,28 +1373,28 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
-    "learner_id": "DHM9-025",
-    "full_name": "Pham Binh Ha",
+    "learner_id": "DHM9-024",
+    "full_name": "Phạm Bình Hà",
     "email": "ha.hapb@gmail.com",
-    "phone_raw": "",
-    "phone_full": "",
-    "phone_last4": "",
-    "phone_status": "missing",
+    "phone_raw": "0903253958",
+    "phone_full": "0903253958",
+    "phone_last4": "3958",
+    "phone_status": "verified",
     "cohort": "DHM9",
     "role": "Learner",
     "organization": "",
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
-    "notes": "Chờ bổ sung SĐT qua LMS Onboarding"
+    "updated_at": "2026-09-29T12:45:00Z",
+    "notes": ""
   },
   {
-    "learner_id": "DHM9-026",
+    "learner_id": "DHM9-025",
     "full_name": "Trần Khánh Linh",
     "email": "trankhanhlinh.2808@gmail.com",
     "phone_raw": "",
@@ -1424,11 +1407,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": "Chờ bổ sung SĐT qua LMS Onboarding"
   },
   {
-    "learner_id": "DHM9-027",
+    "learner_id": "DHM9-026",
     "full_name": "Trần Thị Ngọc",
     "email": "ngoccgv@gmail.com",
     "phone_raw": "0904522485",
@@ -1441,11 +1424,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
-    "learner_id": "DHM9-028",
+    "learner_id": "DHM9-027",
     "full_name": "Tạ Thị Hà Thu",
     "email": "hathu@gofood.vn",
     "phone_raw": "",
@@ -1458,11 +1441,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": "Chờ bổ sung SĐT qua LMS Onboarding"
   },
   {
-    "learner_id": "DHM9-029",
+    "learner_id": "DHM9-028",
     "full_name": "Võ Diệu Thu",
     "email": "thu.vo@mht.masangroup.com",
     "phone_raw": "0979567965",
@@ -1475,11 +1458,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
-    "learner_id": "DHM9-030",
+    "learner_id": "DHM9-029",
     "full_name": "Vũ Thị Huê",
     "email": "vuthihue27@gmail.com",
     "phone_raw": "",
@@ -1492,11 +1475,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": "Chờ bổ sung SĐT qua LMS Onboarding"
   },
   {
-    "learner_id": "DHM9-031",
+    "learner_id": "DHM9-030",
     "full_name": "Âu Thị Đồng",
     "email": "audong.khtn@gmail.com",
     "phone_raw": "",
@@ -1509,11 +1492,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": "Chờ bổ sung SĐT qua LMS Onboarding"
   },
   {
-    "learner_id": "DHM9-032",
+    "learner_id": "DHM9-031",
     "full_name": "Đoàn Thị Thanh Vân",
     "email": "doanthanhvan1909@gmail.com",
     "phone_raw": "",
@@ -1526,11 +1509,11 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": "Chờ bổ sung SĐT qua LMS Onboarding"
   },
   {
-    "learner_id": "DHM9-033",
+    "learner_id": "DHM9-032",
     "full_name": "Đỗ Bá Tuấn",
     "email": "tuan.do1@mht.masangroup.com",
     "phone_raw": "",
@@ -1543,7 +1526,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": "Chờ bổ sung SĐT qua LMS Onboarding"
   },
   {
@@ -1560,7 +1543,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1577,7 +1560,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1594,7 +1577,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1611,7 +1594,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1628,7 +1611,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1645,7 +1628,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1662,7 +1645,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1679,7 +1662,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1696,7 +1679,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1713,7 +1696,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1730,7 +1713,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1747,7 +1730,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1764,7 +1747,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1781,7 +1764,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1798,7 +1781,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1815,7 +1798,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1832,7 +1815,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1849,7 +1832,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1866,7 +1849,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1883,7 +1866,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1900,7 +1883,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1917,7 +1900,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1934,7 +1917,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1951,7 +1934,7 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
@@ -1968,11 +1951,28 @@
     "auth_provider": "email_password",
     "status": "active",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   },
   {
     "learner_id": "TEST-001",
+    "full_name": "Codex Live Test DHM9 20260707",
+    "email": "vuhoang2708+codexdhm9test202607072249@gmail.com",
+    "phone_raw": "",
+    "phone_full": "",
+    "phone_last4": "",
+    "phone_status": "missing",
+    "cohort": "DHM_Test",
+    "role": "Learner",
+    "organization": "",
+    "auth_provider": "email_password",
+    "status": "test",
+    "created_at": "2026-09-28T00:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
+    "notes": "Chờ bổ sung SĐT qua LMS Onboarding"
+  },
+  {
+    "learner_id": "TEST-002",
     "full_name": "Học viên Test",
     "email": "hocvien.test@gmail.com",
     "phone_raw": "0901234567",
@@ -1985,7 +1985,7 @@
     "auth_provider": "email_password",
     "status": "test",
     "created_at": "2026-09-28T00:00:00Z",
-    "updated_at": "2026-09-28T15:00:00Z",
+    "updated_at": "2026-09-29T12:45:00Z",
     "notes": ""
   }
 ]

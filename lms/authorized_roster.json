@@ -1,22 +1,22 @@
 [
   {
-    "name": "Hà Ngọc Hoàn",
+    "name": "Hà Minh Châu",
     "email": "chauhm71@gmail.com",
-    "phone": "0913503505",
+    "phone": "",
     "cohort": "BTC / Coach",
     "role": "Coach"
   },
   {
-    "name": "Nguyễn Văn Hoàn",
+    "name": "Hà Ngọc Hoàn",
     "email": "hoanhn.edu.vn@gmail.com",
-    "phone": "0988888888",
+    "phone": "0913503505",
     "cohort": "BTC / Coach",
     "role": "Coach"
   },
   {
     "name": "Vũ Hoàng",
     "email": "vuhoang2708@gmail.com",
-    "phone": "0912345678",
+    "phone": "0983453145",
     "cohort": "BTC / Coach",
     "role": "Coach"
   },
@@ -420,13 +420,6 @@
     "role": "Learner"
   },
   {
-    "name": "Codex Live Test DHM9 20260707",
-    "email": "vuhoang2708+codexdhm9test202607072249@gmail.com",
-    "phone": "",
-    "cohort": "DHM9",
-    "role": "Learner"
-  },
-  {
     "name": "Dương Thị Hậu",
     "email": "hau.duong@mht.masangroup.com",
     "phone": "0357835626",
@@ -574,9 +567,9 @@
     "role": "Learner"
   },
   {
-    "name": "Pham Binh Ha",
+    "name": "Phạm Bình Hà",
     "email": "ha.hapb@gmail.com",
-    "phone": "",
+    "phone": "0903253958",
     "cohort": "DHM9",
     "role": "Learner"
   },
@@ -809,6 +802,13 @@
     "email": "anh.doan@whitecoat.vn",
     "phone": "0942234594",
     "cohort": "DHM_Registration",
+    "role": "Learner"
+  },
+  {
+    "name": "Codex Live Test DHM9 20260707",
+    "email": "vuhoang2708+codexdhm9test202607072249@gmail.com",
+    "phone": "",
+    "cohort": "DHM_Test",
     "role": "Learner"
   },
   {
