@@ -280,6 +280,11 @@
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6" id="summary-cards-container">
                                 <!-- Dynamic insight cards -->
                             </div>
+
+                            <!-- DEEP SCIENTIFIC CONTENT & INFOGRAPHICS SHOWCASE -->
+                            <div id="summary-deep-content-container" class="space-y-6 mt-8">
+                                <!-- Injected dynamically via JS: Case study, Scientific analysis, Infographic showcase -->
+                            </div>
                         </div>
                     </div>
 
@@ -640,6 +645,22 @@
                                 </div>
                             </div>
 
+                            <!-- INFOGRAPHIC SUMMARY BANNER -->
+                            <div id="stage3-infographic-banner" class="p-5 rounded-2xl bg-gradient-to-r from-brand-amber/15 via-brand-orange/10 to-brand-card border border-brand-amber/30 flex items-center justify-between flex-wrap gap-4">
+                                <div class="space-y-1 max-w-xl">
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px]">TỔNG HỢP TRỰC QUAN</span>
+                                        <h4 class="text-sm font-bold text-white">Đồ Họa: Khoa Học Hạnh Phúc Toàn Diện (Full Model Infographic)</h4>
+                                    </div>
+                                    <p class="text-xs text-slate-300 leading-relaxed">
+                                        Bản đồ thị giác hợp nhất 3 Cấp độ Hạnh phúc, 3 Đòn bẩy SDT và 5 Thói quen thực hành giúp bạn nắm trọn toàn bộ hệ điều hành Delivering Happiness chỉ trong 1 ánh nhìn.
+                                    </p>
+                                </div>
+                                <button type="button" class="btn-view-infographic px-4 py-2.5 rounded-xl bg-brand-amber hover:bg-amber-400 text-black font-bold text-xs shadow-lg transition-transform hover:scale-105 flex items-center gap-1.5" data-img="data/artifacts/infographics/infographic_tong_ket_hanh_phuc.png" data-title="Tổng Kết Khoa Học Hạnh Phúc Toàn Diện">
+                                    <span>🔍 Phóng To Đồ Họa HD</span>
+                                </button>
+                            </div>
+
                             <!-- CARDS RECAP MATERIAL FROM STAGE 1 & 2 -->
                             <div id="stage3-recap-section" class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                                 <!-- Card 1: Me Values -->
@@ -670,6 +691,48 @@
                                     <div id="recap-iam-content" class="text-xs text-slate-300 space-y-1 max-h-36 overflow-y-auto pr-1">
                                         <span class="text-slate-500 italic">Đang tải đúc kết...</span>
                                     </div>
+                                </div>
+                            </div>
+
+                            <!-- 25 FLASHCARDS INTERACTIVE DECK -->
+                            <div id="stage3-flashcards-section" class="p-5 rounded-2xl bg-brand-card/40 border border-brand-border space-y-4">
+                                <div class="flex items-center justify-between flex-wrap gap-2">
+                                    <div>
+                                        <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                                            <span>🃏 Bộ 25 Flashcards Văn Hóa Ghi Nhớ (Interactive Deck)</span>
+                                        </h4>
+                                        <p class="text-xs text-slate-400">Lật thẻ để kiểm tra phản xạ và ghi nhớ sâu sắc các mô hình, thuật ngữ và thói quen.</p>
+                                    </div>
+                                    <span id="flashcard-counter" class="text-xs px-2.5 py-1 rounded-full bg-brand-amber/20 text-brand-amber font-mono font-bold border border-brand-amber/30">1 / 25</span>
+                                </div>
+
+                                <!-- FLASHCARD CONTAINER -->
+                                <div class="w-full max-w-xl mx-auto h-52 cursor-pointer select-none" id="flashcard-container">
+                                    <div id="flashcard-inner" class="w-full h-full rounded-2xl p-6 flex flex-col justify-between border border-brand-amber/40 bg-gradient-to-br from-brand-card to-brand-surface shadow-xl transition-all hover:border-brand-amber">
+                                        <div class="flex items-center justify-between">
+                                            <span id="flashcard-badge" class="px-2 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px] tracking-wider uppercase">CÂU HỎI</span>
+                                            <span class="text-[11px] text-slate-400">Chạm để lật đáp án ↻</span>
+                                        </div>
+                                        <div id="flashcard-content" class="text-center my-auto text-sm font-semibold text-slate-100 leading-relaxed px-4">
+                                            Đang tải flashcard...
+                                        </div>
+                                        <div class="text-center text-[10px] text-slate-500 font-mono">
+                                            Delivering Happiness Micro-LMS Flashcard System
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- CONTROLS -->
+                                <div class="flex items-center justify-center gap-4 pt-1">
+                                    <button type="button" id="btn-prev-card" class="px-4 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-300 text-xs font-semibold border border-brand-border transition-colors">
+                                        ⬅ Thẻ trước
+                                    </button>
+                                    <button type="button" id="btn-flip-card" class="px-5 py-2 rounded-xl bg-brand-amber/20 hover:bg-brand-amber/30 text-brand-amber text-xs font-bold border border-brand-amber/40 transition-colors">
+                                        🔄 Lật Thẻ
+                                    </button>
+                                    <button type="button" id="btn-next-card" class="px-4 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-300 text-xs font-semibold border border-brand-border transition-colors">
+                                        Thẻ tiếp ➔
+                                    </button>
                                 </div>
                             </div>
 
@@ -852,6 +915,52 @@
                 <a href="https://delivering-happiness.vercel.app/" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-black font-extrabold text-xs shadow-lg transition-transform hover:scale-105">
                     Trang chủ DHM ↗
                 </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- INFOGRAPHIC LIGHTBOX MODAL -->
+    <div id="infographic-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 hidden">
+        <div class="relative max-w-5xl w-full max-h-[92vh] flex flex-col bg-brand-surface border border-brand-amber/40 rounded-2xl overflow-hidden shadow-2xl">
+            <div class="flex items-center justify-between px-6 py-3.5 border-b border-brand-border bg-brand-dark/90">
+                <div class="flex items-center gap-2">
+                    <span class="text-base">🖼️</span>
+                    <h3 id="infographic-modal-title" class="text-sm font-bold text-white truncate max-w-md">Đồ Họa Thông Tin</h3>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a id="btn-infographic-download" href="#" download class="text-xs px-3 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-slate-200 border border-brand-border transition-colors flex items-center gap-1.5">
+                        <span>⬇️ Tải ảnh gốc</span>
+                    </a>
+                    <button id="btn-close-infographic" class="text-slate-400 hover:text-white p-1 text-lg font-bold transition-colors">
+                        ✕
+                    </button>
+                </div>
+            </div>
+            <div class="flex-1 overflow-auto p-4 flex items-center justify-center bg-black/50">
+                <img id="infographic-modal-img" src="" alt="Infographic" class="max-w-full max-h-[82vh] object-contain rounded-xl shadow-2xl border border-white/10" />
+            </div>
+        </div>
+    </div>
+
+    <!-- DOCUMENT READER MODAL -->
+    <div id="doc-reader-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 hidden">
+        <div class="relative max-w-4xl w-full max-h-[90vh] flex flex-col bg-brand-surface border border-brand-border rounded-2xl overflow-hidden shadow-2xl">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-brand-border bg-brand-dark/95">
+                <div class="flex items-center gap-2.5">
+                    <span class="text-lg">📘</span>
+                    <div>
+                        <h3 id="doc-reader-title" class="text-sm font-bold text-white truncate max-w-lg">Báo Cáo Chuyên Sâu</h3>
+                        <span class="text-[11px] text-brand-amber font-mono">Tài liệu học thuật Delivering Happiness Movement</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="btn-close-doc-reader" class="text-slate-400 hover:text-white p-1.5 text-lg font-bold transition-colors">
+                        ✕
+                    </button>
+                </div>
+            </div>
+            <div id="doc-reader-body" class="flex-1 overflow-y-auto p-6 lg:p-8 space-y-4 text-sm text-slate-200 leading-relaxed">
+                <!-- Injected via Markdown parser in JS -->
             </div>
         </div>
     </div>

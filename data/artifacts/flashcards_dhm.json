@@ -1,0 +1,205 @@
+{
+  "title": "Văn hóa Ghi nhớ",
+  "cards": [
+    {
+      "front": "Theo định nghĩa về giá trị cốt lõi, 'Đạo đức' được hiểu là gì?",
+      "back": "Là những phẩm chất đáng phấn đấu và đúng với luân thường đạo lý."
+    },
+    {
+      "front": "Trong hệ thống giá trị cốt lõi, thành phần nào đóng vai trò là 'nguyên tắc tổ chức' mang lại sự an toàn?",
+      "back": "Chỉ dẫn (Guidance)."
+    },
+    {
+      "front": "Giá trị cốt lõi đóng vai trò là 'Động lực' như thế nào đối với một cá nhân?",
+      "back": "Giúp trở thành con người tốt đẹp hơn và là động lực sâu thẳm nhất của hành vi."
+    },
+    {
+      "front": "Mối quan hệ giữa 'Hành động' và giá trị cốt lõi là gì?",
+      "back": "Các thói quen hành động, ý tưởng và lý tưởng đều được dựa trên các giá trị."
+    },
+    {
+      "front": "Trong 'Bảy cấp độ nhận thức của tổ chức', cấp độ 1 (Survival) tập trung vào yếu tố nào?",
+      "back": "Lợi nhuận và giá trị cổ đông."
+    },
+    {
+      "front": "Cấp độ 2 trong nhận thức tổ chức (Relationship) hướng đến điều gì?",
+      "back": "Giao tiếp cởi mở, giải quyết xung đột và sự hài lòng của khách hàng."
+    },
+    {
+      "front": "Cấp độ 3 trong nhận thức tổ chức (Self-esteem) tập trung vào năng lực nào?",
+      "back": "Hiệu suất, năng suất, kết quả và chất lượng."
+    },
+    {
+      "front": "Yếu tố then chốt của cấp độ 4 trong nhận thức tổ chức (Transformation) là gì?",
+      "back": "Học tập liên tục, thích nghi và chia sẻ kiến thức."
+    },
+    {
+      "front": "Cấp độ 5 trong nhận thức tổ chức (Internal cohesion) xây dựng văn hóa dựa trên điều gì?",
+      "back": "Sự tin tưởng, cởi mở, cam kết, sáng tạo và nhiệt huyết."
+    },
+    {
+      "front": "Cấp độ 6 trong nhận thức tổ chức (Making a difference) tập trung vào đối tượng nào?",
+      "back": "Liên minh chiến lược, sự thỏa mãn của nhân viên và sự tham gia của cộng đồng."
+    },
+    {
+      "front": "Cấp độ cao nhất (Cấp độ 7 - Service) trong nhận thức tổ chức hướng tới điều gì?",
+      "back": "Phụng sự nhân loại, đạo đức và trách nhiệm xã hội."
+    },
+    {
+      "front": "Ba cấp độ lan tỏa hạnh phúc trong mô hình Delivering Happiness (DH) là gì?",
+      "back": "Cá nhân (ME), Tập thể (WE) và Cộng đồng (COMMUNITY)."
+    },
+    {
+      "front": "Theo mô hình DH, sự thống nhất (alignment) thực sự bắt đầu từ đâu?",
+      "back": "Bắt đầu từ việc hiểu được giá trị cốt lõi của Cá nhân (ME)."
+    },
+    {
+      "front": "Trong biểu tượng 'La bàn và Đồng hồ', La bàn (Compass) đại diện cho điều gì?",
+      "back": "Giá trị, tầm nhìn, hướng đi và các nguyên tắc."
+    },
+    {
+      "front": "Trong biểu tượng 'La bàn và Đồng hồ', Đồng hồ (Clock) đại diện cho điều gì?",
+      "back": "Hành động, hành vi và những gì chúng ta dành thời gian thực hiện."
+    },
+    {
+      "front": "Vấn đề phát sinh khi nào trong mối quan hệ giữa 'La bàn' và 'Đồng hồ'?",
+      "back": "Khi những việc chúng ta làm không hướng tới những điều chúng ta cảm thấy quan trọng."
+    },
+    {
+      "front": "Định nghĩa về 'Tỉnh thức' (Mindfulness) trong thói quen hạnh phúc là gì?",
+      "back": "Tập trung chú ý vào khoảnh khắc hiện tại mà không phán xét."
+    },
+    {
+      "front": "Theo Mihaly Csikszentmihalyi, người ta hạnh phúc không phải vì những gì họ làm mà vì điều gì?",
+      "back": "Vì cách họ thực hiện công việc đó."
+    },
+    {
+      "front": "Trạng thái 'Phiêu' (Flow) thường xuất hiện khi nào?",
+      "back": "Khi nhiệm vụ thách thức phù hợp với kỹ năng và có sự hiện diện không phân tâm."
+    },
+    {
+      "front": "Thuyết Tự quyết (Self-Determination Theory - SDT) xác định 3 nhu cầu tâm lý cơ bản nào?",
+      "back": "Tự chủ (Autonomy), Năng lực (Competence) và Liên quan (Relatedness)."
+    },
+    {
+      "front": "Nhu cầu 'Tự chủ' (Autonomy) trong tổ chức được thể hiện như thế nào?",
+      "back": "Quyền lựa chọn phương pháp làm việc và tham gia thiết lập mục tiêu."
+    },
+    {
+      "front": "Nhu cầu 'Năng lực' (Competence) trong SDT có nghĩa là gì?",
+      "back": "Cảm thấy hiệu quả, có khả năng và có định hướng làm chủ trong các hoạt động."
+    },
+    {
+      "front": "Nhu cầu 'Liên quan' (Relatedness) trong SDT được manifested như thế nào?",
+      "back": "Sự kết nối, được quan tâm và cảm giác thuộc về một cộng đồng."
+    },
+    {
+      "front": "Bốn trụ cột hạnh phúc trong khung Delivering Happiness là gì?",
+      "back": "Kiểm soát (Control), Tiến bộ (Progress), Kết nối (Connectedness) và Tầm nhìn/Ý nghĩa (Vision/Meaning)."
+    },
+    {
+      "front": "Tại Zappos, 'Cảm giác kiểm soát' (Perceived Control) được ứng dụng thông qua điều gì?",
+      "back": "Sử dụng Holacracy (tự quản lý) và không sử dụng kịch bản khi gọi điện hỗ trợ khách hàng."
+    },
+    {
+      "front": "Tại Zappos, 'Cảm giác tiến bộ' (Perceived Progress) được tạo ra như thế nào?",
+      "back": "Chu kỳ thăng tiến 6 tháng một lần và hệ thống huy hiệu dựa trên kỹ năng."
+    },
+    {
+      "front": "Mục tiêu của trụ cột 'Tầm nhìn / Ý nghĩa' tại Zappos là gì?",
+      "back": "Tạo cảm giác là một phần của điều gì đó lớn lao hơn, như sứ mệnh 'Deliver WOW'."
+    },
+    {
+      "front": "Theo Tony Hsieh, loại hạnh phúc nào có thời gian tồn tại ngắn nhất và cần sự đổi mới liên tục?",
+      "back": "Sự thỏa mãn (Pleasure)."
+    },
+    {
+      "front": "Mô hình kinh doanh của Zappos tin rằng hạnh phúc của nhân viên sẽ dẫn đến điều gì?",
+      "back": "Hạnh phúc của khách hàng và từ đó tạo ra lợi nhuận lâu dài."
+    },
+    {
+      "front": "Khái niệm 'Work-life integration' tại Zappos khác gì so với 'Work-life balance'?",
+      "back": "Khuyến khích nhân viên mang toàn bộ con người thật (kể cả sự kỳ quặc) vào công việc."
+    },
+    {
+      "front": "Định nghĩa về thói quen 'Lòng biết ơn' là gì?",
+      "back": "Nhận thức và trân trọng những điều tích cực trong cuộc sống."
+    },
+    {
+      "front": "Lăng kính của thói quen biết ơn tập trung vào điều gì?",
+      "back": "Nhìn thấy những điều mà mọi người làm đúng."
+    },
+    {
+      "front": "Theo nghiên cứu của Bob Emons, nhóm người thực hành lòng biết ơn có kết quả như thế nào?",
+      "back": "Họ hạnh phúc hơn, ít phàn nàn hơn và có năng lượng tích cực hơn."
+    },
+    {
+      "front": "Khoa học chứng minh sự kết nối giúp ích gì cho con người?",
+      "back": "Sống thọ hơn, khỏe mạnh hơn, giảm căng thẳng và thành công hơn."
+    },
+    {
+      "front": "Khái niệm 'Me to We alignment' trong quản trị hiệu suất thường được biết đến là gì?",
+      "back": "Thiết lập mục tiêu (Goal setting) hoặc KPI."
+    },
+    {
+      "front": "Tại sao sự liên kết về 'Hành vi và Giá trị' lại quan trọng bên cạnh KPI?",
+      "back": "Để đảm bảo sự thống nhất về cách thức làm việc và văn hóa chung."
+    },
+    {
+      "front": "Ba đòn bẩy tạo nên hạnh phúc bền vững được nhắc đến trong DH là gì?",
+      "back": "Cảm giác tiến bộ, cảm giác tự chủ và cảm giác kết nối."
+    },
+    {
+      "front": "Hạnh phúc không chỉ là tìm kiếm mà còn cần điều gì?",
+      "back": "Cần phải được duy trì thường xuyên."
+    },
+    {
+      "front": "Tại sao Tony Hsieh cho rằng 'Văn hóa là ưu tiên hàng đầu'?",
+      "back": "Vì văn hóa tốt sẽ tự nhiên tạo ra dịch vụ khách hàng tốt và thương hiệu mạnh."
+    },
+    {
+      "front": "Mối quan hệ giữa 'Giá trị cốt lõi cá nhân' và 'Giá trị tổ chức' là gì?",
+      "back": "Sự thống nhất giữa chúng giúp tìm thấy ý nghĩa trong công việc và sự an toàn tài chính."
+    },
+    {
+      "front": "Nhiệm vụ đầy thách thức kết hợp với kỹ năng chinh phục sẽ tạo ra điều gì?",
+      "back": "Trạng thái 'Phiêu' (Flow)."
+    },
+    {
+      "front": "Tại sao Zappos lại đào tạo 'bootcamp' 4 tuần cho mọi nhân viên mới?",
+      "back": "Để đảm bảo nhân viên có đủ năng lực (competence) và thấm nhuần văn hóa công ty."
+    },
+    {
+      "front": "Ý nghĩa của việc 'Nhìn thấy những điều mọi người làm đúng' là gì?",
+      "back": "Là cách thực hành lòng biết ơn và ghi nhận giá trị của người khác."
+    },
+    {
+      "front": "Hành vi (Behaviors) đóng vai trò gì đối với Giá trị cốt lõi (Core Values)?",
+      "back": "Hành vi là sự chuyển hóa và biểu hiện cụ thể của các giá trị ra bên ngoài."
+    },
+    {
+      "front": "Thói quen 'Tỉnh thức' giúp ích gì trong việc tìm kiếm hạnh phúc?",
+      "back": "Giúp nhận ra niềm vui và hạnh phúc luôn hiện hữu trong khoảnh khắc hiện tại."
+    },
+    {
+      "front": "Trụ cột nào trong DH tương ứng với nhu cầu 'Liên quan' của SDT?",
+      "back": "Sự kết nối (Connectedness)."
+    },
+    {
+      "front": "Theo DH, 'Lòng biết ơn' nên bắt đầu từ đâu để hiệu quả nhất?",
+      "back": "Phải đến từ mong muốn thực sự của cá nhân thay vì bị ép buộc như KPI."
+    },
+    {
+      "front": "Tầm quan trọng của 'Ý chí cá nhân' khi làm việc trong tổ chức là gì?",
+      "back": "Giúp cá nhân vẫn giữ được giá trị riêng trong khi đồng hành cùng mục tiêu của chủ doanh nghiệp."
+    },
+    {
+      "front": "Tại sao DH coi 'Niềm vui/Sự thỏa mãn' là lớp ngoài cùng của kim tự tháp hạnh phúc?",
+      "back": "Vì nó mang tính nhất thời và không tạo ra ý nghĩa bền vững như Tầm nhìn cao cả."
+    },
+    {
+      "front": "Trong nghiên cứu của Bob Emons, nhóm 'Trung tính' được yêu cầu làm gì?",
+      "back": "Ghi lại những sự kiện xảy ra mà không tập trung vào tích cực hay tiêu cực."
+    }
+  ]
+}

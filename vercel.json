@@ -3,5 +3,8 @@
   "redirects": [
     { "source": "/login", "destination": "/lms", "permanent": true },
     { "source": "/login.html", "destination": "/lms", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/lms/data/:path*", "destination": "/data/:path*" }
   ]
 }

@@ -257,7 +257,71 @@
           "url": "data/artifacts/flashcards",
           "icon": "🃏"
         }
-      ]
+      ],
+      "deepInsights": {
+        "title": "Khoa Học Hạnh Phúc Bền Vững & 3 Cấp Độ (Martin Seligman)",
+        "zapposCaseStudy": {
+          "title": "Case Study Zappos & Amazon (1,2 Tỷ USD): Khi Hạnh Phúc Là Lợi Thế Cạnh Tranh",
+          "content": "Năm 2009, Amazon chi 1,2 tỷ USD mua lại Zappos không phải chỉ để bán giày, mà để sở hữu 'công nghệ văn hóa' tạo trải nghiệm WOW. Tại Zappos, nhân viên được tặng 3.000 USD để nghỉ việc ngay tuần đầu nếu không hợp văn hóa. Nhân viên CSKH không bị áp KPI thời lượng cuộc gọi (cuộc gọi kỷ lục kéo dài 10 tiếng 43 phút), vì mục đích cao cả là xây dựng sự kết nối con người sâu sắc."
+        },
+        "seligmanLevels": [
+          {
+            "level": "Cấp độ 1: Thú vui (Pleasure)",
+            "nature": "Đến từ Sở hữu (vật chất) hoặc Trải nghiệm ngắn hạn. Nhanh nguội lạnh do cơ chế thích nghi khoái lạc (Hedonic Adaptation).",
+            "duration": "Ngắn hạn (Vài giờ đến vài ngày)",
+            "impact": "Tạo động lực tức thời nhưng dễ dẫn đến trống rỗng nếu thiếu cấp độ cao hơn."
+          },
+          {
+            "level": "Cấp độ 2: Đam mê / Dòng chảy (Passion & Flow)",
+            "nature": "Trạng thái 'Phiêu' say sưa khi đương đầu với thử thách phù hợp năng lực. Thời gian như ngừng trôi.",
+            "duration": "Trung hạn (Theo hoạt động/dự án)",
+            "impact": "Tập trung đỉnh cao, hiệu suất vượt bậc, gắn kết với tiến độ công việc."
+          },
+          {
+            "level": "Cấp độ 3: Mục đích cao cả (Higher Purpose)",
+            "nature": "Cảm giác thuộc về điều gì đó lớn lao hơn bản thân. Phụng sự và cống hiến cho tập thể và xã hội.",
+            "duration": "Trường tồn (Tính di sản cả đời)",
+            "impact": "Nội lực bền bỉ nhất, tạo sự kiên cường trước mọi biến cố và khủng hoảng."
+          }
+        ],
+        "compassClock": {
+          "title": "La Bàn và Đồng Hồ: Bi kịch Lệch Pha Giữa Giá Trị và Hành Động",
+          "content": "La bàn đại diện cho Giá trị cốt lõi (những gì ta NGHĨ là quan trọng), Đồng hồ đại diện cho Thời gian/Hành động thực tế. Bất hạnh nảy sinh khi ta tuyên bố 'Gia đình là số 1' (La bàn) nhưng 100% thời gian lại dành cho bàn nhậu (Đồng hồ). Khoảnh khắc Quyết định Then chốt (Critical Decision Moment - CBM) sẽ phơi bày Bạn thực sự là ai (Who you are) thay vì Bạn nghĩ mình là ai.",
+          "intelExample": "Tại Intel, văn hóa an toàn bắt đầu từ niềm tin 'Mọi thương vong đều phòng tránh được', và được cụ thể hóa thành kỷ luật thép: 'Phải nắm tay vịn khi lên xuống cầu thang'."
+        },
+        "sdtLevers": [
+          {
+            "lever": "Cảm giác Kết nối (Connection)",
+            "stat": "Thiếu kết nối đánh thuế 21% hiệu suất và tăng 66% lo âu. Kết nối chân thực giúp tăng 50% tuổi thọ.",
+            "action": "Lắng nghe không phán xét, xây dựng không gian an toàn tâm lý (Psychological Safety).",
+            "infographic": "data/artifacts/infographics/infographic_suc_manh_ket_noi.png"
+          },
+          {
+            "lever": "Cảm giác Tự chủ (Autonomy)",
+            "stat": "Khi tỷ lệ nhân viên cảm thấy tiếng nói được lắng nghe tăng từ 3/10 lên 6/10, tỷ lệ thôi việc giảm 27% và năng suất tăng 12%.",
+            "action": "Trao quyền quyết định trong phạm vi trách nhiệm, khuyến khích sáng kiến và thử nghiệm mới.",
+            "infographic": "data/artifacts/infographics/infographic_suc_manh_tu_chu.png"
+          },
+          {
+            "lever": "Cảm giác Tiến bộ (Progress)",
+            "stat": "67% người lao động khẳng định sự ghi nhận của cấp trên là động lực hiệu suất số 1 (McKinsey). 49% bất mãn khi thiếu cơ hội tăng trưởng.",
+            "action": "Ghi nhận tức thì các bước tiến nhỏ (Small Wins), thiết lập cột mốc học tập rõ ràng.",
+            "infographic": "data/artifacts/infographics/infographic_dong_luc_tien_bo.png"
+          }
+        ],
+        "infographics": [
+          {
+            "title": "Đồ họa: 3 Cấp Độ Hạnh Phúc",
+            "url": "data/artifacts/infographics/infographic_3_cap_do_hanh_phuc.png",
+            "desc": "Mô hình kim tự tháp hạnh phúc từ Thú vui đến Đam mê và Mục đích cao cả của Martin Seligman."
+          },
+          {
+            "title": "Đồ họa: La Bàn Gặp Đồng Hồ",
+            "url": "data/artifacts/infographics/infographic_la_ban_dong_ho.png",
+            "desc": "Sự đồng bộ giữa Hệ giá trị cốt lõi (La bàn) và Phân bổ thời gian thực tế (Đồng hồ) qua các điểm CBM."
+          }
+        ]
+      }
     },
     {
       "id": "stage-2",
@@ -618,6 +682,59 @@
         "I": "Điều tâm đắc và lay động lớn nhất đối với bạn sau trọn vẹn 1 ngày trải nghiệm tại lớp?",
         "A": "Ba cam kết hành động cụ thể nhất bạn sẽ mang về thực hiện tại doanh nghiệp / gia đình?",
         "M": "Khóa học này đã thay đổi định nghĩa về Hạnh phúc và Văn hóa đội ngũ của bạn như thế nào?"
+      },
+      "habitsScience": {
+        "gratitude": {
+          "science": "Nghiên cứu của GS. Robert Emmons (UC Davis) chứng minh: Nhóm thực hành biết ơn thường xuyên có mức độ hạnh phúc cao hơn 25%, lạc quan hơn về tương lai và dành nhiều hơn 1.5 giờ/tuần để rèn luyện thể chất.",
+          "dimensions": [
+            "1. Biết ơn kết quả tốt đẹp đã diễn ra.",
+            "2. Biết ơn nghịch cảnh & điều bất như ý (vì mang lại bài học và sức bật tâm lý).",
+            "3. Biết ơn những điều tốt đẹp SẼ xảy ra (kiến tạo tương lai).",
+            "4. Biết ơn chính bản thân mình (vì đã kiên trì vượt khó và hòa ái nội tâm)."
+          ],
+          "formula": "Công thức trân trọng 4 thành tố: [Tên đồng nghiệp] + [Giá trị cốt lõi họ thể hiện] + [Câu chuyện/Hành vi cụ thể] + [Tác động tích cực đến tôi/đội ngũ].",
+          "quote": "Cảm thấy biết ơn mà không thể hiện ra cũng giống như gói một món quà thật đẹp mà không bao giờ đem tặng. — William A. Ward",
+          "infographic": "data/artifacts/infographics/infographic_thoi_quen_biet_on.png"
+        },
+        "mindfulness": {
+          "science": "Chương trình MBSR của GS. Y khoa Jon Kabat-Zinn chỉ ra: Giảm 39% stress, tăng 35% tự nhận thức và tăng 200% chất lượng giấc ngủ. Khoa học chứng minh 98% dân số không thể đa nhiệm hiệu quả; chuyển đổi ngữ cảnh (Context Switching) bào mòn năng lượng não bộ.",
+          "technique": "Kỹ thuật SBA (Stop - Breathe - Ask): Stop (Dừng lại nhận diện cảm xúc không phán xét) → Breathe (Hít thở sâu 3 hơi để đưa máu về vỏ não trước trán) → Ask (Tự hỏi: Tôi đang đội chiếc mũ vai trò gì và điều gì là quan trọng nhất lúc này?).",
+          "bodyScan": "Quét cơ thể từ đỉnh đầu đến ngón chân để giải tỏa các vùng cơ căng cứng, kích hoạt hệ thần kinh phó giao cảm.",
+          "infographic": "data/artifacts/infographics/infographic_song_tinh_thuc.png"
+        },
+        "optimism": {
+          "science": "Lạc quan lý trí (Rational Optimism) theo Melinda Gates: Niềm tin rằng ta có năng lực hành động để biến chuyển tình thế. Não bộ tự động sa vào hố đen suy diễn tiêu cực (Hạch Hạnh Nhân - Amygdala); ABCDE giúp chuyển giao quyền kiểm soát sang Vỏ Não Trước Trán (Prefrontal Cortex).",
+          "abcdeTool": "A (Adversity - Nghịch cảnh khách quan) → B (Belief - Niềm tin/Suy diễn tiêu cực nảy sinh) → C (Consequence - Cảm xúc tê liệt & Hậu quả) → D (Dispute - Phản biện với câu hỏi vàng: 'Niềm tin này có đúng 100% không?' và 'So what? - Thế thì sao?') → E (Energization & Action - Tái tạo năng lượng & Hành động cụ thể ngay).",
+          "mistake": "Tránh bẫy 'Lạc quan tếu' (chờ đợi may mắn thụ động) hoặc bị mắc kẹt vô vọng ở bước B và C.",
+          "infographic": "data/artifacts/infographics/infographic_lac_quan_hoc_duoc.png"
+        },
+        "flow": {
+          "science": "Khởi xướng bởi Mihaly Csikszentmihalyi: Trạng thái đắm chìm trọn vẹn, năng suất tối đa, quên thời gian. Tỉnh thức là TĨNH (lắng quan sát hiện tại), Flow là ĐỘNG (hướng tới chinh phục thử thách).",
+          "fourConditions": [
+            "1. Nhiệm vụ đầy tính thách thức.",
+            "2. Bản thân có đủ kỹ năng tương xứng.",
+            "3. Nhận được phản hồi tức thì (Immediate Feedback).",
+            "4. Hiện diện 100% và không bị phân tâm."
+          ],
+          "microflow": "Kỹ thuật Microflow: Biến mọi công việc nhàm chán nhất thành một trò chơi có luật chơi, bấm giờ Pomodoro 25-30 phút để bứt phá kỷ lục năng suất của chính mình.",
+          "infographic": "data/artifacts/infographics/infographic_trang_thai_flow.png"
+        },
+        "altruism": {
+          "science": "GS. Adam Grant (Wharton, tác giả Give and Take): Phân loại Takers (Chỉ nhận), Matchers (Sòng phẳng), và Givers (Cho đi). Nghịch lý: Givers ngây thơ đứng cuối bảng hiệu suất (kiệt sức, bị lợi dụng); nhưng Người đứng đầu bảng thành công nhất CŨNG LÀ GIVERS — các 'Smart Givers' (Người cho đi sắc sảo).",
+          "trio": "Bộ ba Bi - Trí - Dũng: Bi (Từ bi muốn giúp đỡ) → Trí (Dùng SBA cân nhắc xem có tạo ra sự ỷ lại không) → Dũng (Dũng cảm hướng dẫn họ tự làm thay vì làm hộ để giúp họ đạt sự tự chủ, hoặc dũng cảm nói Không với đòi hỏi độc hại).",
+          "workplaceActs": [
+            "Xung phong làm Buddy kèm cặp nhân viên mới.",
+            "Thực hiện Allyship (Âm thầm ủng hộ sáng kiến của đồng nghiệp trong cuộc họp).",
+            "Làm Giảng viên nội bộ chia sẻ chuyên môn.",
+            "Quy tắc 5 phút: Giúp đỡ nhanh chóng nếu việc đó chỉ tốn dưới 5 phút của bạn."
+          ],
+          "infographic": "data/artifacts/infographics/infographic_vi_nhan_thong_thai.png"
+        },
+        "capstone": {
+          "culturePact": "Văn hóa là Thỏa thuận hành vi (Culture Pact) được đồng thuận từ dưới lên, tuyệt đối cấm sao chép (copy-paste) sổ tay văn hóa vô hồn. Hành vi là đơn vị đo lường duy nhất của văn hóa.",
+          "sevenLevels": "Mô hình 7 cấp độ nhận thức tổ chức từ Sinh tồn (Survival) đến Phụng sự (Service). Phụng sự không phụ thuộc vào số tiền bạn có, mà phụ thuộc vào phần trăm của trái tim bạn trao đi.",
+          "infographic": "data/artifacts/infographics/infographic_thiet_ke_van_hoa_nhom.png"
+        }
       }
     },
     {
@@ -662,24 +779,162 @@
       },
       "resources": [
         {
-          "title": "Bản Thiết Kế Văn Hóa Tổ Chức (Culture Blueprint)",
-          "type": "pdf",
-          "url": "data/artifacts/culture_blueprint.pdf",
-          "icon": "📑"
-        },
-        {
-          "title": "Báo cáo Dòng Chảy & Quản Trị Con Người",
+          "id": "rep-1",
+          "title": "Báo Cáo Chuyên Sâu: Khoa Học Hạnh Phúc & Mô Hình 3 Cấp Độ",
           "type": "markdown",
-          "url": "data/artifacts/report_dong_chay.md",
-          "icon": "📄"
+          "url": "data/artifacts/report_khoa_hoc_hanh_phuc_3_cap_do.md",
+          "icon": "📘",
+          "readOnline": true,
+          "desc": "Nghiên cứu toàn diện về văn hóa Zappos, Amazon, mô hình Martin Seligman, thuyết SDT và 8 chữ C của Tỉnh thức."
         },
         {
-          "title": "Ngân Hàng 50+ Tình Huống Thực Chiến ABCDE",
+          "id": "rep-2",
+          "title": "Báo Cáo Chiến Lược: Văn Hóa Dòng Chảy & Quản Trị Con Người",
+          "type": "markdown",
+          "url": "data/artifacts/report_van_hoa_dong_chay.md",
+          "icon": "📑",
+          "readOnline": true,
+          "desc": "Chiến lược chuyển hóa từ Niềm tin sang Hành vi, xây dựng Culture Pact và giải quyết xung đột La Bàn - Đồng Hồ."
+        },
+        {
+          "id": "rep-3",
+          "title": "Cẩm Nang Hướng Dẫn Ôn Tập & Đúc Kết Chuyển Hóa DHM",
+          "type": "markdown",
+          "url": "data/artifacts/huong_dan_on_tap_dhm.md",
+          "icon": "📝",
+          "readOnline": true,
+          "desc": "Bộ câu hỏi tự vấn và khung đúc kết I•A•M giúp biến lý thuyết thành lối sống hạnh phúc tự thân."
+        },
+        {
+          "id": "rep-4",
+          "title": "Sơ Đồ Tư Duy: Hệ Sinh Thái Giá Trị & Khoa Học Hạnh Phúc",
           "type": "json",
-          "url": "data/artifacts/knowledge_base_abcde.json",
-          "icon": "💡"
+          "url": "data/artifacts/mindmap_he_sinh_thai_dhm.json",
+          "icon": "🧠",
+          "readOnline": false,
+          "desc": "Cây cấu trúc tư duy dạng Mindmap kết nối toàn bộ các thành tố của hệ điều hành hạnh phúc."
+        },
+        {
+          "id": "rep-5",
+          "title": "Kho 12 Đồ Họa Thông Tin Infographics HD (Bộ Đầy Đủ)",
+          "type": "image",
+          "url": "data/artifacts/infographics/",
+          "icon": "🖼️",
+          "readOnline": true,
+          "desc": "Toàn bộ 12 infographic chất lượng cao trích xuất từ Google NotebookLM phục vụ trực quan hóa bài giảng."
         }
-      ]
+      ],
+      "flashcardsDeck": {
+        "title": "Bộ 25 Flashcards Văn Hóa Ghi Nhớ (Delivering Happiness)",
+        "description": "Lật thẻ phản xạ nhanh để khắc sâu các khái niệm cốt lõi: 3 Cấp độ Hạnh phúc, La bàn & Đồng hồ, 3 Đòn bẩy SDT, 5 Thói quen và DNA Văn hóa.",
+        "cards": [
+          {
+            "front": "Theo định nghĩa về giá trị cốt lõi, 'Đạo đức' được hiểu là gì?",
+            "back": "Là những phẩm chất đáng phấn đấu và đúng với luân thường đạo lý."
+          },
+          {
+            "front": "Trong hệ thống giá trị cốt lõi, thành phần nào đóng vai trò là 'nguyên tắc tổ chức' mang lại sự an toàn?",
+            "back": "Chỉ dẫn (Guidance)."
+          },
+          {
+            "front": "Giá trị cốt lõi đóng vai trò là 'Động lực' như thế nào đối với một cá nhân?",
+            "back": "Giúp trở thành con người tốt đẹp hơn và là động lực sâu thẳm nhất của hành vi."
+          },
+          {
+            "front": "Mối quan hệ giữa 'Hành động' và giá trị cốt lõi là gì?",
+            "back": "Các thói quen hành động, ý tưởng và lý tưởng đều được dựa trên các giá trị."
+          },
+          {
+            "front": "Trong 'Bảy cấp độ nhận thức của tổ chức', cấp độ 1 (Survival) tập trung vào yếu tố nào?",
+            "back": "Lợi nhuận và giá trị cổ đông."
+          },
+          {
+            "front": "Cấp độ 2 trong nhận thức tổ chức (Relationship) hướng đến điều gì?",
+            "back": "Giao tiếp cởi mở, giải quyết xung đột và sự hài lòng của khách hàng."
+          },
+          {
+            "front": "Cấp độ 3 trong nhận thức tổ chức (Self-esteem) tập trung vào năng lực nào?",
+            "back": "Hiệu suất, năng suất, kết quả và chất lượng."
+          },
+          {
+            "front": "Yếu tố then chốt của cấp độ 4 trong nhận thức tổ chức (Transformation) là gì?",
+            "back": "Học tập liên tục, thích nghi và chia sẻ kiến thức."
+          },
+          {
+            "front": "Cấp độ 5 trong nhận thức tổ chức (Internal cohesion) xây dựng văn hóa dựa trên điều gì?",
+            "back": "Sự tin tưởng, cởi mở, cam kết, sáng tạo và nhiệt huyết."
+          },
+          {
+            "front": "Cấp độ 6 trong nhận thức tổ chức (Making a difference) tập trung vào đối tượng nào?",
+            "back": "Liên minh chiến lược, sự thỏa mãn của nhân viên và sự tham gia của cộng đồng."
+          },
+          {
+            "front": "Cấp độ cao nhất (Cấp độ 7 - Service) trong nhận thức tổ chức hướng tới điều gì?",
+            "back": "Phụng sự nhân loại, đạo đức và trách nhiệm xã hội."
+          },
+          {
+            "front": "Ba cấp độ lan tỏa hạnh phúc trong mô hình Delivering Happiness (DH) là gì?",
+            "back": "Cá nhân (ME), Tập thể (WE) và Cộng đồng (COMMUNITY)."
+          },
+          {
+            "front": "Theo mô hình DH, sự thống nhất (alignment) thực sự bắt đầu từ đâu?",
+            "back": "Bắt đầu từ việc hiểu được giá trị cốt lõi của Cá nhân (ME)."
+          },
+          {
+            "front": "Trong biểu tượng 'La bàn và Đồng hồ', La bàn (Compass) đại diện cho điều gì?",
+            "back": "Giá trị, tầm nhìn, hướng đi và các nguyên tắc."
+          },
+          {
+            "front": "Trong biểu tượng 'La bàn và Đồng hồ', Đồng hồ (Clock) đại diện cho điều gì?",
+            "back": "Hành động, hành vi và những gì chúng ta dành thời gian thực hiện."
+          },
+          {
+            "front": "Vấn đề phát sinh khi nào trong mối quan hệ giữa 'La bàn' và 'Đồng hồ'?",
+            "back": "Khi những việc chúng ta làm không hướng tới những điều chúng ta cảm thấy quan trọng."
+          },
+          {
+            "front": "Định nghĩa về 'Tỉnh thức' (Mindfulness) trong thói quen hạnh phúc là gì?",
+            "back": "Tập trung chú ý vào khoảnh khắc hiện tại mà không phán xét."
+          },
+          {
+            "front": "Theo Mihaly Csikszentmihalyi, người ta hạnh phúc không phải vì những gì họ làm mà vì điều gì?",
+            "back": "Vì cách họ thực hiện công việc đó."
+          },
+          {
+            "front": "Trạng thái 'Phiêu' (Flow) thường xuất hiện khi nào?",
+            "back": "Khi nhiệm vụ thách thức phù hợp với kỹ năng và có sự hiện diện không phân tâm."
+          },
+          {
+            "front": "Thuyết Tự quyết (Self-Determination Theory - SDT) xác định 3 nhu cầu tâm lý cơ bản nào?",
+            "back": "Tự chủ (Autonomy), Năng lực (Competence) và Liên quan (Relatedness)."
+          },
+          {
+            "front": "Nhu cầu 'Tự chủ' (Autonomy) trong tổ chức được thể hiện như thế nào?",
+            "back": "Quyền lựa chọn phương pháp làm việc và tham gia thiết lập mục tiêu."
+          },
+          {
+            "front": "Nhu cầu 'Năng lực' (Competence) trong SDT có nghĩa là gì?",
+            "back": "Cảm thấy hiệu quả, có khả năng và có định hướng làm chủ trong các hoạt động."
+          },
+          {
+            "front": "Nhu cầu 'Liên quan' (Relatedness) trong SDT được manifested như thế nào?",
+            "back": "Sự kết nối, được quan tâm và cảm giác thuộc về một cộng đồng."
+          },
+          {
+            "front": "Bốn trụ cột hạnh phúc trong khung Delivering Happiness là gì?",
+            "back": "Kiểm soát (Control), Tiến bộ (Progress), Kết nối (Connectedness) và Tầm nhìn/Ý nghĩa (Vision/Meaning)."
+          },
+          {
+            "front": "Tại Zappos, 'Cảm giác kiểm soát' (Perceived Control) được ứng dụng thông qua điều gì?",
+            "back": "Sử dụng Holacracy (tự quản lý) và không sử dụng kịch bản khi gọi điện hỗ trợ khách hàng."
+          }
+        ]
+      },
+      "infographicSummary": {
+        "title": "Đồ Họa Tổng Kết: Khoa Học Hạnh Phúc Toàn Diện",
+        "url": "data/artifacts/infographics/infographic_tong_ket_hanh_phuc.png",
+        "desc": "Bản đồ thị giác tích hợp trọn vẹn 3 Cấp độ, 3 Đòn bẩy và 5 Thói quen Hạnh phúc để thực hành trong 21 ngày."
+      }
     }
   ]
 }

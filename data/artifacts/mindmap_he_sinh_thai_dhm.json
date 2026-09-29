@@ -1,0 +1,162 @@
+{
+  "name": "Giá trị cốt lõi và Khoa học Hạnh phúc",
+  "children": [
+    {
+      "name": "Giá trị cốt lõi (Core Values)",
+      "children": [
+        {
+          "name": "Thước đo giá trị",
+          "children": [
+            {
+              "name": "La bàn (Định hướng)"
+            },
+            {
+              "name": "Đồng hồ (Thời gian)"
+            },
+            {
+              "name": "Đô la (Tiền bạc/Cam kết)"
+            }
+          ]
+        },
+        {
+          "name": "Hành vi (Behaviors)",
+          "children": [
+            {
+              "name": "Biểu hiện quan sát được"
+            },
+            {
+              "name": "Đo lường được"
+            },
+            {
+              "name": "Chuyển hóa từ giá trị"
+            }
+          ]
+        },
+        {
+          "name": "Sự đồng bộ (Alignment)",
+          "children": [
+            {
+              "name": "Me to We alignment"
+            },
+            {
+              "name": "Tìm điểm chung cá nhân và tổ chức"
+            },
+            {
+              "name": "Không ép buộc, là sự lựa chọn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Khoa học Hạnh phúc",
+      "children": [
+        {
+          "name": "3 Cấp độ Hạnh phúc",
+          "children": [
+            {
+              "name": "Pleasure (Thú vui/Sở hữu/Trải nghiệm)"
+            },
+            {
+              "name": "Passion (Đam mê)"
+            },
+            {
+              "name": "Higher Purpose (Lý tưởng/Ý nghĩa)"
+            }
+          ]
+        },
+        {
+          "name": "3 Đòn bẩy (Science of Happiness)",
+          "children": [
+            {
+              "name": "Sense of Progress (Tiến bộ)",
+              "children": [
+                {
+                  "name": "1% tốt hơn mỗi ngày"
+                },
+                {
+                  "name": "An toàn tâm lý (Psychological Safety)"
+                },
+                {
+                  "name": "Ghi nhận (Recognition)"
+                }
+              ]
+            },
+            {
+              "name": "Sense of Control (Tự chủ)",
+              "children": [
+                {
+                  "name": "Sự lựa chọn (Choice)"
+                },
+                {
+                  "name": "Trí tuệ và Dũng cảm"
+                }
+              ]
+            },
+            {
+              "name": "Sense of Connection (Kết nối)",
+              "children": [
+                {
+                  "name": "Tình đồng nghiệp (Camaraderie)"
+                },
+                {
+                  "name": "Cùng tần số/Hệ tư tưởng"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Thói quen Hạnh phúc (Lòng biết ơn)",
+      "children": [
+        {
+          "name": "4 Lý do biết ơn",
+          "children": [
+            {
+              "name": "Điều như ý đã xảy ra"
+            },
+            {
+              "name": "Điều như ý sắp xảy ra"
+            },
+            {
+              "name": "Điều bất như ý (Nghịch cảnh)"
+            },
+            {
+              "name": "Chính bản thân mình"
+            }
+          ]
+        },
+        {
+          "name": "Thực hành tại công sở",
+          "children": [
+            {
+              "name": "Ghi nhận (Appreciation)"
+            },
+            {
+              "name": "Khen thưởng (Award)"
+            },
+            {
+              "name": "Loại bỏ văn hóa NATO (Chỉ nói không làm)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Thỏa thuận văn hóa lớp học",
+      "children": [
+        {
+          "name": "Hiện diện trọn vẹn (Đúng giờ)"
+        },
+        {
+          "name": "Cởi mở chia sẻ & Chủ động đặt câu hỏi"
+        },
+        {
+          "name": "Hợp tác & Không phán xét"
+        }
+      ]
+    }
+  ]
+}

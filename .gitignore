@@ -13,6 +13,8 @@ register_nvc - Copy.html
 clasp_out.txt
 *.jpg
 *.png
+!data/artifacts/infographics/*.png
+!data/artifacts/*.png
 antigravity_export/
 implementation_plan.md
 implementation_plan_20260413_UpdateGeminiRules.md

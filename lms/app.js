@@ -294,7 +294,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const tabContents = document.querySelectorAll(".tab-content");
     const summaryCoreText = document.getElementById("summary-core-text");
     const summaryCardsContainer = document.getElementById("summary-cards-container");
+    const summaryDeepContentContainer = document.getElementById("summary-deep-content-container");
     const resourcesGridContainer = document.getElementById("resources-grid-container");
+
+    // Infographic Lightbox Modal Elements
+    const infographicModal = document.getElementById("infographic-modal");
+    const infographicModalImg = document.getElementById("infographic-modal-img");
+    const infographicModalTitle = document.getElementById("infographic-modal-title");
+    const btnInfographicDownload = document.getElementById("btn-infographic-download");
+    const btnCloseInfographic = document.getElementById("btn-close-infographic");
+
+    // Document Reader Modal Elements
+    const docReaderModal = document.getElementById("doc-reader-modal");
+    const docReaderTitle = document.getElementById("doc-reader-title");
+    const docReaderBody = document.getElementById("doc-reader-body");
+    const btnCloseDocReader = document.getElementById("btn-close-doc-reader");
+
+    // Stage 3 Flashcards Deck Elements
+    const flashcardContainer = document.getElementById("flashcard-container");
+    const flashcardInner = document.getElementById("flashcard-inner");
+    const flashcardBadge = document.getElementById("flashcard-badge");
+    const flashcardContent = document.getElementById("flashcard-content");
+    const flashcardCounter = document.getElementById("flashcard-counter");
+    const btnPrevCard = document.getElementById("btn-prev-card");
+    const btnFlipCard = document.getElementById("btn-flip-card");
+    const btnNextCard = document.getElementById("btn-next-card");
 
     // Stage Containers
     const stage1PracticeContainer = document.getElementById("stage1-practice-container");
@@ -810,6 +834,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 summaryCardsContainer.appendChild(c);
             });
         }
+        renderSummaryDeepContent(stage);
 
         // Tab 2: Switch Stage Practice View
         if (stage.id === "stage-1") {
@@ -1225,9 +1250,23 @@ document.addEventListener("DOMContentLoaded", () => {
         bindInput("weekly-checkin-1", v => { wChecks.w1 = v; s3.weeklyCheckins = wChecks; debouncedSave(); }, wChecks.w1);
         bindInput("weekly-checkin-2", v => { wChecks.w2 = v; s3.weeklyCheckins = wChecks; debouncedSave(); }, wChecks.w2);
         bindInput("weekly-checkin-3", v => { wChecks.w3 = v; s3.weeklyCheckins = wChecks; debouncedSave(); }, wChecks.w3);
+
+        // 11.6 Flashcards Deck Initialization
+        if (stage.flashcardsDeck && stage.flashcardsDeck.cards) {
+            setupFlashcards(stage.flashcardsDeck.cards);
+        }
+
+        // 11.7 Stage 3 Banner Infographic Button Trigger
+        const s3BannerBtn = document.querySelector("#stage3-practice-container .btn-view-infographic");
+        if (s3BannerBtn) {
+            s3BannerBtn.onclick = (e) => {
+                e.preventDefault();
+                openInfographicModal("data/artifacts/infographics/infographic_tong_ket_hanh_phuc.png", "Tổng Kết Khoa Học Hạnh Phúc Toàn Diện");
+            };
+        }
     }
 
-    // 12. TAB 3: RESOURCES RENDERER
+    // 12. TAB 3: RESOURCES RENDERER (Enhanced with in-app reader & lightbox)
     function renderResourcesTab(stage) {
         resourcesGridContainer.innerHTML = "";
         const resources = stage.resources || [];
@@ -1237,21 +1276,618 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         resources.forEach(r => {
-            const card = document.createElement("a");
-            card.href = r.url;
-            card.target = "_blank";
-            card.className = "p-4 rounded-xl bg-brand-card/70 border border-brand-border hover:border-brand-amber/50 transition-all flex items-center gap-3.5 group";
+            const card = document.createElement("div");
+            card.className = "p-4 rounded-xl bg-brand-card/70 border border-brand-border hover:border-brand-amber/50 transition-all flex flex-col justify-between group space-y-3";
+
+            let actionBtnHtml = "";
+            if (r.type === "markdown") {
+                actionBtnHtml = `
+                    <div class="flex items-center gap-2 pt-1 border-t border-brand-border/40">
+                        <button type="button" class="btn-read-doc flex-1 py-1.5 px-2.5 rounded-lg bg-brand-amber/15 hover:bg-brand-amber/25 text-brand-amber text-xs font-bold border border-brand-amber/30 transition-all flex items-center justify-center gap-1.5" data-doc="${r.url}" data-title="${r.title}">
+                            <span>📖 Đọc Trực Tiếp</span>
+                        </button>
+                        <a href="${r.url}" target="_blank" download class="py-1.5 px-2.5 rounded-lg bg-brand-dark hover:bg-brand-surface text-slate-300 text-xs border border-brand-border transition-colors">
+                            ⬇️ Tải file
+                        </a>
+                    </div>
+                `;
+            } else if (r.type === "image") {
+                const targetImg = r.url.endsWith('/') ? 'data/artifacts/infographics/infographic_tong_ket_hanh_phuc.png' : r.url;
+                actionBtnHtml = `
+                    <div class="flex items-center gap-2 pt-1 border-t border-brand-border/40">
+                        <button type="button" class="btn-view-infographic flex-1 py-1.5 px-2.5 rounded-lg bg-brand-amber/15 hover:bg-brand-amber/25 text-brand-amber text-xs font-bold border border-brand-amber/30 transition-all flex items-center justify-center gap-1.5" data-img="${targetImg}" data-title="${r.title}">
+                            <span>🔍 Xem Đồ Họa HD</span>
+                        </button>
+                        <a href="${targetImg}" target="_blank" class="py-1.5 px-2.5 rounded-lg bg-brand-dark hover:bg-brand-surface text-slate-300 text-xs border border-brand-border transition-colors">
+                            ↗ Mở
+                        </a>
+                    </div>
+                `;
+            } else {
+                actionBtnHtml = `
+                    <div class="pt-1 border-t border-brand-border/40">
+                        <a href="${r.url}" target="_blank" class="w-full py-1.5 px-2.5 rounded-lg bg-brand-dark hover:bg-brand-card text-brand-amber text-xs font-semibold border border-brand-border/60 transition-colors flex items-center justify-center gap-1.5">
+                            <span>Khám phá tệp ↗</span>
+                        </a>
+                    </div>
+                `;
+            }
+
             card.innerHTML = `
-                <div class="w-10 h-10 rounded-lg bg-brand-amber/10 text-brand-amber flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
-                    ${r.icon || '📄'}
+                <div class="flex items-start gap-3.5">
+                    <div class="w-10 h-10 rounded-lg bg-brand-amber/10 text-brand-amber flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform shrink-0">
+                        ${r.icon || '📄'}
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <div class="text-xs font-bold text-slate-200 group-hover:text-brand-amber transition-colors leading-snug">${r.title}</div>
+                        <div class="text-[11px] text-slate-400 capitalize mt-0.5">Định dạng: ${r.type} ${r.readOnline ? '• Đọc trực tiếp' : ''}</div>
+                        ${r.desc ? `<p class="text-[11px] text-slate-400 line-clamp-2 mt-1 leading-relaxed">${r.desc}</p>` : ''}
+                    </div>
                 </div>
-                <div class="min-w-0 flex-1">
-                    <div class="text-xs font-bold text-slate-200 group-hover:text-brand-amber transition-colors truncate">${r.title}</div>
-                    <div class="text-[11px] text-slate-400 capitalize mt-0.5">Định dạng: ${r.type} ↗</div>
-                </div>
+                ${actionBtnHtml}
             `;
             resourcesGridContainer.appendChild(card);
         });
+
+        attachMediaTriggers();
+    }
+
+    // 12.1 SUMMARY DEEP CONTENT BUILDER
+    function renderSummaryDeepContent(stage) {
+        if (!summaryDeepContentContainer) return;
+        summaryDeepContentContainer.innerHTML = "";
+
+        if (stage.id === "stage-1" && stage.deepInsights) {
+            const di = stage.deepInsights;
+            const container = document.createElement("div");
+            container.className = "space-y-6 pt-4 border-t border-brand-border/80";
+
+            // 1. Zappos Case Study
+            if (di.zapposCaseStudy) {
+                const zBox = document.createElement("div");
+                zBox.className = "p-5 rounded-2xl bg-gradient-to-br from-brand-card via-brand-surface to-brand-card border border-brand-amber/30 space-y-3 shadow-lg";
+                zBox.innerHTML = `
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <span class="px-2.5 py-1 rounded-full bg-brand-amber/20 text-brand-amber border border-brand-amber/30 text-[10px] font-extrabold uppercase tracking-wider flex items-center gap-1.5">
+                            <span>💼</span> Case Study Kinh Điển (1,2 Tỷ USD)
+                        </span>
+                        <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/infographics/infographic_3_cap_do_hanh_phuc.png" data-title="3 Cấp Độ Hạnh Phúc & Văn Hóa Zappos">
+                            <span>🔍 Xem Đồ Họa 3 Cấp Độ</span>
+                        </button>
+                    </div>
+                    <h3 class="text-sm font-extrabold text-white">${di.zapposCaseStudy.title}</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">${di.zapposCaseStudy.content}</p>
+                `;
+                container.appendChild(zBox);
+            }
+
+            // 2. Seligman 3 Levels
+            if (di.seligmanLevels && di.seligmanLevels.length > 0) {
+                const sBox = document.createElement("div");
+                sBox.className = "p-5 rounded-2xl bg-brand-card/40 border border-brand-border space-y-4";
+                let levelsHtml = di.seligmanLevels.map((lvl, idx) => {
+                    const colors = [
+                        { border: "border-slate-600", text: "text-slate-300", badge: "bg-slate-700 text-slate-200" },
+                        { border: "border-amber-500/50", text: "text-brand-amber", badge: "bg-brand-amber/20 text-brand-amber" },
+                        { border: "border-emerald-500/50", text: "text-emerald-400", badge: "bg-emerald-500/20 text-emerald-400" }
+                    ][idx] || { border: "border-brand-border", text: "text-white", badge: "bg-brand-card text-slate-300" };
+
+                    return `
+                        <div class="p-3.5 rounded-xl bg-brand-dark/60 border ${colors.border} space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="font-extrabold text-xs ${colors.text}">${lvl.level}</span>
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded ${colors.badge}">${lvl.duration}</span>
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed">${lvl.nature}</p>
+                            <div class="text-[11px] text-slate-400 border-t border-brand-border/40 pt-1.5">
+                                <strong class="text-slate-300">Tác động:</strong> ${lvl.impact}
+                            </div>
+                        </div>
+                    `;
+                }).join("");
+
+                sBox.innerHTML = `
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg">⚖️</span>
+                            <h3 class="text-sm font-bold text-white">So Sánh 3 Cấp Độ Hạnh Phúc (Martin Seligman)</h3>
+                        </div>
+                        <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/infographics/infographic_3_cap_do_hanh_phuc.png" data-title="3 Cấp Độ Hạnh Phúc Bền Vững">
+                            <span>🖼️ Đồ Họa Cấp Độ</span>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">${levelsHtml}</div>
+                `;
+                container.appendChild(sBox);
+            }
+
+            // 3. Compass and Clock
+            if (di.compassClock) {
+                const cBox = document.createElement("div");
+                cBox.className = "p-5 rounded-2xl bg-brand-card/40 border border-brand-border space-y-3";
+                cBox.innerHTML = `
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg">🧭</span>
+                            <h3 class="text-sm font-bold text-white">${di.compassClock.title}</h3>
+                        </div>
+                        <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/infographics/infographic_la_ban_dong_ho.png" data-title="La Bàn Me Values & Đồng Hồ Thời Gian">
+                            <span>🔍 Xem Đồ Họa La Bàn</span>
+                        </button>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">${di.compassClock.content}</p>
+                    ${di.compassClock.intelExample ? `
+                        <div class="p-3 rounded-xl bg-brand-dark/70 border-l-4 border-brand-orange text-xs text-slate-300 leading-relaxed">
+                            <strong class="text-brand-orange">Ví dụ Intel:</strong> ${di.compassClock.intelExample}
+                        </div>
+                    ` : ""}
+                `;
+                container.appendChild(cBox);
+            }
+
+            // 4. SDT 3 Levers
+            if (di.sdtLevers && di.sdtLevers.length > 0) {
+                const lBox = document.createElement("div");
+                lBox.className = "p-5 rounded-2xl bg-brand-card/40 border border-brand-border space-y-4";
+                let leversHtml = di.sdtLevers.map(lev => `
+                    <div class="p-4 rounded-xl bg-brand-dark/60 border border-brand-border/60 space-y-2 flex flex-col justify-between">
+                        <div class="space-y-1.5">
+                            <div class="text-xs font-bold text-brand-amber">${lev.lever}</div>
+                            <div class="text-xs text-slate-300 leading-relaxed">${lev.stat}</div>
+                            <div class="text-[11px] text-slate-400">💡 <em>${lev.action}</em></div>
+                        </div>
+                        ${lev.infographic ? `
+                            <div class="pt-2">
+                                <button type="button" class="btn-view-infographic w-full py-1.5 px-3 rounded-lg bg-brand-card hover:bg-brand-border text-slate-200 hover:text-brand-amber text-[11px] font-semibold border border-brand-border transition-all flex items-center justify-center gap-1.5" data-img="${lev.infographic}" data-title="${lev.lever}">
+                                    <span>🔍 Đồ Họa ${lev.lever.split("(")[0]}</span>
+                                </button>
+                            </div>
+                        ` : ""}
+                    </div>
+                `).join("");
+
+                lBox.innerHTML = `
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg">⚡</span>
+                            <h3 class="text-sm font-bold text-white">Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc Tự Thân</h3>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">${leversHtml}</div>
+                `;
+                container.appendChild(lBox);
+            }
+
+            summaryDeepContentContainer.appendChild(container);
+
+        } else if (stage.id === "stage-2") {
+            const container = document.createElement("div");
+            container.className = "space-y-6 pt-4 border-t border-brand-border/80";
+
+            // Stage 2 Deep Habits Showcase
+            const habitsData = [
+                {
+                    name: "Thói Quen 1: Biết Ơn Bền Vững",
+                    author: "Robert Emmons & Martin Seligman",
+                    evidence: "Khoa học chứng minh: Thực hành thư biết ơn giúp giảm 23% cortisol (hormone gây căng thẳng), tăng nồng độ DHEA và cải thiện 25% chất lượng giấc ngủ. Thói quen biết ơn nâng cao hiệu suất làm việc 50% khi người quản lý bày tỏ sự công nhận.",
+                    img: "data/artifacts/infographics/infographic_thoi_quen_biet_on.png"
+                },
+                {
+                    name: "Thói Quen 2: Tỉnh Thức & Phản Xạ S-B-A",
+                    author: "Jon Kabat-Zinn (MBSR) & Chade-Meng Tan",
+                    evidence: "Mô hình Stop - Breathe - Ask giúp ngắt dòng kích hoạt quá mức của hạch hạnh nhân (Amygdala), chuyển quyền kiểm soát sang vỏ não trước trán (Prefrontal Cortex). Nuôi dưỡng 8 phẩm chất C của năng lực tỉnh thức.",
+                    img: "data/artifacts/infographics/infographic_song_tinh_thuc.png"
+                },
+                {
+                    name: "Thói Quen 3: Lạc Quan Lý Trí & Kỹ Thuật A-B-C-D-E",
+                    author: "Martin Seligman & Melinda Gates",
+                    evidence: "Lạc quan không phải tô hồng cuộc sống hay ngây thơ (naive optimism), mà là khả năng phản biện lý trí (Dispute - D) để bẻ gãy niềm tin tiêu cực tự động (Belief - B), từ đó tái định hình hành động mới (Effect - E).",
+                    img: "data/artifacts/infographics/infographic_lac_quan_hoc_duoc.png"
+                },
+                {
+                    name: "Thói Quen 4: Trạng Thái Flow & Microflow",
+                    author: "Mihaly Csikszentmihalyi",
+                    evidence: "Flow xuất hiện ở giao điểm giữa Thách thức cao (High Challenge) và Kỹ năng cao (High Skill). Áp dụng Microflow biến những công việc nhàm chán lặp đi lặp lại thành trò chơi thử thách bản thân với mục tiêu rõ ràng và phản hồi tức thì.",
+                    img: "data/artifacts/infographics/infographic_trang_thai_flow.png"
+                },
+                {
+                    name: "Thói Quen 5: Vị Nhân & Bộ Ba Bi - Trí - Dũng",
+                    author: "Adam Grant (Give and Take)",
+                    evidence: "Người cho đi thông thái (Smart Giver) khác với người hy sinh mù quáng (Selfless Giver). Họ ứng dụng 'Ưu tiên 5 phút' (5-minute favor), cho đi có ranh giới và hỗ trợ đúng người, tạo nên mạng lưới cộng tác bền vững nhất.",
+                    img: "data/artifacts/infographics/infographic_vi_nhan_thong_thai.png"
+                }
+            ];
+
+            let habitsHtml = habitsData.map(h => `
+                <div class="p-4 rounded-xl bg-brand-card/40 border border-brand-border/70 space-y-2 flex flex-col justify-between">
+                    <div class="space-y-1">
+                        <div class="flex items-center justify-between flex-wrap gap-1">
+                            <h4 class="text-xs font-bold text-white">${h.name}</h4>
+                            <span class="text-[10px] text-brand-amber font-mono">${h.author}</span>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">${h.evidence}</p>
+                    </div>
+                    <div class="pt-2">
+                        <button type="button" class="btn-view-infographic w-full py-1.5 px-3 rounded-lg bg-brand-dark hover:bg-brand-card text-brand-amber border border-brand-amber/30 text-xs font-semibold transition-all flex items-center justify-center gap-1.5" data-img="${h.img}" data-title="${h.name}">
+                            <span>🔍 Xem Đồ Họa Infographic HD</span>
+                        </button>
+                    </div>
+                </div>
+            `).join("");
+
+            container.innerHTML = `
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">🔬</span>
+                        <h3 class="text-sm font-bold text-white">Nền Tảng Khoa Học Thần Kinh & Tâm Lý Học Của 5 Thói Quen</h3>
+                    </div>
+                    <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/infographics/infographic_thiet_ke_van_hoa_nhom.png" data-title="Thiết Kế Văn Hóa Nhóm (Culture Pact)">
+                        <span>🤝 Thỏa Thuận Văn Hóa Nhóm</span>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">${habitsHtml}</div>
+            `;
+            summaryDeepContentContainer.appendChild(container);
+
+        } else if (stage.id === "stage-3") {
+            const container = document.createElement("div");
+            container.className = "space-y-6 pt-4 border-t border-brand-border/80";
+
+            // 12 Infographics Gallery
+            const galleryList = [
+                { title: "3 Cấp Độ Hạnh Phúc", file: "infographic_3_cap_do_hanh_phuc.png" },
+                { title: "La Bàn Me Values & Đồng Hồ", file: "infographic_la_ban_dong_ho.png" },
+                { title: "Đòn Bẩy: Sức Mạnh Kết Nối", file: "infographic_suc_manh_ket_noi.png" },
+                { title: "Đòn Bẩy: Sức Mạnh Tự Chủ", file: "infographic_suc_manh_tu_chu.png" },
+                { title: "Đòn Bẩy: Động Lực Tiến Bộ", file: "infographic_dong_luc_tien_bo.png" },
+                { title: "Thói Quen 1: Biết Ơn Bền Vững", file: "infographic_thoi_quen_biet_on.png" },
+                { title: "Thói Quen 2: Sống Tỉnh Thức", file: "infographic_song_tinh_thuc.png" },
+                { title: "Thói Quen 3: Lạc Quan Học Được", file: "infographic_lac_quan_hoc_duoc.png" },
+                { title: "Thói Quen 4: Trạng Thái Flow", file: "infographic_trang_thai_flow.png" },
+                { title: "Thói Quen 5: Vị Nhân Thông Thái", file: "infographic_vi_nhan_thong_thai.png" },
+                { title: "Tổng Kết Toàn Diện Hạnh Phúc", file: "infographic_tong_ket_hanh_phuc.png" },
+                { title: "Thiết Kế Văn Hóa Nhóm (Culture Pact)", file: "infographic_thiet_ke_van_hoa_nhom.png" }
+            ];
+
+            let galleryHtml = galleryList.map((item, idx) => `
+                <button type="button" class="btn-view-infographic p-3 rounded-xl bg-brand-dark/70 hover:bg-brand-card border border-brand-border hover:border-brand-amber/60 text-left transition-all group flex items-center gap-3" data-img="data/artifacts/infographics/${item.file}" data-title="${item.title}">
+                    <span class="w-7 h-7 rounded-lg bg-brand-amber/15 text-brand-amber flex items-center justify-center font-mono font-bold text-xs group-hover:scale-110 transition-transform shrink-0">
+                        ${idx + 1}
+                    </span>
+                    <span class="text-xs font-semibold text-slate-200 group-hover:text-brand-amber transition-colors truncate">
+                        ${item.title}
+                    </span>
+                </button>
+            `).join("");
+
+            // 3 Reports Shortcut
+            const reports = [
+                { title: "Khoa Học Hạnh Phúc & Mô Hình 3 Cấp Độ", file: "data/artifacts/report_khoa_hoc_hanh_phuc_3_cap_do.md" },
+                { title: "Văn Hóa Dòng Chảy & Quản Trị Con Người", file: "data/artifacts/report_van_hoa_dong_chay.md" },
+                { title: "Cẩm Nang Ôn Tập & Đúc Kết Chuyển Hóa DHM", file: "data/artifacts/huong_dan_on_tap_dhm.md" }
+            ];
+
+            let reportsHtml = reports.map(r => `
+                <button type="button" class="btn-read-doc p-3.5 rounded-xl bg-brand-dark/80 hover:bg-brand-card border border-brand-border hover:border-brand-amber/60 text-left transition-all group flex items-center justify-between" data-doc="${r.file}" data-title="${r.title}">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <span class="text-lg">📘</span>
+                        <span class="text-xs font-bold text-slate-200 group-hover:text-brand-amber transition-colors truncate">${r.title}</span>
+                    </div>
+                    <span class="text-[11px] text-brand-amber shrink-0 font-semibold">Đọc ngay ➔</span>
+                </button>
+            `).join("");
+
+            container.innerHTML = `
+                <!-- 12 Infographics Hub -->
+                <div class="p-5 rounded-2xl bg-brand-card/40 border border-brand-border space-y-4">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg">🖼️</span>
+                            <h3 class="text-sm font-bold text-white">Kho Tàng 12 Đồ Họa Thông Tin Infographics HD (Studio Collection)</h3>
+                        </div>
+                        <span class="text-xs text-brand-amber font-mono font-bold">12/12 Infographics</span>
+                    </div>
+                    <p class="text-xs text-slate-400">Nhấp vào bất kỳ đồ họa nào để phóng to toàn màn hình hoặc tải về bản in chất lượng cao.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">${galleryHtml}</div>
+                </div>
+
+                <!-- 3 Scientific Reports -->
+                <div class="p-5 rounded-2xl bg-brand-card/40 border border-brand-border space-y-4">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">📚</span>
+                        <h3 class="text-sm font-bold text-white">3 Báo Cáo Chiến Lược & Luận Điểm Chuyên Sâu (In-App Reader)</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">${reportsHtml}</div>
+                </div>
+            `;
+            summaryDeepContentContainer.appendChild(container);
+        }
+
+        attachMediaTriggers();
+    }
+
+    // 12.2 ATTACH MEDIA TRIGGERS (INFOGRAPHICS & DOC READERS)
+    function attachMediaTriggers() {
+        document.querySelectorAll(".btn-view-infographic").forEach(btn => {
+            btn.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const img = btn.getAttribute("data-img");
+                const title = btn.getAttribute("data-title");
+                if (img) openInfographicModal(img, title);
+            };
+        });
+
+        document.querySelectorAll(".btn-read-doc").forEach(btn => {
+            btn.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const doc = btn.getAttribute("data-doc");
+                const title = btn.getAttribute("data-title");
+                if (doc) openDocReader(doc, title);
+            };
+        });
+    }
+
+    // 12.3 FLASHCARDS CONTROLLER
+    let currentFlashcards = [];
+    let currentCardIdx = 0;
+    let isCardFlipped = false;
+
+    function setupFlashcards(cards) {
+        if (!cards || cards.length === 0) return;
+        currentFlashcards = cards;
+        currentCardIdx = 0;
+        isCardFlipped = false;
+        renderFlashcard();
+    }
+
+    function renderFlashcard() {
+        if (!currentFlashcards || currentFlashcards.length === 0) return;
+        const card = currentFlashcards[currentCardIdx];
+        if (!card) return;
+
+        if (flashcardCounter) {
+            flashcardCounter.textContent = `${currentCardIdx + 1} / ${currentFlashcards.length}`;
+        }
+
+        if (isCardFlipped) {
+            if (flashcardBadge) {
+                flashcardBadge.textContent = "ĐÁP ÁN KHOA HỌC";
+                flashcardBadge.className = "px-2 py-0.5 rounded bg-emerald-500 text-black font-extrabold text-[10px] tracking-wider uppercase";
+            }
+            if (flashcardInner) {
+                flashcardInner.className = "w-full h-full rounded-2xl p-6 flex flex-col justify-between border border-emerald-500/50 bg-gradient-to-br from-emerald-950/40 via-brand-card to-brand-surface shadow-2xl transition-all";
+            }
+            if (flashcardContent) {
+                flashcardContent.innerHTML = `<span class="text-emerald-300 font-semibold text-sm leading-relaxed">${card.back || card.answer}</span>`;
+            }
+        } else {
+            if (flashcardBadge) {
+                flashcardBadge.textContent = "CÂU HỎI THẢO LUẬN";
+                flashcardBadge.className = "px-2 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px] tracking-wider uppercase";
+            }
+            if (flashcardInner) {
+                flashcardInner.className = "w-full h-full rounded-2xl p-6 flex flex-col justify-between border border-brand-amber/40 bg-gradient-to-br from-brand-card to-brand-surface shadow-xl transition-all hover:border-brand-amber";
+            }
+            if (flashcardContent) {
+                flashcardContent.innerHTML = `<span class="text-slate-100 font-medium text-sm leading-relaxed">${card.front || card.question}</span>`;
+            }
+        }
+    }
+
+    if (flashcardContainer) {
+        flashcardContainer.addEventListener("click", () => {
+            isCardFlipped = !isCardFlipped;
+            renderFlashcard();
+        });
+    }
+    if (btnFlipCard) {
+        btnFlipCard.addEventListener("click", (e) => {
+            e.stopPropagation();
+            isCardFlipped = !isCardFlipped;
+            renderFlashcard();
+        });
+    }
+    if (btnNextCard) {
+        btnNextCard.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (currentFlashcards.length > 0) {
+                currentCardIdx = (currentCardIdx + 1) % currentFlashcards.length;
+                isCardFlipped = false;
+                renderFlashcard();
+            }
+        });
+    }
+    if (btnPrevCard) {
+        btnPrevCard.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (currentFlashcards.length > 0) {
+                currentCardIdx = (currentCardIdx - 1 + currentFlashcards.length) % currentFlashcards.length;
+                isCardFlipped = false;
+                renderFlashcard();
+            }
+        });
+    }
+
+    // 12.4 INFOGRAPHIC LIGHTBOX MODAL
+    function openInfographicModal(imgSrc, title) {
+        if (!infographicModal) return;
+        const targetImg = (imgSrc.startsWith("/") || imgSrc.startsWith("http")) ? imgSrc : "/" + imgSrc;
+        if (infographicModalImg) infographicModalImg.src = targetImg;
+        if (infographicModalTitle) infographicModalTitle.textContent = title || "Đồ Họa Thông Tin HD";
+        if (btnInfographicDownload) {
+            btnInfographicDownload.href = targetImg;
+            const fileName = imgSrc.split("/").pop() || "infographic.png";
+            btnInfographicDownload.setAttribute("download", fileName);
+        }
+        infographicModal.classList.remove("hidden");
+    }
+
+    function closeInfographicModal() {
+        if (infographicModal) infographicModal.classList.add("hidden");
+    }
+
+    if (btnCloseInfographic) {
+        btnCloseInfographic.addEventListener("click", closeInfographicModal);
+    }
+    if (infographicModal) {
+        infographicModal.addEventListener("click", (e) => {
+            if (e.target === infographicModal) closeInfographicModal();
+        });
+    }
+
+    // 12.5 DOCUMENT READER MODAL
+    async function openDocReader(docUrl, title) {
+        if (!docReaderModal) return;
+        if (docReaderTitle) docReaderTitle.textContent = title || "Báo Cáo Chuyên Sâu";
+        if (docReaderBody) docReaderBody.innerHTML = `<div class="p-8 text-center text-slate-400">⏳ Đang tải tài liệu...</div>`;
+        docReaderModal.classList.remove("hidden");
+
+        const targetUrl = (docUrl.startsWith("/") || docUrl.startsWith("http")) ? docUrl : "/" + docUrl;
+
+        try {
+            const resp = await fetch(targetUrl);
+            if (!resp.ok) throw new Error("Không thể tải tài liệu: " + resp.status);
+            const text = await resp.text();
+            if (docReaderBody) {
+                docReaderBody.innerHTML = renderSimpleMarkdown(text);
+            }
+        } catch (err) {
+            if (docReaderBody) {
+                docReaderBody.innerHTML = `
+                    <div class="p-6 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300">
+                        <div class="font-bold mb-1">⚠️ Lỗi tải tài liệu</div>
+                        <div class="text-xs">${err.message}</div>
+                        <div class="mt-3">
+                            <a href="${targetUrl}" target="_blank" class="px-3 py-1.5 rounded-lg bg-brand-card border border-brand-border text-xs text-white hover:text-brand-amber">
+                                Mở tệp trực tiếp trong tab mới ↗
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+    }
+
+    function closeDocReader() {
+        if (docReaderModal) docReaderModal.classList.add("hidden");
+    }
+
+    if (btnCloseDocReader) {
+        btnCloseDocReader.addEventListener("click", closeDocReader);
+    }
+    if (docReaderModal) {
+        docReaderModal.addEventListener("click", (e) => {
+            if (e.target === docReaderModal) closeDocReader();
+        });
+    }
+
+    // 12.6 SIMPLE CLIENT-SIDE MARKDOWN PARSER
+    function renderSimpleMarkdown(md) {
+        if (!md) return "";
+        let lines = md.split("\n");
+        let html = [];
+        let inList = false;
+        let inTable = false;
+        let tableHeaderDone = false;
+
+        for (let i = 0; i < lines.length; i++) {
+            let line = lines[i].trim();
+
+            if (!line) {
+                if (inList) { html.push("</ul>"); inList = false; }
+                if (inTable) { html.push("</tbody></table></div>"); inTable = false; tableHeaderDone = false; }
+                continue;
+            }
+
+            // Tables (| col | col |)
+            if (line.startsWith("|") && line.endsWith("|")) {
+                let cells = line.split("|").slice(1, -1).map(c => c.trim());
+                if (cells.every(c => /^[-:\s]+$/.test(c))) {
+                    tableHeaderDone = true;
+                    html.push("<tbody>");
+                    continue;
+                }
+                if (!inTable) {
+                    if (inList) { html.push("</ul>"); inList = false; }
+                    html.push('<div class="overflow-x-auto my-4 rounded-xl border border-brand-border"><table class="w-full text-xs text-left">');
+                    html.push('<thead class="bg-brand-card/80 text-brand-amber uppercase text-[11px] font-bold border-b border-brand-border"><tr>');
+                    cells.forEach(c => html.push(`<th class="p-3 border-r border-brand-border/40 last:border-r-0">${formatInline(c)}</th>`));
+                    html.push('</tr></thead>');
+                    inTable = true;
+                    continue;
+                } else {
+                    html.push('<tr class="border-b border-brand-border/40 hover:bg-white/5 transition-colors">');
+                    cells.forEach(c => html.push(`<td class="p-3 border-r border-brand-border/40 last:border-r-0 text-slate-300 leading-relaxed">${formatInline(c)}</td>`));
+                    html.push('</tr>');
+                    continue;
+                }
+            } else if (inTable) {
+                html.push("</tbody></table></div>");
+                inTable = false;
+                tableHeaderDone = false;
+            }
+
+            // Headings
+            if (line.startsWith("### ")) {
+                if (inList) { html.push("</ul>"); inList = false; }
+                html.push(`<h3 class="text-base font-bold text-brand-orange mt-6 mb-2 flex items-center gap-2"><span>📌</span> <span>${formatInline(line.slice(4))}</span></h3>`);
+                continue;
+            }
+            if (line.startsWith("## ")) {
+                if (inList) { html.push("</ul>"); inList = false; }
+                html.push(`<h2 class="text-lg font-extrabold text-white mt-8 mb-3 pb-1 border-b border-brand-border/60 flex items-center gap-2"><span>🎯</span> <span>${formatInline(line.slice(3))}</span></h2>`);
+                continue;
+            }
+            if (line.startsWith("# ")) {
+                if (inList) { html.push("</ul>"); inList = false; }
+                html.push(`<h1 class="text-xl font-black text-brand-amber mt-4 mb-4 pb-2 border-b-2 border-brand-amber/40">${formatInline(line.slice(2))}</h1>`);
+                continue;
+            }
+
+            // Blockquote
+            if (line.startsWith("> ")) {
+                if (inList) { html.push("</ul>"); inList = false; }
+                html.push(`<blockquote class="border-l-4 border-brand-amber pl-4 py-2 italic bg-brand-card/50 rounded-r-xl my-3 text-slate-300 text-xs leading-relaxed">${formatInline(line.slice(2))}</blockquote>`);
+                continue;
+            }
+
+            // Unordered list
+            if (line.startsWith("- ") || line.startsWith("* ")) {
+                if (!inList) {
+                    html.push('<ul class="space-y-1.5 my-3 pl-2">');
+                    inList = true;
+                }
+                html.push(`<li class="flex items-start gap-2 text-xs text-slate-300 leading-relaxed"><span class="w-1.5 h-1.5 rounded-full bg-brand-amber mt-1.5 shrink-0"></span><span>${formatInline(line.slice(2))}</span></li>`);
+                continue;
+            } else if (inList) {
+                html.push("</ul>");
+                inList = false;
+            }
+
+            // Horizontal rule
+            if (line === "---" || line === "***") {
+                html.push('<hr class="border-brand-border my-6">');
+                continue;
+            }
+
+            // Standard paragraph
+            html.push(`<p class="text-xs text-slate-300 leading-relaxed my-2">${formatInline(line)}</p>`);
+        }
+
+        if (inList) html.push("</ul>");
+        if (inTable) html.push("</tbody></table></div>");
+
+        return html.join("\n");
+
+        function formatInline(str) {
+            if (!str) return "";
+            return str
+                .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em class="italic text-slate-300">$1</em>')
+                .replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded bg-brand-card border border-brand-border text-brand-amber text-[11px] font-mono">$1</code>');
+        }
     }
 
     // Input Binder Helper
