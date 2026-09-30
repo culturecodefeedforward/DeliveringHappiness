@@ -983,8 +983,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 const disabledAttr = isLockedOut ? "disabled" : "";
                 optionsHtml += `
-                    <button class="quiz-opt-btn w-full text-left p-3 rounded-lg border text-xs transition-all flex items-start gap-2.5 ${btnClass}" data-qid="${q.id}" data-optidx="${optIdx}" ${disabledAttr}>
-                        <span class="w-5 h-5 rounded flex items-center justify-center font-bold text-[10px] bg-brand-card border border-brand-border">
+                    <button class="quiz-opt-btn w-full text-left p-3 rounded-lg border text-xs transition-all flex items-start gap-2.5 min-h-[44px] ${btnClass}" data-qid="${q.id}" data-optidx="${optIdx}" ${disabledAttr}>
+                        <span class="w-5 h-5 rounded flex items-center justify-center font-bold text-[10px] bg-brand-card border border-brand-border shrink-0 mt-0.5">
                             ${String.fromCharCode(65 + optIdx)}
                         </span>
                         <span class="flex-1">${opt}</span>
@@ -1101,10 +1101,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 ? "border-brand-amber bg-brand-amber/15 text-white shadow-md shadow-amber-500/10"
                 : "border-brand-border bg-brand-card/50 text-slate-300 hover:border-slate-500";
 
-            card.className = `p-3 rounded-xl border text-left transition-all flex items-center justify-between group ${cardStyle}`;
+            card.className = `min-h-[44px] p-3 rounded-xl border text-left transition-all flex items-center justify-between group ${cardStyle}`;
             card.innerHTML = `
-                <span class="text-xs font-medium leading-snug">${val}</span>
-                <span class="w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold ${isSelected ? "bg-brand-amber text-black" : "border border-brand-border text-transparent"}">
+                <span class="text-xs font-medium leading-snug pr-2">${val}</span>
+                <span class="w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 ${isSelected ? "bg-brand-amber text-black" : "border border-brand-border text-transparent"}">
                     ${isSelected ? "✓" : ""}
                 </span>
             `;
@@ -1328,7 +1328,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             dayCard.innerHTML = `
                 <div class="text-[11px] font-bold text-slate-300">Ngày ${day}</div>
-                <div class="flex justify-center gap-1">${habitChecks}</div>
+                <div class="flex flex-wrap justify-center gap-1">${habitChecks}</div>
             `;
 
             dayCard.querySelectorAll("button").forEach(btn => {
@@ -2102,6 +2102,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 13.1 QUIZ JUMP SHORTCUT HANDLER (ĐÁP ỨNG FEEDBACK CÔ CHÂU)
     function jumpToStage1Quiz() {
+        if (currentStageIndex !== 0) {
+            loadStage(0);
+            renderSyllabus();
+        }
         const practiceTabBtn = document.querySelector('.tab-btn[data-tab="tab-practice"]');
         if (practiceTabBtn) {
             practiceTabBtn.click();
@@ -2118,20 +2122,30 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 150);
     }
 
+    function openRoadmapDoc() {
+        openDocReader("data/artifacts/huong_dan_va_lo_trinh_hoc_dhm.md", "Cẩm Nang: Lộ Trình Học Tập & Hướng Dẫn Sử Dụng LMS");
+    }
+
     const btnHeroGotoQuiz = document.getElementById("btn-hero-goto-quiz");
-    if (btnHeroGotoQuiz) {
-        btnHeroGotoQuiz.addEventListener("click", jumpToStage1Quiz);
-    }
+    if (btnHeroGotoQuiz) btnHeroGotoQuiz.addEventListener("click", jumpToStage1Quiz);
+
     const btnQuickQuiz = document.getElementById("btn-quick-quiz");
-    if (btnQuickQuiz) {
-        btnQuickQuiz.addEventListener("click", jumpToStage1Quiz);
-    }
+    if (btnQuickQuiz) btnQuickQuiz.addEventListener("click", jumpToStage1Quiz);
+
+    const btnHeaderQuiz = document.getElementById("btn-header-quiz");
+    if (btnHeaderQuiz) btnHeaderQuiz.addEventListener("click", jumpToStage1Quiz);
+
+    const btnBottomQuiz = document.getElementById("btn-bottom-quiz");
+    if (btnBottomQuiz) btnBottomQuiz.addEventListener("click", jumpToStage1Quiz);
+
     const btnQuickRoadmap = document.getElementById("btn-quick-roadmap");
-    if (btnQuickRoadmap) {
-        btnQuickRoadmap.addEventListener("click", () => {
-            openDocReader("data/artifacts/huong_dan_va_lo_trinh_hoc_dhm.md", "Cẩm Nang: Lộ Trình Học Tập & Hướng Dẫn Sử Dụng LMS");
-        });
-    }
+    if (btnQuickRoadmap) btnQuickRoadmap.addEventListener("click", openRoadmapDoc);
+
+    const btnHeaderRoadmap = document.getElementById("btn-header-roadmap");
+    if (btnHeaderRoadmap) btnHeaderRoadmap.addEventListener("click", openRoadmapDoc);
+
+    const btnBottomRoadmap = document.getElementById("btn-bottom-roadmap");
+    if (btnBottomRoadmap) btnBottomRoadmap.addEventListener("click", openRoadmapDoc);
 
     // 14. AUTH FORM SUBMIT
     authForm.addEventListener("submit", (e) => {
