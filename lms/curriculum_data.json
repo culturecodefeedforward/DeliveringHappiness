@@ -25,7 +25,7 @@
         },
         {
           "id": "sub-1-2",
-          "title": "Mục 1.2: Khoa Học Hạnh Phúc & 3 Cấp Độ (Seligman)",
+          "title": "Mục 1.2: ⚡ BÀI TEST SÁT HẠCH ĐẦU VÀO (10 Câu) & Khoa Học Hạnh Phúc",
           "target": "stage1-mod-1-1",
           "tab": "tab-practice"
         },
@@ -328,15 +328,27 @@
       ],
       "resources": [
         {
-          "title": "Đồ họa thông tin: Bí Quyết 3 Cấp Độ Hạnh Phúc",
+          "title": "Bản chụp Slide: 3 Cấp Độ Hạnh Phúc (Martin Seligman)",
           "type": "image",
-          "url": "data/artifacts/infographic_bi_quyet.png",
-          "icon": "🖼️"
+          "url": "data/artifacts/slides/slide_16.png",
+          "icon": "📷"
         },
         {
-          "title": "Đồ họa thông tin: Kim Tự Tháp Hạnh Phúc",
+          "title": "Bản chụp Slide: Ẩn Dụ Ba Tầng Lầu (Phong Tử Khải)",
           "type": "image",
-          "url": "data/artifacts/infographic.png",
+          "url": "data/artifacts/slides/slide_17.png",
+          "icon": "📷"
+        },
+        {
+          "title": "Bản chụp Slide: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy",
+          "type": "image",
+          "url": "data/artifacts/slides/slide_25.png",
+          "icon": "📊"
+        },
+        {
+          "title": "Bản chụp Slide: Mục Tiêu & Kim Tự Tháp Hạnh Phúc",
+          "type": "image",
+          "url": "data/artifacts/slides/slide_14.png",
           "icon": "📊"
         },
         {
@@ -388,31 +400,41 @@
             "lever": "Cảm giác Kết nối (Connection)",
             "stat": "Thiếu kết nối đánh thuế 21% hiệu suất và tăng 66% lo âu. Kết nối chân thực giúp tăng 50% tuổi thọ.",
             "action": "Lắng nghe không phán xét, xây dựng không gian an toàn tâm lý (Psychological Safety).",
-            "infographic": "data/artifacts/infographics/infographic_suc_manh_ket_noi.png"
+            "infographic": "data/artifacts/slides/slide_28.png"
           },
           {
             "lever": "Cảm giác Tự chủ (Autonomy)",
             "stat": "Khi tỷ lệ nhân viên cảm thấy tiếng nói được lắng nghe tăng từ 3/10 lên 6/10, tỷ lệ thôi việc giảm 27% và năng suất tăng 12%.",
             "action": "Trao quyền quyết định trong phạm vi trách nhiệm, khuyến khích sáng kiến và thử nghiệm mới.",
-            "infographic": "data/artifacts/infographics/infographic_suc_manh_tu_chu.png"
+            "infographic": "data/artifacts/slides/slide_30.png"
           },
           {
             "lever": "Cảm giác Tiến bộ (Progress)",
             "stat": "67% người lao động khẳng định sự ghi nhận của cấp trên là động lực hiệu suất số 1 (McKinsey). 49% bất mãn khi thiếu cơ hội tăng trưởng.",
             "action": "Ghi nhận tức thì các bước tiến nhỏ (Small Wins), thiết lập cột mốc học tập rõ ràng.",
-            "infographic": "data/artifacts/infographics/infographic_dong_luc_tien_bo.png"
+            "infographic": "data/artifacts/slides/slide_35.png"
           }
         ],
         "infographics": [
           {
-            "title": "Đồ họa: 3 Cấp Độ Hạnh Phúc",
-            "url": "data/artifacts/infographics/infographic_3_cap_do_hanh_phuc.png",
-            "desc": "Mô hình kim tự tháp hạnh phúc từ Thú vui đến Đam mê và Mục đích cao cả của Martin Seligman."
+            "title": "Bản chụp Slide: 3 Cấp Độ Hạnh Phúc (Martin Seligman)",
+            "url": "data/artifacts/slides/slide_16.png",
+            "desc": "Trích từ slide bài giảng chính thức DHM: Thú vui, Đam mê (Flow) và Mục đích cao cả."
           },
           {
-            "title": "Đồ họa: La Bàn Gặp Đồng Hồ",
-            "url": "data/artifacts/infographics/infographic_la_ban_dong_ho.png",
-            "desc": "Sự đồng bộ giữa Hệ giá trị cốt lõi (La bàn) và Phân bổ thời gian thực tế (Đồng hồ) qua các điểm CBM."
+            "title": "Bản chụp Slide: Ẩn Dụ Ba Tầng Lầu (Phong Tử Khải)",
+            "url": "data/artifacts/slides/slide_17.png",
+            "desc": "Trích từ slide bài giảng chính thức DHM: Tầng 1 Vật chất, Tầng 2 Tinh thần, Tầng 3 Tâm hồn."
+          },
+          {
+            "title": "Bản chụp Slide: La Bàn Me Values (Giá Trị Cốt Lõi Cá Nhân)",
+            "url": "data/artifacts/slides/slide_22.png",
+            "desc": "Trích từ slide bài giảng chính thức DHM: Sự thống nhất bắt đầu từ Giá trị cá nhân."
+          },
+          {
+            "title": "Bản chụp Slide: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy",
+            "url": "data/artifacts/slides/slide_25.png",
+            "desc": "Trích từ slide bài giảng chính thức DHM: Ba đòn bẩy Kết nối, Tự chủ, Tiến bộ."
           }
         ]
       }

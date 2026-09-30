@@ -1365,7 +1365,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (s3BannerBtn) {
             s3BannerBtn.onclick = (e) => {
                 e.preventDefault();
-                openInfographicModal("data/artifacts/infographics/infographic_tong_ket_hanh_phuc.png", "Tổng Kết Khoa Học Hạnh Phúc Toàn Diện");
+                openInfographicModal("data/artifacts/slides/slide_25.png", "Bản Chụp Slide: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc");
             };
         }
     }
@@ -1455,8 +1455,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         <span class="px-2.5 py-1 rounded-full bg-brand-amber/20 text-brand-amber border border-brand-amber/30 text-[10px] font-extrabold uppercase tracking-wider flex items-center gap-1.5">
                             <span>💼</span> Case Study Kinh Điển (1,2 Tỷ USD)
                         </span>
-                        <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/infographics/infographic_3_cap_do_hanh_phuc.png" data-title="3 Cấp Độ Hạnh Phúc & Văn Hóa Zappos">
-                            <span>🔍 Xem Đồ Họa 3 Cấp Độ</span>
+                        <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/slides/slide_16.png" data-title="Bản Chụp Slide: 3 Cấp Độ Hạnh Phúc (DHM)">
+                            <span>📷 Xem Bản Chụp Slide DHM</span>
                         </button>
                     </div>
                     <h3 class="text-sm font-extrabold text-white">${di.zapposCaseStudy.title}</h3>
@@ -1496,8 +1496,8 @@ document.addEventListener("DOMContentLoaded", () => {
                             <span class="text-lg">⚖️</span>
                             <h3 class="text-sm font-bold text-white">So Sánh 3 Cấp Độ Hạnh Phúc (Martin Seligman)</h3>
                         </div>
-                        <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/infographics/infographic_3_cap_do_hanh_phuc.png" data-title="3 Cấp Độ Hạnh Phúc Bền Vững">
-                            <span>🖼️ Đồ Họa Cấp Độ</span>
+                        <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/slides/slide_16.png" data-title="Bản Chụp Slide: 3 Cấp Độ Hạnh Phúc (Martin Seligman)">
+                            <span>📷 Xem Slide 3 Cấp Độ</span>
                         </button>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">${levelsHtml}</div>
@@ -1515,8 +1515,8 @@ document.addEventListener("DOMContentLoaded", () => {
                             <span class="text-lg">🧭</span>
                             <h3 class="text-sm font-bold text-white">${di.compassClock.title}</h3>
                         </div>
-                        <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/infographics/infographic_la_ban_dong_ho.png" data-title="La Bàn Me Values & Đồng Hồ Thời Gian">
-                            <span>🔍 Xem Đồ Họa La Bàn</span>
+                        <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/slides/slide_22.png" data-title="Bản Chụp Slide: Giá Trị Cốt Lõi Cá Nhân (ME Values)">
+                            <span>📷 Xem Slide La Bàn</span>
                         </button>
                     </div>
                     <p class="text-xs text-slate-300 leading-relaxed">${di.compassClock.content}</p>
@@ -1543,7 +1543,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         ${lev.infographic ? `
                             <div class="pt-2">
                                 <button type="button" class="btn-view-infographic w-full py-1.5 px-3 rounded-lg bg-brand-card hover:bg-brand-border text-slate-200 hover:text-brand-amber text-[11px] font-semibold border border-brand-border transition-all flex items-center justify-center gap-1.5" data-img="${lev.infographic}" data-title="${lev.lever}">
-                                    <span>🔍 Đồ Họa ${lev.lever.split("(")[0]}</span>
+                                    <span>📷 Xem Slide ${lev.lever.split("(")[0]}</span>
                                 </button>
                             </div>
                         ` : ""}
@@ -1574,31 +1574,31 @@ document.addEventListener("DOMContentLoaded", () => {
                     name: "Thói Quen 1: Biết Ơn Bền Vững",
                     author: "Robert Emmons & Martin Seligman",
                     evidence: "Khoa học chứng minh: Thực hành thư biết ơn giúp giảm 23% cortisol (hormone gây căng thẳng), tăng nồng độ DHEA và cải thiện 25% chất lượng giấc ngủ. Thói quen biết ơn nâng cao hiệu suất làm việc 50% khi người quản lý bày tỏ sự công nhận.",
-                    img: "data/artifacts/infographics/infographic_thoi_quen_biet_on.png"
+                    img: "data/artifacts/slides/slide_27.png"
                 },
                 {
                     name: "Thói Quen 2: Tỉnh Thức & Phản Xạ S-B-A",
                     author: "Jon Kabat-Zinn (MBSR) & Chade-Meng Tan",
                     evidence: "Mô hình Stop - Breathe - Ask giúp ngắt dòng kích hoạt quá mức của hạch hạnh nhân (Amygdala), chuyển quyền kiểm soát sang vỏ não trước trán (Prefrontal Cortex). Nuôi dưỡng 8 phẩm chất C của năng lực tỉnh thức.",
-                    img: "data/artifacts/infographics/infographic_song_tinh_thuc.png"
+                    img: "data/artifacts/slides/slide_27.png"
                 },
                 {
                     name: "Thói Quen 3: Lạc Quan Lý Trí & Kỹ Thuật A-B-C-D-E",
                     author: "Martin Seligman & Melinda Gates",
                     evidence: "Lạc quan không phải tô hồng cuộc sống hay ngây thơ (naive optimism), mà là khả năng phản biện lý trí (Dispute - D) để bẻ gãy niềm tin tiêu cực tự động (Belief - B), từ đó tái định hình hành động mới (Effect - E).",
-                    img: "data/artifacts/infographics/infographic_lac_quan_hoc_duoc.png"
+                    img: "data/artifacts/slides/slide_27.png"
                 },
                 {
                     name: "Thói Quen 4: Trạng Thái Flow & Microflow",
                     author: "Mihaly Csikszentmihalyi",
                     evidence: "Flow xuất hiện ở giao điểm giữa Thách thức cao (High Challenge) và Kỹ năng cao (High Skill). Áp dụng Microflow biến những công việc nhàm chán lặp đi lặp lại thành trò chơi thử thách bản thân với mục tiêu rõ ràng và phản hồi tức thì.",
-                    img: "data/artifacts/infographics/infographic_trang_thai_flow.png"
+                    img: "data/artifacts/slides/slide_27.png"
                 },
                 {
                     name: "Thói Quen 5: Vị Nhân & Bộ Ba Bi - Trí - Dũng",
                     author: "Adam Grant (Give and Take)",
                     evidence: "Người cho đi thông thái (Smart Giver) khác với người hy sinh mù quáng (Selfless Giver). Họ ứng dụng 'Ưu tiên 5 phút' (5-minute favor), cho đi có ranh giới và hỗ trợ đúng người, tạo nên mạng lưới cộng tác bền vững nhất.",
-                    img: "data/artifacts/infographics/infographic_vi_nhan_thong_thai.png"
+                    img: "data/artifacts/slides/slide_27.png"
                 }
             ];
 
@@ -1613,7 +1613,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                     <div class="pt-2">
                         <button type="button" class="btn-view-infographic w-full py-1.5 px-3 rounded-lg bg-brand-dark hover:bg-brand-card text-brand-amber border border-brand-amber/30 text-xs font-semibold transition-all flex items-center justify-center gap-1.5" data-img="${h.img}" data-title="${h.name}">
-                            <span>🔍 Xem Đồ Họa Infographic HD</span>
+                            <span>📷 Xem Bản Chụp Slide DHM</span>
                         </button>
                     </div>
                 </div>
@@ -1625,8 +1625,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         <span class="text-lg">🔬</span>
                         <h3 class="text-sm font-bold text-white">Nền Tảng Khoa Học Thần Kinh & Tâm Lý Học Của 5 Thói Quen</h3>
                     </div>
-                    <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/infographics/infographic_thiet_ke_van_hoa_nhom.png" data-title="Thiết Kế Văn Hóa Nhóm (Culture Pact)">
-                        <span>🤝 Thỏa Thuận Văn Hóa Nhóm</span>
+                    <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/slides/slide_09.png" data-title="Bản Chụp Slide: Triết Lý Văn Hóa Zappos (Tony Hsieh)">
+                        <span>📷 Xem Slide Văn Hóa (Tony Hsieh)</span>
                     </button>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">${habitsHtml}</div>
@@ -1637,24 +1637,24 @@ document.addEventListener("DOMContentLoaded", () => {
             const container = document.createElement("div");
             container.className = "space-y-6 pt-4 border-t border-brand-border/80";
 
-            // 12 Infographics Gallery
+            // 12 Slides Gallery trích từ Slide chính thức của DHM (Đáp ứng Feedback Cô Châu)
             const galleryList = [
-                { title: "3 Cấp Độ Hạnh Phúc", file: "infographic_3_cap_do_hanh_phuc.png" },
-                { title: "La Bàn Me Values & Đồng Hồ", file: "infographic_la_ban_dong_ho.png" },
-                { title: "Đòn Bẩy: Sức Mạnh Kết Nối", file: "infographic_suc_manh_ket_noi.png" },
-                { title: "Đòn Bẩy: Sức Mạnh Tự Chủ", file: "infographic_suc_manh_tu_chu.png" },
-                { title: "Đòn Bẩy: Động Lực Tiến Bộ", file: "infographic_dong_luc_tien_bo.png" },
-                { title: "Thói Quen 1: Biết Ơn Bền Vững", file: "infographic_thoi_quen_biet_on.png" },
-                { title: "Thói Quen 2: Sống Tỉnh Thức", file: "infographic_song_tinh_thuc.png" },
-                { title: "Thói Quen 3: Lạc Quan Học Được", file: "infographic_lac_quan_hoc_duoc.png" },
-                { title: "Thói Quen 4: Trạng Thái Flow", file: "infographic_trang_thai_flow.png" },
-                { title: "Thói Quen 5: Vị Nhân Thông Thái", file: "infographic_vi_nhan_thong_thai.png" },
-                { title: "Tổng Kết Toàn Diện Hạnh Phúc", file: "infographic_tong_ket_hanh_phuc.png" },
-                { title: "Thiết Kế Văn Hóa Nhóm (Culture Pact)", file: "infographic_thiet_ke_van_hoa_nhom.png" }
+                { title: "Lộ Trình 3 Mini Step DHM", file: "slide_04.png" },
+                { title: "Ban Giảng Huấn (Your Guides)", file: "slide_05.png" },
+                { title: "Triết Lý Văn Hóa Tony Hsieh (Zappos)", file: "slide_09.png" },
+                { title: "Kim Tự Tháp Mục Tiêu & Hạnh Phúc", file: "slide_14.png" },
+                { title: "3 Cấp Độ Hạnh Phúc (Martin Seligman)", file: "slide_16.png" },
+                { title: "Ẩn Dụ Ba Tầng Lầu (Phong Tử Khải)", file: "slide_17.png" },
+                { title: "La Bàn Me Values (Giá Trị Cá Nhân)", file: "slide_22.png" },
+                { title: "Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy", file: "slide_25.png" },
+                { title: "5 Thói Quen Hạnh Phúc Tự Thân", file: "slide_27.png" },
+                { title: "Đòn Bẩy 1: Sống Hòa Ái (Kết Nối)", file: "slide_29.png" },
+                { title: "Đòn Bẩy 2: Tự Chủ & An Toàn Tâm Lý", file: "slide_31.png" },
+                { title: "Đòn Bẩy 3: Động Lực Tiến Bộ & Small Wins", file: "slide_38.png" }
             ];
 
             let galleryHtml = galleryList.map((item, idx) => `
-                <button type="button" class="btn-view-infographic p-3 rounded-xl bg-brand-dark/70 hover:bg-brand-card border border-brand-border hover:border-brand-amber/60 text-left transition-all group flex items-center gap-3" data-img="data/artifacts/infographics/${item.file}" data-title="${item.title}">
+                <button type="button" class="btn-view-infographic p-3 rounded-xl bg-brand-dark/70 hover:bg-brand-card border border-brand-border hover:border-brand-amber/60 text-left transition-all group flex items-center gap-3" data-img="data/artifacts/slides/${item.file}" data-title="${item.title}">
                     <span class="w-7 h-7 rounded-lg bg-brand-amber/15 text-brand-amber flex items-center justify-center font-mono font-bold text-xs group-hover:scale-110 transition-transform shrink-0">
                         ${idx + 1}
                     </span>
@@ -1687,9 +1687,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="flex items-center justify-between flex-wrap gap-2">
                         <div class="flex items-center gap-2">
                             <span class="text-lg">🖼️</span>
-                            <h3 class="text-sm font-bold text-white">Kho Tàng 12 Đồ Họa Thông Tin Infographics HD (Studio Collection)</h3>
+                            <h3 class="text-sm font-bold text-white">Kho Tàng 12 Bản Chụp Slide Bài Giảng DHM Chính Thức (HD Presentation)</h3>
                         </div>
-                        <span class="text-xs text-brand-amber font-mono font-bold">12/12 Infographics</span>
+                        <span class="text-xs text-brand-amber font-mono font-bold">12/12 Slides</span>
                     </div>
                     <p class="text-xs text-slate-400">Nhấp vào bất kỳ đồ họa nào để phóng to toàn màn hình hoặc tải về bản in chất lượng cao.</p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">${galleryHtml}</div>
@@ -2099,6 +2099,33 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     });
+
+    // 13.1 QUIZ JUMP SHORTCUT HANDLER (ĐÁP ỨNG FEEDBACK CÔ CHÂU)
+    function jumpToStage1Quiz() {
+        const practiceTabBtn = document.querySelector('.tab-btn[data-tab="tab-practice"]');
+        if (practiceTabBtn) {
+            practiceTabBtn.click();
+        }
+        setTimeout(() => {
+            const quizSec = document.getElementById("stage1-mod-1-1");
+            if (quizSec) {
+                quizSec.scrollIntoView({ behavior: "smooth", block: "start" });
+                quizSec.classList.add("ring-4", "ring-brand-amber", "transition-all", "duration-500");
+                setTimeout(() => {
+                    quizSec.classList.remove("ring-4", "ring-brand-amber");
+                }, 3500);
+            }
+        }, 150);
+    }
+
+    const btnHeroGotoQuiz = document.getElementById("btn-hero-goto-quiz");
+    if (btnHeroGotoQuiz) {
+        btnHeroGotoQuiz.addEventListener("click", jumpToStage1Quiz);
+    }
+    const btnQuickQuiz = document.getElementById("btn-quick-quiz");
+    if (btnQuickQuiz) {
+        btnQuickQuiz.addEventListener("click", jumpToStage1Quiz);
+    }
 
     // 14. AUTH FORM SUBMIT
     authForm.addEventListener("submit", (e) => {
