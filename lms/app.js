@@ -2126,6 +2126,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnQuickQuiz) {
         btnQuickQuiz.addEventListener("click", jumpToStage1Quiz);
     }
+    const btnQuickRoadmap = document.getElementById("btn-quick-roadmap");
+    if (btnQuickRoadmap) {
+        btnQuickRoadmap.addEventListener("click", () => {
+            openDocReader("data/artifacts/huong_dan_va_lo_trinh_hoc_dhm.md", "Cẩm Nang: Lộ Trình Học Tập & Hướng Dẫn Sử Dụng LMS");
+        });
+    }
 
     // 14. AUTH FORM SUBMIT
     authForm.addEventListener("submit", (e) => {

@@ -328,6 +328,15 @@
       ],
       "resources": [
         {
+          "id": "res-roadmap",
+          "title": "Cẩm Nang: Lộ Trình Học Tập & Hướng Dẫn Sử Dụng LMS",
+          "type": "markdown",
+          "url": "data/artifacts/huong_dan_va_lo_trinh_hoc_dhm.md",
+          "icon": "📘",
+          "readOnline": true,
+          "desc": "Hướng dẫn chi tiết toàn bộ lộ trình 3 Mini-steps, quy chế sát hạch đầu vào (≥70%) và thao tác sử dụng hệ thống học tập LMS."
+        },
+        {
           "title": "Bản chụp Slide: 3 Cấp Độ Hạnh Phúc (Martin Seligman)",
           "type": "image",
           "url": "data/artifacts/slides/slide_16.png",
@@ -894,6 +903,15 @@
         "weeklyIamCheckin": true
       },
       "resources": [
+        {
+          "id": "rep-0",
+          "title": "Cẩm Nang: Lộ Trình Học Tập & Hướng Dẫn Sử Dụng LMS",
+          "type": "markdown",
+          "url": "data/artifacts/huong_dan_va_lo_trinh_hoc_dhm.md",
+          "icon": "📘",
+          "readOnline": true,
+          "desc": "Hướng dẫn chi tiết toàn bộ lộ trình 3 Mini-steps, quy chế sát hạch đầu vào (≥70%) và thao tác sử dụng hệ thống học tập LMS."
+        },
         {
           "id": "rep-1",
           "title": "Báo Cáo Chuyên Sâu: Khoa Học Hạnh Phúc & Mô Hình 3 Cấp Độ",
