@@ -1,6 +1,8 @@
 # Workflow Dang Ky Va Thanh Toan DHM8
 
-Ngay cap nhat: 2026-07-09
+Ngay cap nhat: 2026-07-29
+
+> **Lưu ý:** Sự kiện DHM8 đã diễn ra thành công và kết thúc vào ngày 04/07/2026. Tài liệu này được giữ lại dưới dạng Reference Workflow để tham khảo cho các dự án sau, minh chứng cho việc tích hợp Vercel Proxy, SePay Webhook và quy trình Staged Deployment (Rule 4).
 
 Tai lieu nay mo ta thiet ke du kien trong:
 
@@ -112,6 +114,7 @@ sequenceDiagram
     actor HV as Hoc vien
     participant BANK as Ngan hang
     participant SEP as SePay
+    participant VercelProxy as VercelProxy
     participant GAS as Apps Script
     participant PAY as DHM8_Payments
     participant DATA as DHM8_Data
@@ -120,8 +123,9 @@ sequenceDiagram
 
     HV->>BANK: Chuyen 300.000 VND kem SDT
     BANK->>SEP: Ghi nhan giao dich
-    SEP->>GAS: Webhook kem transaction va token
-    GAS->>GAS: Xac thuc token + config fail-closed
+    SEP->>VercelProxy: Webhook POST toi api/sepay-dh.js
+    VercelProxy->>GAS: Chuyen tiep request (kem HMAC/Secret)
+    GAS->>GAS: Xac thuc token + Dynamic Payment Config (getPaymentConfig_('dh8')) + Validate Email Template
 
     alt Payment kill switch dang bat
         GAS->>GAS: Luu raw event vao DHM8_Inbox
@@ -202,7 +206,7 @@ stateDiagram-v2
 - Giao dich chi auto-match khi dung 300.000 VND va co dung mot hoc vien phu hop.
 - Job email duoc cap nhat theo `jobKey` va `leaseOwner`.
 - Email BTC chi gui den `chauhm71@gmail.com` va `vuhoang2708@gmail.com`.
-- Moi staging, trigger, Sheet mutation va deploy deu can phe duyet rieng.
+- Moi staging, trigger, Sheet mutation va deploy deu can phe duyet rieng theo chuẩn Staged Deployment (Rule 4).
 
 ## 6. Bang Chung Can Co Truoc Khi Len Production
 
@@ -212,3 +216,4 @@ stateDiagram-v2
 - Diff chinh xac cua frontend, final Apps Script va rollback Apps Script.
 - Backup code va Sheet truoc cutover.
 - Xac minh URL webhook SePay van giu nguyen sau deploy.
+- Tuân thủ quy trình Production Lock (`vercel --prod --skip-domain` -> Duyệt -> `promote`).

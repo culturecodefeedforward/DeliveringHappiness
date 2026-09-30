@@ -279,13 +279,15 @@ Các lớp CAPTCHA và giới hạn tần suất được áp dụng theo từng
 *   **Mục đích:** Tích hợp với tác nhân AI để truy xuất CRM Sheet hoặc thực hiện quy trình Gmail/Sheets có phê duyệt.
 *   **Xác thực:** Dùng Google OAuth; credential nằm ngoài repository và tuyệt đối không được ghi vào tài liệu, log hoặc artifact.
 
-### E. Phân hệ Micro-LMS v2 & Master Learner Registry
-*   **Mục đích:** Cung cấp trải nghiệm học tập số hóa tương tác (90 phút) cho học viên Delivering Happiness Masterclass, đảm bảo phân quyền danh bạ chính xác, lưu giữ phản tư cá nhân (I•A•M), và tự động bổ sung số điện thoại tự phục vụ.
+### E. Phân hệ Delivering Happiness Blended Learning LMS Engine v3 & Master Learner Registry
+*   **Mục đích:** Cung cấp nền tảng học tập kết hợp 3 Chặng (`Blended Learning`) kết nối chặt chẽ giữa học trực tuyến trước lớp (Online Pre-Class), xưởng thực hành 5 thói quen tại lớp (Offline Workshop Live), và hành trình đồng hành 21 ngày nuôi dưỡng thói quen (Action Learning Post-Class).
 *   **Các thành phần cốt lõi:**
-    1.  *Giao diện LMS Web (`lms/index.html`):* SPA (Single Page Application) hiện đại xây dựng trên Tailwind CSS Glassmorphism, 3 chặng học tuần tự, bài tập trắc nghiệm tự chấm điểm, la bàn Me Values tương tác, và công cụ chuyển hóa nghịch cảnh ABCDE.
-    2.  *Bộ điều khiển Client (`lms/app.js`):* Quản lý phiên làm việc (`dhm_lms_auth_user`), nhận diện học viên thời gian thực, cơ chế Onboarding SĐT lưu đè `localStorage` (`dhm_roster_overrides`), và đồng bộ nền (background sync) dữ liệu học viên & phản tư về Google Apps Script qua `GOOGLE_APPS_SCRIPT_URL`.
-    3.  *Danh bạ phân quyền (`lms/authorized_roster.json`):* 117 tài khoản được ủy quyền (Coach, DHM8, DHM9, Đăng ký mới).
-    4.  *Cơ sở dữ liệu học viên tổng quát (`master_learners_roster.json` & `.csv`):* Chuẩn hóa cấu trúc 117 học viên kèm mã định danh `learner_id`, trạng thái số điện thoại (`verified`, `legacy_partial`, `missing`), và phân loại doanh nghiệp/tổ chức tự động từ email domain. Chi tiết cấu trúc xem tại [LEARNER_DATA_SCHEMA.md](file:///C:/Users/vu.hoang/.gemini/antigravity/scratch/Teaching%20DH/Artifacts/LEARNER_DATA_SCHEMA.md).
+    1.  *Giao diện LMS Web (`lms/index.html`):* SPA (Single Page Application) hiện đại xây dựng trên Tailwind CSS Glassmorphism, 3 chặng học tuần tự, tích hợp bộ đếm giờ kiểm tra sát hạch, huy hiệu lượt thử `#quiz-attempt-badge`, bảng tổng kết `#quiz-summary-container`, giao diện thực hành 5 thói quen và dashboard vinh danh 21 ngày.
+    2.  *Bộ điều khiển Client (`lms/app.js`):* Quản lý phiên làm việc (`dhm_lms_auth_user`), nhận diện học viên thời gian thực, cơ chế Onboarding SĐT tự phục vụ, logic kiểm tra sát hạch 20 câu với ngưỡng đạt ≥ 70% (14/20 câu) sau tối đa 3 lần thử (`retries`), khóa bài thi (`lockout`) khi hết lượt, và cổng kiểm soát chuyển chặng (`btnNextLesson.onclick`) chặn học viên chưa đủ điều kiện chuyển sang Chặng 2.
+    3.  *Danh bạ phân quyền (`lms/authorized_roster.json`):* 383 tài khoản được ủy quyền (gồm 6 thành viên Ban Giảng Huấn/Coach, học viên từ DHM3 đến DHM9, và đăng ký mới).
+    4.  *Cơ sở dữ liệu học viên tổng quát (`master_learners_roster.json`):* Chuẩn hóa 383 học viên và giảng viên kèm mã định danh chuẩn (`COACH-001` đến `COACH-006` cho Ban Giảng Huấn, `DHMx-yyy` cho học viên), trạng thái số điện thoại (`verified`, `legacy_partial`, `missing`), và phân loại tổ chức.
+    5.  *CSDL Bài giảng (`lms/curriculum_data.json`):* Cấu trúc giáo trình 3 chặng, nạp trọn vẹn 20 câu hỏi trắc nghiệm phản xạ thực chiến từ Excel, 41 giá trị La Bàn Me Values, và phân công phụ trách của 6 thành viên Ban Giảng Huấn (Cô Châu, Cô Hoàn, Thầy Vũ, Thầy Hưng, Cô Khánh Linh, Cô Hân).
+    6.  *Cổng quản trị (`lms/admin.html`):* Cổng Coach Portal dành riêng cho Ban Giảng Huấn theo dõi tiến độ, xem kết quả sát hạch và ghi chú khai vấn.
 
 ## 3. Ma trận Ranh giới Kiểm chứng
 

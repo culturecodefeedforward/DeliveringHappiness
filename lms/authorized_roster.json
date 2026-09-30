@@ -21,6 +21,27 @@
     "role": "Coach"
   },
   {
+    "name": "Anh Hưng",
+    "email": "hung.coach@dhm.vn",
+    "phone": "",
+    "cohort": "BTC / Coach",
+    "role": "Coach"
+  },
+  {
+    "name": "Vũ Khánh Linh",
+    "email": "linh.vu@mvillage.vn",
+    "phone": "0838712632",
+    "cohort": "BTC / Coach",
+    "role": "Coach"
+  },
+  {
+    "name": "Hân",
+    "email": "han.coach@dhm.vn",
+    "phone": "",
+    "cohort": "BTC / Coach",
+    "role": "Coach"
+  },
+  {
     "name": "Anh Nguyet - Kim Tin",
     "email": "anhnguyet.mba@gmail.com",
     "phone": "***1731",
@@ -1501,13 +1522,6 @@
     "name": "Nguyễn Thị Hồng Lê",
     "email": "hongle.nguyen125@gmail.com",
     "phone": "0904124299",
-    "cohort": "DHM7",
-    "role": "Learner"
-  },
-  {
-    "name": "Vũ Khánh Linh",
-    "email": "linh.vu@mvillage.vn",
-    "phone": "0838712632",
     "cohort": "DHM7",
     "role": "Learner"
   },

@@ -19,7 +19,7 @@ sequenceDiagram
 
     FE->>FE: Người dùng chọn phiên bản (Stable vs. RAG Beta)
     FE->>API: Gửi tin nhắn + Passcode + state + chatVersion
-    Note over API: Kiểm tra Rate Limit (Redis)<br/>Xác thực passcode bằng SHA-256
+    Note over API: Kiểm tra giới hạn theo IP<br/>So khớp passcode với danh sách cho phép
     
     alt Phiên bản RAG Beta (Tại bước D)
         API->>VDB: Truy vấn vector để tìm tri thức liên quan nhất
@@ -30,13 +30,13 @@ sequenceDiagram
     end
     
     GEMINI-->>API: Trả về câu trả lời + Tag [NEXT_STATE]
-    Note over API: Bóc tách tag NEXT_STATE<br/>Ký HMAC-SHA256 lên payload JSON (kèm chatVersion)
+    Note over API: Bóc tách tag NEXT_STATE<br/>HMAC chỉ được tạo ở action submit
     API-->>FE: Trả về cleanReply + nextState
     Note over FE: Lưu dữ liệu bước cũ cục bộ
     Note over FE: Khi hoàn thành bước E (SUBMIT)
     FE->>API: Request SUBMIT (A, B, C, D, E)
     API->>GAS: POST JSON (Kèm chữ ký Signature, Timestamp, Nonce)
-    Note over GAS: Xác thực chữ ký HMAC-SHA256<br/>Chống replay attack (Timestamp & Nonce)
+    Note over GAS: Source hiện chưa xác minh HMAC/timestamp/nonce<br/>Bảo vệ đầu-cuối vẫn UNVERIFIED
     GAS->>DB: Ghi dữ liệu vào Sheets
     GAS->>GAS: Gửi email HTML tổng hợp cho học viên
     GAS-->>API: Trả về success: true
@@ -49,11 +49,16 @@ sequenceDiagram
     - Quản lý máy trạng thái cục bộ và lưu trữ tạm thời các câu trả lời của học viên qua từng bước.
 2.  **Vercel Serverless Function API (`api/chat-abcde.js`)**:
     - Làm nhiệm vụ API Gateway trung gian kết nối sang Gemini API.
-    - Tích hợp bộ lọc Rate Limiting (chặn theo IP và Email học viên, hạn chế 20 requests/phút).
-    - Đóng vai trò ký xác thực bảo mật và bảo vệ API key tuyệt đối ở môi trường máy chủ.
+    - Tích hợp giới hạn theo IP, tối đa 20 request/phút; ưu tiên Upstash Redis và dự phòng bằng bộ nhớ tiến trình.
+    - Giữ Gemini API key ở môi trường server. Riêng submit ABCDE vẫn còn fallback cấu hình trong source, nên không được claim secret handling đã hoàn tất.
 3.  **Google Apps Script Web App (`active_code_gs_final.js`)**:
-    - Nhận dữ liệu thực hành cuối cùng đã qua xác thực từ Vercel API.
-    - Lưu trữ trực tiếp dữ liệu vào bảng tính Google Sheets CRM `ABCDE_Practice` và tự động gửi email báo cáo HTML tổng hợp cho học viên.
+    - Nhận payload thực hành cuối cùng do Vercel API gửi sang.
+    - Lưu dữ liệu vào bảng tính Google Sheets CRM `ABCDE_Data` và gọi luồng email báo cáo HTML. Apps Script hiện chưa xác minh chữ ký HMAC do Vercel gửi kèm.
+
+### 4. Giao diện Thực hành Tĩnh (`practice-abcde.html` - Interactive Worksheet)
+    - Luồng thực hành độc lập tải dữ liệu JSON tĩnh chứa 18 case studies.
+    - Dùng cho học viên muốn luyện tập nhanh bằng cách điền trực tiếp qua lưới đối chiếu (Side-by-Side Grid).
+    - Frontend sử dụng Regex để bóc tách gợi ý mẫu thành các khối B, C, D, E tương ứng.
 
 ---
 
@@ -89,10 +94,13 @@ sequenceDiagram
         *   `Đã hiệu quả, đi tiếp` 🟢: Frontend gán `currentState = "STEP_E"`.
         *   `Tôi muốn phản biện thêm` 🟡: Frontend giữ nguyên `currentState = "STEP_D"`, AI tiếp tục hỏi sâu về các khía cạnh (Utility, Implications).
 
-### E. Năng lượng mới & Cam kết Hành động ở Bước E (Energization)
-*   **Mục tiêu**: Chuyển dịch năng lượng nhận thức thành hành động thực tế.
-*   **Giải pháp xử lý**:
-    - AI yêu cầu học viên gọi tên cảm xúc mới và cam kết **1 hành động cụ thể, nhỏ nhất** có thể làm ngay trong ngày.
+### E. Energization — Năng lượng mới được khơi dậy ở Bước E
+*   **Định nghĩa học thuật**: "Energization" (Seligman, 1990) là trạng thái cảm xúc tích cực, cảm giác nhẹ nhõm và năng lượng mới sinh ra sau khi phản biện (Dispute) thành công niềm tin tiêu cực. Đây là trạng thái tâm lý, không đồng nghĩa với hành động vật chất bắt buộc.
+*   **Mục tiêu**: Giúp học viên nhận diện và gọi tên trạng thái Energization, từ đó mở ra khả năng tiếp cận lại Nghịch cảnh A theo explanatory style (phong cách diễn giải) mới.
+*   **Giải pháp xử lý** (luồng 2 câu hỏi nối tiếp trong cùng 1 state STEP_E):
+    - **Câu hỏi 1 — Nhận diện Energization**: AI hỏi về cảm xúc/năng lượng mới: *"Bạn cảm thấy thế nào sau khi đã bẻ gãy được suy nghĩ tiêu cực đó?"*
+    - **Câu hỏi 2 — Tiếp cận lại A**: Sau đó AI hỏi tiếp: *"Từ năng lượng và góc nhìn mới này, bạn nghĩ mình có thể tiếp cận lại nghịch cảnh A theo những hướng nào?"*
+    - **Nguyên tắc quan trọng**: AI không phán xét loại câu trả lời. Hành động vật chất cụ thể và thay đổi nhận thức/chấp nhận đều là cách "tiếp cận lại A" hợp lệ theo đúng tinh thần Seligman.
     - Khi nhận câu trả lời cho bước E, AI trả về `[NEXT_STATE: SUBMIT]` để kích hoạt form nhập email nhận báo cáo ở Frontend.
 
 ---
@@ -105,14 +113,22 @@ sequenceDiagram
     - **Bản ổn định - thực hành nhanh (Stable)**: Đi qua endpoint `api/chat-abcde.js`, sử dụng system instruction cứng.
     - **Bản thử nghiệm - có tri thức lớp học (RAG Beta)**: Đi qua endpoint `api/chat-abcde-rag.js`. Tại bước D, hệ thống thực hiện truy vấn cơ sở dữ liệu véc-tơ để tìm kiếm tri thức chuyên sâu từ Martin Seligman và slide DH8.
     - **Cơ chế Fallback thông minh**: Khi bản Beta gặp sự cố kết nối hoặc API bị tắt (qua kill switch `ABCDE_RAG_ENABLED=false`), Frontend sẽ hiển thị nút gợi ý học viên tự chuyển đổi về bản ổn định mà không bị mất lịch sử chat.
-2.  **Cơ chế RAG lai (Hybrid RAG & Local Fallback)**:
+2.  **Cơ chế RAG lai trong source (Hybrid RAG)**:
     - **Upstash Vector DB**: Được gọi qua REST API nếu có cấu hình biến môi trường `UPSTASH_VECTOR_REST_URL`.
-    - **Local Vector Search (Embedding Cosine Similarity)**: Nếu chưa cấu hình Upstash, backend tự động đọc file véc-tơ tri thức nạp sẵn `data/artifacts/knowledge_base_abcde.json`, gọi Gemini Embedding API (`gemini-embedding-001`) để sinh véc-tơ tin nhắn học viên và tính toán Cosine Similarity trực tiếp trên serverless function nhằm tối ưu hóa chi phí và đảm bảo hoạt động 100% độc lập.
+    - Giới hạn tần suất hiện theo IP; source không chứng minh lớp giới hạn riêng theo User ID/email.
+    - **Local Vector Search (Embedding Cosine Similarity):** Nếu chưa cấu hình Upstash Vector, backend đọc `data/artifacts/knowledge_base_abcde.json`, gọi Gemini Embedding API và tính Cosine Similarity trong serverless function.
+    - Nếu truy xuất RAG lỗi bên trong endpoint Beta, source tiếp tục theo chế độ không có context RAG; nếu endpoint trả lỗi, frontend mới mời người dùng chuyển sang Stable.
 3.  **Xác thực mật mã lớp học (Passcode Authentication)**:
-    - Học viên phải nhập mật mã lớp học (`DHM8`). Frontend băm mật mã bằng SHA-256 trước khi gửi lên API để bảo vệ mật mã gốc.
+    - Frontend gửi passcode qua HTTPS; API chuẩn hóa và so khớp với `DHM_PASSCODE` hoặc danh sách mặc định trong source. Frontend hiện không băm SHA-256 trước khi gửi.
+    - Danh sách mặc định không phải secret production. Môi trường live phải cấu hình riêng và cần kiểm chứng runtime.
 4.  **Ký chữ ký điện tử HMAC-SHA256 & Theo dõi phiên bản (chatVersion)**:
     - Khi Vercel API gửi kết quả submit sang Google Apps Script, nó đính kèm trường `chatVersion` (stable/beta) và ký chữ ký HMAC-SHA256 trên toàn bộ JSON payload (bao gồm cả `chatVersion` và `timestamp`/`nonce`).
-    - Apps Script ghi nhận thuộc tính `chatVersion` vào cột thứ 10 của bảng tính `ABCDE_Data` và hiển thị phiên bản này trong email báo cáo HTML gửi về cho học viên.
+    - Apps Script ghi `chatVersion` vào cột thứ 10 của `ABCDE_Data`, nhưng chưa xác minh chữ ký/timestamp/nonce. Vì vậy chống giả mạo và replay attack đầu-cuối là yêu cầu chưa đạt, không phải tính năng đã hoàn tất.
+
+### Trạng thái kiểm chứng
+
+*   `VERIFIED` ở source: selector Stable/Beta, kill switch `ABCDE_RAG_ENABLED`, Upstash/local fallback, submit qua stable API và cột `ChatVersion` trong `ABCDE_Data`.
+*   `UNVERIFIED` ở runtime: biến môi trường, Upstash, Gemini, Apps Script deployment, Sheet write, email delivery và giao diện live.
 
 
 ---
@@ -123,7 +139,7 @@ sequenceDiagram
     - Frontend JS: [chat-abcde.js](file:///C:/Users/vu.hoang/.gemini/antigravity/scratch/dh4hn-website/chat-abcde.js)
     - Backend API: [api/chat-abcde.js](file:///C:/Users/vu.hoang/.gemini/antigravity/scratch/dh4hn-website/api/chat-abcde.js)
     - Google Apps Script: [active_code_gs_final.js](file:///C:/Users/vu.hoang/.gemini/antigravity/scratch/dh4hn-website/Scripts/active_code_gs_final.js)
-*   **Google Sheet Thực hành**: [Sheet ABCDE_Practice](https://docs.google.com/spreadsheets/d/1ZToRX6J5Vo6UghzYEE_eUxU0bVnsGxBRLt-8tduI5CA/edit#gid=ABCDE)
+*   **Google Sheet đích:** `ABCDE_Data`; Spreadsheet ID phải lấy từ Script Properties/runtime và không nhúng vào tài liệu.
 
 ---
-*Cập nhật bởi Antigravity v3.5 (Audit Mode) - 15/07/2026*
+*Đối chiếu lại với source local ngày 08/08/2026; tài liệu không thay thế runtime UAT.*

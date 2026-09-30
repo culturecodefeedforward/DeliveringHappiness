@@ -89,3 +89,43 @@ Mỗi giá trị trong số 41 giá trị sống được thiết kế dưới d
 *   Hệ thống tôn trọng cấu hình hệ điều hành của người dùng. Khi phát hiện media query `prefers-reduced-motion: reduce`:
     *   Tất cả các hiệu ứng lật thẻ 3D xoay (`.flip-card-inner`) phải chuyển sang trạng thái chuyển đổi tức thời (không dùng transition).
     *   Các hiệu ứng nhấp nháy vô hạn (`blink-glow` trên `.flip-card.blinking`) và hiệu ứng phóng to modal (`zoomIn`) phải bị vô hiệu hóa hoàn toàn (`animation: none`).
+
+---
+
+## 6. Email Design System (CultureCode Premium Format)
+
+Tất cả các email gửi tự động cho khách hàng (Xác nhận thanh toán, Báo cáo ABCDE) phải tuân theo chuẩn CultureCode Premium:
+*   **Font chữ**: Phải là sans-serif, sạch sẽ và dễ đọc (Helvetica, Arial, sans-serif).
+*   **Bố cục (Layout)**:
+    *   Chứa trong một container trung tâm, rộng tối đa 600px.
+    *   Nền email màu xám nhạt `#f3f4f6`, nền phần thân trắng `#ffffff` với viền góc bo tròn `8px`.
+*   **Header**: Hiển thị Logo CultureCode được căn giữa, viền dưới nhẹ.
+*   **Button (CTA)**: Màu nền chính là đen (`#111827`) hoặc cam ấm (`#ea580c`), chữ trắng, bo góc mạnh (`4px` hoặc `8px`), padding tối thiểu `12px 24px`.
+*   **Footer**: Màu xám nhạt nhòa (`#6b7280`), cỡ chữ nhỏ, ghi rõ bản quyền và thông tin công ty.
+
+---
+
+## 7. UI Specification cho Chatbox ABCDE và QR Check-in
+
+### A. Giao diện Chatbox ABCDE
+*   **Thiết kế Bong bóng Hội thoại (Chat Bubbles)**:
+    *   *AI Message (Gemini)*: Nằm bên trái, nền xám siêu nhạt (`#f3f4f6`), có avatar chữ G (bo tròn) hoặc icon Socratic.
+    *   *User Message*: Nằm bên phải, nền màu tối (hoặc cam), chữ trắng.
+*   **Khu vực nhập liệu**: Khóa và hiển thị placeholder hướng dẫn chi tiết theo từng trạng thái (Ví dụ: "Mô tả Nghịch cảnh A...").
+*   **Hiệu ứng Loading (Typing Indicator)**: Hiển thị 3 dấu chấm nhảy nhẹ nhàng khi API Gemini đang xử lý trả lời.
+
+### B. Giao diện QR Check-in (`checkin.html`)
+*   **Layout Cốt lõi**: Giao diện tối giản toàn màn hình, phù hợp với màn hình di động đứng (Portrait view).
+*   **Video Scanner Overlay**: Luồng camera có overlay khung lấy nét ở giữa.
+*   **Phản hồi Âm thanh & Hình ảnh**:
+    *   Phát tiếng "Bíp" khi quét thành công.
+    *   Hiển thị Modal lớn màu xanh lá (Xác nhận Khớp) hoặc Đỏ (Lỗi/Không tồn tại) kèm ảnh đại diện/tên học viên to, rõ.
+
+---
+
+## 8. Trạng thái Stable/Beta và Đường dự phòng
+
+*   Bộ chọn ABCDE phải phân biệt rõ `Stable` (ổn định) và `RAG Beta` (bản thử nghiệm), không dùng màu sắc làm tín hiệu duy nhất.
+*   Stable phải luôn là lựa chọn mặc định và vẫn sử dụng được độc lập khi Beta bị tắt hoặc lỗi.
+*   Khi Beta trả lỗi kết nối/503, giao diện phải giải thích ngắn gọn và cung cấp nút chuyển về Stable mà không làm mất nội dung người dùng vừa nhập.
+*   Các yêu cầu trên đã được đối chiếu ở source `chat-abcde.js` và `chat-abcde.css`; trạng thái hiển thị desktop/mobile live vẫn `UNVERIFIED` cho tới khi có browser evidence.

@@ -1,21 +1,17 @@
 # 🚀 Hướng dẫn Triển khai (Deployment Guide)
 
-Tài liệu hướng dẫn quy trình deploy (triển khai) và cấu hình hệ thống trên các môi trường.
+Tài liệu hướng dẫn cấu hình backend, Apps Script và các cổng kiểm chứng liên quan. `docs/deployment.md` là `source of truth` (nguồn chuẩn) duy nhất cho phát hành frontend production.
 
 ## 1. Triển khai Giao diện (Frontend Deployment - Vercel)
 
-Giao diện trang web (HTML/CSS/JS tĩnh) được deploy tự động lên **Vercel** thông qua cơ chế tích hợp CI/CD từ kho lưu trữ GitHub `culturecodefeedforward/DeliveringHappiness`.
+Giao diện gồm HTML/CSS/JS tĩnh và API serverless trên Vercel. Nhánh `main`, trạng thái Vercel `Ready` hoặc một URL deployment riêng lẻ không chứng minh production alias đã chạy đúng source.
 
 ### Quy trình Deploy Frontend:
-1.  **Nhánh Production (Chính thức):** Mọi thay đổi được commit và đẩy lên nhánh `main` sẽ tự động kích hoạt trigger build của Vercel và cập nhật lên domain chính thức:
-    *   *URL trang chủ:* `https://delivering-happiness.vercel.app/`
-    *   *Trang khảo sát giá trị:* `https://delivering-happiness.vercel.app/personal-value.html`
-    *   *Trang đăng ký DHM8:* `https://delivering-happiness.vercel.app/register.html`
-    *   *Trang đăng ký DHM9 Hà Nội:* `https://delivering-happiness.vercel.app/register_dh9_hanoi.html`
-    *   *Trang thực hành ABCDE:* `https://delivering-happiness.vercel.app/practice-abcde`
-2.  **Nhánh Preview/LMS (Bài học học viên):** Các cập nhật bài giảng cho học viên cũ được đẩy lên nhánh `07042026` và deploy lên môi trường Preview tương ứng.
-3.  **Cấu hình dự án:** Tệp cấu hình `vercel.json` ở thư mục gốc chứa các quy tắc chuyển hướng hoặc header bảo mật (nếu có).
-4.  **Cảnh báo .vercelignore:** Để tránh Vercel bỏ qua các thư mục con trùng tên (ví dụ: `data/artifacts` bị nhận diện nhầm do dòng `Artifacts/` trong file cấu hình), bắt buộc phải dùng dấu gạch chéo ở đầu để khóa cứng đường dẫn gốc (như `/Artifacts/`, `/UAT/`, `/Implementation Plan/`).
+1.  Bắt đầu từ worktree sạch và commit bất biến đã review; không dùng dirty root hiện tại làm nguồn phát hành.
+2.  Bảo đảm checkout có **đúng bản tracked trong cùng commit** của `Scripts/build_release_package.js`, `Scripts/verify_vercel_live_gate.js`, `.github/workflows/production-release.yml` và release contract trong `release-specs/`; path tồn tại nhưng untracked/diverged vẫn phải fail-closed.
+3.  Thực hiện đúng `docs/deployment.md`: build package → staged deployment bằng `--skip-domain` → UAT toàn bộ route trong release contract → phê duyệt Cấp độ 3 → promote → production UAT.
+4.  Kiểm tra trực tiếp mọi CTA target. `interest.html` (`DH_INTEREST`) và `program-interest.html` (`PROGRAM_INTEREST`) là hai hợp đồng khác nhau.
+5.  Chỉ claim `Live done` khi production alias và release identity khớp artifact `LIVE_VERIFIED` trong `UAT/releases/<release-id>/production/`.
 
 ---
 
@@ -35,22 +31,10 @@ Backend của hệ thống chạy trên nền tảng Google Apps Script (GAS) We
     *Lưu ý:* Trình duyệt sẽ mở ra và yêu cầu cấp quyền truy cập Apps Script API. Hãy bật quyền này trong phần cấu hình Google Apps Script User Settings (`https://script.google.com/home/usersettings`).
 
 ### Bước 2: Đồng bộ mã nguồn lên Google Cloud
-1.  Cấu hình trong tệp `.clasp.json` tại thư mục gốc quản lý ID của script và thư mục chứa code:
-    ```json
-    {
-      "scriptId": "1W3QUKnfO0jyt0LAD-jJ8Mua2UglbANgxdnmHyDXT5WRYCxNmyeuJFzQU",
-      "rootDir": "Scripts"
-    }
-    ```
-    *Lưu ý:* Hãy đảm bảo thuộc tính `rootDir` trỏ chính xác đến thư mục `Scripts/` chứa file code `active_code_gs_final.js` và `appsscript.json`.
-3.  **Cấu hình tệp loại trừ `.claspignore` (Bắt buộc):**
-    Để tránh xung đột trùng lặp hàm `doPost` (Function Shadowing) do clasp đẩy cả tệp rollback/runner lên cloud, tạo tệp `.claspignore` ở thư mục gốc của dự án với nội dung:
-    ```text
-    # Ignore files relative to rootDir (Scripts)
-    active_code_gs_rollback.js
-    dhm8_gate2_uat_runner.js
-    ```
-4.  Đẩy mã nguồn từ máy local lên Google Apps Script:
+1.  Đọc `.clasp.json` tại repo root và xác nhận `rootDir` là `Scripts`; không sao chép Script ID vào tài liệu hoặc log.
+2.  Đọc `.claspignore`, sau đó chạy `clasp status` để lấy upload inventory thật. Fail-closed nếu rollback, runner, test hoặc file ngoài allowlist xuất hiện.
+3.  Đối chiếu diff, tạo backup/rollback mapping và ghi commit SHA ↔ Apps Script version/deployment ID.
+4.  `clasp push -f` là external write và ghi đè source cloud; chỉ chạy sau phê duyệt Cấp độ 3 cho exact command và target:
     ```bash
     clasp push -f
     ```
@@ -64,17 +48,25 @@ Sau khi clasp push code thành công, thực hiện tạo bản deploy trên Goo
     *   *Who has access:* Chọn **Anyone** (để cho phép backend Vercel gọi API công khai).
 4.  Nhấp **Deploy**, hệ thống sẽ sinh ra một URL Web App mới (ví dụ: `https://script.google.com/macros/s/AKfycb.../exec`).
 
+### Cổng triển khai và kiểm chứng cho `program-interest.html`
+1. Chỉ deploy Apps Script sau khi đối chiếu `.clasp.json`, `.claspignore`, diff đúng allowlist và có phê duyệt Cấp độ 3 cho lệnh cụ thể.
+2. Sau khi cập nhật deployment, probe read-only `checkProgramInterestStatus` bằng UUID thử hợp lệ; chỉ tiếp tục khi endpoint trả đúng `not_found` và không rơi vào route `DH_INTEREST`.
+3. Chỉ deploy frontend khi probe backend đạt yêu cầu. Sau promote phải kiểm tra trực tiếp `/program-interest` và mọi CTA được thay đổi; không lấy `/interest` hoặc homepage làm bằng chứng thay thế.
+4. **Đích lưu dữ liệu:** [CRM Google Sheet — tab Program Interest](https://docs.google.com/spreadsheets/d/1ZToRX6J5Vo6UgHzYEE_eUxU0bVnsGxBRLt-8tduI5CA/edit). Apps Script production hiện được frontend gọi qua deployment `@69` với endpoint `AKfycbxMi_bQBceGxVK_TjbcU5rQNAaLyUXOMuQJHyYWCwdeoWlsccq2kFkhRYVG2meySCsPdA/exec`; `SPREADSHEET_ID` vẫn phải đọc từ `Script Properties`, không ghi token/credential vào tài liệu.
+5. **Luồng ghi:** frontend tạo payload `PROGRAM_INTEREST` và `interestUuid`, gửi `POST` `no-cors`; Apps Script validate dữ liệu, mở đúng spreadsheet theo `SPREADSHEET_ID` ở chế độ fail-closed, kiểm tra tab `Program Interest`, khóa thao tác, tìm UUID ở cột B rồi mới append một hàng 25 cột. Sau đó frontend gọi JSONP `checkProgramInterestStatus` với cùng UUID để xác nhận `recorded`.
+6. **Chống ghi trùng:** POST đầu tiên trả `duplicate:false`; POST lại nguyên payload/UUID trả `duplicate:true` và không thêm hàng thứ hai trong `Program Interest`. Apps Script có thể ghi log vận hành vào `DHM8_System_Logs` cho mỗi POST; log này không được tính là dòng dữ liệu Program Interest.
+7. Ghi thử vào tab `Program Interest` là thao tác Google Sheet thật, cần phê duyệt Cấp độ 3 riêng. Không dùng `parentId` trong `.clasp.json` để suy ra `SPREADSHEET_ID` runtime: `parentId` chỉ là metadata container của Apps Script. Trước POST phải xác minh runtime target bằng Script Properties/authorized read-back hoặc UAT có kiểm soát; sau POST phải đọc lại theo UUID, đối chiếu đúng một dòng và không xóa dòng UAT. Không phát sinh email, thanh toán hoặc giữ chỗ từ handler `PROGRAM_INTEREST`.
+
 ### Bước 4: Cập nhật biến môi trường trên Vercel Backend
 Không tự ý sửa URL trực tiếp trong mã nguồn backend. Mọi URL và token kết nối đều được cấu hình qua **Vercel Environment Variables**:
 1.  Truy cập bảng điều khiển Vercel của dự án.
-2.  Cấu hình các biến môi trường sau:
-    *   `DHM8_APPS_SCRIPT_URL`: URL Web App mới deploy ở Bước 3.
-    *   `DHM8_APPS_SCRIPT_TOKEN`: Token dùng để ký mã HMAC (Ví dụ: `shared-token-key-2026`).
-    *   `GEMINI_API_KEY`: API Key của Google Gemini dùng để chạy chatbot Socratic.
-    *   `GEMINI_MODEL`: Model sử dụng (mặc định: `gemini-3.1-flash-lite`).
-3.  Chạy deploy lại dự án để áp dụng các biến môi trường mới:
+2.  Cấu hình các key mà source hiện đọc; giá trị thật chỉ nằm trong Vercel Environment Variables/secret store và không được ghi vào tài liệu:
+    *   ABCDE Stable: `DHM_PASSCODE`, `GEMINI_API_KEY`, `GEMINI_MODEL`, `DHM8_APPS_SCRIPT_URL`, `DHM8_APPS_SCRIPT_TOKEN`, `KV_REST_API_URL`, `KV_REST_API_TOKEN`.
+    *   ABCDE Beta: các key Stable cộng `ABCDE_RAG_ENABLED`, `UPSTASH_VECTOR_REST_URL`, `UPSTASH_VECTOR_REST_TOKEN`.
+    *   SePay proxy: `DHM8_APPS_SCRIPT_URL`, `SEPAY_WEBHOOK_TOKEN`, `DHM8_SEPAY_WEBHOOK_TOKEN`, `DHM8_SEPAY_PROXY_TOKEN`.
+3.  Chạy deploy lại dự án để áp dụng các biến môi trường mới (tuân thủ Rule 4):
     ```bash
-    vercel --prod --yes
+    vercel --prod --skip-domain
     ```
 
 ---
@@ -88,8 +80,16 @@ Không tự ý sửa URL trực tiếp trong mã nguồn backend. Mọi URL và 
 | `ENVIRONMENT` | `PRODUCTION` hoặc `STAGING` |
 | `SPREADSHEET_ID` | ID của Google Sheet CRM chính |
 | `SEPAY_WEBHOOK_TOKEN` | Token bí mật dùng để xác thực webhook thanh toán từ SePay |
-| `OFFICIAL_ACCOUNT_NUMBER` | Số tài khoản ngân hàng chính thức nhận tiền (`8815369431`) |
+| `OFFICIAL_ACCOUNT_NUMBER` | Số tài khoản vận hành; lấy từ Script Properties/runtime, không ghi giá trị vào docs |
 | `KILL_SWITCH_EMAIL` | Đặt là `true` để tạm dừng tất cả các hoạt động gửi email |
 | `KILL_SWITCH_REGISTRATION` | Đặt là `true` để tạm dừng nhận đăng ký mới |
+| `KILL_SWITCH_PAYMENT` | Đặt là `true` để chặn xử lý thanh toán tự động theo nhánh SePay |
 | `KILL_SWITCH_PV` | Đặt là `true` để đóng cổng khảo sát Giá trị Cốt lõi |
 | `KILL_SWITCH_ABCDE` | Đặt là `true` để tạm dừng nhận bài thực hành ABCDE Socratic |
+
+## 4. Khoảng trống cần xử lý trước phát hành
+
+*   `.claspignore` trong working tree không khớp ví dụ từng được ghi trong tài liệu cũ; upload inventory phải coi là `UNVERIFIED` cho tới khi `clasp status` được review.
+*   Snapshot 08/08/2026: local `main` chậm `origin/main` ba commit; release tool local bị lệch bản committed và release contract chưa có trong checkout. Chỉ dùng clean worktree tại commit release đã review.
+*   Source còn fallback cấu hình nhạy cảm và Apps Script chưa xác minh HMAC của submit ABCDE. Không dùng tài liệu này để claim security hardening đã hoàn tất.
+*   Lượt cập nhật tài liệu không chạy network, browser, Apps Script, Sheet, email hoặc payment probe; mọi trạng thái live vẫn `UNVERIFIED`.

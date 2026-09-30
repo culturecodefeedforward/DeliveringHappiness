@@ -31,7 +31,13 @@ Tài liệu PDR (Product Development Requirements - yêu cầu phát triển s�
     *   Cho phép học viên đăng ký nhận toàn bộ bản tổng hợp bài tập qua Email dưới định dạng HTML sang xịn mịn.
     *   Luồng submit ghi vào Google Sheets `ABCDE_Data` trong mã Apps Script hiện tại.
 *   **FR-07 (QR Check-in):** Có giao diện camera `checkin.html`; kết nối dữ liệu live và chống check-in trùng vẫn cần UAT riêng.
-*   **FR-08 (LMS Dashboard):** Có bề mặt tĩnh `lms_dashboard.html` và `login.html`; tài liệu không xác nhận cơ chế phân quyền live.
+*   **FR-08 (Hệ thống LMS Blended Learning & Cổng Sát Hạch Đầu Vào):** 
+    *   Hệ thống học tập kết hợp (Blended Learning) 3 Chặng tại `/lms/` (`lms/index.html`, `lms/app.js`, `lms/curriculum_data.json`).
+    *   **Master Learner Directory:** CSDL 383 học viên và giảng viên từ DHM3 đến DHM9 (`lms/master_learners_roster.json`, `lms/authorized_roster.json`).
+    *   **Cơ chế Xác thực & Nhận diện Học viên:** Đăng nhập an toàn bằng Email / Số điện thoại đăng ký, tự động nhận diện danh tính và khóa học.
+    *   **Ban Giảng Huấn 6 Giảng viên / Coach:** Cô Hà Minh Châu, Thầy / Anh Hưng, Cô Hà Ngọc Hoàn, Thầy Vũ Hoàng, Cô / Chị Hân, Cô Vũ Khánh Linh (phân quyền Coach, bypass cổng kiểm tra).
+    *   **Cổng Sát Hạch Đầu Vào Chặng 1 (10 Câu Trắc Nghiệm):** Yêu cầu đạt tối thiểu ≥70% (7/10 câu) sau tối đa 3 lần thử để qualify mở khóa Chặng 2 (Offline). Khóa lại sau 3 lần trượt và yêu cầu liên hệ Coach/BTC.
+    *   **Công cụ Tương tác:** Video Explainer, Audio Player bài giảng, La Bàn Giá Trị Me Values (41 giá trị), Khung đúc kết I•A•M, 4 Thói quen cốt lõi (Vị nhân, Biết ơn, Tỉnh thức SCBA, Lạc quan ABCDE) và Nhật ký 21 Ngày (Habit Tracker).
 *   **FR-09 (SePay Webhook Auto-Reconciliation):** Có API `api/sepay-dh.js` và handler Apps Script để đối soát theo lane; trạng thái webhook production là `UNVERIFIED` trong lượt cập nhật tài liệu này.
 *   **FR-10 (Program Interest Hub):** Trang đích chung ghi nhận sự quan tâm đối với nhiều chương trình (DHM8, DHM9, NVC, AI) với cơ chế chống spam bằng UUID.
 *   **FR-11 (Mẫu đăng ký Giao tiếp Kết nối NVC):** Biểu mẫu đăng ký chuyên biệt cho khóa học Nonviolent Communication (`register_nvc.html`), lưu trữ CRM độc lập vào Sheet `CultureCode - NVC Leads` (13 cột) và tự động bắn email thông báo cho CultureCode Team.

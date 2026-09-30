@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 badge: "Mini Step 1 • Online",
                 title: "Mini step 1 • ONLINE – Gieo Thông điệp",
                 subtitle: "Khoa học Hạnh phúc • 3 Cấp độ • Định vị La Bàn (Me Values) • Thuyết Tự Quyết (SDT)",
-                instructor: "Giảng viên Vũ",
+                instructor: "Thầy Vũ Hoàng & Ban Giảng Huấn",
                 estimatedMinutes: 30,
                 videoDuration: "7:27",
                 videoUrl: "data/artifacts/the_explainer.mp4",
@@ -155,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 badge: "Mini Step 2 • Offline",
                 title: "Mini step 2 • OFFLINE – Gieo Thói quen",
                 subtitle: "Workshop Live tại lớp • Xưởng thực hành 5 Thói quen Hạnh phúc & I•A•M",
-                instructor: "Ban Giảng Huấn DHM (Châu, Hưng, Hoàn, Vũ)",
+                instructor: "Ban Giảng Huấn DHM (Cô Châu, Thầy Hưng, Cô Hoàn, Thầy Vũ, Cô Hân, Cô Khánh Linh)",
                 estimatedMinutes: 120,
                 videoUrl: null,
                 subSections: [
@@ -197,7 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 badge: "Mini Step 3 • Online",
                 title: "Mini step 3 • ONLINE – Focus on I • A • M",
                 subtitle: "Nuôi dưỡng Thói quen Chuyển hóa • Kế thừa Toàn bộ Chất liệu • Đồng hành 21 ngày",
-                instructor: "Đội ngũ Coach DHM Đồng Hành",
+                instructor: "Đội ngũ Giảng viên & Coach DHM Đồng Hành",
                 estimatedMinutes: 21,
                 videoUrl: null,
                 subSections: [
@@ -924,7 +924,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderStage1View(stage) {
         const sData = learnerProgress.stageData["stage-1"] || {};
 
-        // 9.1 Render Quiz (Sát Hạch Đầu Vào - 20 Câu - Đạt ≥70% - Tối đa 3 lần thử)
+        // 9.1 Render Quiz (Sát Hạch Đầu Vào - 10 Câu - Đạt ≥70% - Tối đa 3 lần thử)
         quizItemsContainer.innerHTML = "";
         const mod1 = (stage.modules && stage.modules[0]) ? stage.modules[0] : null;
         const quizzes = (mod1 && mod1.quizzes) ? mod1.quizzes : [];
@@ -1052,7 +1052,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                             <div class="space-y-1">
                                 <h4 class="text-sm font-extrabold text-brand-amber">CHƯA ĐẠT TIÊU CHUẨN ĐẦU VÀO (≥70%)</h4>
-                                <p class="text-xs text-slate-300">Bạn đạt <strong>${correct}/${quizzes.length} câu (${percent}%)</strong>. Tiêu chuẩn để qualify lên lớp Offline là tối thiểu <strong>14/20 câu (≥70%)</strong>.</p>
+                                <p class="text-xs text-slate-300">Bạn đạt <strong>${correct}/${quizzes.length} câu (${percent}%)</strong>. Tiêu chuẩn để qualify lên lớp Offline là tối thiểu <strong>${Math.ceil(quizzes.length * 0.7)}/${quizzes.length} câu (≥70%)</strong>.</p>
                                 <p class="text-xs text-slate-400">Bạn còn <strong class="text-white">${maxAttempts - attempts} lần thử lại</strong>. Hãy xem lại các đáp án tô đỏ ở trên trước khi bấm thử lại.</p>
                             </div>
                             <button id="btn-quiz-retry" class="px-5 py-3 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-black font-extrabold text-xs shadow-lg shadow-orange-500/20 active:scale-95 transition-all whitespace-nowrap flex items-center justify-center gap-1.5 self-start sm:self-center">
@@ -2041,7 +2041,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 currentUser.role === "Coach"
             );
             if (!s1Data.passed && !isCoach) {
-                alert("⚠️ Bạn cần hoàn thành và đạt tối thiểu 70% (14/20 câu) ở Bài 1.1 Kiểm tra Sát Hạch Đầu Vào để đủ điều kiện (qualify) hoàn thành Chặng 1 và bước vào Lớp Offline Chặng 2!");
+                const s1Quizzes = (curStage.modules && curStage.modules[0] && curStage.modules[0].quizzes) ? curStage.modules[0].quizzes : [];
+                const passCount = s1Quizzes.length > 0 ? Math.ceil(s1Quizzes.length * 0.7) : 7;
+                const totalQ = s1Quizzes.length || 10;
+                alert(`⚠️ Bạn cần hoàn thành và đạt tối thiểu 70% (${passCount}/${totalQ} câu) ở Bài 1.1 Kiểm tra Sát Hạch Đầu Vào để đủ điều kiện (qualify) hoàn thành Chặng 1 và bước vào Lớp Offline Chặng 2!`);
                 const practiceTabBtn = document.querySelector('[data-tab="tab-practice"]');
                 if (practiceTabBtn) practiceTabBtn.click();
                 const quizSec = document.getElementById("stage1-mod-1-1");

@@ -10,7 +10,7 @@
       "badge": "Mini Step 1 • Online",
       "title": "Mini step 1 • ONLINE – Gieo Thông điệp",
       "subtitle": "Khoa học Hạnh phúc • 3 Cấp độ • Định vị La Bàn (Me Values) • Thuyết Tự Quyết (SDT)",
-      "instructor": "Giảng viên Vũ",
+      "instructor": "Thầy Vũ Hoàng & Ban Giảng Huấn",
       "estimatedMinutes": 30,
       "videoUrl": "data/artifacts/the_explainer.mp4",
       "videoTitle": "Video Explainer: Delivering Happiness Movement (Hệ Điều Hành Hạnh Phúc)",
@@ -92,23 +92,10 @@
       "modules": [
         {
           "id": "mod-1-1",
-          "title": "Bài 1.1: Khoa học Hạnh phúc & Bài Sát Hạch Đầu Vào (20 Câu)",
+          "title": "Bài 1.1: Khoa học Hạnh phúc & Bài Sát Hạch Đầu Vào (10 Câu)",
           "quizzes": [
             {
               "id": "dhm-quiz-1",
-              "question": "Trạng thái 'Phiêu' (Flow) thường xuất hiện ở cấp độ hạnh phúc nào?",
-              "options": [
-                "Passion",
-                "Kết nối",
-                "Higher Purpose",
-                "Pleasure"
-              ],
-              "correctIndex": 0,
-              "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 1: Passion"
-            },
-            {
-              "id": "dhm-quiz-2",
               "question": "Trong Cảm giác 'Tiến bộ'; yếu tố nào quan trọng nhất để duy trì động lực?",
               "options": [
                 "Sự ghi nhận các bước tiến nhỏ (Small wins)",
@@ -121,7 +108,7 @@
               "explanation": "Đáp án đúng là lựa chọn 1: Sự ghi nhận các bước tiến nhỏ (Small wins)"
             },
             {
-              "id": "dhm-quiz-3",
+              "id": "dhm-quiz-2",
               "question": "An toàn tâm lý (Psychological Safety) thuộc đòn bẩy nào?",
               "options": [
                 "Tự chủ (Control)",
@@ -134,7 +121,7 @@
               "explanation": "Đáp án đúng là lựa chọn 2: Kết nối (Connectedness)"
             },
             {
-              "id": "dhm-quiz-4",
+              "id": "dhm-quiz-3",
               "question": "Trong công việc, cảm giác 'Tự chủ' (Control) được hiểu đúng nhất là:",
               "options": [
                 "Có quyền lựa chọn và kiểm soát cách thực hiện công việc",
@@ -147,7 +134,7 @@
               "explanation": "Đáp án đúng là lựa chọn 1: Có quyền lựa chọn và kiểm soát cách thực hiện công việc"
             },
             {
-              "id": "dhm-quiz-5",
+              "id": "dhm-quiz-4",
               "question": "Tại sao cảm giác 'Tiến bộ' (Progress) lại quan trọng hơn việc Đạt mục tiêu cuối cùng theo khoa học hạnh phúc?",
               "options": [
                 "Vì các Small wins (chiến thắng nhỏ) tạo ra nguồn năng lượng liên tục giúp duy trì động lực",
@@ -160,20 +147,7 @@
               "explanation": "Đáp án đúng là lựa chọn 1: Vì các Small wins (chiến thắng nhỏ) tạo ra nguồn năng lượng liên tục giúp duy trì động lực"
             },
             {
-              "id": "dhm-quiz-6",
-              "question": "Mô hình Me - We - Community gợi ý trình tự tối ưu nhất để xây dựng  văn hóa hạnh phúc:",
-              "options": [
-                "Me vì bạn tham gia. We vì bạn muốn lan toả và Community vì bạn muốn phụng sự",
-                "Ưu tiên sự gắn kết của đội nhóm (We) vì đây là đơn vị cơ bản nhất tạo ra giá trị cho doanh nghiệp",
-                "Tập trung xây dựng một cộng đồng lớn mạnh (Community) để tạo áp lực tích cực lên các cá nhân (Me)",
-                "Thay đổi các yếu tố vĩ mô của cộng đồng (Community) để tạo ra môi trường thuận lợi cho cá nhân (Me)"
-              ],
-              "correctIndex": 0,
-              "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 1: Me vì bạn tham gia. We vì bạn muốn lan toả và Community vì bạn muốn phụng sự"
-            },
-            {
-              "id": "dhm-quiz-7",
+              "id": "dhm-quiz-5",
               "question": "Khái niệm 'Psychological Safety' (An toàn tâm lý) đóng vai trò gì trong Cảm giác ‘Kết nối?",
               "options": [
                 "Thiết lập một hệ thống kiểm soát nội bộ chặt chẽ để ngăn ngừa các hành vi gây mất đoàn kết trong nhóm",
@@ -186,173 +160,69 @@
               "explanation": "Đáp án đúng là lựa chọn 4: Tạo ra môi trường nơi mọi người dám chia sẻ sai lầm và thử nghiệm cái mới mà không sợ bị phán xét"
             },
             {
-              "id": "dhm-quiz-8",
-              "question": "We' trong mô hình DH đại diện cho:",
+              "id": "dhm-quiz-6",
+              "question": "Theo  Delivering Happiness, đâu là 3 cấp độ hạnh phúc?",
               "options": [
-                "Những người không quen biết",
-                "Toàn thế giới",
-                "Gia đình và đồng nghiệp trực tiếp",
-                "Khách hàng mục tiêu"
-              ],
-              "correctIndex": 2,
-              "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 3: Gia đình và đồng nghiệp trực tiếp"
-            },
-            {
-              "id": "dhm-quiz-9",
-              "question": "Giá trị cốt lõi 'Actual Value' (Giá trị thực tế) được phân biệt với 'Stated Value' (GTCL thực tế vs GTCL phông bạt-NATO)",
-              "options": [
-                "Việc giá trị đó có được in ấn và truyền thông rộng rãi trên các bảng hiệu và văn phòng của công ty không",
-                "Việc tất cả các thành viên trong tổ chức có thuộc lòng nội dung của giá trị đó khi được hỏi hay không",
-                "Việc giá trị đó có nhận được sự đồng thuận của đa số nhân viên thông qua các cuộc khảo sát văn hóa không",
-                "Việc giá trị đó có dẫn dắt các quyết định quan trọng (La bàn) và được ưu tiên thời gian (Đồng hồ) hay không"
-              ],
-              "correctIndex": 3,
-              "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 4: Việc giá trị đó có dẫn dắt các quyết định quan trọng (La bàn) và được ưu tiên thời gian (Đồng hồ) hay không"
-            },
-            {
-              "id": "dhm-quiz-10",
-              "question": "Mối quan hệ giữa GTCL và Văn hóa tổ chức là:",
-              "options": [
-                "Hai khái niệm không liên quan",
-                "Văn hoá tổ chức quan trọng hơn GTCL",
-                "Văn hóa là tập hợp các Core Value được thực hành",
-                "Core Value chỉ để treo tường; Văn hóa là cái đang diễn ra"
-              ],
-              "correctIndex": 2,
-              "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 3: Văn hóa là tập hợp các Core Value được thực hành"
-            },
-            {
-              "id": "dhm-quiz-11",
-              "question": "Một GTCL 'Phông bạt-NATO‘ ( Stated Value) thường thiếu yếu tố nào?",
-              "options": [
-                "Tên gọi hào nhoáng",
-                "Sự cam kết về thời gian và nguồn lực (trí lực, tài lực, vật lực)",
-                "Sự ủng hộ của sếp",
-                "Các buổi workshop"
-              ],
-              "correctIndex": 1,
-              "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 2: Sự cam kết về thời gian và nguồn lực (trí lực, tài lực, vật lực)"
-            },
-            {
-              "id": "dhm-quiz-12",
-              "question": "Điều gì định nghĩa một 'Microflow' ( Mrico Phiêu ) trong công việc hàng ngày?",
-              "options": [
-                "Việc tập trung hoàn toàn vào một công việc duy nhất trong một khoảng thời gian rất ngắn dưới 5 phút",
-                "Việc biến những nhiệm vụ nhàm chán trở nên thú vị bằng cách đặt ra các thử thách nhỏ cho bản thân",
-                "Việc chia nhỏ các dự án lớn thành nhiều giai đoạn để dễ dàng kiểm soát tiến độ và nguồn lực tài chính",
-                "Việc thực hiện các công việc lặp đi lặp lại một cách nhanh chóng để tiết kiệm thời gian cho tổ chức"
-              ],
-              "correctIndex": 1,
-              "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 2: Việc biến những nhiệm vụ nhàm chán trở nên thú vị bằng cách đặt ra các thử thách nhỏ cho bản thân"
-            },
-            {
-              "id": "dhm-quiz-13",
-              "question": "Trạng thái 'Dòng chảy' (Flow) bị phá vỡ khi xảy ra sự mất cân bằng giữa hai yếu tố đây?",
-              "options": [
-                "Sự mất cân bằng giữa thời gian dành cho công việc và thời gian dành cho các hoạt động giải trí cá nhân",
-                "Sự mất cân bằng giữa độ khó của Thử thách (Challenge) và Năng lực thực tế của cá nhân (Skills)",
-                "Sự mất cân bằng giữa nguồn lực tài chính được cấp và mục tiêu chất lượng mà dự án yêu cầu đạt được",
-                "Sự mất cân bằng giữa mức độ kỳ vọng của cấp trên và sự nỗ lực thực tế của người thực hiện dự án"
-              ],
-              "correctIndex": 1,
-              "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 2: Sự mất cân bằng giữa độ khó của Thử thách (Challenge) và Năng lực thực tế của cá nhân (Skills)"
-            },
-            {
-              "id": "dhm-quiz-14",
-              "question": "Tại sao thói quen 'Tỉnh thức' (Mindfulness) trang bị cho chúng ta khả năng thực hành 4 Thói quen Hạnh phúc còn lại",
-              "options": [
-                "Vì Tỉnh thức giúp chúng ta loại bỏ hoàn toàn các cảm xúc tiêu cực phát sinh trong quá trình làm việc",
-                "Vì nó giúp chúng ta nhận diện hiện tại để tăng cường sự tập trung và có khả năng nhìn nhận",
-                "Vì đây là thói quen duy nhất không đòi hỏi sự tương tác với người khác trong quá trình thực hành",
-                "Vì nó là kỹ năng dễ rèn luyện nhất và mang lại kết quả ngay lập tức mà không cần sự kiên trì"
-              ],
-              "correctIndex": 1,
-              "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 2: Vì nó giúp chúng ta nhận diện hiện tại để tăng cường sự tập trung và có khả năng nhìn nhận"
-            },
-            {
-              "id": "dhm-quiz-15",
-              "question": "Bước 'Stop' trong SBA giúp chúng ta điều gì?",
-              "options": [
-                "Kết thúc cuộc tranh luận",
-                "Tạo khoảng trống để không sa lầy vào phản ứng trước tình huống",
-                "Ngừng làm việc ngay lập tức",
-                "Trốn tránh sự thật"
-              ],
-              "correctIndex": 1,
-              "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 2: Tạo khoảng trống để không sa lầy vào phản ứng trước tình huống"
-            },
-            {
-              "id": "dhm-quiz-16",
-              "question": "Trong mô hình ABCDE; bước 'E' (Energize) thể hiện điều gì sau khi gặp nghịch cảnh",
-              "options": [
-                "Sự chuyển hóa năng lượng tiêu cực thành hành động tích cực và tinh thần sẵn sàng cho những thử thách mới",
-                "Việc dành thời gian để nghỉ ngơi và hồi phục năng lượng sau khi đã trải qua một sự cố căng thẳng",
-                "Sự tự tin rằng chúng ta sẽ không bao giờ gặp lại những sự việc bất như ý tương tự trong tương lai nữa",
-                "Việc tổ chức các hoạt động ăn mừng để ghi nhận việc chúng ta đã vượt qua được những khó khăn vừa rồi"
+                "Thú vui (Pleasure) - Đam mê (Passion) - Mục đích cao cả (Higher Purpose)",
+                "Tiến bộ - Tự chủ - Kết nối",
+                "Biết ơn - Flow - Lạc quan",
+                "Giá trị - Hành vi - Văn hóa"
               ],
               "correctIndex": 0,
               "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 1: Sự chuyển hóa năng lượng tiêu cực thành hành động tích cực và tinh thần sẵn sàng cho những thử thách mới"
+              "explanation": "Đáp án đúng là lựa chọn 1: Thú vui (Pleasure) - Đam mê (Passion) - Mục đích cao cả (Higher Purpose)"
             },
             {
-              "id": "dhm-quiz-17",
-              "question": "Trong công thức ABCDE của thói quen Lạc quan; bước 'D' (Dispute) thực hiện nhiệm vụ",
+              "id": "dhm-quiz-7",
+              "question": "Ai là người phát biểu câu nói:\n\"Xây dựng một văn hóa tuyệt vời và mọi thứ khác sẽ đi đúng hướng\"?",
               "options": [
-                "Chấp nhận sự thật rằng mọi sự việc diễn ra đều có lý do của nó và chúng ta không cần phải can thiệp",
-                "Phản biện lại những niềm tin cố hữu và tìm ra niềm tin mới có thể đem tới điều tốt đẹp từ nghịch cảnh",
-                "Đánh giá lại mức độ thiệt hại thực tế mà sự việc bất như ý đã gây ra cho cá nhân và cho tập thể",
-                "Phát triển các kế hoạch dự phòng (Back-up plans) để đối phó với những rủi ro có thể xảy ra tiếp theo"
-              ],
-              "correctIndex": 1,
-              "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 2: Phản biện lại những niềm tin cố hữu và tìm ra niềm tin mới có thể đem tới điều tốt đẹp từ nghịch cảnh"
-            },
-            {
-              "id": "dhm-quiz-18",
-              "question": "Trong thói quen Biết ơn; việc ghi nhận những bài học từ 'Điều bất như ý' (hoặc nghịch cảnh) có ý nghĩa",
-              "options": [
-                "Giúp chúng ta quên đi nỗi đau thực tại bằng cách tập trung vào những điều tốt đẹp khác xung quanh",
-                "Giúp chúng ta nhìn thấy cơ hội trưởng thành và bài học ẩn giấu từ nghịch cảnh đó",
-                "Giúp chúng ta chứng minh với người khác rằng mình là người có tinh thần lạc quan và bao dung cao",
-                "Giúp chúng ta cảm thấy nhẹ nhõm hơn bằng cách đổ lỗi cho các yếu tố khách quan nằm ngoài tầm kiểm soát"
-              ],
-              "correctIndex": 1,
-              "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 2: Giúp chúng ta nhìn thấy cơ hội trưởng thành và bài học ẩn giấu từ nghịch cảnh đó"
-            },
-            {
-              "id": "dhm-quiz-19",
-              "question": "Trong thói quen Vị nhân; hành động ‘Trao giá trị' hiệu quả nhất khi nào?",
-              "options": [
-                "Khi chúng ta cho đi tất cả những gì mình có mà không giữ lại bất kỳ nguồn lực nào cho bản thân mình",
-                "Khi chúng ta chỉ cho đi những thứ mà mình đã dư thừa và không còn nhu cầu sử dụng trong tương lai",
-                "Khi sự cho đi đó gắn liền với lợi ích chung lớn nhất",
-                "Khi sự cho đi được thực hiện một cách công khai để tạo ra hiệu ứng truyền thông tốt cho tổ chức"
+                "Martin Seligman",
+                "Aristotle",
+                "Tony Hsieh",
+                "Mihály Csíkszentmihályi"
               ],
               "correctIndex": 2,
               "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 3: Khi sự cho đi đó gắn liền với lợi ích chung lớn nhất"
+              "explanation": "Đáp án đúng là lựa chọn 3: Tony Hsieh"
             },
             {
-              "id": "dhm-quiz-20",
-              "question": "Một 'Smart Giver' (Người cho đi thông thái) khác biệt với một 'Selfless Giver' (Người hy sinh bản thân mình) ở điểm nào?",
+              "id": "dhm-quiz-8",
+              "question": "Đòn bảy Kết nối được thể hiện qua hoà ái với",
               "options": [
-                "Smart Giver là những người có địa vị cao trong xã hội nên việc cho đi của họ mang tính chiến lược hơn",
-                "Smart Giver thực hành tỉnh thức để không bị rơi vào bẫy vì người khác mà quên bản thân (Burnout)",
-                "Smart Giver chỉ thực hiện việc cho đi khi họ biết chắc chắn rằng mình sẽ nhận lại được lợi ích tương xứng",
-                "Selfless Giver luôn đạt được sự hạnh phúc bền vững hơn vì họ không bao giờ quan tâm đến bản thân mình"
+                "Với bản thân, với người khác và với thiên nhiên",
+                "Với mục tiêu, với thành tích và với lợi nhuận",
+                "Với tự chủ, với tiến bộ và với thành tựu",
+                "Với tổ chức, với khách hàng và với quy trình"
+              ],
+              "correctIndex": 0,
+              "timeLimit": 20,
+              "explanation": "Đáp án đúng là lựa chọn 1: Với bản thân, với người khác và với thiên nhiên"
+            },
+            {
+              "id": "dhm-quiz-9",
+              "question": "Đâu là biểu hiện của Ownership Advantage™ (Tinh thần làm chủ)?",
+              "options": [
+                "Cảm giác được chú ý và lắng nghe ý kiến",
+                "Cảm giác được kết nối, tương tác và quan tâm đến người khác",
+                "Được là chính mình trong môi trường làm việc",
+                "Lựa chọn cá nhân trong việc chịu trách nhiệm về kết quả"
+              ],
+              "correctIndex": 3,
+              "timeLimit": 20,
+              "explanation": "Đáp án đúng là lựa chọn 4: Lựa chọn cá nhân trong việc chịu trách nhiệm về kết quả"
+            },
+            {
+              "id": "dhm-quiz-10",
+              "question": "Theo tài liệu, tại sao nhiều mục tiêu như mua nhà, thăng chức hoặc kiếm nhiều tiền không đảm bảo hạnh phúc bền vững?",
+              "options": [
+                "Vì chúng làm giảm động lực nội tại.",
+                "Vì chúng thường mang lại hạnh phúc trong ngắn hạn và khi đạt được ta nhanh chóng đặt mục tiêu mới.",
+                "Vì chúng làm giảm cảm giác kết nối.",
+                "Vì chúng làm suy yếu giá trị cốt lõi cá nhân."
               ],
               "correctIndex": 1,
               "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 2: Smart Giver thực hành tỉnh thức để không bị rơi vào bẫy vì người khác mà quên bản thân (Burnout)"
+              "explanation": "Đáp án đúng là lựa chọn 2: Vì chúng thường mang lại hạnh phúc trong ngắn hạn và khi đạt được ta nhanh chóng đặt mục tiêu mới."
             }
           ],
           "iam": {
@@ -553,7 +423,7 @@
       "badge": "Mini Step 2 • Offline",
       "title": "Mini step 2 • OFFLINE – Gieo Thói quen",
       "subtitle": "Workshop Live tại lớp • Xưởng thực hành 5 Thói quen Hạnh phúc & I•A•M",
-      "instructor": "Ban Giảng Huấn DHM (Châu, Hưng, Hoàn, Vũ)",
+      "instructor": "Ban Giảng Huấn DHM (Cô Châu, Thầy Hưng, Cô Hoàn, Thầy Vũ, Cô Hân, Cô Khánh Linh)",
       "estimatedMinutes": 120,
       "videoUrl": null,
       "subSections": [
@@ -967,7 +837,7 @@
       "badge": "Mini Step 3 • Online",
       "title": "Mini step 3 • ONLINE – Focus on I • A • M",
       "subtitle": "Nuôi dưỡng Thói quen Chuyển hóa • Kế thừa Toàn bộ Chất liệu • Đồng hành 21 ngày",
-      "instructor": "Đội ngũ Coach DHM Đồng Hành",
+      "instructor": "Đội ngũ Giảng viên & Coach DHM Đồng Hành",
       "estimatedMinutes": 21,
       "videoUrl": null,
       "subSections": [
