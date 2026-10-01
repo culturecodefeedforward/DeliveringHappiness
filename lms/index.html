@@ -710,7 +710,7 @@
                                 </button>
                             </div>
 
-                            <!-- HABIT 1: GRATITUDE -->
+                                                        <!-- HABIT 1: GRATITUDE -->
                             <div id="habit-panel-gratitude" class="habit-panel p-5 rounded-2xl bg-brand-card/40 border border-brand-border space-y-5">
                                 <div class="flex items-center justify-between">
                                     <h4 class="text-sm font-bold text-white flex items-center gap-2">
@@ -720,7 +720,12 @@
                                         <span>▶ Nghe Audio Biết Ơn</span>
                                     </button>
                                 </div>
+
+                                <!-- PHẦN 1: KHÁI NIỆM & CÔNG CỤ THỰC HÀNH CỐT LÕI -->
                                 <div class="space-y-3">
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-surface border border-brand-border text-[11px] font-bold text-slate-300">
+                                        <span>📌 PHẦN 1: KHÁI NIỆM & CÔNG CỤ THỰC HÀNH CỐT LÕI</span>
+                                    </div>
                                     <label class="block text-xs font-semibold text-slate-300">Viết 4 điều biết ơn sâu sắc hôm nay:</label>
                                     <input type="text" id="gratitude-1" class="w-full bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500" placeholder="1. Về bản thân hoặc sức khỏe..." />
                                     <input type="text" id="gratitude-2" class="w-full bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500" placeholder="2. Về một cơ hội học hỏi / công việc..." />
@@ -732,12 +737,56 @@
                                     <input type="text" id="gratitude-card-to" class="w-full bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500 mb-2" placeholder="Gửi đến: (Tên đồng nghiệp / người thân)..." />
                                     <textarea id="gratitude-card-msg" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500" placeholder="Nội dung lời cảm ơn chân thành..."></textarea>
                                 </div>
-                                <!-- DEDICATED IAM GRATITUDE -->
-                                <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
-                                    <div class="text-xs font-bold text-brand-amber">I • A • M — Thói Quen Biết Ơn</div>
-                                    <input type="text" id="iam-gratitude-i" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="I: Điểm chạm sâu sắc nhất về lòng biết ơn..." />
-                                    <input type="text" id="iam-gratitude-a" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="A: Bạn sẽ thiết lập thói quen cảm ơn ai ngay sau lớp..." />
-                                    <input type="text" id="iam-gratitude-m" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="M: Lòng biết ơn nuôi dưỡng bình an ra sao..." />
+
+                                <!-- PHẦN 2: TÌNH HUỐNG THỰC TẾ & BÀI TẬP MẪU GỢI Ý CỦA GIẢNG VIÊN (MÔ HÌNH DUY) -->
+                                <div class="mt-6 pt-5 border-t border-brand-border/70 space-y-3.5">
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-amber/10 border border-brand-amber/30 text-[11px] font-bold text-brand-amber">
+                                        <span>💡 PHẦN 2: TÌNH HUỐNG THỰC TẾ & BÀI TẬP MẪU GỢI Ý (MÔ HÌNH DUY)</span>
+                                    </div>
+                                    <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                                        <span>Tình Huống Thực Tế 2.1: Chiếc Máy Lạnh Giữa Đêm & Bồn Tắm Đá 900kg — Nghịch Cảnh & Storytelling Biết Ơn Dưới 60 Giây</span>
+                                    </div>
+                                    <p class="text-xs text-slate-300 leading-relaxed bg-brand-surface/60 p-3 rounded-lg border border-brand-border/40">
+                                        Khi vận chuyển chiếc bồn tắm đá nguyên khối nặng 900kg lên tầng cao, dây cáp xe cẩu rung lắc dữ dội có nguy cơ sập đổ toàn bộ công trình. Thay vì hoảng loạn đổ lỗi, người chủ nhà đã kích hoạt lòng biết ơn nghịch cảnh: biết ơn vì 10 ngón tay chân vẫn còn nguyên vẹn, biết ơn vì có cơ hội nhận bài học chuẩn bị kỹ thuật. Cùng lúc đó tại văn phòng, một quản lý muốn tri ân đồng đội đã lặng lẽ đến sớm 30 phút bật sẵn máy lạnh để cả phòng không bị ngột ngạt giữa trưa nắng 40 độ.
+                                    </p>
+                                    <!-- Accordion trigger button -->
+                                    <button type="button" onclick="window.toggleModelAnswer('scenario-habit-gratitude')" class="w-full py-2.5 px-3.5 rounded-xl bg-brand-amber/15 hover:bg-brand-amber/25 text-brand-amber text-xs font-bold border border-brand-amber/30 transition-all flex items-center justify-between gap-2 min-h-[44px]">
+                                        <span class="flex items-center gap-1.5">
+                                            <span>💡 Xem Phân Tích & Bài Tập Mẫu Gợi Ý Của Giảng Viên</span>
+                                        </span>
+                                        <span id="accordion-icon-scenario-habit-gratitude" class="transform transition-transform text-xs">▼</span>
+                                    </button>
+                                    <!-- Accordion content (Hidden by default) -->
+                                    <div id="accordion-content-scenario-habit-gratitude" class="hidden scenario-accordion-content p-4 rounded-xl bg-brand-surface border border-brand-amber/30 space-y-2.5 text-xs text-slate-300">
+                                        <div class="font-bold text-brand-amber">🔍 Phân tích nguyên lý (Faculty Analysis):</div>
+                                        <p class="leading-relaxed text-slate-300">
+                                            GS. Robert Emmons chỉ ra 4 tầng bậc biết ơn: Kết quả tốt, Nghịch cảnh, Đón đầu tương lai, và Bản thân. Đại đa số chỉ biết ơn khi có quà (Tầng 1). Sức mạnh chuyển hóa thực sự nằm ở Biết ơn Nghịch cảnh (Tầng 2) - biến khủng hoảng thành cơ hội tôi luyện bản lĩnh. Trong giao tiếp tổ chức, Lời khen chung chung (Recognition) chỉ tạo hưng phấn ngắn hạn, trong khi Khen ngợi qua Storytelling 5 bước gắn với Giá trị cốt lõi (Core Values) mới tạo nên Dấu ấn văn hóa (Moment of Truth).
+                                        </p>
+                                        <div class="font-bold text-brand-green pt-1">🎯 Bài tập mẫu gợi ý (Model Solution):</div>
+                                        <div class="space-y-1 text-slate-200 leading-relaxed">
+                                            1. Kích hoạt Lòng biết ơn nghịch cảnh: Khi đối mặt với sự cố dự án/khủng hoảng, lập tức liệt kê 3 điều may mắn hoặc bài học quý giá mà tình huống này mang lại trước khi tìm phương án khắc phục.<br>2. Áp dụng Khung Storytelling Biết ơn 5 bước (dưới 60 giây):<br>- Bước 1: Gọi tên người nhận và bối cảnh sự việc cụ thể.<br>- Bước 2: Kể lại hành vi/hành động vượt trội của họ (không chỉ là nhiệm vụ thông thường).<br>- Bước 3: Nêu rõ tác động tích cực mà hành động đó mang lại cho bạn hoặc đội ngũ.<br>- Bước 4: Liên kết hành vi đó với Giá trị cốt lõi của tổ chức (Sự chu đáo, Tinh thần phụng sự).<br>- Bước 5: Bày tỏ lời cảm ơn chân thành từ trái tim.
+                                        </div>
+                                    </div>
+                                    <!-- Learner response -->
+                                    <div class="pt-2 space-y-2.5">
+                                        <label class="block text-xs font-semibold text-slate-200">Góc nhìn & Bài học suy ngẫm của bạn:</label>
+                                        <textarea id="scenario-habit-gratitude-reflection" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500" placeholder="Bạn đã từng trải qua nghịch cảnh nào trong công việc mà sau này nhìn lại bạn thầm cảm ơn vì nó đã rèn luyện bản lĩnh cho mình? Nếu kể lại lời cảm ơn 60s cho một đồng nghiệp hôm nay, bạn sẽ kể điều gì?"></textarea>
+                                        <label class="block text-xs font-semibold text-brand-amber">Hành động áp dụng cụ thể của bạn:</label>
+                                        <input type="text" id="scenario-habit-gratitude-action" class="w-full bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500" placeholder="Viết 1 thông điệp Storytelling biết ơn dưới 60 giây theo khung 5 bước để gửi ngay cho một người đồng đội:" />
+                                    </div>
+                                </div>
+
+                                <!-- PHẦN 3: ĐÚC KẾT I • A • M & CAM KẾT HÀNH ĐỘNG CÁ NHÂN -->
+                                <div class="mt-6 pt-5 border-t border-brand-border/70 space-y-3">
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-green/10 border border-brand-green/30 text-[11px] font-bold text-brand-green">
+                                        <span>🎯 PHẦN 3: ĐÚC KẾT I • A • M & CAM KẾT HÀNH ĐỘNG CÁ NHÂN</span>
+                                    </div>
+                                    <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
+                                        <div class="text-xs font-bold text-brand-amber">I • A • M — Thói Quen Biết Ơn</div>
+                                        <input type="text" id="iam-gratitude-i" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="I: Điểm chạm sâu sắc nhất về lòng biết ơn..." />
+                                        <input type="text" id="iam-gratitude-a" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="A: Bạn sẽ thiết lập thói quen cảm ơn ai ngay sau lớp..." />
+                                        <input type="text" id="iam-gratitude-m" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="M: Lòng biết ơn nuôi dưỡng bình an ra sao..." />
+                                    </div>
                                 </div>
                             </div>
 
@@ -751,31 +800,82 @@
                                         <span>▶ Nghe Audio Tỉnh Thức</span>
                                     </button>
                                 </div>
-                                <div class="p-3.5 rounded-xl bg-brand-dark/70 border border-brand-border space-y-2 text-xs text-slate-300">
-                                    <div class="font-bold text-brand-amber">Thực hành khoảng dừng SBA khi áp lực:</div>
-                                    <label class="flex items-center gap-2 cursor-pointer">
-                                        <input type="checkbox" id="sba-check-s" class="rounded bg-brand-card text-brand-amber focus:ring-0">
-                                        <span><strong>S — STOP:</strong> Dừng lại 3 giây khi nhận thấy cảm xúc tiêu cực</span>
-                                    </label>
-                                    <label class="flex items-center gap-2 cursor-pointer">
-                                        <input type="checkbox" id="sba-check-b" class="rounded bg-brand-card text-brand-amber focus:ring-0">
-                                        <span><strong>B — BREATHE:</strong> Hít thở sâu 3 nhịp vào bụng dưới</span>
-                                    </label>
-                                    <label class="flex items-center gap-2 cursor-pointer">
-                                        <input type="checkbox" id="sba-check-a" class="rounded bg-brand-card text-brand-amber focus:ring-0">
-                                        <span><strong>A — ASK:</strong> Tự hỏi 'Điều gì thực sự quan trọng và có ý nghĩa nhất lúc này?'</span>
-                                    </label>
+
+                                <!-- PHẦN 1: KHÁI NIỆM & CÔNG CỤ THỰC HÀNH CỐT LÕI -->
+                                <div class="space-y-3">
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-surface border border-brand-border text-[11px] font-bold text-slate-300">
+                                        <span>📌 PHẦN 1: KHÁI NIỆM & CÔNG CỤ THỰC HÀNH CỐT LÕI</span>
+                                    </div>
+                                    <div class="p-3.5 rounded-xl bg-brand-dark/70 border border-brand-border space-y-2 text-xs text-slate-300">
+                                        <div class="font-bold text-brand-amber">Thực hành khoảng dừng SBA khi áp lực:</div>
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="checkbox" id="sba-check-s" class="rounded bg-brand-card text-brand-amber focus:ring-0">
+                                            <span><strong>S — STOP:</strong> Dừng lại 3 giây khi nhận thấy cảm xúc tiêu cực</span>
+                                        </label>
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="checkbox" id="sba-check-b" class="rounded bg-brand-card text-brand-amber focus:ring-0">
+                                            <span><strong>B — BREATHE:</strong> Hít thở sâu 3 nhịp vào bụng dưới</span>
+                                        </label>
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="checkbox" id="sba-check-a" class="rounded bg-brand-card text-brand-amber focus:ring-0">
+                                            <span><strong>A — ASK:</strong> Tự hỏi 'Điều gì thực sự quan trọng và có ý nghĩa nhất lúc này?'</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-300 mb-1">Tình huống cụ thể nào trong công việc bạn sẽ đặt chuông nhắc SBA?</label>
+                                        <textarea id="sba-situation" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500" placeholder="Ví dụ: Trước khi bấm gửi email căng thẳng, trước cuộc họp giao ban..."></textarea>
+                                    </div>
                                 </div>
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-300 mb-1">Tình huống cụ thể nào trong công việc bạn sẽ đặt chuông nhắc SBA?</label>
-                                    <textarea id="sba-situation" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500" placeholder="Ví dụ: Trước khi bấm gửi email căng thẳng, trước cuộc họp giao ban..."></textarea>
+
+                                <!-- PHẦN 2: TÌNH HUỐNG THỰC TẾ & BÀI TẬP MẪU GỢI Ý CỦA GIẢNG VIÊN (MÔ HÌNH DUY) -->
+                                <div class="mt-6 pt-5 border-t border-brand-border/70 space-y-3.5">
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-amber/10 border border-brand-amber/30 text-[11px] font-bold text-brand-amber">
+                                        <span>💡 PHẦN 2: TÌNH HUỐNG THỰC TẾ & BÀI TẬP MẪU GỢI Ý (MÔ HÌNH DUY)</span>
+                                    </div>
+                                    <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                                        <span>Tình Huống Thực Tế 2.2: Ca Phẫu Thuật Mổ Mở 2018 — 'Làm Bạn Với Cơn Đau' & Kỹ Thuật SCBA</span>
+                                    </div>
+                                    <p class="text-xs text-slate-300 leading-relaxed bg-brand-surface/60 p-3 rounded-lg border border-brand-border/40">
+                                        Năm 2018, Cô Châu phải trải qua ca đại phẫu mổ mở ổ bụng kéo dài. Khi thuốc tê tan dần, cơn đau xé thịt ập đến khiến từng thớ cơ co thắt, tâm trí hoảng loạn. Lời dạy của Thầy Minh xuất hiện: 'Đừng gồng mình chống lại cơn đau. Hãy thở cùng nó, làm bạn với nó. Cái gì không thuộc về con thì hãy trả lại cho tự nhiên'. Cô Châu đã dùng chánh niệm tách biệt cơn đau vật lý khỏi nỗi sợ tâm lý để vượt qua ca mổ an toàn.
+                                    </p>
+                                    <!-- Accordion trigger button -->
+                                    <button type="button" onclick="window.toggleModelAnswer('scenario-habit-mindfulness')" class="w-full py-2.5 px-3.5 rounded-xl bg-brand-amber/15 hover:bg-brand-amber/25 text-brand-amber text-xs font-bold border border-brand-amber/30 transition-all flex items-center justify-between gap-2 min-h-[44px]">
+                                        <span class="flex items-center gap-1.5">
+                                            <span>💡 Xem Phân Tích & Bài Tập Mẫu Gợi Ý Của Giảng Viên</span>
+                                        </span>
+                                        <span id="accordion-icon-scenario-habit-mindfulness" class="transform transition-transform text-xs">▼</span>
+                                    </button>
+                                    <!-- Accordion content (Hidden by default) -->
+                                    <div id="accordion-content-scenario-habit-mindfulness" class="hidden scenario-accordion-content p-4 rounded-xl bg-brand-surface border border-brand-amber/30 space-y-2.5 text-xs text-slate-300">
+                                        <div class="font-bold text-brand-amber">🔍 Phân tích nguyên lý (Faculty Analysis):</div>
+                                        <p class="leading-relaxed text-slate-300">
+                                            GS. Y khoa Jon Kabat-Zinn (cha đẻ MBSR) chỉ rõ: Đau đớn là thực tế vật lý khách quan (Pain is inevitable), nhưng sự đau khổ là do tâm trí phóng đại và kháng cự (Suffering is optional). Khi gặp biến cố hoặc căng thẳng cao độ, hạch hạnh nhân (Amygdala) lập tức kích hoạt phản xạ 'Chiến hay Biến' (Fight or Flight), phóng thích cortisol làm ta phản ứng bốc đồng. Kỹ thuật SCBA (Stop - Calibrate/Breathe - Be Aware - Act) tạo ra một 'khoảng dừng thiêng liêng' (Sacred Pause), đưa máu trở về Vỏ não trước trán (Prefrontal Cortex) để ra quyết định tỉnh táo.
+                                        </p>
+                                        <div class="font-bold text-brand-green pt-1">🎯 Bài tập mẫu gợi ý (Model Solution):</div>
+                                        <div class="space-y-1 text-slate-200 leading-relaxed">
+                                            1. Tách biệt Thực tế và Phóng đại: Nhận diện cơn đau/sự giận dữ chỉ là trạng thái sinh lý tạm thời, không đồng nhất bản thân với cảm xúc đó ('Tôi đang quan sát cơn giận', chứ không phải 'Tôi là cơn giận').<br>2. Thực hành SCBA 4 bước trong công việc:<br>- S (Stop): Dừng ngay hành động gõ bàn phím hoặc phát ngôn khi nhận thấy nhịp tim tăng nhanh.<br>- C/B (Calibrate / Breathe): Hít thở sâu 3 nhịp bụng (4 giây hít vào, 6 giây thở ra) để kích hoạt hệ thần kinh phó giao cảm.<br>- A (Be Aware): Quan sát cơ thể (vai có gồng không, hàm có nghiến không) và tự hỏi: 'Chiếc mũ vai trò của tôi lúc này là gì?'.<br>- A (Act): Phản hồi trên cơ sở sự thấu cảm và mục tiêu dài hạn, thay vì phản xạ ăn miếng trả miếng.
+                                        </div>
+                                    </div>
+                                    <!-- Learner response -->
+                                    <div class="pt-2 space-y-2.5">
+                                        <label class="block text-xs font-semibold text-slate-200">Góc nhìn & Bài học suy ngẫm của bạn:</label>
+                                        <textarea id="scenario-habit-mindfulness-reflection" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500" placeholder="Khi đối mặt với áp lực gay gắt từ cấp trên hoặc khách hàng, phản xạ tự động đầu tiên của bạn là gì (Chiến - Biến - hay Đóng băng)? Bạn nhận ra điều gì nếu áp dụng khoảng dừng SCBA?"></textarea>
+                                        <label class="block text-xs font-semibold text-brand-amber">Hành động áp dụng cụ thể của bạn:</label>
+                                        <input type="text" id="scenario-habit-mindfulness-action" class="w-full bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500" placeholder="Một tình huống căng thẳng cụ thể tuần tới bạn cam kết sẽ dừng lại 3 nhịp thở trước khi phản hồi:" />
+                                    </div>
                                 </div>
-                                <!-- DEDICATED IAM MINDFULNESS -->
-                                <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
-                                    <div class="text-xs font-bold text-brand-amber">I • A • M — Thói Quen Tỉnh Thức</div>
-                                    <input type="text" id="iam-mindfulness-i" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="I: Bạn nhận ra điều gì về phản xạ vô thức khi gặp căng thẳng..." />
-                                    <input type="text" id="iam-mindfulness-a" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="A: Tình huống cụ thể bạn cam kết kích hoạt SBA..." />
-                                    <input type="text" id="iam-mindfulness-m" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="M: Tỉnh thức bảo vệ an toàn tâm lý cho đội ngũ ra sao..." />
+
+                                <!-- PHẦN 3: ĐÚC KẾT I • A • M & CAM KẾT HÀNH ĐỘNG CÁ NHÂN -->
+                                <div class="mt-6 pt-5 border-t border-brand-border/70 space-y-3">
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-green/10 border border-brand-green/30 text-[11px] font-bold text-brand-green">
+                                        <span>🎯 PHẦN 3: ĐÚC KẾT I • A • M & CAM KẾT HÀNH ĐỘNG CÁ NHÂN</span>
+                                    </div>
+                                    <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
+                                        <div class="text-xs font-bold text-brand-amber">I • A • M — Thói Quen Tỉnh Thức</div>
+                                        <input type="text" id="iam-mindfulness-i" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="I: Bạn nhận ra điều gì về phản xạ vô thức khi gặp căng thẳng..." />
+                                        <input type="text" id="iam-mindfulness-a" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="A: Tình huống cụ thể bạn cam kết kích hoạt SBA..." />
+                                        <input type="text" id="iam-mindfulness-m" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="M: Tỉnh thức bảo vệ an toàn tâm lý cho đội ngũ ra sao..." />
+                                    </div>
                                 </div>
                             </div>
 
@@ -789,7 +889,12 @@
                                         <span>▶ Nghe Audio ABCDE</span>
                                     </button>
                                 </div>
+
+                                <!-- PHẦN 1: KHÁI NIỆM & CÔNG CỤ THỰC HÀNH CỐT LÕI -->
                                 <div class="space-y-3">
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-surface border border-brand-border text-[11px] font-bold text-slate-300">
+                                        <span>📌 PHẦN 1: KHÁI NIỆM & CÔNG CỤ THỰC HÀNH CỐT LÕI</span>
+                                    </div>
                                     <div>
                                         <label class="block text-xs font-bold text-white mb-1">A — Adversity (Nghịch cảnh có thật vừa xảy ra):</label>
                                         <textarea id="abcde-a" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200" placeholder="Mô tả sự việc khó khăn, thất bại hoặc áp lực..."></textarea>
@@ -811,12 +916,56 @@
                                         <textarea id="abcde-e" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200" placeholder="Hành động cụ thể bạn sẽ làm ngay bây giờ..."></textarea>
                                     </div>
                                 </div>
-                                <!-- DEDICATED IAM OPTIMISM -->
-                                <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
-                                    <div class="text-xs font-bold text-brand-amber">I • A • M — Thói Quen Lạc Quan ABCDE</div>
-                                    <input type="text" id="iam-optimism-i" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="I: Bài học lớn nhất khi nhìn rõ cơ chế ABC vs sức mạnh chữ D..." />
-                                    <input type="text" id="iam-optimism-a" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="A: Hành động mới (E) bạn cam kết thực hiện đầu tiên..." />
-                                    <input type="text" id="iam-optimism-m" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="M: Bẻ gãy niềm tin giới hạn mang lại ý nghĩa gì cho sự kiên cường..." />
+
+                                <!-- PHẦN 2: TÌNH HUỐNG THỰC TẾ & BÀI TẬP MẪU GỢI Ý CỦA GIẢNG VIÊN (MÔ HÌNH DUY) -->
+                                <div class="mt-6 pt-5 border-t border-brand-border/70 space-y-3.5">
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-amber/10 border border-brand-amber/30 text-[11px] font-bold text-brand-amber">
+                                        <span>💡 PHẦN 2: TÌNH HUỐNG THỰC TẾ & BÀI TẬP MẪU GỢI Ý (MÔ HÌNH DUY)</span>
+                                    </div>
+                                    <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                                        <span>Tình Huống Thực Tế 2.3: Khách Hàng Khó Tính 15 Năm & Báo Cáo Intel WFH Thứ Sáu (Chuyển Hóa ABCDE)</span>
+                                    </div>
+                                    <p class="text-xs text-slate-300 leading-relaxed bg-brand-surface/60 p-3 rounded-lg border border-brand-border/40">
+                                        Chị Linh (Account Manager) phụ trách một khách hàng khó tính hợp tác 15 năm. Nhận email phàn nàn gay gắt về tiến độ, Linh rơi vào khủng hoảng: tự trách bản thân yếu kém, tin rằng khách hàng ghét mình và dự án sẽ sụp đổ (A-B-C). Chị thu mình né tránh. Tương tự tại Intel, Cô Châu muốn xin chính sách WFH vào thứ Sáu; thay vì than phiền sếp cứng nhắc, Cô Châu lập Báo cáo Tình trạng Hàng tháng (Monthly Status Report) chứng minh năng suất thứ Sáu tại nhà cao hơn 18% so với văn phòng.
+                                    </p>
+                                    <!-- Accordion trigger button -->
+                                    <button type="button" onclick="window.toggleModelAnswer('scenario-habit-optimism')" class="w-full py-2.5 px-3.5 rounded-xl bg-brand-amber/15 hover:bg-brand-amber/25 text-brand-amber text-xs font-bold border border-brand-amber/30 transition-all flex items-center justify-between gap-2 min-h-[44px]">
+                                        <span class="flex items-center gap-1.5">
+                                            <span>💡 Xem Phân Tích & Bài Tập Mẫu Gợi Ý Của Giảng Viên</span>
+                                        </span>
+                                        <span id="accordion-icon-scenario-habit-optimism" class="transform transition-transform text-xs">▼</span>
+                                    </button>
+                                    <!-- Accordion content (Hidden by default) -->
+                                    <div id="accordion-content-scenario-habit-optimism" class="hidden scenario-accordion-content p-4 rounded-xl bg-brand-surface border border-brand-amber/30 space-y-2.5 text-xs text-slate-300">
+                                        <div class="font-bold text-brand-amber">🔍 Phân tích nguyên lý (Faculty Analysis):</div>
+                                        <p class="leading-relaxed text-slate-300">
+                                            GS. Martin Seligman chỉ ra: Người bi quan sa vào cái bẫy 3P: Vĩnh viễn (Permanent), Toàn diện (Pervasive), và Cá nhân hóa (Personal). Mô hình ABCDE giúp ta can thiệp tại chữ D (Dispute - Phản biện lý trí): Khách hàng phàn nàn vì quy trình chuyển giao chưa khớp, không phải ghét cá nhân Linh; và đây là sự cố tạm thời có thể khắc phục triệt để. Khi chuyển sang chữ E (Energization/Action), Linh chủ động đối thoại làm rõ kỳ vọng (Courageous Conversation) thay vì đóng vai nạn nhân thụ động (Covert-aggressive).
+                                        </p>
+                                        <div class="font-bold text-brand-green pt-1">🎯 Bài tập mẫu gợi ý (Model Solution):</div>
+                                        <div class="space-y-1 text-slate-200 leading-relaxed">
+                                            1. Khử độc tố 3P bằng chữ D (Dispute):<br>- Bác bỏ Cá nhân hóa: Khách hàng sốt ruột vì áp lực từ ban điều hành của họ, không phải tấn công cá nhân tôi.<br>- Bác bỏ Toàn diện: Trục trặc chỉ nằm ở 1 module kiểm thử, 90% các hạng mục còn lại đang đạt chuẩn xuất sắc.<br>- Bác bỏ Vĩnh viễn: Đây là cơ hội chuẩn hóa quy trình bàn giao trong 24 giờ tới.<br>2. Kế hoạch hành động mới (E):<br>- Soạn tin nhắn hẹn gặp trực tiếp: 'Em đã rà soát lại quy trình và chuẩn bị 2 phương án xử lý dứt điểm cho anh/chị'.<br>- Trình bày giải pháp bằng dữ liệu xác thực (dựa trên mô hình Monthly Status Report tại Intel) thay vì giải thích quanh co.
+                                        </div>
+                                    </div>
+                                    <!-- Learner response -->
+                                    <div class="pt-2 space-y-2.5">
+                                        <label class="block text-xs font-semibold text-slate-200">Góc nhìn & Bài học suy ngẫm của bạn:</label>
+                                        <textarea id="scenario-habit-optimism-reflection" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500" placeholder="Bạn có đang giữ niềm tin tiêu cực 3P nào về một mối quan hệ công việc hoặc một dự án khó khăn hiện tại không? Nếu dùng chữ D để phản biện, sự thật khách quan là gì?"></textarea>
+                                        <label class="block text-xs font-semibold text-brand-amber">Hành động áp dụng cụ thể của bạn:</label>
+                                        <input type="text" id="scenario-habit-optimism-action" class="w-full bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500" placeholder="Một bước hành động mới (E) bạn sẽ thực hiện ngay trong 24 giờ tới để chủ động gỡ nút thắt:" />
+                                    </div>
+                                </div>
+
+                                <!-- PHẦN 3: ĐÚC KẾT I • A • M & CAM KẾT HÀNH ĐỘNG CÁ NHÂN -->
+                                <div class="mt-6 pt-5 border-t border-brand-border/70 space-y-3">
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-green/10 border border-brand-green/30 text-[11px] font-bold text-brand-green">
+                                        <span>🎯 PHẦN 3: ĐÚC KẾT I • A • M & CAM KẾT HÀNH ĐỘNG CÁ NHÂN</span>
+                                    </div>
+                                    <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
+                                        <div class="text-xs font-bold text-brand-amber">I • A • M — Thói Quen Lạc Quan ABCDE</div>
+                                        <input type="text" id="iam-optimism-i" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="I: Bài học lớn nhất khi nhìn rõ cơ chế ABC vs sức mạnh chữ D..." />
+                                        <input type="text" id="iam-optimism-a" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="A: Hành động mới (E) bạn cam kết thực hiện đầu tiên..." />
+                                        <input type="text" id="iam-optimism-m" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="M: Bẻ gãy niềm tin giới hạn mang lại ý nghĩa gì cho sự kiên cường..." />
+                                    </div>
                                 </div>
                             </div>
 
@@ -830,7 +979,12 @@
                                         <span>▶ Nghe Audio Flow</span>
                                     </button>
                                 </div>
+
+                                <!-- PHẦN 1: KHÁI NIỆM & CÔNG CỤ THỰC HÀNH CỐT LÕI -->
                                 <div class="space-y-3">
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-surface border border-brand-border text-[11px] font-bold text-slate-300">
+                                        <span>📌 PHẦN 1: KHÁI NIỆM & CÔNG CỤ THỰC HÀNH CỐT LÕI</span>
+                                    </div>
                                     <div>
                                         <label class="block text-xs font-semibold text-slate-300 mb-1">Một công việc buồn tẻ / lặp đi lặp lại bạn phải làm trong tuần:</label>
                                         <input type="text" id="flow-boring-task" class="w-full bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200" placeholder="Ví dụ: Nhập liệu báo cáo tuần, lọc email..." />
@@ -840,12 +994,56 @@
                                         <textarea id="flow-redesign" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200" placeholder="Ví dụ: Dùng AI viết script tự động hóa trong 20 phút, bấm giờ thi đua hoàn thành..."></textarea>
                                     </div>
                                 </div>
-                                <!-- DEDICATED IAM FLOW -->
-                                <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
-                                    <div class="text-xs font-bold text-brand-amber">I • A • M — Thói Quen Phiêu (Flow)</div>
-                                    <input type="text" id="iam-flow-i" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="I: Điều kiện tiên quyết nào giúp bạn bước vào Flow..." />
-                                    <input type="text" id="iam-flow-a" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="A: Bạn sẽ loại bỏ xao lãng nào để đạt Flow tuần tới..." />
-                                    <input type="text" id="iam-flow-m" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="M: Flow mang lại giá trị gì cho hiệu suất và niềm hứng khởi..." />
+
+                                <!-- PHẦN 2: TÌNH HUỐNG THỰC TẾ & BÀI TẬP MẪU GỢI Ý CỦA GIẢNG VIÊN (MÔ HÌNH DUY) -->
+                                <div class="mt-6 pt-5 border-t border-brand-border/70 space-y-3.5">
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-amber/10 border border-brand-amber/30 text-[11px] font-bold text-brand-amber">
+                                        <span>💡 PHẦN 2: TÌNH HUỐNG THỰC TẾ & BÀI TẬP MẪU GỢI Ý (MÔ HÌNH DUY)</span>
+                                    </div>
+                                    <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                                        <span>Tình Huống Thực Tế 2.4: Cân Bằng Thử Thách 4% & Chu Kỳ 4 Bước Vượt Qua Vùng Vật Lộn (Struggle)</span>
+                                    </div>
+                                    <p class="text-xs text-slate-300 leading-relaxed bg-brand-surface/60 p-3 rounded-lg border border-brand-border/40">
+                                        Một chuyên viên phân tích dữ liệu rơi vào hai thái cực: Khi làm báo cáo số liệu lặp đi lặp lại hàng tuần thì cảm thấy buồn ngủ, chán chường (Boredom); nhưng khi được giao đề bài xây dựng mô hình dự báo tài chính phức tạp thì lại hoang mang, sợ sai và liên tục trì hoãn lướt mạng xã hội (Anxiety). Cả hai trạng thái đều triệt tiêu hiệu suất và gây kiệt sức tinh thần.
+                                    </p>
+                                    <!-- Accordion trigger button -->
+                                    <button type="button" onclick="window.toggleModelAnswer('scenario-habit-flow')" class="w-full py-2.5 px-3.5 rounded-xl bg-brand-amber/15 hover:bg-brand-amber/25 text-brand-amber text-xs font-bold border border-brand-amber/30 transition-all flex items-center justify-between gap-2 min-h-[44px]">
+                                        <span class="flex items-center gap-1.5">
+                                            <span>💡 Xem Phân Tích & Bài Tập Mẫu Gợi Ý Của Giảng Viên</span>
+                                        </span>
+                                        <span id="accordion-icon-scenario-habit-flow" class="transform transition-transform text-xs">▼</span>
+                                    </button>
+                                    <!-- Accordion content (Hidden by default) -->
+                                    <div id="accordion-content-scenario-habit-flow" class="hidden scenario-accordion-content p-4 rounded-xl bg-brand-surface border border-brand-amber/30 space-y-2.5 text-xs text-slate-300">
+                                        <div class="font-bold text-brand-amber">🔍 Phân tích nguyên lý (Faculty Analysis):</div>
+                                        <p class="leading-relaxed text-slate-300">
+                                            Mihaly Csikszentmihalyi chỉ ra trạng thái Flow chỉ xuất hiện ở điểm giao thoa giữa Thách thức và Kỹ năng. Nghiên cứu thần kinh học hiện đại đúc kết 'Quy tắc vàng 4%': Nhiệm vụ lý tưởng cần có độ khó cao hơn kỹ năng hiện tại khoảng 4% (độ khó khoảng 7/10). Đặc biệt, Flow không xuất hiện ngay mà trải qua Chu kỳ 4 giai đoạn: 1. Struggle (Vùng vật lộn nạp dữ liệu); 2. Release (Buông lỏng ngắn); 3. Flow (Dòng chảy bùng nổ Dopamine & Endorphin); 4. Recovery (Phục hồi chủ động). Mỗi lần bị cắt ngang bởi điện thoại/email, não bộ mất 15-20 phút mới tái lập được Flow.
+                                        </p>
+                                        <div class="font-bold text-brand-green pt-1">🎯 Bài tập mẫu gợi ý (Model Solution):</div>
+                                        <div class="space-y-1 text-slate-200 leading-relaxed">
+                                            1. Áp dụng Chuỗi khởi động 5 bước (5-Step Launch Sequence):<br>- Bước 1: Dọn sạch bàn làm việc và màn hình máy tính (Zero Clutter).<br>- Bước 2: Thiết lập nguyên tắc 'Flow Before Phones' (Tắt toàn bộ thông báo, kích hoạt chế độ Do Not Disturb trong 90 phút).<br>- Bước 3: Xác định rõ 'Đầu ra đơn nhất' (One Single Clear Outcome) cho phiên làm việc.<br>- Bước 4: Tinh chỉnh độ khó: Nếu việc quá nhàm chán, hãy gắn thêm giới hạn thời gian (Microflow) hoặc áp dụng công cụ AI mới; nếu việc quá khó, hãy chia nhỏ thành các chặng 15 phút.<br>- Bước 5: Chấp nhận giai đoạn Vật lộn (Struggle) 10-15 phút đầu tiên mà không từ bỏ.<br>2. Phục hồi chủ động: Sau phiên 90 phút, đi bộ thư giãn hoặc uống nước, không nạp mạng xã hội.
+                                        </div>
+                                    </div>
+                                    <!-- Learner response -->
+                                    <div class="pt-2 space-y-2.5">
+                                        <label class="block text-xs font-semibold text-slate-200">Góc nhìn & Bài học suy ngẫm của bạn:</label>
+                                        <textarea id="scenario-habit-flow-reflection" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500" placeholder="Đâu là yếu tố phân tâm lớn nhất (Notification, họp đột xuất, đa nhiệm) đang phá vỡ trạng thái Dòng chảy của bạn hàng ngày? Bạn sẽ thiết lập nguyên tắc 'Flow Before Phones' vào khung giờ nào?"></textarea>
+                                        <label class="block text-xs font-semibold text-brand-amber">Hành động áp dụng cụ thể của bạn:</label>
+                                        <input type="text" id="scenario-habit-flow-action" class="w-full bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500" placeholder="Một khung giờ vàng cố định trong ngày bạn cam kết chặn toàn bộ xao lãng để bước vào Flow:" />
+                                    </div>
+                                </div>
+
+                                <!-- PHẦN 3: ĐÚC KẾT I • A • M & CAM KẾT HÀNH ĐỘNG CÁ NHÂN -->
+                                <div class="mt-6 pt-5 border-t border-brand-border/70 space-y-3">
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-green/10 border border-brand-green/30 text-[11px] font-bold text-brand-green">
+                                        <span>🎯 PHẦN 3: ĐÚC KẾT I • A • M & CAM KẾT HÀNH ĐỘNG CÁ NHÂN</span>
+                                    </div>
+                                    <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
+                                        <div class="text-xs font-bold text-brand-amber">I • A • M — Thói Quen Phiêu (Flow)</div>
+                                        <input type="text" id="iam-flow-i" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="I: Điều kiện tiên quyết nào giúp bạn bước vào Flow..." />
+                                        <input type="text" id="iam-flow-a" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="A: Bạn sẽ loại bỏ xao lãng nào để đạt Flow tuần tới..." />
+                                        <input type="text" id="iam-flow-m" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="M: Flow mang lại giá trị gì cho hiệu suất và niềm hứng khởi..." />
+                                    </div>
                                 </div>
                             </div>
 
@@ -859,7 +1057,12 @@
                                         <span>▶ Nghe Audio Vị Nhân</span>
                                     </button>
                                 </div>
+
+                                <!-- PHẦN 1: KHÁI NIỆM & CÔNG CỤ THỰC HÀNH CỐT LÕI -->
                                 <div class="space-y-3">
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-surface border border-brand-border text-[11px] font-bold text-slate-300">
+                                        <span>📌 PHẦN 1: KHÁI NIỆM & CÔNG CỤ THỰC HÀNH CỐT LÕI</span>
+                                    </div>
                                     <label class="block text-xs font-semibold text-slate-300">Tự nhận diện phong cách tương tác theo Adam Grant:</label>
                                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                                         <label class="p-3 rounded-xl border border-brand-border bg-brand-dark flex items-center gap-2 cursor-pointer text-xs">
@@ -880,12 +1083,56 @@
                                         <textarea id="altruism-act" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200" placeholder="Hành động giúp đỡ cụ thể không vì vụ lợi..."></textarea>
                                     </div>
                                 </div>
-                                <!-- DEDICATED IAM ALTRUISM -->
-                                <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
-                                    <div class="text-xs font-bold text-brand-amber">I • A • M — Thói Quen Vị Nhân</div>
-                                    <input type="text" id="iam-altruism-i" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="I: Nhận thức sâu sắc nhất về Smart Giver (Vị nhân thông thái)..." />
-                                    <input type="text" id="iam-altruism-a" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="A: Hành động cụ thể giúp đồng nghiệp không cần đền đáp..." />
-                                    <input type="text" id="iam-altruism-m" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="M: Tinh thần vị nhân kiến tạo niềm tin đội ngũ ra sao..." />
+
+                                <!-- PHẦN 2: TÌNH HUỐNG THỰC TẾ & BÀI TẬP MẪU GỢI Ý CỦA GIẢNG VIÊN (MÔ HÌNH DUY) -->
+                                <div class="mt-6 pt-5 border-t border-brand-border/70 space-y-3.5">
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-amber/10 border border-brand-amber/30 text-[11px] font-bold text-brand-amber">
+                                        <span>💡 PHẦN 2: TÌNH HUỐNG THỰC TẾ & BÀI TẬP MẪU GỢI Ý (MÔ HÌNH DUY)</span>
+                                    </div>
+                                    <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                                        <span>Tình Huống Thực Tế 2.5: Thầy Vũ Bị Lừa Tại Quán Ăn (Smart Giver) & Bảo Hiểm Cho Con Em Công Nhân Yếm Thế</span>
+                                    </div>
+                                    <p class="text-xs text-slate-300 leading-relaxed bg-brand-surface/60 p-3 rounded-lg border border-brand-border/40">
+                                        Tại một quán ăn bình dân, một người đóng giả hoàn cảnh cơ nhỡ đến xin Thầy Vũ tiền viện phí khẩn cấp. Với lòng trắc ẩn tự nhiên (Unsmart Giver), Thầy Vũ định rút ví cho tiền ngay. Nhưng bằng sự tỉnh thức quan sát, Thầy nhận ra dấu hiệu của một đường dây trục lợi lòng tốt. Thầy đã dừng lại tự vấn: 'Hành động này thực sự đang giúp ích cho con người họ, hay đang vô tình dung túng và tiếp tay cho sự dối trá?'. Ngược lại, tại Nice Company, ban lãnh đạo quyết định mua bảo hiểm y tế toàn diện cho con em những công nhân yếm thế nhất, tạo nên tỷ lệ gắn kết 98% và lòng trung thành phi thường.
+                                    </p>
+                                    <!-- Accordion trigger button -->
+                                    <button type="button" onclick="window.toggleModelAnswer('scenario-habit-altruism')" class="w-full py-2.5 px-3.5 rounded-xl bg-brand-amber/15 hover:bg-brand-amber/25 text-brand-amber text-xs font-bold border border-brand-amber/30 transition-all flex items-center justify-between gap-2 min-h-[44px]">
+                                        <span class="flex items-center gap-1.5">
+                                            <span>💡 Xem Phân Tích & Bài Tập Mẫu Gợi Ý Của Giảng Viên</span>
+                                        </span>
+                                        <span id="accordion-icon-scenario-habit-altruism" class="transform transition-transform text-xs">▼</span>
+                                    </button>
+                                    <!-- Accordion content (Hidden by default) -->
+                                    <div id="accordion-content-scenario-habit-altruism" class="hidden scenario-accordion-content p-4 rounded-xl bg-brand-surface border border-brand-amber/30 space-y-2.5 text-xs text-slate-300">
+                                        <div class="font-bold text-brand-amber">🔍 Phân tích nguyên lý (Faculty Analysis):</div>
+                                        <p class="leading-relaxed text-slate-300">
+                                            Adam Grant (tác giả 'Give and Take') phân loại: Taker (Trục lợi), Matcher (Sòng phẳng), và Giver (Cho đi). Trong nhóm Giver, có Unsmart Giver (cho đi mù quáng, không giữ ranh giới, dễ bị Taker vắt kiệt) và Smart Giver (Vị nhân thông thái: cho đi với Bi - Trí - Dũng). Smart Giver luôn giữ ranh giới lành mạnh (Boundaries), biết từ chối sự lợi dụng, ưu tiên nâng đỡ những người có tinh thần học hỏi, và trao tặng giá trị có tính đòn bẩy cao (như chia sẻ tri thức TPOV - Teachable Point of View, kết nối cơ hội) thay vì cho tiền bạc hay làm hộ việc.
+                                        </p>
+                                        <div class="font-bold text-brand-green pt-1">🎯 Bài tập mẫu gợi ý (Model Solution):</div>
+                                        <div class="space-y-1 text-slate-200 leading-relaxed">
+                                            1. Thiết lập Bộ lọc Vị nhân Thông thái (3 câu hỏi tự vấn):<br>- Câu 1: Sự giúp đỡ này có giúp đối phương tự lập và phát triển năng lực (Empowerment), hay tạo ra sự ỷ lại (Dependency)?<br>- Câu 2: Tôi có đang hy sinh những giá trị cốt lõi hoặc nguồn lực thiết yếu của bản thân/gia đình một cách vô lý không?<br>- Câu 3: Đối phương có thái độ trân trọng và cầu thị hay đang lợi dụng lòng tốt?<br>2. Hành vi vị tha công sở hiệu quả cao (5-Minute Favors):<br>- Dành 15 phút làm 'Buddy' hướng dẫn tư duy cho nhân viên mới thay vì làm hộ việc.<br>- Kết nối cơ hội hợp tác cho đồng nghiệp.<br>- Chia sẻ kinh nghiệm đúc kết (TPOV) giúp đội ngũ tránh đi vào vết xe đổ.
+                                        </div>
+                                    </div>
+                                    <!-- Learner response -->
+                                    <div class="pt-2 space-y-2.5">
+                                        <label class="block text-xs font-semibold text-slate-200">Góc nhìn & Bài học suy ngẫm của bạn:</label>
+                                        <textarea id="scenario-habit-altruism-reflection" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500" placeholder="Bạn đã bao giờ rơi vào trạng thái 'Unsmart Giver' (cho đi kiệt sức vì không dám từ chối hoặc bị người khác lợi dụng) chưa? Làm thế nào để bạn nâng cấp lên 'Smart Giver'?"></textarea>
+                                        <label class="block text-xs font-semibold text-brand-amber">Hành động áp dụng cụ thể của bạn:</label>
+                                        <input type="text" id="scenario-habit-altruism-action" class="w-full bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500" placeholder="Một hành vi vị nhân thông thái cụ thể (5-Minute Favor) bạn sẽ làm để giúp đỡ một đồng nghiệp trong 48 giờ tới:" />
+                                    </div>
+                                </div>
+
+                                <!-- PHẦN 3: ĐÚC KẾT I • A • M & CAM KẾT HÀNH ĐỘNG CÁ NHÂN -->
+                                <div class="mt-6 pt-5 border-t border-brand-border/70 space-y-3">
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-green/10 border border-brand-green/30 text-[11px] font-bold text-brand-green">
+                                        <span>🎯 PHẦN 3: ĐÚC KẾT I • A • M & CAM KẾT HÀNH ĐỘNG CÁ NHÂN</span>
+                                    </div>
+                                    <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
+                                        <div class="text-xs font-bold text-brand-amber">I • A • M — Thói Quen Vị Nhân</div>
+                                        <input type="text" id="iam-altruism-i" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="I: Nhận thức sâu sắc nhất về Smart Giver (Vị nhân thông thái)..." />
+                                        <input type="text" id="iam-altruism-a" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="A: Hành động cụ thể giúp đồng nghiệp không cần đền đáp..." />
+                                        <input type="text" id="iam-altruism-m" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="M: Tinh thần vị nhân kiến tạo niềm tin đội ngũ ra sao..." />
+                                    </div>
                                 </div>
                             </div>
 

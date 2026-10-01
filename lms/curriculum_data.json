@@ -634,6 +634,15 @@
             "I": "Điểm chạm sâu sắc nhất của bạn về sức mạnh chuyển hóa của Lòng biết ơn là gì?",
             "A": "Bạn sẽ thiết lập thói quen ghi nhận và gửi lời cảm ơn ai ngay sau khóa học?",
             "M": "Lòng biết ơn nuôi dưỡng sự bình an và các mối quan hệ của bạn như thế nào?"
+          },
+          "practicalScenario": {
+            "id": "scenario-habit-gratitude",
+            "title": "Tình Huống Thực Tế 2.1: Chiếc Máy Lạnh Giữa Đêm & Bồn Tắm Đá 900kg — Nghịch Cảnh & Storytelling Biết Ơn Dưới 60 Giây",
+            "context": "Khi vận chuyển chiếc bồn tắm đá nguyên khối nặng 900kg lên tầng cao, dây cáp xe cẩu rung lắc dữ dội có nguy cơ sập đổ toàn bộ công trình. Thay vì hoảng loạn đổ lỗi, người chủ nhà đã kích hoạt lòng biết ơn nghịch cảnh: biết ơn vì 10 ngón tay chân vẫn còn nguyên vẹn, biết ơn vì có cơ hội nhận bài học chuẩn bị kỹ thuật. Cùng lúc đó tại văn phòng, một quản lý muốn tri ân đồng đội đã lặng lẽ đến sớm 30 phút bật sẵn máy lạnh để cả phòng không bị ngột ngạt giữa trưa nắng 40 độ.",
+            "facultyAnalysis": "GS. Robert Emmons chỉ ra 4 tầng bậc biết ơn: Kết quả tốt, Nghịch cảnh, Đón đầu tương lai, và Bản thân. Đại đa số chỉ biết ơn khi có quà (Tầng 1). Sức mạnh chuyển hóa thực sự nằm ở Biết ơn Nghịch cảnh (Tầng 2) - biến khủng hoảng thành cơ hội tôi luyện bản lĩnh. Trong giao tiếp tổ chức, Lời khen chung chung (Recognition) chỉ tạo hưng phấn ngắn hạn, trong khi Khen ngợi qua Storytelling 5 bước gắn với Giá trị cốt lõi (Core Values) mới tạo nên Dấu ấn văn hóa (Moment of Truth).",
+            "modelAnswer": "1. Kích hoạt Lòng biết ơn nghịch cảnh: Khi đối mặt với sự cố dự án/khủng hoảng, lập tức liệt kê 3 điều may mắn hoặc bài học quý giá mà tình huống này mang lại trước khi tìm phương án khắc phục.\n2. Áp dụng Khung Storytelling Biết ơn 5 bước (dưới 60 giây):\n  - Bước 1: Gọi tên người nhận và bối cảnh sự việc cụ thể.\n  - Bước 2: Kể lại hành vi/hành động vượt trội của họ (không chỉ là nhiệm vụ thông thường).\n  - Bước 3: Nêu rõ tác động tích cực mà hành động đó mang lại cho bạn hoặc đội ngũ.\n  - Bước 4: Liên kết hành vi đó với Giá trị cốt lõi của tổ chức (Sự chu đáo, Tinh thần phụng sự).\n  - Bước 5: Bày tỏ lời cảm ơn chân thành từ trái tim.",
+            "reflectionPrompt": "Bạn đã từng trải qua nghịch cảnh nào trong công việc mà sau này nhìn lại bạn thầm cảm ơn vì nó đã rèn luyện bản lĩnh cho mình? Nếu kể lại lời cảm ơn 60s cho một đồng nghiệp hôm nay, bạn sẽ kể điều gì?",
+            "actionPrompt": "Viết 1 thông điệp Storytelling biết ơn dưới 60 giây theo khung 5 bước để gửi ngay cho một người đồng đội:"
           }
         },
         {
@@ -682,6 +691,15 @@
             "I": "Bạn nhận ra điều gì về phản xạ vô thức của mình khi gặp căng thẳng trước đây?",
             "A": "Tình huống cụ thể nào trong ngày bạn cam kết sẽ kích hoạt kỹ thuật Stop – Breathe – Ask?",
             "M": "Năng lực tỉnh thức giúp bạn làm chủ cảm xúc và bảo vệ an toàn tâm lý cho đội ngũ ra sao?"
+          },
+          "practicalScenario": {
+            "id": "scenario-habit-mindfulness",
+            "title": "Tình Huống Thực Tế 2.2: Ca Phẫu Thuật Mổ Mở 2018 — 'Làm Bạn Với Cơn Đau' & Kỹ Thuật SCBA",
+            "context": "Năm 2018, Cô Châu phải trải qua ca đại phẫu mổ mở ổ bụng kéo dài. Khi thuốc tê tan dần, cơn đau xé thịt ập đến khiến từng thớ cơ co thắt, tâm trí hoảng loạn. Lời dạy của Thầy Minh xuất hiện: 'Đừng gồng mình chống lại cơn đau. Hãy thở cùng nó, làm bạn với nó. Cái gì không thuộc về con thì hãy trả lại cho tự nhiên'. Cô Châu đã dùng chánh niệm tách biệt cơn đau vật lý khỏi nỗi sợ tâm lý để vượt qua ca mổ an toàn.",
+            "facultyAnalysis": "GS. Y khoa Jon Kabat-Zinn (cha đẻ MBSR) chỉ rõ: Đau đớn là thực tế vật lý khách quan (Pain is inevitable), nhưng sự đau khổ là do tâm trí phóng đại và kháng cự (Suffering is optional). Khi gặp biến cố hoặc căng thẳng cao độ, hạch hạnh nhân (Amygdala) lập tức kích hoạt phản xạ 'Chiến hay Biến' (Fight or Flight), phóng thích cortisol làm ta phản ứng bốc đồng. Kỹ thuật SCBA (Stop - Calibrate/Breathe - Be Aware - Act) tạo ra một 'khoảng dừng thiêng liêng' (Sacred Pause), đưa máu trở về Vỏ não trước trán (Prefrontal Cortex) để ra quyết định tỉnh táo.",
+            "modelAnswer": "1. Tách biệt Thực tế và Phóng đại: Nhận diện cơn đau/sự giận dữ chỉ là trạng thái sinh lý tạm thời, không đồng nhất bản thân với cảm xúc đó ('Tôi đang quan sát cơn giận', chứ không phải 'Tôi là cơn giận').\n2. Thực hành SCBA 4 bước trong công việc:\n  - S (Stop): Dừng ngay hành động gõ bàn phím hoặc phát ngôn khi nhận thấy nhịp tim tăng nhanh.\n  - C/B (Calibrate / Breathe): Hít thở sâu 3 nhịp bụng (4 giây hít vào, 6 giây thở ra) để kích hoạt hệ thần kinh phó giao cảm.\n  - A (Be Aware): Quan sát cơ thể (vai có gồng không, hàm có nghiến không) và tự hỏi: 'Chiếc mũ vai trò của tôi lúc này là gì?'.\n  - A (Act): Phản hồi trên cơ sở sự thấu cảm và mục tiêu dài hạn, thay vì phản xạ ăn miếng trả miếng.",
+            "reflectionPrompt": "Khi đối mặt với áp lực gay gắt từ cấp trên hoặc khách hàng, phản xạ tự động đầu tiên của bạn là gì (Chiến - Biến - hay Đóng băng)? Bạn nhận ra điều gì nếu áp dụng khoảng dừng SCBA?",
+            "actionPrompt": "Một tình huống căng thẳng cụ thể tuần tới bạn cam kết sẽ dừng lại 3 nhịp thở trước khi phản hồi:"
           }
         },
         {
@@ -742,6 +760,15 @@
             "I": "Bài học lớn nhất khi bạn nhìn rõ cơ chế tự động A-B-C so với sức mạnh phản biện ở chữ D?",
             "A": "Hành động mới (E) bạn cam kết thực hiện đầu tiên vào tuần tới là gì?",
             "M": "Khả năng bẻ gãy niềm tin giới hạn mang lại ý nghĩa gì cho sự kiên cường của bạn?"
+          },
+          "practicalScenario": {
+            "id": "scenario-habit-optimism",
+            "title": "Tình Huống Thực Tế 2.3: Khách Hàng Khó Tính 15 Năm & Báo Cáo Intel WFH Thứ Sáu (Chuyển Hóa ABCDE)",
+            "context": "Chị Linh (Account Manager) phụ trách một khách hàng khó tính hợp tác 15 năm. Nhận email phàn nàn gay gắt về tiến độ, Linh rơi vào khủng hoảng: tự trách bản thân yếu kém, tin rằng khách hàng ghét mình và dự án sẽ sụp đổ (A-B-C). Chị thu mình né tránh. Tương tự tại Intel, Cô Châu muốn xin chính sách WFH vào thứ Sáu; thay vì than phiền sếp cứng nhắc, Cô Châu lập Báo cáo Tình trạng Hàng tháng (Monthly Status Report) chứng minh năng suất thứ Sáu tại nhà cao hơn 18% so với văn phòng.",
+            "facultyAnalysis": "GS. Martin Seligman chỉ ra: Người bi quan sa vào cái bẫy 3P: Vĩnh viễn (Permanent), Toàn diện (Pervasive), và Cá nhân hóa (Personal). Mô hình ABCDE giúp ta can thiệp tại chữ D (Dispute - Phản biện lý trí): Khách hàng phàn nàn vì quy trình chuyển giao chưa khớp, không phải ghét cá nhân Linh; và đây là sự cố tạm thời có thể khắc phục triệt để. Khi chuyển sang chữ E (Energization/Action), Linh chủ động đối thoại làm rõ kỳ vọng (Courageous Conversation) thay vì đóng vai nạn nhân thụ động (Covert-aggressive).",
+            "modelAnswer": "1. Khử độc tố 3P bằng chữ D (Dispute):\n  - Bác bỏ Cá nhân hóa: Khách hàng sốt ruột vì áp lực từ ban điều hành của họ, không phải tấn công cá nhân tôi.\n  - Bác bỏ Toàn diện: Trục trặc chỉ nằm ở 1 module kiểm thử, 90% các hạng mục còn lại đang đạt chuẩn xuất sắc.\n  - Bác bỏ Vĩnh viễn: Đây là cơ hội chuẩn hóa quy trình bàn giao trong 24 giờ tới.\n2. Kế hoạch hành động mới (E):\n  - Soạn tin nhắn hẹn gặp trực tiếp: 'Em đã rà soát lại quy trình và chuẩn bị 2 phương án xử lý dứt điểm cho anh/chị'.\n  - Trình bày giải pháp bằng dữ liệu xác thực (dựa trên mô hình Monthly Status Report tại Intel) thay vì giải thích quanh co.",
+            "reflectionPrompt": "Bạn có đang giữ niềm tin tiêu cực 3P nào về một mối quan hệ công việc hoặc một dự án khó khăn hiện tại không? Nếu dùng chữ D để phản biện, sự thật khách quan là gì?",
+            "actionPrompt": "Một bước hành động mới (E) bạn sẽ thực hiện ngay trong 24 giờ tới để chủ động gỡ nút thắt:"
           }
         },
         {
@@ -777,6 +804,15 @@
             "I": "Điều kiện tiên quyết nào giúp bạn bước vào trạng thái Dòng chảy (Flow)?",
             "A": "Bạn sẽ loại bỏ sự xao lãng nào hoặc tái thiết kế công việc nào để đạt Flow trong tuần tới?",
             "M": "Trạng thái Flow mang lại giá trị gì cho hiệu suất và niềm hứng khởi trong công việc của bạn?"
+          },
+          "practicalScenario": {
+            "id": "scenario-habit-flow",
+            "title": "Tình Huống Thực Tế 2.4: Cân Bằng Thử Thách 4% & Chu Kỳ 4 Bước Vượt Qua Vùng Vật Lộn (Struggle)",
+            "context": "Một chuyên viên phân tích dữ liệu rơi vào hai thái cực: Khi làm báo cáo số liệu lặp đi lặp lại hàng tuần thì cảm thấy buồn ngủ, chán chường (Boredom); nhưng khi được giao đề bài xây dựng mô hình dự báo tài chính phức tạp thì lại hoang mang, sợ sai và liên tục trì hoãn lướt mạng xã hội (Anxiety). Cả hai trạng thái đều triệt tiêu hiệu suất và gây kiệt sức tinh thần.",
+            "facultyAnalysis": "Mihaly Csikszentmihalyi chỉ ra trạng thái Flow chỉ xuất hiện ở điểm giao thoa giữa Thách thức và Kỹ năng. Nghiên cứu thần kinh học hiện đại đúc kết 'Quy tắc vàng 4%': Nhiệm vụ lý tưởng cần có độ khó cao hơn kỹ năng hiện tại khoảng 4% (độ khó khoảng 7/10). Đặc biệt, Flow không xuất hiện ngay mà trải qua Chu kỳ 4 giai đoạn: 1. Struggle (Vùng vật lộn nạp dữ liệu); 2. Release (Buông lỏng ngắn); 3. Flow (Dòng chảy bùng nổ Dopamine & Endorphin); 4. Recovery (Phục hồi chủ động). Mỗi lần bị cắt ngang bởi điện thoại/email, não bộ mất 15-20 phút mới tái lập được Flow.",
+            "modelAnswer": "1. Áp dụng Chuỗi khởi động 5 bước (5-Step Launch Sequence):\n  - Bước 1: Dọn sạch bàn làm việc và màn hình máy tính (Zero Clutter).\n  - Bước 2: Thiết lập nguyên tắc 'Flow Before Phones' (Tắt toàn bộ thông báo, kích hoạt chế độ Do Not Disturb trong 90 phút).\n  - Bước 3: Xác định rõ 'Đầu ra đơn nhất' (One Single Clear Outcome) cho phiên làm việc.\n  - Bước 4: Tinh chỉnh độ khó: Nếu việc quá nhàm chán, hãy gắn thêm giới hạn thời gian (Microflow) hoặc áp dụng công cụ AI mới; nếu việc quá khó, hãy chia nhỏ thành các chặng 15 phút.\n  - Bước 5: Chấp nhận giai đoạn Vật lộn (Struggle) 10-15 phút đầu tiên mà không từ bỏ.\n2. Phục hồi chủ động: Sau phiên 90 phút, đi bộ thư giãn hoặc uống nước, không nạp mạng xã hội.",
+            "reflectionPrompt": "Đâu là yếu tố phân tâm lớn nhất (Notification, họp đột xuất, đa nhiệm) đang phá vỡ trạng thái Dòng chảy của bạn hàng ngày? Bạn sẽ thiết lập nguyên tắc 'Flow Before Phones' vào khung giờ nào?",
+            "actionPrompt": "Một khung giờ vàng cố định trong ngày bạn cam kết chặn toàn bộ xao lãng để bước vào Flow:"
           }
         },
         {
@@ -825,6 +861,15 @@
             "I": "Nhận thức sâu sắc nhất của bạn về tinh thần Vị nhân thông thái (Smart Giver)?",
             "A": "Hành động cụ thể nào bạn sẽ làm để giúp đỡ một đồng nghiệp mà không cần họ đền đáp?",
             "M": "Tinh thần Vị nhân kiến tạo niềm tin và văn hóa hạnh phúc trong tổ chức của bạn thế nào?"
+          },
+          "practicalScenario": {
+            "id": "scenario-habit-altruism",
+            "title": "Tình Huống Thực Tế 2.5: Thầy Vũ Bị Lừa Tại Quán Ăn (Smart Giver) & Bảo Hiểm Cho Con Em Công Nhân Yếm Thế",
+            "context": "Tại một quán ăn bình dân, một người đóng giả hoàn cảnh cơ nhỡ đến xin Thầy Vũ tiền viện phí khẩn cấp. Với lòng trắc ẩn tự nhiên (Unsmart Giver), Thầy Vũ định rút ví cho tiền ngay. Nhưng bằng sự tỉnh thức quan sát, Thầy nhận ra dấu hiệu của một đường dây trục lợi lòng tốt. Thầy đã dừng lại tự vấn: 'Hành động này thực sự đang giúp ích cho con người họ, hay đang vô tình dung túng và tiếp tay cho sự dối trá?'. Ngược lại, tại Nice Company, ban lãnh đạo quyết định mua bảo hiểm y tế toàn diện cho con em những công nhân yếm thế nhất, tạo nên tỷ lệ gắn kết 98% và lòng trung thành phi thường.",
+            "facultyAnalysis": "Adam Grant (tác giả 'Give and Take') phân loại: Taker (Trục lợi), Matcher (Sòng phẳng), và Giver (Cho đi). Trong nhóm Giver, có Unsmart Giver (cho đi mù quáng, không giữ ranh giới, dễ bị Taker vắt kiệt) và Smart Giver (Vị nhân thông thái: cho đi với Bi - Trí - Dũng). Smart Giver luôn giữ ranh giới lành mạnh (Boundaries), biết từ chối sự lợi dụng, ưu tiên nâng đỡ những người có tinh thần học hỏi, và trao tặng giá trị có tính đòn bẩy cao (như chia sẻ tri thức TPOV - Teachable Point of View, kết nối cơ hội) thay vì cho tiền bạc hay làm hộ việc.",
+            "modelAnswer": "1. Thiết lập Bộ lọc Vị nhân Thông thái (3 câu hỏi tự vấn):\n  - Câu 1: Sự giúp đỡ này có giúp đối phương tự lập và phát triển năng lực (Empowerment), hay tạo ra sự ỷ lại (Dependency)?\n  - Câu 2: Tôi có đang hy sinh những giá trị cốt lõi hoặc nguồn lực thiết yếu của bản thân/gia đình một cách vô lý không?\n  - Câu 3: Đối phương có thái độ trân trọng và cầu thị hay đang lợi dụng lòng tốt?\n2. Hành vi vị tha công sở hiệu quả cao (5-Minute Favors):\n  - Dành 15 phút làm 'Buddy' hướng dẫn tư duy cho nhân viên mới thay vì làm hộ việc.\n  - Kết nối cơ hội hợp tác cho đồng nghiệp.\n  - Chia sẻ kinh nghiệm đúc kết (TPOV) giúp đội ngũ tránh đi vào vết xe đổ.",
+            "reflectionPrompt": "Bạn đã bao giờ rơi vào trạng thái 'Unsmart Giver' (cho đi kiệt sức vì không dám từ chối hoặc bị người khác lợi dụng) chưa? Làm thế nào để bạn nâng cấp lên 'Smart Giver'?",
+            "actionPrompt": "Một hành vi vị nhân thông thái cụ thể (5-Minute Favor) bạn sẽ làm để giúp đỡ một đồng nghiệp trong 48 giờ tới:"
           }
         }
       ],

@@ -1363,6 +1363,9 @@ document.addEventListener("DOMContentLoaded", () => {
         bindInput("gratitude-4", v => { hG.items[3] = v; habits.gratitude = hG; debouncedSave(); }, hG.items[3]);
         bindInput("gratitude-card-to", v => { hG.card.to = v; habits.gratitude = hG; debouncedSave(); }, hG.card.to);
         bindInput("gratitude-card-msg", v => { hG.card.msg = v; habits.gratitude = hG; debouncedSave(); }, hG.card.msg);
+        hG.scenario = hG.scenario || {};
+        bindInput("scenario-habit-gratitude-reflection", v => { hG.scenario.reflection = v; habits.gratitude = hG; debouncedSave(); }, hG.scenario.reflection);
+        bindInput("scenario-habit-gratitude-action", v => { hG.scenario.action = v; habits.gratitude = hG; debouncedSave(); }, hG.scenario.action);
         bindInput("iam-gratitude-i", v => { hG.iam.I = v; habits.gratitude = hG; debouncedSave(); }, hG.iam.I);
         bindInput("iam-gratitude-a", v => { hG.iam.A = v; habits.gratitude = hG; debouncedSave(); }, hG.iam.A);
         bindInput("iam-gratitude-m", v => { hG.iam.M = v; habits.gratitude = hG; debouncedSave(); }, hG.iam.M);
@@ -1385,6 +1388,9 @@ document.addEventListener("DOMContentLoaded", () => {
             chkA.onchange = () => { hM.sbaChecks.a = chkA.checked; habits.mindfulness = hM; debouncedSave(); };
         }
         bindInput("sba-situation", v => { hM.situation = v; habits.mindfulness = hM; debouncedSave(); }, hM.situation);
+        hM.scenario = hM.scenario || {};
+        bindInput("scenario-habit-mindfulness-reflection", v => { hM.scenario.reflection = v; habits.mindfulness = hM; debouncedSave(); }, hM.scenario.reflection);
+        bindInput("scenario-habit-mindfulness-action", v => { hM.scenario.action = v; habits.mindfulness = hM; debouncedSave(); }, hM.scenario.action);
         bindInput("iam-mindfulness-i", v => { hM.iam.I = v; habits.mindfulness = hM; debouncedSave(); }, hM.iam.I);
         bindInput("iam-mindfulness-a", v => { hM.iam.A = v; habits.mindfulness = hM; debouncedSave(); }, hM.iam.A);
         bindInput("iam-mindfulness-m", v => { hM.iam.M = v; habits.mindfulness = hM; debouncedSave(); }, hM.iam.M);
@@ -1396,6 +1402,9 @@ document.addEventListener("DOMContentLoaded", () => {
         bindInput("abcde-c", v => { hO.abcde.C = v; habits.optimism = hO; debouncedSave(); }, hO.abcde.C);
         bindInput("abcde-d", v => { hO.abcde.D = v; habits.optimism = hO; debouncedSave(); }, hO.abcde.D);
         bindInput("abcde-e", v => { hO.abcde.E = v; habits.optimism = hO; debouncedSave(); }, hO.abcde.E);
+        hO.scenario = hO.scenario || {};
+        bindInput("scenario-habit-optimism-reflection", v => { hO.scenario.reflection = v; habits.optimism = hO; debouncedSave(); }, hO.scenario.reflection);
+        bindInput("scenario-habit-optimism-action", v => { hO.scenario.action = v; habits.optimism = hO; debouncedSave(); }, hO.scenario.action);
         bindInput("iam-optimism-i", v => { hO.iam.I = v; habits.optimism = hO; debouncedSave(); }, hO.iam.I);
         bindInput("iam-optimism-a", v => { hO.iam.A = v; habits.optimism = hO; debouncedSave(); }, hO.iam.A);
         bindInput("iam-optimism-m", v => { hO.iam.M = v; habits.optimism = hO; debouncedSave(); }, hO.iam.M);
@@ -1404,6 +1413,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const hF = habits.flow || { iam: {} };
         bindInput("flow-boring-task", v => { hF.boringTask = v; habits.flow = hF; debouncedSave(); }, hF.boringTask);
         bindInput("flow-redesign", v => { hF.redesign = v; habits.flow = hF; debouncedSave(); }, hF.redesign);
+        hF.scenario = hF.scenario || {};
+        bindInput("scenario-habit-flow-reflection", v => { hF.scenario.reflection = v; habits.flow = hF; debouncedSave(); }, hF.scenario.reflection);
+        bindInput("scenario-habit-flow-action", v => { hF.scenario.action = v; habits.flow = hF; debouncedSave(); }, hF.scenario.action);
         bindInput("iam-flow-i", v => { hF.iam.I = v; habits.flow = hF; debouncedSave(); }, hF.iam.I);
         bindInput("iam-flow-a", v => { hF.iam.A = v; habits.flow = hF; debouncedSave(); }, hF.iam.A);
         bindInput("iam-flow-m", v => { hF.iam.M = v; habits.flow = hF; debouncedSave(); }, hF.iam.M);
@@ -1415,6 +1427,9 @@ document.addEventListener("DOMContentLoaded", () => {
             r.onchange = () => { hA.style = r.value; habits.altruism = hA; debouncedSave(); };
         });
         bindInput("altruism-act", v => { hA.act = v; habits.altruism = hA; debouncedSave(); }, hA.act);
+        hA.scenario = hA.scenario || {};
+        bindInput("scenario-habit-altruism-reflection", v => { hA.scenario.reflection = v; habits.altruism = hA; debouncedSave(); }, hA.scenario.reflection);
+        bindInput("scenario-habit-altruism-action", v => { hA.scenario.action = v; habits.altruism = hA; debouncedSave(); }, hA.scenario.action);
         bindInput("iam-altruism-i", v => { hA.iam.I = v; habits.altruism = hA; debouncedSave(); }, hA.iam.I);
         bindInput("iam-altruism-a", v => { hA.iam.A = v; habits.altruism = hA; debouncedSave(); }, hA.iam.A);
         bindInput("iam-altruism-m", v => { hA.iam.M = v; habits.altruism = hA; debouncedSave(); }, hA.iam.M);
