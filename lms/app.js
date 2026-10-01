@@ -255,6 +255,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const sidebarBackdrop = document.getElementById("sidebar-backdrop");
     const syllabusList = document.getElementById("syllabus-list");
     const sidebarBadgeCompleted = document.getElementById("sidebar-badge-completed");
+    const btnCollapseSidebarDesktop = document.getElementById("btn-collapse-sidebar-desktop");
+    const btnSidebarDesktopExpand = document.getElementById("btn-sidebar-desktop-expand");
 
     const globalProgressBar = document.getElementById("global-progress-bar");
     const globalProgressText = document.getElementById("global-progress-text");
@@ -263,6 +265,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const userAvatar = document.getElementById("user-avatar");
     const userDisplayName = document.getElementById("user-display-name");
     const btnLogout = document.getElementById("btn-logout");
+    const btnHeaderResume = document.getElementById("btn-header-resume");
+    const heroQuizGateBanner = document.getElementById("hero-quiz-gate-banner");
+
+    // Quick Start Modal Elements
+    const modalQuickStart = document.getElementById("modal-quick-start");
+    const btnCloseQuickStart = document.getElementById("btn-close-quick-start");
+    const btnQuickStartDismiss = document.getElementById("btn-quick-start-dismiss");
+    const chkDontShowQuickStart = document.getElementById("chk-dont-show-quick-start");
 
     // Header Breadcrumbs
     const breadcrumbStage = document.getElementById("breadcrumb-stage");
@@ -563,7 +573,10 @@ document.addEventListener("DOMContentLoaded", () => {
         // Ensure proper schema
         if (!learnerProgress.stageData) learnerProgress.stageData = {};
         if (!learnerProgress.stageData["stage-1"]) {
-            learnerProgress.stageData["stage-1"] = { selectedValues: [], iam_1_1: {}, iam_1_2: {}, iam_1_3: {} };
+            learnerProgress.stageData["stage-1"] = { selectedValues: [], iam_1_1: {}, iam_1_2: {}, iam_1_3: {}, scenarios: {} };
+        }
+        if (!learnerProgress.stageData["stage-1"].scenarios) {
+            learnerProgress.stageData["stage-1"].scenarios = {};
         }
         if (!learnerProgress.stageData["stage-2"]) {
             learnerProgress.stageData["stage-2"] = { habits: {}, capstoneIam: {} };
@@ -575,6 +588,8 @@ document.addEventListener("DOMContentLoaded", () => {
         renderSyllabus();
         loadStage(currentStageIndex);
         updateGlobalProgress();
+        evaluateLearnerStatus();
+        showQuickStartIfNeeded();
     }
 
     function saveLearnerProgress() {
@@ -692,9 +707,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 stage.subSections.forEach(sub => {
                     const subBtn = document.createElement("button");
                     subBtn.className = "w-full text-left px-2.5 py-1.5 rounded-lg text-[11px] text-slate-300 hover:text-brand-amber hover:bg-brand-card/80 transition-all flex items-center gap-2 group";
+
+                    // Check subsection completion status for visual badges (✓)
+                    let isSubDone = false;
+                    const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
+                    if (sub.id === "sub-1-1") {
+                        isSubDone = Boolean(s1Data.videoWatched || s1Data.audioListened);
+                    } else if (sub.id === "sub-1-2") {
+                        isSubDone = Boolean((s1Data.passed || s1Data.percentage >= 70) && (s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i)));
+                    } else if (sub.id === "sub-1-3") {
+                        isSubDone = Boolean((s1Data.selectedValues && s1Data.selectedValues.length > 0) && (s1Data.iam_1_2 && (s1Data.iam_1_2.I || s1Data.iam_1_2.i)));
+                    } else if (sub.id === "sub-1-4") {
+                        isSubDone = Boolean(s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i));
+                    }
+
+                    const marker = isSubDone 
+                        ? `<span class="text-brand-green font-bold text-xs shrink-0">✓</span>`
+                        : `<span class="w-1.5 h-1.5 rounded-full bg-brand-amber/50 group-hover:bg-brand-amber shrink-0 transition-colors"></span>`;
+
                     subBtn.innerHTML = `
-                        <span class="w-1.5 h-1.5 rounded-full bg-brand-amber/50 group-hover:bg-brand-amber shrink-0 transition-colors"></span>
-                        <span class="truncate flex-1">${sub.title}</span>
+                        ${marker}
+                        <span class="truncate flex-1 ${isSubDone ? 'text-slate-200 font-medium' : ''}">${sub.title}</span>
                     `;
 
                     subBtn.addEventListener("click", (e) => {
@@ -747,6 +780,144 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (sidebarToggle) sidebarToggle.addEventListener("click", () => toggleSidebar());
     if (sidebarBackdrop) sidebarBackdrop.addEventListener("click", () => toggleSidebar(false));
+
+    // Desktop Collapsible Sidebar (LinkedIn Learning Focused Mode)
+    if (btnCollapseSidebarDesktop) {
+        btnCollapseSidebarDesktop.addEventListener("click", () => {
+            sidebar.classList.add("sidebar-collapsed-desktop");
+            if (btnSidebarDesktopExpand) {
+                btnSidebarDesktopExpand.classList.remove("hidden");
+                btnSidebarDesktopExpand.classList.add("flex");
+            }
+            localStorage.setItem("dhm_sidebar_collapsed_desktop", "true");
+        });
+    }
+
+    if (btnSidebarDesktopExpand) {
+        btnSidebarDesktopExpand.addEventListener("click", () => {
+            sidebar.classList.remove("sidebar-collapsed-desktop");
+            btnSidebarDesktopExpand.classList.add("hidden");
+            btnSidebarDesktopExpand.classList.remove("flex");
+            localStorage.removeItem("dhm_sidebar_collapsed_desktop");
+        });
+    }
+
+    // Restore desktop sidebar preference on load
+    if (localStorage.getItem("dhm_sidebar_collapsed_desktop") === "true" && window.innerWidth >= 1024) {
+        sidebar.classList.add("sidebar-collapsed-desktop");
+        if (btnSidebarDesktopExpand) {
+            btnSidebarDesktopExpand.classList.remove("hidden");
+            btnSidebarDesktopExpand.classList.add("flex");
+        }
+    }
+
+    // Accordion Toggle for Model Solutions (Section 2)
+    window.toggleModelAnswer = function(scenarioId) {
+        const content = document.getElementById(`accordion-content-${scenarioId}`);
+        const icon = document.getElementById(`accordion-icon-${scenarioId}`);
+        if (!content) return;
+        const isHidden = content.classList.contains("hidden");
+        if (isHidden) {
+            content.classList.remove("hidden");
+            if (icon) {
+                icon.textContent = "▲";
+                icon.classList.add("rotate-180");
+            }
+        } else {
+            content.classList.add("hidden");
+            if (icon) {
+                icon.textContent = "▼";
+                icon.classList.remove("rotate-180");
+            }
+        }
+    };
+
+    // Smart Resume Learning & Status Evaluator
+    function evaluateLearnerStatus() {
+        const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
+        const isQuizPassed = Boolean(s1Data.passed || (s1Data.percentage >= 70));
+
+        // 1. Auto-collapse / Refine Hero Quiz Gate Banner
+        if (heroQuizGateBanner) {
+            if (isQuizPassed) {
+                heroQuizGateBanner.className = "p-3 sm:p-3.5 rounded-2xl bg-brand-green/10 border border-brand-green/40 shadow-md flex items-center justify-between flex-wrap gap-2 transition-all";
+                heroQuizGateBanner.innerHTML = `
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-8 h-8 rounded-lg bg-brand-green/20 text-brand-green flex items-center justify-center font-bold text-sm">✓</span>
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-brand-green tracking-wider">Đã Sát Hạch Thành Công</span>
+                            <div class="text-xs sm:text-sm font-bold text-white">Bạn đã đủ điều kiện lên lớp Offline (${s1Data.score || 7}/${s1Data.totalQuestions || 10} câu)</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button type="button" id="btn-banner-resume-action" class="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-black font-extrabold text-xs shadow-md transition-all active:scale-95">
+                            <span>▶ Tiếp Tục Bài Tập Tình Huống</span>
+                        </button>
+                    </div>
+                `;
+                const btnBannerAction = document.getElementById("btn-banner-resume-action");
+                if (btnBannerAction) {
+                    btnBannerAction.onclick = () => {
+                        const tabTarget = document.querySelector('.tab-btn[data-tab="tab-practice"]');
+                        if (tabTarget) tabTarget.click();
+                        setTimeout(() => {
+                            const el = document.getElementById("stage1-mod-1-1");
+                            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                        }, 100);
+                    };
+                }
+            }
+        }
+
+        // 2. Configure Header Resume Button
+        if (btnHeaderResume) {
+            btnHeaderResume.classList.remove("hidden");
+            btnHeaderResume.classList.add("sm:flex");
+
+            if (isQuizPassed) {
+                btnHeaderResume.innerHTML = `<span>▶ Tiếp Tục Bài Tập</span>`;
+                btnHeaderResume.onclick = () => {
+                    const tabTarget = document.querySelector('.tab-btn[data-tab="tab-practice"]');
+                    if (tabTarget) tabTarget.click();
+                    setTimeout(() => {
+                        const el = document.getElementById("stage1-mod-1-1");
+                        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }, 100);
+                };
+            } else {
+                btnHeaderResume.innerHTML = `<span>▶ Làm Bài Test</span>`;
+                btnHeaderResume.onclick = () => {
+                    const tabTarget = document.querySelector('.tab-btn[data-tab="tab-practice"]');
+                    if (tabTarget) tabTarget.click();
+                    setTimeout(() => {
+                        const el = document.getElementById("quiz-items-container");
+                        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }, 100);
+                };
+            }
+        }
+    }
+
+    // Quick Start Guide Modal Controller
+    function showQuickStartIfNeeded() {
+        if (!localStorage.getItem("dhm_seen_quick_start") && modalQuickStart) {
+            setTimeout(() => {
+                modalQuickStart.classList.remove("hidden");
+            }, 600);
+        }
+    }
+
+    function dismissQuickStart() {
+        if (modalQuickStart) {
+            modalQuickStart.classList.add("hidden");
+        }
+        if (chkDontShowQuickStart && chkDontShowQuickStart.checked) {
+            localStorage.setItem("dhm_seen_quick_start", "true");
+        }
+    }
+
+    if (btnCloseQuickStart) btnCloseQuickStart.addEventListener("click", dismissQuickStart);
+    if (btnQuickStartDismiss) btnQuickStartDismiss.addEventListener("click", dismissQuickStart);
 
     // 7. LESSON / STAGE LOADER
     function loadStage(stageIdx) {
@@ -1024,6 +1195,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         saveLearnerProgress();
                         renderStage1View(stage);
+                        renderSyllabus();
+                        evaluateLearnerStatus();
                     });
                 });
             }
@@ -1068,6 +1241,8 @@ document.addEventListener("DOMContentLoaded", () => {
                             learnerProgress.stageData["stage-1"].passed = false;
                             saveLearnerProgress();
                             renderStage1View(stage);
+                            renderSyllabus();
+                            evaluateLearnerStatus();
                             quizItemsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
                         });
                     }
@@ -1127,17 +1302,33 @@ document.addEventListener("DOMContentLoaded", () => {
         valuesCountBadge.textContent = `${selectedValues.length} Đã chọn`;
 
         // 9.3 IAM Inputs for Stage 1
-        bindInput("iam-1-1-i", val => { sData.iam_1_1 = sData.iam_1_1 || {}; sData.iam_1_1.I = val; debouncedSave(); }, sData.iam_1_1?.I);
+        bindInput("iam-1-1-i", val => { sData.iam_1_1 = sData.iam_1_1 || {}; sData.iam_1_1.I = val; debouncedSave(); renderSyllabus(); }, sData.iam_1_1?.I);
         bindInput("iam-1-1-a", val => { sData.iam_1_1 = sData.iam_1_1 || {}; sData.iam_1_1.A = val; debouncedSave(); }, sData.iam_1_1?.A);
         bindInput("iam-1-1-m", val => { sData.iam_1_1 = sData.iam_1_1 || {}; sData.iam_1_1.M = val; debouncedSave(); }, sData.iam_1_1?.M);
 
-        bindInput("iam-1-2-i", val => { sData.iam_1_2 = sData.iam_1_2 || {}; sData.iam_1_2.I = val; debouncedSave(); }, sData.iam_1_2?.I);
+        bindInput("iam-1-2-i", val => { sData.iam_1_2 = sData.iam_1_2 || {}; sData.iam_1_2.I = val; debouncedSave(); renderSyllabus(); }, sData.iam_1_2?.I);
         bindInput("iam-1-2-a", val => { sData.iam_1_2 = sData.iam_1_2 || {}; sData.iam_1_2.A = val; debouncedSave(); }, sData.iam_1_2?.A);
         bindInput("iam-1-2-m", val => { sData.iam_1_2 = sData.iam_1_2 || {}; sData.iam_1_2.M = val; debouncedSave(); }, sData.iam_1_2?.M);
 
-        bindInput("iam-1-3-i", val => { sData.iam_1_3 = sData.iam_1_3 || {}; sData.iam_1_3.I = val; debouncedSave(); }, sData.iam_1_3?.I);
+        bindInput("iam-1-3-i", val => { sData.iam_1_3 = sData.iam_1_3 || {}; sData.iam_1_3.I = val; debouncedSave(); renderSyllabus(); }, sData.iam_1_3?.I);
         bindInput("iam-1-3-a", val => { sData.iam_1_3 = sData.iam_1_3 || {}; sData.iam_1_3.A = val; debouncedSave(); }, sData.iam_1_3?.A);
         bindInput("iam-1-3-m", val => { sData.iam_1_3 = sData.iam_1_3 || {}; sData.iam_1_3.M = val; debouncedSave(); }, sData.iam_1_3?.M);
+
+        // 9.4 Practical Scenarios (Duy 3-Sections Model)
+        sData.scenarios = sData.scenarios || {};
+        sData.scenarios["scenario-1-1"] = sData.scenarios["scenario-1-1"] || {};
+        bindInput("scenario-1-1-reflection", val => { sData.scenarios["scenario-1-1"].reflection = val; debouncedSave(); }, sData.scenarios["scenario-1-1"].reflection);
+        bindInput("scenario-1-1-action", val => { sData.scenarios["scenario-1-1"].action = val; debouncedSave(); }, sData.scenarios["scenario-1-1"].action);
+
+        sData.scenarios["scenario-1-2"] = sData.scenarios["scenario-1-2"] || {};
+        bindInput("scenario-1-2-reflection", val => { sData.scenarios["scenario-1-2"].reflection = val; debouncedSave(); }, sData.scenarios["scenario-1-2"].reflection);
+        bindInput("scenario-1-2-action", val => { sData.scenarios["scenario-1-2"].action = val; debouncedSave(); }, sData.scenarios["scenario-1-2"].action);
+
+        sData.scenarios["scenario-1-3"] = sData.scenarios["scenario-1-3"] || {};
+        bindInput("scenario-1-3-reflection", val => { sData.scenarios["scenario-1-3"].reflection = val; debouncedSave(); }, sData.scenarios["scenario-1-3"].reflection);
+        bindInput("scenario-1-3-action", val => { sData.scenarios["scenario-1-3"].action = val; debouncedSave(); }, sData.scenarios["scenario-1-3"].action);
+
+        evaluateLearnerStatus();
     }
 
     // 10. STAGE 2 RENDERER (Workshop Live 5 Habits)
