@@ -9,7 +9,7 @@
       "stageNumber": 1,
       "badge": "Chặng 1 · Online",
       "title": "Chặng 1 · Gieo Thông Điệp",
-      "subtitle": "Khoa học Hạnh phúc • 3 Cấp độ • Định vị La Bàn (Me Values) • Thuyết Tự Quyết (SDT)",
+      "subtitle": "Khoa học Hạnh phúc • 3 Cấp độ • Định vị La Bàn (Me Values) • 3 Đòn Bẩy Hạnh Phúc",
       "instructor": "Thầy Vũ Hoàng & Ban Giảng Huấn",
       "estimatedMinutes": 30,
       "videoUrl": "data/artifacts/the_explainer.mp4",
@@ -19,26 +19,32 @@
       "subSections": [
         {
           "id": "sub-1-1",
-          "title": "Video & Audio Bài Giảng",
+          "title": "Mục 1.1: Video & Audio Bài Giảng",
           "target": "video-player-container",
           "tab": "tab-summary"
         },
         {
           "id": "sub-1-2",
-          "title": "⚡ Bài Sát Hạch Đầu Vào",
+          "title": "Mục 1.2: 3 Cấp Độ Hạnh Phúc",
           "target": "stage1-mod-1-1",
           "tab": "tab-practice"
         },
         {
           "id": "sub-1-3",
-          "title": "La Bàn Giá Trị Cá Nhân",
+          "title": "Mục 1.3: Định Vị La Bàn — Me Values",
           "target": "stage1-mod-1-2",
           "tab": "tab-practice"
         },
         {
           "id": "sub-1-4",
-          "title": "3 Đòn Bẩy Hạnh Phúc",
+          "title": "Mục 1.4: 3 Đòn Bẩy Hạnh Phúc",
           "target": "stage1-mod-1-3",
+          "tab": "tab-practice"
+        },
+        {
+          "id": "sub-1-5",
+          "title": "🎯 Cổng Vượt Chặng: Bài Kiểm Tra 10 Câu",
+          "target": "stage1-mod-quiz",
           "tab": "tab-practice"
         }
       ],
@@ -92,7 +98,7 @@
       "modules": [
         {
           "id": "mod-1-1",
-          "title": "Bài 1.1: Khoa học Hạnh phúc & Bài Sát Hạch Đầu Vào (10 Câu)",
+          "title": "Bài 1.1: 3 Cấp Độ Hạnh Phúc (Pleasure • Passion • Higher Purpose)",
           "quizzes": [
             {
               "id": "dhm-quiz-1",
@@ -308,7 +314,7 @@
         },
         {
           "id": "mod-1-3",
-          "title": "Bài 1.3: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc",
+          "title": "Bài 1.3: 3 Đòn Bẩy Hạnh Phúc (Deci & Ryan)",
           "quizzes": [
             {
               "id": "bk-q4",
@@ -480,7 +486,7 @@
       "stageNumber": 2,
       "badge": "Chặng 2 · Workshop",
       "title": "Chặng 2 · Gieo Thói Quen",
-      "subtitle": "Workshop Live tại lớp • Xưởng thực hành 5 Thói quen Hạnh phúc & I•A•M",
+      "subtitle": "Workshop Live tại lớp • Trạm thực hành 5 Thói quen Hạnh phúc & I•A•M",
       "instructor": "Ban Giảng Huấn DHM (Cô Châu, Thầy Hưng, Cô Hoàn, Thầy Vũ, Cô Hân)",
       "estimatedMinutes": 120,
       "videoUrl": null,

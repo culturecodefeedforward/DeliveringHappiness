@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 stageNumber: 1,
                 badge: "Mini Step 1 • Online",
                 title: "Mini step 1 • ONLINE – Gieo Thông điệp",
-                subtitle: "Khoa học Hạnh phúc • 3 Cấp độ • Định vị La Bàn (Me Values) • Thuyết Tự Quyết (SDT)",
+                subtitle: "Khoa học Hạnh phúc • 3 Cấp độ • Định vị La Bàn (Me Values) • 3 Đòn Bẩy Hạnh Phúc",
                 instructor: "Thầy Vũ Hoàng & Ban Giảng Huấn",
                 estimatedMinutes: 30,
                 videoDuration: "7:27",
@@ -21,9 +21,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 videoType: "mp4",
                 subSections: [
                     { id: "sub-1-1", title: "Mục 1.1: Video Explainer & Kho Audio Bài Giảng", target: "video-player-container", tab: "tab-summary" },
-                    { id: "sub-1-2", title: "Mục 1.2: Khoa Học Hạnh Phúc & 3 Cấp Độ (Seligman)", target: "stage1-mod-1-1", tab: "tab-practice" },
+                    { id: "sub-1-2", title: "Mục 1.2: Khoa Học Hạnh Phúc & 3 Cấp Độ", target: "stage1-mod-1-1", tab: "tab-practice" },
                     { id: "sub-1-3", title: "Mục 1.3: Định Vị La Bàn — Giá Trị Cốt Lõi Cá Nhân (Me Values)", target: "stage1-mod-1-2", tab: "tab-practice" },
-                    { id: "sub-1-4", title: "Mục 1.4: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc", target: "stage1-mod-1-3", tab: "tab-practice" }
+                    { id: "sub-1-4", title: "Mục 1.4: 3 Đòn Bẩy Hạnh Phúc (Deci & Ryan)", target: "stage1-mod-1-3", tab: "tab-practice" },
+                    { id: "sub-1-5", title: "Mục 1.5: Bài Kiểm Tra Vượt Chặng 1 (10 Câu Trắc Nghiệm)", target: "stage1-mod-quiz", tab: "tab-practice" }
                 ],
                 audios: [
                     { id: "a1-0", title: "0. Lời dẫn & Giới thiệu tổng quan", file: "data/artifacts/dh4_overview.mp3", duration: "2:45" },
@@ -41,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 modules: [
                     {
                         id: "mod-1-1",
-                        title: "Bài 1.1: Khoa học Hạnh phúc & 3 Cấp độ",
+                        title: "Bài 1.1: 3 Cấp Độ Hạnh Phúc",
                         quizzes: [
                             {
                                 id: "q1",
@@ -132,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     },
                     {
                         id: "mod-1-3",
-                        title: "Bài 1.3: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc",
+                        title: "Bài 1.3: 3 Đòn Bẩy Hạnh Phúc (Deci & Ryan)",
                         iam: {
                             id: "iam_1_3",
                             title: "Đúc kết I • A • M 1.3 — 3 Đòn Bẩy (Kết Nối • Tự Chủ • Tiến Bộ)",
@@ -154,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 stageNumber: 2,
                 badge: "Mini Step 2 • Offline",
                 title: "Mini step 2 • OFFLINE – Gieo Thói quen",
-                subtitle: "Workshop Live tại lớp • Xưởng thực hành 5 Thói quen Hạnh phúc & I•A•M",
+                subtitle: "Workshop Live tại lớp • Trạm thực hành 5 Thói quen Hạnh phúc & I•A•M",
                 instructor: "Ban Giảng Huấn DHM (Cô Châu, Thầy Hưng, Cô Hoàn, Thầy Vũ, Cô Hân)",
                 estimatedMinutes: 120,
                 videoUrl: null,
@@ -765,7 +766,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             item.addEventListener("click", () => {
                 if (!isUnlocked) {
-                    alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 70% ở Bài 1.1 Kiểm Tra Sát Hạch Đầu Vào (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
+                    alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 70% ở Bài Kiểm Tra Vượt Chặng (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
                     jumpToStage1Quiz();
                     toggleSidebar(false);
                     return;
@@ -807,11 +808,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (sub.id === "sub-1-1") {
                         isSubDone = Boolean(s1Data.videoWatched || s1Data.audioListened);
                     } else if (sub.id === "sub-1-2") {
-                        isSubDone = Boolean((s1Data.passed || s1Data.percentage >= 70) && (s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i)));
+                        isSubDone = Boolean(s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i));
                     } else if (sub.id === "sub-1-3") {
                         isSubDone = Boolean((s1Data.selectedValues && s1Data.selectedValues.length > 0) && (s1Data.iam_1_2 && (s1Data.iam_1_2.I || s1Data.iam_1_2.i)));
                     } else if (sub.id === "sub-1-4") {
                         isSubDone = Boolean(s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i));
+                    } else if (sub.id === "sub-1-5") {
+                        isSubDone = Boolean(s1Data.passed || s1Data.score >= 7 || s1Data.percentage >= 70);
                     }
 
                     const marker = !isUnlocked
@@ -828,7 +831,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     subBtn.addEventListener("click", (e) => {
                         e.stopPropagation();
                         if (!isUnlocked) {
-                            alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 70% ở Bài 1.1 Kiểm Tra Sát Hạch Đầu Vào (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
+                            alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 70% ở Bài Kiểm Tra Vượt Chặng (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
                             jumpToStage1Quiz();
                             toggleSidebar(false);
                             return;
@@ -1019,7 +1022,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         const tabTarget = document.querySelector('.tab-btn[data-tab="tab-practice"]');
                         if (tabTarget) tabTarget.click();
                         setTimeout(() => {
-                            const el = document.getElementById("quiz-items-container");
+                            openAccordionModule("stage1-mod-quiz");
+                            const el = document.getElementById("stage1-mod-quiz");
                             if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
                         }, 100);
                     };
@@ -1064,7 +1068,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     const tabTarget = document.querySelector('.tab-btn[data-tab="tab-practice"]');
                     if (tabTarget) tabTarget.click();
                     setTimeout(() => {
-                        const el = document.getElementById("quiz-items-container");
+                        openAccordionModule("stage1-mod-quiz");
+                        const el = document.getElementById("stage1-mod-quiz");
                         if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
                     }, 100);
                 };
@@ -3119,10 +3124,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 const s1Quizzes = (curStage.modules && curStage.modules[0] && curStage.modules[0].quizzes) ? curStage.modules[0].quizzes : [];
                 const passCount = s1Quizzes.length > 0 ? Math.ceil(s1Quizzes.length * 0.7) : 7;
                 const totalQ = s1Quizzes.length || 10;
-                alert(`⚠️ Bạn cần hoàn thành và đạt tối thiểu 70% (${passCount}/${totalQ} câu) ở Bài 1.1 Kiểm tra Sát Hạch Đầu Vào để đủ điều kiện (qualify) hoàn thành Chặng 1 và bước vào Lớp Offline Chặng 2!`);
+                alert(`⚠️ Bạn cần hoàn thành và đạt tối thiểu 70% (${passCount}/${totalQ} câu) ở Bài Kiểm Tra Vượt Chặng để đủ điều kiện (qualify) hoàn thành Chặng 1 và bước vào Lớp Offline Chặng 2!`);
                 const practiceTabBtn = document.querySelector('[data-tab="tab-practice"]');
                 if (practiceTabBtn) practiceTabBtn.click();
-                const quizSec = document.getElementById("stage1-mod-1-1");
+                openAccordionModule("stage1-mod-quiz");
+                const quizSec = document.getElementById("stage1-mod-quiz");
                 if (quizSec) quizSec.scrollIntoView({ behavior: "smooth" });
                 return;
             }
@@ -3153,16 +3159,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
         let count = 0;
-        // Mốc 1 (25%): Video giới thiệu hoặc Audio podcast đã xem/nghe
+        // Mốc 1 (20%): Video giới thiệu hoặc Audio podcast đã xem/nghe
         if (s1Data.videoWatched || s1Data.audioListened) count++;
-        // Mốc 2 (25%): Đạt sát hạch đầu vào (≥7/10 câu) VÀ hoàn thành phản tư I•A•M 1.1
-        if ((s1Data.passed || s1Data.score >= 7 || s1Data.percentage >= 70) && s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i)) count++;
-        // Mốc 3 (25%): Đã chọn ≥1 Giá trị La Bàn VÀ hoàn thành phản tư I•A•M 1.2
+        // Mốc 2 (20%): Hoàn thành phản tư I•A•M 1.1 (3 Cấp Độ Hạnh Phúc)
+        if (s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i)) count++;
+        // Mốc 3 (20%): Đã chọn ≥1 Giá trị La Bàn VÀ hoàn thành phản tư I•A•M 1.2
         if (s1Data.selectedValues && s1Data.selectedValues.length > 0 && s1Data.iam_1_2 && (s1Data.iam_1_2.I || s1Data.iam_1_2.i)) count++;
-        // Mốc 4 (25%): Hoàn thành thiết kế công việc/bài 1.3 VÀ phản tư I•A•M 1.3
+        // Mốc 4 (20%): Hoàn thành phản tư I•A•M 1.3 (3 Đòn Bẩy Hạnh Phúc)
         if (s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i)) count++;
+        // Mốc 5 (20%): Đạt bài kiểm tra vượt chặng (≥7/10 câu hoặc ≥70%)
+        if (s1Data.passed || s1Data.score >= 7 || s1Data.percentage >= 70) count++;
 
-        return Math.min(100, Math.round(count * 25));
+        return Math.min(100, Math.round(count * 20));
     }
 
     function calculateStage2Progress() {
@@ -3235,14 +3243,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const isS1Done = learnerProgress.completedStages && learnerProgress.completedStages.includes("stage-1");
 
         const mVideoDone = isS1Done || Boolean(s1Data.videoWatched || s1Data.audioListened);
-        const mQuizDone = isS1Done || Boolean((s1Data.passed || s1Data.score >= 7 || s1Data.percentage >= 70) && (s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i)));
+        const mLevelsDone = isS1Done || Boolean(s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i));
         const mValuesDone = isS1Done || Boolean((s1Data.selectedValues && s1Data.selectedValues.length > 0) && (s1Data.iam_1_2 && (s1Data.iam_1_2.I || s1Data.iam_1_2.i)));
-        const mJobDone = isS1Done || Boolean(s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i));
+        const mDriversDone = isS1Done || Boolean(s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i));
+        const mQuizDone = isS1Done || Boolean(s1Data.passed || s1Data.score >= 7 || s1Data.percentage >= 70);
 
-        const doneCount = [mVideoDone, mQuizDone, mValuesDone, mJobDone].filter(Boolean).length;
+        const doneCount = [mVideoDone, mLevelsDone, mValuesDone, mDriversDone, mQuizDone].filter(Boolean).length;
         const milestoneText = document.getElementById("stage1-milestone-text");
         if (milestoneText) {
-            milestoneText.textContent = `${doneCount}/4 Hoàn thành`;
+            milestoneText.textContent = `${doneCount}/5 Hoàn thành`;
         }
 
         function setPill(id, done) {
@@ -3259,9 +3268,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         setPill("m-pill-video", mVideoDone);
-        setPill("m-pill-quiz", mQuizDone);
+        setPill("m-pill-levels", mLevelsDone);
         setPill("m-pill-values", mValuesDone);
-        setPill("m-pill-job", mJobDone);
+        setPill("m-pill-drivers", mDriversDone);
+        setPill("m-pill-quiz", mQuizDone);
     }
 
     function openAccordionModule(moduleId) {
@@ -3284,11 +3294,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function autoOpenInProgressModule() {
         const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
-        const mod1Done = Boolean((s1Data.passed || s1Data.score >= 7 || s1Data.percentage >= 70) && (s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i)));
+        const mod1Done = Boolean(s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i));
         const mod2Done = Boolean((s1Data.selectedValues && s1Data.selectedValues.length > 0) && (s1Data.iam_1_2 && (s1Data.iam_1_2.I || s1Data.iam_1_2.i)));
         const mod3Done = Boolean(s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i));
+        const quizDone = Boolean(s1Data.passed || s1Data.score >= 7 || s1Data.percentage >= 70);
 
-        ["stage1-mod-1-1", "stage1-mod-1-2", "stage1-mod-1-3"].forEach(id => closeAccordionModule(id));
+        ["stage1-mod-1-1", "stage1-mod-1-2", "stage1-mod-1-3", "stage1-mod-quiz"].forEach(id => closeAccordionModule(id));
 
         if (!mod1Done) {
             openAccordionModule("stage1-mod-1-1");
@@ -3296,6 +3307,8 @@ document.addEventListener("DOMContentLoaded", () => {
             openAccordionModule("stage1-mod-1-2");
         } else if (!mod3Done) {
             openAccordionModule("stage1-mod-1-3");
+        } else if (!quizDone) {
+            openAccordionModule("stage1-mod-quiz");
         } else {
             openAccordionModule("stage1-mod-1-1");
         }
@@ -3382,8 +3395,8 @@ document.addEventListener("DOMContentLoaded", () => {
             practiceTabBtn.click();
         }
         setTimeout(() => {
-            openAccordionModule("stage1-mod-1-1");
-            const quizSec = document.getElementById("stage1-mod-1-1");
+            openAccordionModule("stage1-mod-quiz");
+            const quizSec = document.getElementById("stage1-mod-quiz");
             if (quizSec) {
                 quizSec.scrollIntoView({ behavior: "smooth", block: "start" });
                 quizSec.classList.add("ring-4", "ring-brand-amber", "transition-all", "duration-500");
