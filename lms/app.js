@@ -615,6 +615,10 @@ document.addEventListener("DOMContentLoaded", () => {
             learnerProgress.stageData["stage-3"] = { habitTracker: {}, weeklyCheckins: {} };
         }
 
+        if (!isStageUnlocked(currentStageIndex)) {
+            currentStageIndex = 0;
+        }
+
         renderSyllabus();
         loadStage(currentStageIndex);
         updateGlobalProgress();
@@ -687,10 +691,25 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (e) {}
     }
 
-    // 6. SYLLABUS RENDERER (Supports Sub-items Navigation)
+    // 5.5 STAGE UNLOCKING GATE (Sát hạch đầu vào)
+    function isStageUnlocked(stageIdx) {
+        if (stageIdx === 0) return true; // Chặng 1 luôn luôn mở
+        const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
+        const isQuizPassed = Boolean(s1Data.passed || (s1Data.percentage >= 70));
+        const isCoach = currentUser && (
+            currentUser.cohort === "COACH" || 
+            currentUser.cohort === "BTC / Coach" || 
+            currentUser.role === "admin" || 
+            currentUser.role === "Coach"
+        );
+        return Boolean(isQuizPassed || isCoach);
+    }
+
+    // 6. SYLLABUS RENDERER (Supports Sub-items Navigation & Locked Stages)
     function renderSyllabus() {
         syllabusList.innerHTML = "";
         curriculum.stages.forEach((stage, idx) => {
+            const isUnlocked = isStageUnlocked(idx);
             const isCompleted = learnerProgress.completedStages.includes(stage.id);
             const isActive = idx === currentStageIndex;
 
@@ -699,37 +718,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const item = document.createElement("button");
             item.className = `w-full text-left p-3.5 rounded-xl border transition-all flex items-start gap-3 ${
-                isActive
+                !isUnlocked
+                    ? "bg-brand-card/20 border-brand-border/40 text-slate-500 opacity-60 cursor-not-allowed"
+                    : isActive
                     ? "bg-brand-amber/15 border-brand-amber text-white shadow-lg shadow-amber-500/10"
                     : isCompleted
                     ? "bg-brand-card/70 border-brand-green/30 text-slate-300 hover:border-brand-green/60"
                     : "bg-brand-card/40 border-brand-border text-slate-400 hover:border-slate-600 hover:text-slate-200"
             }`;
 
+            const badgeHtml = !isUnlocked
+                ? `<span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.2 rounded bg-brand-surface text-slate-500 border border-slate-700/60 flex items-center gap-1">🔒 Khóa</span>`
+                : `<span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.2 rounded ${
+                    isActive ? "bg-brand-amber/20 text-brand-amber" : "bg-brand-surface text-slate-400"
+                }">${stage.badge || 'Chặng ' + stage.stageNumber}</span>`;
+
             item.innerHTML = `
                 <div class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs shrink-0 ${
-                    isCompleted
+                    !isUnlocked
+                        ? "bg-brand-surface text-slate-500 border border-brand-border/60"
+                        : isCompleted
                         ? "bg-brand-green text-black"
                         : isActive
                         ? "bg-brand-amber text-black"
                         : "bg-brand-surface text-slate-400 border border-brand-border"
                 }">
-                    ${isCompleted ? "✓" : stage.stageNumber}
+                    ${!isUnlocked ? "🔒" : isCompleted ? "✓" : stage.stageNumber}
                 </div>
                 <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-1.5 mb-0.5">
-                        <span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.2 rounded ${
-                            isActive ? "bg-brand-amber/20 text-brand-amber" : "bg-brand-surface text-slate-400"
-                        }">${stage.badge || 'Chặng ' + stage.stageNumber}</span>
+                        ${badgeHtml}
                         ${isCompleted ? '<span class="text-[10px] text-brand-green font-semibold">Đã xong</span>' : ''}
                     </div>
-                    <div class="text-xs font-bold truncate text-slate-100">${stage.title}</div>
-                    <div class="text-[11px] text-slate-400 truncate mt-0.5">${stage.subtitle}</div>
+                    <div class="text-xs font-bold truncate ${!isUnlocked ? 'text-slate-400' : 'text-slate-100'}">${stage.title}</div>
+                    <div class="text-[11px] ${!isUnlocked ? 'text-slate-500' : 'text-slate-400'} truncate mt-0.5">${!isUnlocked ? 'Cần đạt ≥70% Bài Sát Hạch để mở khóa' : stage.subtitle}</div>
                 </div>
                 ${stage.subSections && stage.subSections.length > 0 ? `<span class="stage-toggle-chevron text-xs text-slate-400 shrink-0 transform transition-transform ${isActive ? 'rotate-90' : ''}">▸</span>` : ''}
             `;
 
             item.addEventListener("click", () => {
+                if (!isUnlocked) {
+                    alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 70% ở Bài 1.1 Kiểm Tra Sát Hạch Đầu Vào (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
+                    jumpToStage1Quiz();
+                    toggleSidebar(false);
+                    return;
+                }
                 if (currentStageIndex === idx) {
                     const subEl = stageBlock.querySelector(".stage-subsections");
                     const chevron = item.querySelector(".stage-toggle-chevron");
@@ -755,7 +788,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 stage.subSections.forEach(sub => {
                     const subBtn = document.createElement("button");
-                    subBtn.className = "w-full text-left px-2.5 py-1.5 rounded-lg text-[11px] text-slate-300 hover:text-brand-amber hover:bg-brand-card/80 transition-all flex items-center gap-2 group";
+                    subBtn.className = `w-full text-left px-2.5 py-1.5 rounded-lg text-[11px] ${
+                        !isUnlocked 
+                            ? "text-slate-500 opacity-60 cursor-not-allowed" 
+                            : "text-slate-300 hover:text-brand-amber hover:bg-brand-card/80"
+                    } transition-all flex items-center gap-2 group`;
 
                     // Check subsection completion status for visual badges (✓)
                     let isSubDone = false;
@@ -770,7 +807,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         isSubDone = Boolean(s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i));
                     }
 
-                    const marker = isSubDone 
+                    const marker = !isUnlocked
+                        ? `<span class="text-slate-500 text-[10px] shrink-0">🔒</span>`
+                        : isSubDone 
                         ? `<span class="text-brand-green font-bold text-xs shrink-0">✓</span>`
                         : `<span class="w-1.5 h-1.5 rounded-full bg-brand-amber/50 group-hover:bg-brand-amber shrink-0 transition-colors"></span>`;
 
@@ -781,6 +820,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     subBtn.addEventListener("click", (e) => {
                         e.stopPropagation();
+                        if (!isUnlocked) {
+                            alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 70% ở Bài 1.1 Kiểm Tra Sát Hạch Đầu Vào (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
+                            jumpToStage1Quiz();
+                            toggleSidebar(false);
+                            return;
+                        }
                         if (currentStageIndex !== idx) {
                             loadStage(idx);
                             renderSyllabus();
@@ -1035,6 +1080,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 7. LESSON / STAGE LOADER
     function loadStage(stageIdx) {
+        if (!isStageUnlocked(stageIdx)) {
+            alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 70% ở Bài 1.1 Kiểm Tra Sát Hạch Đầu Vào (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
+            currentStageIndex = 0;
+            jumpToStage1Quiz();
+            return;
+        }
         currentStageIndex = stageIdx;
         const stage = curriculum.stages[stageIdx];
         if (!stage) return;
