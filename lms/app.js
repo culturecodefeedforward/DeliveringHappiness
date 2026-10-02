@@ -1931,6 +1931,151 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // =========================================================================
+    // STAGE 3 GAMIFICATION: STREAK ENGINE & BADGES (Tham chiếu READ10 Engine)
+    // =========================================================================
+    const STAGE3_BADGES = [
+        {
+            id: "seed_happiness",
+            name: "Hạt Mầm Hạnh Phúc",
+            days: 7,
+            icon: "🌱",
+            desc: "Hoàn thành 7 ngày liên tiếp (≥ 3/5 thói quen). Thói quen hạnh phúc bắt đầu bén rễ."
+        },
+        {
+            id: "sprout_discipline",
+            name: "Cây Kỷ Luật Vươn Mình",
+            days: 14,
+            icon: "🌿",
+            desc: "Bền bỉ 14 ngày liên tiếp (≥ 3/5 thói quen). Kỷ luật vững vàng và lan tỏa."
+        },
+        {
+            id: "dhm_champion",
+            name: "Đại Sứ Hạnh Phúc",
+            days: 21,
+            icon: "🏆",
+            desc: "Trọn vẹn 21 ngày chuyển hóa! Chúc mừng Đại Sứ Hạnh Phúc."
+        }
+    ];
+
+    /**
+     * Tính toán chỉ số Kỷ luật & Chuỗi liên tục (Stage 3 Streak Engine)
+     * Ngày hoàn thành = tích chọn ≥ 3/5 thói quen (M-G-O-F-A)
+     * @param {Object} habitTracker - Object day_1..day_21
+     * @returns {Object} { currentStreak, longestStreak, totalCompletedDays, completedDaysSet }
+     */
+    function calculateStage3Streak(habitTracker) {
+        const completedDays = [];
+        const habitKeys = ["mindfulness", "gratitude", "optimism", "flow", "altruism"];
+
+        for (let d = 1; d <= 21; d++) {
+            const dayData = (habitTracker && habitTracker[`day_${d}`]) || {};
+            const checkedCount = habitKeys.filter(k => !!dayData[k]).length;
+            if (checkedCount >= 3) {
+                completedDays.push(d);
+            }
+        }
+
+        // 1. Tính longestStreak (chuỗi liên tiếp dài nhất trong toàn bộ 21 ngày)
+        let longest = 0;
+        let running = 0;
+        let prev = null;
+        for (const day of completedDays) {
+            if (prev === null || day === prev + 1) {
+                running++;
+            } else {
+                running = 1;
+            }
+            if (running > longest) longest = running;
+            prev = day;
+        }
+
+        // 2. Tính currentStreak (đếm lùi từ ngày cao nhất đã hoàn thành)
+        let current = 0;
+        for (let i = completedDays.length - 1; i >= 0; i--) {
+            if (i === completedDays.length - 1) {
+                current = 1;
+            } else if (completedDays[i] === completedDays[i + 1] - 1) {
+                current++;
+            } else {
+                break;
+            }
+        }
+
+        return {
+            currentStreak: current,
+            longestStreak: longest,
+            totalCompletedDays: completedDays.length,
+            completedDaysSet: new Set(completedDays)
+        };
+    }
+
+    /**
+     * Render Streak Hero Banner (Thống kê, Thanh tiến trình & Bộ 3 Huy hiệu)
+     * @param {Object} streakStats - Kết quả từ calculateStage3Streak
+     */
+    function renderStage3StreakHero(streakStats) {
+        const elCurrent = document.getElementById("streak-current");
+        const elLongest = document.getElementById("streak-longest");
+        const elTotal = document.getElementById("streak-total-days");
+        const elNextLabel = document.getElementById("streak-next-label");
+        const elProgressText = document.getElementById("streak-progress-text");
+        const elProgressBar = document.getElementById("streak-progress-bar");
+        const elCountdownText = document.getElementById("streak-countdown-text");
+        const elBadgesRow = document.getElementById("streak-badges-row");
+
+        if (!elCurrent || !elLongest || !elTotal || !elBadgesRow) return;
+
+        // Cập nhật 3 chỉ số Stat
+        elCurrent.textContent = streakStats.currentStreak;
+        elLongest.textContent = streakStats.longestStreak;
+        elTotal.textContent = streakStats.totalCompletedDays;
+
+        // Xác định huy hiệu kế tiếp cần chinh phục theo currentStreak
+        const nextBadge = STAGE3_BADGES.find(b => b.days > streakStats.currentStreak);
+
+        if (nextBadge) {
+            const daysLeft = nextBadge.days - streakStats.currentStreak;
+            const pct = Math.min(100, Math.round((streakStats.currentStreak / nextBadge.days) * 100));
+            if (elNextLabel) elNextLabel.textContent = `🎯 Mục tiêu: ${nextBadge.name}`;
+            if (elProgressText) elProgressText.textContent = `${streakStats.currentStreak}/${nextBadge.days} ngày (${pct}%)`;
+            if (elProgressBar) elProgressBar.style.width = `${pct}%`;
+            if (elCountdownText) {
+                elCountdownText.innerHTML = `Chỉ còn <strong class="text-white">${daysLeft} ngày</strong> tích cực liên tiếp nữa để mở khóa huy hiệu <span class="text-brand-amber">${nextBadge.icon} ${nextBadge.name}</span>!`;
+            }
+        } else {
+            // Đã đạt mốc 21 ngày
+            if (elNextLabel) elNextLabel.textContent = `🎉 Đỉnh cao 21 Ngày Hoàn Thành!`;
+            if (elProgressText) elProgressText.textContent = `21/21 ngày (100%)`;
+            if (elProgressBar) elProgressBar.style.width = `100%`;
+            if (elCountdownText) {
+                elCountdownText.innerHTML = `🏆 <strong class="text-emerald-400">Trọn vẹn 21 ngày chuyển hóa! Bạn là Đại Sứ Hạnh Phúc!</strong>`;
+            }
+        }
+
+        // Render 3 Huy hiệu (Mở khóa theo longestStreak — "Thành tích cũ không mất")
+        elBadgesRow.innerHTML = STAGE3_BADGES.map(b => {
+            const isUnlocked = streakStats.longestStreak >= b.days;
+            if (isUnlocked) {
+                return `
+                    <div class="flex-1 min-w-[100px] max-w-[180px] p-2.5 sm:p-3 rounded-xl bg-brand-amber/15 border border-brand-amber/40 text-center shadow-lg shadow-amber-500/10 transition-all group" title="${b.desc}">
+                        <div class="text-2xl sm:text-3xl mb-1 filter drop-shadow group-hover:scale-110 transition-transform">${b.icon}</div>
+                        <div class="text-xs font-bold text-brand-amber leading-tight">${b.name}</div>
+                        <div class="text-[10px] text-amber-200/80 font-mono mt-0.5">${b.days} ngày ✓</div>
+                    </div>
+                `;
+            } else {
+                return `
+                    <div class="flex-1 min-w-[100px] max-w-[180px] p-2.5 sm:p-3 rounded-xl bg-slate-800/40 border border-slate-700/50 text-center opacity-40 grayscale transition-all group hover:opacity-60" title="${b.desc}">
+                        <div class="text-2xl sm:text-3xl mb-1 opacity-70">${b.icon}</div>
+                        <div class="text-xs font-semibold text-slate-400 leading-tight">🔒 ${b.name}</div>
+                        <div class="text-[10px] text-slate-500 font-mono mt-0.5">${b.days} ngày</div>
+                    </div>
+                `;
+            }
+        }).join("");
+    }
+
     // 11. STAGE 3 RENDERER (Post-Class 21-Day Dashboard)
     function renderStage3View(stage) {
         const s1 = learnerProgress.stageData["stage-1"] || {};
@@ -2130,53 +2275,106 @@ document.addEventListener("DOMContentLoaded", () => {
             recapIamContent.innerHTML = `<span class="text-slate-500 italic">Chưa có đúc kết I•A•M nào từ Chặng 2.</span>`;
         }
 
-        // 11.4 Render 21-Day Habit Tracker Grid
+        // 11.4 Render 21-Day Habit Tracker Grid (Heatmap 3 Tuần & Gamification)
         habitTrackerGrid.innerHTML = "";
+        habitTrackerGrid.className = "space-y-4";
         const trackerState = s3.habitTracker || {};
         let totalChecked = 0;
         const maxChecks = 21 * 5;
 
-        for (let day = 1; day <= 21; day++) {
-            const dayKey = `day_${day}`;
-            const dayState = trackerState[dayKey] || {};
-            const dayCard = document.createElement("div");
-            dayCard.className = "p-2.5 rounded-xl bg-brand-dark/80 border border-brand-border text-center space-y-1.5";
+        // Cấu trúc 3 tuần chuyển hóa
+        const weeks = [
+            { week: 1, label: "🌱 Tuần 1: Gieo Mầm", desc: "Khởi tạo thói quen & nhịp điệu (Mục tiêu: 7 ngày liên tục)", startDay: 1, endDay: 7 },
+            { week: 2, label: "🌿 Tuần 2: Vươn Mình", desc: "Bền bỉ vượt thử thách & củng cố kỷ luật (Mục tiêu: 14 ngày)", startDay: 8, endDay: 14 },
+            { week: 3, label: "🏆 Tuần 3: Chuyển Hóa", desc: "Khắc sâu phong cách sống & lan tỏa hạnh phúc (Mục tiêu: 21 ngày)", startDay: 15, endDay: 21 }
+        ];
 
-            let habitChecks = ["M", "G", "O", "F", "A"].map((code, idx) => {
-                const keys = ["mindfulness", "gratitude", "optimism", "flow", "altruism"];
-                const isChk = !!dayState[keys[idx]];
-                if (isChk) totalChecked++;
-                return `
-                    <button class="w-5 h-5 rounded text-[10px] font-bold transition-colors ${
-                        isChk ? "bg-brand-amber text-black" : "bg-brand-surface text-slate-500 hover:text-white border border-brand-border"
-                    }" data-day="${dayKey}" data-key="${keys[idx]}">
-                        ${code}
-                    </button>
-                `;
-            }).join("");
+        weeks.forEach(w => {
+            const weekContainer = document.createElement("div");
+            weekContainer.className = "space-y-2 p-3 sm:p-3.5 rounded-xl bg-brand-dark/50 border border-brand-border/70";
 
-            dayCard.innerHTML = `
-                <div class="text-[11px] font-bold text-slate-300">Ngày ${day}</div>
-                <div class="flex flex-wrap justify-center gap-1">${habitChecks}</div>
+            const weekHeader = document.createElement("div");
+            weekHeader.className = "flex flex-wrap items-center justify-between gap-1 text-xs px-1";
+            weekHeader.innerHTML = `
+                <span class="font-bold text-brand-amber flex items-center gap-1.5">${w.label} (Ngày ${w.startDay} - ${w.endDay})</span>
+                <span class="text-[11px] text-slate-400 italic">${w.desc}</span>
             `;
+            weekContainer.appendChild(weekHeader);
 
-            dayCard.querySelectorAll("button").forEach(btn => {
-                btn.onclick = () => {
-                    const d = btn.getAttribute("data-day");
-                    const k = btn.getAttribute("data-key");
-                    s3.habitTracker[d] = s3.habitTracker[d] || {};
-                    s3.habitTracker[d][k] = !s3.habitTracker[d][k];
-                    saveLearnerProgress();
-                    renderStage3View(stage);
-                };
-            });
+            const gridRow = document.createElement("div");
+            gridRow.className = "grid grid-cols-2 min-[440px]:grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-2";
 
-            habitTrackerGrid.appendChild(dayCard);
-        }
+            for (let day = w.startDay; day <= w.endDay; day++) {
+                const dayKey = `day_${day}`;
+                const dayState = trackerState[dayKey] || {};
+
+                const habitKeys = ["mindfulness", "gratitude", "optimism", "flow", "altruism"];
+                const checkedCount = habitKeys.filter(k => !!dayState[k]).length;
+                totalChecked += checkedCount;
+
+                // 4 Cấp độ sắc thái trực quan Heatmap
+                let shadingClass = "bg-slate-800/60 border-slate-700/40"; // Cấp 0 (0/5: xám tối)
+                if (checkedCount >= 5) {
+                    shadingClass = "bg-brand-green/20 border-brand-green/60 shadow-sm shadow-green-500/20"; // Cấp 3 (5/5: xanh glow)
+                } else if (checkedCount >= 3) {
+                    shadingClass = "bg-amber-600/30 border-amber-500/50 shadow-sm shadow-amber-500/10"; // Cấp 2 (3-4/5: hổ phách đậm)
+                } else if (checkedCount >= 1) {
+                    shadingClass = "bg-amber-900/30 border-amber-700/40"; // Cấp 1 (1-2/5: hổ phách nhạt)
+                }
+
+                const isCompletedDay = checkedCount >= 3;
+                const statusBadge = isCompletedDay
+                    ? `<span class="inline-block px-1.5 py-0.2 rounded text-[9px] font-bold bg-brand-green/20 text-brand-green border border-brand-green/40">Đạt ✓</span>`
+                    : `<span class="text-[10px] text-slate-500 font-mono">${checkedCount}/5</span>`;
+
+                const dayCard = document.createElement("div");
+                dayCard.className = `p-2.5 rounded-xl border text-center space-y-1.5 transition-all ${shadingClass}`;
+
+                let habitChecks = ["M", "G", "O", "F", "A"].map((code, idx) => {
+                    const k = habitKeys[idx];
+                    const isChk = !!dayState[k];
+                    return `
+                        <button class="w-5 h-5 rounded text-[10px] font-bold transition-colors ${
+                            isChk ? "bg-brand-amber text-black shadow-sm" : "bg-brand-surface text-slate-500 hover:text-white border border-brand-border"
+                        }" data-day="${dayKey}" data-key="${k}" title="${k}">
+                            ${code}
+                        </button>
+                    `;
+                }).join("");
+
+                dayCard.innerHTML = `
+                    <div class="flex items-center justify-between text-[11px] font-bold text-slate-300 px-0.5">
+                        <span>Ngày ${day}</span>
+                        ${statusBadge}
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-1">${habitChecks}</div>
+                `;
+
+                dayCard.querySelectorAll("button").forEach(btn => {
+                    btn.onclick = () => {
+                        const d = btn.getAttribute("data-day");
+                        const k = btn.getAttribute("data-key");
+                        s3.habitTracker[d] = s3.habitTracker[d] || {};
+                        s3.habitTracker[d][k] = !s3.habitTracker[d][k];
+                        saveLearnerProgress();
+                        renderStage3View(stage);
+                    };
+                });
+
+                gridRow.appendChild(dayCard);
+            }
+
+            weekContainer.appendChild(gridRow);
+            habitTrackerGrid.appendChild(weekContainer);
+        });
 
         trackerCountBadge.textContent = `${totalChecked}/${maxChecks} Lượt`;
         const pct = Math.round((totalChecked / maxChecks) * 100);
         trackerSummaryPercent.textContent = `${pct}%`;
+
+        // Kích hoạt Streak Engine & Cập nhật Streak Hero Banner
+        const streakStats = calculateStage3Streak(s3.habitTracker);
+        renderStage3StreakHero(streakStats);
 
         // 11.5 Weekly Checkins
         const wChecks = s3.weeklyCheckins || {};

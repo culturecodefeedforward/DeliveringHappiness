@@ -1607,7 +1607,42 @@
                                     </div>
                                     <span id="tracker-count-badge" class="text-xs px-2.5 py-1 rounded bg-brand-amber/20 text-brand-amber font-bold border border-brand-amber/30">0/105 Lượt</span>
                                 </div>
-                                <div id="habit-tracker-grid" class="grid grid-cols-2 min-[440px]:grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-2">
+
+                                <!-- Stage 3: Streak Hero Banner -->
+                                <div id="stage3-streak-hero" class="p-4 sm:p-5 rounded-2xl bg-brand-dark/80 border border-brand-amber/30 space-y-4">
+                                    <!-- Row 1: Streak Stats -->
+                                    <div class="grid grid-cols-3 gap-3">
+                                        <div class="text-center p-3 rounded-xl bg-brand-surface/60 border border-brand-border/60">
+                                            <div class="text-2xl sm:text-3xl font-extrabold text-white font-mono" id="streak-current">0</div>
+                                            <div class="text-[10px] uppercase font-bold text-brand-amber tracking-wider mt-0.5">Chuỗi Hiện Tại</div>
+                                        </div>
+                                        <div class="text-center p-3 rounded-xl bg-brand-surface/60 border border-brand-border/60">
+                                            <div class="text-2xl sm:text-3xl font-extrabold text-white font-mono" id="streak-longest">0</div>
+                                            <div class="text-[10px] uppercase font-bold text-slate-300 tracking-wider mt-0.5">Kỷ Lục</div>
+                                        </div>
+                                        <div class="text-center p-3 rounded-xl bg-brand-surface/60 border border-brand-border/60">
+                                            <div class="text-2xl sm:text-3xl font-extrabold text-white font-mono" id="streak-total-days">0</div>
+                                            <div class="text-[10px] uppercase font-bold text-slate-300 tracking-wider mt-0.5">Tổng Ngày</div>
+                                        </div>
+                                    </div>
+                                    <!-- Row 2: Progress Bar to Next Badge -->
+                                    <div class="p-3.5 rounded-xl bg-brand-surface/80 border border-brand-border/80 space-y-2">
+                                        <div class="flex items-center justify-between text-[11px]">
+                                            <span class="text-slate-300 font-semibold flex items-center gap-1.5" id="streak-next-label">🎯 Mục tiêu: Hạt Mầm Hạnh Phúc</span>
+                                            <span class="font-mono font-bold text-brand-amber" id="streak-progress-text">0/7 ngày (0%)</span>
+                                        </div>
+                                        <div class="w-full h-2.5 rounded-full bg-slate-900 border border-slate-800 overflow-hidden relative">
+                                            <div id="streak-progress-bar" class="h-full rounded-full bg-gradient-to-r from-orange-500 via-amber-400 to-yellow-400 transition-all duration-700 shadow-lg shadow-orange-500/30" style="width: 0%"></div>
+                                        </div>
+                                        <p class="text-[11px] text-slate-400" id="streak-countdown-text">Chỉ còn 7 ngày tích cực liên tiếp nữa để mở khóa huy hiệu 🌱 Hạt Mầm Hạnh Phúc!</p>
+                                    </div>
+                                    <!-- Row 3: Badges Showcase -->
+                                    <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3" id="streak-badges-row">
+                                        <!-- Rendered by JS -->
+                                    </div>
+                                </div>
+
+                                <div id="habit-tracker-grid" class="space-y-4">
                                     <!-- Dynamic 21 Day Cards injected via JS -->
                                 </div>
                             </div>
