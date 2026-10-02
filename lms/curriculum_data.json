@@ -344,12 +344,12 @@
           },
           "practicalScenario": {
             "id": "scenario-1-3",
-            "title": "Tình Huống Thực Tế 1.3: Nhân Viên Gen Z Làm Việc Đối Phó & Rời Rạc",
-            "context": "Một nhân viên trẻ có năng lực nhưng chỉ làm việc đúng giờ, không chủ động đóng góp ý kiến trong các cuộc họp và né tránh các nhiệm vụ mới ngoài mô tả công việc (JDs). Quản lý đã thử tăng phụ cấp và thưởng dự án nhưng nhân viên vẫn giữ thái độ 'làm cho xong việc rồi về'.",
-            "facultyAnalysis": "Theo Thuyết Tự Quyết (Self-Determination Theory - Deci & Ryan), tiền thưởng là Động lực ngoại tại (Extrinsic Motivation). Khi áp đặt kiểm soát vi mô (micromanagement), nhu cầu Tự chủ (Autonomy) bị triệt tiêu, dẫn đến hiện tượng 'nghỉ việc trong âm thầm' (quiet quitting). Muốn kích hoạt động lực nội tại, phải nuôi dưỡng 3 đòn bẩy: Tự chủ (Autonomy), Kết nối (Relatedness), và Tiến bộ (Competence).",
-            "modelAnswer": "1. Tự chủ (Autonomy): Giao mục tiêu đầu ra rõ ràng nhưng để nhân viên tự do lựa chọn phương pháp và công cụ triển khai.\n2. Kết nối (Relatedness): Thực hiện buổi 1-on-1 lắng nghe không phán xét để hiểu sở thích, mục tiêu cá nhân và tạo cảm giác an toàn tâm lý (Psychological Safety).\n3. Tiến bộ (Competence / Small Wins): Chia nhỏ dự án lớn thành các cột mốc ngắn hạn, lập tức ghi nhận những đóng góp sáng tạo nhỏ hàng tuần.",
-            "reflectionPrompt": "Tại phòng ban/tổ chức của bạn, nhân viên đang được trao quyền tự chủ ở mức độ nào? Đâu là rào cản lớn nhất?",
-            "actionPrompt": "Một thay đổi nhỏ bạn sẽ thực hiện ngay với 1 thành viên đội ngũ để kích hoạt 3 đòn bẩy SDT trong tuần tới:"
+            "title": "Tình Huống Thực Tế 1.3: Đòn Bẩy Tự Chủ (Báo Cáo MSR Tại Tập Đoàn Công Nghệ, Đối Thoại Khách Hàng 15 Năm) & Đòn Bẩy Kết Nối (Hướng Gió Máy Lạnh)",
+            "context": "Tại một tập đoàn công nghệ toàn cầu, khi cấp trên trực tiếp chưa ghi nhận xứng đáng, thay vì cằn nhằn hay đóng vai nạn nhân thụ động (covert-aggressive), Chị An (nữ quản lý nhân sự) đã chủ động thực hành Đòn bẩy Tự chủ (Autonomy): tự tay viết Báo cáo Tình trạng Hàng tháng (Monthly Status Report - MSR) gửi thẳng ban giám đốc để chứng minh năng suất ngày thứ Sáu làm việc tại nhà (WFH) cao hơn 18% so với văn phòng, từ đó được phê duyệt chính sách linh hoạt ('You cannot change people, but you can change the context'). Tương tự, Chị Hà (Giám đốc Quản lý Khách hàng) khi bị một đối tác lớn 15 năm phản hồi gay gắt, thay vì né tránh, chị chủ động hẹn gặp đối thoại trực tiếp để làm rõ kỳ vọng, giành lại quyền làm chủ tình thế. Song song đó trong giờ làm việc tại văn phòng, Anh Nam (quản lý vận hành) nhận thấy người đồng nghiệp trẻ (Bình) ngồi ngay luồng gió máy lạnh phà thẳng vào đầu rất khó chịu nhưng ngại không dám nói, Anh Nam đã chủ động bước tới hỏi han và chỉnh lại hướng gió thổi sang vị trí khác, tạo nên sự thấu hiểu và gắn kết ấm áp (Đòn bẩy Kết nối).",
+            "facultyAnalysis": "Thuyết Tự Quyết (Self-Determination Theory - Deci & Ryan) chỉ ra 3 nhu cầu tâm lý cốt lõi nuôi dưỡng động lực nội tại: 1) Cảm giác Tự chủ (Autonomy / Sense of Control) - 'You cannot change people, but you can change the context', chuyển hóa từ làm vì SỢ sang làm vì TIN và chủ động kiểm soát kết quả; 2) Cảm giác Kết nối (Relatedness / Connection) - quan tâm tinh tế đến nhu cầu nhỏ của người khác (như hướng gió máy lạnh) để xây dựng an toàn tâm lý (Psychological Safety); 3) Cảm giác Tiến bộ (Competence / Progress) - tôn vinh các chiến thắng nhỏ (Small wins) và tiến trình nỗ lực.",
+            "modelAnswer": "1. Kích hoạt Đòn bẩy Tự chủ: Thay đổi bối cảnh thay vì đóng vai nạn nhân. Chủ động giao tiếp bằng dữ liệu xác thực (như Báo cáo MSR) hoặc đối thoại can đảm (như Chị Hà) để xác lập lại sự hợp tác lành mạnh.\n2. Nuôi dưỡng Đòn bẩy Kết nối: Lắng nghe không phán xét, quan tâm tinh tế đến nhu cầu của đồng đội từ những hành động nhỏ hàng ngày.\n3. Thiết lập Đòn bẩy Tiến bộ: Chia nhỏ mục tiêu, ghi nhận các bước tiến nhỏ (Small wins) và tạo môi trường dám học hỏi từ lỗi lầm.",
+            "reflectionPrompt": "Trong công việc hiện tại, bạn có đang để mình rơi vào thế bị động / đóng vai nạn nhân ở khía cạnh nào không? Bạn có thể chủ động thay đổi bối cảnh như cách Chị An viết MSR hoặc Chị Hà đối thoại ra sao?",
+            "actionPrompt": "Một hành động cụ thể bạn sẽ thực hiện ngay tuần này để kích hoạt đòn bẩy Tự chủ hoặc Kết nối tại đội ngũ:"
           }
         }
       ],
@@ -487,16 +487,16 @@
       "subSections": [
         {
           "id": "sub-2-1",
-          "title": "Mục 2.1: Thói Quen 1 — Biết Ơn (Gratitude Card + IAM)",
-          "target": "habit-panel-gratitude",
-          "habit": "gratitude",
+          "title": "Mục 2.1: Thói Quen 1 — Tỉnh Thức (SBA & Body Scan + IAM)",
+          "target": "habit-panel-mindfulness",
+          "habit": "mindfulness",
           "tab": "tab-practice"
         },
         {
           "id": "sub-2-2",
-          "title": "Mục 2.2: Thói Quen 2 — Tỉnh Thức (SBA & Body Scan + IAM)",
-          "target": "habit-panel-mindfulness",
-          "habit": "mindfulness",
+          "title": "Mục 2.2: Thói Quen 2 — Biết Ơn (Gratitude Card + IAM)",
+          "target": "habit-panel-gratitude",
+          "habit": "gratitude",
           "tab": "tab-practice"
         },
         {
@@ -597,59 +597,10 @@
       ],
       "habits": [
         {
-          "id": "habit-gratitude",
-          "number": 1,
-          "name": "Biết Ơn (Gratitude)",
-          "title": "Thói quen 1: Biết Ơn Bền Vững (Robert Emmons)",
-          "icon": "🙏",
-          "description": "Ghi nhận 4 điều biết ơn mỗi ngày và lan tỏa sự trân trọng đến đồng nghiệp thông qua văn hóa ghi nhận (Kudos).",
-          "audioTrack": "data/artifacts/audio_biet_on.mp3",
-          "tool": {
-            "type": "gratitude_tool",
-            "prompts": [
-              "Điều biết ơn #1 (Về bản thân hoặc sức khỏe):",
-              "Điều biết ơn #2 (Về một cơ hội học hỏi / công việc):",
-              "Điều biết ơn #3 (Về một người đồng đội hỗ trợ bạn):",
-              "Điều biết ơn #4 (Về một nghịch cảnh đã giúp bạn trưởng thành):"
-            ],
-            "cardPrompt": "Gửi 1 lời cảm ơn chân thành đến 1 người cụ thể (Đồng nghiệp / Người thân):"
-          },
-          "quizzes": [
-            {
-              "id": "bk-q8",
-              "question": "Thói quen 'Biết ơn' (Gratitude) được thực hành thông qua hành động cụ thể nào theo gợi ý của chuyên gia Robert Emmons?",
-              "options": [
-                "Viết thư cảm ơn cho tất cả những người mình đã từng gặp trong đời.",
-                "Chỉ biết ơn khi nhận được những món quà hoặc lợi ích lớn lao.",
-                "Nhìn thấy những điều mọi người làm đúng và trân trọng những điều tích cực hiện có.",
-                "Khoe khoang về những thành công của mình để người khác ngưỡng mộ."
-              ],
-              "correctIndex": 2,
-              "explanation": "Đáp án đúng là lựa chọn số 3 theo giáo trình Delivering Happiness."
-            }
-          ],
-          "iam": {
-            "id": "iam_gratitude",
-            "title": "Đúc kết I • A • M — Thói Quen Biết Ơn",
-            "I": "Điểm chạm sâu sắc nhất của bạn về sức mạnh chuyển hóa của Lòng biết ơn là gì?",
-            "A": "Bạn sẽ thiết lập thói quen ghi nhận và gửi lời cảm ơn ai ngay sau khóa học?",
-            "M": "Lòng biết ơn nuôi dưỡng sự bình an và các mối quan hệ của bạn như thế nào?"
-          },
-          "practicalScenario": {
-            "id": "scenario-habit-gratitude",
-            "title": "Tình Huống Thực Tế 2.1: Chiếc Bồn Tắm Đá 900kg Không Lọt Cửa Nhà & Hướng Gió Máy Lạnh — Biết Ơn Điều Bất Như Ý & Quan Tâm Tinh Tế",
-            "context": "Cô Châu đặt mua một chiếc bồn tắm đá nguyên khối nặng 900kg. Khi thợ đá chế tác xong chở đến nhà thì kích thước bị rộng ra vài phân nên không thể lọt qua cửa nhà. Thay vì nổi giận hay trách móc thợ đá, cô bình tĩnh đón nhận điều bất như ý (nghịch cảnh). Một người bạn làm công ty xây dựng đã đứng ra nhận xử lý giúp cô, và nhờ đó cô kết nối được một nhà thầu uy tín giúp sửa chữa, hoàn thiện căn nhà đẹp ngoài mong đợi. Song song đó trong giờ làm việc tại văn phòng, anh Vũ quan sát thấy người đồng nghiệp (Phú) ngồi đúng luồng gió máy lạnh phà thẳng vào đầu rất khó chịu nhưng ngại không dám nói sợ ảnh hưởng mọi người, anh Vũ đã chủ động tiến lại hỏi han và điều chỉnh hướng gió thổi sang vị trí khác để đồng nghiệp thoải mái.",
-            "facultyAnalysis": "GS. Robert Emmons chỉ ra 4 tầng bậc biết ơn: Kết quả tốt, Nghịch cảnh, Đón đầu tương lai, và Bản thân. Đại đa số chỉ biết ơn khi có quà (Tầng 1). Sức mạnh chuyển hóa thực sự nằm ở Biết ơn Nghịch cảnh (Tầng 2) - biến khủng hoảng thành cơ hội tôi luyện bản lĩnh. Trong giao tiếp tổ chức, Lời khen chung chung (Recognition) chỉ tạo hưng phấn ngắn hạn, trong khi Khen ngợi qua Storytelling 5 bước gắn với Giá trị cốt lõi (Core Values) mới tạo nên Dấu ấn văn hóa (Moment of Truth).",
-            "modelAnswer": "1. Đón nhận điều bất như ý (Biết ơn nghịch cảnh): Khi gặp sự cố ngoài ý muốn (như việc chiếc bồn tắm không vừa cửa hay trục trặc dự án), thay vì đổ lỗi, hãy dừng lại tự hỏi 'Thế thì sao? Giờ giải quyết thế nào?' và nhìn nhận bài học/cơ hội mới mà tình huống mang lại.\n2. Thực hành quan tâm tinh tế và Storytelling biết ơn: Chủ động quan sát những nhu cầu nhỏ của đồng đội (như chỉnh hướng gió máy lạnh) và gửi lời tri ân ngắn gọn dưới 60 giây gắn liền với hành vi cụ thể và giá trị phụng sự.",
-            "reflectionPrompt": "Bạn đã từng trải qua nghịch cảnh nào trong công việc mà sau này nhìn lại bạn thầm cảm ơn vì nó đã rèn luyện bản lĩnh cho mình? Nếu kể lại lời cảm ơn 60s cho một đồng nghiệp hôm nay, bạn sẽ kể điều gì?",
-            "actionPrompt": "Viết 1 thông điệp Storytelling biết ơn dưới 60 giây theo khung 5 bước để gửi ngay cho một người đồng đội:"
-          }
-        },
-        {
           "id": "habit-mindfulness",
-          "number": 2,
+          "number": 1,
           "name": "Tỉnh Thức (Mindfulness)",
-          "title": "Thói quen 2: Sống Tỉnh Thức & Kỹ Thuật SBA",
+          "title": "Thói quen 1: Sống Tỉnh Thức & Kỹ Thuật SBA",
           "icon": "🌿",
           "description": "Thực hành khoảng dừng SBA (Stop – Breathe – Ask) để ngắt phản xạ tự động của não bộ khi gặp áp lực.",
           "audioTrack": "data/artifacts/audio_mindful.mp3",
@@ -694,12 +645,61 @@
           },
           "practicalScenario": {
             "id": "scenario-habit-mindfulness",
-            "title": "Tình Huống Thực Tế 2.2: Ca Phẫu Thuật Mổ Mở 2018 — \"Làm Bạn Với Cơn Đau\" & Kỹ Thuật SCBA",
-            "context": "Trước ca đại phẫu mổ mở ổ bụng năm 2018, Cô Châu được Thầy Minh (Chùa Huyền Không Sơn Hạ) chia sẻ hai lời khuyên cốt lõi: \"Cái gì không thuộc về con thì hãy trả lại cho tự nhiên\" và \"Hãy làm bạn với cơn đau\". Khi thuốc tê tan dần sau ca mổ, thay vì gồng mình chống cự và để nỗi sợ hãi phóng đại cảm giác đau đớn, Cô Châu đã thực hành tỉnh thức: an trú vào hơi thở, quan sát và làm bạn với cơn đau vật lý. Nhờ tâm trí bình thản, cơ thể cô phục hồi an toàn mà không cần lạm dụng thuốc giảm đau bên ngoài.",
+            "title": "Tình Huống Thực Tế 2.1: Ca Phẫu Thuật Mổ Mở 2018 — \"Làm Bạn Với Cơn Đau\" & Kỹ Thuật SCBA",
+            "context": "Trước một ca đại phẫu mổ mở ổ bụng phức tạp năm 2018, Chị An (một nữ quản lý đào tạo) được một vị thiền sư dẫn đường chia sẻ hai lời khuyên cốt lõi: \"Cái gì không thuộc về con thì hãy trả lại cho tự nhiên\" và \"Hãy làm bạn với cơn đau\". Khi thuốc tê tan dần sau ca mổ, thay vì gồng mình chống cự và để nỗi sợ hãi phóng đại cảm giác đau đớn, Chị An đã thực hành tỉnh thức: an trú vào hơi thở, quan sát và làm bạn với cơn đau vật lý. Nhờ tâm trí bình thản, cơ thể chị phục hồi an toàn mà không cần lạm dụng thuốc giảm đau bên ngoài.",
             "facultyAnalysis": "GS. Y khoa Jon Kabat-Zinn (cha đẻ MBSR) chỉ rõ: Đau đớn là thực tế vật lý khách quan (Pain is inevitable), nhưng sự đau khổ là do tâm trí phóng đại và kháng cự (Suffering is optional). Khi gặp biến cố hoặc căng thẳng cao độ, hạch hạnh nhân (Amygdala) lập tức kích hoạt phản xạ 'Chiến hay Biến' (Fight or Flight), phóng thích cortisol làm ta phản ứng bốc đồng. Kỹ thuật SCBA (Stop - Calibrate/Breathe - Be Aware - Act) tạo ra một 'khoảng dừng thiêng liêng' (Sacred Pause), đưa máu trở về Vỏ não trước trán (Prefrontal Cortex) để ra quyết định tỉnh táo.",
             "modelAnswer": "1. Tách biệt Thực tế và Phóng đại: Nhận diện cơn đau/sự giận dữ chỉ là trạng thái sinh lý tạm thời, không đồng nhất bản thân với cảm xúc đó ('Tôi đang quan sát cơn giận', chứ không phải 'Tôi là cơn giận').\n2. Thực hành SCBA 4 bước trong công việc:\n  - S (Stop): Dừng ngay hành động gõ bàn phím hoặc phát ngôn khi nhận thấy nhịp tim tăng nhanh.\n  - C/B (Calibrate / Breathe): Hít thở sâu 3 nhịp bụng (4 giây hít vào, 6 giây thở ra) để kích hoạt hệ thần kinh phó giao cảm.\n  - A (Be Aware): Quan sát cơ thể (vai có gồng không, hàm có nghiến không) và tự hỏi: 'Chiếc mũ vai trò của tôi lúc này là gì?'.\n  - A (Act): Phản hồi trên cơ sở sự thấu cảm và mục tiêu dài hạn, thay vì phản xạ ăn miếng trả miếng.",
             "reflectionPrompt": "Khi đối mặt với áp lực gay gắt từ cấp trên hoặc khách hàng, phản xạ tự động đầu tiên của bạn là gì (Chiến - Biến - hay Đóng băng)? Bạn nhận ra điều gì nếu áp dụng khoảng dừng SCBA?",
             "actionPrompt": "Một tình huống căng thẳng cụ thể tuần tới bạn cam kết sẽ dừng lại 3 nhịp thở trước khi phản hồi:"
+          }
+        },
+        {
+          "id": "habit-gratitude",
+          "number": 2,
+          "name": "Biết Ơn (Gratitude)",
+          "title": "Thói quen 2: Biết Ơn Bền Vững (Robert Emmons)",
+          "icon": "🙏",
+          "description": "Ghi nhận 4 điều biết ơn mỗi ngày và lan tỏa sự trân trọng đến đồng nghiệp thông qua văn hóa ghi nhận (Kudos).",
+          "audioTrack": "data/artifacts/audio_biet_on.mp3",
+          "tool": {
+            "type": "gratitude_tool",
+            "prompts": [
+              "Điều biết ơn #1 (Về bản thân hoặc sức khỏe):",
+              "Điều biết ơn #2 (Về một cơ hội học hỏi / công việc):",
+              "Điều biết ơn #3 (Về một người đồng đội hỗ trợ bạn):",
+              "Điều biết ơn #4 (Về một nghịch cảnh đã giúp bạn trưởng thành):"
+            ],
+            "cardPrompt": "Gửi 1 lời cảm ơn chân thành đến 1 người cụ thể (Đồng nghiệp / Người thân):"
+          },
+          "quizzes": [
+            {
+              "id": "bk-q8",
+              "question": "Thói quen 'Biết ơn' (Gratitude) được thực hành thông qua hành động cụ thể nào theo gợi ý của chuyên gia Robert Emmons?",
+              "options": [
+                "Viết thư cảm ơn cho tất cả những người mình đã từng gặp trong đời.",
+                "Chỉ biết ơn khi nhận được những món quà hoặc lợi ích lớn lao.",
+                "Nhìn thấy những điều mọi người làm đúng và trân trọng những điều tích cực hiện có.",
+                "Khoe khoang về những thành công của mình để người khác ngưỡng mộ."
+              ],
+              "correctIndex": 2,
+              "explanation": "Đáp án đúng là lựa chọn số 3 theo giáo trình Delivering Happiness."
+            }
+          ],
+          "iam": {
+            "id": "iam_gratitude",
+            "title": "Đúc kết I • A • M — Thói Quen Biết Ơn",
+            "I": "Điểm chạm sâu sắc nhất của bạn về sức mạnh chuyển hóa của Lòng biết ơn là gì?",
+            "A": "Bạn sẽ thiết lập thói quen ghi nhận và gửi lời cảm ơn ai ngay sau khóa học?",
+            "M": "Lòng biết ơn nuôi dưỡng sự bình an và các mối quan hệ của bạn như thế nào?"
+          },
+          "practicalScenario": {
+            "id": "scenario-habit-gratitude",
+            "title": "Tình Huống Thực Tế 2.2: Chiếc Bồn Tắm Đá 900kg Không Lọt Cửa Nhà — Biết Ơn Điều Bất Như Ý & Nghịch Cảnh",
+            "context": "Chị An đặt mua một chiếc bồn tắm bằng đá nguyên khối nặng 900kg cho ngôi nhà mới. Khi thợ đá chế tác xong chở đến nhà thì kích thước thực tế bị rộng ra vài phân nên không thể nào lọt qua cửa nhà. Thay vì nổi giận hay trách móc thợ đá, chị bình tĩnh đón nhận điều bất như ý (nghịch cảnh) với lòng biết ơn bài học kiên nhẫn. Một người bạn làm công ty xây dựng đã đứng ra nhận xử lý giúp chị, và nhờ đó chị kết nối được một nhà thầu uy tín giúp sửa chữa, hoàn thiện căn nhà đẹp và chuẩn mực ngoài mong đợi.",
+            "facultyAnalysis": "GS. Robert Emmons chỉ ra 4 tầng bậc biết ơn: 1) Kết quả tốt, 2) Nghịch cảnh & Điều bất như ý, 3) Đón đầu tương lai, và 4) Bản thân. Đại đa số chỉ biết ơn khi có quà hoặc thành tựu (Tầng 1). Sức mạnh chuyển hóa thực sự nằm ở Biết ơn Nghịch cảnh (Tầng 2) - biến khủng hoảng thành cơ hội tôi luyện bản lĩnh và mở ra những thiện nhân duyên mới. Trong giao tiếp tổ chức, Lời khen chung chung chỉ tạo hưng phấn ngắn hạn, trong khi Storytelling biết ơn 5 bước gắn với Giá trị cốt lõi mới tạo nên Dấu ấn văn hóa (Moment of Truth).",
+            "modelAnswer": "1. Đón nhận điều bất như ý (Biết ơn nghịch cảnh): Khi gặp sự cố ngoài ý muốn (như việc chiếc bồn tắm không vừa cửa hay trục trặc dự án), thay vì đổ lỗi, hãy dừng lại tự hỏi 'Thế thì sao? Giờ giải quyết thế nào?' và nhìn nhận bài học/cơ hội mới mà tình huống mang lại.\n2. Thực hành Storytelling biết ơn: Dành thời gian ghi nhận những nỗ lực thầm lặng của đồng đội qua thông điệp chân thành dưới 60 giây gắn liền với hành vi cụ thể và giá trị phụng sự.",
+            "reflectionPrompt": "Bạn đã từng trải qua nghịch cảnh nào trong công việc hoặc cuộc sống mà sau này nhìn lại bạn thầm cảm ơn vì nó đã mở ra cơ hội hoặc rèn luyện bản lĩnh cho mình? Nếu kể lại lời cảm ơn 60s cho một người đồng đội hôm nay, bạn sẽ kể điều gì?",
+            "actionPrompt": "Viết 1 thông điệp Storytelling biết ơn dưới 60 giây theo khung 5 bước để gửi ngay cho một người đồng đội:"
           }
         },
         {
@@ -763,12 +763,12 @@
           },
           "practicalScenario": {
             "id": "scenario-habit-optimism",
-            "title": "Tình Huống Thực Tế 2.3: Khách Hàng Khó Tính 15 Năm & Báo Cáo Intel WFH Thứ Sáu (Chuyển Hóa ABCDE)",
-            "context": "Chị Dung (Account Manager) phụ trách một khách hàng lớn hợp tác 15 năm. Khi nhận được phản hồi phàn nàn gay gắt của khách hàng, thay vì thu mình né tránh hay rơi vào bẫy bi quan 3P (Cá nhân hóa - Toàn diện - Vĩnh viễn), Dung đã chọn tự chủ đối thoại trực tiếp để làm rõ kỳ vọng phục vụ. Tương tự tại Intel, khi sếp trực tiếp chưa ghi nhận đúng mức, thay vì cằn nhằn hay đóng vai nạn nhân thụ động, Cô Châu đã tự chủ lập Báo cáo Tình trạng Hàng tháng (Monthly Status Report - MSR) chứng minh năng suất ngày thứ Sáu làm việc tại nhà (WFH) cao hơn 18% so với văn phòng để thuyết phục ban giám đốc phê duyệt chính sách.",
-            "facultyAnalysis": "GS. Martin Seligman chỉ ra: Người bi quan sa vào cái bẫy 3P: Vĩnh viễn (Permanent), Toàn diện (Pervasive), và Cá nhân hóa (Personal). Mô hình ABCDE giúp ta can thiệp tại chữ D (Dispute - Phản biện lý trí): Khách hàng phàn nàn vì quy trình chuyển giao chưa khớp, không phải ghét cá nhân Linh; và đây là sự cố tạm thời có thể khắc phục triệt để. Khi chuyển sang chữ E (Energization/Action), Linh chủ động đối thoại làm rõ kỳ vọng (Courageous Conversation) thay vì đóng vai nạn nhân thụ động (Covert-aggressive).",
-            "modelAnswer": "1. Khử độc tố 3P bằng chữ D (Dispute):\n  - Bác bỏ Cá nhân hóa: Khách hàng sốt ruột vì áp lực từ ban điều hành của họ, không phải tấn công cá nhân tôi.\n  - Bác bỏ Toàn diện: Trục trặc chỉ nằm ở 1 module kiểm thử, 90% các hạng mục còn lại đang đạt chuẩn xuất sắc.\n  - Bác bỏ Vĩnh viễn: Đây là cơ hội chuẩn hóa quy trình bàn giao trong 24 giờ tới.\n2. Kế hoạch hành động mới (E):\n  - Soạn tin nhắn hẹn gặp trực tiếp: 'Em đã rà soát lại quy trình và chuẩn bị 2 phương án xử lý dứt điểm cho anh/chị'.\n  - Trình bày giải pháp bằng dữ liệu xác thực (dựa trên mô hình Monthly Status Report tại Intel) thay vì giải thích quanh co.",
-            "reflectionPrompt": "Bạn có đang giữ niềm tin tiêu cực 3P nào về một mối quan hệ công việc hoặc một dự án khó khăn hiện tại không? Nếu dùng chữ D để phản biện, sự thật khách quan là gì?",
-            "actionPrompt": "Một bước hành động mới (E) bạn sẽ thực hiện ngay trong 24 giờ tới để chủ động gỡ nút thắt:"
+            "title": "Tình Huống Thực Tế 2.3: Ý Tưởng Bị Đồng Nghiệp Bác Bỏ Trong Cuộc Họp & Đứa Trẻ Sơ Sinh (Chuyển Hóa ABCDE)",
+            "context": "Trong cuộc họp phòng ban, một đồng nghiệp nói rằng ý tưởng cải tiến của bạn sẽ không hiệu quả ngay trước mặt cả nhóm. Phản xạ tự động (B-Belief) trỗi dậy: 'Ý tưởng của mình thật ngớ ngẩn, cả nhóm đang coi thường mình, sếp sẽ đánh giá thấp năng lực của mình'. Hậu quả (C-Consequence): bạn cảm thấy tự ái, xấu hổ, thu mình né tránh và quyết định không bao giờ đóng góp ý kiến nữa. Tương tự, người chồng khi phát hiện con gái mới sinh không giật mình trước tiếng động lớn đã rơi vào hoảng loạn, suy diễn con bị điếc di truyền và đau khổ suốt cuối tuần, trong khi người vợ tỉnh thức chọn bình tĩnh kiểm chứng y khoa chuyên môn vào thứ Hai.",
+            "facultyAnalysis": "GS. Martin Seligman chỉ ra: Người bi quan thường sa vào cái bẫy 3P: Vĩnh viễn (Permanent), Toàn diện (Pervasive), và Cá nhân hóa (Personal). Mô hình ABCDE giúp ta can thiệp tại chữ D (Dispute - Phản biện lý trí): Bác bỏ bẫy cá nhân hóa (đồng nghiệp phản biện ý tưởng vì góc nhìn nghiệp vụ chứ không công kích con người bạn); Bác bỏ bẫy toàn diện (một đề xuất chưa phù hợp không đồng nghĩa bạn bất tài); Bác bỏ bẫy vĩnh viễn (đây chỉ là một cuộc họp, có thể hoàn thiện lại). Khi chuyển sang chữ E (Energization & Action), bạn lấy lại năng lượng chủ động đối thoại làm rõ đóng góp.",
+            "modelAnswer": "1. Khử độc tố 3P bằng chữ D (Dispute):\n  - Bác bỏ Cá nhân hóa: Lời nhận xét nhắm vào tính khả thi của đề xuất, không phải tấn công cá nhân tôi.\n  - Bác bỏ Toàn diện: Trục trặc chỉ nằm ở góc độ phân bổ ngân sách, tư duy giải pháp tổng thể vẫn được đánh giá cao.\n  - Bác bỏ Vĩnh viễn: Đây là cơ hội tuyệt vời để thu thập phản hồi và tinh chỉnh phương án hoàn thiện hơn.\n2. Kế hoạch hành động mới (E):\n  - Gặp riêng đồng nghiệp và sếp sau buổi họp để hỏi thêm 2 điểm cần cải thiện.\n  - Chuẩn bị dữ liệu bổ sung và đề xuất thử nghiệm quy mô nhỏ (pilot) vào tuần tới.",
+            "reflectionPrompt": "Bạn có đang giữ niềm tin tiêu cực 3P nào về một mối quan hệ công việc hoặc một ý tưởng bị từ chối gần đây không? Nếu dùng chữ D để phản biện khách quan, sự thật là gì?",
+            "actionPrompt": "Một bước hành động mới (E) bạn sẽ thực hiện ngay trong 24 giờ tới để giải quyết vấn đề thay vì né tránh:"
           }
         },
         {
@@ -807,12 +807,12 @@
           },
           "practicalScenario": {
             "id": "scenario-habit-flow",
-            "title": "Tình Huống Thực Tế 2.4: Cân Bằng Thử Thách 4% & Chu Kỳ 4 Bước Vượt Qua Vùng Vật Lộn (Struggle)",
-            "context": "Một chuyên viên phân tích dữ liệu rơi vào hai thái cực: Khi làm báo cáo số liệu lặp đi lặp lại hàng tuần thì cảm thấy buồn ngủ, chán chường (Boredom); nhưng khi được giao đề bài xây dựng mô hình dự báo tài chính phức tạp thì lại hoang mang, sợ sai và liên tục trì hoãn lướt mạng xã hội (Anxiety). Cả hai trạng thái đều triệt tiêu hiệu suất và gây kiệt sức tinh thần.",
-            "facultyAnalysis": "Mihaly Csikszentmihalyi chỉ ra trạng thái Flow chỉ xuất hiện ở điểm giao thoa giữa Thách thức và Kỹ năng. Nghiên cứu thần kinh học hiện đại đúc kết 'Quy tắc vàng 4%': Nhiệm vụ lý tưởng cần có độ khó cao hơn kỹ năng hiện tại khoảng 4% (độ khó khoảng 7/10). Đặc biệt, Flow không xuất hiện ngay mà trải qua Chu kỳ 4 giai đoạn: 1. Struggle (Vùng vật lộn nạp dữ liệu); 2. Release (Buông lỏng ngắn); 3. Flow (Dòng chảy bùng nổ Dopamine & Endorphin); 4. Recovery (Phục hồi chủ động). Mỗi lần bị cắt ngang bởi điện thoại/email, não bộ mất 15-20 phút mới tái lập được Flow.",
-            "modelAnswer": "1. Áp dụng Chuỗi khởi động 5 bước (5-Step Launch Sequence):\n  - Bước 1: Dọn sạch bàn làm việc và màn hình máy tính (Zero Clutter).\n  - Bước 2: Thiết lập nguyên tắc 'Flow Before Phones' (Tắt toàn bộ thông báo, kích hoạt chế độ Do Not Disturb trong 90 phút).\n  - Bước 3: Xác định rõ 'Đầu ra đơn nhất' (One Single Clear Outcome) cho phiên làm việc.\n  - Bước 4: Tinh chỉnh độ khó: Nếu việc quá nhàm chán, hãy gắn thêm giới hạn thời gian (Microflow) hoặc áp dụng công cụ AI mới; nếu việc quá khó, hãy chia nhỏ thành các chặng 15 phút.\n  - Bước 5: Chấp nhận giai đoạn Vật lộn (Struggle) 10-15 phút đầu tiên mà không từ bỏ.\n2. Phục hồi chủ động: Sau phiên 90 phút, đi bộ thư giãn hoặc uống nước, không nạp mạng xã hội.",
-            "reflectionPrompt": "Đâu là yếu tố phân tâm lớn nhất (Notification, họp đột xuất, đa nhiệm) đang phá vỡ trạng thái Dòng chảy của bạn hàng ngày? Bạn sẽ thiết lập nguyên tắc 'Flow Before Phones' vào khung giờ nào?",
-            "actionPrompt": "Một khung giờ vàng cố định trong ngày bạn cam kết chặn toàn bộ xao lãng để bước vào Flow:"
+            "title": "Tình Huống Thực Tế 2.4: Siêu Sao Lynn Swann, Thế Vận Hội Microflow Mùa Đông & Anh Nam Ứng Dụng AI Kích Hoạt Flow",
+            "context": "Siêu sao bóng bầu dục Lynn Swann (MVP Pittsburgh Steelers) mô tả khoảnh khắc bắt đường bóng quyết định: Thế giới xung quanh dường như chậm lại, mọi ồn ào biến mất, chỉ còn sự tập trung tuyệt đối vào trái bóng. Trong đời thường, thử thách kéo mình dậy vào buổi sáng mùa đông Hà Nội rét căm căm được biến thành 'Thế vận hội Microflow': băm nhỏ mục tiêu lớn thành các chặng 3 phút (chạm sàn cốc nước ấm, bước vào phòng tắm, mặc đồ thể thao). Tại nơi làm việc, khi đối mặt với các công việc nhàm chán lặp đi lặp lại hoặc các bài toán phức tạp, Anh Nam ứng dụng công cụ AI làm đòn bẩy: tự động hóa các thao tác thủ công, tạo phản hồi tức thì để nâng cao kỹ năng tương xứng với thử thách, đưa tâm trí thẳng vào trạng thái Flow hiệu suất cao.",
+            "facultyAnalysis": "Mihaly Csikszentmihalyi chỉ ra trạng thái Flow chỉ xuất hiện ở điểm giao thoa giữa Thách thức (Challenge) và Kỹ năng (Skill). Khi kỹ năng thấp gặp thách thức cao sẽ gây Hoang mang lo âu (Anxiety); kỹ năng cao gặp việc quá dễ sẽ gây Buồn ngủ chán chường (Boredom). Đòn bẩy Flow nằm ở: 1) Quy tắc vàng 4% - liên tục tinh chỉnh độ khó cao hơn kỹ năng một chút; 2) Microflow - biến công việc thành trò chơi có luật và bấm giờ; 3) Ứng dụng công nghệ/AI làm trợ lý loại bỏ các rào cản nhàm chán và cung cấp phản hồi tức thì (Immediate Feedback).",
+            "modelAnswer": "1. Áp dụng Chuỗi kích hoạt Flow 5 bước:\n  - Bước 1: Dọn sạch không gian (Zero Clutter).\n  - Bước 2: Thiết lập nguyên tắc 'Flow Before Phones' (Tắt toàn bộ thông báo trong 60-90 phút).\n  - Bước 3: Xác định rõ một đầu ra đơn nhất (Single Clear Outcome).\n  - Bước 4: Tinh chỉnh độ khó bằng Microflow hoặc dùng AI hỗ trợ để loại bỏ thao tác lặp lại.\n  - Bước 5: Chấp nhận 10-15 phút đầu vùng vật lộn (Struggle) để đón dòng chảy Dopamine & Endorphin.\n2. Phục hồi chủ động sau mỗi phiên tập trung cao độ.",
+            "reflectionPrompt": "Đâu là yếu tố phân tâm lớn nhất đang phá vỡ trạng thái Dòng chảy của bạn hàng ngày? Bạn có thể ứng dụng Microflow hoặc công cụ AI để biến một việc nhàm chán thành trải nghiệm Flow ra sao?",
+            "actionPrompt": "Một khung giờ vàng cố định trong ngày bạn cam kết tắt điện thoại để bước vào trạng thái Flow:"
           }
         },
         {
@@ -864,8 +864,8 @@
           },
           "practicalScenario": {
             "id": "scenario-habit-altruism",
-            "title": "Tình Huống Thực Tế 2.5: Thầy Vũ Bị Lừa Tiền Xe (Smart Giver) & Gói Bảo Hiểm Cho Con Công Nhân Yếm Thế",
-            "context": "Khi dắt con đi ăn, Thầy Vũ gặp một cô gái trẻ 18-20 tuổi khóc lóc cầu xin giúp đỡ, nói lên thành phố khám bệnh bị móc sạch ví và điện thoại, nhờ chuyển khoản tiền xe cho tài xế Grab đang chờ. Thầy Vũ chuyển khoản giúp đỡ nhưng sau đó nhận ra mình đã bị lừa. Thầy đúc kết bài học đắt giá về \"Smart Giver\": Lòng tốt cần đi kèm trí tuệ và sự sắc sảo, nếu cho đi mù quáng (Unsmart Giver) thì chỉ là thỏa mãn cái tôi vị kỷ (egoism) và tiếp tay cho sự dối trá. Ngược lại, tại mô hình Nice Company (Doanh nghiệp tử tế), ban lãnh đạo lắng nghe công nhân yếm thế trong nhà máy và chủ động mua bảo hiểm y tế toàn diện cho con em họ mà không thu thêm tiền, tạo nên sự gắn kết 98% và lòng trung thành bền vững.",
+            "title": "Tình Huống Thực Tế 2.5: Anh Nam Bị Lừa Tiền Xe Tại Bến Xe Miền Tây (Bài Học Smart Giver) & Gói Bảo Hiểm Cho Con Công Nhân Yếm Thế",
+            "context": "Khi đưa con đi ăn, Anh Nam gặp một cô gái trẻ 18-20 tuổi khóc lóc cầu xin giúp đỡ, nói lên thành phố khám bệnh bị móc sạch ví và điện thoại, nhờ chuyển khoản tiền xe cho tài xế Grab đang chờ. Anh Nam chuyển khoản giúp đỡ nhưng sau đó nhận ra mình đã bị lừa. Anh đúc kết bài học đắt giá về 'Smart Giver': Lòng tốt cần đi kèm trí tuệ và sự sắc sảo, nếu cho đi mù quáng (Unsmart Giver) thì chỉ là thỏa mãn cái tôi vị kỷ (egoism) và tiếp tay cho sự dối trá. Ngược lại, tại mô hình Nice Company (Doanh nghiệp tử tế), ban lãnh đạo lắng nghe công nhân yếm thế trong nhà máy và chủ động thương lượng mua bảo hiểm y tế toàn diện cho con em họ mà không thu thêm tiền, tạo nên sự gắn kết 98% và lòng trung thành bền vững.",
             "facultyAnalysis": "Adam Grant (tác giả 'Give and Take') phân loại: Taker (Trục lợi), Matcher (Sòng phẳng), và Giver (Cho đi). Trong nhóm Giver, có Unsmart Giver (cho đi mù quáng, không giữ ranh giới, dễ bị Taker vắt kiệt) và Smart Giver (Vị nhân thông thái: cho đi với Bi - Trí - Dũng). Smart Giver luôn giữ ranh giới lành mạnh (Boundaries), biết từ chối sự lợi dụng, ưu tiên nâng đỡ những người có tinh thần học hỏi, và trao tặng giá trị có tính đòn bẩy cao (như chia sẻ tri thức TPOV - Teachable Point of View, kết nối cơ hội) thay vì cho tiền bạc hay làm hộ việc.",
             "modelAnswer": "1. Thiết lập Bộ lọc Vị nhân Thông thái (3 câu hỏi tự vấn):\n  - Câu 1: Sự giúp đỡ này có giúp đối phương tự lập và phát triển năng lực (Empowerment), hay tạo ra sự ỷ lại (Dependency)?\n  - Câu 2: Tôi có đang hy sinh những giá trị cốt lõi hoặc nguồn lực thiết yếu của bản thân/gia đình một cách vô lý không?\n  - Câu 3: Đối phương có thái độ trân trọng và cầu thị hay đang lợi dụng lòng tốt?\n2. Hành vi vị tha công sở hiệu quả cao (5-Minute Favors):\n  - Dành 15 phút làm 'Buddy' hướng dẫn tư duy cho nhân viên mới thay vì làm hộ việc.\n  - Kết nối cơ hội hợp tác cho đồng nghiệp.\n  - Chia sẻ kinh nghiệm đúc kết (TPOV) giúp đội ngũ tránh đi vào vết xe đổ.",
             "reflectionPrompt": "Bạn đã bao giờ rơi vào trạng thái 'Unsmart Giver' (cho đi kiệt sức vì không dám từ chối hoặc bị người khác lợi dụng) chưa? Làm thế nào để bạn nâng cấp lên 'Smart Giver'?",

@@ -159,8 +159,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 estimatedMinutes: 120,
                 videoUrl: null,
                 subSections: [
-                    { id: "sub-2-1", title: "Mục 2.1: Thói Quen 1 — Biết Ơn (Gratitude Card + IAM)", target: "habit-panel-gratitude", habit: "gratitude", tab: "tab-practice" },
-                    { id: "sub-2-2", title: "Mục 2.2: Thói Quen 2 — Tỉnh Thức (SBA & Body Scan + IAM)", target: "habit-panel-mindfulness", habit: "mindfulness", tab: "tab-practice" },
+                    { id: "sub-2-1", title: "Mục 2.1: Thói Quen 1 — Tỉnh Thức (SBA & Body Scan + IAM)", target: "habit-panel-mindfulness", habit: "mindfulness", tab: "tab-practice" },
+                    { id: "sub-2-2", title: "Mục 2.2: Thói Quen 2 — Biết Ơn (Gratitude Card + IAM)", target: "habit-panel-gratitude", habit: "gratitude", tab: "tab-practice" },
                     { id: "sub-2-3", title: "Mục 2.3: Thói Quen 3 — Lạc Quan Học Được (ABCDE + IAM)", target: "habit-panel-optimism", habit: "optimism", tab: "tab-practice" },
                     { id: "sub-2-4", title: "Mục 2.4: Thói Quen 4 — Phiêu / Flow (Thách thức vs Kỹ năng + IAM)", target: "habit-panel-flow", habit: "flow", tab: "tab-practice" },
                     { id: "sub-2-5", title: "Mục 2.5: Thói Quen 5 — Vị Nhân (Adam Grant Style + IAM)", target: "habit-panel-altruism", habit: "altruism", tab: "tab-practice" },
@@ -169,9 +169,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 audios: [
                     { id: "a2-1", title: "Đòn bẩy Tự chủ: 70.000 giờ làm việc", file: "data/artifacts/70000_gio_lam_viec.mp3", duration: "39:50" },
                     { id: "a2-2", title: "Đòn bẩy Kết nối: Thỏa thuận văn hóa", file: "data/artifacts/thoa_thuan_van_hoa.mp3", duration: "38:20" },
-                    { id: "a2-3", title: "Thói quen 1 (Biết ơn): Âm thanh thực hành", file: "data/artifacts/audio_biet_on.mp3", duration: "33:50" },
-                    { id: "a2-4", title: "Thói quen 1 (Biết ơn): Biết ơn & Hiệu suất", file: "data/artifacts/biet_on_hieu_suat.mp3", duration: "41:10" },
-                    { id: "a2-5", title: "Thói quen 2 (Tỉnh thức): Âm thanh SBA", file: "data/artifacts/audio_mindful.mp3", duration: "35:10" },
+                    { id: "a2-3", title: "Thói quen 1 (Tỉnh thức): Âm thanh SBA", file: "data/artifacts/audio_mindful.mp3", duration: "35:10" },
+                    { id: "a2-4", title: "Thói quen 2 (Biết ơn): Âm thanh thực hành", file: "data/artifacts/audio_biet_on.mp3", duration: "33:50" },
+                    { id: "a2-5", title: "Thói quen 2 (Biết ơn): Biết ơn & Hiệu suất", file: "data/artifacts/biet_on_hieu_suat.mp3", duration: "41:10" },
                     { id: "a2-6", title: "Thói quen 3 (Lạc quan): Tư duy lạc quan", file: "data/artifacts/audio_lac_quan.mp3", duration: "24:25" },
                     { id: "a2-7", title: "Thói quen 3 (Lạc quan): Bài giảng ABCDE", file: "data/artifacts/lac_quan_abcde.mp3", duration: "41:35" },
                     { id: "a2-8", title: "Thói quen 4 (Flow): Trạng thái phiêu", file: "data/artifacts/audio_flow.mp3", duration: "31:45" },
@@ -180,8 +180,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     { id: "a2-11", title: "Thói quen 5 (Vị nhân): Người vị nhân & Nghịch lý tử tế", file: "data/artifacts/nguoi_vi_nhan.mp3", duration: "41:30" }
                 ],
                 habits: [
-                    { id: "habit-gratitude", name: "Biết Ơn" },
                     { id: "habit-mindfulness", name: "Tỉnh Thức" },
+                    { id: "habit-gratitude", name: "Biết Ơn" },
                     { id: "habit-optimism", name: "Lạc Quan" },
                     { id: "habit-flow", name: "Phiêu (Flow)" },
                     { id: "habit-altruism", name: "Vị Nhân" }
@@ -1822,77 +1822,7 @@ document.addEventListener("DOMContentLoaded", () => {
         bindInput("iam-optimism-a", v => { hO.iam.A = v; habits.optimism = hO; debouncedSave(); }, hO.iam.A);
         bindInput("iam-optimism-m", v => { hO.iam.M = v; habits.optimism = hO; debouncedSave(); }, hO.iam.M);
 
-        // 10.4.1 Dropdown 6 Tình Huống Mẫu ABCDE
-        const abcdeSelect = document.getElementById("abcde-scenario-select");
-        if (abcdeSelect) {
-            abcdeSelect.value = hO.scenarioId || "";
-            const st3 = curriculum.stages.find(s => s.id === "stage-3") || {};
-            const allScenarios = st3.abcdeScenarios || [];
-
-            abcdeSelect.onchange = () => {
-                const selectedId = abcdeSelect.value;
-                hO.scenarioId = selectedId;
-
-                const elA = document.getElementById("abcde-a");
-                const elB = document.getElementById("abcde-b");
-                const elC = document.getElementById("abcde-c");
-                const elD = document.getElementById("abcde-d");
-                const elE = document.getElementById("abcde-e");
-
-                if (!selectedId) {
-                    if (elD) elD.placeholder = "Niềm tin B có đúng 100% không? Bằng chứng ngược lại là gì? Góc nhìn khách quan khác?";
-                    if (elE) elE.placeholder = "Hành động cụ thể bạn sẽ làm ngay bây giờ...";
-                    habits.optimism = hO;
-                    debouncedSave();
-                    return;
-                }
-
-                const scenario = allScenarios.find(s => s.id === selectedId);
-                if (scenario) {
-                    hO.abcde.A = scenario.A || scenario.adversity || "";
-                    hO.abcde.B = scenario.B || scenario.belief || "";
-                    hO.abcde.C = scenario.C || scenario.consequence || "";
-
-                    if (elA) elA.value = hO.abcde.A;
-                    if (elB) elB.value = hO.abcde.B;
-                    if (elC) elC.value = hO.abcde.C;
-
-                    const dHint = scenario.hintD || scenario.disputeHint || "Niềm tin B có đúng 100% không? Bằng chứng ngược lại là gì?";
-                    const eHint = scenario.hintE || scenario.actionHint || "Hành động cụ thể bạn sẽ làm ngay bây giờ...";
-
-                    if (elD) {
-                        elD.placeholder = `[Gợi ý phản biện D]: ${dHint}`;
-                        elD.focus();
-                    }
-                    if (elE) {
-                        elE.placeholder = `[Gợi ý hành động E]: ${eHint}`;
-                    }
-
-                    habits.optimism = hO;
-                    debouncedSave();
-                    syncAbcdeBackToLocalStorage(hO.abcde);
-                }
-            };
-
-            // Set placeholder hints on load if scenario is already active
-            if (hO.scenarioId) {
-                const activeScenario = allScenarios.find(s => s.id === hO.scenarioId);
-                if (activeScenario) {
-                    const elD = document.getElementById("abcde-d");
-                    const elE = document.getElementById("abcde-e");
-                    const dHint = activeScenario.hintD || activeScenario.disputeHint;
-                    const eHint = activeScenario.hintE || activeScenario.actionHint;
-                    if (elD && dHint) {
-                        elD.placeholder = `[Gợi ý phản biện D]: ${dHint}`;
-                    }
-                    if (elE && eHint) {
-                        elE.placeholder = `[Gợi ý hành động E]: ${eHint}`;
-                    }
-                }
-            }
-        }
-
-        // 10.4.2 Load Landing Page sync if available
+        // 10.4.1 Load Landing Page sync if available
         loadAbcdeLandingSync();
 
         // 10.5 Habit 4: Flow
@@ -1969,24 +1899,148 @@ document.addEventListener("DOMContentLoaded", () => {
         const btnGotoAbcde = document.getElementById("btn-goto-abcde-practice");
         if (btnGotoAbcde) {
             btnGotoAbcde.onclick = () => {
-                loadStage(1);
-                renderSyllabus();
-                const tabTarget = document.querySelector('.tab-btn[data-tab="tab-practice"]');
-                if (tabTarget) tabTarget.click();
-                const habitTab = document.querySelector('.habit-tab[data-habit="optimism"]');
-                if (habitTab) habitTab.click();
-                setTimeout(() => {
-                    const el = document.getElementById("habit-panel-optimism");
-                    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-                }, 150);
+                const el = document.getElementById("stage3-abcde-workout-container");
+                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+            };
+        }
+
+        // 11.2.1 Stage 3 ABCDE 6-Scenario Workout
+        s3.dailyAbcde = s3.dailyAbcde || { scenarioId: "", A: "", B: "", C: "", D: "", E: "" };
+        const dAbcde = s3.dailyAbcde;
+
+        const s3Select = document.getElementById("stage3-abcde-scenario-select");
+        const s3ElA = document.getElementById("stage3-abcde-a");
+        const s3ElB = document.getElementById("stage3-abcde-b");
+        const s3ElC = document.getElementById("stage3-abcde-c");
+        const s3ElD = document.getElementById("stage3-abcde-d");
+        const s3ElE = document.getElementById("stage3-abcde-e");
+        const s3SaveStatus = document.getElementById("stage3-abcde-save-status");
+        const s3BtnSave = document.getElementById("btn-save-stage3-abcde");
+
+        const allScenarios = stage.abcdeScenarios || [
+            {
+                id: "scenario-1",
+                category: "workplace",
+                name: "Deadline chiều thứ Sáu & Trục trặc tích hợp (Công sở)",
+                A: "16:30 chiều thứ Sáu, trước giờ bàn giao dự án cho khách hàng lớn, một lỗi tích hợp dữ liệu bất ngờ xuất hiện làm sập toàn bộ hệ thống báo cáo.",
+                B: "Đội ngũ bất tài, dự án này coi như vứt đi, khách hàng sẽ cắt hợp đồng ngay lập tức và tôi sẽ mất hết uy tín trong công ty.",
+                C: "Hoảng loạn tột độ, to tiếng quát mắng lập trình viên, muốn tắt điện thoại bỏ về để né tránh thực tại.",
+                hintD: "Hít sâu 3 nhịp SBA. Lỗi này do xung đột tham số mới cập nhật hay lỗi cấu trúc? 95% tính năng cốt lõi vẫn đang chạy tốt. Khách hàng cần một giải pháp khẩn cấp trong 2 giờ tới, không phải sự hoảng loạn.",
+                hintE: "Bình tĩnh kích hoạt quy trình rollback về phiên bản ổn định, triệu tập cuộc họp khẩn 10 phút phân công đúng chuyên gia rà soát log, và chủ động gửi thông báo trung thực kèm phương án dự phòng cho khách hàng."
+            },
+            {
+                id: "scenario-2",
+                category: "workplace",
+                name: "Người đồng đội kéo tụt KPI nhóm (Công sở)",
+                A: "Một thành viên chủ chốt liên tục nộp tài liệu muộn 3 ngày và sản phẩm chất lượng rất sơ sài, khiến cả nhóm bị trừ điểm đánh giá hiệu suất cuối tháng.",
+                B: "Họ vô trách nhiệm, lười biếng và cố tình phá hoại nỗ lực của cả tập thể. Làm việc với người như thế này thì nhóm không bao giờ ngóc đầu lên được.",
+                C: "Ức chế, cô lập thành viên đó trong nhóm chat, từ chối chia sẻ thông tin và định lên sếp lớn khiếu nại để đuổi việc.",
+                hintD: "Đã bao giờ mình hỏi han xem họ đang gặp trở ngại gì chưa? Tháng trước họ vẫn là nhân viên xuất sắc. Sự chậm trễ này là do quá tải cá nhân hay sự cố gia đình?",
+                hintE: "Hẹn riêng một buổi cà phê 20 phút với tinh thần thấu cảm: 'Tôi thấy dạo này bạn có vẻ áp lực, có điều gì tôi hoặc nhóm có thể hỗ trợ bạn không?' để cùng tháo gỡ nút thắt."
+            },
+            {
+                id: "scenario-3",
+                category: "workplace",
+                name: "Ý tưởng cải tiến bị sếp gạt bỏ (Công sở)",
+                A: "Trưởng phòng tâm huyết chuẩn bị đề xuất tự động hóa trong 2 tuần nhưng trong cuộc họp giao ban, ban lãnh đạo chỉ lướt qua 2 phút rồi gạt đi: 'Chưa phải lúc, tập trung làm việc hiện tại'.",
+                B: "Sếp cổ hủ, công ty này không có đất cho sự đổi mới, công sức của mình chẳng bao giờ được ai ghi nhận.",
+                C: "Chán nản, tự ái, quyết định từ nay chỉ làm đúng phận sự, không bao giờ đóng góp sáng kiến nào nữa.",
+                hintD: "Ý tưởng mới cũng như đứa trẻ sơ sinh, cần được bao bọc và nuôi dưỡng. Sếp từ chối vì mô hình chưa đủ số liệu chứng minh ROI tài chính, không phải ghét cá nhân mình.",
+                hintE: "Thu thập số liệu đo lường thực tế trong 1 tuần, làm thí điểm quy mô nhỏ (Proof of Concept) không tốn ngân sách rồi xin trình bày lại 10 phút với dữ liệu thuyết phục."
+            },
+            {
+                id: "scenario-4",
+                category: "workplace",
+                name: "Tái cấu trúc tổ chức & Nỗi sợ tụt lại phía sau (Công sở)",
+                A: "Công ty công bố sáp nhập hai phòng ban và chuyển đổi sang mô hình ứng dụng AI tự động hóa toàn diện, nhiều vị trí truyền thống đứng trước nguy cơ cắt giảm.",
+                B: "Kỹ năng của mình đã lỗi thời, mình già rồi không thể cạnh tranh với lứa trẻ, sớm muộn gì cũng bị đào thải ra đường.",
+                C: "Mất ngủ, hoang mang, đi làm trong tâm trạng ủ rũ lo sợ, giảm sút 50% năng suất làm việc mỗi ngày.",
+                hintD: "AI và tái cấu trúc là xu thế khách quan của toàn cầu, không phải bản án nhắm riêng vào mình. Kinh nghiệm ngành sâu sắc của mình kết hợp với công cụ AI mới chính là đòn bẩy vô giá.",
+                hintE: "Đăng ký ngay khóa học ứng dụng AI thực chiến, chủ động đề xuất trưởng bộ phận thử nghiệm công cụ mới vào tối ưu quy trình của chính mình trong 30 ngày."
+            },
+            {
+                id: "scenario-5",
+                category: "family",
+                name: "Con cái điểm kém liên tục & Nỗi bất an của cha mẹ (Gia đình)",
+                A: "Con trai mang bài kiểm tra học kỳ về với điểm 3 môn Toán, trong khi bạn bè cùng trang lứa đều đạt 8-9 điểm.",
+                B: "Con mình hư hỏng, lười biếng, sau này sẽ không làm nên trò trống gì. Gia đình mình nuôi dạy con thất bại hoàn toàn.",
+                C: "Tức giận lôi con ra mắng chửi thậm tệ, cấm toàn bộ đồ chơi, không khí gia đình u ám căng thẳng như địa ngục.",
+                hintD: "Điểm 3 một môn thi chỉ phản ánh lỗ hổng kiến thức của một giai đoạn, không phản ánh nhân cách hay tương lai cả đời của con. Sự giận dữ của mình thực chất là nỗi sợ bị phán xét.",
+                hintE: "Ôm con vào lòng, lắng nghe con chia sẻ khó khăn ở trường, cùng con lập kế hoạch ôn tập 30 phút mỗi tối và ghi nhận mọi nỗ lực tiến bộ nhỏ của con."
+            },
+            {
+                id: "scenario-6",
+                category: "family",
+                name: "Kế hoạch gia đình bị hủy vào phút chót (Gia đình)",
+                A: "Cả gia đình đã đặt vé đi nghỉ dưỡng cuối tuần sau cả tháng chờ đợi, nhưng sáng thứ Sáu đối tác quan trọng gọi điện yêu cầu xử lý sự cố gấp khiến chuyến đi bị hủy bỏ.",
+                B: "Lúc nào công việc cũng cướp mất hạnh phúc gia đình. Bạn đời và con cái sẽ giận mình mãi mãi và coi mình là người ích kỷ.",
+                C: "Cáu gắt với đối tác, bực bội với vợ/chồng, tự dằn vặt và hủy hoại luôn tâm trạng của cả hai ngày cuối tuần.",
+                hintD: "Đây là tình huống bất khả kháng. Gia đình yêu thương mình và sẽ hiểu nếu mình chia sẻ chân thành bằng sự tôn trọng và tình yêu thương.",
+                hintE: "Ngồi lại xin lỗi chân thành gia đình, cùng con tổ chức một buổi 'cắm trại mini tại phòng khách' với pizza và xem phim tối thứ Bảy, đồng thời đặt lịch dứt khoát cho chuyến đi bù vào tháng sau."
+            }
+        ];
+
+        if (s3Select) {
+            s3Select.value = dAbcde.scenarioId || "";
+            s3Select.onchange = () => {
+                const selId = s3Select.value;
+                dAbcde.scenarioId = selId;
+                if (!selId) {
+                    if (s3ElD) s3ElD.placeholder = "Niềm tin B có đúng 100% không? Bằng chứng khách quan ngược lại là gì? Tôi có đang bị bẫy 3P (Cá nhân hóa - Toàn diện - Vĩnh viễn) không?";
+                    if (s3ElE) s3ElE.placeholder = "Một hành động cụ thể và cảm xúc mới bạn sẽ thực hiện ngay hôm nay...";
+                    debouncedSave();
+                    return;
+                }
+                const sc = allScenarios.find(s => s.id === selId);
+                if (sc) {
+                    dAbcde.A = sc.A;
+                    dAbcde.B = sc.B;
+                    dAbcde.C = sc.C;
+                    if (s3ElA) s3ElA.value = sc.A;
+                    if (s3ElB) s3ElB.value = sc.B;
+                    if (s3ElC) s3ElC.value = sc.C;
+                    if (s3ElD) {
+                        s3ElD.placeholder = `[Gợi ý phản biện D]: ${sc.hintD}`;
+                        s3ElD.focus();
+                    }
+                    if (s3ElE) {
+                        s3ElE.placeholder = `[Gợi ý hành động E]: ${sc.hintE}`;
+                    }
+                    debouncedSave();
+                }
+            };
+
+            if (dAbcde.scenarioId) {
+                const activeSc = allScenarios.find(s => s.id === dAbcde.scenarioId);
+                if (activeSc) {
+                    if (s3ElD && activeSc.hintD) s3ElD.placeholder = `[Gợi ý phản biện D]: ${activeSc.hintD}`;
+                    if (s3ElE && activeSc.hintE) s3ElE.placeholder = `[Gợi ý hành động E]: ${activeSc.hintE}`;
+                }
+            }
+        }
+
+        bindInput("stage3-abcde-a", v => { dAbcde.A = v; debouncedSave(); }, dAbcde.A);
+        bindInput("stage3-abcde-b", v => { dAbcde.B = v; debouncedSave(); }, dAbcde.B);
+        bindInput("stage3-abcde-c", v => { dAbcde.C = v; debouncedSave(); }, dAbcde.C);
+        bindInput("stage3-abcde-d", v => { dAbcde.D = v; debouncedSave(); }, dAbcde.D);
+        bindInput("stage3-abcde-e", v => { dAbcde.E = v; debouncedSave(); }, dAbcde.E);
+
+        if (s3BtnSave) {
+            s3BtnSave.onclick = () => {
+                s3.dailyAbcde = dAbcde;
+                saveLearnerProgress();
+                if (s3SaveStatus) {
+                    s3SaveStatus.classList.remove("hidden");
+                    setTimeout(() => s3SaveStatus.classList.add("hidden"), 3500);
+                }
             };
         }
 
         // 11.3 Recap 5 Habits IAM
         recapIamContent.innerHTML = "";
         const habitNames = {
-            gratitude: "Biết Ơn",
             mindfulness: "Tỉnh Thức",
+            gratitude: "Biết Ơn",
             optimism: "Lạc Quan",
             flow: "Phiêu",
             altruism: "Vị Nhân"
@@ -2021,8 +2075,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const dayCard = document.createElement("div");
             dayCard.className = "p-2.5 rounded-xl bg-brand-dark/80 border border-brand-border text-center space-y-1.5";
 
-            let habitChecks = ["G", "M", "O", "F", "A"].map((code, idx) => {
-                const keys = ["gratitude", "mindfulness", "optimism", "flow", "altruism"];
+            let habitChecks = ["M", "G", "O", "F", "A"].map((code, idx) => {
+                const keys = ["mindfulness", "gratitude", "optimism", "flow", "altruism"];
                 const isChk = !!dayState[keys[idx]];
                 if (isChk) totalChecked++;
                 return `
