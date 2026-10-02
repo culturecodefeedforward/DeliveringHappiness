@@ -155,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 badge: "Mini Step 2 • Offline",
                 title: "Mini step 2 • OFFLINE – Gieo Thói quen",
                 subtitle: "Workshop Live tại lớp • Xưởng thực hành 5 Thói quen Hạnh phúc & I•A•M",
-                instructor: "Ban Giảng Huấn DHM (Cô Châu, Thầy Hưng, Cô Hoàn, Thầy Vũ, Cô Hân, Cô Khánh Linh)",
+                instructor: "Ban Giảng Huấn DHM (Cô Châu, Thầy Hưng, Cô Hoàn, Thầy Vũ, Cô Hân)",
                 estimatedMinutes: 120,
                 videoUrl: null,
                 subSections: [
@@ -209,45 +209,56 @@ document.addEventListener("DOMContentLoaded", () => {
                 resources: [
                     { title: "Bản Thiết Kế Văn Hóa Tổ Chức (Culture Blueprint)", type: "pdf", url: "data/artifacts/culture_blueprint.pdf", icon: "📑" },
                     { title: "Báo cáo Dòng Chảy & Quản Trị Con Người", type: "markdown", url: "data/artifacts/report_dong_chay.md", icon: "📄" },
-                    { title: "Ngân Hàng 50+ Tình Huống Thực Chiến ABCDE", type: "json", url: "data/artifacts/knowledge_base_abcde.json", icon: "💡" }
+                    { title: "Ngân Hàng 50+ Tình Huống & Công Cụ Thực Chiến ABCDE", type: "tool", url: "../practice-abcde.html", icon: "☀️", desc: "Công cụ luyện tập phản biện niềm tin tiêu cực (Disputation) tương tác trực tiếp." }
                 ]
             }
         ]
     };
 
-    // 2. STATE OBJECT
+    // 2. CONFIGURATION & STATE OBJECT
+    const LMS_CONFIG = {
+        PHASE: 1,
+        ENABLE_REMOTE_SYNC: false, // Phase 1: Local-only storage. Phase 2: Kích hoạt khi có Webhook chính thức
+        AUTHORIZED_WEBHOOKS: []
+    };
+
     let currentStageIndex = 0;
     let currentUser = null;
     let authorizedRoster = [];
 
-    let learnerProgress = {
-        completedStages: [],
-        stageData: {
-            "stage-1": {
-                quizAnswers: {},
-                score: 0,
-                passed: false,
-                selectedValues: [],
-                iam_1_1: { I: "", A: "", M: "" },
-                iam_1_2: { I: "", A: "", M: "" },
-                iam_1_3: { I: "", A: "", M: "" }
-            },
-            "stage-2": {
-                habits: {
-                    gratitude: { items: ["", "", "", ""], card: { to: "", msg: "" }, iam: { I: "", A: "", M: "" } },
-                    mindfulness: { sbaChecks: { s: false, b: false, a: false }, situation: "", iam: { I: "", A: "", M: "" } },
-                    optimism: { abcde: { A: "", B: "", C: "", D: "", E: "" }, iam: { I: "", A: "", M: "" } },
-                    flow: { boringTask: "", redesign: "", iam: { I: "", A: "", M: "" } },
-                    altruism: { style: "", act: "", iam: { I: "", A: "", M: "" } }
+    function getInitialLearnerProgress() {
+        return {
+            completedStages: [],
+            stageData: {
+                "stage-1": {
+                    quizAnswers: {},
+                    score: 0,
+                    passed: false,
+                    selectedValues: [],
+                    iam_1_1: { I: "", A: "", M: "" },
+                    iam_1_2: { I: "", A: "", M: "" },
+                    iam_1_3: { I: "", A: "", M: "" },
+                    scenarios: {}
                 },
-                capstoneIam: { I: "", A: "", M: "" }
-            },
-            "stage-3": {
-                habitTracker: {},
-                weeklyCheckins: { w1: "", w2: "", w3: "" }
+                "stage-2": {
+                    habits: {
+                        gratitude: { items: ["", "", "", ""], card: { to: "", msg: "" }, iam: { I: "", A: "", M: "" } },
+                        mindfulness: { sbaChecks: { s: false, b: false, a: false }, situation: "", iam: { I: "", A: "", M: "" } },
+                        optimism: { abcde: { A: "", B: "", C: "", D: "", E: "" }, iam: { I: "", A: "", M: "" } },
+                        flow: { boringTask: "", redesign: "", iam: { I: "", A: "", M: "" } },
+                        altruism: { style: "", act: "", iam: { I: "", A: "", M: "" } }
+                    },
+                    capstoneIam: { I: "", A: "", M: "" }
+                },
+                "stage-3": {
+                    habitTracker: {},
+                    weeklyCheckins: { w1: "", w2: "", w3: "" }
+                }
             }
-        }
-    };
+        };
+    }
+
+    let learnerProgress = getInitialLearnerProgress();
 
     // 3. DOM ELEMENTS
     const sidebar = document.getElementById("sidebar");
@@ -267,6 +278,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnLogout = document.getElementById("btn-logout");
     const btnHeaderResume = document.getElementById("btn-header-resume");
     const heroQuizGateBanner = document.getElementById("hero-quiz-gate-banner");
+    const summaryQuizGateBanner = document.getElementById("summary-quiz-gate-banner");
 
     // Quick Start Modal Elements
     const modalQuickStart = document.getElementById("modal-quick-start");
@@ -342,6 +354,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const quizSummaryContainer = document.getElementById("quiz-summary-container");
     const valuesGrid = document.getElementById("values-grid");
     const valuesCountBadge = document.getElementById("values-count-badge");
+    const pvIntegrationContainer = document.getElementById("pv-integration-container");
+    const pvBannerNoTest = document.getElementById("pv-banner-notest");
+    const pvTestResultCard = document.getElementById("pv-test-result-card");
+    const pvResultMeta = document.getElementById("pv-result-meta");
+    const pvTop7Badges = document.getElementById("pv-top7-badges");
+    const btnApplyTop7Values = document.getElementById("btn-apply-top7-values");
+    const abcdeScenarioSelect = document.getElementById("abcde-scenario-select");
+    const btnGotoAbcdePractice = document.getElementById("btn-goto-abcde-practice");
+    const abcdeIntegrationContainer = document.getElementById("abcde-integration-container");
+    const abcdeBannerLanding = document.getElementById("abcde-banner-landing");
+    const abcdeSyncCard = document.getElementById("abcde-sync-card");
+    const abcdeSyncMeta = document.getElementById("abcde-sync-meta");
+    const abcdeSyncPreviewA = document.getElementById("abcde-sync-preview-a");
+    const abcdeSyncPreviewD = document.getElementById("abcde-sync-preview-d");
+    const btnApplyLandingAbcde = document.getElementById("btn-apply-landing-abcde");
 
     // Stage 2 Practice Elements (Habit Tabs & Panels)
     const habitNavTabs = document.getElementById("habit-nav-tabs");
@@ -567,7 +594,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 learnerProgress = JSON.parse(saved);
             } catch (e) {
                 console.error("Error restoring progress", e);
+                learnerProgress = getInitialLearnerProgress();
             }
+        } else {
+            learnerProgress = getInitialLearnerProgress();
         }
 
         // Ensure proper schema
@@ -600,26 +630,33 @@ document.addEventListener("DOMContentLoaded", () => {
         recordLearnerInDirectory();
         syncToGoogleSheets();
 
-        saveStatusIndicator.textContent = "✓ Đã tự động lưu";
+        saveStatusIndicator.textContent = "✓ Đã lưu trên trình duyệt";
         saveStatusIndicator.className = "text-brand-green font-medium";
         setTimeout(() => {
-            saveStatusIndicator.textContent = "✓ Đã tự động lưu";
+            saveStatusIndicator.textContent = "✓ Đã lưu trên trình duyệt";
         }, 2000);
     }
 
     function syncToGoogleSheets() {
         if (!currentUser) return;
-        const webhookUrl = "https://script.google.com/macros/s/AKfycbycE6vQG7-5y5y5y5/exec"; // standard placeholder
+        if (!LMS_CONFIG.ENABLE_REMOTE_SYNC) {
+            return;
+        }
+        const webhookUrl = LMS_CONFIG.AUTHORIZED_WEBHOOKS[0];
+        if (!webhookUrl || !LMS_CONFIG.AUTHORIZED_WEBHOOKS.includes(webhookUrl)) {
+            return;
+        }
+
         const payload = {
             learner_id: currentUser.learner_id || "DHM-USER",
             name: currentUser.name || "",
             email: currentUser.email || currentUser.identity,
             phone: currentUser.phone || "",
             completed_stages: learnerProgress.completedStages,
-            stage1_values: learnerProgress.stageData["stage-1"].selectedValues || [],
-            stage2_habits: learnerProgress.stageData["stage-2"].habits || {},
-            stage2_capstone: learnerProgress.stageData["stage-2"].capstoneIam || {},
-            stage3_tracker: learnerProgress.stageData["stage-3"].habitTracker || {},
+            stage1_values: (learnerProgress.stageData && learnerProgress.stageData["stage-1"] && learnerProgress.stageData["stage-1"].selectedValues) || [],
+            stage2_habits: (learnerProgress.stageData && learnerProgress.stageData["stage-2"] && learnerProgress.stageData["stage-2"].habits) || {},
+            stage2_capstone: (learnerProgress.stageData && learnerProgress.stageData["stage-2"] && learnerProgress.stageData["stage-2"].capstoneIam) || {},
+            stage3_tracker: (learnerProgress.stageData && learnerProgress.stageData["stage-3"] && learnerProgress.stageData["stage-3"].habitTracker) || {},
             timestamp: new Date().toISOString()
         };
 
@@ -789,7 +826,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 btnSidebarDesktopExpand.classList.remove("hidden");
                 btnSidebarDesktopExpand.classList.add("flex");
             }
-            localStorage.setItem("dhm_sidebar_collapsed_desktop", "true");
+            localStorage.setItem("dhm_sidebar_desktop_collapsed", "true");
+            localStorage.removeItem("dhm_sidebar_collapsed_desktop");
         });
     }
 
@@ -798,18 +836,26 @@ document.addEventListener("DOMContentLoaded", () => {
             sidebar.classList.remove("sidebar-collapsed-desktop");
             btnSidebarDesktopExpand.classList.add("hidden");
             btnSidebarDesktopExpand.classList.remove("flex");
+            localStorage.removeItem("dhm_sidebar_desktop_collapsed");
             localStorage.removeItem("dhm_sidebar_collapsed_desktop");
         });
     }
 
-    // Restore desktop sidebar preference on load
-    if (localStorage.getItem("dhm_sidebar_collapsed_desktop") === "true" && window.innerWidth >= 1024) {
-        sidebar.classList.add("sidebar-collapsed-desktop");
-        if (btnSidebarDesktopExpand) {
-            btnSidebarDesktopExpand.classList.remove("hidden");
-            btnSidebarDesktopExpand.classList.add("flex");
+    // Restore & Migration desktop sidebar preference on load
+    (function initDesktopSidebar() {
+        const legacyKey = localStorage.getItem("dhm_sidebar_collapsed_desktop");
+        if (legacyKey === "true") {
+            localStorage.setItem("dhm_sidebar_desktop_collapsed", "true");
+            localStorage.removeItem("dhm_sidebar_collapsed_desktop");
         }
-    }
+        if (localStorage.getItem("dhm_sidebar_desktop_collapsed") === "true" && window.innerWidth >= 1024) {
+            sidebar.classList.add("sidebar-collapsed-desktop");
+            if (btnSidebarDesktopExpand) {
+                btnSidebarDesktopExpand.classList.remove("hidden");
+                btnSidebarDesktopExpand.classList.add("flex");
+            }
+        }
+    })();
 
     // Accordion Toggle for Model Solutions (Section 2)
     window.toggleModelAnswer = function(scenarioId) {
@@ -832,12 +878,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Smart Resume Learning & Status Evaluator
+    // Smart Resume Learning & Status Evaluator (Idempotent 2-Way Renderer)
     function evaluateLearnerStatus() {
         const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
         const isQuizPassed = Boolean(s1Data.passed || (s1Data.percentage >= 70));
 
-        // 1. Auto-collapse / Refine Hero Quiz Gate Banner
+        // 1. Auto-collapse / Refine Primary Hero Action Bar on Video (Idempotent 2-Way)
         if (heroQuizGateBanner) {
             if (isQuizPassed) {
                 heroQuizGateBanner.className = "p-3 sm:p-3.5 rounded-2xl bg-brand-green/10 border border-brand-green/40 shadow-md flex items-center justify-between flex-wrap gap-2 transition-all";
@@ -866,10 +912,66 @@ document.addEventListener("DOMContentLoaded", () => {
                         }, 100);
                     };
                 }
+            } else {
+                heroQuizGateBanner.className = "p-3.5 sm:p-4 lg:p-5 rounded-2xl bg-gradient-to-r from-brand-amber/20 via-brand-surface to-brand-orange/20 border-2 border-brand-amber/50 shadow-2xl shadow-amber-500/15 flex items-center justify-between flex-wrap gap-3.5 sm:gap-4 transition-all";
+                heroQuizGateBanner.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-brand-amber flex items-center justify-center text-black text-xl sm:text-2xl font-extrabold shadow-md shrink-0">
+                            ⚡
+                        </div>
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="px-2 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px] uppercase tracking-wider shrink-0">Bắt buộc</span>
+                                <h3 class="text-xs sm:text-sm lg:text-base font-extrabold text-white truncate">BÀI TEST SÁT HẠCH ĐẦU VÀO (10 CÂU)</h3>
+                                <span class="text-[11px] sm:text-xs px-2 py-0.5 rounded-full bg-brand-amber/15 text-brand-amber font-mono font-bold border border-brand-amber/30 shrink-0">
+                                    Đạt ≥ 70%
+                                </span>
+                            </div>
+                            <p class="text-xs text-slate-300 mt-0.5 sm:mt-1">
+                                Điều kiện tiên quyết để hoàn thành Mini-step 1 và tham dự lớp Offline.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 w-full sm:flex sm:w-auto sm:justify-end">
+                        <button id="btn-quick-roadmap" type="button" class="min-h-[44px] px-3 sm:px-4 py-2.5 rounded-xl bg-brand-card hover:bg-brand-border text-slate-200 text-xs font-bold border border-brand-border transition-all flex items-center justify-center gap-1.5 shadow-sm text-center">
+                            <span>📘 Lộ Trình & HDSD</span>
+                        </button>
+                        <button id="btn-quick-quiz" type="button" class="min-h-[44px] px-3.5 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-black font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-orange-500/25 hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-1.5 text-center">
+                            <span>⚡ Mở Bài Test ➔</span>
+                        </button>
+                    </div>
+                `;
+                const btnQuickQuiz = document.getElementById("btn-quick-quiz");
+                if (btnQuickQuiz) {
+                    btnQuickQuiz.onclick = () => {
+                        const tabTarget = document.querySelector('.tab-btn[data-tab="tab-practice"]');
+                        if (tabTarget) tabTarget.click();
+                        setTimeout(() => {
+                            const el = document.getElementById("quiz-items-container");
+                            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                        }, 100);
+                    };
+                }
+                const btnQuickRoadmap = document.getElementById("btn-quick-roadmap");
+                if (btnQuickRoadmap) {
+                    btnQuickRoadmap.onclick = () => {
+                        const modal = document.getElementById("modal-quick-start");
+                        if (modal) modal.classList.remove("hidden");
+                    };
+                }
             }
         }
 
-        // 2. Configure Header Resume Button
+        // 2. Summary Quiz Gate Banner: Ẩn khi đạt, Hiện khi chưa đạt
+        if (summaryQuizGateBanner) {
+            if (isQuizPassed) {
+                summaryQuizGateBanner.classList.add("hidden");
+            } else {
+                summaryQuizGateBanner.classList.remove("hidden");
+            }
+        }
+
+        // 3. Configure Header Resume Button
         if (btnHeaderResume) {
             btnHeaderResume.classList.remove("hidden");
             btnHeaderResume.classList.add("sm:flex");
@@ -1046,9 +1148,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (tracks.length === 0) {
             audioTrackSelect.innerHTML = `<option value="">Không có tệp âm thanh ở chặng này</option>`;
+            audioTrackSelect.disabled = true;
+            audioTrackSubtitle.textContent = "Chặng này không có tệp âm thanh bổ trợ.";
+            mainAudioSource.src = "";
             mainAudioPlayer.pause();
+            mainAudioPlayer.load();
+            mainAudioPlayer.classList.add("opacity-50", "pointer-events-none");
             return;
         }
+
+        audioTrackSelect.disabled = false;
+        mainAudioPlayer.classList.remove("opacity-50", "pointer-events-none");
 
         tracks.forEach((track, i) => {
             const opt = document.createElement("option");
@@ -1090,6 +1200,308 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
+
+    // 8.1 Personal Values Test Sync Mapping & Controller
+    const PV_TO_CURRICULUM_MAP = {
+        "Tiến bộ": "Tiến bộ (luôn tiến lên phía trước, phát triển không ngừng)",
+        "Sự thăng tiến": "Tiến bộ (luôn tiến lên phía trước, phát triển không ngừng)",
+        "Thành công": "Thành công (đạt kết quả, hoàn thành nhiệm vụ)",
+        "Thành tựu": "Thành công (đạt kết quả, hoàn thành nhiệm vụ)",
+        "Sáng tạo": "Sáng tạo (nhạy cảm, nhiều sáng kiến, kinh nghiệm)",
+        "Sự sáng tạo": "Sáng tạo (nhạy cảm, nhiều sáng kiến, kinh nghiệm)",
+        "Sự chính trực": "Sự chính trực (trung thực, chân thành, sống theo giá trị của mình)",
+        "Sự trung thực": "Sự chính trực (trung thực, chân thành, sống theo giá trị của mình)",
+        "Hợp tác": "Hợp tác (làm việc theo tập thể, làm việc tốt với mọi người)",
+        "Làm việc nhóm": "Hợp tác (làm việc theo tập thể, làm việc tốt với mọi người)",
+        "Gắn kết cộng đồng": "Hợp tác (làm việc theo tập thể, làm việc tốt với mọi người)",
+        "Trách nhiệm": "Trách nhiệm (có trách nhiệm, luôn đáng tin và chín chắn)",
+        "Giúp đỡ": "Giúp đỡ (hỗ trợ những người xung quanh và cải thiện xã hội)",
+        "Sự phục vụ": "Giúp đỡ (hỗ trợ những người xung quanh và cải thiện xã hội)",
+        "Sự tĩnh tâm": "Sự tĩnh tâm (luôn bình thản thư giãn trong lòng)",
+        "Bình yên": "Sự tĩnh tâm (luôn bình thản thư giãn trong lòng)",
+        "Hạnh phúc gia đình": "Hạnh phúc gia đình (chung sống hòa thuận và coi trọng mọi thành viên)",
+        "Gắn kết gia đình": "Hạnh phúc gia đình (chung sống hòa thuận và coi trọng mọi thành viên)",
+        "Tình bạn": "Tình bạn (mật thiết, quan tâm và những mối quan hệ thân thuộc)",
+        "Tình cảm": "Tình bạn (mật thiết, quan tâm và những mối quan hệ thân thuộc)",
+        "Học vấn": "Học vấn (cam kết luôn lắng nghe, học hỏi)",
+        "Học tập, phát triển": "Học vấn (cam kết luôn lắng nghe, học hỏi)",
+        "Trí tuệ": "Học vấn (cam kết luôn lắng nghe, học hỏi)",
+        "Đóng góp": "Đóng góp (tạo sự khác biệt, luôn cống hiến)",
+        "Sự cống hiến": "Đóng góp (tạo sự khác biệt, luôn cống hiến)",
+        "Độc lập": "Độc lập (tự quản, không chịu sự quản lý của ai)",
+        "Tính Độc Lập": "Độc lập (tự quản, không chịu sự quản lý của ai)",
+        "Tự do": "Độc lập (tự quản, không chịu sự quản lý của ai)",
+        "Sự tự chủ": "Độc lập (tự quản, không chịu sự quản lý của ai)",
+        "Công bằng": "Công bằng (đưa ra cơ hội đối với tất cả mọi người)",
+        "Sự bình đẳng": "Công bằng (đưa ra cơ hội đối với tất cả mọi người)",
+        "Sức khỏe": "Sức khỏe (cơ thể khỏe mạnh, đầy sinh lực và không có bệnh)",
+        "Sức khoẻ": "Sức khỏe (cơ thể khỏe mạnh, đầy sinh lực và không có bệnh)",
+        "Tha thứ": "Tha thứ (luôn sẵn sàng và rộng lượng)",
+        "Bao dung/Tha thứ": "Tha thứ (luôn sẵn sàng và rộng lượng)",
+        "Trung thành": "Trung thành (trách nhiệm, trung thành, tôn trọng)",
+        "Sự cam kết": "Trung thành (trách nhiệm, trung thành, tôn trọng)",
+        "Tính cân bằng": "Tính cân bằng (quan tâm sâu sắc đến từng lĩnh vực cuộc sống)",
+        "Sự cân bằng": "Tính cân bằng (quan tâm sâu sắc đến từng lĩnh vực cuộc sống)",
+        "Phát triển cá nhân": "Phát triển cá nhân (tăng trưởng, sử dụng mọi tiềm lực bản thân)",
+        "Tự khám phá": "Phát triển cá nhân (tăng trưởng, sử dụng mọi tiềm lực bản thân)",
+        "Chất lượng làm việc": "Chất lượng làm việc (xuất sắc, toàn diện, mắc rất ít lỗi)",
+        "Môi trường làm việc": "Chất lượng làm việc (xuất sắc, toàn diện, mắc rất ít lỗi)",
+        "Năng suất": "Chất lượng làm việc (xuất sắc, toàn diện, mắc rất ít lỗi)",
+        "Tôn trọng bản thân": "Tôn trọng bản thân (tự hào về bản thân mình)",
+        "Sự tự tin": "Tôn trọng bản thân (tự hào về bản thân mình)",
+        "Lòng khoan dung": "Lòng khoan dung (coi trọng quan điểm và giá trị của người xung quanh)",
+        "Tâm linh": "Tâm linh (có niềm tin mạnh mẽ, sức mạnh đạo đức đề cao)",
+        "Tôn giáo/Tín ngưỡng": "Tâm linh (có niềm tin mạnh mẽ, sức mạnh đạo đức đề cao)",
+        "Yêu thiên nhiên": "Yêu thiên nhiên (thoải mái hơn khi bước ra thiên nhiên)",
+        "Thoải mái": "Thoải mái (hài lòng, thích thú, nhiều niềm vui và hạnh phúc)",
+        "Niềm vui": "Thoải mái (hài lòng, thích thú, nhiều niềm vui và hạnh phúc)",
+        "Sự hài hước": "Thoải mái (hài lòng, thích thú, nhiều niềm vui và hạnh phúc)",
+        "Lãng mạn": "Thoải mái (hài lòng, thích thú, nhiều niềm vui và hạnh phúc)",
+        "Kiềm chế": "Kiềm chế (chịu trách nhiệm, tự chủ cảm xúc)",
+        "Lòng dũng cảm": "Kiềm chế (chịu trách nhiệm, tự chủ cảm xúc)",
+        "An toàn": "An toàn (cảm thấy an tâm về mọi chuyện)",
+        "Sự an toàn": "An toàn (cảm thấy an tâm về mọi chuyện)",
+        "Sự công nhận": "Sự công nhận (về vị thế, sự tôn trọng và thừa nhận của người khác)",
+        "Được ghi nhận": "Sự công nhận (về vị thế, sự tôn trọng và thừa nhận của người khác)",
+        "Ảnh hưởng": "Ảnh hưởng (ý tưởng độc đáo, lan tỏa quy trình tích cực)",
+        "Lãnh đạo": "Ảnh hưởng (ý tưởng độc đáo, lan tỏa quy trình tích cực)",
+        "Tính đa dạng": "Tính đa dạng (đa dạng trong hành động và kinh nghiệm sống)",
+        "Sự đa dạng": "Tính đa dạng (đa dạng trong hành động và kinh nghiệm sống)",
+        "Tính phong phú": "Tính phong phú (hiểu cuộc sống xung quanh, ứng xử công minh)",
+        "Linh hoạt/Thích ứng": "Tính phong phú (hiểu cuộc sống xung quanh, ứng xử công minh)",
+        "Trật tự": "Trật tự (sự tuân thủ, kiên quyết với những sai trái)",
+        "Tự kỷ luật": "Trật tự (sự tuân thủ, kiên quyết với những sai trái)",
+        "Bảo đảm kinh tế": "Bảo đảm kinh tế (độc lập về những vấn đề tài chính)",
+        "Thu nhập cao": "Bảo đảm kinh tế (độc lập về những vấn đề tài chính)",
+        "Mạo hiểm": "Mạo hiểm (những mạo hiểm mới, đầy thách thức, hồi hộp)",
+        "Phiêu lưu": "Mạo hiểm (những mạo hiểm mới, đầy thách thức, hồi hộp)",
+        "Cạnh tranh": "Cạnh tranh (giành chiến thắng, luôn muốn vươn lên)",
+        "Cảm nhận về nghệ thuật": "Cảm nhận về nghệ thuật (ca kịch, vẽ, văn học)",
+        "Nổi tiếng": "Nổi tiếng (được nhiều người biết đến)",
+        "Thanh thế": "Thanh thế (thể hiện qua sự thành công, địa vị, vị thế)",
+        "Sức mạnh": "Sức mạnh (sự điều khiển, quyền lực, sức ảnh hưởng)",
+        "Chính thống": "Chính thống (coi trọng quá khứ, phong tục tập quán)",
+        "Tài sản": "Tài sản (giàu có, sung túc và đầy đủ)"
+    };
+
+    function loadPersonalValuesTestResult() {
+        const bannerEl = document.getElementById("pv-banner-notest");
+        const cardEl = document.getElementById("pv-test-result-card");
+        const metaEl = document.getElementById("pv-result-meta");
+        const badgesEl = document.getElementById("pv-top7-badges");
+        const btnApplyEl = document.getElementById("btn-apply-top7-values");
+
+        if (!bannerEl || !cardEl) return;
+
+        let pvData = null;
+        if (currentUser && currentUser.email) {
+            const emailKey = "dhm_pv_" + encodeURIComponent(currentUser.email.toLowerCase().trim());
+            const savedByEmail = localStorage.getItem(emailKey);
+            if (savedByEmail) {
+                try { pvData = JSON.parse(savedByEmail); } catch (e) {}
+            }
+        }
+        if (!pvData) {
+            const savedLatest = localStorage.getItem("dhm_personal_values_latest");
+            if (savedLatest) {
+                try { pvData = JSON.parse(savedLatest); } catch (e) {}
+            }
+        }
+
+        if (pvData && pvData.top7 && Array.isArray(pvData.top7) && pvData.top7.length > 0) {
+            bannerEl.classList.add("hidden");
+            cardEl.classList.remove("hidden");
+
+            const learnerName = pvData.fullName || (currentUser ? (currentUser.name || currentUser.email) : "Học viên");
+            const dateStr = pvData.dateStr || (pvData.timestamp ? new Date(pvData.timestamp).toLocaleDateString("vi-VN") : "Gần đây");
+            if (metaEl) {
+                metaEl.textContent = `Học viên: ${learnerName} • Ngày test: ${dateStr}`;
+            }
+
+            if (badgesEl) {
+                badgesEl.innerHTML = "";
+                pvData.top7.forEach((item, idx) => {
+                    const valName = typeof item === "string" ? item : (item.name || item);
+                    const badge = document.createElement("span");
+                    badge.className = "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-brand-amber/15 text-brand-amber border border-brand-amber/30 text-xs font-semibold";
+                    badge.innerHTML = `<span class="w-4 h-4 rounded-full bg-brand-amber text-black text-[10px] font-extrabold flex items-center justify-center shrink-0">${idx + 1}</span><span>${valName}</span>`;
+                    badgesEl.appendChild(badge);
+                });
+            }
+
+            if (btnApplyEl) {
+                btnApplyEl.onclick = () => {
+                    const mod2 = (curriculum.stages[0]?.modules && curriculum.stages[0].modules[1]) ? curriculum.stages[0].modules[1] : null;
+                    const availableOptions = (mod2 && mod2.valueOptions) ? mod2.valueOptions : [];
+
+                    const mappedValues = [];
+                    pvData.top7.forEach(item => {
+                        const rawName = typeof item === "string" ? item : (item.name || item);
+                        if (!rawName) return;
+
+                        if (PV_TO_CURRICULUM_MAP[rawName]) {
+                            mappedValues.push(PV_TO_CURRICULUM_MAP[rawName]);
+                            return;
+                        }
+                        const exact = availableOptions.find(opt => opt === rawName);
+                        if (exact) {
+                            mappedValues.push(exact);
+                            return;
+                        }
+                        const starts = availableOptions.find(opt => opt.toLowerCase().startsWith(rawName.toLowerCase()));
+                        if (starts) {
+                            mappedValues.push(starts);
+                            return;
+                        }
+                        const incl = availableOptions.find(opt => opt.toLowerCase().includes(rawName.toLowerCase()));
+                        if (incl) {
+                            mappedValues.push(incl);
+                            return;
+                        }
+                        mappedValues.push(rawName);
+                    });
+
+                    const uniqueMapped = Array.from(new Set(mappedValues));
+
+                    if (!learnerProgress.stageData["stage-1"]) {
+                        learnerProgress.stageData["stage-1"] = { selectedValues: [] };
+                    }
+                    learnerProgress.stageData["stage-1"].selectedValues = uniqueMapped;
+                    saveLearnerProgress();
+                    renderStage1View(curriculum.stages[0]);
+                    renderSyllabus();
+
+                    const originalHtml = btnApplyEl.innerHTML;
+                    btnApplyEl.innerHTML = `<span>✓ Đã Áp Dụng Top 7!</span>`;
+                    btnApplyEl.classList.remove("from-brand-orange", "to-brand-amber");
+                    btnApplyEl.classList.add("bg-brand-green", "text-black");
+                    setTimeout(() => {
+                        btnApplyEl.innerHTML = originalHtml;
+                        btnApplyEl.classList.add("from-brand-orange", "to-brand-amber");
+                        btnApplyEl.classList.remove("bg-brand-green", "text-black");
+                    }, 2500);
+
+                    if (valuesGrid) {
+                        valuesGrid.scrollIntoView({ behavior: "smooth", block: "center" });
+                    }
+                };
+            }
+        } else {
+            bannerEl.classList.remove("hidden");
+            cardEl.classList.add("hidden");
+        }
+    }
+
+    function loadAbcdeLandingSync() {
+        const bannerEl = document.getElementById("abcde-banner-landing");
+        const cardEl = document.getElementById("abcde-sync-card");
+        const metaEl = document.getElementById("abcde-sync-meta");
+        const previewA = document.getElementById("abcde-sync-preview-a");
+        const previewD = document.getElementById("abcde-sync-preview-d");
+        const btnApplyEl = document.getElementById("btn-apply-landing-abcde");
+
+        if (!bannerEl || !cardEl) return;
+
+        let abcdeData = null;
+        if (currentUser && currentUser.email) {
+            const emailKey = "dhm_abcde_" + encodeURIComponent(currentUser.email.toLowerCase().trim());
+            const savedByEmail = localStorage.getItem(emailKey);
+            if (savedByEmail) {
+                try { abcdeData = JSON.parse(savedByEmail); } catch (e) {}
+            }
+        }
+        if (!abcdeData) {
+            const savedLatest = localStorage.getItem("dhm_abcde_latest");
+            if (savedLatest) {
+                try { abcdeData = JSON.parse(savedLatest); } catch (e) {}
+            }
+        }
+
+        if (abcdeData && (abcdeData.A || abcdeData.D || abcdeData.caseTitle)) {
+            bannerEl.classList.add("hidden");
+            cardEl.classList.remove("hidden");
+
+            const caseTitle = abcdeData.caseTitle || abcdeData.caseId || "Tình huống thực tế";
+            const dateStr = abcdeData.dateStr || (abcdeData.timestamp ? new Date(abcdeData.timestamp).toLocaleDateString("vi-VN") : "Gần đây");
+            if (metaEl) {
+                metaEl.textContent = `Tình huống: ${caseTitle} • Ngày làm: ${dateStr}`;
+            }
+
+            if (previewA) {
+                previewA.textContent = abcdeData.A || "(Chưa có nội dung Nghịch cảnh)";
+            }
+            if (previewD) {
+                previewD.textContent = abcdeData.D || "(Chưa có nội dung Phản biện)";
+            }
+
+            if (btnApplyEl) {
+                btnApplyEl.onclick = () => {
+                    const elA = document.getElementById("abcde-a");
+                    const elB = document.getElementById("abcde-b");
+                    const elC = document.getElementById("abcde-c");
+                    const elD = document.getElementById("abcde-d");
+                    const elE = document.getElementById("abcde-e");
+
+                    const stage2 = learnerProgress.stageData["stage-2"] || { habits: {} };
+                    stage2.habits = stage2.habits || {};
+                    stage2.habits.optimism = stage2.habits.optimism || { abcde: {}, iam: {} };
+                    const hO = stage2.habits.optimism;
+                    hO.abcde = hO.abcde || {};
+
+                    if (abcdeData.A) { hO.abcde.A = abcdeData.A; if (elA) elA.value = abcdeData.A; }
+                    if (abcdeData.B) { hO.abcde.B = abcdeData.B; if (elB) elB.value = abcdeData.B; }
+                    if (abcdeData.C) { hO.abcde.C = abcdeData.C; if (elC) elC.value = abcdeData.C; }
+                    if (abcdeData.D) { hO.abcde.D = abcdeData.D; if (elD) elD.value = abcdeData.D; }
+                    if (abcdeData.E) { hO.abcde.E = abcdeData.E; if (elE) elE.value = abcdeData.E; }
+
+                    learnerProgress.stageData["stage-2"] = stage2;
+                    saveLearnerProgress();
+                    renderSyllabus();
+
+                    const originalHtml = btnApplyEl.innerHTML;
+                    btnApplyEl.innerHTML = `<span>✓ Đã Nạp Bài Tập!</span>`;
+                    btnApplyEl.classList.remove("from-brand-orange", "to-brand-amber");
+                    btnApplyEl.classList.add("bg-brand-green", "text-black");
+                    setTimeout(() => {
+                        btnApplyEl.innerHTML = originalHtml;
+                        btnApplyEl.classList.add("from-brand-orange", "to-brand-amber");
+                        btnApplyEl.classList.remove("bg-brand-green", "text-black");
+                    }, 2500);
+
+                    if (elA) {
+                        elA.scrollIntoView({ behavior: "smooth", block: "center" });
+                        elA.focus();
+                    }
+                };
+            }
+        } else {
+            bannerEl.classList.remove("hidden");
+            cardEl.classList.add("hidden");
+        }
+    }
+
+    function syncAbcdeBackToLocalStorage(abcdeObj) {
+        if (!abcdeObj) return;
+        try {
+            const payload = {
+                source: "lms",
+                caseId: "LMS_CHALLENGE",
+                caseTitle: "Bài tập Chặng 2 (Micro-LMS)",
+                A: abcdeObj.A || "",
+                B: abcdeObj.B || "",
+                C: abcdeObj.C || "",
+                D: abcdeObj.D || "",
+                E: abcdeObj.E || "",
+                timestamp: new Date().toISOString(),
+                dateStr: new Date().toLocaleDateString("vi-VN")
+            };
+            localStorage.setItem("dhm_abcde_latest", JSON.stringify(payload));
+            if (currentUser && currentUser.email) {
+                const emKey = "dhm_abcde_" + encodeURIComponent(currentUser.email.toLowerCase().trim());
+                localStorage.setItem(emKey, JSON.stringify(payload));
+            }
+        } catch (e) {}
+    }
 
     // 9. STAGE 1 RENDERER
     function renderStage1View(stage) {
@@ -1300,6 +1712,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         valuesCountBadge.textContent = `${selectedValues.length} Đã chọn`;
+        loadPersonalValuesTestResult();
 
         // 9.3 IAM Inputs for Stage 1
         bindInput("iam-1-1-i", val => { sData.iam_1_1 = sData.iam_1_1 || {}; sData.iam_1_1.I = val; debouncedSave(); renderSyllabus(); }, sData.iam_1_1?.I);
@@ -1400,14 +1813,87 @@ document.addEventListener("DOMContentLoaded", () => {
         bindInput("abcde-a", v => { hO.abcde.A = v; habits.optimism = hO; debouncedSave(); }, hO.abcde.A);
         bindInput("abcde-b", v => { hO.abcde.B = v; habits.optimism = hO; debouncedSave(); }, hO.abcde.B);
         bindInput("abcde-c", v => { hO.abcde.C = v; habits.optimism = hO; debouncedSave(); }, hO.abcde.C);
-        bindInput("abcde-d", v => { hO.abcde.D = v; habits.optimism = hO; debouncedSave(); }, hO.abcde.D);
-        bindInput("abcde-e", v => { hO.abcde.E = v; habits.optimism = hO; debouncedSave(); }, hO.abcde.E);
+        bindInput("abcde-d", v => { hO.abcde.D = v; habits.optimism = hO; debouncedSave(); syncAbcdeBackToLocalStorage(hO.abcde); }, hO.abcde.D);
+        bindInput("abcde-e", v => { hO.abcde.E = v; habits.optimism = hO; debouncedSave(); syncAbcdeBackToLocalStorage(hO.abcde); }, hO.abcde.E);
         hO.scenario = hO.scenario || {};
         bindInput("scenario-habit-optimism-reflection", v => { hO.scenario.reflection = v; habits.optimism = hO; debouncedSave(); }, hO.scenario.reflection);
         bindInput("scenario-habit-optimism-action", v => { hO.scenario.action = v; habits.optimism = hO; debouncedSave(); }, hO.scenario.action);
         bindInput("iam-optimism-i", v => { hO.iam.I = v; habits.optimism = hO; debouncedSave(); }, hO.iam.I);
         bindInput("iam-optimism-a", v => { hO.iam.A = v; habits.optimism = hO; debouncedSave(); }, hO.iam.A);
         bindInput("iam-optimism-m", v => { hO.iam.M = v; habits.optimism = hO; debouncedSave(); }, hO.iam.M);
+
+        // 10.4.1 Dropdown 6 Tình Huống Mẫu ABCDE
+        const abcdeSelect = document.getElementById("abcde-scenario-select");
+        if (abcdeSelect) {
+            abcdeSelect.value = hO.scenarioId || "";
+            const st3 = curriculum.stages.find(s => s.id === "stage-3") || {};
+            const allScenarios = st3.abcdeScenarios || [];
+
+            abcdeSelect.onchange = () => {
+                const selectedId = abcdeSelect.value;
+                hO.scenarioId = selectedId;
+
+                const elA = document.getElementById("abcde-a");
+                const elB = document.getElementById("abcde-b");
+                const elC = document.getElementById("abcde-c");
+                const elD = document.getElementById("abcde-d");
+                const elE = document.getElementById("abcde-e");
+
+                if (!selectedId) {
+                    if (elD) elD.placeholder = "Niềm tin B có đúng 100% không? Bằng chứng ngược lại là gì? Góc nhìn khách quan khác?";
+                    if (elE) elE.placeholder = "Hành động cụ thể bạn sẽ làm ngay bây giờ...";
+                    habits.optimism = hO;
+                    debouncedSave();
+                    return;
+                }
+
+                const scenario = allScenarios.find(s => s.id === selectedId);
+                if (scenario) {
+                    hO.abcde.A = scenario.A || scenario.adversity || "";
+                    hO.abcde.B = scenario.B || scenario.belief || "";
+                    hO.abcde.C = scenario.C || scenario.consequence || "";
+
+                    if (elA) elA.value = hO.abcde.A;
+                    if (elB) elB.value = hO.abcde.B;
+                    if (elC) elC.value = hO.abcde.C;
+
+                    const dHint = scenario.hintD || scenario.disputeHint || "Niềm tin B có đúng 100% không? Bằng chứng ngược lại là gì?";
+                    const eHint = scenario.hintE || scenario.actionHint || "Hành động cụ thể bạn sẽ làm ngay bây giờ...";
+
+                    if (elD) {
+                        elD.placeholder = `[Gợi ý phản biện D]: ${dHint}`;
+                        elD.focus();
+                    }
+                    if (elE) {
+                        elE.placeholder = `[Gợi ý hành động E]: ${eHint}`;
+                    }
+
+                    habits.optimism = hO;
+                    debouncedSave();
+                    syncAbcdeBackToLocalStorage(hO.abcde);
+                }
+            };
+
+            // Set placeholder hints on load if scenario is already active
+            if (hO.scenarioId) {
+                const activeScenario = allScenarios.find(s => s.id === hO.scenarioId);
+                if (activeScenario) {
+                    const elD = document.getElementById("abcde-d");
+                    const elE = document.getElementById("abcde-e");
+                    const dHint = activeScenario.hintD || activeScenario.disputeHint;
+                    const eHint = activeScenario.hintE || activeScenario.actionHint;
+                    if (elD && dHint) {
+                        elD.placeholder = `[Gợi ý phản biện D]: ${dHint}`;
+                    }
+                    if (elE && eHint) {
+                        elE.placeholder = `[Gợi ý hành động E]: ${eHint}`;
+                    }
+                }
+            }
+        }
+
+        // 10.4.2 Load Landing Page sync if available
+        loadAbcdeLandingSync();
 
         // 10.5 Habit 4: Flow
         const hF = habits.flow || { iam: {} };
@@ -1443,7 +1929,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (btnSyncWorkshop) {
             btnSyncWorkshop.onclick = () => {
                 saveLearnerProgress();
-                alert("✓ Toàn bộ bài tập 5 Thói quen & Capstone IAM đã được lưu trữ và đồng bộ về Google Sheets của Ban Giảng Huấn!");
+                alert("✓ Toàn bộ bài tập 5 Thói quen & Capstone IAM đã được lưu trữ an toàn trên trình duyệt của bạn!\n\n(Lưu ý: Tính năng đồng bộ tự động về Google Sheets của Ban Giảng Huấn sẽ chính thức khả dụng trong Giai đoạn 2).");
             };
         }
     }
@@ -1478,6 +1964,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div><strong class="text-brand-amber">D (Phản biện):</strong> ${abcde.D || "..."}</div>
                 <div><strong class="text-brand-green">E (Hành động):</strong> ${abcde.E || "..."}</div>
             `;
+        }
+
+        const btnGotoAbcde = document.getElementById("btn-goto-abcde-practice");
+        if (btnGotoAbcde) {
+            btnGotoAbcde.onclick = () => {
+                loadStage(1);
+                renderSyllabus();
+                const tabTarget = document.querySelector('.tab-btn[data-tab="tab-practice"]');
+                if (tabTarget) tabTarget.click();
+                const habitTab = document.querySelector('.habit-tab[data-habit="optimism"]');
+                if (habitTab) habitTab.click();
+                setTimeout(() => {
+                    const el = document.getElementById("habit-panel-optimism");
+                    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                }, 150);
+            };
         }
 
         // 11.3 Recap 5 Habits IAM
@@ -1610,6 +2112,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         </button>
                         <a href="${targetImg}" target="_blank" class="py-1.5 px-2.5 rounded-lg bg-brand-dark hover:bg-brand-surface text-slate-300 text-xs border border-brand-border transition-colors">
                             ↗ Mở
+                        </a>
+                    </div>
+                `;
+            } else if (r.type === "tool") {
+                actionBtnHtml = `
+                    <div class="pt-1 border-t border-brand-border/40">
+                        <a href="${r.url}" target="_blank" class="w-full py-1.5 px-2.5 rounded-lg bg-brand-amber/15 hover:bg-brand-amber/25 text-brand-amber text-xs font-bold border border-brand-amber/30 transition-colors flex items-center justify-center gap-1.5">
+                            <span>⚡ Mở Công Cụ Thực Chiến ↗</span>
                         </a>
                     </div>
                 `;
@@ -2431,7 +2941,11 @@ document.addEventListener("DOMContentLoaded", () => {
             if (confirm("Bạn có chắc chắn muốn đăng xuất không?")) {
                 localStorage.removeItem("dhm_lms_auth_user");
                 currentUser = null;
+                learnerProgress = getInitialLearnerProgress();
                 userChip.classList.add("hidden");
+                renderSyllabus();
+                evaluateLearnerStatus();
+                loadStage(0);
                 showAuthModal();
             }
         });
@@ -2442,5 +2956,26 @@ document.addEventListener("DOMContentLoaded", () => {
         loadRoster().then(() => {
             initAuth();
         });
+    });
+
+    // Auto-refresh Personal Values & ABCDE results on window focus and storage event
+    window.addEventListener("focus", () => {
+        if (currentStageIndex === 0) {
+            loadPersonalValuesTestResult();
+        } else if (currentStageIndex === 1) {
+            loadAbcdeLandingSync();
+        }
+    });
+    window.addEventListener("storage", (e) => {
+        if (e.key && (e.key === "dhm_personal_values_latest" || e.key.startsWith("dhm_pv_"))) {
+            if (currentStageIndex === 0) {
+                loadPersonalValuesTestResult();
+            }
+        }
+        if (e.key && (e.key === "dhm_abcde_latest" || e.key.startsWith("dhm_abcde_"))) {
+            if (currentStageIndex === 1) {
+                loadAbcdeLandingSync();
+            }
+        }
     });
 });

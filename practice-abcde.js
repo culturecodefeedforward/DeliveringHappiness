@@ -41,7 +41,19 @@
   document.addEventListener("DOMContentLoaded", () => {
     loadCaseStudies();
     setupEventListeners();
+    checkLmsSyncNotice();
   });
+
+  // Check and display LMS sync notice if user is known
+  function checkLmsSyncNotice() {
+    try {
+      const storedUser = localStorage.getItem("dhm_lms_auth_user");
+      const noticeEl = document.getElementById("lmsSyncNotice");
+      if (noticeEl && storedUser) {
+        noticeEl.style.display = "flex";
+      }
+    } catch (e) {}
+  }
 
   // Load Case Studies from the static JSON file
   function loadCaseStudies() {
@@ -178,12 +190,54 @@
     resultSuggestD.textContent = parsedContent.D;
     resultSuggestE.textContent = parsedContent.E;
 
+    // Save result to localStorage for LMS synchronization
+    saveAbcdeResultToLocalStorage(valB, valC, valD, valE);
+
     // Hide input area, show results area
     practiceArea.classList.add("hidden");
     resultsArea.classList.remove("hidden");
 
     // Smooth scroll to results
     resultsArea.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // Save ABCDE payload to localStorage for Micro-LMS sync
+  function saveAbcdeResultToLocalStorage(valB, valC, valD, valE) {
+    try {
+      const adv = (parsedContent && parsedContent.A) ? parsedContent.A : (adversityContent ? adversityContent.textContent : "");
+      const cId = selectedCase ? selectedCase.id : "CUSTOM";
+      const cTitle = (selectedCase && selectedCase.metadata) ? (selectedCase.metadata.title || selectedCase.id) : "Tình huống thực hành";
+
+      const payload = {
+        source: "landing_page",
+        caseId: cId,
+        caseTitle: cTitle,
+        A: adv,
+        B: valB,
+        C: valC,
+        D: valD,
+        E: valE,
+        modelD: (parsedContent && parsedContent.D) ? parsedContent.D : "",
+        modelE: (parsedContent && parsedContent.E) ? parsedContent.E : "",
+        timestamp: new Date().toISOString(),
+        dateStr: new Date().toLocaleDateString('vi-VN')
+      };
+
+      localStorage.setItem("dhm_abcde_latest", JSON.stringify(payload));
+
+      const storedUser = localStorage.getItem("dhm_lms_auth_user");
+      if (storedUser) {
+        try {
+          const u = JSON.parse(storedUser);
+          if (u && (u.email || u.identity)) {
+            const em = (u.email || u.identity).toLowerCase().trim();
+            localStorage.setItem("dhm_abcde_" + encodeURIComponent(em), JSON.stringify(payload));
+          }
+        } catch (e) {}
+      }
+    } catch (err) {
+      console.warn("Could not save ABCDE to localStorage:", err);
+    }
   }
 
   // Handle reset

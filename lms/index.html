@@ -327,7 +327,7 @@
                     <!-- TAB 1: SUMMARY & CORE TAKEAWAYS -->
                     <div id="tab-summary" class="tab-content p-6 lg:p-8 space-y-6">
                         <!-- PROMINENT TEST GATE CALLOUT BANNER (ĐÁP ỨNG FEEDBACK CÔ CHÂU) -->
-                        <div id="hero-quiz-gate-banner" class="p-5 rounded-2xl bg-gradient-to-r from-brand-amber/20 via-brand-card to-brand-orange/20 border-2 border-brand-amber flex flex-col md:flex-row items-center justify-between gap-4 shadow-xl shadow-amber-500/10">
+                        <div id="summary-quiz-gate-banner" class="p-5 rounded-2xl bg-gradient-to-r from-brand-amber/20 via-brand-card to-brand-orange/20 border-2 border-brand-amber flex flex-col md:flex-row items-center justify-between gap-4 shadow-xl shadow-amber-500/10">
                             <div class="flex items-center gap-3.5">
                                 <div class="w-12 h-12 rounded-xl bg-brand-amber flex items-center justify-center text-2xl text-black font-extrabold shadow-md shrink-0">
                                     ⚡
@@ -502,6 +502,56 @@
                                         <span class="px-2 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px]">SECTION 1</span>
                                         <span class="text-xs font-bold text-brand-amber">💭 Định Vị La Bàn & Phản Tư I • A • M 1.2</span>
                                     </div>
+
+                                    <!-- PERSONAL VALUES TEST SYNC INTEGRATION CONTAINER -->
+                                    <div id="pv-integration-container" class="space-y-3">
+                                        <!-- State A: Banner Link (shown when no test result found) -->
+                                        <div id="pv-banner-notest" class="p-3.5 rounded-xl bg-gradient-to-r from-brand-amber/15 via-brand-surface to-brand-card border border-brand-amber/30 flex items-center justify-between flex-wrap gap-3">
+                                            <div class="space-y-0.5">
+                                                <div class="flex items-center gap-2">
+                                                    <span class="px-2 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px]">GỢI Ý TỰ ĐỘNG</span>
+                                                    <h4 class="text-xs font-bold text-white">Bạn đã làm bài test La Bàn Giá Trị (1vs1 Duel) trên Landing Page chưa?</h4>
+                                                </div>
+                                                <p class="text-[11px] text-slate-300">
+                                                    Tham gia bài test đối đầu trực quan 1vs1 để hệ thống tự động tìm ra Top 7 Giá trị cốt lõi dẫn đường và đồng bộ về đây.
+                                                </p>
+                                            </div>
+                                            <a href="../personal-value.html" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-xl bg-brand-amber hover:bg-amber-400 text-black font-extrabold text-xs shadow-md transition-all flex items-center gap-1.5 shrink-0">
+                                                <span>🧭 Làm bài test 1vs1 ↗</span>
+                                            </a>
+                                        </div>
+
+                                        <!-- State B: Result Card (hidden by default, revealed if localStorage has test data) -->
+                                        <div id="pv-test-result-card" class="hidden p-4 rounded-xl bg-gradient-to-br from-brand-surface to-brand-card border-2 border-brand-amber/50 shadow-lg shadow-amber-500/10 space-y-3">
+                                            <div class="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-brand-border/60">
+                                                <div class="flex items-center gap-2.5">
+                                                    <span class="w-8 h-8 rounded-lg bg-brand-amber flex items-center justify-center text-black font-extrabold text-base">🧭</span>
+                                                    <div>
+                                                        <div class="text-xs font-bold text-white flex items-center gap-2">
+                                                            <span>KẾT QUẢ LA BÀN GIÁ TRỊ TỪ BÀI TEST 1VS1</span>
+                                                            <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-semibold border border-emerald-500/30">Đã đồng bộ</span>
+                                                        </div>
+                                                        <p id="pv-result-meta" class="text-[11px] text-slate-400">Dữ liệu từ Landing Page</p>
+                                                    </div>
+                                                </div>
+                                                <div class="flex items-center gap-2">
+                                                    <button type="button" id="btn-apply-top7-values" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-black font-extrabold text-xs shadow-md hover:brightness-110 active:scale-95 transition-all flex items-center gap-1.5">
+                                                        <span>✨ Áp dụng Top 7 vào La Bàn</span>
+                                                    </button>
+                                                    <a href="../personal-value.html" target="_blank" rel="noopener noreferrer" class="text-[11px] text-brand-amber hover:underline flex items-center gap-1 py-1 px-2 rounded hover:bg-brand-amber/10 transition-colors">
+                                                        <span>Làm lại ↗</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="text-[11px] font-semibold text-slate-300 mb-1.5">Top 7 Giá trị cốt lõi ưu tiên cao nhất của bạn:</div>
+                                                <div id="pv-top7-badges" class="flex flex-wrap gap-1.5">
+                                                    <!-- Badges injected via JS -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div id="values-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 max-h-80 overflow-y-auto pr-1">
                                         <!-- Dynamic 41 value cards injected via JS -->
                                     </div>
@@ -744,10 +794,10 @@
                                         <span>💡 PHẦN 2: TÌNH HUỐNG THỰC TẾ & BÀI TẬP MẪU GỢI Ý (MÔ HÌNH DUY)</span>
                                     </div>
                                     <div class="text-xs font-bold text-white flex items-center gap-1.5">
-                                        <span>Tình Huống Thực Tế 2.1: Chiếc Máy Lạnh Giữa Đêm & Bồn Tắm Đá 900kg — Nghịch Cảnh & Storytelling Biết Ơn Dưới 60 Giây</span>
+                                        <span>Tình Huống Thực Tế 2.1: Chiếc Bồn Tắm Đá 900kg Không Lọt Cửa Nhà & Hướng Gió Máy Lạnh — Biết Ơn Điều Bất Như Ý & Quan Tâm Tinh Tế</span>
                                     </div>
                                     <p class="text-xs text-slate-300 leading-relaxed bg-brand-surface/60 p-3 rounded-lg border border-brand-border/40">
-                                        Khi vận chuyển chiếc bồn tắm đá nguyên khối nặng 900kg lên tầng cao, dây cáp xe cẩu rung lắc dữ dội có nguy cơ sập đổ toàn bộ công trình. Thay vì hoảng loạn đổ lỗi, người chủ nhà đã kích hoạt lòng biết ơn nghịch cảnh: biết ơn vì 10 ngón tay chân vẫn còn nguyên vẹn, biết ơn vì có cơ hội nhận bài học chuẩn bị kỹ thuật. Cùng lúc đó tại văn phòng, một quản lý muốn tri ân đồng đội đã lặng lẽ đến sớm 30 phút bật sẵn máy lạnh để cả phòng không bị ngột ngạt giữa trưa nắng 40 độ.
+                                        Cô Châu đặt mua một chiếc bồn tắm đá nguyên khối nặng 900kg. Khi thợ đá chế tác xong chở đến nhà thì kích thước bị rộng ra vài phân nên không thể lọt qua cửa nhà. Thay vì nổi giận hay trách móc thợ đá, cô bình tĩnh đón nhận điều bất như ý (nghịch cảnh). Một người bạn làm công ty xây dựng đã đứng ra nhận xử lý giúp cô, và nhờ đó cô kết nối được một nhà thầu uy tín giúp sửa chữa, hoàn thiện căn nhà đẹp ngoài mong đợi. Song song đó trong giờ làm việc tại văn phòng, anh Vũ quan sát thấy người đồng nghiệp (Phú) ngồi đúng luồng gió máy lạnh phà thẳng vào đầu rất khó chịu nhưng ngại không dám nói sợ ảnh hưởng mọi người, anh Vũ đã chủ động tiến lại hỏi han và điều chỉnh hướng gió thổi sang vị trí khác để đồng nghiệp thoải mái.
                                     </p>
                                     <!-- Accordion trigger button -->
                                     <button type="button" onclick="window.toggleModelAnswer('scenario-habit-gratitude')" class="w-full py-2.5 px-3.5 rounded-xl bg-brand-amber/15 hover:bg-brand-amber/25 text-brand-amber text-xs font-bold border border-brand-amber/30 transition-all flex items-center justify-between gap-2 min-h-[44px]">
@@ -764,7 +814,7 @@
                                         </p>
                                         <div class="font-bold text-brand-green pt-1">🎯 Bài tập mẫu gợi ý (Model Solution):</div>
                                         <div class="space-y-1 text-slate-200 leading-relaxed">
-                                            1. Kích hoạt Lòng biết ơn nghịch cảnh: Khi đối mặt với sự cố dự án/khủng hoảng, lập tức liệt kê 3 điều may mắn hoặc bài học quý giá mà tình huống này mang lại trước khi tìm phương án khắc phục.<br>2. Áp dụng Khung Storytelling Biết ơn 5 bước (dưới 60 giây):<br>- Bước 1: Gọi tên người nhận và bối cảnh sự việc cụ thể.<br>- Bước 2: Kể lại hành vi/hành động vượt trội của họ (không chỉ là nhiệm vụ thông thường).<br>- Bước 3: Nêu rõ tác động tích cực mà hành động đó mang lại cho bạn hoặc đội ngũ.<br>- Bước 4: Liên kết hành vi đó với Giá trị cốt lõi của tổ chức (Sự chu đáo, Tinh thần phụng sự).<br>- Bước 5: Bày tỏ lời cảm ơn chân thành từ trái tim.
+                                            1. Đón nhận điều bất như ý (Biết ơn nghịch cảnh): Khi gặp sự cố ngoài ý muốn (như việc chiếc bồn tắm không vừa cửa hay trục trặc dự án), thay vì đổ lỗi, hãy dừng lại tự hỏi 'Thế thì sao? Giờ giải quyết thế nào?' và nhìn nhận bài học/cơ hội mới mà tình huống mang lại.<br>2. Thực hành quan tâm tinh tế và Storytelling biết ơn: Chủ động quan sát những nhu cầu nhỏ của đồng đội (như chỉnh hướng gió máy lạnh) và gửi lời tri ân ngắn gọn dưới 60 giây gắn liền với hành vi cụ thể và giá trị phụng sự.
                                         </div>
                                     </div>
                                     <!-- Learner response -->
@@ -895,6 +945,85 @@
                                     <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-surface border border-brand-border text-[11px] font-bold text-slate-300">
                                         <span>📌 PHẦN 1: KHÁI NIỆM & CÔNG CỤ THỰC HÀNH CỐT LÕI</span>
                                     </div>
+
+                                    <!-- ABCDE LANDING PAGE SYNC INTEGRATION CONTAINER -->
+                                    <div id="abcde-integration-container" class="space-y-3">
+                                        <!-- State A: Banner Link (shown when no test/practice result found) -->
+                                        <div id="abcde-banner-landing" class="p-3.5 rounded-xl bg-gradient-to-r from-brand-amber/15 via-brand-surface to-brand-card border border-brand-amber/30 flex items-center justify-between flex-wrap gap-3">
+                                            <div class="space-y-0.5">
+                                                <div class="flex items-center gap-2">
+                                                    <span class="px-2 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px]">CÔNG CỤ THỰC CHIẾN</span>
+                                                    <h4 class="text-xs font-bold text-white">Thực hành ABCDE với 50+ Case Study thực tế trên Landing Page</h4>
+                                                </div>
+                                                <p class="text-[11px] text-slate-300">
+                                                    Khám phá kho 50+ tình huống công sở & đời sống, luyện phản biện D (Disputation) và đối chiếu với lời giải mẫu của chuyên gia.
+                                                </p>
+                                            </div>
+                                            <a href="../practice-abcde.html" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-xl bg-brand-amber hover:bg-amber-400 text-black font-extrabold text-xs shadow-md transition-all flex items-center gap-1.5 shrink-0">
+                                                <span>⚡ Mở Công Cụ 50+ Case ↗</span>
+                                            </a>
+                                        </div>
+
+                                        <!-- State B: Result Card (hidden by default, revealed if localStorage has test data) -->
+                                        <div id="abcde-sync-card" class="hidden p-4 rounded-xl bg-gradient-to-br from-brand-surface to-brand-card border-2 border-brand-amber/50 shadow-lg shadow-amber-500/10 space-y-3">
+                                            <div class="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-brand-border/60">
+                                                <div class="flex items-center gap-2.5">
+                                                    <span class="w-8 h-8 rounded-lg bg-brand-amber flex items-center justify-center text-black font-extrabold text-base">☀️</span>
+                                                    <div>
+                                                        <div class="text-xs font-bold text-white flex items-center gap-2">
+                                                            <span>BÀI TẬP ABCDE TỪ LANDING PAGE</span>
+                                                            <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-semibold border border-emerald-500/30">Đã đồng bộ</span>
+                                                        </div>
+                                                        <p id="abcde-sync-meta" class="text-[11px] text-slate-400">Dữ liệu từ Landing Page</p>
+                                                    </div>
+                                                </div>
+                                                <div class="flex items-center gap-2">
+                                                    <button type="button" id="btn-apply-landing-abcde" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-black font-extrabold text-xs shadow-md hover:brightness-110 active:scale-95 transition-all flex items-center gap-1.5">
+                                                        <span>✨ Nạp bài tập vào LMS</span>
+                                                    </button>
+                                                    <a href="../practice-abcde.html" target="_blank" rel="noopener noreferrer" class="text-[11px] text-brand-amber hover:underline flex items-center gap-1 py-1 px-2 rounded hover:bg-brand-amber/10 transition-colors">
+                                                        <span>Luyện thêm case khác ↗</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="space-y-2 text-xs">
+                                                <div class="p-2.5 rounded-lg bg-brand-dark/80 border border-brand-border/60">
+                                                    <div class="text-[11px] font-bold text-brand-amber mb-0.5">📌 Nghịch cảnh (A):</div>
+                                                    <p id="abcde-sync-preview-a" class="text-slate-300 line-clamp-2 italic text-[11px]"></p>
+                                                </div>
+                                                <div class="p-2.5 rounded-lg bg-brand-dark/80 border border-brand-border/60">
+                                                    <div class="text-[11px] font-bold text-brand-green mb-0.5">💡 Phản biện của bạn (D):</div>
+                                                    <p id="abcde-sync-preview-d" class="text-slate-300 line-clamp-2 italic text-[11px]"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- DROPDOWN 6 TÌNH HUỐNG THỰC HÀNH MẪU -->
+                                    <div class="p-3.5 rounded-xl bg-gradient-to-r from-brand-surface via-brand-card to-brand-surface border border-brand-amber/40 space-y-2">
+                                        <div class="flex items-center justify-between flex-wrap gap-2">
+                                            <label for="abcde-scenario-select" class="text-xs font-bold text-brand-amber flex items-center gap-1.5">
+                                                <span>🎯 Bộ 6 Tình Huống Thực Hành Mẫu ABCDE:</span>
+                                            </label>
+                                            <span class="text-[10px] text-slate-400 bg-brand-dark px-2 py-0.5 rounded border border-brand-border">
+                                                Tự động điền A - B - C, tập trung phản biện D & E
+                                            </span>
+                                        </div>
+                                        <select id="abcde-scenario-select" class="w-full bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-brand-amber transition-colors">
+                                            <option value="">-- Chọn 1 trong 6 tình huống mẫu (hoặc tự nhập tình huống của bạn) --</option>
+                                            <optgroup label="🏢 Tình Huống Công Sở & Dự Án">
+                                                <option value="scenario-1">Tình huống 1: Deadline chiều thứ Sáu & Trục trặc tích hợp (Công sở)</option>
+                                                <option value="scenario-2">Tình huống 2: Người đồng đội kéo tụt KPI nhóm (Công sở)</option>
+                                                <option value="scenario-3">Tình huống 3: Ý tưởng cải tiến bị sếp gạt bỏ (Công sở)</option>
+                                                <option value="scenario-4">Tình huống 4: Tái cấu trúc tổ chức & Nỗi sợ tụt lại phía sau (Công sở)</option>
+                                            </optgroup>
+                                            <optgroup label="🏡 Tình Huống Gia Đình & Đời Sống">
+                                                <option value="scenario-5">Tình huống 5: Con cái điểm kém liên tục & Nỗi bất an của cha mẹ (Gia đình)</option>
+                                                <option value="scenario-6">Tình huống 6: Kế hoạch gia đình bị hủy vào phút chót (Gia đình)</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+
                                     <div>
                                         <label class="block text-xs font-bold text-white mb-1">A — Adversity (Nghịch cảnh có thật vừa xảy ra):</label>
                                         <textarea id="abcde-a" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200" placeholder="Mô tả sự việc khó khăn, thất bại hoặc áp lực..."></textarea>
@@ -1212,8 +1341,16 @@
 
                                 <!-- Card 2: ABCDE Script -->
                                 <div class="p-4 rounded-xl bg-brand-card/60 border border-brand-border space-y-2">
-                                    <div class="text-xs font-bold text-brand-orange flex items-center gap-1.5">
-                                        <span>☀️</span> Kịch Bản ABCDE (Từ Chặng 2)
+                                    <div class="text-xs font-bold text-brand-orange flex items-center justify-between gap-1.5 flex-wrap">
+                                        <span class="flex items-center gap-1.5"><span>☀️</span> Kịch Bản ABCDE (Từ Chặng 2)</span>
+                                        <div class="flex items-center gap-1.5">
+                                            <a href="../practice-abcde.html" target="_blank" rel="noopener noreferrer" class="text-[10px] px-2 py-0.5 rounded bg-brand-amber/20 text-brand-amber hover:bg-brand-amber/30 font-semibold border border-brand-amber/40 transition-colors">
+                                                Kho 50+ Case ↗
+                                            </a>
+                                            <button type="button" id="btn-goto-abcde-practice" class="text-[10px] px-2 py-0.5 rounded bg-brand-orange/20 text-brand-orange hover:bg-brand-orange/30 font-semibold border border-brand-orange/40 transition-colors">
+                                                Luyện tập ➔
+                                            </button>
+                                        </div>
                                     </div>
                                     <div id="recap-abcde-content" class="text-xs text-slate-300 space-y-1">
                                         <span class="text-slate-500 italic">Đang tải kịch bản...</span>
@@ -1452,7 +1589,7 @@
             <div class="p-4 rounded-2xl bg-brand-card/70 border border-brand-border text-left space-y-2 text-xs">
                 <div class="font-bold text-slate-200">🚀 Bước tiếp theo: Buổi Live Reflection & Q&A trực tiếp</div>
                 <p class="text-slate-400">
-                    Sau 2–4 tuần thực hành thói quen, Ban giảng huấn (Thầy Vũ, Cô Châu, Thầy Hưng, Cô Hân, Cô Khánh Linh, Cô Hoàn) sẽ tổ chức buổi kết nối trực tuyến qua Zoom để cùng giải đáp các tình huống thực tế của bạn.
+                    Sau 2–4 tuần thực hành thói quen, Ban giảng huấn (Thầy Vũ, Cô Châu, Thầy Hưng, Cô Hân, Cô Hoàn) sẽ tổ chức buổi kết nối trực tuyến qua Zoom để cùng giải đáp các tình huống thực tế của bạn.
                 </p>
             </div>
 

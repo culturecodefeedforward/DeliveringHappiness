@@ -16,10 +16,15 @@
   <div class="background-decor"></div>
 
   <div class="wrapper">
-    <header class="header">
-      <div class="logo-area">
-        <a href="/">
-          <img src="assets/culturecode_logo_transparent.png" alt="CultureCode Logo" onerror="this.src='assets/culturecode-logo-dark.jpg'" />
+    <header class="header" style="position: relative;">
+      <div class="header-top-bar" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 1rem;">
+        <div class="logo-area" style="margin-bottom: 0;">
+          <a href="/">
+            <img src="assets/culturecode_logo_transparent.png" alt="CultureCode Logo" onerror="this.src='assets/culturecode-logo-dark.jpg'" />
+          </a>
+        </div>
+        <a href="/lms/" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 1rem; border-radius: 9999px; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4); color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-decoration: none; transition: all 0.2s;">
+          <span>🏫 Vào Micro-LMS ↗</span>
         </a>
       </div>
       <h1 class="title">Bài Tập Thực Hành<br><span class="accent">Lạc Quan ABCDE</span></h1>
@@ -27,6 +32,15 @@
     </header>
 
     <main class="main-content">
+      
+      <!-- LMS Sync Notice -->
+      <div id="lmsSyncNotice" style="display: none; margin-bottom: 1.5rem; padding: 0.9rem 1.25rem; border-radius: 1rem; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.35); color: #e2e8f0; font-size: 0.85rem; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+        <div>
+          <div style="font-weight: 700; color: #fbbf24; margin-bottom: 0.2rem;">✨ Kết nối tự động cùng Micro-LMS</div>
+          <div style="font-size: 0.8rem; color: #94a3b8;">Kết quả bài tập của bạn tại đây sẽ được tự động đồng bộ sang Chặng 2 của khóa học.</div>
+        </div>
+        <a href="/lms/" style="padding: 0.4rem 0.85rem; border-radius: 0.5rem; background: #fbbf24; color: #000; font-weight: 700; font-size: 0.75rem; text-decoration: none;">Vào LMS ➔</a>
+      </div>
       
       <!-- STEP 1: Select Case -->
       <section class="section-card selection-card">
@@ -69,9 +83,9 @@
           </div>
 
           <div class="input-group">
-            <label for="inputE" class="input-label">🌟 E — Năng lượng mới & Hành động (Effect & Energy)</label>
-            <span class="input-hint">Cảm xúc của bạn thay đổi ra sao và hành động mới, mang tính xây dựng là gì?</span>
-            <textarea id="inputE" placeholder="Ví dụ: Bình tĩnh lại, chủ động nói chuyện 1-on-1 để tháo gỡ khó khăn..."></textarea>
+            <label for="inputE" class="input-label">🌟 E — Energization (Năng lượng mới được khơi dậy)</label>
+            <span class="input-hint">Bạn cảm thấy thế nào sau khi bẻ gãy được suy nghĩ tiêu cực? Từ năng lượng mới đó, bạn có thể tiếp cận lại nghịch cảnh A theo những hướng nào?</span>
+            <textarea id="inputE" placeholder="Ví dụ: Cảm thấy nhẹ nhõm và tự tin hơn. Từ đó, nhận ra mình có thể chủ động đề xuất cuộc họp 1-on-1 để làm rõ vấn đề..."></textarea>
           </div>
 
           <div class="action-bar">
@@ -113,7 +127,7 @@
             </div>
 
             <div class="comp-item">
-              <span class="comp-step">🌟 E — Hành động mới</span>
+              <span class="comp-step">🌟 E — Energization</span>
               <p id="resultUserE" class="comp-text"></p>
             </div>
           </div>
@@ -145,10 +159,13 @@
 
         </div>
 
-        <div class="bottom-action-bar">
+        <div class="bottom-action-bar" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; align-items: center;">
           <button id="btnReset" class="btn-reset">
             🔄 Thực hành tình huống khác
           </button>
+          <a href="/lms/" id="btnSyncToLms" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.85rem 1.6rem; border-radius: 9999px; background: linear-gradient(135deg, #f59e0b, #ea580c); color: #000; font-weight: 800; font-size: 0.85rem; text-decoration: none; box-shadow: 0 4px 14px rgba(245, 158, 11, 0.25); transition: all 0.2s;">
+            <span>🏫 Vào Micro-LMS Chặng 2 (Áp Dụng Bài Này) ➔</span>
+          </a>
         </div>
 
       </div>

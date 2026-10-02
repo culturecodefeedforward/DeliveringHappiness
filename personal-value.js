@@ -471,8 +471,30 @@ function finishDuel() {
   }).sort((a, b) => b.score - a.score); // Giảm dần
   
   latestRankedData = ranked;
+  savePvResultToLocalStorage(null, null, ranked);
   // Không renderResults ngay mà chờ user submit form (hoặc sửa form)
   initReportFormEvents();
+}
+
+function savePvResultToLocalStorage(fullName, email, ranked) {
+  try {
+    const list = ranked || latestRankedData || [];
+    const nameVal = (fullName || document.getElementById('reportFullName')?.value || '').trim();
+    const emailVal = (email || document.getElementById('reportEmail')?.value || '').trim();
+    const payload = {
+      fullName: nameVal,
+      email: emailVal,
+      rankedData: list,
+      top7: list.slice(0, 7),
+      timestamp: new Date().toISOString()
+    };
+    localStorage.setItem('dhm_personal_values_latest', JSON.stringify(payload));
+    if (emailVal) {
+      localStorage.setItem('dhm_pv_' + emailVal.toLowerCase(), JSON.stringify(payload));
+    }
+  } catch (err) {
+    console.warn('LMS LocalStorage sync notice:', err);
+  }
 }
 
 function renderResults(ranked) {
@@ -815,6 +837,7 @@ function submitPersonalValuesReport(fullName, email, captchaAnswer) {
       btnSendEmail.innerText = "Đã lưu thành công! Đang mở kết quả...";
       btnSendEmail.style.background = "#059669";
       btnSendEmail.style.boxShadow = "none";
+      savePvResultToLocalStorage(fullName, email, latestRankedData);
       setTimeout(() => {
         document.getElementById('stepInfo').classList.remove('active');
         document.getElementById('step4').classList.add('active');
@@ -844,6 +867,7 @@ function submitPersonalValuesReport(fullName, email, captchaAnswer) {
     alert("Yêu cầu quá hạn (timeout). Vui lòng kiểm tra mạng hoặc tắt trình chặn quảng cáo (AdBlocker).\n\nHệ thống sẽ mở khóa Kết quả để bạn có thể xem và Tải file PDF trực tiếp.");
     
     // Fallback: Unlock step 4 anyway so they can see result & download PDF
+    savePvResultToLocalStorage(fullName, email, latestRankedData);
     document.getElementById('stepInfo').classList.remove('active');
     document.getElementById('step4').classList.add('active');
     renderResults(latestRankedData);
@@ -879,6 +903,7 @@ function submitPersonalValuesReport(fullName, email, captchaAnswer) {
     alert("Lỗi kết nối tới máy chủ (Thường do mạng hoặc trình chặn quảng cáo AdBlocker).\n\nHệ thống không thể gửi email tự động, nhưng sẽ mở khóa Kết quả để bạn xem và Tải file PDF trực tiếp!");
     
     // Fallback: Unlock step 4 anyway so they can see result & download PDF
+    savePvResultToLocalStorage(fullName, email, latestRankedData);
     document.getElementById('stepInfo').classList.remove('active');
     document.getElementById('step4').classList.add('active');
     renderResults(latestRankedData);
