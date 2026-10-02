@@ -271,6 +271,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const globalProgressBar = document.getElementById("global-progress-bar");
     const globalProgressText = document.getElementById("global-progress-text");
+    const segmentBar1 = document.getElementById("segment-bar-1");
+    const segmentBar2 = document.getElementById("segment-bar-2");
+    const segmentBar3 = document.getElementById("segment-bar-3");
+    const segmentLabel1 = document.getElementById("segment-label-1");
+    const segmentLabel2 = document.getElementById("segment-label-2");
+    const segmentLabel3 = document.getElementById("segment-label-3");
 
     const userChip = document.getElementById("user-chip");
     const userAvatar = document.getElementById("user-avatar");
@@ -633,6 +639,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         recordLearnerInDirectory();
         syncToGoogleSheets();
+        updateGlobalProgress();
 
         saveStatusIndicator.textContent = "✓ Đã lưu trên trình duyệt";
         saveStatusIndicator.className = "text-brand-green font-medium";
@@ -841,6 +848,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         setTimeout(() => {
                             const el = document.getElementById(sub.target);
                             if (el) {
+                                if (el.classList.contains("accordion-module")) {
+                                    openAccordionModule(el.id);
+                                } else {
+                                    const parentMod = el.closest(".accordion-module");
+                                    if (parentMod) {
+                                        openAccordionModule(parentMod.id);
+                                    }
+                                }
                                 el.scrollIntoView({ behavior: "smooth", block: "start" });
                             }
                         }, 120);
@@ -1112,6 +1127,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 btnPlayVideo.onclick = () => {
                     if (videoPoster) videoPoster.classList.add("hidden");
                     if (videoFrameContainer) videoFrameContainer.classList.remove("hidden");
+                    if (stage.id === "stage-1" && learnerProgress.stageData && learnerProgress.stageData["stage-1"]) {
+                        learnerProgress.stageData["stage-1"].videoWatched = true;
+                        saveLearnerProgress();
+                        renderSyllabus();
+                    }
                     if (stage.videoUrl.endsWith('.mp4') || stage.videoType === 'mp4') {
                         if (videoIframe) {
                             videoIframe.classList.add("hidden");
@@ -1180,6 +1200,7 @@ document.addEventListener("DOMContentLoaded", () => {
             stage2PracticeContainer.classList.add("hidden");
             stage3PracticeContainer.classList.add("hidden");
             renderStage1View(stage);
+            initAccordions();
         } else if (stage.id === "stage-2") {
             stage1PracticeContainer.classList.add("hidden");
             stage2PracticeContainer.classList.remove("hidden");
@@ -1237,9 +1258,22 @@ document.addEventListener("DOMContentLoaded", () => {
         mainAudioPlayer.load();
 
         audioTrackSelect.onchange = () => {
+            if (currentStageIndex === 0 && learnerProgress.stageData && learnerProgress.stageData["stage-1"]) {
+                learnerProgress.stageData["stage-1"].audioListened = true;
+                saveLearnerProgress();
+                renderSyllabus();
+            }
             mainAudioSource.src = audioTrackSelect.value;
             mainAudioPlayer.load();
             mainAudioPlayer.play().catch(() => {});
+        };
+
+        mainAudioPlayer.onplay = () => {
+            if (currentStageIndex === 0 && learnerProgress.stageData && learnerProgress.stageData["stage-1"]) {
+                learnerProgress.stageData["stage-1"].audioListened = true;
+                saveLearnerProgress();
+                renderSyllabus();
+            }
         };
     }
 
@@ -3113,13 +3147,209 @@ document.addEventListener("DOMContentLoaded", () => {
         btnCloseCompletion.onclick = () => completionModal.classList.add("hidden");
     }
 
-    function updateGlobalProgress() {
-        const completed = learnerProgress.completedStages.length;
-        const total = curriculum.stages.length;
-        const pct = Math.round((completed / total) * 100);
+    function calculateStage1Progress() {
+        if (learnerProgress.completedStages && learnerProgress.completedStages.includes("stage-1")) {
+            return 100;
+        }
+        const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
+        let count = 0;
+        // Mốc 1 (25%): Video giới thiệu hoặc Audio podcast đã xem/nghe
+        if (s1Data.videoWatched || s1Data.audioListened) count++;
+        // Mốc 2 (25%): Đạt sát hạch đầu vào (≥7/10 câu) VÀ hoàn thành phản tư I•A•M 1.1
+        if ((s1Data.passed || s1Data.score >= 7 || s1Data.percentage >= 70) && s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i)) count++;
+        // Mốc 3 (25%): Đã chọn ≥1 Giá trị La Bàn VÀ hoàn thành phản tư I•A•M 1.2
+        if (s1Data.selectedValues && s1Data.selectedValues.length > 0 && s1Data.iam_1_2 && (s1Data.iam_1_2.I || s1Data.iam_1_2.i)) count++;
+        // Mốc 4 (25%): Hoàn thành thiết kế công việc/bài 1.3 VÀ phản tư I•A•M 1.3
+        if (s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i)) count++;
 
-        globalProgressBar.style.width = `${pct}%`;
-        globalProgressText.textContent = `${pct}% (${completed}/${total} Chặng)`;
+        return Math.min(100, Math.round(count * 25));
+    }
+
+    function calculateStage2Progress() {
+        if (learnerProgress.completedStages && learnerProgress.completedStages.includes("stage-2")) {
+            return 100;
+        }
+        const s2Data = (learnerProgress.stageData && learnerProgress.stageData["stage-2"]) || {};
+        const habits = s2Data.habits || {};
+        let count = 0;
+
+        // 1. Gratitude
+        const hG = habits.gratitude;
+        if (hG && (
+            (hG.items && hG.items.some(x => x && String(x).trim())) ||
+            (hG.card && (hG.card.to || hG.card.msg)) ||
+            (hG.iam && (hG.iam.I || hG.iam.A || hG.iam.M)) ||
+            (hG.scenario && (hG.scenario.reflection || hG.scenario.action))
+        )) count++;
+
+        // 2. Mindfulness
+        const hM = habits.mindfulness;
+        if (hM && (
+            (hM.sbaChecks && (hM.sbaChecks.s || hM.sbaChecks.b || hM.sbaChecks.a)) ||
+            (hM.situation && String(hM.situation).trim()) ||
+            (hM.iam && (hM.iam.I || hM.iam.A || hM.iam.M)) ||
+            (hM.scenario && (hM.scenario.reflection || hM.scenario.action))
+        )) count++;
+
+        // 3. Optimism
+        const hO = habits.optimism;
+        if (hO && (
+            (hO.abcde && (hO.abcde.A || hO.abcde.B || hO.abcde.C || hO.abcde.D || hO.abcde.E)) ||
+            (hO.iam && (hO.iam.I || hO.iam.A || hO.iam.M)) ||
+            (hO.scenario && (hO.scenario.reflection || hO.scenario.action))
+        )) count++;
+
+        // 4. Flow
+        const hF = habits.flow;
+        if (hF && (
+            (hF.boringTask && String(hF.boringTask).trim()) ||
+            (hF.redesign && String(hF.redesign).trim()) ||
+            (hF.iam && (hF.iam.I || hF.iam.A || hF.iam.M)) ||
+            (hF.scenario && (hF.scenario.reflection || hF.scenario.action))
+        )) count++;
+
+        // 5. Altruism
+        const hA = habits.altruism;
+        if (hA && (
+            (hA.style && String(hA.style).trim()) ||
+            (hA.act && String(hA.act).trim()) ||
+            (hA.iam && (hA.iam.I || hA.iam.A || hA.iam.M)) ||
+            (hA.scenario && (hA.scenario.reflection || hA.scenario.action))
+        )) count++;
+
+        return Math.min(100, Math.round(count * 20));
+    }
+
+    function calculateStage3Progress() {
+        if (learnerProgress.completedStages && learnerProgress.completedStages.includes("stage-3")) {
+            return 100;
+        }
+        const s3Data = (learnerProgress.stageData && learnerProgress.stageData["stage-3"]) || {};
+        const streakStats = calculateStage3Streak(s3Data.habitTracker || {});
+        const days = (streakStats && streakStats.totalCompletedDays) || 0;
+        return Math.min(100, Math.round((days / 21) * 100));
+    }
+
+    function updateStage1Milestones() {
+        const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
+        const isS1Done = learnerProgress.completedStages && learnerProgress.completedStages.includes("stage-1");
+
+        const mVideoDone = isS1Done || Boolean(s1Data.videoWatched || s1Data.audioListened);
+        const mQuizDone = isS1Done || Boolean((s1Data.passed || s1Data.score >= 7 || s1Data.percentage >= 70) && (s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i)));
+        const mValuesDone = isS1Done || Boolean((s1Data.selectedValues && s1Data.selectedValues.length > 0) && (s1Data.iam_1_2 && (s1Data.iam_1_2.I || s1Data.iam_1_2.i)));
+        const mJobDone = isS1Done || Boolean(s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i));
+
+        const doneCount = [mVideoDone, mQuizDone, mValuesDone, mJobDone].filter(Boolean).length;
+        const milestoneText = document.getElementById("stage1-milestone-text");
+        if (milestoneText) {
+            milestoneText.textContent = `${doneCount}/4 Hoàn thành`;
+        }
+
+        function setPill(id, done) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const icon = el.querySelector(".m-pill-icon");
+            if (done) {
+                el.className = "px-2.5 py-1 rounded-lg border border-brand-green/50 bg-brand-green/10 text-brand-green font-medium flex items-center gap-1.5 transition-colors";
+                if (icon) icon.textContent = "✓";
+            } else {
+                el.className = "px-2.5 py-1 rounded-lg border border-brand-border bg-brand-dark/70 text-slate-400 flex items-center gap-1.5 transition-colors";
+                if (icon) icon.textContent = "○";
+            }
+        }
+
+        setPill("m-pill-video", mVideoDone);
+        setPill("m-pill-quiz", mQuizDone);
+        setPill("m-pill-values", mValuesDone);
+        setPill("m-pill-job", mJobDone);
+    }
+
+    function openAccordionModule(moduleId) {
+        const mod = document.getElementById(moduleId);
+        if (!mod) return;
+        const body = mod.querySelector(".accordion-body");
+        const chevron = mod.querySelector(".accordion-chevron span");
+        if (body) body.classList.remove("hidden");
+        if (chevron) chevron.style.transform = "rotate(180deg)";
+    }
+
+    function closeAccordionModule(moduleId) {
+        const mod = document.getElementById(moduleId);
+        if (!mod) return;
+        const body = mod.querySelector(".accordion-body");
+        const chevron = mod.querySelector(".accordion-chevron span");
+        if (body) body.classList.add("hidden");
+        if (chevron) chevron.style.transform = "rotate(0deg)";
+    }
+
+    function autoOpenInProgressModule() {
+        const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
+        const mod1Done = Boolean((s1Data.passed || s1Data.score >= 7 || s1Data.percentage >= 70) && (s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i)));
+        const mod2Done = Boolean((s1Data.selectedValues && s1Data.selectedValues.length > 0) && (s1Data.iam_1_2 && (s1Data.iam_1_2.I || s1Data.iam_1_2.i)));
+        const mod3Done = Boolean(s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i));
+
+        ["stage1-mod-1-1", "stage1-mod-1-2", "stage1-mod-1-3"].forEach(id => closeAccordionModule(id));
+
+        if (!mod1Done) {
+            openAccordionModule("stage1-mod-1-1");
+        } else if (!mod2Done) {
+            openAccordionModule("stage1-mod-1-2");
+        } else if (!mod3Done) {
+            openAccordionModule("stage1-mod-1-3");
+        } else {
+            openAccordionModule("stage1-mod-1-1");
+        }
+    }
+
+    function initAccordions() {
+        const modules = document.querySelectorAll(".accordion-module");
+        modules.forEach(mod => {
+            const header = mod.querySelector(".accordion-header");
+            const body = mod.querySelector(".accordion-body");
+            const chevron = mod.querySelector(".accordion-chevron span");
+
+            if (header && body) {
+                header.onclick = () => {
+                    const isOpen = !body.classList.contains("hidden");
+                    if (isOpen) {
+                        body.classList.add("hidden");
+                        if (chevron) chevron.style.transform = "rotate(0deg)";
+                    } else {
+                        body.classList.remove("hidden");
+                        if (chevron) chevron.style.transform = "rotate(180deg)";
+                    }
+                };
+            }
+        });
+
+        autoOpenInProgressModule();
+    }
+
+    function updateGlobalProgress() {
+        const pct1 = calculateStage1Progress();
+        const pct2 = calculateStage2Progress();
+        const pct3 = calculateStage3Progress();
+
+        if (segmentBar1) segmentBar1.style.width = `${pct1}%`;
+        if (segmentBar2) segmentBar2.style.width = `${pct2}%`;
+        if (segmentBar3) segmentBar3.style.width = `${pct3}%`;
+
+        if (segmentLabel1) segmentLabel1.textContent = `C1: ${pct1}%`;
+        if (segmentLabel2) segmentLabel2.textContent = `C2: ${pct2}%`;
+        if (segmentLabel3) segmentLabel3.textContent = `C3: ${pct3}%`;
+
+        const totalPct = Math.round((pct1 + pct2 + pct3) / 3);
+        const completed = (learnerProgress.completedStages || []).length;
+        const total = (curriculum.stages || []).length || 3;
+
+        if (globalProgressBar) {
+            globalProgressBar.style.width = `${totalPct}%`;
+        }
+        if (globalProgressText) {
+            globalProgressText.textContent = `${totalPct}% (${completed}/${total} Chặng)`;
+        }
+
+        updateStage1Milestones();
     }
 
     // 13. TAB SWITCHING
@@ -3152,6 +3382,7 @@ document.addEventListener("DOMContentLoaded", () => {
             practiceTabBtn.click();
         }
         setTimeout(() => {
+            openAccordionModule("stage1-mod-1-1");
             const quizSec = document.getElementById("stage1-mod-1-1");
             if (quizSec) {
                 quizSec.scrollIntoView({ behavior: "smooth", block: "start" });
