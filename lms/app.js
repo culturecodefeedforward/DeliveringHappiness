@@ -726,20 +726,32 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="text-xs font-bold truncate text-slate-100">${stage.title}</div>
                     <div class="text-[11px] text-slate-400 truncate mt-0.5">${stage.subtitle}</div>
                 </div>
+                ${stage.subSections && stage.subSections.length > 0 ? `<span class="stage-toggle-chevron text-xs text-slate-400 shrink-0 transform transition-transform ${isActive ? 'rotate-90' : ''}">▸</span>` : ''}
             `;
 
             item.addEventListener("click", () => {
-                loadStage(idx);
-                renderSyllabus();
-                toggleSidebar(false);
+                if (currentStageIndex === idx) {
+                    const subEl = stageBlock.querySelector(".stage-subsections");
+                    const chevron = item.querySelector(".stage-toggle-chevron");
+                    if (subEl) {
+                        subEl.classList.toggle("hidden");
+                        if (chevron) {
+                            chevron.classList.toggle("rotate-90", !subEl.classList.contains("hidden"));
+                        }
+                    }
+                } else {
+                    loadStage(idx);
+                    renderSyllabus();
+                    toggleSidebar(false);
+                }
             });
 
             stageBlock.appendChild(item);
 
-            // Subsections / Mục con tree for Active Stage
-            if (stage.subSections && stage.subSections.length > 0 && isActive) {
+            // Subsections / Mục con tree for Stage (Collapsible Progressive Disclosure)
+            if (stage.subSections && stage.subSections.length > 0) {
                 const subContainer = document.createElement("div");
-                subContainer.className = "ml-4 pl-3 border-l-2 border-brand-amber/40 space-y-1 py-1";
+                subContainer.className = `stage-subsections ml-4 pl-3 border-l-2 border-brand-amber/40 space-y-1 py-1 ${isActive ? "" : "hidden"}`;
 
                 stage.subSections.forEach(sub => {
                     const subBtn = document.createElement("button");
@@ -1167,7 +1179,7 @@ document.addEventListener("DOMContentLoaded", () => {
             audioTrackSelect.appendChild(opt);
         });
 
-        audioTrackSubtitle.textContent = `${tracks.length} tệp âm thanh gỡ băng cho ${stage.badge || stage.title}`;
+        audioTrackSubtitle.textContent = `${tracks.length} bài giảng âm thanh cho ${stage.badge || stage.title}`;
 
         // Set initial track
         mainAudioSource.src = tracks[0].file;
@@ -1185,6 +1197,10 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.addEventListener("click", () => {
             const audioPath = btn.getAttribute("data-audio");
             if (audioPath) {
+                // Ensure audio details is open if collapsed
+                const audioDetails = document.getElementById("audio-player-details");
+                if (audioDetails) audioDetails.open = true;
+
                 // Find in dropdown
                 for (let i = 0; i < audioTrackSelect.options.length; i++) {
                     if (audioTrackSelect.options[i].value === audioPath) {
@@ -2211,7 +2227,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!summaryDeepContentContainer) return;
         summaryDeepContentContainer.innerHTML = "";
 
-        if (stage.id === "stage-1" && stage.deepInsights) {
+        const deepDetails = summaryDeepContentContainer.closest("details.explore-more") || document.getElementById("summary-deep-content-details");
+        const hasDeepInsights = Boolean(stage.id === "stage-1" && stage.deepInsights);
+        if (deepDetails) {
+            deepDetails.style.display = hasDeepInsights ? "" : "none";
+        }
+
+        if (hasDeepInsights) {
             const di = stage.deepInsights;
             const container = document.createElement("div");
             container.className = "space-y-6 pt-4 border-t border-brand-border/80";

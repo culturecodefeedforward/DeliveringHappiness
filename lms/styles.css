@@ -477,3 +477,62 @@ body {
     font-size: 3.5rem;
     margin-bottom: 1rem;
 }
+
+/* PROGRESSIVE DISCLOSURE - EXPLORE MORE */
+details.explore-more {
+    border-radius: 0.75rem;
+    transition: all 0.2s ease-in-out;
+}
+
+details.explore-more > summary {
+    cursor: pointer;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+    font-weight: 600;
+    font-size: 0.8rem;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    user-select: none;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+details.explore-more > summary:hover {
+    background: rgba(245, 158, 11, 0.14);
+    border-color: rgba(245, 158, 11, 0.35);
+}
+
+details.explore-more > summary::-webkit-details-marker {
+    display: none;
+}
+
+details.explore-more > summary::before {
+    content: '▸';
+    display: inline-block;
+    font-size: 0.85rem;
+    transition: transform 0.2s ease-in-out;
+}
+
+details.explore-more[open] > summary::before {
+    transform: rotate(90deg);
+}
+
+details.explore-more[open] > summary ~ * {
+    animation: exploreMoreFadeIn 0.25s ease-in-out;
+}
+
+@keyframes exploreMoreFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+

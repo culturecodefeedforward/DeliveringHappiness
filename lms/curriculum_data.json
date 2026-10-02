@@ -7,37 +7,37 @@
     {
       "id": "stage-1",
       "stageNumber": 1,
-      "badge": "Mini Step 1 • Online",
-      "title": "Mini step 1 • ONLINE – Gieo Thông điệp",
+      "badge": "Chặng 1 · Online",
+      "title": "Chặng 1 · Gieo Thông Điệp",
       "subtitle": "Khoa học Hạnh phúc • 3 Cấp độ • Định vị La Bàn (Me Values) • Thuyết Tự Quyết (SDT)",
       "instructor": "Thầy Vũ Hoàng & Ban Giảng Huấn",
       "estimatedMinutes": 30,
       "videoUrl": "data/artifacts/the_explainer.mp4",
-      "videoTitle": "Video Explainer: Delivering Happiness Movement (Hệ Điều Hành Hạnh Phúc)",
+      "videoTitle": "Video: Delivering Happiness Movement (Hệ Điều Hành Hạnh Phúc)",
       "videoDuration": "7 phút 27 giây",
       "videoType": "mp4",
       "subSections": [
         {
           "id": "sub-1-1",
-          "title": "Mục 1.1: Video Explainer & Kho Audio Bài Giảng",
+          "title": "Video & Audio Bài Giảng",
           "target": "video-player-container",
           "tab": "tab-summary"
         },
         {
           "id": "sub-1-2",
-          "title": "Mục 1.2: ⚡ BÀI TEST SÁT HẠCH ĐẦU VÀO (10 Câu) & Khoa Học Hạnh Phúc",
+          "title": "⚡ Bài Sát Hạch Đầu Vào",
           "target": "stage1-mod-1-1",
           "tab": "tab-practice"
         },
         {
           "id": "sub-1-3",
-          "title": "Mục 1.3: Định Vị La Bàn — Giá Trị Cốt Lõi Cá Nhân (Me Values)",
+          "title": "La Bàn Giá Trị Cá Nhân",
           "target": "stage1-mod-1-2",
           "tab": "tab-practice"
         },
         {
           "id": "sub-1-4",
-          "title": "Mục 1.4: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc",
+          "title": "3 Đòn Bẩy Hạnh Phúc",
           "target": "stage1-mod-1-3",
           "tab": "tab-practice"
         }
@@ -478,8 +478,8 @@
     {
       "id": "stage-2",
       "stageNumber": 2,
-      "badge": "Mini Step 2 • Offline",
-      "title": "Mini step 2 • OFFLINE – Gieo Thói quen",
+      "badge": "Chặng 2 · Workshop",
+      "title": "Chặng 2 · Gieo Thói Quen",
       "subtitle": "Workshop Live tại lớp • Xưởng thực hành 5 Thói quen Hạnh phúc & I•A•M",
       "instructor": "Ban Giảng Huấn DHM (Cô Châu, Thầy Hưng, Cô Hoàn, Thầy Vũ, Cô Hân)",
       "estimatedMinutes": 120,
@@ -487,42 +487,42 @@
       "subSections": [
         {
           "id": "sub-2-1",
-          "title": "Mục 2.1: Thói Quen 1 — Tỉnh Thức (SBA & Body Scan + IAM)",
+          "title": "🌿 Tỉnh Thức",
           "target": "habit-panel-mindfulness",
           "habit": "mindfulness",
           "tab": "tab-practice"
         },
         {
           "id": "sub-2-2",
-          "title": "Mục 2.2: Thói Quen 2 — Biết Ơn (Gratitude Card + IAM)",
+          "title": "🙏 Biết Ơn",
           "target": "habit-panel-gratitude",
           "habit": "gratitude",
           "tab": "tab-practice"
         },
         {
           "id": "sub-2-3",
-          "title": "Mục 2.3: Thói Quen 3 — Lạc Quan Học Được (ABCDE + IAM)",
+          "title": "☀️ Lạc Quan",
           "target": "habit-panel-optimism",
           "habit": "optimism",
           "tab": "tab-practice"
         },
         {
           "id": "sub-2-4",
-          "title": "Mục 2.4: Thói Quen 4 — Phiêu / Flow (Thách thức vs Kỹ năng + IAM)",
+          "title": "🌀 Phiêu (Flow)",
           "target": "habit-panel-flow",
           "habit": "flow",
           "tab": "tab-practice"
         },
         {
           "id": "sub-2-5",
-          "title": "Mục 2.5: Thói Quen 5 — Vị Nhân (Adam Grant Style + IAM)",
+          "title": "🤝 Vị Nhân",
           "target": "habit-panel-altruism",
           "habit": "altruism",
           "tab": "tab-practice"
         },
         {
           "id": "sub-2-6",
-          "title": "Mục 2.6: Thu Hoạch Tổng Lực Ngày Học (Capstone IAM)",
+          "title": "🏆 Thu Hoạch Cuối Ngày",
           "target": "stage2-capstone-card",
           "tab": "tab-practice"
         }
@@ -600,7 +600,7 @@
           "id": "habit-mindfulness",
           "number": 1,
           "name": "Tỉnh Thức (Mindfulness)",
-          "title": "Thói quen 1: Sống Tỉnh Thức & Kỹ Thuật SBA",
+          "title": "Tỉnh Thức & Kỹ Thuật SBA",
           "icon": "🌿",
           "description": "Thực hành khoảng dừng SBA (Stop – Breathe – Ask) để ngắt phản xạ tự động của não bộ khi gặp áp lực.",
           "audioTrack": "data/artifacts/audio_mindful.mp3",
@@ -657,7 +657,7 @@
           "id": "habit-gratitude",
           "number": 2,
           "name": "Biết Ơn (Gratitude)",
-          "title": "Thói quen 2: Biết Ơn Bền Vững (Robert Emmons)",
+          "title": "Biết Ơn Bền Vững",
           "icon": "🙏",
           "description": "Ghi nhận 4 điều biết ơn mỗi ngày và lan tỏa sự trân trọng đến đồng nghiệp thông qua văn hóa ghi nhận (Kudos).",
           "audioTrack": "data/artifacts/audio_biet_on.mp3",
@@ -706,7 +706,7 @@
           "id": "habit-optimism",
           "number": 3,
           "name": "Lạc Quan (Optimism & ABCDE)",
-          "title": "Thói quen 3: Lạc Quan Học Được & Framework ABCDE",
+          "title": "Lạc Quan & ABCDE",
           "icon": "☀️",
           "description": "Lạc quan bằng lý trí thông qua mô hình ABCDE của Martin Seligman: Dùng chữ D (Dispute) để bẻ gãy niềm tin tiêu cực.",
           "audioTrack": "data/artifacts/lac_quan_abcde.mp3",
@@ -775,7 +775,7 @@
           "id": "habit-flow",
           "number": 4,
           "name": "Phiêu (Flow & Microflow)",
-          "title": "Thói quen 4: Thói Quen Phiêu & Trạng Thái Dòng Chảy",
+          "title": "Phiêu & Trạng Thái Flow",
           "icon": "🌀",
           "description": "Thiết lập trạng thái đắm chìm tối ưu (Optimal Experience) khi cân bằng giữa Thử thách và Kỹ năng (Mihaly Csikszentmihalyi).",
           "audioTrack": "data/artifacts/audio_flow.mp3",
@@ -819,7 +819,7 @@
           "id": "habit-altruism",
           "number": 5,
           "name": "Vị Nhân (Altruism)",
-          "title": "Thói quen 5: Vị Nhân & Trao Giá Trị Không Vụ Lợi",
+          "title": "Vị Nhân & Trao Giá Trị",
           "icon": "🤝",
           "description": "Sống và hành động vì mục tiêu chung lớn nhất theo triết lý Smart Giver của Adam Grant.",
           "audioTrack": "data/artifacts/audio_vi_nhan.mp3",
@@ -875,7 +875,7 @@
       ],
       "capstoneIam": {
         "id": "iam_capstone",
-        "title": "Đúc Kết Tổng Lực Cuối Ngày Học (Workshop Capstone IAM)",
+        "title": "Thu Hoạch Cuối Ngày (Đúc Kết Tổng Lực)",
         "I": "Điều tâm đắc và lay động lớn nhất đối với bạn sau trọn vẹn 1 ngày trải nghiệm tại lớp?",
         "A": "Ba cam kết hành động cụ thể nhất bạn sẽ mang về thực hiện tại doanh nghiệp / gia đình?",
         "M": "Khóa học này đã thay đổi định nghĩa về Hạnh phúc và Văn hóa đội ngũ của bạn như thế nào?"
@@ -937,36 +937,48 @@
     {
       "id": "stage-3",
       "stageNumber": 3,
-      "badge": "Mini Step 3 • Online",
-      "title": "Mini step 3 • ONLINE – Focus on I • A • M",
-      "subtitle": "Nuôi dưỡng Thói quen Chuyển hóa • Kế thừa Toàn bộ Chất liệu • Đồng hành 21 ngày",
-      "instructor": "Đội ngũ Giảng viên & Coach DHM Đồng Hành",
+      "badge": "Chặng 3 · Online",
+      "title": "Chặng 3 · Đồng Hành 21 Ngày",
+      "subtitle": "Đồng hành 21 ngày • Nuôi dưỡng Thói quen Chuyển hóa",
+      "instructor": "Ban Giảng Huấn DHM Đồng Hành",
       "estimatedMinutes": 21,
       "videoUrl": null,
       "subSections": [
         {
           "id": "sub-3-1",
-          "title": "Mục 3.1: Bảng Vinh Danh Chất Liệu Đã Gieo (Recap Dashboard)",
+          "title": "Tổng Kết Hành Trình",
           "target": "stage3-recap-section",
           "tab": "tab-practice"
         },
         {
           "id": "sub-3-2",
-          "title": "Mục 3.2: Bảng Điểm Danh 5 Thói Quen 21 Ngày (Habit Tracker)",
+          "title": "Điểm Danh 21 Ngày",
           "target": "stage3-tracker-section",
           "tab": "tab-practice"
         },
         {
           "id": "sub-3-3",
-          "title": "Mục 3.3: Đúc Kết Tuần (Weekly Check-in I • A • M)",
+          "title": "Đúc Kết Hàng Tuần",
           "target": "stage3-weekly-section",
           "tab": "tab-practice"
         },
         {
           "id": "sub-3-4",
-          "title": "Mục 3.4: Kho Tài Liệu Đính Kèm (Delivering Happiness Artifacts)",
+          "title": "Tài Liệu & Công Cụ",
           "target": "tab-resources",
           "tab": "tab-resources"
+        },
+        {
+          "id": "sub-3-5",
+          "title": "🎯 Tự Giải Tình Huống Mẫu",
+          "target": "stage3-practice-solve",
+          "tab": "tab-practice"
+        },
+        {
+          "id": "sub-3-6",
+          "title": "☀️ Phân Tích Tình Huống Của Tôi",
+          "target": "stage3-my-scenario",
+          "tab": "tab-practice"
         }
       ],
       "features": {
