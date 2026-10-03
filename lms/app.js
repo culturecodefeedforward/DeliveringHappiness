@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 subSections: [
                     { id: "sub-1-1", title: "Mục 1.1: Video Explainer & Kho Audio Bài Giảng", target: "video-player-container", tab: "tab-summary" },
                     { id: "sub-1-2", title: "Mục 1.2: Khoa Học Hạnh Phúc & 3 Cấp Độ", target: "stage1-mod-1-1", tab: "tab-practice" },
-                    { id: "sub-1-3", title: "Mục 1.3: Định Vị La Bàn — Giá Trị Cốt Lõi Cá Nhân (Me Values)", target: "stage1-mod-1-2", tab: "tab-practice" },
+                    { id: "sub-1-3", title: "Mục 1.3: La Bàn Giá Trị Cốt Lõi Cá Nhân (Me Values)", target: "stage1-mod-1-2", tab: "tab-practice" },
                     { id: "sub-1-4", title: "Mục 1.4: 3 Đòn Bẩy Hạnh Phúc (Deci & Ryan)", target: "stage1-mod-1-3", tab: "tab-practice" },
                     { id: "sub-1-5", title: "Mục 1.5: Bài Kiểm Tra Vượt Chặng 1 (10 Câu Trắc Nghiệm)", target: "stage1-mod-quiz", tab: "tab-practice" }
                 ],
@@ -45,28 +45,134 @@ document.addEventListener("DOMContentLoaded", () => {
                         title: "Bài 1.1: 3 Cấp Độ Hạnh Phúc",
                         quizzes: [
                             {
-                                id: "q1",
-                                question: "Theo Martin Seligman và triết lý DHM, cấp độ hạnh phúc nào có tính bền vững lâu dài nhất?",
+                                id: "dhm-quiz-1",
+                                question: "Trong Cảm giác 'Tiến bộ'; yếu tố nào quan trọng nhất để duy trì động lực?",
                                 options: [
-                                    "Thú vui (Pleasure) từ việc sở hữu vật chất ngắn hạn",
-                                    "Đam mê (Passion) từ sự dấn thân và phát huy thế mạnh",
-                                    "Mục đích cao cả (Higher Purpose / Meaning) khi cống hiến cho điều lớn lao",
-                                    "Niềm vui sau mỗi bữa tiệc tùng"
+                                    "Sự ghi nhận các bước tiến nhỏ (Small wins)",
+                                    "Sự phê bình nghiêm khắc",
+                                    "Phần thưởng lớn cuối năm",
+                                    "Việc không bao giờ thất bại"
                                 ],
-                                correctIndex: 2,
-                                explanation: "Chính xác! Chỉ khi gắn với Mục đích cao cả (Higher Purpose), cảm giác hạnh phúc mới duy trì bền vững."
+                                correctIndex: 0,
+                                timeLimit: 20,
+                                explanation: "Đáp án đúng là lựa chọn 1: Sự ghi nhận các bước tiến nhỏ (Small wins)"
                             },
                             {
-                                id: "q2",
-                                question: "Ẩn dụ 'Ba tầng lầu' của Phong Tử Khải tương ứng thế nào với 3 cấp độ hạnh phúc?",
+                                id: "dhm-quiz-2",
+                                question: "Trong xây dựng văn hóa giao tiếp cởi mở và thấu hiểu không phán xét, An toàn tâm lý (Psychological Safety) đóng vai trò nền tảng cho đòn bẩy nào?",
                                 options: [
-                                    "Tầng 1: Đam mê — Tầng 2: Vật chất — Tầng 3: Danh vọng",
-                                    "Tầng 1: Đời sống vật chất (Thú vui) — Tầng 2: Đời sống tinh thần (Đam mê) — Tầng 3: Đời sống tâm hồn (Mục đích cao cả)",
-                                    "Tầng 1: Gia đình — Tầng 2: Bạn bè — Tầng 3: Công việc",
-                                    "Tầng 1: Kiến thức — Tầng 2: Kỹ năng — Tầng 3: Thái độ"
+                                    "Tự chủ (Control)",
+                                    "Kết nối (Connectedness)",
+                                    "Đam mê (Passion)",
+                                    "Tiến bộ (Progress)"
                                 ],
                                 correctIndex: 1,
-                                explanation: "Đúng! Tầng 1 là vật chất, Tầng 2 là tinh thần (đam mê sáng tạo), Tầng 3 là tâm hồn (mục đích cao cả cống hiến)."
+                                timeLimit: 20,
+                                explanation: "An toàn tâm lý giúp mọi người dám cởi mở, lắng nghe không phán xét và gắn kết chân thực, là nền tảng cốt lõi của Cảm giác Kết nối (Connectedness). Đồng thời ở cấp độ tổ chức, nó cũng là tiền đề để nhân viên dám nói lên tiếng nói cá nhân (Tự chủ)."
+                            },
+                            {
+                                id: "dhm-quiz-3",
+                                question: "Trong công việc, cảm giác 'Tự chủ' (Control) được hiểu đúng nhất là:",
+                                options: [
+                                    "Có quyền lựa chọn và kiểm soát cách thực hiện công việc",
+                                    "Được quyền ra lệnh cho người khác",
+                                    "Không cần làm việc theo quy trình",
+                                    "Làm việc một mình không cần ai giúp"
+                                ],
+                                correctIndex: 0,
+                                timeLimit: 20,
+                                explanation: "Đáp án đúng là lựa chọn 1: Có quyền lựa chọn và kiểm soát cách thực hiện công việc"
+                            },
+                            {
+                                id: "dhm-quiz-4",
+                                question: "Tại sao cảm giác 'Tiến bộ' (Progress) lại quan trọng hơn việc Đạt mục tiêu cuối cùng theo khoa học hạnh phúc?",
+                                options: [
+                                    "Vì các Small wins (chiến thắng nhỏ) tạo ra nguồn năng lượng liên tục giúp duy trì động lực",
+                                    "Vì cảm giác tiến bộ giúp chúng ta không bị tác động bởi những thất bại tạm thời",
+                                    "Vì việc đạt mục tiêu cuối cùng thường đi kèm với sự lo âu về việc phải đặt ra những mục tiêu cao hơn",
+                                    "Vì tiến bộ là yếu tố duy nhất có thể đo lường được bằng các chỉ số định lượng trong quản trị nhân sự"
+                                ],
+                                correctIndex: 0,
+                                timeLimit: 20,
+                                explanation: "Đáp án đúng là lựa chọn 1: Vì các Small wins (chiến thắng nhỏ) tạo ra nguồn năng lượng liên tục giúp duy trì động lực"
+                            },
+                            {
+                                id: "dhm-quiz-5",
+                                question: "Khái niệm 'Psychological Safety' (An toàn tâm lý) đóng vai trò gì trong Cảm giác ‘Kết nối?",
+                                options: [
+                                    "Thiết lập một hệ thống kiểm soát nội bộ chặt chẽ để ngăn ngừa các hành vi gây mất đoàn kết trong nhóm",
+                                    "Đảm bảo rằng mọi thành viên trong nhóm luôn có sự đồng thuận tuyệt đối và không bao giờ có tranh luận",
+                                    "Cung cấp một chế độ bảo hiểm và phúc lợi đầy đủ để nhân viên cảm thấy an tâm về mặt tài chính cá nhân",
+                                    "Tạo ra môi trường nơi mọi người dám chia sẻ sai lầm và thử nghiệm cái mới mà không sợ bị phán xét"
+                                ],
+                                correctIndex: 3,
+                                timeLimit: 20,
+                                explanation: "Đáp án đúng là lựa chọn 4: Tạo ra môi trường nơi mọi người dám chia sẻ sai lầm và thử nghiệm cái mới mà không sợ bị phán xét"
+                            },
+                            {
+                                id: "dhm-quiz-6",
+                                question: "Theo Delivering Happiness, đâu là 3 cấp độ hạnh phúc?",
+                                options: [
+                                    "Thú vui (Pleasure) - Đam mê (Passion) - Mục đích cao cả (Higher Purpose)",
+                                    "Tiến bộ - Tự chủ - Kết nối",
+                                    "Biết ơn - Flow - Lạc quan",
+                                    "Giá trị - Hành vi - Văn hóa"
+                                ],
+                                correctIndex: 0,
+                                timeLimit: 20,
+                                explanation: "Đáp án đúng là lựa chọn 1: Thú vui (Pleasure) - Đam mê (Passion) - Mục đích cao cả (Higher Purpose)"
+                            },
+                            {
+                                id: "dhm-quiz-7",
+                                question: "Ai là người phát biểu câu nói:\n\"Xây dựng một văn hóa tuyệt vời và mọi thứ khác sẽ đi đúng hướng\"?",
+                                options: [
+                                    "Martin Seligman",
+                                    "Aristotle",
+                                    "Tony Hsieh",
+                                    "Mihály Csíkszentmihályi"
+                                ],
+                                correctIndex: 2,
+                                timeLimit: 20,
+                                explanation: "Đáp án đúng là lựa chọn 3: Tony Hsieh"
+                            },
+                            {
+                                id: "dhm-quiz-8",
+                                question: "Đòn bẩy Kết nối được thể hiện qua hòa ái với:",
+                                options: [
+                                    "Với bản thân, với người khác và với thiên nhiên",
+                                    "Với mục tiêu, với thành tích và với lợi nhuận",
+                                    "Với tự chủ, với tiến bộ và với thành tựu",
+                                    "Với tổ chức, với khách hàng và với quy trình"
+                                ],
+                                correctIndex: 0,
+                                timeLimit: 20,
+                                explanation: "Đáp án đúng là lựa chọn 1: Với bản thân, với người khác và với thiên nhiên"
+                            },
+                            {
+                                id: "dhm-quiz-9",
+                                question: "Đâu là biểu hiện của Ownership Advantage™ (Tinh thần làm chủ)?",
+                                options: [
+                                    "Cảm giác được chú ý và lắng nghe ý kiến",
+                                    "Cảm giác được kết nối, tương tác và quan tâm đến người khác",
+                                    "Được là chính mình trong môi trường làm việc",
+                                    "Lựa chọn cá nhân trong việc chịu trách nhiệm về kết quả"
+                                ],
+                                correctIndex: 3,
+                                timeLimit: 20,
+                                explanation: "Đáp án đúng là lựa chọn 4: Lựa chọn cá nhân trong việc chịu trách nhiệm về kết quả"
+                            },
+                            {
+                                id: "dhm-quiz-10",
+                                question: "Theo tài liệu, tại sao nhiều mục tiêu như mua nhà, thăng chức hoặc kiếm nhiều tiền không đảm bảo hạnh phúc bền vững?",
+                                options: [
+                                    "Vì chúng làm giảm động lực nội tại.",
+                                    "Vì chúng thường mang lại hạnh phúc trong ngắn hạn và khi đạt được ta nhanh chóng đặt mục tiêu mới.",
+                                    "Vì chúng làm giảm cảm giác kết nối.",
+                                    "Vì chúng làm suy yếu giá trị cốt lõi cá nhân."
+                                ],
+                                correctIndex: 1,
+                                timeLimit: 20,
+                                explanation: "Đáp án đúng là lựa chọn 2: Vì chúng thường mang lại hạnh phúc trong ngắn hạn và khi đạt được ta nhanh chóng đặt mục tiêu mới."
                             }
                         ],
                         iam: {
@@ -79,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     },
                     {
                         id: "mod-1-2",
-                        title: "Bài 1.2: Định Vị La Bàn — Giá Trị Cốt Lõi Cá Nhân (Me Values)",
+                        title: "Bài 1.2: La Bàn Giá Trị Cốt Lõi Cá Nhân — Personal Core Value Compass (Me Values)",
                         valueOptions: [
                             "Tiến bộ (luôn tiến lên phía trước, phát triển không ngừng)",
                             "Thành công (đạt kết quả, hoàn thành nhiệm vụ)",
@@ -145,7 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 ],
                 resources: [
                     { title: "Đồ họa thông tin: Bí Quyết 3 Cấp Độ Hạnh Phúc", type: "image", url: "data/artifacts/infographic_bi_quyet.png", icon: "🖼️" },
-                    { title: "Đồ họa thông tin: Kim Tự Tháp Hạnh Phúc", type: "image", url: "data/artifacts/infographic.png", icon: "📊" },
+                    { title: "Đồ họa thông tin: Lộ Trình Khoa Học Hạnh Phúc: Từ Cá Nhân Đến Tổ Chức", type: "image", url: "data/artifacts/infographic.png", icon: "📊" },
                     { title: "Báo cáo: Khoa học Hạnh phúc & Dòng chảy Tổ chức", type: "markdown", url: "data/artifacts/report_dong_chay.md", icon: "📄" },
                     { title: "Thẻ ghi nhớ tương tác: Flashcards Hạnh Phúc", type: "html", url: "data/artifacts/flashcards", icon: "🃏" }
                 ]
@@ -2728,7 +2834,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 { title: "Lộ Trình 3 Mini Step DHM", file: "slide_04.png" },
                 { title: "Đội Ngũ Đồng Hành (Your Guides)", file: "slide_05.png" },
                 { title: "Triết Lý Văn Hóa Tony Hsieh (Zappos)", file: "slide_09.png" },
-                { title: "Kim Tự Tháp Mục Tiêu & Hạnh Phúc", file: "slide_14.png" },
+                { title: "Mọi Mục Tiêu Đều Quy Về Hạnh Phúc (Chuỗi Câu Hỏi Tại Sao?)", file: "slide_14.png" },
                 { title: "3 Cấp Độ Hạnh Phúc (Martin Seligman)", file: "slide_16.png" },
                 { title: "Ẩn Dụ Ba Tầng Lầu (Phong Tử Khải)", file: "slide_17.png" },
                 { title: "La Bàn Me Values (Giá Trị Cốt Lõi)", file: "slide_23.png" },

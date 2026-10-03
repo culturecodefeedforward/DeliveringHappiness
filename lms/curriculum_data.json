@@ -31,7 +31,7 @@
         },
         {
           "id": "sub-1-3",
-          "title": "Mục 1.3: Định Vị La Bàn — Me Values",
+          "title": "Mục 1.3: La Bàn Giá Trị Cốt Lõi Cá Nhân (Me Values)",
           "target": "stage1-mod-1-2",
           "tab": "tab-practice"
         },
@@ -115,7 +115,7 @@
             },
             {
               "id": "dhm-quiz-2",
-              "question": "An toàn tâm lý (Psychological Safety) thuộc đòn bẩy nào?",
+              "question": "Trong xây dựng văn hóa giao tiếp cởi mở và thấu hiểu không phán xét, An toàn tâm lý (Psychological Safety) đóng vai trò nền tảng cho đòn bẩy nào?",
               "options": [
                 "Tự chủ (Control)",
                 "Kết nối (Connectedness)",
@@ -124,7 +124,7 @@
               ],
               "correctIndex": 1,
               "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 2: Kết nối (Connectedness)"
+              "explanation": "An toàn tâm lý giúp mọi người dám cởi mở, lắng nghe không phán xét và gắn kết chân thực, là nền tảng cốt lõi của Cảm giác Kết nối (Connectedness). Đồng thời ở cấp độ tổ chức, nó cũng là tiền đề để nhân viên dám nói lên tiếng nói cá nhân (Tự chủ)."
             },
             {
               "id": "dhm-quiz-3",
@@ -167,7 +167,7 @@
             },
             {
               "id": "dhm-quiz-6",
-              "question": "Theo  Delivering Happiness, đâu là 3 cấp độ hạnh phúc?",
+              "question": "Theo Delivering Happiness, đâu là 3 cấp độ hạnh phúc?",
               "options": [
                 "Thú vui (Pleasure) - Đam mê (Passion) - Mục đích cao cả (Higher Purpose)",
                 "Tiến bộ - Tự chủ - Kết nối",
@@ -193,7 +193,7 @@
             },
             {
               "id": "dhm-quiz-8",
-              "question": "Đòn bảy Kết nối được thể hiện qua hoà ái với",
+              "question": "Đòn bẩy Kết nối được thể hiện qua hòa ái với:",
               "options": [
                 "Với bản thân, với người khác và với thiên nhiên",
                 "Với mục tiêu, với thành tích và với lợi nhuận",
@@ -250,7 +250,7 @@
         },
         {
           "id": "mod-1-2",
-          "title": "Bài 1.2: Định Vị La Bàn — Giá Trị Cốt Lõi Cá Nhân (Me Values)",
+          "title": "Bài 1.2: La Bàn Giá Trị Cốt Lõi Cá Nhân — Personal Core Value Compass (Me Values)",
           "description": "Lựa chọn các giá trị quan trọng nhất từ danh mục chuẩn mực để thiết lập chiếc La Bàn nội tâm dẫn lối trước khi đến lớp.",
           "valueOptions": [
             "Tiến bộ (luôn tiến lên phía trước, phát triển không ngừng)",
@@ -388,7 +388,7 @@
           "icon": "📊"
         },
         {
-          "title": "Slide Bài Giảng: Mục Tiêu & Kim Tự Tháp Hạnh Phúc",
+          "title": "Slide Bài Giảng: Mọi Mục Tiêu Đều Quy Về Hạnh Phúc (Chuỗi Câu Hỏi Tại Sao?)",
           "type": "image",
           "url": "data/artifacts/slides/slide_14.png",
           "icon": "📊"
@@ -651,11 +651,11 @@
           },
           "practicalScenario": {
             "id": "scenario-habit-mindfulness",
-            "title": "Tình Huống Thực Tế 2.1: Ca Phẫu Thuật Mổ Mở 2018 — \"Làm Bạn Với Cơn Đau\" & Kỹ Thuật SCBA",
+            "title": "Tình Huống Thực Tế 2.1: Ca Phẫu Thuật Mổ Mở 2018 — \"Làm Bạn Với Cơn Đau\" & Kỹ Thuật SBA",
             "context": "Trước một ca đại phẫu mổ mở ổ bụng phức tạp năm 2018, Chị An (một nữ quản lý đào tạo) được một vị thiền sư dẫn đường chia sẻ hai lời khuyên cốt lõi: \"Cái gì không thuộc về con thì hãy trả lại cho tự nhiên\" và \"Hãy làm bạn với cơn đau\". Khi thuốc tê tan dần sau ca mổ, thay vì gồng mình chống cự và để nỗi sợ hãi phóng đại cảm giác đau đớn, Chị An đã thực hành tỉnh thức: an trú vào hơi thở, quan sát và làm bạn với cơn đau vật lý. Nhờ tâm trí bình thản, cơ thể chị phục hồi an toàn mà không cần lạm dụng thuốc giảm đau bên ngoài.",
-            "facultyAnalysis": "GS. Y khoa Jon Kabat-Zinn (cha đẻ MBSR) chỉ rõ: Đau đớn là thực tế vật lý khách quan (Pain is inevitable), nhưng sự đau khổ là do tâm trí phóng đại và kháng cự (Suffering is optional). Khi gặp biến cố hoặc căng thẳng cao độ, hạch hạnh nhân (Amygdala) lập tức kích hoạt phản xạ 'Chiến hay Biến' (Fight or Flight), phóng thích cortisol làm ta phản ứng bốc đồng. Kỹ thuật SCBA (Stop - Calibrate/Breathe - Be Aware - Act) tạo ra một 'khoảng dừng thiêng liêng' (Sacred Pause), đưa máu trở về Vỏ não trước trán (Prefrontal Cortex) để ra quyết định tỉnh táo.",
-            "modelAnswer": "1. Tách biệt Thực tế và Phóng đại: Nhận diện cơn đau/sự giận dữ chỉ là trạng thái sinh lý tạm thời, không đồng nhất bản thân với cảm xúc đó ('Tôi đang quan sát cơn giận', chứ không phải 'Tôi là cơn giận').\n2. Thực hành SCBA 4 bước trong công việc:\n  - S (Stop): Dừng ngay hành động gõ bàn phím hoặc phát ngôn khi nhận thấy nhịp tim tăng nhanh.\n  - C/B (Calibrate / Breathe): Hít thở sâu 3 nhịp bụng (4 giây hít vào, 6 giây thở ra) để kích hoạt hệ thần kinh phó giao cảm.\n  - A (Be Aware): Quan sát cơ thể (vai có gồng không, hàm có nghiến không) và tự hỏi: 'Chiếc mũ vai trò của tôi lúc này là gì?'.\n  - A (Act): Phản hồi trên cơ sở sự thấu cảm và mục tiêu dài hạn, thay vì phản xạ ăn miếng trả miếng.",
-            "reflectionPrompt": "Khi đối mặt với áp lực gay gắt từ cấp trên hoặc khách hàng, phản xạ tự động đầu tiên của bạn là gì (Chiến - Biến - hay Đóng băng)? Bạn nhận ra điều gì nếu áp dụng khoảng dừng SCBA?",
+            "facultyAnalysis": "GS. Y khoa Jon Kabat-Zinn (cha đẻ MBSR) chỉ rõ: Đau đớn là thực tế vật lý khách quan (Pain is inevitable), nhưng sự đau khổ là do tâm trí phóng đại và kháng cự (Suffering is optional). Khi gặp biến cố hoặc căng thẳng cao độ, hạch hạnh nhân (Amygdala) lập tức kích hoạt phản xạ 'Chiến hay Biến' (Fight or Flight), phóng thích cortisol làm ta phản ứng bốc đồng. Kỹ thuật SBA (Stop – Breathe – Attend/Ask) tạo ra một 'khoảng dừng thiêng liêng' (Sacred Pause), đưa máu trở về Vỏ não trước trán (Prefrontal Cortex) để ra quyết định tỉnh táo.",
+            "modelAnswer": "1. Tách biệt Thực tế và Phóng đại: Nhận diện cơn đau/sự giận dữ chỉ là trạng thái sinh lý tạm thời, không đồng nhất bản thân với cảm xúc đó ('Tôi đang quan sát cơn giận', chứ không phải 'Tôi là cơn giận').\n2. Thực hành SBA 3 bước trong công việc:\n  - S (Stop): Dừng ngay hành động gõ bàn phím hoặc phát ngôn khi nhận thấy nhịp tim tăng nhanh.\n  - B (Breathe): Hít thở sâu 3 nhịp bụng (4 giây hít vào, 6 giây thở ra) để kích hoạt hệ thần kinh phó giao cảm.\n  - A (Attend / Ask): Chú ý cảm thọ cơ thể, quan sát phản ứng và tự hỏi: 'Mục tiêu tối ưu và chiếc mũ vai trò của tôi lúc này là gì?' để phản hồi thấu cảm thay vì phản xạ ăn miếng trả miếng.",
+            "reflectionPrompt": "Khi đối mặt với áp lực gay gắt từ cấp trên hoặc khách hàng, phản xạ tự động đầu tiên của bạn là gì (Chiến - Biến - hay Đóng băng)? Bạn nhận ra điều gì nếu áp dụng khoảng dừng SBA?",
             "actionPrompt": "Một tình huống căng thẳng cụ thể tuần tới bạn cam kết sẽ dừng lại 3 nhịp thở trước khi phản hồi:"
           }
         },
@@ -665,7 +665,7 @@
           "name": "Biết Ơn (Gratitude)",
           "title": "Biết Ơn Bền Vững",
           "icon": "🙏",
-          "description": "Ghi nhận 4 điều biết ơn mỗi ngày và lan tỏa sự trân trọng đến đồng nghiệp thông qua văn hóa ghi nhận (Kudos).",
+          "description": "Ghi nhận 3 điều biết ơn mỗi ngày và lan tỏa sự trân trọng đến đồng nghiệp thông qua văn hóa ghi nhận (Kudos).",
           "audioTrack": "data/artifacts/audio_biet_on.mp3",
           "tool": {
             "type": "gratitude_tool",
@@ -1046,7 +1046,7 @@
           "A": "Bạn đã thuê gia sư, tốn nhiều tiền bạc và thời gian nhắc nhở, nhưng bài kiểm tra toán của con bạn tháng này lại tiếp tục dưới điểm trung bình.",
           "B": "Con lười biếng vô phương cứu chữa và không có tương lai. Mọi công sức tiền bạc đổ sông đổ biển. Mình là phụ huynh thất bại hoàn toàn.",
           "C": "Bùng nổ cơn thịnh nộ, quát mắng đay nghiến con, không khí gia đình ngột ngạt căng thẳng, đứa trẻ sợ hãi, khép kín và càng ghét học toán hơn.",
-          "hintD": "Áp dụng SCBA (Stop - Breathe - Ask). Bác bỏ Cá nhân hóa & Toàn diện: Điểm kém ở môn toán không định nghĩa nhân cách hay tương lai của con. Con vẫn rất giàu lòng trắc ẩn và có khiếu nghệ thuật. Sự sa sút có thể do phương pháp dạy chưa khớp với cách tiếp thu của con.",
+          "hintD": "Áp dụng SBA (Stop – Breathe – Attend/Ask). Bác bỏ Cá nhân hóa & Toàn diện: Điểm kém ở môn toán không định nghĩa nhân cách hay tương lai của con. Con vẫn rất giàu lòng trắc ẩn và có khiếu nghệ thuật. Sự sa sút có thể do phương pháp dạy chưa khớp với cách tiếp thu của con.",
           "hintE": "Ôm con và lắng nghe con chia sẻ về những phần bài học con đang gặp vướng mắc; cùng trao đổi lại với gia sư để đổi phương pháp trực quan hơn thay vì chỉ giải bài tập máy móc."
         },
         {
