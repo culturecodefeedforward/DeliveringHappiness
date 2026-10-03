@@ -100,36 +100,41 @@ sequenceDiagram
     end
 ```
 
-### D. Luồng Xác thực Micro-LMS v2 & Onboarding Số điện thoại Tự phục vụ (Micro-LMS v2 Auth & Self-Service Onboarding Flow)
-Luồng đăng nhập thông minh và bổ sung thông tin tự phục vụ dành cho học viên Delivering Happiness Masterclass:
+### D. Luồng Mô hình Đăng nhập Lai & Phân quyền Vượt Chặng (LMS Hybrid Auth & Trial Gating Flow)
+Luồng đăng nhập phân quyền kép giữa Học viên chính thức (Roster) và Người học thử Magic Link:
 
 ```mermaid
 sequenceDiagram
-    participant Learner as Học viên (Browser)
-    participant LMS as Micro-LMS v2 (lms/index.html)
+    participant User as Người dùng (Browser)
+    participant LMS as Micro-LMS (lms/index.html)
     participant Engine as LMS Controller (lms/app.js)
     participant Local as localStorage (Trình duyệt)
-    participant GAS as Google Apps Script Webhook
-    participant Sheet as CRM / Google Sheet BTC
+    participant GAS as CRM Webhook (Deployment @74)
+    participant Sheet as CRM Leads_Directory
 
-    Learner->>LMS: Nhập Email học viên
+    User->>LMS: Nhập Email
     LMS->>Engine: input event (kiểm tra real-time)
-    Engine->>Engine: Tra cứu Email trong authorized_roster.json & overrides
-    
-    alt Trường hợp 1: Học viên đã có SĐT (hoặc đã Onboard trước đó)
-        Engine-->>LMS: Hiển thị form Mật khẩu (4 số cuối SĐT)
-        Learner->>LMS: Nhập 4 số cuối & bấm "Vào Học Ngay"
-        Engine->>Engine: verifyPassword (so khớp 4 số cuối)
-        Engine->>Local: Lưu dhm_lms_auth_user
-        Engine-->>LMS: Đóng Modal, mở Dashboard 3 Chặng Học
-    else Trường hợp 2: Học viên thiếu SĐT (16 học viên DHM9)
-        Engine-->>LMS: Ẩn mật khẩu, hiện form Onboarding: "Nhập 10 số điện thoại"
-        Learner->>LMS: Nhập 10 số SĐT & bấm "Kích Hoạt & Vào Học Ngay"
-        Engine->>Engine: Kiểm tra Regex SĐT Việt Nam (/^0[35789]\d{8}$/)
-        Engine->>Local: 1. Lưu phone vào dhm_roster_overrides & dhm_lms_auth_user
-        Engine-)GAS: 2. POST Webhook ngầm (action: update_phone, email, name, phone, cohort)
-        GAS->>Sheet: Ghi thông tin học viên & SĐT mới
-        Engine-->>LMS: 3. Vào Dashboard học ngay tức thì (4 số cuối là pass cho lần sau)
+    Engine->>Engine: Tra cứu Email trong master_learners_roster.json
+
+    alt Nhóm 1: Học viên Chính thức (Khớp Roster)
+        Engine-->>LMS: Hiện ô Mật khẩu (4 số cuối SĐT)
+        User->>LMS: Nhập 4 số cuối & bấm "Vào Học Ngay"
+        Engine->>Engine: verifyPassword (khớp 4 số cuối SĐT)
+        Engine->>Local: Lưu phiên dhm_lms_auth_user (isTrial: false)
+        Engine-->>LMS: Mở Dashboard; mở khóa 3 Chặng sau khi đạt ≥70% Cổng Vượt Chặng
+    else Nhóm 2: Người mới / Email lạ (Không khớp Roster)
+        Engine-->>LMS: Ẩn mật khẩu, hiện form "Học thử Chặng 1" (Họ tên, SĐT 10 số, Consent)
+        User->>LMS: Điền thông tin & bấm "Gửi Liên Kết Học Thử"
+        LMS->>GAS: POST action: register_or_request_link (survey_type: LMS_TRIAL)
+        GAS->>Sheet: Ghi nhận Lead mới & sinh Token 32-hex
+        GAS->>User: Gửi Magic Link qua Email (hiệu lực 30 phút)
+        Note over User,LMS: Người dùng nhấp link trong Email (?token=...&action=verify)
+        User->>LMS: Truy cập liên kết kích hoạt
+        LMS->>GAS: GET verify_token & token
+        GAS-->>LMS: Phản hồi 200 OK { success: true, verified: true }
+        Engine->>Local: Lưu phiên dhm_lms_auth_user (isTrial: true)
+        Engine-->>LMS: Mở Chặng 1; KHÓA CỨNG Chặng 2 và Chặng 3
+        Note over User,LMS: Cố tình click Chặng 2/3 ➔ Hiện Modal Nâng Cấp sang /program-interest.html
     end
 ```
 
@@ -283,11 +288,55 @@ Các lớp CAPTCHA và giới hạn tần suất được áp dụng theo từng
 *   **Mục đích:** Cung cấp nền tảng học tập kết hợp 3 Chặng (`Blended Learning`) kết nối chặt chẽ giữa học trực tuyến trước lớp (Online Pre-Class), xưởng thực hành 5 thói quen tại lớp (Offline Workshop Live), và hành trình đồng hành 21 ngày nuôi dưỡng thói quen (Action Learning Post-Class).
 *   **Các thành phần cốt lõi:**
     1.  *Giao diện LMS Web (`lms/index.html`):* SPA (Single Page Application) hiện đại xây dựng trên Tailwind CSS Glassmorphism, 3 chặng học tuần tự, tích hợp bộ đếm giờ kiểm tra sát hạch, huy hiệu lượt thử `#quiz-attempt-badge`, bảng tổng kết `#quiz-summary-container`, giao diện thực hành 5 thói quen và dashboard vinh danh 21 ngày.
-    2.  *Bộ điều khiển Client (`lms/app.js`):* Quản lý phiên làm việc (`dhm_lms_auth_user`), nhận diện học viên thời gian thực, cơ chế Onboarding SĐT tự phục vụ, logic kiểm tra sát hạch 20 câu với ngưỡng đạt ≥ 70% (14/20 câu) sau tối đa 3 lần thử (`retries`), khóa bài thi (`lockout`) khi hết lượt, và cổng kiểm soát chuyển chặng (`btnNextLesson.onclick`) chặn học viên chưa đủ điều kiện chuyển sang Chặng 2.
-    3.  *Danh bạ phân quyền (`lms/authorized_roster.json`):* 383 tài khoản được ủy quyền (gồm 6 thành viên Ban Giảng Huấn/Coach, học viên từ DHM3 đến DHM9, và đăng ký mới).
-    4.  *Cơ sở dữ liệu học viên tổng quát (`master_learners_roster.json`):* Chuẩn hóa 383 học viên và giảng viên kèm mã định danh chuẩn (`COACH-001` đến `COACH-006` cho Ban Giảng Huấn, `DHMx-yyy` cho học viên), trạng thái số điện thoại (`verified`, `legacy_partial`, `missing`), và phân loại tổ chức.
-    5.  *CSDL Bài giảng (`lms/curriculum_data.json`):* Cấu trúc giáo trình 3 chặng, nạp trọn vẹn 20 câu hỏi trắc nghiệm phản xạ thực chiến từ Excel, 41 giá trị La Bàn Me Values, và phân công phụ trách của 6 thành viên Ban Giảng Huấn (Cô Châu, Cô Hoàn, Thầy Vũ, Thầy Hưng, Cô Khánh Linh, Cô Hân).
-    6.  *Cổng quản trị (`lms/admin.html`):* Cổng Coach Portal dành riêng cho Ban Giảng Huấn theo dõi tiến độ, xem kết quả sát hạch và ghi chú khai vấn.
+    2.  *Bộ điều khiển Client (`lms/app.js`):* Quản lý phiên làm việc (`dhm_lms_auth_user`), nhận diện học viên thời gian thực, cơ chế Onboarding SĐT tự phục vụ, logic kiểm tra sát hạch 10 câu với ngưỡng đạt ≥ 70% (7/10 câu) sau tối đa 3 lần thử (`retries`), khóa bài thi (`lockout`) khi hết lượt, và cổng kiểm soát chuyển chặng (`btnNextLesson.onclick`) chặn học viên chưa đủ điều kiện chuyển sang Chặng 2.
+    3.  *Chế độ Học Tập Tập Trung (Focused Mode) & Điều Hướng Thông Minh:*
+        *   *Thu gọn Sidebar Desktop:* Nút thu gọn thanh điều hướng (`#btn-collapse-sidebar-desktop`) mở rộng bề ngang màn hình, tự động đồng bộ cờ `dhm_sidebar_desktop_collapsed` vào `localStorage`. Khi thu gọn, nút mở rộng xuất hiện trên thanh tiêu đề (`#btn-sidebar-desktop-expand`).
+        *   *Thanh Resume Learning:* Tự động xác định mô-đun và tiểu mục gần nhất của học viên để kích hoạt học tiếp chỉ với 1 click.
+        *   *Quick Start Card Modal (`#modal-quick-start`):* Cung cấp thẻ bắt đầu nhanh tóm lược lộ trình học 90 phút và thời lượng từng chặng.
+        *   *Tự động thu gọn Hero Quiz Gate:* Hàm `evaluateLearnerStatus()` kiểm tra trạng thái vượt qua sát hạch của học viên để tự động thu gọn khối Hero xuống kích thước thẻ trạng thái nhỏ, giải phóng không gian hiển thị bài học.
+    4.  *Mô hình 3 Khối Nội Dung Sư phạm (Duy 3-Sections Interactive Model):*
+        *   *Section 1 (Bối cảnh & Trọng tâm):* Thẻ tóm lược lý thuyết cốt lõi, từ khóa trọng tâm.
+        *   *Section 2 (Ngân hàng Tình huống Thực chiến):* Danh sách tình huống doanh nghiệp thực tế (`practicalScenarios` với 8 case study chuẩn hóa cho cả 3 Đòn bẩy Chặng 1 và 5 Thói quen Chặng 2) mô tả chi tiết thách thức nhân sự, xung đột giá trị hoặc mâu thuẫn giao tiếp.
+        *   *Section 3 (Bài tập mẫu & Accordion Phân tích):* Bài tập mẫu kèm accordion ẩn/hiện giải pháp chi tiết (`toggleModelAnswer`) cho phép học viên tự học, tự đối chiếu phương pháp tư duy chuẩn mực trước khi điền bài tập cá nhân.
+
+```mermaid
+flowchart TD
+    subgraph DataLayer["Lớp Dữ Liệu (curriculum_data.json)"]
+        S1_Data["3 Đòn Bẩy Hạnh Phúc (Chặng 1)<br/>3 Scenarios: Động lực Nội tại, Điểm mạnh, Ý nghĩa"]
+        S2_Data["5 Thói Quen Cốt Lõi (Chặng 2)<br/>5 Scenarios: Lắng nghe, Ghi nhận, Phản tư, Hiện diện, Tử tế"]
+    end
+
+    subgraph ControllerLayer["Lớp Điều Khiển (lms/app.js)"]
+        Renderer["renderLesson(stageId, lessonId)"]
+        SecRenderer["renderExerciseContent()<br/>3-Sections Assembler"]
+        AccordionEngine["toggleModelAnswer(scenarioId)<br/>DOM Accordion Engine"]
+    end
+
+    subgraph PresentationLayer["Giao Diện Học Viên (lms/index.html)"]
+        SEC1["Section 1: Bối Cảnh & Trọng Tâm (bg-amber-50)"]
+        SEC2["Section 2: Ngân Hàng Case Study (bg-slate-50)"]
+        SEC3["Section 3: Bài Tập Mẫu & Accordion (bg-emerald-50)"]
+        ModelBtn["Nút 'Xem bài giải mẫu của Giảng viên'"]
+        AnswerBox["Accordion Nội dung bài giải chi tiết"]
+        StudentInput["Form Học viên tự điền bài làm & Cam kết"]
+    end
+
+    S1_Data --> Renderer
+    S2_Data --> Renderer
+    Renderer --> SecRenderer
+    SecRenderer --> SEC1
+    SecRenderer --> SEC2
+    SecRenderer --> SEC3
+    SEC3 --> ModelBtn
+    ModelBtn -->|click event| AccordionEngine
+    AccordionEngine -->|toggle hidden class| AnswerBox
+    SEC3 --> StudentInput
+```
+
+    5.  *Danh bạ phân quyền (`lms/authorized_roster.json`):* 382 tài khoản được ủy quyền (gồm 5 thành viên Ban Giảng Huấn/Coach, học viên từ DHM3 đến DHM9, và đăng ký mới).
+    6.  *Cơ sở dữ liệu học viên tổng quát (`master_learners_roster.json`):* Chuẩn hóa 382 học viên và giảng viên kèm mã định danh chuẩn (`COACH-001` đến `COACH-005` cho Ban Giảng Huấn, `DHMx-yyy` cho học viên), trạng thái số điện thoại (`verified`, `legacy_partial`, `missing`), và phân loại tổ chức.
+    7.  *CSDL Bài giảng (`lms/curriculum_data.json`):* Cấu trúc giáo trình 3 chặng, nạp trọn vẹn 10 câu hỏi trắc nghiệm sát hạch đầu vào chuẩn hóa, 41 giá trị La Bàn Me Values, ngân hàng 8 tình huống thực chiến `practicalScenarios` chuẩn trích xuất từ NotebookLM, và phân công phụ trách của 5 thành viên Ban Giảng Huấn (Cô Châu, Thầy Hưng, Cô Hoàn, Thầy Vũ, Cô Hân).
+    8.  *Cổng quản trị (`lms/admin.html`):* Cổng Coach Portal dành riêng cho Ban Giảng Huấn theo dõi tiến độ, xem kết quả sát hạch và ghi chú khai vấn.
 
 ## 3. Ma trận Ranh giới Kiểm chứng
 

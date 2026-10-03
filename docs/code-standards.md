@@ -44,3 +44,11 @@ Dự án sử dụng cơ chế chia nhánh để phân tách môi trường phá
     *   Mở thư mục `dh4hn-website` khi phát triển trang đăng ký mới trên `main`.
     *   Mở thư mục `dh4hn-website-dh7` khi cập nhật kho bài giảng cho học viên cũ trên `07042026`.
 *   **Đồng bộ clasp:** Sử dụng công cụ `clasp` (Google Command Line Apps Script Projects - công cụ dòng lệnh cho Apps Script) để đồng bộ mã nguồn. Trước `clasp push`, phải kiểm tra `.clasp.json`, `.claspignore`, `clasp status`, diff allowlist, backup/rollback và phê duyệt Cấp độ 3 cho exact command. Không commit token xác thực cá nhân lên Git.
+
+## 6. Quy chuẩn Phát triển Phân hệ LMS Client State & Tương tác
+*   **Quản lý Khóa `localStorage` có Tiền tố Chuẩn:** Mọi khóa lưu trữ trạng thái người dùng trong LMS phải có tiền tố `dhm_` để tránh xung đột không gian tên:
+    *   `dhm_lms_auth_user`: Lưu trữ phiên đăng nhập và định danh học viên.
+    *   `dhm_sidebar_desktop_collapsed`: Lưu cờ boolean trạng thái thu gọn thanh điều hướng bên trái trên desktop.
+    *   `dhm_roster_overrides`: Lưu trữ số điện thoại học viên tự phục vụ onboarding tại client.
+*   **Toàn vẹn Cấu trúc Dữ liệu JSON Giáo trình (`curriculum_data.json`):** Mọi tệp dữ liệu tĩnh phục vụ LMS phải tuân thủ chuẩn mã hóa UTF-8 tuyệt đối. Khi bổ sung trường mới (`practicalScenarios`, `quiz_questions`), bắt buộc kiểm tra cú pháp và tính toàn vẹn bằng Python JSON validator trước khi commit.
+*   **Tiêu chuẩn Trợ năng cho Accordion & Drawer:** Nút mở/đóng accordion phải gắn `aria-expanded` tương ứng và hỗ trợ thao tác bàn phím (Enter / Space). Khi chuyển đổi trạng thái thu gọn Sidebar, hiệu ứng chuyển động CSS phải mượt mà và không gây giật khung hình (layout shift) cho nội dung bài giảng.

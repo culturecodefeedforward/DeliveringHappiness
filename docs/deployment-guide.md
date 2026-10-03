@@ -93,3 +93,18 @@ Không tự ý sửa URL trực tiếp trong mã nguồn backend. Mọi URL và 
 *   Snapshot 08/08/2026: local `main` chậm `origin/main` ba commit; release tool local bị lệch bản committed và release contract chưa có trong checkout. Chỉ dùng clean worktree tại commit release đã review.
 *   Source còn fallback cấu hình nhạy cảm và Apps Script chưa xác minh HMAC của submit ABCDE. Không dùng tài liệu này để claim security hardening đã hoàn tất.
 *   Lượt cập nhật tài liệu không chạy network, browser, Apps Script, Sheet, email hoặc payment probe; mọi trạng thái live vẫn `UNVERIFIED`.
+
+## 5. Quy Trình Kiểm Thử Pre-flight & Xác Minh CDN Cho Phân Hệ LMS
+Trước khi commit, push và deploy phân hệ LMS (`/lms/`), bắt buộc thực hiện kiểm tra pre-flight 3 lớp:
+1.  **Cú pháp JavaScript Client:** Chạy lệnh `node -c lms/app.js` để đảm bảo 100% không có lỗi cú pháp (SyntaxError).
+2.  **Toàn vẹn Dữ liệu JSON:** Chạy script kiểm tra nạp dữ liệu UTF-8 trên các file JSON cốt lõi:
+    ```powershell
+    python -c "import json; json.load(open('lms/curriculum_data.json', encoding='utf-8')); print('curriculum_data: PASS')"
+    python -c "import json; json.load(open('lms/authorized_roster.json', encoding='utf-8')); print('authorized_roster: PASS')"
+    ```
+3.  **Xác minh Độ trễ CDN Cache sau khi Deploy:** Do mạng phân phối nội dung (CDN) của Vercel có thể có độ trễ bộ đệm (cache delay 30-45 giây), kiểm tra live production phải tải trực tiếp tệp từ URL live kèm header không lưu cache (`Cache-Control: no-cache`) và kiểm tra sự xuất hiện của các trường dữ liệu hoặc ID mới (ví dụ: `scenario-1-1` đến `scenario-1-3` cho Chặng 1, `scenario-2-1` đến `scenario-2-5` cho Chặng 2, hoặc `#btn-collapse-sidebar-desktop`). Ví dụ lệnh kiểm chứng HTTP no-cache:
+    ```powershell
+    $res = Invoke-WebRequest -Uri "https://delivering-happiness.vercel.app/lms/curriculum_data.json" -Headers @{"Cache-Control"="no-cache"}
+    ($res.Content | ConvertFrom-Json).stages[1].modules[0].lessons[0].practicalScenarios.id
+    ```
+    Chỉ kết luận `Live done` khi toàn bộ 8 case study và các thành phần UI mới nhất đã phản ánh đầy đủ trên production.

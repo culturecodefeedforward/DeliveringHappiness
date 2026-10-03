@@ -129,3 +129,35 @@ Tất cả các email gửi tự động cho khách hàng (Xác nhận thanh to�
 *   Stable phải luôn là lựa chọn mặc định và vẫn sử dụng được độc lập khi Beta bị tắt hoặc lỗi.
 *   Khi Beta trả lỗi kết nối/503, giao diện phải giải thích ngắn gọn và cung cấp nút chuyển về Stable mà không làm mất nội dung người dùng vừa nhập.
 *   Các yêu cầu trên đã được đối chiếu ở source `chat-abcde.js` và `chat-abcde.css`; trạng thái hiển thị desktop/mobile live vẫn `UNVERIFIED` cho tới khi có browser evidence.
+
+---
+
+## 9. Thiết Kế Giao Diện LMS Chế Độ Học Tập Tập Trung (Focused Mode) & Mô Hình 3 Khối
+
+### A. Chế độ Thu gọn Sidebar Desktop (LinkedIn Learning Focused Pattern)
+*   **Thanh điều hướng Sidebar (`#sidebar`):**
+    *   *Trạng thái mở rộng (Expanded):* Chiều rộng tiêu chuẩn `w-80` (320px), hiển thị đầy đủ danh mục chặng, bài học, biểu tượng trạng thái và thời lượng. Nút thu gọn `#btn-collapse-sidebar-desktop` đặt góc trên bên phải của sidebar.
+    *   *Trạng thái thu gọn (Collapsed):* Ẩn bằng class `-translate-x-full lg:hidden` (hoặc chuyển thành cột siêu hẹp `w-0` hoặc `hidden`), mở rộng toàn bộ diện tích hiển thị bài giảng và bảng thực hành.
+    *   *Nút mở rộng trên Header (`#btn-sidebar-desktop-expand`):* Khi sidebar đóng, nút mở rộng xuất hiện mượt mà trên header chính với tooltip "Mở rộng danh mục bài học".
+    *   *Lưu trữ trạng thái:* Giá trị cờ boolean được đồng bộ vào `localStorage: dhm_sidebar_desktop_collapsed` để giữ nguyên trạng thái khi chuyển bài hoặc làm mới trang.
+
+### B. Mô hình 3 Khối Nội Dung Sư phạm (Duy 3-Sections Interactive UX)
+*   **Section 1: Bối cảnh & Trọng tâm học phần (`bg-amber-50/50 border-amber-200`):**
+    *   Tông màu hổ phách dịu mát (amber warm tone), viền mảnh bo góc mềm mại.
+    *   Icon huy hiệu lý thuyết, tóm lược từ khóa cốt lõi giúp học viên định hình tư duy trước khi bắt tay làm bài.
+*   **Section 2: Ngân hàng Tình huống Thực chiến (`bg-slate-50 border-slate-200`):**
+    *   Tông màu xám trung tính chuyên nghiệp, thẻ card nổi khối nhẹ.
+    *   Thông tin bối cảnh doanh nghiệp thực tế rõ ràng: Tên doanh nghiệp, vị trí nhân sự, mâu thuẫn cần giải quyết, giúp tạo độ "chạm" và liên hệ thực tiễn cao cho học viên.
+*   **Section 3: Bài tập Mẫu & Accordion Phân tích Đối chiếu (`bg-emerald-50/40 border-emerald-200`):**
+    *   Tông màu xanh ngọc bích (emerald) thể hiện sự gợi mở và giải pháp.
+    *   Nút accordion tương tác (`#btn-toggle-model-...`) với biểu tượng mũi tên xoay chuyển hướng mượt mà khi mở rộng.
+    *   Nội dung bài tập mẫu trình bày theo cấu trúc phân rã chuẩn mực (I•A•M hoặc công thức chuyên biệt) giúp học viên dễ dàng sao chép phương pháp tư duy.
+
+### C. Nút Tiếp Tục Học Tập Thông Minh (Smart Resume Learning CTA)
+*   Nút Resume Learning trên Header (`#btn-header-resume`) sử dụng phong cách gradient màu nổi bật (`bg-gradient-to-r from-amber-500 to-orange-500 text-white font-medium shadow-sm hover:shadow`), kích thước tối thiểu 40px theo chuẩn tương tác di động/desktop.
+*   Modal Quick Start Card (`#modal-quick-start`) trình bày dưới dạng thẻ Glassmorphism nổi bật giữa màn hình với backdrop mờ tối giản (`bg-black/50 backdrop-blur-sm`).
+
+### D. Trực quan hóa Tiến độ & Hiệu ứng Chuyển động Accordion (Progress Badges & Accordion Motion)
+*   **Huy hiệu Tích xanh Tiến độ (Section Checkmark `✓`):** Các tiểu mục và bài học đã hoàn thành hiển thị biểu tượng tích xanh lá cây bo tròn (`text-emerald-600 bg-emerald-100 rounded-full px-1.5 py-0.5 text-xs font-bold`) ở góc phải thanh điều hướng sidebar, tạo động lực tâm lý hoàn thành liên tục.
+*   **Vi tương tác Accordion Bài giải Mẫu:** Nút mở bài tập mẫu có hiệu ứng chuyển đổi xoay icon mũi tên 180 độ (`transition-transform duration-200 group-hover:translate-x-0.5`), vùng nội dung gợi ý trượt mở mượt mà kèm khung viền nổi bật chấm phá (`border-l-4 border-emerald-500 bg-emerald-50/50 p-4 rounded-r-xl`).
+

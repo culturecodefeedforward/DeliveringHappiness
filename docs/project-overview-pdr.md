@@ -33,14 +33,23 @@ Tài liệu PDR (Product Development Requirements - yêu cầu phát triển s�
 *   **FR-07 (QR Check-in):** Có giao diện camera `checkin.html`; kết nối dữ liệu live và chống check-in trùng vẫn cần UAT riêng.
 *   **FR-08 (Hệ thống LMS Blended Learning & Cổng Sát Hạch Đầu Vào):** 
     *   Hệ thống học tập kết hợp (Blended Learning) 3 Chặng tại `/lms/` (`lms/index.html`, `lms/app.js`, `lms/curriculum_data.json`).
-    *   **Master Learner Directory:** CSDL 383 học viên và giảng viên từ DHM3 đến DHM9 (`lms/master_learners_roster.json`, `lms/authorized_roster.json`).
+    *   **Master Learner Directory:** CSDL 382 học viên và giảng viên từ DHM3 đến DHM9 (`lms/master_learners_roster.json`, `lms/authorized_roster.json`).
     *   **Cơ chế Xác thực & Nhận diện Học viên:** Đăng nhập an toàn bằng Email / Số điện thoại đăng ký, tự động nhận diện danh tính và khóa học.
-    *   **Ban Giảng Huấn 6 Giảng viên / Coach:** Cô Hà Minh Châu, Thầy / Anh Hưng, Cô Hà Ngọc Hoàn, Thầy Vũ Hoàng, Cô / Chị Hân, Cô Vũ Khánh Linh (phân quyền Coach, bypass cổng kiểm tra).
+    *   **Ban Giảng Huấn 5 Giảng viên / Coach:** Cô Hà Minh Châu, Thầy / Anh Hưng, Cô Hà Ngọc Hoàn, Thầy Vũ Hoàng, Cô / Chị Hân (phân quyền Coach, bypass cổng kiểm tra).
     *   **Cổng Sát Hạch Đầu Vào Chặng 1 (10 Câu Trắc Nghiệm):** Yêu cầu đạt tối thiểu ≥70% (7/10 câu) sau tối đa 3 lần thử để qualify mở khóa Chặng 2 (Offline). Khóa lại sau 3 lần trượt và yêu cầu liên hệ Coach/BTC.
     *   **Công cụ Tương tác:** Video Explainer, Audio Player bài giảng, La Bàn Giá Trị Me Values (41 giá trị), Khung đúc kết I•A•M, 4 Thói quen cốt lõi (Vị nhân, Biết ơn, Tỉnh thức SCBA, Lạc quan ABCDE) và Nhật ký 21 Ngày (Habit Tracker).
 *   **FR-09 (SePay Webhook Auto-Reconciliation):** Có API `api/sepay-dh.js` và handler Apps Script để đối soát theo lane; trạng thái webhook production là `UNVERIFIED` trong lượt cập nhật tài liệu này.
 *   **FR-10 (Program Interest Hub):** Trang đích chung ghi nhận sự quan tâm đối với nhiều chương trình (DHM8, DHM9, NVC, AI) với cơ chế chống spam bằng UUID.
 *   **FR-11 (Mẫu đăng ký Giao tiếp Kết nối NVC):** Biểu mẫu đăng ký chuyên biệt cho khóa học Nonviolent Communication (`register_nvc.html`), lưu trữ CRM độc lập vào Sheet `CultureCode - NVC Leads` (13 cột) và tự động bắn email thông báo cho CultureCode Team.
+*   **FR-12 (LMS Chế độ Học Tập Tập Trung Focused Mode & Mô hình 3 Sections Duy Đề xuất):**
+    *   **Desktop Focused Mode (Thu gọn Sidebar):** Nút thu gọn thanh điều hướng bên trái trên máy tính bàn (`#btn-collapse-sidebar-desktop`), tự động lưu trạng thái thu gọn vào `localStorage: dhm_sidebar_desktop_collapsed` để học viên mở rộng tối đa không gian đọc/xem bài giảng mà không bị phân tâm. Có nút khôi phục nhanh trên thanh tiêu đề (`#btn-sidebar-desktop-expand`).
+    *   **Thanh Tiếp Tục Học Tập Thông Minh (Smart Resume Learning):** Nút Resume Learning trên Header (`#btn-header-resume`) và Thẻ Khởi động Nhanh (`#modal-quick-start`) tự động ghi nhớ và chuyển hướng học viên đến đúng bài học hoặc tiểu mục đang học dở.
+    *   **Mô hình 3 Khối Nội Dung (Duy 3-Sections Model):** Chuẩn hóa tab Bài tập & Thực hành thành 3 khối nội dung sư phạm:
+        1. *Khối 1 (Bối cảnh & Trọng tâm):* Tóm lược cốt lõi lý thuyết, nguyên lý tâm lý học ứng dụng.
+        2. *Khối 2 (Ngân hàng Case Study & Tình huống thực chiến):* Cung cấp các tình huống thực tế bám sát môi trường doanh nghiệp Việt Nam (`practicalScenarios` trong `lms/curriculum_data.json`).
+        3. *Khối 3 (Bài tập mẫu & Accordion Phân tích):* Bài tập mẫu kèm đáp án chi tiết và cơ chế ẩn/hiện accordion (`toggleModelAnswer`) giúp học viên tự đối chiếu cách giải trước khi làm bài tập riêng.
+    *   **Tự động Thu gọn Banner Sát Hạch (Hero Gate Auto-Collapse):** Khi học viên đạt ngưỡng đậu (≥70%), banner thi sát hạch tự động thu nhỏ thành huy hiệu trạng thái gọn gàng để nhường màn hình cho bài học.
+    *   **Tích xanh Tiến độ Tiểu mục (Visual Subsection Checkmarks):** Hiển thị dấu kiểm `✓` trực quan bên cạnh các tiểu mục đã hoàn thành trên Sidebar.
 *   *(Chi tiết toàn bộ biểu mẫu và điểm đến dữ liệu xem tại [forms-and-data-destinations.md](file:///C:/Users/vu.hoang/.gemini/antigravity/scratch/dh4hn-website/docs/forms-and-data-destinations.md)).*
 *   **NFR-01 (Hiệu suất):** Mục tiêu tải trang dưới 1,5 giây trên thiết bị di động. Chưa có phép đo hiệu năng hiện hành trong lượt cập nhật này, nên trạng thái là `UNVERIFIED`.
 *   **NFR-02 (Bảo mật thông tin):** Secret, token và thông tin vận hành nhạy cảm không được đặt trong mã máy khách hoặc tài liệu. Mọi giá trị phải đến từ cấu hình runtime thích hợp.
