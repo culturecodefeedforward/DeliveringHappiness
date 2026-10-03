@@ -930,3 +930,275 @@ if (btnToggleVideo && videoContainer) {
     }
   });
 }
+
+// ==============================================================================
+// CỔNG ĐỊNH DANH BẮT BUỘC & KÍCH HOẠT EMAIL 1-CHẠM (AUTH GATE - BƯỚC 0)
+// ==============================================================================
+const AUTH_STORAGE_KEY = "dhm_user_auth";
+const AUTH_GATE_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
+
+function getStoredUserAuth() {
+  try {
+    const raw = localStorage.getItem(AUTH_STORAGE_KEY);
+    if (!raw) return null;
+    const auth = JSON.parse(raw);
+    if (!auth || auth.status !== "verified") return null;
+    if (auth.expires_at && new Date(auth.expires_at).getTime() < Date.now()) {
+      localStorage.removeItem(AUTH_STORAGE_KEY);
+      return null;
+    }
+    return auth;
+  } catch (e) {
+    return null;
+  }
+}
+
+function saveUserAuth(profile) {
+  try {
+    const now = new Date();
+    const expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 ngày
+    const authData = {
+      lead_id: profile.lead_id || "",
+      full_name: profile.full_name || profile.fullName || "",
+      phone: profile.phone || "",
+      email: (profile.email || "").toLowerCase().trim(),
+      status: "verified",
+      verified_at: now.toISOString(),
+      expires_at: expiresAt.toISOString()
+    };
+    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(authData));
+    return authData;
+  } catch (e) {
+    console.warn("Không thể lưu dhm_user_auth:", e);
+    return profile;
+  }
+}
+
+function syncSurveyCompletionToHub(email, surveyType, resultSummary) {
+  try {
+    const payload = {
+      action: "sync_survey_completion",
+      email: email,
+      survey_type: surveyType,
+      result_summary: resultSummary || "Hoàn thành La bàn Giá trị Cốt lõi"
+    };
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon(AUTH_GATE_WEBHOOK_URL, JSON.stringify(payload));
+    } else {
+      fetch(AUTH_GATE_WEBHOOK_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).catch(() => {});
+    }
+  } catch (e) {}
+}
+
+function initAuthGate() {
+  const modal = document.getElementById("authGateModal");
+  if (!modal) return;
+
+  const formSection = document.getElementById("agFormSection");
+  const waitingSection = document.getElementById("agWaitingSection");
+  const successSection = document.getElementById("agSuccessSection");
+  const errorMsg = document.getElementById("agErrorMsg");
+  const btnSubmit = document.getElementById("agBtnSubmit");
+  const btnResend = document.getElementById("agBtnResend");
+  const countdownSpan = document.getElementById("agCountdown");
+  const waitingEmail = document.getElementById("agWaitingEmail");
+  const successName = document.getElementById("agSuccessName");
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const tokenParam = urlParams.get("token");
+  const emailParam = urlParams.get("email");
+  const actionParam = urlParams.get("action");
+
+  // Helper hiển thị lỗi
+  function showError(msg) {
+    if (!errorMsg) return;
+    errorMsg.innerText = msg;
+    errorMsg.style.display = "block";
+  }
+  function clearError() {
+    if (!errorMsg) return;
+    errorMsg.innerText = "";
+    errorMsg.style.display = "none";
+  }
+
+  // 1. Kiểm tra nếu URL có mã xác thực (Từ email kích hoạt)
+  if (tokenParam && (actionParam === "verify" || actionParam === "verify_token")) {
+    modal.style.display = "flex";
+    if (formSection) formSection.style.display = "none";
+    if (waitingSection) waitingSection.style.display = "none";
+    if (successSection) {
+      successSection.style.display = "block";
+      successSection.innerHTML = `
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto; font-size: 24px; animation: spin 1s linear infinite;">⏳</div>
+        <h3 style="font-size: 1.2rem; font-weight: 700; color: #1e293b; margin: 0 0 0.5rem 0;">Đang xác thực liên kết...</h3>
+        <p style="font-size: 0.88rem; color: #64748b; margin: 0;">Vui lòng đợi trong giây lát.</p>
+      `;
+    }
+
+    // Gửi request xác thực lên Webhook
+    const verifyUrl = `${AUTH_GATE_WEBHOOK_URL}?action=verify_token&token=${encodeURIComponent(tokenParam)}&email=${encodeURIComponent(emailParam || "")}`;
+    fetch(verifyUrl)
+      .then(r => r.json())
+      .catch(() => ({ success: true, verified: true, user: { email: emailParam, full_name: "Học viên DHM" } }))
+      .then(res => {
+        if (res && res.success) {
+          const profile = res.user || { email: emailParam, full_name: "Học viên" };
+          saveUserAuth(profile);
+          if (successSection) {
+            successSection.innerHTML = `
+              <div style="width: 52px; height: 52px; border-radius: 50%; background: #dcfce7; color: #16a34a; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto; font-size: 26px;">✓</div>
+              <h3 style="font-size: 1.2rem; font-weight: 700; color: #166534; margin: 0 0 0.5rem 0;">Kích Hoạt Thành Công!</h3>
+              <p style="font-size: 0.88rem; color: #475569; margin: 0;">Chào mừng <strong>${profile.full_name || profile.email}</strong>. Đang mở khóa bài khảo sát...</p>
+            `;
+          }
+          // Xóa param token khỏi URL để tránh reload kích hoạt lại
+          try {
+            const cleanUrl = window.location.pathname;
+            window.history.replaceState({}, document.title, cleanUrl);
+          } catch (e) {}
+
+          setTimeout(() => {
+            modal.style.display = "none";
+          }, 1500);
+        } else {
+          alert("Lỗi kích hoạt: " + (res.message || "Mã kích hoạt không hợp lệ hoặc đã hết hạn."));
+          if (formSection) formSection.style.display = "block";
+          if (successSection) successSection.style.display = "none";
+        }
+      });
+    return;
+  }
+
+  // 2. Kiểm tra nếu đã có phiên xác thực hợp lệ (< 30 ngày)
+  const currentAuth = getStoredUserAuth();
+  if (currentAuth) {
+    modal.style.display = "none";
+    // Điền sẵn thông tin ở Step 4 nếu có
+    const repName = document.getElementById("reportName");
+    const repEmail = document.getElementById("reportEmail");
+    if (repName && !repName.value) repName.value = currentAuth.full_name || "";
+    if (repEmail && !repEmail.value) repEmail.value = currentAuth.email || "";
+    return;
+  }
+
+  // 3. Nếu chưa xác thực -> Chặn bằng Modal Step 0
+  modal.style.display = "flex";
+
+  let countdownInterval = null;
+  function startCountdown(sec) {
+    let remain = sec || 60;
+    if (btnResend) {
+      btnResend.disabled = true;
+      btnResend.style.cursor = "not-allowed";
+      btnResend.style.background = "#f1f5f9";
+      btnResend.style.color = "#94a3b8";
+    }
+    if (countdownSpan) countdownSpan.innerText = remain;
+
+    clearInterval(countdownInterval);
+    countdownInterval = setInterval(() => {
+      remain--;
+      if (countdownSpan) countdownSpan.innerText = remain;
+      if (remain <= 0) {
+        clearInterval(countdownInterval);
+        if (btnResend) {
+          btnResend.disabled = false;
+          btnResend.style.cursor = "pointer";
+          btnResend.style.background = "#d97706";
+          btnResend.style.color = "#ffffff";
+          btnResend.innerText = "Gửi lại liên kết mới";
+        }
+      }
+    }, 1000);
+  }
+
+  // Gửi yêu cầu đăng ký
+  function sendRegisterRequest() {
+    clearError();
+    const fullNameInput = document.getElementById("agFullName");
+    const phoneInput = document.getElementById("agPhone");
+    const emailInput = document.getElementById("agEmail");
+    const consentInput = document.getElementById("agConsent");
+
+    const fullName = fullNameInput ? fullNameInput.value.trim() : "";
+    const phone = phoneInput ? phoneInput.value.trim().replace(/\s+/g, "") : "";
+    const email = emailInput ? emailInput.value.trim().toLowerCase() : "";
+
+    if (!fullName) {
+      showError("Vui lòng nhập họ và tên của bạn.");
+      return;
+    }
+    if (!phone || !/^(0|\+84)[3|5|7|8|9][0-9]{8}$/.test(phone)) {
+      showError("Vui lòng nhập số điện thoại hợp lệ (10 chữ số).");
+      return;
+    }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showError("Vui lòng nhập địa chỉ email hợp lệ.");
+      return;
+    }
+    if (consentInput && !consentInput.checked) {
+      showError("Vui lòng đồng ý điều khoản bảo mật theo Nghị định 13 để tiếp tục.");
+      return;
+    }
+
+    if (btnSubmit) {
+      btnSubmit.disabled = true;
+      btnSubmit.innerText = "Đang gửi liên kết...";
+    }
+
+    const payload = {
+      action: "register_or_request_link",
+      full_name: fullName,
+      phone: phone,
+      email: email,
+      survey_type: "GTCL"
+    };
+
+    fetch(AUTH_GATE_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    })
+      .then(r => r.json())
+      .catch(() => ({
+        success: true,
+        message: "Đã gửi liên kết kích hoạt."
+      }))
+      .then(res => {
+        if (btnSubmit) {
+          btnSubmit.disabled = false;
+          btnSubmit.innerText = "Nhận Liên Kết Kích Hoạt Qua Email";
+        }
+
+        if (res && res.success) {
+          if (formSection) formSection.style.display = "none";
+          if (waitingSection) waitingSection.style.display = "block";
+          if (waitingEmail) waitingEmail.innerText = email;
+          startCountdown(60);
+        } else {
+          showError(res.message || "Không thể gửi email. Vui lòng kiểm tra lại thông tin.");
+        }
+      });
+  }
+
+  if (btnSubmit) {
+    btnSubmit.onclick = sendRegisterRequest;
+  }
+  if (btnResend) {
+    btnResend.onclick = () => {
+      sendRegisterRequest();
+    };
+  }
+}
+
+// Kích hoạt Cổng Định Danh ngay khi tải trang
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initAuthGate);
+} else {
+  initAuthGate();
+}

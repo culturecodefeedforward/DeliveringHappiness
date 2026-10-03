@@ -547,9 +547,6 @@
     
     .pdf-export .cta-box { padding: 0.8rem !important; margin-bottom: 0 !important; border: none !important; }
     .pdf-export .cta-box h3 { font-size: 1.1rem !important; margin-bottom: 0.3rem !important; }
-    .pdf-export .cta-box p { font-size: 0.85rem !important; margin-bottom: 0.5rem !important; line-height: 1.3 !important; }
-    .pdf-export .cta-box a { padding: 0.5rem 1rem !important; font-size: 0.85rem !important; }
-  </style>
 </head>
 
 <body>
@@ -557,6 +554,89 @@
     <a href="index.html" class="back-btn">&larr;</a>
     <h1 class="app-title">La bàn giá trị cốt lõi cá nhân - Personal Core Value Compass</h1>
   </header>
+
+  <!-- STEP 0: CỔNG ĐỊNH DANH BẮT BUỘC (AUTH GATE MODAL) -->
+  <div id="authGateModal" class="custom-modal" style="display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 1rem;">
+    <div style="background: #ffffff; border-radius: 16px; width: 100%; max-width: 520px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); overflow: hidden; border: 1px solid #e2e8f0; animation: modalPop 0.3s ease;">
+      <!-- Top Bar Amber -->
+      <div style="height: 6px; background: linear-gradient(90deg, #d97706, #f59e0b);"></div>
+      <div style="padding: 2rem;">
+        <div style="display: inline-block; font-size: 11px; font-weight: 700; color: #d97706; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; background: #fef3c7; padding: 2px 8px; border-radius: 999px;">
+          Delivering Happiness &bull; Cổng Định Danh
+        </div>
+        <h2 style="font-size: 1.45rem; font-weight: 800; color: #1e293b; margin: 0 0 0.5rem 0;">
+          Xác Thực Học Viên 1-Chạm
+        </h2>
+        <p style="font-size: 0.88rem; color: #64748b; margin: 0 0 1.5rem 0; line-height: 1.5;">
+          Vui lòng hoàn thành xác thực để mở khóa bài khảo sát La bàn Giá trị Cốt lõi và lưu trữ hành trình học tập.
+        </p>
+
+        <!-- FORM NHẬP THÔNG TIN -->
+        <div id="agFormSection">
+          <div style="margin-bottom: 1rem;">
+            <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #334155; margin-bottom: 0.4rem;">Họ và tên *</label>
+            <input type="text" id="agFullName" placeholder="Ví dụ: Nguyễn Văn An" style="width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; box-sizing: border-box; outline: none;" />
+          </div>
+          <div style="margin-bottom: 1rem;">
+            <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #334155; margin-bottom: 0.4rem;">Số điện thoại (10 chữ số) *</label>
+            <input type="tel" id="agPhone" placeholder="Ví dụ: 0912345678" style="width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; box-sizing: border-box; outline: none;" />
+          </div>
+          <div style="margin-bottom: 1rem;">
+            <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #334155; margin-bottom: 0.4rem;">Địa chỉ Email *</label>
+            <input type="email" id="agEmail" placeholder="Ví dụ: yourname@gmail.com" style="width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; box-sizing: border-box; outline: none;" />
+          </div>
+
+          <!-- Checkbox Nghị định 13 -->
+          <div style="margin-bottom: 1.25rem; display: flex; align-items: flex-start; gap: 0.6rem;">
+            <input type="checkbox" id="agConsent" checked style="margin-top: 0.2rem; cursor: pointer; accent-color: #d97706; width: 16px; height: 16px;" />
+            <label for="agConsent" style="font-size: 0.78rem; color: #64748b; line-height: 1.4; cursor: pointer;">
+              Tôi đồng ý cung cấp thông tin để xác thực danh tính và nhận kết quả khảo sát cá nhân hóa theo Nghị định 13/2023/NĐ-CP.
+            </label>
+          </div>
+
+          <div id="agErrorMsg" style="display: none; padding: 0.6rem 0.8rem; background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; color: #b91c1c; font-size: 0.85rem; margin-bottom: 1rem;"></div>
+
+          <button id="agBtnSubmit" style="width: 100%; padding: 0.9rem; background: #d97706; color: #ffffff; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25);">
+            Nhận Liên Kết Kích Hoạt Qua Email
+          </button>
+        </div>
+
+        <!-- MÀN HÌNH CHỜ XÁC THỰC (WAITING STATE) -->
+        <div id="agWaitingSection" style="display: none; text-align: center; padding: 1rem 0;">
+          <div style="width: 52px; height: 52px; border-radius: 50%; background: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto; font-size: 24px;">
+            ✉
+          </div>
+          <h3 style="font-size: 1.15rem; font-weight: 700; color: #1e293b; margin: 0 0 0.5rem 0;">
+            Kiểm Tra Hộp Thư Của Bạn!
+          </h3>
+          <p style="font-size: 0.88rem; color: #475569; margin: 0 0 1rem 0; line-height: 1.5;">
+            Liên kết kích hoạt 1-chạm đã được gửi tới:<br>
+            <strong id="agWaitingEmail" style="color: #0f172a;"></strong>
+          </p>
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.8rem; font-size: 0.82rem; color: #64748b; margin-bottom: 1.25rem;">
+            Vui lòng mở email và nhấn nút <strong>"BẮT ĐẦU LÀM BÀI KHẢO SÁT NGAY"</strong> để hoàn tất kích hoạt.
+          </div>
+          <button id="agBtnResend" disabled style="padding: 0.6rem 1.2rem; background: #f1f5f9; color: #94a3b8; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: not-allowed;">
+            Gửi lại mã (<span id="agCountdown">60</span>s)
+          </button>
+        </div>
+
+        <!-- TRẠNG THÁI KÍCH HOẠT THÀNH CÔNG -->
+        <div id="agSuccessSection" style="display: none; text-align: center; padding: 1rem 0;">
+          <div style="width: 52px; height: 52px; border-radius: 50%; background: #dcfce7; color: #16a34a; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto; font-size: 26px;">
+            ✓
+          </div>
+          <h3 style="font-size: 1.2rem; font-weight: 700; color: #166534; margin: 0 0 0.5rem 0;">
+            Kích Hoạt Thành Công!
+          </h3>
+          <p style="font-size: 0.88rem; color: #475569; margin: 0 0 1rem 0;">
+            Chào mừng <strong id="agSuccessName"></strong>. Đang mở khóa bài khảo sát...
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
   <!-- STEP 1: GRID RATING -->
   <div id="step1" class="step-container active">
