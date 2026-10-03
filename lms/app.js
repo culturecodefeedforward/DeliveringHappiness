@@ -699,7 +699,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (e) {}
     }
 
-    // 5.5 STAGE UNLOCKING GATE (Sát hạch đầu vào)
+    // 5.5 STAGE UNLOCKING GATE (Cổng Vượt Chặng)
     function isStageUnlocked(stageIdx) {
         if (stageIdx === 0) return true; // Chặng 1 luôn luôn mở
         const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
@@ -759,7 +759,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         ${isCompleted ? '<span class="text-[10px] text-brand-green font-semibold">Đã xong</span>' : ''}
                     </div>
                     <div class="text-xs font-bold truncate ${!isUnlocked ? 'text-slate-400' : 'text-slate-100'}">${stage.title}</div>
-                    <div class="text-[11px] ${!isUnlocked ? 'text-slate-500' : 'text-slate-400'} truncate mt-0.5">${!isUnlocked ? 'Cần đạt ≥70% Bài Sát Hạch để mở khóa' : stage.subtitle}</div>
+                    <div class="text-[11px] ${!isUnlocked ? 'text-slate-500' : 'text-slate-400'} truncate mt-0.5">${!isUnlocked ? 'Cần đạt ≥70% Cổng Vượt Chặng để mở khóa' : stage.subtitle}</div>
                 </div>
                 ${stage.subSections && stage.subSections.length > 0 ? `<span class="stage-toggle-chevron text-xs text-slate-400 shrink-0 transform transition-transform ${isActive ? 'rotate-90' : ''}">▸</span>` : ''}
             `;
@@ -966,8 +966,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="flex items-center gap-2.5">
                         <span class="w-8 h-8 rounded-lg bg-brand-green/20 text-brand-green flex items-center justify-center font-bold text-sm">✓</span>
                         <div>
-                            <span class="text-[10px] uppercase font-bold text-brand-green tracking-wider">Đã Sát Hạch Thành Công</span>
-                            <div class="text-xs sm:text-sm font-bold text-white">Bạn đã đủ điều kiện lên lớp Offline (${s1Data.score || 7}/${s1Data.totalQuestions || 10} câu)</div>
+                            <span class="text-[10px] uppercase font-bold text-brand-green tracking-wider">Đã Vượt Chặng 1</span>
+                            <div class="text-xs sm:text-sm font-bold text-white">Bạn đã mở khóa Chặng 2 & Chặng 3 (${s1Data.score || 7}/${s1Data.totalQuestions || 10} câu)</div>
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
@@ -992,27 +992,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 heroQuizGateBanner.innerHTML = `
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-brand-amber flex items-center justify-center text-black text-xl sm:text-2xl font-extrabold shadow-md shrink-0">
-                            ⚡
+                            🎯
                         </div>
                         <div class="min-w-0">
                             <div class="flex items-center gap-2 flex-wrap">
-                                <span class="px-2 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px] uppercase tracking-wider shrink-0">Bắt buộc</span>
-                                <h3 class="text-xs sm:text-sm lg:text-base font-extrabold text-white truncate">BÀI TEST SÁT HẠCH ĐẦU VÀO (10 CÂU)</h3>
+                                <span class="px-2 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px] uppercase tracking-wider shrink-0">Cổng Vượt Chặng 1</span>
+                                <h3 class="text-xs sm:text-sm lg:text-base font-extrabold text-white truncate">BÀI KIỂM TRA VƯỢT CHẶNG (10 CÂU)</h3>
                                 <span class="text-[11px] sm:text-xs px-2 py-0.5 rounded-full bg-brand-amber/15 text-brand-amber font-mono font-bold border border-brand-amber/30 shrink-0">
                                     Đạt ≥ 70%
                                 </span>
                             </div>
                             <p class="text-xs text-slate-300 mt-0.5 sm:mt-1">
-                                Điều kiện tiên quyết để hoàn thành Mini-step 1 và tham dự lớp Offline.
+                                Xem video, hoàn thành các trạm học tập bên dưới, sau đó vượt qua bài test ở cuối Chặng 1 để mở Chặng 2.
                             </p>
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-2 w-full sm:flex sm:w-auto sm:justify-end">
                         <button id="btn-quick-roadmap" type="button" class="min-h-[44px] px-3 sm:px-4 py-2.5 rounded-xl bg-brand-card hover:bg-brand-border text-slate-200 text-xs font-bold border border-brand-border transition-all flex items-center justify-center gap-1.5 shadow-sm text-center">
-                            <span>📘 Lộ Trình & HDSD</span>
+                            <span>📘 Lộ Trình & Hướng Dẫn</span>
                         </button>
                         <button id="btn-quick-quiz" type="button" class="min-h-[44px] px-3.5 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-black font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-orange-500/25 hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-1.5 text-center">
-                            <span>⚡ Mở Bài Test ➔</span>
+                            <span>🎯 Đến Cổng Vượt Chặng ➔</span>
                         </button>
                     </div>
                 `;
@@ -1047,10 +1047,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // 3. Configure Header Resume Button
+        // 3. Configure Header Resume Button (Desktop only: ẩn hoàn toàn trên mobile để tránh trùng 2 nút test)
         if (btnHeaderResume) {
-            btnHeaderResume.classList.remove("hidden");
-            btnHeaderResume.classList.add("sm:flex");
+            btnHeaderResume.classList.add("hidden", "sm:flex");
+            btnHeaderResume.classList.remove("flex");
 
             if (isQuizPassed) {
                 btnHeaderResume.innerHTML = `<span>▶ Tiếp Tục Bài Tập</span>`;
@@ -1063,13 +1063,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     }, 100);
                 };
             } else {
-                btnHeaderResume.innerHTML = `<span>▶ Làm Bài Test</span>`;
+                btnHeaderResume.innerHTML = `<span>▶ Tiếp Tục Học</span>`;
                 btnHeaderResume.onclick = () => {
                     const tabTarget = document.querySelector('.tab-btn[data-tab="tab-practice"]');
                     if (tabTarget) tabTarget.click();
                     setTimeout(() => {
-                        openAccordionModule("stage1-mod-quiz");
-                        const el = document.getElementById("stage1-mod-quiz");
+                        const el = document.getElementById("stage1-mod-1-1");
                         if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
                     }, 100);
                 };
@@ -1101,7 +1100,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 7. LESSON / STAGE LOADER
     function loadStage(stageIdx) {
         if (!isStageUnlocked(stageIdx)) {
-            alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 70% ở Bài 1.1 Kiểm Tra Sát Hạch Đầu Vào (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
+            alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 70% ở Bài 1.4 Cổng Vượt Chặng (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
             currentStageIndex = 0;
             jumpToStage1Quiz();
             return;
@@ -1613,7 +1612,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderStage1View(stage) {
         const sData = learnerProgress.stageData["stage-1"] || {};
 
-        // 9.1 Render Quiz (Sát Hạch Đầu Vào - 10 Câu - Đạt ≥70% - Tối đa 3 lần thử)
+        // 9.1 Render Quiz (Cổng Vượt Chặng 1 - 10 Câu - Đạt ≥70% - Tối đa 3 lần thử)
         quizItemsContainer.innerHTML = "";
         const mod1 = (stage.modules && stage.modules[0]) ? stage.modules[0] : null;
         const quizzes = (mod1 && mod1.quizzes) ? mod1.quizzes : [];
@@ -1732,8 +1731,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         <div class="flex items-center gap-3">
                             <span class="text-2xl">🎉</span>
                             <div>
-                                <h4 class="text-sm font-extrabold text-brand-green">CHÚC MỪNG BẠN ĐÃ ĐỦ ĐIỀU KIỆN (QUALIFIED) LÊN LỚP OFFLINE!</h4>
-                                <p class="text-xs text-slate-300 mt-0.5">Kết quả bài sát hạch: <strong class="text-white">${correct}/${quizzes.length} câu đúng (${percent}%)</strong> — Đạt chuẩn ≥70% sau lần thử ${attempts}/${maxAttempts}.</p>
+                                <h4 class="text-sm font-extrabold text-brand-green">CHÚC MỪNG BẠN ĐÃ VƯỢT CHẶNG 1 THÀNH CÔNG!</h4>
+                                <p class="text-xs text-slate-300 mt-0.5">Kết quả bài kiểm tra vượt chặng: <strong class="text-white">${correct}/${quizzes.length} câu đúng (${percent}%)</strong> — Đạt chuẩn ≥70% sau lần thử ${attempts}/${maxAttempts}, đã mở khóa Chặng 2 & Chặng 3.</p>
                             </div>
                         </div>
                     `;
@@ -1742,8 +1741,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     quizSummaryContainer.innerHTML = `
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                             <div class="space-y-1">
-                                <h4 class="text-sm font-extrabold text-brand-amber">CHƯA ĐẠT TIÊU CHUẨN ĐẦU VÀO (≥70%)</h4>
-                                <p class="text-xs text-slate-300">Bạn đạt <strong>${correct}/${quizzes.length} câu (${percent}%)</strong>. Tiêu chuẩn để qualify lên lớp Offline là tối thiểu <strong>${Math.ceil(quizzes.length * 0.7)}/${quizzes.length} câu (≥70%)</strong>.</p>
+                                <h4 class="text-sm font-extrabold text-brand-amber">CHƯA ĐẠT CHUẨN VƯỢT CHẶNG (≥70%)</h4>
+                                <p class="text-xs text-slate-300">Bạn đạt <strong>${correct}/${quizzes.length} câu (${percent}%)</strong>. Tiêu chuẩn để mở khóa Chặng 2 là tối thiểu <strong>${Math.ceil(quizzes.length * 0.7)}/${quizzes.length} câu (≥70%)</strong>.</p>
                                 <p class="text-xs text-slate-400">Bạn còn <strong class="text-white">${maxAttempts - attempts} lần thử lại</strong>. Hãy xem lại các đáp án tô đỏ ở trên trước khi bấm thử lại.</p>
                             </div>
                             <button id="btn-quiz-retry" class="px-5 py-3 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-black font-extrabold text-xs shadow-lg shadow-orange-500/20 active:scale-95 transition-all whitespace-nowrap flex items-center justify-center gap-1.5 self-start sm:self-center">
