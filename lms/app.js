@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 badge: "Mini Step 1 • Online",
                 title: "Mini step 1 • ONLINE – Gieo Thông điệp",
                 subtitle: "Khoa học Hạnh phúc • 3 Cấp độ • Định vị La Bàn (Me Values) • 3 Đòn Bẩy Hạnh Phúc",
-                instructor: "Thầy Vũ Hoàng & Ban Giảng Huấn",
+                instructor: "",
                 estimatedMinutes: 30,
                 videoDuration: "7:27",
                 videoUrl: "data/artifacts/the_explainer.mp4",
@@ -33,10 +33,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     { id: "a1-3", title: "3. Ẩn dụ Ba tầng lầu & Case Study Zappos", file: "data/artifacts/ba_tang_zappos.mp3", duration: "40:15" },
                     { id: "a1-4", title: "4. Hạnh phúc không khẩu hiệu", file: "data/artifacts/hanh_phuc_khong_khau_hieu.mp3", duration: "38:40" }
                 ],
-                summary: "Mọi hành động con người đều hội tụ về đích đến là Hạnh phúc (Aristotle). Tuy nhiên, não bộ rất nhanh thích nghi với Thú vui ngắn hạn do cơ chế thích nghi khoái lạc (Hedonic Adaptation). Để bền vững, ta cần nâng cấp lên trạng thái Phiêu (Passion / Flow) và Mục đích cao cả (Higher Purpose).",
+                summary: "Mọi hành động con người đều hội tụ về đích đến là Hạnh phúc (Aristotle). Tuy nhiên, não bộ rất nhanh thích nghi với Thú vui ngắn hạn do cơ chế thích nghi khoái lạc (Hedonic Adaptation). Để bền vững, ta cần nâng cấp lên sự Đam mê dấn thân (The Engaged Life) và Mục đích cao cả (Higher Purpose).",
                 insights: [
                     { title: "Cấp độ 1: Thú vui (Pleasure)", desc: "Nhanh nguội lạnh do cơ chế thích nghi khoái lạc. Tiền bạc, tiện nghi vật chất chỉ đem lại thỏa mãn nhất thời." },
-                    { title: "Cấp độ 2: Đam mê (Passion / Flow)", desc: "Trạng thái Dòng chảy (Flow) khi tập trung giải quyết thử thách phù hợp với năng lực. Thời gian như ngừng trôi." },
+                    { title: "Cấp độ 2: Đam mê (Passion / Engagement)", desc: "Hạnh phúc từ sự dấn thân, gắn kết sâu sắc và phát huy thế mạnh bản thân (Signature Strengths) từ động lực nội tại." },
                     { title: "Cấp độ 3: Mục đích cao cả (Higher Purpose)", desc: "Cấp độ bền vững nhất. Thấy công việc của mình có ý nghĩa, phụng sự và đóng góp giá trị cho cộng đồng." }
                 ],
                 modules: [
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 question: "Theo Martin Seligman và triết lý DHM, cấp độ hạnh phúc nào có tính bền vững lâu dài nhất?",
                                 options: [
                                     "Thú vui (Pleasure) từ việc sở hữu vật chất ngắn hạn",
-                                    "Đam mê (Passion) khi tập trung cao độ",
+                                    "Đam mê (Passion) từ sự dấn thân và phát huy thế mạnh",
                                     "Mục đích cao cả (Higher Purpose / Meaning) khi cống hiến cho điều lớn lao",
                                     "Niềm vui sau mỗi bữa tiệc tùng"
                                 ],
@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 badge: "Mini Step 2 • Offline",
                 title: "Mini step 2 • OFFLINE – Gieo Thói quen",
                 subtitle: "Workshop Live tại lớp • Trạm thực hành 5 Thói quen Hạnh phúc & I•A•M",
-                instructor: "Ban Giảng Huấn DHM (Cô Châu, Thầy Hưng, Cô Hoàn, Thầy Vũ, Cô Hân)",
+                instructor: "",
                 estimatedMinutes: 120,
                 videoUrl: null,
                 subSections: [
@@ -198,7 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 badge: "Mini Step 3 • Online",
                 title: "Mini step 3 • ONLINE – Focus on I • A • M",
                 subtitle: "Nuôi dưỡng Thói quen Chuyển hóa • Kế thừa Toàn bộ Chất liệu • Đồng hành 21 ngày",
-                instructor: "Đội ngũ Giảng viên & Coach DHM Đồng Hành",
+                instructor: "",
                 estimatedMinutes: 21,
                 videoUrl: null,
                 subSections: [
@@ -1174,7 +1174,14 @@ document.addEventListener("DOMContentLoaded", () => {
         // Breadcrumbs & Header
         breadcrumbStage.textContent = stage.badge || `Chặng ${stage.stageNumber}`;
         breadcrumbLesson.textContent = stage.title;
-        lessonInstructorBadge.textContent = `👨‍🏫 ${stage.instructor || 'Ban Giảng Huấn'}`;
+        if (lessonInstructorBadge) {
+            if (stage.instructor && stage.instructor.trim()) {
+                lessonInstructorBadge.textContent = `👨‍🏫 ${stage.instructor}`;
+                lessonInstructorBadge.classList.remove("hidden");
+            } else {
+                lessonInstructorBadge.classList.add("hidden");
+            }
+        }
         lessonDurationBadge.textContent = `⏱ ${stage.estimatedMinutes || 30} phút`;
         lessonMainTitle.textContent = stage.title;
         lessonSubtitle.textContent = stage.subtitle;
@@ -1770,7 +1777,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <span class="text-2xl">⚠️</span>
                             <div>
                                 <h4 class="text-sm font-extrabold text-red-400">ĐÃ HẾT ${maxAttempts} LẦN THỬ — CHƯA ĐẠT 70%</h4>
-                                <p class="text-xs text-slate-300 mt-0.5">Bạn đạt <strong>${correct}/${quizzes.length} câu (${percent}%)</strong> sau 3 lượt thử. Vui lòng liên hệ Ban Giảng Huấn / Coach để được hướng dẫn ôn tập trước khi lên lớp Offline.</p>
+                                <p class="text-xs text-slate-300 mt-0.5">Bạn đạt <strong>${correct}/${quizzes.length} câu (${percent}%)</strong> sau 3 lượt thử. Vui lòng liên hệ Đội ngũ Điều phối / Coach để được hướng dẫn ôn tập trước khi lên lớp Offline.</p>
                             </div>
                         </div>
                     `;
@@ -1964,7 +1971,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (btnSyncWorkshop) {
             btnSyncWorkshop.onclick = () => {
                 saveLearnerProgress();
-                alert("✓ Toàn bộ bài tập 5 Thói quen & Capstone IAM đã được lưu trữ an toàn trên trình duyệt của bạn!\n\n(Lưu ý: Tính năng đồng bộ tự động về Google Sheets của Ban Giảng Huấn sẽ chính thức khả dụng trong Giai đoạn 2).");
+                alert("✓ Toàn bộ bài tập 5 Thói quen & Capstone IAM đã được lưu trữ an toàn trên trình duyệt của bạn!\n\n(Lưu ý: Tính năng đồng bộ tự động về Google Sheets của hệ thống sẽ chính thức khả dụng trong Giai đoạn 2).");
             };
         }
     }
@@ -2430,7 +2437,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (s3BannerBtn) {
             s3BannerBtn.onclick = (e) => {
                 e.preventDefault();
-                openInfographicModal("data/artifacts/slides/slide_25.png", "Bản Chụp Slide: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc");
+                openInfographicModal("data/artifacts/slides/slide_25.png", "Slide Bài Giảng: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc");
             };
         }
     }
@@ -2534,8 +2541,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         <span class="px-2.5 py-1 rounded-full bg-brand-amber/20 text-brand-amber border border-brand-amber/30 text-[10px] font-extrabold uppercase tracking-wider flex items-center gap-1.5">
                             <span>💼</span> Case Study Kinh Điển (1,2 Tỷ USD)
                         </span>
-                        <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/slides/slide_16.png" data-title="Bản Chụp Slide: 3 Cấp Độ Hạnh Phúc (DHM)">
-                            <span>📷 Xem Bản Chụp Slide DHM</span>
+                        <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/slides/slide_16.png" data-title="Slide Bài Giảng: 3 Cấp Độ Hạnh Phúc (DHM)">
+                            <span>📷 Xem Slide Bài Giảng DHM</span>
                         </button>
                     </div>
                     <h3 class="text-sm font-extrabold text-white">${di.zapposCaseStudy.title}</h3>
@@ -2575,7 +2582,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <span class="text-lg">⚖️</span>
                             <h3 class="text-sm font-bold text-white">So Sánh 3 Cấp Độ Hạnh Phúc (Martin Seligman)</h3>
                         </div>
-                        <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/slides/slide_16.png" data-title="Bản Chụp Slide: 3 Cấp Độ Hạnh Phúc (Martin Seligman)">
+                        <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/slides/slide_16.png" data-title="Slide Bài Giảng: 3 Cấp Độ Hạnh Phúc (Martin Seligman)">
                             <span>📷 Xem Slide 3 Cấp Độ</span>
                         </button>
                     </div>
@@ -2594,7 +2601,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <span class="text-lg">🧭</span>
                             <h3 class="text-sm font-bold text-white">${di.compassClock.title}</h3>
                         </div>
-                        <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/slides/slide_22.png" data-title="Bản Chụp Slide: Giá Trị Cốt Lõi Cá Nhân (ME Values)">
+                        <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/slides/slide_23.png" data-title="Slide Bài Giảng: Giá Trị Cốt Lõi Cá Nhân (ME Values)">
                             <span>📷 Xem Slide La Bàn</span>
                         </button>
                     </div>
@@ -2692,7 +2699,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                     <div class="pt-2">
                         <button type="button" class="btn-view-infographic w-full py-1.5 px-3 rounded-lg bg-brand-dark hover:bg-brand-card text-brand-amber border border-brand-amber/30 text-xs font-semibold transition-all flex items-center justify-center gap-1.5" data-img="${h.img}" data-title="${h.name}">
-                            <span>📷 Xem Bản Chụp Slide DHM</span>
+                            <span>📷 Xem Slide Bài Giảng DHM</span>
                         </button>
                     </div>
                 </div>
@@ -2704,7 +2711,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <span class="text-lg">🔬</span>
                         <h3 class="text-sm font-bold text-white">Nền Tảng Khoa Học Thần Kinh & Tâm Lý Học Của 5 Thói Quen</h3>
                     </div>
-                    <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/slides/slide_09.png" data-title="Bản Chụp Slide: Triết Lý Văn Hóa Zappos (Tony Hsieh)">
+                    <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/slides/slide_09.png" data-title="Slide Bài Giảng: Triết Lý Văn Hóa Zappos (Tony Hsieh)">
                         <span>📷 Xem Slide Văn Hóa (Tony Hsieh)</span>
                     </button>
                 </div>
@@ -2719,12 +2726,12 @@ document.addEventListener("DOMContentLoaded", () => {
             // 12 Slides Gallery trích từ Slide chính thức của DHM (Đáp ứng Feedback Cô Châu)
             const galleryList = [
                 { title: "Lộ Trình 3 Mini Step DHM", file: "slide_04.png" },
-                { title: "Ban Giảng Huấn (Your Guides)", file: "slide_05.png" },
+                { title: "Đội Ngũ Đồng Hành (Your Guides)", file: "slide_05.png" },
                 { title: "Triết Lý Văn Hóa Tony Hsieh (Zappos)", file: "slide_09.png" },
                 { title: "Kim Tự Tháp Mục Tiêu & Hạnh Phúc", file: "slide_14.png" },
                 { title: "3 Cấp Độ Hạnh Phúc (Martin Seligman)", file: "slide_16.png" },
                 { title: "Ẩn Dụ Ba Tầng Lầu (Phong Tử Khải)", file: "slide_17.png" },
-                { title: "La Bàn Me Values (Giá Trị Cá Nhân)", file: "slide_22.png" },
+                { title: "La Bàn Me Values (Giá Trị Cốt Lõi)", file: "slide_23.png" },
                 { title: "Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy", file: "slide_25.png" },
                 { title: "5 Thói Quen Hạnh Phúc Tự Thân", file: "slide_27.png" },
                 { title: "Đòn Bẩy 1: Sống Hòa Ái (Kết Nối)", file: "slide_29.png" },
@@ -2766,7 +2773,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="flex items-center justify-between flex-wrap gap-2">
                         <div class="flex items-center gap-2">
                             <span class="text-lg">🖼️</span>
-                            <h3 class="text-sm font-bold text-white">Kho Tàng 12 Bản Chụp Slide Bài Giảng DHM Chính Thức (HD Presentation)</h3>
+                            <h3 class="text-sm font-bold text-white">Kho Tàng 12 Slide Bài Giảng DHM Chính Thức (HD Presentation)</h3>
                         </div>
                         <span class="text-xs text-brand-amber font-mono font-bold">12/12 Slides</span>
                     </div>
@@ -2919,6 +2926,10 @@ document.addEventListener("DOMContentLoaded", () => {
             if (e.target === infographicModal) closeInfographicModal();
         });
     }
+
+    // Expose for inline HTML onclick handlers
+    window.openInfographicModal = openInfographicModal;
+    window.closeInfographicModal = closeInfographicModal;
 
     // 12.5 DOCUMENT READER MODAL
     async function openDocReader(docUrl, title) {

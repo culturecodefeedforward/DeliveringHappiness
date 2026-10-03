@@ -10,7 +10,7 @@
       "badge": "Chặng 1 · Online",
       "title": "Chặng 1 · Gieo Thông Điệp",
       "subtitle": "Khoa học Hạnh phúc • 3 Cấp độ • Định vị La Bàn (Me Values) • 3 Đòn Bẩy Hạnh Phúc",
-      "instructor": "Thầy Vũ Hoàng & Ban Giảng Huấn",
+      "instructor": "",
       "estimatedMinutes": 30,
       "videoUrl": "data/artifacts/the_explainer.mp4",
       "videoTitle": "Video: Delivering Happiness Movement (Hệ Điều Hành Hạnh Phúc)",
@@ -87,8 +87,8 @@
           "desc": "Nhanh nguội lạnh do cơ chế thích nghi khoái lạc. Tiền bạc, tiện nghi vật chất chỉ đem lại thỏa mãn nhất thời."
         },
         {
-          "title": "Cấp độ 2: Đam mê (Passion / Flow)",
-          "desc": "Trạng thái Dòng chảy (Flow) khi tập trung giải quyết thử thách phù hợp với năng lực. Thời gian như ngừng trôi."
+          "title": "Cấp độ 2: Đam mê (Passion / Engagement)",
+          "desc": "Hạnh phúc từ sự dấn thân, gắn kết sâu sắc và phát huy thế mạnh bản thân (Signature Strengths) từ động lực nội tại."
         },
         {
           "title": "Cấp độ 3: Mục đích cao cả (Higher Purpose)",
@@ -370,25 +370,25 @@
           "desc": "Hướng dẫn chi tiết toàn bộ lộ trình 3 Mini-steps, quy chế Cổng Vượt Chặng 1 (≥70%) và thao tác sử dụng hệ thống học tập LMS."
         },
         {
-          "title": "Bản chụp Slide: 3 Cấp Độ Hạnh Phúc (Martin Seligman)",
+          "title": "Slide Bài Giảng: 3 Cấp Độ Hạnh Phúc (Martin Seligman)",
           "type": "image",
           "url": "data/artifacts/slides/slide_16.png",
           "icon": "📷"
         },
         {
-          "title": "Bản chụp Slide: Ẩn Dụ Ba Tầng Lầu (Phong Tử Khải)",
+          "title": "Slide Bài Giảng: Ẩn Dụ Ba Tầng Lầu (Phong Tử Khải)",
           "type": "image",
           "url": "data/artifacts/slides/slide_17.png",
           "icon": "📷"
         },
         {
-          "title": "Bản chụp Slide: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy",
+          "title": "Slide Bài Giảng: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy",
           "type": "image",
           "url": "data/artifacts/slides/slide_25.png",
           "icon": "📊"
         },
         {
-          "title": "Bản chụp Slide: Mục Tiêu & Kim Tự Tháp Hạnh Phúc",
+          "title": "Slide Bài Giảng: Mục Tiêu & Kim Tự Tháp Hạnh Phúc",
           "type": "image",
           "url": "data/artifacts/slides/slide_14.png",
           "icon": "📊"
@@ -420,10 +420,10 @@
             "impact": "Tạo động lực tức thời nhưng dễ dẫn đến trống rỗng nếu thiếu cấp độ cao hơn."
           },
           {
-            "level": "Cấp độ 2: Đam mê / Dòng chảy (Passion & Flow)",
-            "nature": "Trạng thái 'Phiêu' say sưa khi đương đầu với thử thách phù hợp năng lực. Thời gian như ngừng trôi.",
-            "duration": "Trung hạn (Theo hoạt động/dự án)",
-            "impact": "Tập trung đỉnh cao, hiệu suất vượt bậc, gắn kết với tiến độ công việc."
+            "level": "Cấp độ 2: Đam mê (Passion / The Engaged Life)",
+            "nature": "Sự dấn thân, gắn kết sâu sắc và phát huy thế mạnh bản thân (Signature Strengths) từ động lực nội tại. Khi đó, trạng thái Dòng chảy (Flow) sẽ tự nhiên xuất hiện.",
+            "duration": "Bền vững theo hành trình/dự án",
+            "impact": "Gắn kết nội tại, nuôi dưỡng sự say mê và tạo nền tảng cho hiệu suất đỉnh cao."
           },
           {
             "level": "Cấp độ 3: Mục đích cao cả (Higher Purpose)",
@@ -459,22 +459,22 @@
         ],
         "infographics": [
           {
-            "title": "Bản chụp Slide: 3 Cấp Độ Hạnh Phúc (Martin Seligman)",
+            "title": "Slide Bài Giảng: 3 Cấp Độ Hạnh Phúc (Martin Seligman)",
             "url": "data/artifacts/slides/slide_16.png",
-            "desc": "Trích từ slide bài giảng chính thức DHM: Thú vui, Đam mê (Flow) và Mục đích cao cả."
+            "desc": "Trích từ slide bài giảng chính thức DHM: 3 Cấp độ Hạnh phúc — Thú vui, Đam mê (Dấn thân gắn kết) và Mục đích cao cả."
           },
           {
-            "title": "Bản chụp Slide: Ẩn Dụ Ba Tầng Lầu (Phong Tử Khải)",
+            "title": "Slide Bài Giảng: Ẩn Dụ Ba Tầng Lầu (Phong Tử Khải)",
             "url": "data/artifacts/slides/slide_17.png",
             "desc": "Trích từ slide bài giảng chính thức DHM: Tầng 1 Vật chất, Tầng 2 Tinh thần, Tầng 3 Tâm hồn."
           },
           {
-            "title": "Bản chụp Slide: La Bàn Me Values (Giá Trị Cốt Lõi Cá Nhân)",
-            "url": "data/artifacts/slides/slide_22.png",
-            "desc": "Trích từ slide bài giảng chính thức DHM: Sự thống nhất bắt đầu từ Giá trị cá nhân."
+            "title": "Slide Bài Giảng: La Bàn Me Values (Giá Trị Cốt Lõi Cá Nhân)",
+            "url": "data/artifacts/slides/slide_23.png",
+            "desc": "Trích từ slide bài giảng chính thức DHM: Mô hình 3 vòng tròn Me - We - Community và Sự thống nhất bắt đầu từ Giá trị cá nhân."
           },
           {
-            "title": "Bản chụp Slide: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy",
+            "title": "Slide Bài Giảng: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy",
             "url": "data/artifacts/slides/slide_25.png",
             "desc": "Trích từ slide bài giảng chính thức DHM: Ba đòn bẩy Kết nối, Tự chủ, Tiến bộ."
           }
@@ -487,7 +487,7 @@
       "badge": "Chặng 2 · Workshop",
       "title": "Chặng 2 · Gieo Thói Quen",
       "subtitle": "Workshop Live tại lớp • Trạm thực hành 5 Thói quen Hạnh phúc & I•A•M",
-      "instructor": "Ban Giảng Huấn DHM (Cô Châu, Thầy Hưng, Cô Hoàn, Thầy Vũ, Cô Hân)",
+      "instructor": "",
       "estimatedMinutes": 120,
       "videoUrl": null,
       "subSections": [
@@ -946,7 +946,7 @@
       "badge": "Chặng 3 · Online",
       "title": "Chặng 3 · Đồng Hành 21 Ngày",
       "subtitle": "Đồng hành 21 ngày • Nuôi dưỡng Thói quen Chuyển hóa",
-      "instructor": "Ban Giảng Huấn DHM Đồng Hành",
+      "instructor": "",
       "estimatedMinutes": 21,
       "videoUrl": null,
       "subSections": [
