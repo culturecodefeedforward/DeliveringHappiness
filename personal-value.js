@@ -490,7 +490,25 @@ function savePvResultToLocalStorage(fullName, email, ranked) {
     };
     localStorage.setItem('dhm_personal_values_latest', JSON.stringify(payload));
     if (emailVal) {
-      localStorage.setItem('dhm_pv_' + emailVal.toLowerCase(), JSON.stringify(payload));
+      const emailLower = emailVal.toLowerCase();
+      localStorage.setItem('dhm_pv_' + emailLower, JSON.stringify(payload));
+      
+      const histKey = 'dhm_pv_history_' + emailLower;
+      let history = [];
+      try {
+        const existing = localStorage.getItem(histKey);
+        if (existing) history = JSON.parse(existing);
+        if (!Array.isArray(history)) history = [];
+      } catch (e) { history = []; }
+      
+      const isDuplicate = history.some(item => 
+        item.timestamp && (Math.abs(new Date(payload.timestamp).getTime() - new Date(item.timestamp).getTime()) < 10000)
+      );
+      if (!isDuplicate) {
+        history.unshift(payload);
+        if (history.length > 20) history = history.slice(0, 20);
+        localStorage.setItem(histKey, JSON.stringify(history));
+      }
     }
   } catch (err) {
     console.warn('LMS LocalStorage sync notice:', err);

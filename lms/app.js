@@ -1632,30 +1632,85 @@ document.addEventListener("DOMContentLoaded", () => {
         const metaEl = document.getElementById("pv-result-meta");
         const badgesEl = document.getElementById("pv-top7-badges");
         const btnApplyEl = document.getElementById("btn-apply-top7-values");
+        const historyContainer = document.getElementById("pv-history-container");
+        const historySelect = document.getElementById("pv-history-select");
+        const matrixEl = document.getElementById("pv-transformation-matrix");
+        const btnFillIam = document.getElementById("btn-fill-matrix-to-iam");
 
         if (!bannerEl || !cardEl) return;
 
-        let pvData = null;
+        // 1. Thu thập danh sách lịch sử làm bài từ localStorage
+        let pvHistory = [];
+        let emailKey = "";
         if (currentUser && currentUser.email) {
-            const emailKey = "dhm_pv_" + encodeURIComponent(currentUser.email.toLowerCase().trim());
-            const savedByEmail = localStorage.getItem(emailKey);
-            if (savedByEmail) {
-                try { pvData = JSON.parse(savedByEmail); } catch (e) {}
+            emailKey = currentUser.email.toLowerCase().trim();
+            const histKey = "dhm_pv_history_" + emailKey;
+            const savedHist = localStorage.getItem(histKey);
+            if (savedHist) {
+                try {
+                    const parsed = JSON.parse(savedHist);
+                    if (Array.isArray(parsed)) pvHistory = parsed;
+                } catch (e) {}
             }
-        }
-        if (!pvData) {
-            const savedLatest = localStorage.getItem("dhm_personal_values_latest");
-            if (savedLatest) {
-                try { pvData = JSON.parse(savedLatest); } catch (e) {}
+
+            // Đọc thêm bản đơn lẻ theo email (bỏ encodeURIComponent để khớp định dạng)
+            const singleKey = "dhm_pv_" + emailKey;
+            const legacyKey = "dhm_pv_" + encodeURIComponent(emailKey);
+            const savedByEmail = localStorage.getItem(singleKey) || localStorage.getItem(legacyKey);
+            if (savedByEmail) {
+                try {
+                    const single = JSON.parse(savedByEmail);
+                    if (single && single.top7 && Array.isArray(single.top7)) {
+                        const exists = pvHistory.some(h => 
+                            h.timestamp && single.timestamp && Math.abs(new Date(h.timestamp) - new Date(single.timestamp)) < 10000
+                        );
+                        if (!exists) pvHistory.unshift(single);
+                    }
+                } catch (e) {}
             }
         }
 
-        if (pvData && pvData.top7 && Array.isArray(pvData.top7) && pvData.top7.length > 0) {
-            bannerEl.classList.add("hidden");
-            cardEl.classList.remove("hidden");
+        // Đọc fallback bản latest nếu chưa có
+        const savedLatest = localStorage.getItem("dhm_personal_values_latest");
+        if (savedLatest) {
+            try {
+                const latest = JSON.parse(savedLatest);
+                if (latest && latest.top7 && Array.isArray(latest.top7)) {
+                    const exists = pvHistory.some(h => 
+                        h.timestamp && latest.timestamp && Math.abs(new Date(h.timestamp) - new Date(latest.timestamp)) < 10000
+                    );
+                    if (!exists) pvHistory.push(latest);
+                }
+            } catch (e) {}
+        }
+
+        // Lọc bản ghi hợp lệ
+        pvHistory = pvHistory.filter(h => h && Array.isArray(h.top7) && h.top7.length > 0);
+
+        // Sắp xếp giảm dần theo thời gian (mới nhất lên đầu)
+        pvHistory.sort((a, b) => {
+            const timeA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
+            const timeB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
+            return timeB - timeA;
+        });
+
+        // 2. Nếu không có dữ liệu
+        if (pvHistory.length === 0) {
+            bannerEl.classList.remove("hidden");
+            cardEl.classList.add("hidden");
+            return;
+        }
+
+        bannerEl.classList.add("hidden");
+        cardEl.classList.remove("hidden");
+
+        // 3. Hàm hiển thị dữ liệu của một lần làm bài cụ thể
+        function displayPvSession(index) {
+            const pvData = pvHistory[index] || pvHistory[0];
+            if (!pvData) return;
 
             const learnerName = pvData.fullName || (currentUser ? (currentUser.name || currentUser.email) : "Học viên");
-            const dateStr = pvData.dateStr || (pvData.timestamp ? new Date(pvData.timestamp).toLocaleDateString("vi-VN") : "Gần đây");
+            const dateStr = pvData.dateStr || (pvData.timestamp ? new Date(pvData.timestamp).toLocaleString("vi-VN") : "Gần đây");
             if (metaEl) {
                 metaEl.textContent = `Học viên: ${learnerName} • Ngày test: ${dateStr}`;
             }
@@ -1723,15 +1778,177 @@ document.addEventListener("DOMContentLoaded", () => {
                         btnApplyEl.classList.remove("bg-brand-green", "text-black");
                     }, 2500);
 
+                    const valuesGrid = document.getElementById("values-grid");
                     if (valuesGrid) {
                         valuesGrid.scrollIntoView({ behavior: "smooth", block: "center" });
                     }
                 };
             }
-        } else {
-            bannerEl.classList.remove("hidden");
-            cardEl.classList.add("hidden");
+
+            // 4. Ma trận phân tích biến động 4 chiều
+            if (pvHistory.length >= 2 && matrixEl) {
+                matrixEl.classList.remove("hidden");
+                const prevIndex = index < pvHistory.length - 1 ? index + 1 : pvHistory.length - 1;
+                const prevData = pvHistory[prevIndex];
+                calculateAndRenderMatrix(pvData, prevData);
+            } else if (matrixEl) {
+                matrixEl.classList.add("hidden");
+            }
         }
+
+        function calculateAndRenderMatrix(currData, prevData) {
+            const extractNames = (list) => (list || []).map(x => typeof x === "string" ? x.trim() : (x.name ? x.name.trim() : ""));
+            const currNames = extractNames(currData.top7);
+            const prevNames = extractNames(prevData.top7);
+
+            const currTop3 = currNames.slice(0, 3);
+            const prevTop3 = prevNames.slice(0, 3);
+
+            // 1. Mỏ neo cốt lõi: Nằm trong Top 3 của cả 2 lần (hoặc có độ ổn định cao)
+            let anchors = currTop3.filter(name => prevTop3.includes(name));
+            if (anchors.length === 0) {
+                currNames.forEach((name, idx) => {
+                    const prevIdx = prevNames.indexOf(name);
+                    if (prevIdx !== -1 && Math.abs(idx - prevIdx) <= 1 && !anchors.includes(name)) {
+                        anchors.push(name);
+                    }
+                });
+            }
+
+            // 2. Thăng hạng: Tăng ít nhất 2 bậc hoặc từ ngoài lọt vào Top 3
+            const ascending = [];
+            currNames.forEach((name, currIdx) => {
+                const prevIdx = prevNames.indexOf(name);
+                if (prevIdx !== -1) {
+                    if (prevIdx - currIdx >= 2 || (prevIdx >= 3 && currIdx < 3)) {
+                        ascending.push(`${name} (#${prevIdx + 1} ➔ #${currIdx + 1})`);
+                    }
+                }
+            });
+
+            // 3. Mới xuất hiện: Lần đầu lọt Top 7
+            const emerging = currNames.filter(name => !prevNames.includes(name));
+
+            // 4. Buông bỏ / Rời khỏi ưu tiên: Từng có trong lần trước nhưng lần này vắng mặt
+            const departed = prevNames.filter(name => !currNames.includes(name));
+
+            const elAnchors = document.getElementById("pv-dim-anchors");
+            const elAscending = document.getElementById("pv-dim-ascending");
+            const elEmerging = document.getElementById("pv-dim-emerging");
+            const elDeparted = document.getElementById("pv-dim-departed");
+
+            if (elAnchors) elAnchors.textContent = anchors.length > 0 ? anchors.join(", ") : "(Chưa có mỏ neo bất biến)";
+            if (elAscending) elAscending.textContent = ascending.length > 0 ? ascending.join(", ") : "(Không có thay đổi thứ hạng đáng kể)";
+            if (elEmerging) elEmerging.textContent = emerging.length > 0 ? emerging.join(", ") : "(Không có giá trị mới)";
+            if (elDeparted) elDeparted.textContent = departed.length > 0 ? departed.join(", ") : "(Không có giá trị nào bị lùi lại)";
+
+            if (btnFillIam) {
+                btnFillIam.onclick = () => {
+                    const anchorText = anchors.length > 0 ? anchors.join(", ") : currNames[0];
+                    const ascText = ascending.length > 0 ? ascending[0] : (emerging[0] || currNames[1] || "mới");
+                    const valI = `Qua các lần tự đánh giá, mỏ neo cốt lõi vững chắc nhất của tôi là: ${anchorText}. Giá trị ${ascText} đang dần trở thành ưu tiên hàng đầu.`;
+                    const valA = `Tôi sẽ dùng giá trị [${anchorText}] làm kim chỉ nam để đưa ra lựa chọn hành động dứt khoát, nhất quán trong quyết định sắp tới.`;
+                    const valM = departed.length > 0 
+                        ? `Nhận diện những giá trị đã buông bỏ (${departed.join(", ")}) giúp tôi hiểu sâu sắc rằng việc buông bỏ bớt những kỳ vọng cũ là cần thiết để tập trung trọn vẹn cho những giá trị sống đích thực.`
+                        : `Sống trọn vẹn và nhất quán với các giá trị cốt lõi này giúp tôi xây dựng phiên bản chân thật, tràn đầy năng lượng và tự do nội tại.`;
+
+                    const elInputI = document.getElementById("iam-1-2-i");
+                    const elInputA = document.getElementById("iam-1-2-a");
+                    const elInputM = document.getElementById("iam-1-2-m");
+
+                    if (!learnerProgress.stageData["stage-1"]) {
+                        learnerProgress.stageData["stage-1"] = {};
+                    }
+                    if (!learnerProgress.stageData["stage-1"].iam_1_2) {
+                        learnerProgress.stageData["stage-1"].iam_1_2 = {};
+                    }
+
+                    if (elInputI) { elInputI.value = valI; learnerProgress.stageData["stage-1"].iam_1_2.I = valI; }
+                    if (elInputA) { elInputA.value = valA; learnerProgress.stageData["stage-1"].iam_1_2.A = valA; }
+                    if (elInputM) { elInputM.value = valM; learnerProgress.stageData["stage-1"].iam_1_2.M = valM; }
+
+                    saveLearnerProgress();
+                    renderSyllabus();
+
+                    const oldText = btnFillIam.innerHTML;
+                    btnFillIam.innerHTML = `<span>✓ Đã điền gợi ý vào bài tập IAM!</span>`;
+                    setTimeout(() => { btnFillIam.innerHTML = oldText; }, 2500);
+
+                    if (elInputI) {
+                        elInputI.scrollIntoView({ behavior: "smooth", block: "center" });
+                        elInputI.focus();
+                    }
+                };
+            }
+        }
+
+        // 5. Cấu hình Dropdown chọn lần làm bài
+        if (historyContainer && historySelect) {
+            if (pvHistory.length > 1) {
+                historyContainer.classList.remove("hidden");
+                historySelect.innerHTML = "";
+                pvHistory.forEach((item, idx) => {
+                    const opt = document.createElement("option");
+                    opt.value = idx;
+                    const dateFormatted = item.timestamp ? new Date(item.timestamp).toLocaleString("vi-VN") : `Lần ${pvHistory.length - idx}`;
+                    opt.textContent = `Lần ${pvHistory.length - idx} (${dateFormatted}) ${idx === 0 ? "— Mới nhất" : ""}`;
+                    historySelect.appendChild(opt);
+                });
+                historySelect.value = 0;
+                historySelect.onchange = (e) => {
+                    const selIdx = parseInt(e.target.value, 10) || 0;
+                    displayPvSession(selIdx);
+                };
+            } else {
+                historyContainer.classList.add("hidden");
+            }
+        }
+
+        // Render lần làm bài mới nhất (index 0)
+        displayPvSession(0);
+
+        // 6. Kích hoạt đồng bộ ngầm xuyên thiết bị (Cross-device Sync)
+        if (currentUser && currentUser.email) {
+            syncCrossDevicePVHistory(currentUser.email, pvHistory);
+        }
+    }
+
+    function syncCrossDevicePVHistory(email, localHistory) {
+        if (!email) return;
+        const webhookUrl = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
+        const emailLower = email.toLowerCase().trim();
+        const url = `${webhookUrl}?action=get_pv_history&email=${encodeURIComponent(emailLower)}`;
+        
+        fetch(url)
+            .then(res => res.json())
+            .then(res => {
+                if (res && res.success && Array.isArray(res.history) && res.history.length > 0) {
+                    let hasNew = false;
+                    const merged = [...localHistory];
+                    res.history.forEach(remote => {
+                        const exists = merged.some(local => {
+                            if (local.timestamp && remote.timestamp) {
+                                return Math.abs(new Date(local.timestamp).getTime() - new Date(remote.timestamp).getTime()) < 60000;
+                            }
+                            return false;
+                        });
+                        if (!exists && remote.top7 && remote.top7.length > 0) {
+                            merged.push(remote);
+                            hasNew = true;
+                        }
+                    });
+                    if (hasNew) {
+                        merged.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+                        localStorage.setItem("dhm_pv_history_" + emailLower, JSON.stringify(merged));
+                        if (currentStageIndex === 0) {
+                            loadPersonalValuesTestResult();
+                        }
+                    }
+                }
+            })
+            .catch(err => {
+                console.log("Cross-device PV sync notice:", err);
+            });
     }
 
     function loadAbcdeLandingSync() {

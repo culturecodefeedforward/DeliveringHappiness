@@ -872,6 +872,12 @@ function doGet(e) {
     return handleAuthGateVerifyToken_(token, email);
   }
 
+  // --- LỊCH SỬ LÀM BÀI TRẮC NGHIỆM GIÁ TRỊ CÁ NHÂN ---
+  if (action === 'get_pv_history') {
+    var pvEmail = ((e && e.parameter && e.parameter.email) || '').trim().toLowerCase();
+    return handleGetPvHistory_(pvEmail);
+  }
+
   if (action === 'getHealth') {
     return handleOperatorHealthGet_(e);
   }
@@ -2541,6 +2547,74 @@ function sendPersonalValuesEmail(recipientEmail, fullName, parsedRanked) {
     subject: subject,
     htmlBody: htmlBody
   });
+}
+
+function handleGetPvHistory_(email) {
+  try {
+    if (!email) {
+      return jsonOut({ success: false, error: 'MISSING_EMAIL', message: 'Vui lòng cung cấp email hợp lệ.' });
+    }
+    var ss = getSpreadsheet();
+    var sheet = ss.getSheetByName('PV_Data');
+    if (!sheet) {
+      return jsonOut({ success: true, email: email, history: [] });
+    }
+    var rows = sheet.getDataRange().getValues();
+    var history = [];
+    var targetEmail = email.toLowerCase().trim();
+    
+    // Cột 0: Timestamp, Cột 1: Full Name, Cột 2: Email, Cột 3: Top 7 Values (Ranked), Cột 4: Duel History (JSON)
+    for (var i = rows.length - 1; i >= 1; i--) {
+      var row = rows[i];
+      var rowEmail = String(row[2] || '').trim().toLowerCase();
+      if (rowEmail === targetEmail) {
+        var rawRanked = String(row[3] || '');
+        var top7 = [];
+        if (rawRanked) {
+          var parts = rawRanked.split(',');
+          for (var p = 0; p < parts.length; p++) {
+            var itemStr = parts[p].trim();
+            var match = itemStr.match(/^\d+\.\s*([^(]+)(?:\((\d+)[đd]?\))?/);
+            if (match) {
+              top7.push({
+                name: match[1].trim(),
+                score: match[2] ? parseInt(match[2], 10) : 0
+              });
+            } else if (itemStr) {
+              top7.push({ name: itemStr.replace(/^\d+\.\s*/, '').trim() });
+            }
+          }
+        }
+        
+        var ts = row[0];
+        var isoTimestamp = '';
+        if (ts instanceof Date) {
+          isoTimestamp = ts.toISOString();
+        } else if (ts) {
+          isoTimestamp = new Date(ts).toISOString();
+        }
+
+        history.push({
+          timestamp: isoTimestamp,
+          fullName: String(row[1] || ''),
+          email: rowEmail,
+          rankedDisplay: rawRanked,
+          top7: top7,
+          source: 'sheet'
+        });
+
+        if (history.length >= 20) break;
+      }
+    }
+
+    return jsonOut({
+      success: true,
+      email: targetEmail,
+      history: history
+    });
+  } catch (err) {
+    return jsonOut({ success: false, error: 'PV_HISTORY_ERROR', message: err.message });
+  }
 }
 
 function handleAbcdeSubmission(body) {

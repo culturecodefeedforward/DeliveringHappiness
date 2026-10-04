@@ -802,11 +802,55 @@
                                                         <span>Làm lại ↗</span>
                                                     </a>
                                                 </div>
+                                                <div id="pv-history-container" class="hidden flex items-center gap-2 pt-1 pb-1 border-t border-brand-border/40">
+                                                    <label for="pv-history-select" class="text-[11px] text-slate-300 font-semibold whitespace-nowrap">Chọn lần làm bài:</label>
+                                                    <select id="pv-history-select" class="bg-brand-dark/90 border border-brand-border rounded-lg px-2.5 py-1 text-xs text-brand-amber font-medium focus:outline-none focus:border-brand-amber cursor-pointer flex-1">
+                                                        <!-- Options injected via JS -->
+                                                    </select>
+                                                </div>
                                             </div>
                                             <div>
                                                 <div class="text-[11px] font-semibold text-slate-300 mb-1.5">Top 7 Giá trị cốt lõi ưu tiên cao nhất của bạn:</div>
                                                 <div id="pv-top7-badges" class="flex flex-wrap gap-1.5">
                                                     <!-- Badges injected via JS -->
+                                                </div>
+                                            </div>
+
+                                            <!-- Khối Phân Tích Biến Động 4 Chiều (Personal Values Transformation Matrix) -->
+                                            <div id="pv-transformation-matrix" class="hidden mt-3 p-3 rounded-xl bg-black/40 border border-brand-amber/30 space-y-2.5">
+                                                <div class="flex items-center justify-between flex-wrap gap-2">
+                                                    <div class="text-[11px] font-bold text-brand-amber flex items-center gap-1.5">
+                                                        <span>📊 PHÂN TÍCH BIẾN ĐỘNG GIÁ TRỊ (SO VỚI LẦN TRƯỚC)</span>
+                                                    </div>
+                                                    <button type="button" id="btn-fill-matrix-to-iam" class="text-[11px] text-brand-amber hover:text-amber-300 font-medium underline flex items-center gap-1">
+                                                        <span>✨ Điền gợi ý vào bài tập IAM bên dưới</span>
+                                                    </button>
+                                                </div>
+                                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                                    <!-- 1. Mỏ neo cốt lõi -->
+                                                    <div class="p-2.5 rounded-lg bg-brand-surface/70 border border-emerald-500/30">
+                                                        <div class="font-bold text-emerald-400 flex items-center gap-1 text-[11px]">🧭 1. Mỏ neo cốt lõi (Core Anchors)</div>
+                                                        <div id="pv-dim-anchors" class="text-slate-200 mt-1 text-[11px] font-medium"></div>
+                                                        <p class="text-[10px] text-slate-400 italic mt-1">"Điều gì khiến giá trị này luôn là kim chỉ nam vững chắc nhất trong mọi quyết định của bạn?"</p>
+                                                    </div>
+                                                    <!-- 2. Thăng hạng -->
+                                                    <div class="p-2.5 rounded-lg bg-brand-surface/70 border border-amber-500/30">
+                                                        <div class="font-bold text-amber-400 flex items-center gap-1 text-[11px]">🚀 2. Thăng hạng (Ascending)</div>
+                                                        <div id="pv-dim-ascending" class="text-slate-200 mt-1 text-[11px] font-medium"></div>
+                                                        <p class="text-[10px] text-slate-400 italic mt-1">"Trải nghiệm hay bài học thực tế nào thời gian qua đã thôi thúc bạn coi trọng giá trị này nhiều hơn?"</p>
+                                                    </div>
+                                                    <!-- 3. Mới xuất hiện -->
+                                                    <div class="p-2.5 rounded-lg bg-brand-surface/70 border border-cyan-500/30">
+                                                        <div class="font-bold text-cyan-400 flex items-center gap-1 text-[11px]">🌱 3. Mới xuất hiện (Emerging)</div>
+                                                        <div id="pv-dim-emerging" class="text-slate-200 mt-1 text-[11px] font-medium"></div>
+                                                        <p class="text-[10px] text-slate-400 italic mt-1">"Sự thay đổi nào trong công việc hoặc cuộc sống đã đánh thức sự quan tâm của bạn dành cho giá trị này?"</p>
+                                                    </div>
+                                                    <!-- 4. Buông bỏ / Rời khỏi ưu tiên -->
+                                                    <div class="p-2.5 rounded-lg bg-brand-surface/70 border border-rose-500/30">
+                                                        <div class="font-bold text-rose-400 flex items-center gap-1 text-[11px]">🍂 4. Buông bỏ / Lùi lại (Departed)</div>
+                                                        <div id="pv-dim-departed" class="text-slate-200 mt-1 text-[11px] font-medium"></div>
+                                                        <p class="text-[10px] text-slate-400 italic mt-1">"Điều gì trong cuộc sống hoặc công việc thời gian qua đã giúp bạn nhận ra mình sẵn sàng buông bỏ điều này để tập trung cho những giá trị khác?"</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
