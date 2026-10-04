@@ -16,7 +16,7 @@ Bạn là một **Chuyên gia Kiến trúc Hệ thống E-Learning & Đào tạo
    - Ban Giảng Huấn (Coach / Faculty) được nhận diện và cấp quyền bypass cổng sát hạch để tự do kiểm tra toàn bộ các chặng học.
 3. **Cổng Sát Hạch Đầu Vào Nghiêm Ngặt (Qualifying Entrance Gate):**
    - Học viên bắt buộc phải hoàn thành bài kiểm tra trắc nghiệm phản xạ 10 câu (DHM Quiz) tại Chặng 1 trước khi được phép mở khóa Chặng 2 (Lớp học Offline tập trung).
-   - Ngưỡng đạt: Tối thiểu ≥ 70% (7/10 câu đúng).
+   - Ngưỡng đạt: Tối thiểu ≥ 80% (8/10 câu đúng).
    - Giới hạn: Tối đa 3 lần thử (`retries`). Nếu trượt cả 3 lần, hệ thống kích hoạt chế độ khóa thi (`lockout`) và hiển thị thông báo hướng dẫn liên hệ Coach/BTC để được hỗ trợ mở lại.
    - Khi đã đạt kết quả, khối Hero Gate tự động thu gọn (`evaluateLearnerStatus()`) thành huy hiệu trạng thái nhỏ gọn, nhường không gian cho bài giảng.
 4. **Chế Độ Học Tập Tập Trung Kiểu LinkedIn Learning (Desktop Focused Learning Mode):**
@@ -127,7 +127,7 @@ function resumeLearning() {
 
 // 3. Đánh giá Trạng thái & Tự động thu gọn Hero Gate
 function evaluateLearnerStatus() {
-  const isQualified = checkUserQualification(); // Kiểm tra điểm sát hạch >= 70% hoặc là Coach
+  const isQualified = checkUserQualification(); // Kiểm tra điểm sát hạch >= 80% hoặc là Coach
   const heroGate = document.getElementById('hero-quiz-gate-container');
   const miniStatusBadge = document.getElementById('hero-quiz-status-badge');
   if (isQualified && heroGate) {

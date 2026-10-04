@@ -28,7 +28,7 @@ BẮT ĐẦU PHIÊN LÀM VIỆC TIẾP THEO — DỰ ÁN DELIVERING HAPPINESS (D
 2. CÁC HẠNG MỤC ĐÃ HOÀN THÀNH & KIỂM CHỨNG 100% TRÊN LIVE:
 - Hoàn thành Mô hình Đăng nhập Lai (Hybrid Auth Model) cho hệ thống LMS:
   * Xóa bỏ hoàn toàn lỗ hổng tự cấp quyền DHM9-TựPhụcVụ (không ai có thể tự gõ email/sđt giả để học cả 3 chặng).
-  * Học viên Chính thức (có trong Roster): Đăng nhập 3 giây bằng Email + 4 số cuối SĐT, mở khóa 3 Chặng sau khi đạt ≥70% Cổng Vượt Chặng.
+  * Học viên Chính thức (có trong Roster): Đăng nhập 3 giây bằng Email + 4 số cuối SĐT, mở khóa 3 Chặng sau khi đạt ≥80% Cổng Vượt Chặng.
   * Người mới / Email lạ (chưa có trong Roster): Tự động chuyển sang form yêu cầu Magic Link học thử Chặng 1 qua Email (tuân thủ Nghị định 13/2023/NĐ-CP, cooldown 60s).
   * Xác thực Magic Link: Tự bóc tách param ?token=...&action=verify, xác thực qua Webhook CRM, cấp phiên currentUser.isTrial = true.
   * Khóa Cứng (Strict Lockout): Tài khoản học thử CHỈ ĐƯỢC HỌC CHẶNG 1 (Pre-Class 90 phút). Bấm vào Chặng 2/3 hoặc nút Tiếp tục ở cuối Chặng 1 sẽ hiện Modal Nâng Cấp Amber Corporate Minimalist mời đăng ký khóa chính thức.

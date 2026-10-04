@@ -36,7 +36,7 @@ Tài liệu PDR (Product Development Requirements - yêu cầu phát triển s�
     *   **Master Learner Directory:** CSDL 382 học viên và giảng viên từ DHM3 đến DHM9 (`lms/master_learners_roster.json`, `lms/authorized_roster.json`).
     *   **Cơ chế Xác thực & Nhận diện Học viên:** Đăng nhập an toàn bằng Email / Số điện thoại đăng ký, tự động nhận diện danh tính và khóa học.
     *   **Ban Giảng Huấn 5 Giảng viên / Coach:** Cô Hà Minh Châu, Thầy / Anh Hưng, Cô Hà Ngọc Hoàn, Thầy Vũ Hoàng, Cô / Chị Hân (phân quyền Coach, bypass cổng kiểm tra).
-    *   **Cổng Sát Hạch Đầu Vào Chặng 1 (10 Câu Trắc Nghiệm):** Yêu cầu đạt tối thiểu ≥70% (7/10 câu) sau tối đa 3 lần thử để qualify mở khóa Chặng 2 (Offline). Khóa lại sau 3 lần trượt và yêu cầu liên hệ Coach/BTC.
+    *   **Cổng Sát Hạch Đầu Vào Chặng 1 (10 Câu Trắc Nghiệm):** Yêu cầu đạt tối thiểu ≥80% (8/10 câu) sau tối đa 3 lần thử để qualify mở khóa Chặng 2 (Offline). Khóa lại sau 3 lần trượt và yêu cầu liên hệ Coach/BTC.
     *   **Công cụ Tương tác:** Video Explainer, Audio Player bài giảng, La Bàn Giá Trị Me Values (41 giá trị), Khung đúc kết I•A•M, 4 Thói quen cốt lõi (Vị nhân, Biết ơn, Tỉnh thức SCBA, Lạc quan ABCDE) và Nhật ký 21 Ngày (Habit Tracker).
 *   **FR-09 (SePay Webhook Auto-Reconciliation):** Có API `api/sepay-dh.js` và handler Apps Script để đối soát theo lane; trạng thái webhook production là `UNVERIFIED` trong lượt cập nhật tài liệu này.
 *   **FR-10 (Program Interest Hub):** Trang đích chung ghi nhận sự quan tâm đối với nhiều chương trình (DHM8, DHM9, NVC, AI) với cơ chế chống spam bằng UUID.
@@ -48,7 +48,7 @@ Tài liệu PDR (Product Development Requirements - yêu cầu phát triển s�
         1. *Khối 1 (Bối cảnh & Trọng tâm):* Tóm lược cốt lõi lý thuyết, nguyên lý tâm lý học ứng dụng.
         2. *Khối 2 (Ngân hàng Case Study & Tình huống thực chiến):* Cung cấp các tình huống thực tế bám sát môi trường doanh nghiệp Việt Nam (`practicalScenarios` trong `lms/curriculum_data.json`).
         3. *Khối 3 (Bài tập mẫu & Accordion Phân tích):* Bài tập mẫu kèm đáp án chi tiết và cơ chế ẩn/hiện accordion (`toggleModelAnswer`) giúp học viên tự đối chiếu cách giải trước khi làm bài tập riêng.
-    *   **Tự động Thu gọn Banner Sát Hạch (Hero Gate Auto-Collapse):** Khi học viên đạt ngưỡng đậu (≥70%), banner thi sát hạch tự động thu nhỏ thành huy hiệu trạng thái gọn gàng để nhường màn hình cho bài học.
+    *   **Tự động Thu gọn Banner Sát Hạch (Hero Gate Auto-Collapse):** Khi học viên đạt ngưỡng đậu (≥80%), banner thi sát hạch tự động thu nhỏ thành huy hiệu trạng thái gọn gàng để nhường màn hình cho bài học.
     *   **Tích xanh Tiến độ Tiểu mục (Visual Subsection Checkmarks):** Hiển thị dấu kiểm `✓` trực quan bên cạnh các tiểu mục đã hoàn thành trên Sidebar.
 *   *(Chi tiết toàn bộ biểu mẫu và điểm đến dữ liệu xem tại [forms-and-data-destinations.md](file:///C:/Users/vu.hoang/.gemini/antigravity/scratch/dh4hn-website/docs/forms-and-data-destinations.md)).*
 *   **NFR-01 (Hiệu suất):** Mục tiêu tải trang dưới 1,5 giây trên thiết bị di động. Chưa có phép đo hiệu năng hiện hành trong lượt cập nhật này, nên trạng thái là `UNVERIFIED`.

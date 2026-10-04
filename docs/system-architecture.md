@@ -121,7 +121,7 @@ sequenceDiagram
         User->>LMS: Nhập 4 số cuối & bấm "Vào Học Ngay"
         Engine->>Engine: verifyPassword (khớp 4 số cuối SĐT)
         Engine->>Local: Lưu phiên dhm_lms_auth_user (isTrial: false)
-        Engine-->>LMS: Mở Dashboard; mở khóa 3 Chặng sau khi đạt ≥70% Cổng Vượt Chặng
+        Engine-->>LMS: Mở Dashboard; mở khóa 3 Chặng sau khi đạt ≥80% Cổng Vượt Chặng
     else Nhóm 2: Người mới / Email lạ (Không khớp Roster)
         Engine-->>LMS: Ẩn mật khẩu, hiện form "Học thử Chặng 1" (Họ tên, SĐT 10 số, Consent)
         User->>LMS: Điền thông tin & bấm "Gửi Liên Kết Học Thử"
@@ -288,7 +288,7 @@ Các lớp CAPTCHA và giới hạn tần suất được áp dụng theo từng
 *   **Mục đích:** Cung cấp nền tảng học tập kết hợp 3 Chặng (`Blended Learning`) kết nối chặt chẽ giữa học trực tuyến trước lớp (Online Pre-Class), xưởng thực hành 5 thói quen tại lớp (Offline Workshop Live), và hành trình đồng hành 21 ngày nuôi dưỡng thói quen (Action Learning Post-Class).
 *   **Các thành phần cốt lõi:**
     1.  *Giao diện LMS Web (`lms/index.html`):* SPA (Single Page Application) hiện đại xây dựng trên Tailwind CSS Glassmorphism, 3 chặng học tuần tự, tích hợp bộ đếm giờ kiểm tra sát hạch, huy hiệu lượt thử `#quiz-attempt-badge`, bảng tổng kết `#quiz-summary-container`, giao diện thực hành 5 thói quen và dashboard vinh danh 21 ngày.
-    2.  *Bộ điều khiển Client (`lms/app.js`):* Quản lý phiên làm việc (`dhm_lms_auth_user`), nhận diện học viên thời gian thực, cơ chế Onboarding SĐT tự phục vụ, logic kiểm tra sát hạch 10 câu với ngưỡng đạt ≥ 70% (7/10 câu) sau tối đa 3 lần thử (`retries`), khóa bài thi (`lockout`) khi hết lượt, và cổng kiểm soát chuyển chặng (`btnNextLesson.onclick`) chặn học viên chưa đủ điều kiện chuyển sang Chặng 2.
+    2.  *Bộ điều khiển Client (`lms/app.js`):* Quản lý phiên làm việc (`dhm_lms_auth_user`), nhận diện học viên thời gian thực, cơ chế Onboarding SĐT tự phục vụ, logic kiểm tra sát hạch 10 câu với ngưỡng đạt ≥ 80% (8/10 câu) sau tối đa 3 lần thử (`retries`), khóa bài thi (`lockout`) khi hết lượt, và cổng kiểm soát chuyển chặng (`btnNextLesson.onclick`) chặn học viên chưa đủ điều kiện chuyển sang Chặng 2.
     3.  *Chế độ Học Tập Tập Trung (Focused Mode) & Điều Hướng Thông Minh:*
         *   *Thu gọn Sidebar Desktop:* Nút thu gọn thanh điều hướng (`#btn-collapse-sidebar-desktop`) mở rộng bề ngang màn hình, tự động đồng bộ cờ `dhm_sidebar_desktop_collapsed` vào `localStorage`. Khi thu gọn, nút mở rộng xuất hiện trên thanh tiêu đề (`#btn-sidebar-desktop-expand`).
         *   *Thanh Resume Learning:* Tự động xác định mô-đun và tiểu mục gần nhất của học viên để kích hoạt học tiếp chỉ với 1 click.
