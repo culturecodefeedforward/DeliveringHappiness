@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đăng ký quan tâm DH Masterclass 10 (DHM10) — CultureCode Community</title>
+  <meta name="description"
+    content="Để lại thông tin quan tâm khóa Delivering Happiness Masterclass 10 (DHM10) — Mô hình đào tạo Hybrid tại Hà Nội & TP.HCM từ CultureCode Community." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #0f172a 100%);
+      color: #ffffff;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .top-nav {
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      background: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .nav-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .nav-logo-img {
+      height: 42px;
+      width: auto;
+      border-radius: 6px;
+    }
+
+    .interest-shell {
+      width: min(780px, calc(100% - 32px));
+      margin: 40px auto 60px;
+      padding: 36px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.06);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(12px);
+    }
+
+    .badge-hybrid {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(245, 158, 11, 0.18);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fcd34d;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+    }
+
+    .interest-shell h1 {
+      margin: 0 0 12px;
+      color: var(--warm-yellow, #f59e0b);
+      font-size: 2.1rem;
+      line-height: 1.25;
+      font-weight: 800;
+    }
+
+    .intro-desc {
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.65;
+      font-size: 1rem;
+      margin-bottom: 24px;
+    }
+
+    .info-card-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 28px;
+    }
+
+    .info-card-box ul {
+      margin: 8px 0 0;
+      padding-left: 20px;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.65;
+      font-size: 0.95rem;
+    }
+
+    .info-card-box li {
+      margin-bottom: 6px;
+    }
+
+    .interest-form {
+      display: grid;
+      gap: 20px;
+    }
+
+    .interest-form label {
+      display: grid;
+      gap: 8px;
+      color: rgba(255, 255, 255, 0.92);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .interest-form label span.req {
+      color: #f87171;
+    }
+
+    .interest-form input[type="text"],
+    .interest-form input[type="email"],
+    .interest-form input[type="tel"],
+    .interest-form textarea {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      font: inherit;
+      padding: 12px 16px;
+      outline: none;
+      box-sizing: border-box;
+      transition: all 0.2s ease;
+    }
+
+    .interest-form textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .interest-form input:focus,
+    .interest-form textarea:focus {
+      border-color: var(--warm-yellow, #f59e0b);
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+    }
+
+    /* Location Choice Cards */
+    .location-group-title {
+      color: rgba(255, 255, 255, 0.92);
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+
+    .location-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .location-options {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .location-card {
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 10px;
+      padding: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .location-card:hover {
+      border-color: rgba(245, 158, 11, 0.5);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .location-card.selected {
+      border-color: var(--warm-yellow, #f59e0b);
+      background: rgba(245, 158, 11, 0.12);
+    }
+
+    .location-card input[type="radio"] {
+      margin-top: 4px;
+      cursor: pointer;
+      accent-color: #f59e0b;
+    }
+
+    .location-card-content {
+      flex: 1;
+    }
+
+    .location-card-title {
+      font-weight: 700;
+      color: #ffffff;
+      font-size: 1rem;
+      margin-bottom: 3px;
+    }
+
+    .location-card-venue {
+      font-size: 0.85rem;
+      color: var(--warm-yellow, #fcd34d);
+      line-height: 1.4;
+    }
+
+    .interest-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .interest-submit {
+      padding: 14px 28px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      border: 0;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #111827;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .interest-submit:hover:not(:disabled) {
+      background: linear-gradient(135deg, #fbbf24 0%, #b45309 100%);
+      box-shadow: 0 4px 18px rgba(245, 158, 11, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .interest-submit:disabled {
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .back-link {
+      color: rgba(255, 255, 255, 0.72);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .back-link:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    .interest-status {
+      display: none;
+      margin-top: 24px;
+      padding: 16px 20px;
+      border-radius: 10px;
+      background: rgba(16, 185, 129, 0.16);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #d1fae5;
+      line-height: 1.6;
+    }
+
+    .interest-status.error {
+      background: rgba(239, 68, 68, 0.16);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #fee2e2;
+    }
+
+    @media (max-width: 640px) {
+      .interest-shell {
+        margin-top: 24px;
+        padding: 24px 18px;
+      }
+
+      .interest-shell h1 {
+        font-size: 1.65rem;
+      }
+
+      .interest-actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .interest-submit {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- TOP NAV -->
+  <nav class="top-nav">
+    <a href="https://www.linkedin.com/company/culturecodecommunity/" target="_blank" class="nav-brand">
+      <img src="assets/culturecode-logo-dark.jpg" alt="CultureCode Logo" class="nav-logo-img" />
+    </a>
+  </nav>
+
+  <!-- MAIN CONTAINER -->
+  <main class="interest-shell">
+    <div class="badge-hybrid">
+      <span>🚀 ĐỘT PHÁ MÔ HÌNH HYBRID — QUÝ 4/2026</span>
+    </div>
+
+    <h1>Đăng ký nhận thông tin quan tâm DHM10</h1>
+
+    <p class="intro-desc">
+      Chào mừng bạn đến với <strong>Delivering Happiness Masterclass 10 (DHM10)</strong> — Cột mốc số 10 đặc biệt của hành trình kiến tạo văn hóa hạnh phúc bền vững. Lần đầu tiên, DHM được triển khai theo hình thức <strong>Hybrid đa điểm cầu</strong> kết nối song song giữa <strong>Hà Nội</strong> và <strong>TP.HCM</strong>.
+    </p>
+
+    <div class="info-card-box">
+      <strong style="color: var(--warm-yellow, #f59e0b); font-size: 1rem;">📌 Quy trình xác nhận đăng ký DHM10:</strong>
+      <ul>
+        <li><strong>Lịch học chính thức:</strong> Đang được Ban Tổ Chức hoàn thiện để tối ưu lịch giảng dạy và cơ sở vật chất giữa hai đầu cầu.</li>
+        <li><strong>Không gian đào tạo:</strong> Học viên tập trung trực tiếp tại hệ thống cơ sở <strong>Apollo English</strong> (chuẩn mực quốc tế tại Hà Nội & TP.HCM) cùng Giảng viên cơ hữu CultureCode đồng hành tại chỗ.</li>
+        <li><strong>Quyền lợi đăng ký sớm:</strong> Khi bạn để lại thông tin tại form này, BTC sẽ lưu vào danh sách ưu tiên. Ngay khi chốt ngày chính xác, bạn sẽ nhận được email thông báo đầu tiên kèm liên kết hoàn tất học phí để giữ chỗ chính thức.</li>
+      </ul>
+    </div>
+
+    <form id="interestForm" class="interest-form">
+      <label>
+        Họ và tên <span class="req">*</span>
+        <input type="text" name="fullName" autocomplete="name" required placeholder="Ví dụ: Nguyễn Văn A" />
+      </label>
+
+      <label>
+        Email nhận thông báo <span class="req">*</span>
+        <input type="email" name="email" autocomplete="email" required placeholder="name@company.com" />
+      </label>
+
+      <label>
+        Số điện thoại / Zalo <span class="req">*</span>
+        <input type="tel" name="phone" autocomplete="tel" required placeholder="Để BTC liên hệ thông báo lịch học và giữ suất..." />
+      </label>
+
+      <!-- Địa điểm học mong muốn -->
+      <div>
+        <div class="location-group-title">Địa điểm tham dự mong muốn <span class="req" style="color: #f87171;">*</span></div>
+        <div class="location-options">
+          <label class="location-card" id="cardHanoi">
+            <input type="radio" name="preferredLocation" value="Hà Nội - Cơ sở Apollo English" required />
+            <div class="location-card-content">
+              <span class="location-card-title">Hà Nội</span>
+              <span class="location-card-venue">Cơ sở Apollo English</span>
+            </div>
+          </label>
+
+          <label class="location-card" id="cardHcm">
+            <input type="radio" name="preferredLocation" value="TP.HCM - Cơ sở Apollo English" required />
+            <div class="location-card-content">
+              <span class="location-card-title">TP.HCM</span>
+              <span class="location-card-venue">Cơ sở Apollo English</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <label>
+        Công ty / Tổ chức
+        <input type="text" name="company" autocomplete="organization" placeholder="Tên doanh nghiệp hoặc tổ chức của bạn..." />
+      </label>
+
+      <label>
+        Chức danh / Vị trí
+        <input type="text" name="jobTitle" autocomplete="organization-title" placeholder="Ví dụ: CEO, Giám đốc Nhân sự, Trưởng bộ phận..." />
+      </label>
+
+      <label>
+        Kỳ vọng hoặc Lời nhắn dành cho Ban Tổ Chức
+        <textarea name="userNote" placeholder="Bạn quan tâm hoặc mong muốn giải quyết thách thức văn hóa / nhân sự nào qua khóa học này?"></textarea>
+      </label>
+
+      <div class="interest-actions">
+        <button type="submit" id="interestSubmit" class="interest-submit">Gửi thông tin quan tâm</button>
+        <a href="index.html" class="back-link">← Quay về trang chủ Delivering Happiness</a>
+      </div>
+    </form>
+
+    <div id="interestStatus" class="interest-status"></div>
+  </main>
+
+  <script>
+    window.CUSTOM_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
+
+    // Highlight radio cards
+    const locationCards = document.querySelectorAll('.location-card');
+    locationCards.forEach(card => {
+      const radio = card.querySelector('input[type="radio"]');
+      card.addEventListener('click', () => {
+        locationCards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        radio.checked = true;
+      });
+    });
+
+    function createInterestUuid() {
+      if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+        return crypto.randomUUID();
+      }
+      var arr = new Uint8Array(16);
+      if (typeof crypto !== 'undefined' && typeof crypto.getRandomValues === 'function') {
+        crypto.getRandomValues(arr);
+      } else {
+        for (var i = 0; i < 16; i++) arr[i] = Math.floor(Math.random() * 256);
+      }
+      return Array.from(arr).map(function(byte) {
+        return byte.toString(16).padStart(2, '0');
+      }).join('');
+    }
+
+    function showInterestStatus(message, isError) {
+      var status = document.getElementById('interestStatus');
+      status.innerHTML = message;
+      status.className = 'interest-status' + (isError ? ' error' : '');
+      status.style.display = 'block';
+      status.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    document.getElementById('interestForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      var submit = document.getElementById('interestSubmit');
+      submit.disabled = true;
+      submit.textContent = 'Đang gửi thông tin...';
+
+      var formData = new FormData(event.target);
+      var formValues = Object.fromEntries(formData.entries());
+
+      var locationChosen = formValues.preferredLocation || 'Chưa xác định';
+      var noteCombined = '[Địa điểm mong muốn: ' + locationChosen + ']';
+      if (formValues.userNote && formValues.userNote.trim()) {
+        noteCombined += '\n[Kỳ vọng / Lời nhắn]: ' + formValues.userNote.trim();
+      }
+
+      var payload = {
+        fullName: formValues.fullName ? formValues.fullName.trim() : '',
+        email: formValues.email ? formValues.email.trim() : '',
+        phone: formValues.phone ? formValues.phone.trim() : '',
+        company: formValues.company ? formValues.company.trim() : '',
+        jobTitle: formValues.jobTitle ? formValues.jobTitle.trim() : '',
+        location: locationChosen,
+        note: noteCombined,
+        type: 'DHM10_INTEREST',
+        lane: 'dh10',
+        event_id: 'DHM10_INTEREST',
+        source: 'Web_DHM10_Interest',
+        interestUuid: createInterestUuid()
+      };
+
+      try {
+        await fetch(window.CUSTOM_WEBAPP_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        event.target.reset();
+        locationCards.forEach(c => c.classList.remove('selected'));
+        showInterestStatus('✨ <strong>Gửi thông tin thành công!</strong><br/>CultureCode Team đã tiếp nhận thông tin quan tâm của bạn cho khóa <strong>DHM10</strong>. Ban Tổ Chức sẽ ưu tiên liên hệ và gửi email thông báo kèm đường link đăng ký chính thức ngay khi ngày học được công bố.', false);
+      } catch (err) {
+        showInterestStatus('⚠️ Chưa gửi được thông tin do lỗi kết nối mạng. Vui lòng kiểm tra lại đường truyền hoặc liên hệ CultureCode Team.', true);
+      } finally {
+        submit.disabled = false;
+        submit.textContent = 'Gửi thông tin quan tâm';
+      }
+    });
+  </script>
+</body>
+
+</html>
