@@ -932,7 +932,7 @@ if (btnToggleVideo && videoContainer) {
 }
 
 // ==============================================================================
-// CỔNG ĐỊNH DANH BẮT BUỘC & KÍCH HOẠT EMAIL 1-CHẠM (AUTH GATE - BƯỚC 0)
+// CỔNG ĐỊNH DANH BẮT BUỘC & KÍCH HOẠT EMAIL (AUTH GATE - BƯỚC 0)
 // ==============================================================================
 const AUTH_STORAGE_KEY = "dhm_user_auth";
 const AUTH_GATE_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";

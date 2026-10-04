@@ -3878,7 +3878,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (data && data.success) {
                     if (trialStatusMsg) {
                         trialStatusMsg.className = "p-3 rounded-xl bg-brand-green/15 border border-brand-green/30 text-brand-green text-xs leading-relaxed space-y-1";
-                        trialStatusMsg.innerHTML = `<div>🎉 <strong>Gửi thành công!</strong></div><div>Liên kết kích hoạt 1-chạm đã được gửi tới <strong>${email}</strong>. Vui lòng kiểm tra hộp thư (kể cả mục Spam) và nhấp vào liên kết để bắt đầu học Chặng 1.</div>`;
+                        trialStatusMsg.innerHTML = `<div>🎉 <strong>Gửi thành công!</strong></div><div>Liên kết kích hoạt đã được gửi tới <strong>${email}</strong>. Vui lòng kiểm tra hộp thư (kể cả mục Spam) và nhấp vào liên kết để bắt đầu học Chặng 1.</div>`;
                         trialStatusMsg.classList.remove("hidden");
                     }
                     startTrialCooldown(60);
