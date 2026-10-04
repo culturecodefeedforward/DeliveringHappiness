@@ -25,7 +25,7 @@ Hành trình học tập Delivering Happiness được tổ chức theo chuỗi 
 │ • 3 Cấp độ Hạnh phúc    │ • Thỏa thuận Văn hóa Nhóm    │ • Nhật ký thói quen tự thân   │
 │ • La Bàn Me Values      │ • An toàn Tâm lý nội bộ      │ • Tích lũy Small Wins         │
 │ • 3 Đòn Bẩy SDT         │ • Xưởng 5 Thói quen tự thân  │ • Đúc kết chuyển hóa thực tế  │
-│ • Cổng Sát Hạch (≥70%)  │ • Tinh thần Làm chủ          │ • Nhận Chứng nhận tốt nghiệp  │
+│ • Cổng Sát Hạch (≥80%)  │ • Tinh thần Làm chủ          │ • Nhận Chứng nhận tốt nghiệp  │
 └─────────────────────────┴──────────────────────────────┴───────────────────────────────┘
 ```
 
@@ -53,7 +53,7 @@ Hành trình học tập Delivering Happiness được tổ chức theo chuỗi 
      - *Đòn bẩy 2: Cảm giác Tự chủ (Autonomy)* — Cảm giác được lựa chọn phương pháp, được lắng nghe tiếng nói và có tinh thần làm chủ kết quả (*Ownership Advantage™*).
      - *Đòn bẩy 3: Cảm giác Tiến bộ (Competence)* — Cảm nhận bản thân liên tục tiến lên phía trước thông qua việc ghi nhận các bước tiến nhỏ (*Small wins*) hàng ngày.
 - **Điều kiện hoàn thành Mini-step 1 (Cổng Sát Hạch Đầu Vào — Qualifying Gate):**
-  - **Bài Test Sát Hạch (10 câu trắc nghiệm phản xạ):** Học viên bắt buộc phải làm bài và đạt tối thiểu **7/10 câu đúng (≥ 70%)**.
+  - **Bài Test Sát Hạch (10 câu trắc nghiệm phản xạ):** Học viên bắt buộc phải làm bài và đạt tối thiểu **8/10 câu đúng (≥ 80%)**.
   - **Giới hạn làm bài:** Tối đa 3 lần thử. Hệ thống có cơ chế khóa an toàn (*lockout*) sau 3 lần trượt để khuyến khích học viên kết nối trực tiếp với Coach/BTC nhằm nhận hướng dẫn ôn tập.
   - **Đúc kết phản tư I • A • M 1.1, 1.2, 1.3:** Hoàn thành các câu hỏi suy ngẫm cá nhân và bài tập tình huống thực tế.
   - *Ý nghĩa:* Đạt kết quả sát hạch đầu vào là điều kiện bắt buộc để được cấp quyền tham dự Hội thảo tập trung Mini-step 2.
@@ -99,7 +99,7 @@ Giao diện học tập được xây dựng theo tiêu chuẩn Single Page Appl
 ├────────────────────────────────────────────────────────────────────────────────────────┤
 │ [Logo DHM]  [◀ Thu Gọn Mục Lục]     [▶ Tiếp Tục Bài Đang Dở]       [Tên Học Viên ▼]   │
 ├────────────────────────────────────────────────────────────────────────────────────────┤
-│ (Banner Sát Hạch: Tự động co gọn thành huy hiệu sau khi đạt điểm ≥70%)                │
+│ (Banner Sát Hạch: Tự động co gọn thành huy hiệu sau khi đạt điểm ≥80%)                │
 ├───────────────────────────────┬────────────────────────────────────────────────────────┤
 │ SIDEBAR GIÁO TRÌNH (Trái)     │ NỘI DUNG BÀI HỌC CHÍNH (Phải)                          │
 │                               │                                                        │
@@ -138,7 +138,7 @@ Giao diện học tập được xây dựng theo tiêu chuẩn Single Page Appl
 - Học viên mới khi đăng nhập sẽ được chào đón bằng **Quick Start Card Modal** tinh gọn 1 trang:
   1. *Bước 1: Đăng nhập* bằng Email và 4 số cuối SĐT.
   2. *Bước 2: Xem bài giảng* qua Video Explainer và kho Audio Podcast.
-  3. *Bước 3: Vượt qua bài sát hạch đầu vào* (đạt ≥ 70%, tối đa 3 lần).
+  3. *Bước 3: Vượt qua bài sát hạch đầu vào* (đạt ≥ 80%, tối đa 3 lần).
   4. *Bước 4: Thực hành và lưu trữ* các bài tập I•A•M.
 
 #### C. Thanh Tiếp Tục Học Tập Thông Minh (Smart Resume Learning)
@@ -146,7 +146,7 @@ Giao diện học tập được xây dựng theo tiêu chuẩn Single Page Appl
 
 #### D. Tự Động Thu Gọn Banner Sát Hạch (Hero Gate Auto-Collapse)
 - Trước khi thi sát hạch, banner bài test hiển thị nổi bật để nhắc nhở nhiệm vụ bắt buộc.
-- **Ngay khi bạn làm bài thi đạt kết quả từ 70% trở lên**, toàn bộ banner nhắc nhở lớn sẽ tự động co gọn lại thành một huy hiệu thông báo nhỏ gọn `[✓ Đã Đạt Chuẩn Đầu Vào]`, nhường toàn bộ màn hình cho không gian học tập chuyên sâu.
+- **Ngay khi bạn làm bài thi đạt kết quả từ 80% trở lên**, toàn bộ banner nhắc nhở lớn sẽ tự động co gọn lại thành một huy hiệu thông báo nhỏ gọn `[✓ Đã Đạt Chuẩn Đầu Vào]`, nhường toàn bộ màn hình cho không gian học tập chuyên sâu.
 
 #### E. Tích Xanh Tiến Độ Tiểu Mục (Visual Completion Checkmarks)
 - Mỗi khi bạn hoàn thành bài kiểm tra hoặc lưu đúc kết bài tập của một tiểu mục, trên Sidebar giáo trình sẽ tự động xuất hiện dấu tích xanh **`✓`** cạnh tiêu đề mục đó, giúp bạn luôn nhìn thấy rõ cảm giác tiến bộ (*Sense of Progress*) của bản thân.
@@ -294,7 +294,7 @@ Trong suốt hành trình học tập, học viên nhận được sự đồng 
 
 ### QUY CHẾ HỖ TRỢ KỸ THUẬT & KHÓA THI SÁT HẠCH
 
-- **Khi đạt kết quả sát hạch (≥ 70%):** Hệ thống tự động cấp quyền tham dự Hội thảo Mini-step 2 và lưu chứng nhận hoàn thành chặng 1 vào cơ sở dữ liệu.
+- **Khi đạt kết quả sát hạch (≥ 80%):** Hệ thống tự động cấp quyền tham dự Hội thảo Mini-step 2 và lưu chứng nhận hoàn thành chặng 1 vào cơ sở dữ liệu.
 - **Khi chưa đạt sau 3 lần thi (Khóa thi — Lockout):** Màn hình bài test sẽ hiển thị thông báo hướng dẫn liên hệ Coach/BTC. Ban Giảng Huấn sẽ kết nối trực tiếp với bạn để giải đáp các thắc mắc lý thuyết và hỗ trợ mở lại lượt thi.
 - **Kênh hỗ trợ chính thức:**
   - **Email hỗ trợ:** `btc@deliveringhappiness.vn`

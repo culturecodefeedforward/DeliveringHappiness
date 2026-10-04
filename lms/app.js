@@ -921,7 +921,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return false;
         }
         const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
-        const isQuizPassed = Boolean(s1Data.passed || (s1Data.percentage >= 70));
+        const isQuizPassed = Boolean(s1Data.passed || (s1Data.percentage >= 80));
         const isCoach = currentUser && (
             currentUser.cohort === "COACH" || 
             currentUser.cohort === "BTC / Coach" || 
@@ -977,7 +977,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         ${isCompleted ? '<span class="text-[10px] text-brand-green font-semibold">Đã xong</span>' : ''}
                     </div>
                     <div class="text-xs font-bold truncate ${!isUnlocked ? 'text-slate-400' : 'text-slate-100'}">${stage.title}</div>
-                    <div class="text-[11px] ${!isUnlocked ? 'text-slate-500' : 'text-slate-400'} truncate mt-0.5">${!isUnlocked ? 'Cần đạt ≥70% Cổng Vượt Chặng để mở khóa' : stage.subtitle}</div>
+                    <div class="text-[11px] ${!isUnlocked ? 'text-slate-500' : 'text-slate-400'} truncate mt-0.5">${!isUnlocked ? 'Cần đạt ≥80% Cổng Vượt Chặng để mở khóa' : stage.subtitle}</div>
                 </div>
                 ${stage.subSections && stage.subSections.length > 0 ? `<span class="stage-toggle-chevron text-xs text-slate-400 shrink-0 transform transition-transform ${isActive ? 'rotate-90' : ''}">▸</span>` : ''}
             `;
@@ -989,7 +989,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         toggleSidebar(false);
                         return;
                     }
-                    alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 70% ở Bài Kiểm Tra Vượt Chặng (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
+                    alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 80% ở Bài Kiểm Tra Vượt Chặng (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
                     jumpToStage1Quiz();
                     toggleSidebar(false);
                     return;
@@ -1037,7 +1037,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     } else if (sub.id === "sub-1-4") {
                         isSubDone = Boolean(s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i));
                     } else if (sub.id === "sub-1-5") {
-                        isSubDone = Boolean(s1Data.passed || s1Data.score >= 7 || s1Data.percentage >= 70);
+                        isSubDone = Boolean(s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80);
                     }
 
                     const marker = !isUnlocked
@@ -1059,7 +1059,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 toggleSidebar(false);
                                 return;
                             }
-                            alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 70% ở Bài Kiểm Tra Vượt Chặng (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
+                            alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 80% ở Bài Kiểm Tra Vượt Chặng (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
                             jumpToStage1Quiz();
                             toggleSidebar(false);
                             return;
@@ -1184,7 +1184,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Smart Resume Learning & Status Evaluator (Idempotent 2-Way Renderer)
     function evaluateLearnerStatus() {
         const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
-        const isQuizPassed = Boolean(s1Data.passed || (s1Data.percentage >= 70));
+        const isQuizPassed = Boolean(s1Data.passed || (s1Data.percentage >= 80));
 
         // 1. Auto-collapse / Refine Primary Hero Action Bar on Video (Idempotent 2-Way)
         if (heroQuizGateBanner) {
@@ -1195,7 +1195,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <span class="w-8 h-8 rounded-lg bg-brand-green/20 text-brand-green flex items-center justify-center font-bold text-sm">✓</span>
                         <div>
                             <span class="text-[10px] uppercase font-bold text-brand-green tracking-wider">Đã Vượt Chặng 1</span>
-                            <div class="text-xs sm:text-sm font-bold text-white">Bạn đã mở khóa Chặng 2 & Chặng 3 (${s1Data.score || 7}/${s1Data.totalQuestions || 10} câu)</div>
+                            <div class="text-xs sm:text-sm font-bold text-white">Bạn đã mở khóa Chặng 2 & Chặng 3 (${s1Data.score || 8}/${s1Data.totalQuestions || 10} câu)</div>
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
@@ -1227,7 +1227,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <span class="px-2 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px] uppercase tracking-wider shrink-0">Cổng Vượt Chặng 1</span>
                                 <h3 class="text-xs sm:text-sm lg:text-base font-extrabold text-white truncate">BÀI KIỂM TRA VƯỢT CHẶNG (10 CÂU)</h3>
                                 <span class="text-[11px] sm:text-xs px-2 py-0.5 rounded-full bg-brand-amber/15 text-brand-amber font-mono font-bold border border-brand-amber/30 shrink-0">
-                                    Đạt ≥ 70%
+                                    Đạt ≥ 80%
                                 </span>
                             </div>
                             <p class="text-xs text-slate-300 mt-0.5 sm:mt-1">
@@ -1333,7 +1333,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 currentStageIndex = 0;
                 return;
             }
-            alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 70% ở Bài 1.4 Cổng Vượt Chặng (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
+            alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 80% ở Bài 1.4 Cổng Vượt Chặng (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
             currentStageIndex = 0;
             jumpToStage1Quiz();
             return;
@@ -1852,7 +1852,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderStage1View(stage) {
         const sData = learnerProgress.stageData["stage-1"] || {};
 
-        // 9.1 Render Quiz (Cổng Vượt Chặng 1 - 10 Câu - Đạt ≥70% - Tối đa 3 lần thử)
+        // 9.1 Render Quiz (Cổng Vượt Chặng 1 - 10 Câu - Đạt ≥80% - Tối đa 3 lần thử)
         quizItemsContainer.innerHTML = "";
         const mod1 = (stage.modules && stage.modules[0]) ? stage.modules[0] : null;
         const quizzes = (mod1 && mod1.quizzes) ? mod1.quizzes : [];
@@ -1868,7 +1868,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (savedAnswers[item.id] === item.correctIndex) correct++;
         });
         const percent = quizzes.length > 0 ? Math.round((correct / quizzes.length) * 100) : 0;
-        const passed = percent >= 70;
+        const passed = percent >= 80;
 
         // Update badges
         if (quizAttemptBadge) {
@@ -1948,7 +1948,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         learnerProgress.stageData["stage-1"].score = currCorrect;
                         learnerProgress.stageData["stage-1"].totalQuestions = quizzes.length;
                         learnerProgress.stageData["stage-1"].percentage = currPct;
-                        learnerProgress.stageData["stage-1"].passed = (currPct >= 70);
+                        learnerProgress.stageData["stage-1"].passed = (currPct >= 80);
 
                         saveLearnerProgress();
                         renderStage1View(stage);
@@ -1972,7 +1972,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <span class="text-2xl">🎉</span>
                             <div>
                                 <h4 class="text-sm font-extrabold text-brand-green">CHÚC MỪNG BẠN ĐÃ VƯỢT CHẶNG 1 THÀNH CÔNG!</h4>
-                                <p class="text-xs text-slate-300 mt-0.5">Kết quả bài kiểm tra vượt chặng: <strong class="text-white">${correct}/${quizzes.length} câu đúng (${percent}%)</strong> — Đạt chuẩn ≥70% sau lần thử ${attempts}/${maxAttempts}, đã mở khóa Chặng 2 & Chặng 3.</p>
+                                <p class="text-xs text-slate-300 mt-0.5">Kết quả bài kiểm tra vượt chặng: <strong class="text-white">${correct}/${quizzes.length} câu đúng (${percent}%)</strong> — Đạt chuẩn ≥80% sau lần thử ${attempts}/${maxAttempts}, đã mở khóa Chặng 2 & Chặng 3.</p>
                             </div>
                         </div>
                     `;
@@ -1981,8 +1981,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     quizSummaryContainer.innerHTML = `
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                             <div class="space-y-1">
-                                <h4 class="text-sm font-extrabold text-brand-amber">CHƯA ĐẠT CHUẨN VƯỢT CHẶNG (≥70%)</h4>
-                                <p class="text-xs text-slate-300">Bạn đạt <strong>${correct}/${quizzes.length} câu (${percent}%)</strong>. Tiêu chuẩn để mở khóa Chặng 2 là tối thiểu <strong>${Math.ceil(quizzes.length * 0.7)}/${quizzes.length} câu (≥70%)</strong>.</p>
+                                <h4 class="text-sm font-extrabold text-brand-amber">CHƯA ĐẠT CHUẨN VƯỢT CHẶNG (≥80%)</h4>
+                                <p class="text-xs text-slate-300">Bạn đạt <strong>${correct}/${quizzes.length} câu (${percent}%)</strong>. Tiêu chuẩn để mở khóa Chặng 2 là tối thiểu <strong>${Math.ceil(quizzes.length * 0.8)}/${quizzes.length} câu (≥80%)</strong>.</p>
                                 <p class="text-xs text-slate-400">Bạn còn <strong class="text-white">${maxAttempts - attempts} lần thử lại</strong>. Hãy xem lại các đáp án tô đỏ ở trên trước khi bấm thử lại.</p>
                             </div>
                             <button id="btn-quiz-retry" class="px-5 py-3 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-black font-extrabold text-xs shadow-lg shadow-orange-500/20 active:scale-95 transition-all whitespace-nowrap flex items-center justify-center gap-1.5 self-start sm:self-center">
@@ -2009,7 +2009,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <div class="flex items-center gap-3">
                             <span class="text-2xl">⚠️</span>
                             <div>
-                                <h4 class="text-sm font-extrabold text-red-400">ĐÃ HẾT ${maxAttempts} LẦN THỬ — CHƯA ĐẠT 70%</h4>
+                                <h4 class="text-sm font-extrabold text-red-400">ĐÃ HẾT ${maxAttempts} LẦN THỬ — CHƯA ĐẠT 80%</h4>
                                 <p class="text-xs text-slate-300 mt-0.5">Bạn đạt <strong>${correct}/${quizzes.length} câu (${percent}%)</strong> sau 3 lượt thử. Vui lòng liên hệ Đội ngũ Điều phối / Coach để được hướng dẫn ôn tập trước khi lên lớp Offline.</p>
                             </div>
                         </div>
@@ -3354,7 +3354,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btnNextLesson.onclick = () => {
         const curStage = curriculum.stages[currentStageIndex];
 
-        // Gate for Stage 1: Must pass the qualifying quiz (>= 70%) unless Coach/Admin
+        // Gate for Stage 1: Must pass the qualifying quiz (>= 80%) unless Coach/Admin
         if (curStage && curStage.id === "stage-1") {
             const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
             const isCoach = currentUser && (
@@ -3365,9 +3365,9 @@ document.addEventListener("DOMContentLoaded", () => {
             );
             if (!s1Data.passed && !isCoach) {
                 const s1Quizzes = (curStage.modules && curStage.modules[0] && curStage.modules[0].quizzes) ? curStage.modules[0].quizzes : [];
-                const passCount = s1Quizzes.length > 0 ? Math.ceil(s1Quizzes.length * 0.7) : 7;
+                const passCount = s1Quizzes.length > 0 ? Math.ceil(s1Quizzes.length * 0.8) : 8;
                 const totalQ = s1Quizzes.length || 10;
-                alert(`⚠️ Bạn cần hoàn thành và đạt tối thiểu 70% (${passCount}/${totalQ} câu) ở Bài Kiểm Tra Vượt Chặng để đủ điều kiện (qualify) hoàn thành Chặng 1 và bước vào Lớp Offline Chặng 2!`);
+                alert(`⚠️ Bạn cần hoàn thành và đạt tối thiểu 80% (${passCount}/${totalQ} câu) ở Bài Kiểm Tra Vượt Chặng để đủ điều kiện (qualify) hoàn thành Chặng 1 và bước vào Lớp Offline Chặng 2!`);
                 const practiceTabBtn = document.querySelector('[data-tab="tab-practice"]');
                 if (practiceTabBtn) practiceTabBtn.click();
                 openAccordionModule("stage1-mod-quiz");
@@ -3415,8 +3415,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (s1Data.selectedValues && s1Data.selectedValues.length > 0 && s1Data.iam_1_2 && (s1Data.iam_1_2.I || s1Data.iam_1_2.i)) count++;
         // Mốc 4 (20%): Hoàn thành phản tư I•A•M 1.3 (3 Đòn Bẩy Hạnh Phúc)
         if (s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i)) count++;
-        // Mốc 5 (20%): Đạt bài kiểm tra vượt chặng (≥7/10 câu hoặc ≥70%)
-        if (s1Data.passed || s1Data.score >= 7 || s1Data.percentage >= 70) count++;
+        // Mốc 5 (20%): Đạt bài kiểm tra vượt chặng (≥8/10 câu hoặc ≥80%)
+        if (s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80) count++;
 
         return Math.min(100, Math.round(count * 20));
     }
@@ -3494,7 +3494,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const mLevelsDone = isS1Done || Boolean(s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i));
         const mValuesDone = isS1Done || Boolean((s1Data.selectedValues && s1Data.selectedValues.length > 0) && (s1Data.iam_1_2 && (s1Data.iam_1_2.I || s1Data.iam_1_2.i)));
         const mDriversDone = isS1Done || Boolean(s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i));
-        const mQuizDone = isS1Done || Boolean(s1Data.passed || s1Data.score >= 7 || s1Data.percentage >= 70);
+        const mQuizDone = isS1Done || Boolean(s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80);
 
         const doneCount = [mVideoDone, mLevelsDone, mValuesDone, mDriversDone, mQuizDone].filter(Boolean).length;
         const milestoneText = document.getElementById("stage1-milestone-text");
@@ -3545,7 +3545,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const mod1Done = Boolean(s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i));
         const mod2Done = Boolean((s1Data.selectedValues && s1Data.selectedValues.length > 0) && (s1Data.iam_1_2 && (s1Data.iam_1_2.I || s1Data.iam_1_2.i)));
         const mod3Done = Boolean(s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i));
-        const quizDone = Boolean(s1Data.passed || s1Data.score >= 7 || s1Data.percentage >= 70);
+        const quizDone = Boolean(s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80);
 
         ["stage1-mod-1-1", "stage1-mod-1-2", "stage1-mod-1-3", "stage1-mod-quiz"].forEach(id => closeAccordionModule(id));
 
