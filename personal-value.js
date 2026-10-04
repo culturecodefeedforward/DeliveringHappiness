@@ -953,10 +953,124 @@ if (btnToggleVideo && videoContainer) {
 // CỔNG ĐỊNH DANH BẮT BUỘC & KÍCH HOẠT EMAIL (AUTH GATE - BƯỚC 0)
 // ==============================================================================
 const AUTH_STORAGE_KEY = "dhm_user_auth";
+const LMS_AUTH_KEY = "dhm_lms_auth_user";
 const AUTH_GATE_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
+
+let authorizedRoster = [];
+
+// Tải danh bạ học viên chính thức (Roster)
+async function loadAuthorizedRoster() {
+  if (authorizedRoster && authorizedRoster.length > 0) return authorizedRoster;
+  try {
+    const paths = ["/lms/authorized_roster.json", "lms/authorized_roster.json", "./lms/authorized_roster.json"];
+    for (const p of paths) {
+      try {
+        const resp = await fetch(p + "?v=" + Date.now());
+        if (resp.ok) {
+          const data = await resp.json();
+          if (Array.isArray(data) && data.length > 0) {
+            authorizedRoster = data;
+            return authorizedRoster;
+          }
+        }
+      } catch (err) {}
+    }
+  } catch (e) {
+    console.warn("Không thể tải authorized_roster.json:", e);
+  }
+  return [];
+}
+
+function normalizePhone(str) {
+  if (!str) return "";
+  let clean = String(str).replace(/[^\d]/g, "");
+  if (clean.startsWith("84")) clean = "0" + clean.substring(2);
+  return clean;
+}
+
+function normalizeIdentity(str) {
+  if (!str) return "";
+  return String(str).trim().toLowerCase();
+}
+
+// Đối chiếu danh bạ học viên
+function findLearnerInRoster(rawInput, roster) {
+  if (!rawInput) return null;
+  const normInput = normalizeIdentity(rawInput);
+  const normPhone = normalizePhone(rawInput);
+  const list = roster || authorizedRoster || [];
+
+  // 1. Kiểm tra danh bạ chính thức
+  for (const item of list) {
+    const itemEmail = item.email ? normalizeIdentity(item.email) : "";
+    const itemPhone = item.phone || item.phone_full || item.phone_raw || "";
+    const normItemPhone = normalizePhone(itemPhone);
+
+    const emailMatch = itemEmail && itemEmail === normInput;
+    const phoneMatch = normPhone && normPhone.length >= 9 && normItemPhone && normItemPhone === normPhone;
+
+    if (emailMatch || phoneMatch) {
+      return {
+        lead_id: item.learner_id || "",
+        full_name: item.name || item.full_name || item.email,
+        email: item.email ? item.email.toLowerCase().trim() : (normInput.includes("@") ? normInput : ""),
+        phone: item.phone || item.phone_full || normPhone || "",
+        cohort: item.cohort || "Học viên",
+        role: item.role || "Learner",
+        status: "verified"
+      };
+    }
+  }
+
+  // 2. Kiểm tra thêm trong overrides nếu có
+  try {
+    const rawOverrides = localStorage.getItem("dhm_roster_overrides");
+    if (rawOverrides) {
+      const overrides = JSON.parse(rawOverrides);
+      for (const ov of Object.values(overrides)) {
+        const ovEmail = ov.email ? normalizeIdentity(ov.email) : "";
+        const ovPhone = normalizePhone(ov.phone || "");
+        if ((ovEmail && ovEmail === normInput) || (normPhone && normPhone.length >= 9 && ovPhone === normPhone)) {
+          return {
+            lead_id: ov.learner_id || "",
+            full_name: ov.name || ov.full_name || ov.email,
+            email: ov.email ? ov.email.toLowerCase().trim() : "",
+            phone: ov.phone || "",
+            cohort: ov.cohort || "Học viên",
+            role: ov.role || "Learner",
+            status: "verified"
+          };
+        }
+      }
+    }
+  } catch (e) {}
+
+  return null;
+}
 
 function getStoredUserAuth() {
   try {
+    // Tầng 2: Kiểm tra phiên LMS Session (dhm_lms_auth_user)
+    const lmsRaw = localStorage.getItem(LMS_AUTH_KEY);
+    if (lmsRaw) {
+      try {
+        const lmsUser = JSON.parse(lmsRaw);
+        if (lmsUser && (lmsUser.email || lmsUser.identity)) {
+          const profile = {
+            lead_id: lmsUser.learner_id || "",
+            full_name: lmsUser.name || lmsUser.full_name || lmsUser.email || "Học viên DHM",
+            email: (lmsUser.email || lmsUser.identity || "").toLowerCase().trim(),
+            phone: lmsUser.phone || "",
+            cohort: lmsUser.cohort || "Học viên",
+            role: lmsUser.role || "Learner",
+            status: "verified"
+          };
+          return saveUserAuth(profile);
+        }
+      } catch (err) {}
+    }
+
+    // Tầng 3: Kiểm tra phiên La Bàn Giá Trị (dhm_user_auth)
     const raw = localStorage.getItem(AUTH_STORAGE_KEY);
     if (!raw) return null;
     const auth = JSON.parse(raw);
@@ -977,9 +1091,11 @@ function saveUserAuth(profile) {
     const expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 ngày
     const authData = {
       lead_id: profile.lead_id || "",
-      full_name: profile.full_name || profile.fullName || "",
+      full_name: profile.full_name || profile.fullName || profile.name || "",
       phone: profile.phone || "",
       email: (profile.email || "").toLowerCase().trim(),
+      cohort: profile.cohort || "Học viên",
+      role: profile.role || "Learner",
       status: "verified",
       verified_at: now.toISOString(),
       expires_at: expiresAt.toISOString()
@@ -990,6 +1106,14 @@ function saveUserAuth(profile) {
     console.warn("Không thể lưu dhm_user_auth:", e);
     return profile;
   }
+}
+
+function fillReportFields(auth) {
+  if (!auth) return;
+  const repName = document.getElementById("reportName");
+  const repEmail = document.getElementById("reportEmail");
+  if (repName && !repName.value) repName.value = auth.full_name || auth.fullName || auth.name || "";
+  if (repEmail && !repEmail.value) repEmail.value = auth.email || "";
 }
 
 function syncSurveyCompletionToHub(email, surveyType, resultSummary) {
@@ -1013,13 +1137,26 @@ function syncSurveyCompletionToHub(email, surveyType, resultSummary) {
   } catch (e) {}
 }
 
-function initAuthGate() {
+async function initAuthGate() {
   const modal = document.getElementById("authGateModal");
   if (!modal) return;
 
   const formSection = document.getElementById("agFormSection");
+  const rosterSection = document.getElementById("agRosterSection");
+  const trialSection = document.getElementById("agTrialSection");
   const waitingSection = document.getElementById("agWaitingSection");
   const successSection = document.getElementById("agSuccessSection");
+
+  const identifierInput = document.getElementById("agIdentifier");
+  const rosterMsg = document.getElementById("agRosterMsg");
+  const btnVerifyRoster = document.getElementById("agBtnVerifyRoster");
+  const linkOpenTrial = document.getElementById("agLinkOpenTrial");
+  const btnBackToRoster = document.getElementById("agBtnBackToRoster");
+
+  const fullNameInput = document.getElementById("agFullName");
+  const phoneInput = document.getElementById("agPhone");
+  const emailInput = document.getElementById("agEmail");
+  const consentInput = document.getElementById("agConsent");
   const errorMsg = document.getElementById("agErrorMsg");
   const btnSubmit = document.getElementById("agBtnSubmit");
   const btnResend = document.getElementById("agBtnResend");
@@ -1030,21 +1167,35 @@ function initAuthGate() {
   const urlParams = new URLSearchParams(window.location.search);
   const tokenParam = urlParams.get("token");
   const emailParam = urlParams.get("email");
+  const sourceParam = urlParams.get("source");
   const actionParam = urlParams.get("action");
 
-  // Helper hiển thị lỗi
-  function showError(msg) {
+  function showRosterMsg(msg, isSuccess = false) {
+    if (!rosterMsg) return;
+    rosterMsg.innerHTML = isSuccess 
+      ? `<div style="padding: 0.65rem 0.85rem; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 6px; color: #065f46; font-size: 0.88rem; font-weight: 600;">${msg}</div>`
+      : `<div style="padding: 0.65rem 0.85rem; background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; color: #b91c1c; font-size: 0.85rem;">${msg}</div>`;
+    rosterMsg.style.display = "block";
+  }
+  function clearRosterMsg() {
+    if (rosterMsg) {
+      rosterMsg.innerHTML = "";
+      rosterMsg.style.display = "none";
+    }
+  }
+
+  function showTrialError(msg) {
     if (!errorMsg) return;
     errorMsg.innerText = msg;
     errorMsg.style.display = "block";
   }
-  function clearError() {
+  function clearTrialError() {
     if (!errorMsg) return;
     errorMsg.innerText = "";
     errorMsg.style.display = "none";
   }
 
-  // 1. Kiểm tra nếu URL có mã xác thực (Từ email kích hoạt)
+  // 1. Kiểm tra nếu URL có mã xác thực (Từ email kích hoạt bản trial)
   if (tokenParam && (actionParam === "verify" || actionParam === "verify_token")) {
     modal.style.display = "flex";
     if (formSection) formSection.style.display = "none";
@@ -1058,7 +1209,6 @@ function initAuthGate() {
       `;
     }
 
-    // Gửi request xác thực lên Webhook
     const verifyUrl = `${AUTH_GATE_WEBHOOK_URL}?action=verify_token&token=${encodeURIComponent(tokenParam)}&email=${encodeURIComponent(emailParam || "")}`;
     fetch(verifyUrl)
       .then(r => r.json())
@@ -1066,15 +1216,15 @@ function initAuthGate() {
       .then(res => {
         if (res && res.success) {
           const profile = res.user || { email: emailParam, full_name: "Học viên" };
-          saveUserAuth(profile);
+          const saved = saveUserAuth(profile);
           if (successSection) {
             successSection.innerHTML = `
               <div style="width: 52px; height: 52px; border-radius: 50%; background: #dcfce7; color: #16a34a; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto; font-size: 26px;">✓</div>
               <h3 style="font-size: 1.2rem; font-weight: 700; color: #166534; margin: 0 0 0.5rem 0;">Kích Hoạt Thành Công!</h3>
-              <p style="font-size: 0.88rem; color: #475569; margin: 0;">Chào mừng <strong>${profile.full_name || profile.email}</strong>. Đang mở khóa bài khảo sát...</p>
+              <p style="font-size: 0.88rem; color: #475569; margin: 0;">Chào mừng <strong>${saved.full_name || saved.email}</strong>. Đang mở khóa bài khảo sát...</p>
             `;
           }
-          // Xóa param token khỏi URL để tránh reload kích hoạt lại
+          fillReportFields(saved);
           try {
             const cleanUrl = window.location.pathname;
             window.history.replaceState({}, document.title, cleanUrl);
@@ -1082,7 +1232,7 @@ function initAuthGate() {
 
           setTimeout(() => {
             modal.style.display = "none";
-          }, 1500);
+          }, 1200);
         } else {
           alert("Lỗi kích hoạt: " + (res.message || "Mã kích hoạt không hợp lệ hoặc đã hết hạn."));
           if (formSection) formSection.style.display = "block";
@@ -1092,21 +1242,133 @@ function initAuthGate() {
     return;
   }
 
-  // 2. Kiểm tra nếu đã có phiên xác thực hợp lệ (< 30 ngày)
-  const currentAuth = getStoredUserAuth();
-  if (currentAuth) {
+  // 2. Tầng 1: Kiểm tra URL Params có email & source=lms (chuyển tiếp từ LMS)
+  if (sourceParam === "lms" && emailParam) {
+    await loadAuthorizedRoster();
+    const matched = findLearnerInRoster(emailParam, authorizedRoster);
+    const profile = matched || {
+      full_name: emailParam.split("@")[0],
+      email: emailParam.toLowerCase().trim(),
+      phone: "",
+      cohort: "Học viên LMS",
+      role: "Learner",
+      status: "verified"
+    };
+    const saved = saveUserAuth(profile);
     modal.style.display = "none";
-    // Điền sẵn thông tin ở Step 4 nếu có
-    const repName = document.getElementById("reportName");
-    const repEmail = document.getElementById("reportEmail");
-    if (repName && !repName.value) repName.value = currentAuth.full_name || "";
-    if (repEmail && !repEmail.value) repEmail.value = currentAuth.email || "";
+    fillReportFields(saved);
     return;
   }
 
-  // 3. Nếu chưa xác thực -> Chặn bằng Modal Step 0
-  modal.style.display = "flex";
+  // 3. Tầng 2 & 3: Kiểm tra phiên đã lưu (LMS session hoặc PV session)
+  const currentAuth = getStoredUserAuth();
+  if (currentAuth) {
+    modal.style.display = "none";
+    fillReportFields(currentAuth);
+    return;
+  }
 
+  // 4. Nếu chưa có phiên xác thực -> Mở Modal Step 0 với Giai đoạn 1 Roster-First
+  modal.style.display = "flex";
+  if (formSection) formSection.style.display = "block";
+  if (rosterSection) rosterSection.style.display = "block";
+  if (trialSection) trialSection.style.display = "none";
+  if (waitingSection) waitingSection.style.display = "none";
+  if (successSection) successSection.style.display = "none";
+  if (identifierInput) setTimeout(() => identifierInput.focus(), 150);
+
+  // Tải trước danh bạ trong nền
+  loadAuthorizedRoster();
+
+  // Hàm xử lý tra cứu Roster (Giai đoạn 1)
+  async function verifyRosterLearner() {
+    clearRosterMsg();
+    const rawVal = identifierInput ? identifierInput.value.trim() : "";
+    if (!rawVal) {
+      showRosterMsg("Vui lòng nhập Email hoặc Số điện thoại đã đăng ký.");
+      if (identifierInput) identifierInput.focus();
+      return;
+    }
+
+    if (btnVerifyRoster) {
+      btnVerifyRoster.disabled = true;
+      btnVerifyRoster.innerHTML = `<span>⏳ Đang kiểm tra danh bạ...</span>`;
+    }
+
+    const roster = await loadAuthorizedRoster();
+    const learner = findLearnerInRoster(rawVal, roster);
+
+    if (learner) {
+      showRosterMsg(`✓ Chào mừng <strong>${learner.full_name}</strong> (${learner.cohort})! Đang mở khóa bài khảo sát...`, true);
+      const saved = saveUserAuth(learner);
+      fillReportFields(saved);
+      setTimeout(() => {
+        modal.style.display = "none";
+      }, 800);
+    } else {
+      if (btnVerifyRoster) {
+        btnVerifyRoster.disabled = false;
+        btnVerifyRoster.innerHTML = `<span>🚀 Vào Làm Bài Khảo Sát</span>`;
+      }
+      // Chuyển sang Giai đoạn 2: Fallback Trial
+      if (rosterSection) rosterSection.style.display = "none";
+      if (trialSection) {
+        trialSection.style.display = "block";
+        if (rawVal.includes("@") && emailInput) {
+          emailInput.value = rawVal.toLowerCase();
+          if (fullNameInput && !fullNameInput.value) fullNameInput.value = rawVal.split("@")[0];
+        } else if (/^[0-9+ ]+$/.test(rawVal) && phoneInput) {
+          phoneInput.value = rawVal;
+        }
+        if (fullNameInput && !fullNameInput.value) {
+          fullNameInput.focus();
+        } else if (phoneInput && !phoneInput.value) {
+          phoneInput.focus();
+        } else if (emailInput && !emailInput.value) {
+          emailInput.focus();
+        }
+      }
+    }
+  }
+
+  if (btnVerifyRoster) {
+    btnVerifyRoster.onclick = verifyRosterLearner;
+  }
+  if (identifierInput) {
+    identifierInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        verifyRosterLearner();
+      }
+    });
+  }
+
+  // Mở thủ công form Trial
+  if (linkOpenTrial) {
+    linkOpenTrial.onclick = () => {
+      clearRosterMsg();
+      clearTrialError();
+      if (rosterSection) rosterSection.style.display = "none";
+      if (trialSection) {
+        trialSection.style.display = "block";
+        if (fullNameInput) fullNameInput.focus();
+      }
+    };
+  }
+
+  // Quay lại tra cứu Roster
+  if (btnBackToRoster) {
+    btnBackToRoster.onclick = () => {
+      clearTrialError();
+      if (trialSection) trialSection.style.display = "none";
+      if (rosterSection) {
+        rosterSection.style.display = "block";
+        if (identifierInput) identifierInput.focus();
+      }
+    };
+  }
+
+  // Bộ đếm gửi lại email trial
   let countdownInterval = null;
   function startCountdown(sec) {
     let remain = sec || 60;
@@ -1135,32 +1397,27 @@ function initAuthGate() {
     }, 1000);
   }
 
-  // Gửi yêu cầu đăng ký
+  // Gửi yêu cầu đăng ký trải nghiệm trial
   function sendRegisterRequest() {
-    clearError();
-    const fullNameInput = document.getElementById("agFullName");
-    const phoneInput = document.getElementById("agPhone");
-    const emailInput = document.getElementById("agEmail");
-    const consentInput = document.getElementById("agConsent");
-
+    clearTrialError();
     const fullName = fullNameInput ? fullNameInput.value.trim() : "";
     const phone = phoneInput ? phoneInput.value.trim().replace(/\s+/g, "") : "";
     const email = emailInput ? emailInput.value.trim().toLowerCase() : "";
 
     if (!fullName) {
-      showError("Vui lòng nhập họ và tên của bạn.");
+      showTrialError("Vui lòng nhập họ và tên của bạn.");
       return;
     }
     if (!phone || !/^(0|\+84)[3|5|7|8|9][0-9]{8}$/.test(phone)) {
-      showError("Vui lòng nhập số điện thoại hợp lệ (10 chữ số).");
+      showTrialError("Vui lòng nhập số điện thoại hợp lệ (10 chữ số).");
       return;
     }
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      showError("Vui lòng nhập địa chỉ email hợp lệ.");
+      showTrialError("Vui lòng nhập địa chỉ email hợp lệ.");
       return;
     }
     if (consentInput && !consentInput.checked) {
-      showError("Vui lòng đồng ý điều khoản bảo mật theo Nghị định 13 để tiếp tục.");
+      showTrialError("Vui lòng đồng ý điều khoản bảo mật theo Nghị định 13 để tiếp tục.");
       return;
     }
 
@@ -1199,7 +1456,7 @@ function initAuthGate() {
           if (waitingEmail) waitingEmail.innerText = email;
           startCountdown(60);
         } else {
-          showError(res.message || "Không thể gửi email. Vui lòng kiểm tra lại thông tin.");
+          showTrialError(res.message || "Không thể gửi email. Vui lòng kiểm tra lại thông tin.");
         }
       });
   }

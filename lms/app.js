@@ -842,6 +842,27 @@ document.addEventListener("DOMContentLoaded", () => {
         updateGlobalProgress();
         evaluateLearnerStatus();
         showQuickStartIfNeeded();
+        updatePersonalValueLinks();
+    }
+
+    function updatePersonalValueLinks() {
+        try {
+            const pvLinks = document.querySelectorAll('a[href*="personal-value.html"]');
+            const targetEmail = (currentUser && (currentUser.email || currentUser.identity)) 
+                ? (currentUser.email || currentUser.identity).toLowerCase().trim() 
+                : "";
+            pvLinks.forEach(link => {
+                const href = link.getAttribute("href") || "";
+                const baseUrl = href.split("?")[0];
+                if (targetEmail) {
+                    link.setAttribute("href", `${baseUrl}?email=${encodeURIComponent(targetEmail)}&source=lms`);
+                } else {
+                    link.setAttribute("href", baseUrl);
+                }
+            });
+        } catch (e) {
+            console.warn("Lỗi cập nhật liên kết personal-value:", e);
+        }
     }
 
     function saveLearnerProgress() {
@@ -1916,7 +1937,10 @@ document.addEventListener("DOMContentLoaded", () => {
         // Render lần làm bài mới nhất (index 0)
         displayPvSession(0);
 
-        // 6. Kích hoạt đồng bộ ngầm xuyên thiết bị (Cross-device Sync)
+        // 6. Cập nhật URL liên kết La Bàn kèm email và source=lms
+        updatePersonalValueLinks();
+
+        // 7. Kích hoạt đồng bộ ngầm xuyên thiết bị (Cross-device Sync)
         if (currentUser && currentUser.email) {
             syncCrossDevicePVHistory(currentUser.email, pvHistory);
         }
@@ -4469,6 +4493,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (confirm("Bạn có chắc chắn muốn đăng xuất không?")) {
                 localStorage.removeItem("dhm_lms_auth_user");
                 currentUser = null;
+                updatePersonalValueLinks();
                 learnerProgress = getInitialLearnerProgress();
                 userChip.classList.add("hidden");
                 renderSyllabus();
