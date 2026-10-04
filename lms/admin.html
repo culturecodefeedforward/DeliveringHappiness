@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Coach & Admin Portal — Delivering Happiness Movement</title>
-    <meta name="description" content="Cổng quản trị dành cho Ban Giảng Huấn và Quản lý theo dõi tiến độ, chấm bài tập ABCDE và đồng bộ học viên." />
+    <meta name="description" content="Cổng quản trị dành cho Ban Giảng Huấn và Quản lý theo dõi tiến độ, đo lường tỷ lệ hoàn thành bài test trên 80% theo các lần test và chấm bài tập ABCDE." />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -73,7 +73,7 @@
                     Coach & Admin Portal
                     <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-brand-amber/20 text-brand-amber border border-brand-amber/30">Ban Giảng Huấn</span>
                 </div>
-                <div class="text-[11px] text-slate-400">Giám sát bài tập & Khai vấn học viên DHM</div>
+                <div class="text-[11px] text-slate-400">Đo lường bài test, giám sát tiến độ & Khai vấn học viên DHM</div>
             </div>
         </div>
 
@@ -95,7 +95,7 @@
             </div>
             <div>
                 <h3 class="text-lg font-bold text-white">Xác Thực Quyền Giảng Viên</h3>
-                <p class="text-xs text-slate-400 mt-1">Vui lòng nhập Mã PIN của Ban Giảng Huấn để truy cập danh sách học viên và bài tập.</p>
+                <p class="text-xs text-slate-400 mt-1">Vui lòng nhập Mã PIN của Ban Giảng Huấn để truy cập phân tích bài test và hồ sơ học viên.</p>
             </div>
 
             <form id="pin-form" class="space-y-4">
@@ -117,93 +117,465 @@
     <!-- MAIN DASHBOARD CONTENT -->
     <main class="flex-1 p-6 lg:p-10 max-w-7xl mx-auto w-full space-y-8">
 
-        <!-- STATS CARDS -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1 shadow-lg">
-                <div class="text-xs text-slate-400 font-medium">Tổng số học viên</div>
-                <div id="stat-total-learners" class="text-2xl lg:text-3xl font-extrabold text-white">0</div>
-                <div class="text-[11px] text-slate-500">Đã đăng ký tham gia Mini-LMS</div>
+        <!-- TAB NAVIGATION SWITCHER -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-brand-border pb-4">
+            <div class="flex items-center gap-2">
+                <button id="tab-btn-test-analytics" class="px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-amber text-black shadow-lg">
+                    <span>🎯 Đo Lường Bài Test (&gt;80%)</span>
+                    <span id="badge-tested-learners-count" class="px-2 py-0.5 rounded-full bg-black/20 text-black font-mono text-[11px]">0</span>
+                </button>
+                <button id="tab-btn-general-progress" class="px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent">
+                    <span>📋 Tiến Độ Tổng Thể 3 Chặng</span>
+                    <span id="badge-total-registered-count" class="px-2 py-0.5 rounded-full bg-brand-surface text-slate-300 font-mono text-[11px]">0</span>
+                </button>
             </div>
 
-            <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1 shadow-lg">
-                <div class="text-xs text-slate-400 font-medium">Hoàn thành Chặng 1</div>
-                <div id="stat-stage1-completed" class="text-2xl lg:text-3xl font-extrabold text-brand-amber">0%</div>
-                <div class="text-[11px] text-slate-500">Đã vượt qua Quiz 3 Cấp độ</div>
-            </div>
-
-            <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1 shadow-lg">
-                <div class="text-xs text-slate-400 font-medium">Đã chọn La bàn Me Values</div>
-                <div id="stat-stage2-values" class="text-2xl lg:text-3xl font-extrabold text-blue-400">0</div>
-                <div class="text-[11px] text-slate-500">Học viên đã định vị 3 giá trị</div>
-            </div>
-
-            <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1 shadow-lg">
-                <div class="text-xs text-slate-400 font-medium">Bài tập ABCDE Đã Nộp</div>
-                <div id="stat-stage3-abcde" class="text-2xl lg:text-3xl font-extrabold text-brand-green">0</div>
-                <div class="text-[11px] text-slate-500">Đã phân tích phản biện chữ D</div>
+            <div class="flex items-center gap-2.5">
+                <a href="https://docs.google.com/spreadsheets/d/1nZVEowJu3j_WC1b3SO1UJU352g_547813-fWT3MQeac/edit" target="_blank" class="px-3.5 py-2 rounded-xl bg-green-600/20 hover:bg-green-600/30 text-green-400 text-xs font-semibold border border-green-500/30 transition-colors flex items-center gap-1.5" title="Mở trực tiếp Google Sheet Delivering Happiness">
+                    <span>📊 Google Sheet ↗</span>
+                </a>
+                <button id="btn-seed-test-analytics" class="px-3.5 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-brand-amber hover:text-amber-300 text-xs font-semibold border border-brand-amber/30 transition-all flex items-center gap-1.5 shadow-sm" title="Nạp tự động dữ liệu thi lại và điểm số mô phỏng theo danh bạ chuẩn">
+                    <span>🎲 Nạp Dữ Liệu Kiểm Thử Đo Lường</span>
+                </button>
             </div>
         </div>
 
-        <!-- CONTROLS & SEARCH BAR -->
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-brand-surface border border-brand-border">
-            <div class="flex items-center gap-3 w-full sm:w-auto">
-                <div class="relative w-full sm:w-72">
-                    <input type="text" id="search-input" placeholder="Tìm theo tên hoặc Email/SĐT..." class="w-full bg-brand-dark border border-brand-border rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-amber" />
-                    <svg class="w-4 h-4 text-slate-500 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <!-- ========================================== -->
+        <!-- PANE 1: TEST ANALYTICS DASHBOARD (>80%)    -->
+        <!-- ========================================== -->
+        <section id="pane-test-analytics" class="space-y-8">
+
+            <!-- TEST KPI METRICS CARDS -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                <!-- KPI 1: TỔNG HỌC VIÊN ĐÃ TEST -->
+                <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1.5 shadow-lg relative overflow-hidden">
+                    <div class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Học Viên Tham Gia Test</div>
+                    <div class="flex items-baseline gap-2">
+                        <span id="test-kpi-tested-count" class="text-2xl lg:text-3xl font-extrabold text-white">0</span>
+                        <span id="test-kpi-tested-total" class="text-xs text-slate-500 font-mono">/ 0 HV</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-brand-border/60">
+                        <span>Tỷ lệ tham gia:</span>
+                        <span id="test-kpi-participation-rate" class="font-bold text-brand-amber font-mono">0%</span>
+                    </div>
                 </div>
 
-                <select id="filter-status" class="bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-brand-amber">
-                    <option value="all">Tất cả học viên</option>
-                    <option value="completed">Đã hoàn thành cả 3 chặng</option>
-                    <option value="learning">Đang học dở dang</option>
-                </select>
+                <!-- KPI 2: ĐẠT > 80% LẦN 1 -->
+                <div class="p-5 rounded-2xl bg-brand-surface border border-emerald-500/30 bg-emerald-500/5 space-y-1.5 shadow-lg">
+                    <div class="text-[11px] text-emerald-400 font-medium uppercase tracking-wider flex items-center justify-between">
+                        <span>Đạt &gt;80% Lần 1</span>
+                        <span class="text-xs">⚡</span>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span id="test-kpi-l1-pass-rate" class="text-2xl lg:text-3xl font-extrabold text-emerald-400">0%</span>
+                        <span id="test-kpi-l1-pass-count" class="text-xs text-slate-400 font-mono">(0 HV)</span>
+                    </div>
+                    <div class="text-[11px] text-slate-400 pt-1 border-t border-brand-border/60">
+                        Hiểu sâu ngay sau bài giảng
+                    </div>
+                </div>
+
+                <!-- KPI 3: ĐẠT > 80% LŨY KẾ SAU THI LẠI -->
+                <div class="p-5 rounded-2xl bg-brand-surface border border-blue-500/30 bg-blue-500/5 space-y-1.5 shadow-lg">
+                    <div class="text-[11px] text-blue-400 font-medium uppercase tracking-wider flex items-center justify-between">
+                        <span>Đạt &gt;80% Lũy Kế</span>
+                        <span class="text-xs">🎯</span>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span id="test-kpi-cumulative-pass-rate" class="text-2xl lg:text-3xl font-extrabold text-blue-400">0%</span>
+                        <span id="test-kpi-cumulative-pass-count" class="text-xs text-slate-400 font-mono">(0 HV)</span>
+                    </div>
+                    <div class="text-[11px] text-slate-400 pt-1 border-t border-brand-border/60">
+                        Bao gồm Lần 1 + Lần 2 + Lần 3
+                    </div>
+                </div>
+
+                <!-- KPI 4: CẦN HỖ TRỢ (<80%) -->
+                <div class="p-5 rounded-2xl bg-brand-surface border border-rose-500/30 bg-rose-500/5 space-y-1.5 shadow-lg">
+                    <div class="text-[11px] text-rose-400 font-medium uppercase tracking-wider flex items-center justify-between">
+                        <span>Cần Hỗ Trợ (&lt;80%)</span>
+                        <span class="text-xs">⚠️</span>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span id="test-kpi-remediation-rate" class="text-2xl lg:text-3xl font-extrabold text-rose-400">0%</span>
+                        <span id="test-kpi-remediation-count" class="text-xs text-slate-400 font-mono">(0 HV)</span>
+                    </div>
+                    <div class="text-[11px] text-slate-400 pt-1 border-t border-brand-border/60">
+                        Thi ≥2 lần chưa qua chuẩn
+                    </div>
+                </div>
+
+                <!-- KPI 5: MỨC TIẾN BỘ ĐIỂM SỐ TRUNG BÌNH -->
+                <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1.5 shadow-lg">
+                    <div class="text-[11px] text-brand-amber font-medium uppercase tracking-wider flex items-center justify-between">
+                        <span>Tiến Bộ Trung Bình</span>
+                        <span class="text-xs">📈</span>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span id="test-kpi-avg-improvement" class="text-2xl lg:text-3xl font-extrabold text-brand-amber">+0%</span>
+                        <span class="text-xs text-slate-400 font-mono">Delta</span>
+                    </div>
+                    <div class="text-[11px] text-slate-400 pt-1 border-t border-brand-border/60">
+                        Mức tăng từ Lần 1 lên Lần cuối
+                    </div>
+                </div>
             </div>
 
-            <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end">
-                <a href="https://docs.google.com/spreadsheets/d/1nZVEowJu3j_WC1b3SO1UJU352g_547813-fWT3MQeac/edit" target="_blank" class="px-3.5 py-2 rounded-xl bg-green-600/20 hover:bg-green-600/30 text-green-400 text-xs font-semibold border border-green-500/30 transition-colors flex items-center gap-1.5" title="Mở trực tiếp Google Sheet Delivering Happiness">
-                    <span>📊 Mở Google Sheet ↗</span>
-                </a>
-                <button id="btn-seed-sample" class="px-3 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-300 text-xs font-semibold border border-brand-border transition-colors">
-                    ➕ Thêm Dữ Liệu Mẫu
-                </button>
-                <button id="btn-export-csv" class="px-4 py-2 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-black text-xs font-extrabold shadow-md hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5">
-                    <span>📥 Xuất Báo Cáo CSV (Excel)</span>
-                </button>
-            </div>
-        </div>
+            <!-- VISUAL ANALYTICS: FUNNEL & SCORE DISTRIBUTION -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- PHỄU CHUYỂN ĐỔI QUA CÁC LẦN TEST (2 COLS) -->
+                <div class="lg:col-span-2 p-6 rounded-2xl bg-brand-surface border border-brand-border shadow-xl space-y-5">
+                    <div class="flex items-center justify-between border-b border-brand-border pb-3">
+                        <div>
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <span>Phễu Chuyển Đổi Tỷ Lệ Đạt Chuẩn (&gt;80%) Qua Từng Lần Test</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded bg-brand-card text-brand-amber font-mono">Test Funnel</span>
+                            </h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Đo lường mức độ tích lũy học viên đạt chuẩn tinh thông qua các lượt làm bài.</p>
+                        </div>
+                        <span class="text-xs font-mono font-bold text-slate-300">Chuẩn: ≥80% Điểm</span>
+                    </div>
 
-        <!-- LEARNERS TABLE -->
-        <div class="bg-brand-surface border border-brand-border rounded-2xl overflow-hidden shadow-xl">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse text-xs">
-                    <thead>
-                        <tr class="bg-brand-dark/70 border-b border-brand-border text-slate-400 font-semibold uppercase tracking-wider text-[11px]">
-                            <th class="p-4">Học Viên</th>
-                            <th class="p-4">Tiến Độ</th>
-                            <th class="p-4">Quiz Chặng 1</th>
-                            <th class="p-4">La Bàn Me Values</th>
-                            <th class="p-4">Sổ Tay ABCDE</th>
-                            <th class="p-4">Hoạt Động Cuối</th>
-                            <th class="p-4 text-right">Hành Động</th>
-                        </tr>
-                    </thead>
-                    <tbody id="learners-table-body" class="divide-y divide-brand-border/50 text-slate-300">
-                        <!-- Injected via JavaScript -->
-                    </tbody>
-                </table>
+                    <!-- FUNNEL PROGRESS BARS -->
+                    <div class="space-y-4 text-xs">
+                        <!-- Lần 1 -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-slate-300">
+                                <span class="font-semibold text-emerald-400 flex items-center gap-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span>
+                                    Lần 1: Đạt chuẩn ngay lượt đầu
+                                </span>
+                                <span id="funnel-l1-label" class="font-mono font-bold text-white">0% (0 HV)</span>
+                            </div>
+                            <div class="h-3 w-full bg-brand-dark rounded-full overflow-hidden border border-brand-border">
+                                <div id="funnel-l1-bar" class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-700" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Lần 2 -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-slate-300">
+                                <span class="font-semibold text-blue-400 flex items-center gap-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-blue-400 inline-block"></span>
+                                    Lần 2: Thi lại và đạt chuẩn bổ sung
+                                </span>
+                                <span id="funnel-l2-label" class="font-mono font-bold text-white">0% (0 HV)</span>
+                            </div>
+                            <div class="h-3 w-full bg-brand-dark rounded-full overflow-hidden border border-brand-border">
+                                <div id="funnel-l2-bar" class="h-full bg-gradient-to-r from-blue-500 to-indigo-400 rounded-full transition-all duration-700" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Lần 3 -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-slate-300">
+                                <span class="font-semibold text-brand-amber flex items-center gap-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-brand-amber inline-block"></span>
+                                    Lần 3: Kiên trì thi lại và đạt chuẩn
+                                </span>
+                                <span id="funnel-l3-label" class="font-mono font-bold text-white">0% (0 HV)</span>
+                            </div>
+                            <div class="h-3 w-full bg-brand-dark rounded-full overflow-hidden border border-brand-border">
+                                <div id="funnel-l3-bar" class="h-full bg-gradient-to-r from-amber-500 to-orange-400 rounded-full transition-all duration-700" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Chưa Đạt -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-slate-300">
+                                <span class="font-semibold text-rose-400 flex items-center gap-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-rose-400 inline-block"></span>
+                                    Chưa đạt sau nhiều lần test (&lt;80% — Cần khai vấn hỗ trợ)
+                                </span>
+                                <span id="funnel-fail-label" class="font-mono font-bold text-white">0% (0 HV)</span>
+                            </div>
+                            <div class="h-3 w-full bg-brand-dark rounded-full overflow-hidden border border-brand-border">
+                                <div id="funnel-fail-bar" class="h-full bg-gradient-to-r from-rose-500 to-red-600 rounded-full transition-all duration-700" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PHÂN BỐ DẢI ĐIỂM (1 COL) -->
+                <div class="p-6 rounded-2xl bg-brand-surface border border-brand-border shadow-xl space-y-4 flex flex-col justify-between">
+                    <div class="border-b border-brand-border pb-3">
+                        <h3 class="text-sm font-bold text-white">Phân Bố Dải Điểm Bài Test</h3>
+                        <p class="text-xs text-slate-400 mt-0.5">Thống kê điểm số cao nhất của học viên.</p>
+                    </div>
+
+                    <div class="space-y-3 text-xs">
+                        <div class="p-3 rounded-xl bg-brand-dark border border-brand-border flex items-center justify-between">
+                            <div class="space-y-0.5">
+                                <div class="font-bold text-emerald-400 flex items-center gap-1.5">
+                                    <span>🌟 80% — 100% Điểm</span>
+                                    <span class="text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300">Đạt chuẩn</span>
+                                </div>
+                                <div class="text-[11px] text-slate-400">Làm đúng từ 8 đến 10 câu</div>
+                            </div>
+                            <span id="dist-band-high" class="text-base font-extrabold text-white font-mono">0 HV</span>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-brand-dark border border-brand-border flex items-center justify-between">
+                            <div class="space-y-0.5">
+                                <div class="font-bold text-amber-400 flex items-center gap-1.5">
+                                    <span>⚡ 50% — 79% Điểm</span>
+                                    <span class="text-[10px] px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300">Tiệm cận</span>
+                                </div>
+                                <div class="text-[11px] text-slate-400">Làm đúng từ 5 đến 7 câu</div>
+                            </div>
+                            <span id="dist-band-mid" class="text-base font-extrabold text-white font-mono">0 HV</span>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-brand-dark border border-brand-border flex items-center justify-between">
+                            <div class="space-y-0.5">
+                                <div class="font-bold text-rose-400 flex items-center gap-1.5">
+                                    <span>⚠️ Dưới 50% Điểm</span>
+                                    <span class="text-[10px] px-1.5 py-0.2 rounded bg-rose-500/20 text-rose-300">Cần ôn tập</span>
+                                </div>
+                                <div class="text-[11px] text-slate-400">Làm đúng dưới 5 câu</div>
+                            </div>
+                            <span id="dist-band-low" class="text-base font-extrabold text-white font-mono">0 HV</span>
+                        </div>
+                    </div>
+
+                    <div class="text-[11px] text-slate-500 text-center italic">
+                        Ngưỡng sát hạch đầu vào chuẩn: &gt;80%
+                    </div>
+                </div>
             </div>
 
-            <!-- EMPTY STATE -->
-            <div id="table-empty" class="p-12 text-center text-slate-500 space-y-2 hidden">
-                <div class="text-3xl">📭</div>
-                <div class="text-sm font-semibold">Chưa có dữ liệu học viên</div>
-                <div class="text-xs">Bấm "Thêm Dữ Liệu Mẫu" hoặc làm bài từ giao diện học viên để ghi nhận.</div>
+            <!-- CONTROLS & FILTER BAR -->
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-brand-surface border border-brand-border">
+                <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+                    <!-- Search input -->
+                    <div class="relative w-full sm:w-64">
+                        <input type="text" id="test-search-input" placeholder="Tìm theo tên hoặc Email/SĐT..." class="w-full bg-brand-dark border border-brand-border rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-amber" />
+                        <svg class="w-4 h-4 text-slate-500 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+
+                    <!-- Filter Cohort -->
+                    <select id="test-filter-cohort" class="bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-brand-amber">
+                        <option value="all">Tất cả Khóa học (Cohorts)</option>
+                        <option value="DHM8">Khóa DHM8</option>
+                        <option value="DHM9">Khóa DHM9</option>
+                        <option value="BTC / Coach">Ban Giảng Huấn / Coach</option>
+                    </select>
+
+                    <!-- Filter Pass Status -->
+                    <select id="test-filter-status" class="bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-brand-amber">
+                        <option value="all">Tất cả trạng thái đo lường</option>
+                        <option value="pass_l1">⚡ Đạt &gt;80% ngay Lần 1</option>
+                        <option value="pass_retake">🎯 Đạt &gt;80% sau khi thi lại (Lần 2, 3)</option>
+                        <option value="remediation">⚠️ Cần hỗ trợ (&lt;80% sau thi lại)</option>
+                        <option value="not_tested">⏳ Chưa tham gia làm test</option>
+                    </select>
+
+                    <!-- Filter Attempts Count -->
+                    <select id="test-filter-attempts" class="bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-brand-amber">
+                        <option value="all">Tất cả số lần test</option>
+                        <option value="1">Đã test 1 lần</option>
+                        <option value="2">Đã test 2 lần</option>
+                        <option value="3">Đã test ≥3 lần</option>
+                        <option value="0">Chưa test (0 lần)</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-2.5 w-full lg:w-auto justify-end">
+                    <button id="btn-export-test-csv" class="px-4 py-2 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-black text-xs font-extrabold shadow-md hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5">
+                        <span>📥 Xuất Báo Cáo Đo Lường (CSV)</span>
+                    </button>
+                </div>
             </div>
-        </div>
+
+            <!-- LEARNERS TEST ANALYTICS TABLE -->
+            <div class="bg-brand-surface border border-brand-border rounded-2xl overflow-hidden shadow-xl">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-brand-dark/80 border-b border-brand-border text-slate-400 font-semibold uppercase tracking-wider text-[11px]">
+                                <th class="p-4">Học Viên</th>
+                                <th class="p-4 text-center">Số Lần Test</th>
+                                <th class="p-4">Điểm Lần 1</th>
+                                <th class="p-4">Điểm Lần 2</th>
+                                <th class="p-4">Điểm Lần 3</th>
+                                <th class="p-4 text-center">Cán Đích (&gt;80%)</th>
+                                <th class="p-4 text-center">Tiến Bộ (Delta)</th>
+                                <th class="p-4">Trạng Thái Đo Lường</th>
+                                <th class="p-4 text-right">Chi Tiết</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test-learners-table-body" class="divide-y divide-brand-border/50 text-slate-300">
+                            <!-- Injected via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- EMPTY STATE -->
+                <div id="test-table-empty" class="p-12 text-center text-slate-500 space-y-2 hidden">
+                    <div class="text-3xl">📭</div>
+                    <div class="text-sm font-semibold">Không tìm thấy dữ liệu học viên phù hợp</div>
+                    <div class="text-xs">Thử điều chỉnh lại bộ lọc hoặc bấm "Nạp Dữ Liệu Kiểm Thử Đo Lường".</div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- PANE 2: GENERAL 3-STAGES PROGRESS          -->
+        <!-- ========================================== -->
+        <section id="pane-general-progress" class="space-y-8 hidden">
+
+            <!-- STATS CARDS -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1 shadow-lg">
+                    <div class="text-xs text-slate-400 font-medium">Tổng số học viên</div>
+                    <div id="stat-total-learners" class="text-2xl lg:text-3xl font-extrabold text-white">0</div>
+                    <div class="text-[11px] text-slate-500">Đã đăng ký tham gia Mini-LMS</div>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1 shadow-lg">
+                    <div class="text-xs text-slate-400 font-medium">Hoàn thành Chặng 1</div>
+                    <div id="stat-stage1-completed" class="text-2xl lg:text-3xl font-extrabold text-brand-amber">0%</div>
+                    <div class="text-[11px] text-slate-500">Đã vượt qua Quiz 3 Cấp độ</div>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1 shadow-lg">
+                    <div class="text-xs text-slate-400 font-medium">Đã chọn La bàn Me Values</div>
+                    <div id="stat-stage2-values" class="text-2xl lg:text-3xl font-extrabold text-blue-400">0</div>
+                    <div class="text-[11px] text-slate-500">Học viên đã định vị 3 giá trị</div>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1 shadow-lg">
+                    <div class="text-xs text-slate-400 font-medium">Bài tập ABCDE Đã Nộp</div>
+                    <div id="stat-stage3-abcde" class="text-2xl lg:text-3xl font-extrabold text-brand-green">0</div>
+                    <div class="text-[11px] text-slate-500">Đã phân tích phản biện chữ D</div>
+                </div>
+            </div>
+
+            <!-- CONTROLS & SEARCH BAR -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-brand-surface border border-brand-border">
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <div class="relative w-full sm:w-72">
+                        <input type="text" id="search-input" placeholder="Tìm theo tên hoặc Email/SĐT..." class="w-full bg-brand-dark border border-brand-border rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-amber" />
+                        <svg class="w-4 h-4 text-slate-500 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+
+                    <select id="filter-status" class="bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-brand-amber">
+                        <option value="all">Tất cả học viên</option>
+                        <option value="completed">Đã hoàn thành cả 3 chặng</option>
+                        <option value="learning">Đang học dở dang</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+                    <button id="btn-seed-sample" class="px-3 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-300 text-xs font-semibold border border-brand-border transition-colors">
+                        ➕ Thêm Dữ Liệu Mẫu
+                    </button>
+                    <button id="btn-export-csv" class="px-4 py-2 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-black text-xs font-extrabold shadow-md hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5">
+                        <span>📥 Xuất Báo Cáo 3 Chặng (CSV)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- LEARNERS TABLE -->
+            <div class="bg-brand-surface border border-brand-border rounded-2xl overflow-hidden shadow-xl">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-brand-dark/70 border-b border-brand-border text-slate-400 font-semibold uppercase tracking-wider text-[11px]">
+                                <th class="p-4">Học Viên</th>
+                                <th class="p-4">Tiến Độ</th>
+                                <th class="p-4">Quiz Chặng 1</th>
+                                <th class="p-4">La Bàn Me Values</th>
+                                <th class="p-4">Sổ Tay ABCDE</th>
+                                <th class="p-4">Hoạt Động Cuối</th>
+                                <th class="p-4 text-right">Hành Động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="learners-table-body" class="divide-y divide-brand-border/50 text-slate-300">
+                            <!-- Injected via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- EMPTY STATE -->
+                <div id="table-empty" class="p-12 text-center text-slate-500 space-y-2 hidden">
+                    <div class="text-3xl">📭</div>
+                    <div class="text-sm font-semibold">Chưa có dữ liệu học viên</div>
+                    <div class="text-xs">Bấm "Thêm Dữ Liệu Mẫu" hoặc làm bài từ giao diện học viên để ghi nhận.</div>
+                </div>
+            </div>
+
+        </section>
 
     </main>
 
-    <!-- DETAIL INSPECTION MODAL -->
+    <!-- TEST ATTEMPTS DETAIL MODAL -->
+    <div id="test-detail-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4 hidden">
+        <div class="bg-brand-surface border border-brand-border rounded-3xl p-6 lg:p-8 max-w-2xl w-full shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-start justify-between border-b border-brand-border pb-4">
+                <div>
+                    <span class="text-[10px] uppercase font-bold tracking-widest text-brand-amber">Chi Tiết Lịch Sử Làm Bài Test</span>
+                    <h3 id="test-modal-learner-name" class="text-xl font-extrabold text-white mt-0.5">---</h3>
+                    <p id="test-modal-learner-identity" class="text-xs text-slate-400 font-mono">an@gmail.com</p>
+                </div>
+                <button id="btn-close-test-detail" class="text-slate-400 hover:text-white p-2 rounded-lg bg-brand-card">✕</button>
+            </div>
+
+            <!-- SUMMARY STATUS BADGES -->
+            <div class="grid grid-cols-3 gap-3 text-center">
+                <div class="p-3 rounded-xl bg-brand-dark border border-brand-border">
+                    <div class="text-[10px] text-slate-400 uppercase">Tổng số lần test</div>
+                    <div id="test-modal-attempts-count" class="text-lg font-bold text-white font-mono mt-0.5">0</div>
+                </div>
+                <div class="p-3 rounded-xl bg-brand-dark border border-brand-border">
+                    <div class="text-[10px] text-slate-400 uppercase">Điểm cao nhất</div>
+                    <div id="test-modal-best-score" class="text-lg font-bold text-brand-amber font-mono mt-0.5">0/10</div>
+                </div>
+                <div class="p-3 rounded-xl bg-brand-dark border border-brand-border">
+                    <div class="text-[10px] text-slate-400 uppercase">Trạng thái chuẩn (&gt;80%)</div>
+                    <div id="test-modal-passed-badge" class="text-xs font-bold font-mono mt-1 text-slate-400">Chưa đạt</div>
+                </div>
+            </div>
+
+            <!-- ATTEMPTS TIMELINE TABLE -->
+            <div class="space-y-2">
+                <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Lịch Sử Các Lần Nộp Bài:</h4>
+                <div class="border border-brand-border rounded-xl overflow-hidden bg-brand-dark/50">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-brand-card/60 text-slate-400 font-semibold border-b border-brand-border text-[11px]">
+                                <th class="p-3">Lần</th>
+                                <th class="p-3">Thời Gian</th>
+                                <th class="p-3">Thời Lượng</th>
+                                <th class="p-3">Số Câu Đúng</th>
+                                <th class="p-3">Tỷ Lệ %</th>
+                                <th class="p-3 text-right">Kết Quả</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test-modal-attempts-tbody" class="divide-y divide-brand-border/40 text-slate-200 font-mono">
+                            <!-- Injected via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- COACH REMEDIATION NOTES -->
+            <div class="p-4 rounded-2xl bg-brand-dark border border-brand-amber/40 space-y-2">
+                <label for="test-coach-notes-input" class="block text-xs font-bold text-brand-amber uppercase tracking-wider">
+                    📝 Ghi Chú Khai Vấn Của Giảng Viên (Remediation / Coaching Notes):
+                </label>
+                <textarea id="test-coach-notes-input" rows="3" class="w-full bg-brand-surface border border-brand-border rounded-xl p-3 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber" placeholder="Nhập ghi chú hỗ trợ học viên cải thiện điểm bài test..."></textarea>
+                <div class="flex justify-end">
+                    <button id="btn-save-test-coach-notes" class="px-4 py-1.5 rounded-lg bg-brand-amber hover:bg-amber-600 text-black font-bold text-xs transition-colors">
+                        Lưu Ghi Chú
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DETAIL INSPECTION MODAL (FOR GENERAL 3 STAGES) -->
     <div id="detail-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 hidden">
         <div class="bg-brand-surface border border-brand-border rounded-3xl p-6 lg:p-8 max-w-3xl w-full shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
             <div class="flex items-start justify-between border-b border-brand-border pb-4">
@@ -292,7 +664,7 @@
             function checkPinSession() {
                 if (sessionStorage.getItem(PIN_SESSION_KEY) === "true") {
                     pinModal.classList.add("hidden");
-                    loadDashboard();
+                    loadAllData();
                 } else {
                     pinModal.classList.remove("hidden");
                 }
@@ -304,7 +676,7 @@
                     sessionStorage.setItem(PIN_SESSION_KEY, "true");
                     pinModal.classList.add("hidden");
                     pinError.classList.add("hidden");
-                    loadDashboard();
+                    loadAllData();
                 } else {
                     pinError.classList.remove("hidden");
                     pinInput.value = "";
@@ -316,11 +688,87 @@
                 pinModal.classList.remove("hidden");
             });
 
-            // Dashboard State
+            // Tab Switching Logic
+            const tabBtnTest = document.getElementById("tab-btn-test-analytics");
+            const tabBtnGeneral = document.getElementById("tab-btn-general-progress");
+            const paneTest = document.getElementById("pane-test-analytics");
+            const paneGeneral = document.getElementById("pane-general-progress");
+
+            tabBtnTest.addEventListener("click", () => {
+                tabBtnTest.className = "px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-amber text-black shadow-lg";
+                tabBtnGeneral.className = "px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent";
+                paneTest.classList.remove("hidden");
+                paneGeneral.classList.add("hidden");
+            });
+
+            tabBtnGeneral.addEventListener("click", () => {
+                tabBtnGeneral.className = "px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-amber text-black shadow-lg";
+                tabBtnTest.className = "px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent";
+                paneGeneral.classList.remove("hidden");
+                paneTest.classList.add("hidden");
+            });
+
+            // Master State
             let allLearners = [];
             let activeLearnerIdentity = null;
+            let activeTestLearnerIdentity = null;
 
-            // DOM Stats
+            // DOM Elements for Test Analytics
+            const badgeTestedLearnersCount = document.getElementById("badge-tested-learners-count");
+            const badgeTotalRegisteredCount = document.getElementById("badge-total-registered-count");
+
+            const testKpiTestedCount = document.getElementById("test-kpi-tested-count");
+            const testKpiTestedTotal = document.getElementById("test-kpi-tested-total");
+            const testKpiParticipationRate = document.getElementById("test-kpi-participation-rate");
+
+            const testKpiL1PassRate = document.getElementById("test-kpi-l1-pass-rate");
+            const testKpiL1PassCount = document.getElementById("test-kpi-l1-pass-count");
+
+            const testKpiCumulativePassRate = document.getElementById("test-kpi-cumulative-pass-rate");
+            const testKpiCumulativePassCount = document.getElementById("test-kpi-cumulative-pass-count");
+
+            const testKpiRemediationRate = document.getElementById("test-kpi-remediation-rate");
+            const testKpiRemediationCount = document.getElementById("test-kpi-remediation-count");
+
+            const testKpiAvgImprovement = document.getElementById("test-kpi-avg-improvement");
+
+            const funnelL1Label = document.getElementById("funnel-l1-label");
+            const funnelL1Bar = document.getElementById("funnel-l1-bar");
+            const funnelL2Label = document.getElementById("funnel-l2-label");
+            const funnelL2Bar = document.getElementById("funnel-l2-bar");
+            const funnelL3Label = document.getElementById("funnel-l3-label");
+            const funnelL3Bar = document.getElementById("funnel-l3-bar");
+            const funnelFailLabel = document.getElementById("funnel-fail-label");
+            const funnelFailBar = document.getElementById("funnel-fail-bar");
+
+            const distBandHigh = document.getElementById("dist-band-high");
+            const distBandMid = document.getElementById("dist-band-mid");
+            const distBandLow = document.getElementById("dist-band-low");
+
+            const testSearchInput = document.getElementById("test-search-input");
+            const testFilterCohort = document.getElementById("test-filter-cohort");
+            const testFilterStatus = document.getElementById("test-filter-status");
+            const testFilterAttempts = document.getElementById("test-filter-attempts");
+
+            const testTableBody = document.getElementById("test-learners-table-body");
+            const testTableEmpty = document.getElementById("test-table-empty");
+
+            const btnSeedTestAnalytics = document.getElementById("btn-seed-test-analytics");
+            const btnExportTestCsv = document.getElementById("btn-export-test-csv");
+
+            // Modal elements for Test History
+            const testDetailModal = document.getElementById("test-detail-modal");
+            const btnCloseTestDetail = document.getElementById("btn-close-test-detail");
+            const testModalLearnerName = document.getElementById("test-modal-learner-name");
+            const testModalLearnerIdentity = document.getElementById("test-modal-learner-identity");
+            const testModalAttemptsCount = document.getElementById("test-modal-attempts-count");
+            const testModalBestScore = document.getElementById("test-modal-best-score");
+            const testModalPassedBadge = document.getElementById("test-modal-passed-badge");
+            const testModalAttemptsTbody = document.getElementById("test-modal-attempts-tbody");
+            const testCoachNotesInput = document.getElementById("test-coach-notes-input");
+            const btnSaveTestCoachNotes = document.getElementById("btn-save-test-coach-notes");
+
+            // DOM Elements for General Progress
             const statTotalLearners = document.getElementById("stat-total-learners");
             const statStage1Completed = document.getElementById("stat-stage1-completed");
             const statStage2Values = document.getElementById("stat-stage2-values");
@@ -334,7 +782,7 @@
             const btnSeedSample = document.getElementById("btn-seed-sample");
             const btnExportCsv = document.getElementById("btn-export-csv");
 
-            // Modal elements
+            // Modal elements for General Detail
             const detailModal = document.getElementById("detail-modal");
             const btnCloseDetail = document.getElementById("btn-close-detail");
             const modalLearnerName = document.getElementById("modal-learner-name");
@@ -349,7 +797,10 @@
             const coachNotesInput = document.getElementById("coach-notes-input");
             const btnSaveCoachNotes = document.getElementById("btn-save-coach-notes");
 
-            function loadDashboard() {
+            // ==========================================
+            // DATA LOADING & NORMALIZATION
+            // ==========================================
+            async function loadAllData() {
                 try {
                     const raw = localStorage.getItem(REGISTRY_KEY);
                     allLearners = raw ? JSON.parse(raw) : [];
@@ -357,11 +808,532 @@
                     allLearners = [];
                 }
 
-                renderStats();
-                renderTable();
+                // If local storage is empty, attempt to seed from authorized_roster.json
+                if (allLearners.length === 0) {
+                    await autoSeedFromRoster();
+                } else {
+                    ensureTestMetricsIntegrity();
+                }
+
+                renderTestAnalytics();
+                renderGeneralDashboard();
             }
 
-            function renderStats() {
+            // Auto-load official roster if available
+            async function autoSeedFromRoster() {
+                try {
+                    const res = await fetch("authorized_roster.json");
+                    if (res.ok) {
+                        const roster = await res.json();
+                        allLearners = roster.map(r => ({
+                            name: r.name,
+                            identity: r.email || r.phone,
+                            email: r.email,
+                            phone: r.phone,
+                            cohort: r.cohort || "DHM8",
+                            role: r.role || "Learner",
+                            lastActive: null,
+                            completedStagesCount: 0,
+                            stage1Passed: false,
+                            stage2ValuesCount: 0,
+                            stage3AbcdeFilled: false,
+                            coachNotes: "",
+                            testAttempts: [],
+                            firstAttemptPassed80: false,
+                            eventualPassed80: false,
+                            bestScore: 0,
+                            totalAttempts: 0,
+                            improvementDelta: 0
+                        }));
+                        localStorage.setItem(REGISTRY_KEY, JSON.stringify(allLearners));
+                    }
+                } catch (err) {
+                    console.warn("Could not auto-fetch authorized_roster.json", err);
+                }
+            }
+
+            // Ensure every learner has consistent testAttempts data structure
+            function ensureTestMetricsIntegrity() {
+                allLearners.forEach(l => {
+                    if (!l.testAttempts) {
+                        l.testAttempts = [];
+                        // Fallback check from existing stage-1 score if any
+                        const s1Score = l.data?.stageData?.["stage-1"]?.score;
+                        if (typeof s1Score === "number" && s1Score > 0) {
+                            const pct = Math.round((s1Score / 10) * 100);
+                            l.testAttempts.push({
+                                attempt: 1,
+                                score: s1Score,
+                                total: 10,
+                                percent: pct,
+                                passed80: pct >= 80,
+                                durationSeconds: 150,
+                                timestamp: l.lastActive || new Date().toISOString()
+                            });
+                        }
+                    }
+
+                    // Compute derived flags
+                    l.totalAttempts = l.testAttempts.length;
+                    if (l.totalAttempts > 0) {
+                        l.firstAttemptPassed80 = l.testAttempts[0].passed80;
+                        l.eventualPassed80 = l.testAttempts.some(a => a.passed80);
+                        l.bestScore = Math.max(...l.testAttempts.map(a => a.percent));
+                        l.passedAttemptNumber = l.testAttempts.findIndex(a => a.passed80) + 1; // 1-based or 0 if not passed
+                        
+                        const firstPct = l.testAttempts[0].percent;
+                        const lastPct = l.testAttempts[l.totalAttempts - 1].percent;
+                        l.improvementDelta = lastPct - firstPct;
+                    } else {
+                        l.firstAttemptPassed80 = false;
+                        l.eventualPassed80 = false;
+                        l.bestScore = 0;
+                        l.passedAttemptNumber = 0;
+                        l.improvementDelta = 0;
+                    }
+                });
+            }
+
+            // ==========================================
+            // RENDER TEST ANALYTICS (PANE 1)
+            // ==========================================
+            function renderTestAnalytics() {
+                ensureTestMetricsIntegrity();
+
+                const totalLearners = allLearners.length;
+                const testedLearners = allLearners.filter(l => l.totalAttempts > 0);
+                const testedCount = testedLearners.length;
+
+                // Update badge counts
+                badgeTestedLearnersCount.textContent = `${testedCount} Đã Test`;
+                badgeTotalRegisteredCount.textContent = `${totalLearners} Tổng HV`;
+
+                // KPI 1: Tham gia
+                testKpiTestedCount.textContent = testedCount;
+                testKpiTestedTotal.textContent = `/ ${totalLearners} HV`;
+                const partRate = totalLearners > 0 ? Math.round((testedCount / totalLearners) * 100) : 0;
+                testKpiParticipationRate.textContent = `${partRate}%`;
+
+                if (testedCount === 0) {
+                    testKpiL1PassRate.textContent = "0%";
+                    testKpiL1PassCount.textContent = "(0 HV)";
+                    testKpiCumulativePassRate.textContent = "0%";
+                    testKpiCumulativePassCount.textContent = "(0 HV)";
+                    testKpiRemediationRate.textContent = "0%";
+                    testKpiRemediationCount.textContent = "(0 HV)";
+                    testKpiAvgImprovement.textContent = "+0%";
+
+                    renderFunnelAndDist(0, 0, 0, 0, 0, 0, 0);
+                    renderTestTable();
+                    return;
+                }
+
+                // KPI 2: Đạt >80% ngay Lần 1
+                const l1PassLearners = testedLearners.filter(l => l.firstAttemptPassed80);
+                const l1PassCount = l1PassLearners.length;
+                const l1PassRate = Math.round((l1PassCount / testedCount) * 100);
+                testKpiL1PassRate.textContent = `${l1PassRate}%`;
+                testKpiL1PassCount.textContent = `(${l1PassCount} HV)`;
+
+                // KPI 3: Đạt >80% Lũy kế sau thi lại
+                const cumPassLearners = testedLearners.filter(l => l.eventualPassed80);
+                const cumPassCount = cumPassLearners.length;
+                const cumPassRate = Math.round((cumPassCount / testedCount) * 100);
+                testKpiCumulativePassRate.textContent = `${cumPassRate}%`;
+                testKpiCumulativePassCount.textContent = `(${cumPassCount} HV)`;
+
+                // KPI 4: Cần hỗ trợ (Đã thi ≥2 lần nhưng chưa đạt 80%)
+                const remediationLearners = testedLearners.filter(l => l.totalAttempts >= 2 && !l.eventualPassed80);
+                const remediationCount = remediationLearners.length;
+                const remediationRate = Math.round((remediationCount / testedCount) * 100);
+                testKpiRemediationRate.textContent = `${remediationRate}%`;
+                testKpiRemediationCount.textContent = `(${remediationCount} HV)`;
+
+                // KPI 5: Mức tiến bộ trung bình
+                const learnersWithMultiAttempts = testedLearners.filter(l => l.totalAttempts > 1);
+                let avgImprovement = 0;
+                if (learnersWithMultiAttempts.length > 0) {
+                    const sumDelta = learnersWithMultiAttempts.reduce((acc, curr) => acc + curr.improvementDelta, 0);
+                    avgImprovement = Math.round(sumDelta / learnersWithMultiAttempts.length);
+                }
+                testKpiAvgImprovement.textContent = avgImprovement >= 0 ? `+${avgImprovement}%` : `${avgImprovement}%`;
+
+                // Breakdown per attempt
+                const passAtL1 = l1PassCount;
+                const passAtL2 = testedLearners.filter(l => l.passedAttemptNumber === 2).length;
+                const passAtL3 = testedLearners.filter(l => l.passedAttemptNumber >= 3).length;
+                const notPassed = testedLearners.filter(l => !l.eventualPassed80).length;
+
+                // Distribution bands (Best score)
+                const bandHigh = testedLearners.filter(l => l.bestScore >= 80).length;
+                const bandMid = testedLearners.filter(l => l.bestScore >= 50 && l.bestScore < 80).length;
+                const bandLow = testedLearners.filter(l => l.bestScore < 50).length;
+
+                renderFunnelAndDist(testedCount, passAtL1, passAtL2, passAtL3, notPassed, bandHigh, bandMid, bandLow);
+                renderTestTable();
+            }
+
+            function renderFunnelAndDist(total, p1, p2, p3, notP, bHigh, bMid, bLow) {
+                if (total === 0) {
+                    funnelL1Bar.style.width = "0%";
+                    funnelL2Bar.style.width = "0%";
+                    funnelL3Bar.style.width = "0%";
+                    funnelFailBar.style.width = "0%";
+                    funnelL1Label.textContent = "0% (0 HV)";
+                    funnelL2Label.textContent = "0% (0 HV)";
+                    funnelL3Label.textContent = "0% (0 HV)";
+                    funnelFailLabel.textContent = "0% (0 HV)";
+                    distBandHigh.textContent = "0 HV";
+                    distBandMid.textContent = "0 HV";
+                    distBandLow.textContent = "0 HV";
+                    return;
+                }
+
+                const pct1 = Math.round((p1 / total) * 100);
+                const pct2 = Math.round((p2 / total) * 100);
+                const pct3 = Math.round((p3 / total) * 100);
+                const pctFail = Math.round((notP / total) * 100);
+
+                funnelL1Bar.style.width = `${pct1}%`;
+                funnelL1Label.textContent = `${pct1}% (${p1} HV)`;
+
+                funnelL2Bar.style.width = `${pct2}%`;
+                funnelL2Label.textContent = `+${pct2}% (${p2} HV)`;
+
+                funnelL3Bar.style.width = `${pct3}%`;
+                funnelL3Label.textContent = `+${pct3}% (${p3} HV)`;
+
+                funnelFailBar.style.width = `${pctFail}%`;
+                funnelFailLabel.textContent = `${pctFail}% (${notP} HV)`;
+
+                distBandHigh.textContent = `${bHigh} HV (${Math.round((bHigh / total) * 100)}%)`;
+                distBandMid.textContent = `${bMid} HV (${Math.round((bMid / total) * 100)}%)`;
+                distBandLow.textContent = `${bLow} HV (${Math.round((bLow / total) * 100)}%)`;
+            }
+
+            function renderTestTable() {
+                const query = testSearchInput.value.toLowerCase().trim();
+                const cohortFilter = testFilterCohort.value;
+                const statusFilter = testFilterStatus.value;
+                const attemptsFilter = testFilterAttempts.value;
+
+                const filtered = allLearners.filter(l => {
+                    const idStr = (l.identity || "") + (l.phone || "") + (l.email || "");
+                    const matchQ = (l.name || "").toLowerCase().includes(query) || idStr.toLowerCase().includes(query);
+                    if (!matchQ) return false;
+
+                    // Filter Cohort
+                    if (cohortFilter !== "all" && l.cohort !== cohortFilter) return false;
+
+                    // Filter Attempts
+                    if (attemptsFilter === "0" && l.totalAttempts !== 0) return false;
+                    if (attemptsFilter === "1" && l.totalAttempts !== 1) return false;
+                    if (attemptsFilter === "2" && l.totalAttempts !== 2) return false;
+                    if (attemptsFilter === "3" && l.totalAttempts < 3) return false;
+
+                    // Filter Status
+                    if (statusFilter === "pass_l1" && !l.firstAttemptPassed80) return false;
+                    if (statusFilter === "pass_retake" && (l.firstAttemptPassed80 || !l.eventualPassed80)) return false;
+                    if (statusFilter === "remediation" && (l.totalAttempts < 2 || l.eventualPassed80)) return false;
+                    if (statusFilter === "not_tested" && l.totalAttempts > 0) return false;
+
+                    return true;
+                });
+
+                testTableBody.innerHTML = "";
+
+                if (filtered.length === 0) {
+                    testTableEmpty.classList.remove("hidden");
+                    return;
+                }
+                testTableEmpty.classList.add("hidden");
+
+                filtered.forEach(learner => {
+                    const tr = document.createElement("tr");
+                    tr.className = "hover:bg-brand-card/40 transition-colors";
+
+                    // Attempts items
+                    const att1 = learner.testAttempts[0] || null;
+                    const att2 = learner.testAttempts[1] || null;
+                    const att3 = learner.testAttempts[2] || null;
+
+                    function formatAttemptCell(att) {
+                        if (!att) return '<span class="text-slate-600 font-mono text-xs">—</span>';
+                        const badgeColor = att.passed80 ? "text-emerald-400 bg-emerald-500/10 border-emerald-500/30" : "text-slate-300 bg-brand-dark border-brand-border";
+                        return `
+                            <div class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md border ${badgeColor} font-mono">
+                                <span class="font-bold">${att.score}/${att.total}</span>
+                                <span class="text-[10px] text-slate-400">(${att.percent}%)</span>
+                                ${att.passed80 ? '<span class="text-[10px]">✓</span>' : ''}
+                            </div>
+                        `;
+                    }
+
+                    // Reached Milestone Cell
+                    let reachedMilestoneHtml = '<span class="text-slate-600 font-mono">—</span>';
+                    if (learner.passedAttemptNumber === 1) {
+                        reachedMilestoneHtml = '<span class="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 font-semibold text-[10px] border border-emerald-500/30">⚡ Lần 1</span>';
+                    } else if (learner.passedAttemptNumber === 2) {
+                        reachedMilestoneHtml = '<span class="px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-400 font-semibold text-[10px] border border-blue-500/30">🎯 Lần 2</span>';
+                    } else if (learner.passedAttemptNumber >= 3) {
+                        reachedMilestoneHtml = `<span class="px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 font-semibold text-[10px] border border-amber-500/30">★ Lần ${learner.passedAttemptNumber}</span>`;
+                    } else if (learner.totalAttempts > 0) {
+                        reachedMilestoneHtml = '<span class="px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-400 font-semibold text-[10px] border border-rose-500/30">Chưa Đạt</span>';
+                    }
+
+                    // Delta Cell
+                    let deltaHtml = '<span class="text-slate-600 font-mono text-xs">—</span>';
+                    if (learner.totalAttempts > 1) {
+                        if (learner.improvementDelta > 0) {
+                            deltaHtml = `<span class="font-mono text-emerald-400 font-bold">+${learner.improvementDelta}%</span>`;
+                        } else if (learner.improvementDelta === 0) {
+                            deltaHtml = '<span class="font-mono text-slate-400">0%</span>';
+                        } else {
+                            deltaHtml = `<span class="font-mono text-rose-400">${learner.improvementDelta}%</span>`;
+                        }
+                    }
+
+                    // Status Badge
+                    let statusBadgeHtml = '<span class="px-2.5 py-1 rounded-lg bg-brand-dark text-slate-500 text-[10px] font-medium border border-brand-border">⏳ Chưa test</span>';
+                    if (learner.firstAttemptPassed80) {
+                        statusBadgeHtml = '<span class="px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-400 text-[10px] font-bold border border-emerald-500/30">✓ Đạt Chuẩn Lần 1</span>';
+                    } else if (learner.eventualPassed80) {
+                        statusBadgeHtml = `<span class="px-2.5 py-1 rounded-lg bg-blue-500/15 text-blue-400 text-[10px] font-bold border border-blue-500/30">✓ Đạt Sau Thi Lại (Lần ${learner.passedAttemptNumber})</span>`;
+                    } else if (learner.totalAttempts >= 2) {
+                        statusBadgeHtml = '<span class="px-2.5 py-1 rounded-lg bg-rose-500/15 text-rose-400 text-[10px] font-bold border border-rose-500/30">⚠️ Cần Hỗ Trợ (&lt;80%)</span>';
+                    } else if (learner.totalAttempts === 1) {
+                        statusBadgeHtml = '<span class="px-2.5 py-1 rounded-lg bg-amber-500/15 text-amber-400 text-[10px] font-semibold border border-amber-500/30">Đang thi lại (&lt;80%)</span>';
+                    }
+
+                    tr.innerHTML = `
+                        <td class="p-4">
+                            <div class="font-bold text-white flex items-center gap-1.5">
+                                ${learner.name}
+                                <span class="text-[9px] px-1.5 py-0.2 rounded bg-brand-card text-brand-amber border border-brand-border font-mono">${learner.cohort || 'DHM8'}</span>
+                            </div>
+                            <div class="text-[11px] text-slate-500 font-mono mt-0.5">${learner.identity || learner.email || learner.phone}</div>
+                        </td>
+                        <td class="p-4 text-center font-mono">
+                            <span class="px-2 py-0.5 rounded bg-brand-dark text-slate-200 border border-brand-border font-bold text-xs">${learner.totalAttempts}</span>
+                        </td>
+                        <td class="p-4">${formatAttemptCell(att1)}</td>
+                        <td class="p-4">${formatAttemptCell(att2)}</td>
+                        <td class="p-4">${formatAttemptCell(att3)}</td>
+                        <td class="p-4 text-center">${reachedMilestoneHtml}</td>
+                        <td class="p-4 text-center">${deltaHtml}</td>
+                        <td class="p-4">${statusBadgeHtml}</td>
+                        <td class="p-4 text-right">
+                            <button class="btn-inspect-test px-3 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-brand-amber hover:text-white border border-brand-border font-semibold transition-colors flex items-center gap-1 ml-auto" data-id="${learner.identity}">
+                                <span>👁️ Lịch Sử</span>
+                            </button>
+                        </td>
+                    `;
+
+                    testTableBody.appendChild(tr);
+                });
+
+                document.querySelectorAll(".btn-inspect-test").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const id = btn.getAttribute("data-id");
+                        openTestDetailModal(id);
+                    });
+                });
+            }
+
+            // Open Test Detail Modal
+            function openTestDetailModal(identity) {
+                const learner = allLearners.find(l => l.identity === identity);
+                if (!learner) return;
+
+                activeTestLearnerIdentity = identity;
+                testModalLearnerName.textContent = learner.name;
+                testModalLearnerIdentity.textContent = `${learner.identity || ''} • Khóa: ${learner.cohort || 'DHM8'}`;
+                testModalAttemptsCount.textContent = learner.totalAttempts;
+                testModalBestScore.textContent = `${Math.round(learner.bestScore / 10)}/10 (${learner.bestScore}%)`;
+
+                if (learner.eventualPassed80) {
+                    testModalPassedBadge.textContent = `✓ Đạt chuẩn > 80% (Ở Lần ${learner.passedAttemptNumber})`;
+                    testModalPassedBadge.className = "text-xs font-bold font-mono mt-1 text-emerald-400";
+                } else if (learner.totalAttempts > 0) {
+                    testModalPassedBadge.textContent = "⚠️ Chưa đạt chuẩn (<80%)";
+                    testModalPassedBadge.className = "text-xs font-bold font-mono mt-1 text-rose-400";
+                } else {
+                    testModalPassedBadge.textContent = "⏳ Chưa tham gia";
+                    testModalPassedBadge.className = "text-xs font-bold font-mono mt-1 text-slate-500";
+                }
+
+                testModalAttemptsTbody.innerHTML = "";
+                if (learner.testAttempts && learner.testAttempts.length > 0) {
+                    learner.testAttempts.forEach(att => {
+                        const tr = document.createElement("tr");
+                        const dateStr = att.timestamp ? new Date(att.timestamp).toLocaleString("vi-VN", { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' }) : "—";
+                        const durStr = att.durationSeconds ? `${Math.floor(att.durationSeconds / 60)}p ${att.durationSeconds % 60}s` : "02p 30s";
+                        const resultBadge = att.passed80 
+                            ? '<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold text-[10px]">ĐẠT &gt;80%</span>' 
+                            : '<span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 font-bold text-[10px]">CHƯA ĐẠT</span>';
+
+                        tr.innerHTML = `
+                            <td class="p-3 font-bold text-white">Lần ${att.attempt}</td>
+                            <td class="p-3 text-slate-400">${dateStr}</td>
+                            <td class="p-3 text-slate-300">${durStr}</td>
+                            <td class="p-3 text-brand-amber font-bold">${att.score}/${att.total}</td>
+                            <td class="p-3 font-bold text-white">${att.percent}%</td>
+                            <td class="p-3 text-right">${resultBadge}</td>
+                        `;
+                        testModalAttemptsTbody.appendChild(tr);
+                    });
+                } else {
+                    testModalAttemptsTbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-500">Học viên chưa thực hiện lần làm test nào.</td></tr>';
+                }
+
+                testCoachNotesInput.value = learner.coachNotes || "";
+                testDetailModal.classList.remove("hidden");
+            }
+
+            btnCloseTestDetail.addEventListener("click", () => {
+                testDetailModal.classList.add("hidden");
+            });
+
+            btnSaveTestCoachNotes.addEventListener("click", () => {
+                if (!activeTestLearnerIdentity) return;
+                const idx = allLearners.findIndex(l => l.identity === activeTestLearnerIdentity);
+                if (idx >= 0) {
+                    allLearners[idx].coachNotes = testCoachNotesInput.value;
+                    localStorage.setItem(REGISTRY_KEY, JSON.stringify(allLearners));
+                    alert("Đã lưu ghi chú khai vấn bài test thành công!");
+                }
+            });
+
+            // Listeners for Test Search & Filters
+            testSearchInput.addEventListener("input", renderTestTable);
+            testFilterCohort.addEventListener("change", renderTestTable);
+            testFilterStatus.addEventListener("change", renderTestTable);
+            testFilterAttempts.addEventListener("change", renderTestTable);
+
+            // Seed Rich Test Analytics Data (Simulate realistic attempts distribution)
+            btnSeedTestAnalytics.addEventListener("click", () => {
+                const sampleTestProfiles = [
+                    // Group 1: Passed at Attempt 1 (>80%)
+                    { name: "Nguyễn Thị Phương Thảo", id: "thao.nguyen@company.com", phone: "0903112233", cohort: "DHM8", attempts: [{ attempt: 1, score: 9, total: 10, percent: 90, passed80: true, durationSeconds: 140 }] },
+                    { name: "Trần Minh Quân", id: "0982345678", phone: "0982345678", cohort: "DHM8", attempts: [{ attempt: 1, score: 8, total: 10, percent: 80, passed80: true, durationSeconds: 165 }] },
+                    { name: "Phạm Hải Đăng", id: "haidang.lead@gmail.com", phone: "0912445566", cohort: "DHM8", attempts: [{ attempt: 1, score: 10, total: 10, percent: 100, passed80: true, durationSeconds: 120 }] },
+                    { name: "Hoàng Thùy Trang", id: "trang.hoang@bmwindows.vn", phone: "0949566222", cohort: "DHM8", attempts: [{ attempt: 1, score: 9, total: 10, percent: 90, passed80: true, durationSeconds: 155 }] },
+                    { name: "Lê Văn Tùng", id: "tung.le@techcorp.vn", phone: "0908776655", cohort: "DHM9", attempts: [{ attempt: 1, score: 9, total: 10, percent: 90, passed80: true, durationSeconds: 135 }] },
+                    { name: "Đỗ Bích Ngọc", id: "ngoc.dobic@fpt.com.vn", phone: "0977889900", cohort: "DHM9", attempts: [{ attempt: 1, score: 8, total: 10, percent: 80, passed80: true, durationSeconds: 180 }] },
+
+                    // Group 2: Passed at Attempt 2 (Retake and achieved >80%)
+                    { name: "Bùi Thùy Hương", id: "thuyhuong.261291@gmail.com", phone: "0349574656", cohort: "DHM8", attempts: [{ attempt: 1, score: 6, total: 10, percent: 60, passed80: false, durationSeconds: 190 }, { attempt: 2, score: 9, total: 10, percent: 90, passed80: true, durationSeconds: 130 }] },
+                    { name: "Châu Phạm", id: "chaupp89@gmail.com", phone: "0961941943", cohort: "DHM8", attempts: [{ attempt: 1, score: 7, total: 10, percent: 70, passed80: false, durationSeconds: 175 }, { attempt: 2, score: 8, total: 10, percent: 80, passed80: true, durationSeconds: 145 }] },
+                    { name: "Huỳnh Bá Bích Vân", id: "huynhbabichvan@gmail.com", phone: "0933112244", cohort: "DHM8", attempts: [{ attempt: 1, score: 5, total: 10, percent: 50, passed80: false, durationSeconds: 210 }, { attempt: 2, score: 9, total: 10, percent: 90, passed80: true, durationSeconds: 140 }] },
+                    { name: "Vũ Khánh Linh", id: "linh.vk@growth.edu.vn", phone: "0915667788", cohort: "DHM9", attempts: [{ attempt: 1, score: 6, total: 10, percent: 60, passed80: false, durationSeconds: 185 }, { attempt: 2, score: 9, total: 10, percent: 90, passed80: true, durationSeconds: 125 }] },
+                    { name: "Nguyễn Hoàng Nam", id: "nam.hoang@logistics.vn", phone: "0988123456", cohort: "DHM9", attempts: [{ attempt: 1, score: 7, total: 10, percent: 70, passed80: false, durationSeconds: 160 }, { attempt: 2, score: 10, total: 10, percent: 100, passed80: true, durationSeconds: 110 }] },
+
+                    // Group 3: Passed at Attempt 3 (Tenacious learner)
+                    { name: "Ngô Quốc Bảo", id: "bao.ngo@retail.com", phone: "0909554433", cohort: "DHM8", attempts: [{ attempt: 1, score: 5, total: 10, percent: 50, passed80: false, durationSeconds: 200 }, { attempt: 2, score: 7, total: 10, percent: 70, passed80: false, durationSeconds: 180 }, { attempt: 3, score: 8, total: 10, percent: 80, passed80: true, durationSeconds: 140 }] },
+                    { name: "Đặng Thu Thảo", id: "thao.dt@marketing.vn", phone: "0938445566", cohort: "DHM9", attempts: [{ attempt: 1, score: 4, total: 10, percent: 40, passed80: false, durationSeconds: 220 }, { attempt: 2, score: 6, total: 10, percent: 60, passed80: false, durationSeconds: 190 }, { attempt: 3, score: 9, total: 10, percent: 90, passed80: true, durationSeconds: 135 }] },
+
+                    // Group 4: Remediation needed (Attempts >= 2, still < 80%)
+                    { name: "Phan Văn Hậu", id: "hau.phan@sales.vn", phone: "0971223344", cohort: "DHM8", attempts: [{ attempt: 1, score: 5, total: 10, percent: 50, passed80: false, durationSeconds: 195 }, { attempt: 2, score: 6, total: 10, percent: 60, passed80: false, durationSeconds: 175 }], coachNotes: "Học viên chưa nắm rõ sự khác biệt giữa Thú vui (Pleasure) và Dòng chảy (Flow). Cần hướng dẫn xem lại video Chặng 1." },
+                    { name: "Trịnh Thảo Mai", id: "mai.trinh@startup.io", phone: "0918334455", cohort: "DHM9", attempts: [{ attempt: 1, score: 4, total: 10, percent: 40, passed80: false, durationSeconds: 240 }, { attempt: 2, score: 5, total: 10, percent: 50, passed80: false, durationSeconds: 210 }, { attempt: 3, score: 6, total: 10, percent: 60, passed80: false, durationSeconds: 190 }], coachNotes: "Học viên gặp khó khăn ở các câu hỏi về Thuyết Tự Quyết (SDT) và An toàn tâm lý. Coach cần hẹn 15 phút 1-on-1." },
+
+                    // Group 5: Pending (Not tested yet)
+                    { name: "Mai Thanh Trúc", id: "truc.mai@corp.vn", phone: "0903889900", cohort: "DHM8", attempts: [] },
+                    { name: "Hồ Hoàng Long", id: "long.ho@agency.vn", phone: "0944778899", cohort: "DHM9", attempts: [] }
+                ];
+
+                // Merge into existing learners or create
+                sampleTestProfiles.forEach(p => {
+                    let existing = allLearners.find(l => l.identity === p.id || l.name === p.name);
+                    if (existing) {
+                        existing.testAttempts = p.attempts;
+                        existing.coachNotes = p.coachNotes || existing.coachNotes || "";
+                        existing.completedStagesCount = p.attempts.some(a => a.passed80) ? 3 : 1;
+                        existing.stage1Passed = p.attempts.some(a => a.passed80);
+                    } else {
+                        allLearners.push({
+                            name: p.name,
+                            identity: p.id,
+                            email: p.id.includes("@") ? p.id : "",
+                            phone: p.phone,
+                            cohort: p.cohort,
+                            role: "Learner",
+                            lastActive: new Date().toISOString(),
+                            completedStagesCount: p.attempts.some(a => a.passed80) ? 3 : 1,
+                            stage1Passed: p.attempts.some(a => a.passed80),
+                            stage2ValuesCount: 3,
+                            stage3AbcdeFilled: true,
+                            coachNotes: p.coachNotes || "",
+                            testAttempts: p.attempts,
+                            data: {
+                                stageData: {
+                                    "stage-1": { passed: p.attempts.some(a => a.passed80), score: p.attempts.length > 0 ? p.attempts[p.attempts.length - 1].score : 0, reflection: "Bài học giúp mình hiểu rõ bản thân đang ở cấp độ hạnh phúc nào." },
+                                    "stage-2": { selectedValues: ["Chân thật & Trung thực (Integrity)", "Học hỏi & Đổi mới liên tục (Continuous Learning)", "Đồng hành & Tận tâm (Commitment & Empathy)"] },
+                                    "stage-3": { abcde: { A: "Gặp sự cố công việc", B: "Tự trách bản thân", C: "Lo lắng", D: "Dừng lại và thở để suy xét", E: "Hành động tháo gỡ" } }
+                                }
+                            }
+                        });
+                    }
+                });
+
+                localStorage.setItem(REGISTRY_KEY, JSON.stringify(allLearners));
+                renderTestAnalytics();
+                renderGeneralDashboard();
+                alert(`Đã nạp thành công bộ dữ liệu đo lường kiểm thử với ${sampleTestProfiles.length} học viên đa dạng kịch bản!`);
+            });
+
+            // Export Test Analytics CSV with UTF-8 BOM
+            btnExportTestCsv.addEventListener("click", () => {
+                if (allLearners.length === 0) {
+                    alert("Chưa có dữ liệu học viên để xuất!");
+                    return;
+                }
+
+                let csv = "\uFEFF"; // UTF-8 BOM
+                csv += "Họ và tên,Email/SĐT,Khóa học,Số lần test,Điểm Lần 1,Tỷ lệ Lần 1,Điểm Lần 2,Tỷ lệ Lần 2,Điểm Lần 3,Tỷ lệ Lần 3,Lần cán đích >80%,Độ cải thiện (Delta),Trạng thái đo lường,Ghi chú Giảng viên\n";
+
+                allLearners.forEach(l => {
+                    const att1 = l.testAttempts[0];
+                    const att2 = l.testAttempts[1];
+                    const att3 = l.testAttempts[2];
+
+                    const d1 = att1 ? `"${att1.score}/${att1.total}"` : '""';
+                    const p1 = att1 ? `"${att1.percent}%"` : '""';
+                    const d2 = att2 ? `"${att2.score}/${att2.total}"` : '""';
+                    const p2 = att2 ? `"${att2.percent}%"` : '""';
+                    const d3 = att3 ? `"${att3.score}/${att3.total}"` : '""';
+                    const p3 = att3 ? `"${att3.percent}%"` : '""';
+
+                    let milestone = "Chưa đạt";
+                    if (l.passedAttemptNumber > 0) milestone = `Lần ${l.passedAttemptNumber}`;
+                    else if (l.totalAttempts === 0) milestone = "Chưa làm bài";
+
+                    let status = "Chưa test";
+                    if (l.firstAttemptPassed80) status = "Đạt chuẩn Lần 1";
+                    else if (l.eventualPassed80) status = `Đạt sau thi lại (Lần ${l.passedAttemptNumber})`;
+                    else if (l.totalAttempts >= 2) status = "Cần hỗ trợ (<80%)";
+                    else if (l.totalAttempts === 1) status = "Đang thi lại (<80%)";
+
+                    const delta = l.totalAttempts > 1 ? `"${l.improvementDelta >= 0 ? '+' : ''}${l.improvementDelta}%"` : '""';
+                    const notes = (l.coachNotes || "").replace(/"/g, '""');
+
+                    csv += `"${l.name}","${l.identity}","${l.cohort || 'DHM8'}",${l.totalAttempts},${d1},${p1},${d2},${p2},${d3},${p3},"${milestone}",${delta},"${status}","${notes}"\n`;
+                });
+
+                const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `DHM_DoLuong_BaiTest_80_${new Date().toISOString().slice(0, 10)}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+
+            // ==========================================
+            // RENDER GENERAL DASHBOARD (PANE 2)
+            // ==========================================
+            function renderGeneralDashboard() {
                 const total = allLearners.length;
                 statTotalLearners.textContent = total;
 
@@ -369,24 +1341,27 @@
                     statStage1Completed.textContent = "0%";
                     statStage2Values.textContent = "0";
                     statStage3Abcde.textContent = "0";
+                    renderGeneralTable();
                     return;
                 }
 
-                const s1Passed = allLearners.filter(l => l.stage1Passed).length;
-                const s2Done = allLearners.filter(l => l.stage2ValuesCount > 0).length;
-                const s3Filled = allLearners.filter(l => l.stage3AbcdeFilled).length;
+                const s1Passed = allLearners.filter(l => l.stage1Passed || l.eventualPassed80).length;
+                const s2Done = allLearners.filter(l => l.stage2ValuesCount > 0 || (l.data?.stageData?.["stage-2"]?.selectedValues?.length > 0)).length;
+                const s3Filled = allLearners.filter(l => l.stage3AbcdeFilled || !!l.data?.stageData?.["stage-3"]?.abcde?.D).length;
 
                 statStage1Completed.textContent = `${Math.round((s1Passed / total) * 100)}%`;
                 statStage2Values.textContent = `${s2Done} HV`;
                 statStage3Abcde.textContent = `${s3Filled} bài`;
+
+                renderGeneralTable();
             }
 
-            function renderTable() {
+            function renderGeneralTable() {
                 const query = searchInput.value.toLowerCase().trim();
                 const filter = filterStatus.value;
 
                 const filtered = allLearners.filter(l => {
-                    const matchQ = l.name.toLowerCase().includes(query) || l.identity.toLowerCase().includes(query);
+                    const matchQ = (l.name || "").toLowerCase().includes(query) || (l.identity || "").toLowerCase().includes(query);
                     if (!matchQ) return false;
 
                     if (filter === "completed") return l.completedStagesCount >= 3;
@@ -406,7 +1381,7 @@
                     const tr = document.createElement("tr");
                     tr.className = "hover:bg-brand-card/40 transition-colors";
 
-                    const pct = Math.round((learner.completedStagesCount / 3) * 100);
+                    const pct = Math.round(((learner.completedStagesCount || 0) / 3) * 100);
                     const valuesList = learner.data?.stageData?.["stage-2"]?.selectedValues || [];
                     const abcdeDone = !!learner.data?.stageData?.["stage-3"]?.abcde?.D;
 
@@ -424,11 +1399,11 @@
                                 </div>
                                 <span class="font-mono text-xs font-bold text-slate-300">${pct}%</span>
                             </div>
-                            <div class="text-[10px] text-slate-500 mt-0.5">${learner.completedStagesCount}/3 Chặng</div>
+                            <div class="text-[10px] text-slate-500 mt-0.5">${learner.completedStagesCount || 0}/3 Chặng</div>
                         </td>
                         <td class="p-4">
-                            ${learner.stage1Passed 
-                                ? '<span class="px-2 py-0.5 rounded bg-brand-green/15 text-brand-green font-semibold">✓ 2/2 Đúng</span>' 
+                            ${(learner.stage1Passed || learner.eventualPassed80)
+                                ? '<span class="px-2 py-0.5 rounded bg-brand-green/15 text-brand-green font-semibold">✓ Đã vượt qua</span>' 
                                 : '<span class="px-2 py-0.5 rounded bg-brand-card text-slate-400">Chưa xong</span>'}
                         </td>
                         <td class="p-4">
@@ -482,7 +1457,7 @@
                 }
 
                 const s1 = learner.data?.stageData?.["stage-1"] || {};
-                modalC1Status.textContent = s1.passed ? "✓ Đã vượt qua Quiz" : "Chưa hoàn tất";
+                modalC1Status.textContent = (s1.passed || learner.eventualPassed80) ? "✓ Đã vượt qua Quiz" : "Chưa hoàn tất";
                 modalC1Reflection.innerHTML = formatReflection(s1, "Học viên chưa nhập bài phản tư.");
 
                 const s2 = learner.data?.stageData?.["stage-2"] || {};
@@ -528,80 +1503,36 @@
                 }
             });
 
-            // Filter & Search events
-            searchInput.addEventListener("input", renderTable);
-            filterStatus.addEventListener("change", renderTable);
+            // Filter & Search events for General
+            searchInput.addEventListener("input", renderGeneralTable);
+            filterStatus.addEventListener("change", renderGeneralTable);
 
-            // Seed Sample Data (Allows Coach to see rich state immediately)
-            btnSeedSample.addEventListener("click", () => {
-                const sampleUsers = [
-                    {
-                        name: "Nguyễn Thị Phương Thảo",
-                        identity: "thao.nguyen@company.com",
-                        lastActive: new Date().toISOString(),
-                        completedStagesCount: 3,
-                        stage1Passed: true,
-                        stage2ValuesCount: 3,
-                        stage3AbcdeFilled: true,
-                        coachNotes: "Học viên nắm bài rất sâu sắc. Đã đặt câu hỏi rất hay về xung đột chữ D với sếp trực tiếp.",
-                        data: {
-                            stageData: {
-                                "stage-1": { passed: true, score: 2, reflection: "Khoảnh khắc mãn nguyện nhất là khi cùng cả team hoàn thành dự án lớn và khách hàng khen ngợi. Đó là Mục đích cao cả vì đem lại giá trị cho người khác." },
-                                "stage-2": { selectedValues: ["Chân thật & Trung thực (Integrity)", "Học hỏi & Đổi mới (Continuous Learning)", "Đồng hành & Tận tâm (Empathy & Care)"], reflection: "Trước đây mình thường để chiếc đồng hồ cuốn đi. Giờ mình ưu tiên trao đổi thẳng thắn (Chân thật) nếu deadline gây ảnh hưởng chất lượng." },
-                                "stage-3": { abcde: { A: "Dự án bị lỗi release cuối tuần", B: "Team nghĩ mình là leader bất tài", C: "Lo âu, mất ngủ cả đêm thứ 7", D: "Dừng lại và thở: Lỗi release là do server bảo trì đột xuất, không phải lỗi năng lực cá nhân. Đội ngũ đã phối hợp sửa xong trong 30 phút.", E: "Bình tĩnh gửi báo cáo hậu sự cố và lên kế hoạch phòng ngừa." } }
-                            }
-                        }
-                    },
-                    {
-                        name: "Trần Minh Quân",
-                        identity: "0982345678",
-                        lastActive: new Date(Date.now() - 3600000).toISOString(),
-                        completedStagesCount: 2,
-                        stage1Passed: true,
-                        stage2ValuesCount: 3,
-                        stage3AbcdeFilled: false,
-                        coachNotes: "",
-                        data: {
-                            stageData: {
-                                "stage-1": { passed: true, score: 2, reflection: "Nhận ra bản thân đang tìm kiếm quá nhiều thú vui ngắn hạn thay vì theo đuổi đam mê." },
-                                "stage-2": { selectedValues: ["Kỷ luật & Xuất sắc (Excellence)", "Tự do & Sáng tạo (Freedom & Creativity)"], reflection: "Đang cố gắng cân bằng giữa sáng tạo và deadline hàng tuần." },
-                                "stage-3": { abcde: {} }
-                            }
-                        }
-                    }
-                ];
-
-                localStorage.setItem(REGISTRY_KEY, JSON.stringify(sampleUsers));
-                loadDashboard();
-                alert("Đã tạo 2 hồ sơ học viên mẫu hoàn chỉnh để kiểm thử giao diện chấm bài!");
-            });
-
-            // Export to CSV with UTF-8 BOM
+            // Export General CSV
             btnExportCsv.addEventListener("click", () => {
                 if (allLearners.length === 0) {
                     alert("Chưa có dữ liệu học viên để xuất!");
                     return;
                 }
 
-                let csv = "\uFEFF"; // UTF-8 BOM for Excel
+                let csv = "\uFEFF"; // UTF-8 BOM
                 csv += "Họ và tên,Email/SĐT,Tiến độ %,Chặng hoàn thành,Quiz Chặng 1,Me Values Chặng 2,ABCDE Chặng 3,Ghi chú Coach,Hoạt động cuối\n";
 
                 allLearners.forEach(l => {
-                    const pct = Math.round((l.completedStagesCount / 3) * 100);
-                    const q1 = l.stage1Passed ? "Đạt" : "Chưa đạt";
+                    const pct = Math.round(((l.completedStagesCount || 0) / 3) * 100);
+                    const q1 = (l.stage1Passed || l.eventualPassed80) ? "Đạt" : "Chưa đạt";
                     const vals = (l.data?.stageData?.["stage-2"]?.selectedValues || []).join(" | ").replace(/"/g, '""');
-                    const abcde = l.stage3AbcdeFilled ? "Đã nộp" : "Chưa nộp";
+                    const abcde = (l.stage3AbcdeFilled || !!l.data?.stageData?.["stage-3"]?.abcde?.D) ? "Đã nộp" : "Chưa nộp";
                     const notes = (l.coachNotes || "").replace(/"/g, '""');
                     const time = l.lastActive || "";
 
-                    csv += `"${l.name}","${l.identity}","${pct}%","${l.completedStagesCount}/3","${q1}","${vals}","${abcde}","${notes}","${time}"\n`;
+                    csv += `"${l.name}","${l.identity}","${pct}%","${l.completedStagesCount || 0}/3","${q1}","${vals}","${abcde}","${notes}","${time}"\n`;
                 });
 
                 const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement("a");
                 a.href = url;
-                a.download = `DHM_LMS_HocVien_${new Date().toISOString().slice(0, 10)}.csv`;
+                a.download = `DHM_LMS_HocVien_3Chặng_${new Date().toISOString().slice(0, 10)}.csv`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
