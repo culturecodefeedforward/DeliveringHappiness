@@ -738,7 +738,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (authErrorBanner) {
                         authErrorBanner.className = "p-3 rounded-xl bg-red-500/15 border border-red-500/30 text-red-300 text-xs leading-relaxed space-y-1";
                         authErrorTitle.textContent = "Xác thực không thành công";
-                        authErrorDesc.textContent = (data && data.message) ? data.message : "Liên kết kích hoạt đã hết hạn (30 phút) hoặc không hợp lệ. Vui lòng thử lại.";
+                        authErrorDesc.textContent = (data && data.message) ? data.message : "Liên kết kích hoạt đã hết hạn (1 giờ) hoặc không hợp lệ. Vui lòng thử lại.";
                     }
                     return false;
                 }

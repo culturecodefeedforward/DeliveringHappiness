@@ -2677,7 +2677,7 @@ var AUTH_GATE_CONFIG = {
   SHEET_LEADS: "Leads_Directory",
   SHEET_TOKENS: "Activation_Tokens",
   SHEET_LOGS: "Activation_Logs",
-  TOKEN_EXPIRATION_MS: 30 * 60 * 1000,
+  TOKEN_EXPIRATION_MS: 60 * 60 * 1000, // 1 giờ
   RATE_LIMIT_COOLDOWN_MS: 60 * 1000,
   SURVEY_CONFIG: {
     "SS": {
@@ -2839,7 +2839,7 @@ function handleAuthGateRegisterOrRequestLink_(payload) {
       fullName: fullName || 'Học viên',
       surveyName: surveyInfo.name,
       activationUrl: activationUrl,
-      expirationMinutes: 30
+      expirationMinutes: 60
     });
 
     if (!emailResult.success) {
@@ -2911,8 +2911,8 @@ function handleAuthGateVerifyToken_(token, email) {
     }
 
     if (now.getTime() > tokenRecord.expiresAt.getTime()) {
-      logAuthGateActivity_(ss, 'VERIFY_FAIL_EXPIRED', tokenRecord.email, tokenRecord.targetSurvey, 'Token đã hết hạn 30p');
-      return jsonOut({ success: false, verified: false, error: 'TOKEN_EXPIRED', message: 'Liên kết kích hoạt đã hết hạn (hiệu lực 30 phút). Vui lòng yêu cầu gửi lại.' });
+      logAuthGateActivity_(ss, 'VERIFY_FAIL_EXPIRED', tokenRecord.email, tokenRecord.targetSurvey, 'Token đã hết hạn 1h');
+      return jsonOut({ success: false, verified: false, error: 'TOKEN_EXPIRED', message: 'Liên kết kích hoạt đã hết hạn (hiệu lực 1 giờ). Vui lòng yêu cầu gửi lại.' });
     }
 
     if (email && email.toLowerCase() !== tokenRecord.email) {
@@ -3108,7 +3108,7 @@ function sendAuthGateActivationEmail_(opts) {
     var fullName = opts.fullName;
     var surveyName = opts.surveyName;
     var activationUrl = opts.activationUrl;
-    var expirationMinutes = opts.expirationMinutes || 30;
+    var expirationMinutes = opts.expirationMinutes || 60;
 
     var subject = '[Delivering Happiness] Liên kết mở khóa bài ' + surveyName;
     var htmlBody = '<!DOCTYPE html><html><head><meta charset="utf-8">' +
@@ -3130,7 +3130,7 @@ function sendAuthGateActivationEmail_(opts) {
       '<p>Anh/chị vừa yêu cầu thực hiện bài khảo sát <strong>' + escapeHtml_(surveyName) + '</strong> trong khuôn khổ chương trình <em>Delivering Happiness</em>.</p>' +
       '<p>Vui lòng nhấp vào nút bên dưới để mở khóa bài làm của anh/chị:</p>' +
       '<div class="btn-wrap"><a class="btn" href="' + activationUrl + '" target="_blank">BẮT ĐẦU LÀM BÀI KHẢO SÁT NGAY</a></div>' +
-      '<div class="meta"><strong>Lưu ý bảo mật:</strong> Liên kết có hiệu lực trong <strong>' + expirationMinutes + ' phút</strong> và chỉ sử dụng được <strong>một lần duy nhất</strong>. Thiết bị của anh/chị sẽ tự động được nhận diện trong 30 ngày.</div>' +
+      '<div class="meta"><strong>Lưu ý bảo mật:</strong> Liên kết có hiệu lực trong <strong>1 giờ</strong> và chỉ sử dụng được <strong>một lần duy nhất</strong>. Thiết bị của anh/chị sẽ tự động được nhận diện trong 30 ngày.</div>' +
       '<p style="font-size:12px;color:#6B7280;word-break:break-all;margin-top:20px;">Hoặc copy đường dẫn:<br><a href="' + activationUrl + '" style="color:#D97706;">' + activationUrl + '</a></p>' +
       '</div>' +
       '<div class="footer">Thư gửi tự động từ Cổng Khảo Sát & Đo Lường Delivering Happiness Model.</div>' +
@@ -3138,7 +3138,7 @@ function sendAuthGateActivationEmail_(opts) {
 
     var plainBody = 'Kính gửi ' + fullName + ',\n\n' +
       'Anh/chị vừa yêu cầu thực hiện bài khảo sát: ' + surveyName + '.\n' +
-      'Vui lòng truy cập liên kết sau (hiệu lực ' + expirationMinutes + ' phút):\n' +
+      'Vui lòng truy cập liên kết sau (hiệu lực 1 giờ):\n' +
       activationUrl + '\n\n' +
       'Trân trọng,\nDelivering Happiness Model';
 
