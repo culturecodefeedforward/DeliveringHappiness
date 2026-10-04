@@ -110,7 +110,7 @@ def main():
         "contents": [{
             "parts": [
                 {"file_data": {"mime_type": "audio/mp3", "file_uri": file_uri}},
-                {"text": "Hãy lắng nghe file âm thanh và trích xuất tất cả các tình huống thực tế, câu chuyện, hoặc ví dụ áp dụng mô hình ABCDE (Nghịch cảnh - Niềm tin - Hậu quả - Phản biện - Năng lượng mới). Với mỗi tình huống tìm thấy, hãy viết lại chi tiết theo cấu trúc: Tên tình huống, Môi trường (Công sở, Gia đình, Quan hệ...), A (Nghịch cảnh), B (Niềm tin tiêu cực), C (Hậu quả), D (Phản biện chi tiết gồm Bằng chứng/Cách giải thích khác/Giảm thảm họa/Lợi ích), E (Hành động & Kết quả mới). Hãy viết bằng tiếng Việt tự nhiên, gãy gọn, bỏ các thông tin thừa liên quan đến tên người thật hoặc khóa học cụ thể."}
+                {"text": "Hãy lắng nghe file âm thanh và trích xuất tất cả các tình huống thực tế, câu chuyện, hoặc ví dụ áp dụng mô hình ABCDE (Nghịch cảnh - Niềm tin - Hậu quả - Phản biện - Năng lượng mới). Với mỗi tình huống tìm thấy, hãy viết lại chi tiết theo cấu trúc: Tên tình huống, Môi trường (Công sở, Gia đình, Quan hệ...), A (Nghịch cảnh), B (Niềm tin tiêu cực), C (Hậu quả), D (Phản biện chi tiết gồm Bằng chứng/Cách giải thích khác/Giảm thảm họa/Lợi ích), E (Energization - Năng lượng mới được khơi dậy và hướng tiếp cận lại Nghịch cảnh A). Hãy viết bằng tiếng Việt tự nhiên, gãy gọn, bỏ các thông tin thừa liên quan đến tên người thật hoặc khóa học cụ thể."}
             ]
         }]
     }

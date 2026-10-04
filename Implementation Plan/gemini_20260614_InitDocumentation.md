@@ -34,7 +34,7 @@ Khởi tạo cấu trúc tài liệu tiêu chuẩn cho dự án trong thư mục
   - `C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\docs\design-guidelines.md`
 
 ## 5. Rủi ro tiềm ẩn (Risks)
-- **Ghi đè tệp README.md cũ:** Cần sao lưu README.md hiện tại (nếu có nội dung quan trọng) trước khi viết đè. Tuy nhiên, hiện tại dự án không có tệp README.md ở thư mục gốc (đã kiểm tra qua `list_dir`). Do đó rủi ro này bằng 0.
+- **Ghi đè tệp [[README|README]].md cũ:** Cần sao lưu [[README|README]].md hiện tại (nếu có nội dung quan trọng) trước khi viết đè. Tuy nhiên, hiện tại dự án không có tệp README.md ở thư mục gốc (đã kiểm tra qua `list_dir`). Do đó rủi ro này bằng 0.
 
 ## 6. Auditor Review (Đánh giá kiểm toán)
 - Đảm bảo tài liệu được phân tách rõ ràng và phản ánh đúng thực trạng kỹ thuật hiện tại của dự án.

@@ -14,6 +14,7 @@ clasp_out.txt
 *.jpg
 *.png
 !data/artifacts/infographics/*.png
+!data/artifacts/slides/*.png
 !data/artifacts/*.png
 antigravity_export/
 implementation_plan.md

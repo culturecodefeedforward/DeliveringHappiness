@@ -1,11 +1,12 @@
 # Task List: Triển khai Hệ Thống Leadership RSVP & Campaign (20/09/2026)
 
 ## Phase 1: Rà soát & Chốt Danh sách Khách Mời (22 Suất)
-- [x] Rà soát và phân loại danh sách 22 khách mời (v4, v5) <!-- id: 1.1 -->
+- [x] Rà soát và phân loại danh sách 22 khách mời (v4, v5, v6) <!-- id: 1.1 -->
 - [x] Làm rõ 3 suất Apollo: Phạm Thu Hà (tài trợ/chi trả), Nguyễn Đức Anh (KTC), Đoàn Dũng (KTC) <!-- id: 1.2 -->
 - [x] Khớp nối chị Thu Hiền (Golden Gate DHM4) -> Tạ Thị Thu Hiền (Head of HCM Golden Gate Group) <!-- id: 1.3 -->
-- [x] Khớp suất Giải Nhất: Chị Võ Thu Hằng (KTC Vietnam) <!-- id: 1.4 -->
-- [ ] Bổ sung email cho 4 suất còn lại: Đoàn Dũng, Nguyễn Đức Anh, Huy Nguyễn và chốt suất 22 Tâm KTC <!-- id: 1.5 -->
+- [x] Bổ sung email cho Nguyễn Đức Anh và Đoàn Dũng (20/22 sẵn sàng) <!-- id: 1.5 -->
+- [x] Bổ sung email cho Huy Nguyễn (Visualization: `Ahuy0507@gmail.com`) -> v7 đạt 21/22 sẵn sàng (95%) <!-- id: 1.6 -->
+- [ ] Chốt suất 22 Tâm KTC hoặc nhân sự dự phòng <!-- id: 1.7 -->
 
 ## Phase 2: Chuẩn Hóa Frontend RSVP Web App (`leadership_rsvp.html` & `leadership_rsvp.js`)
 - [x] Thiết kế giao diện 3 bước: Xác nhận ➔ Quét mã SePay 250k ➔ Hoàn tất & Join Zalo <!-- id: 2.1 -->
@@ -35,8 +36,11 @@
 
 ## Phase 5: Chuẩn Bị Vận Hành, UAT & Triển Khai
 - [x] Tạo Group Zalo mới cho lớp Leadership 20/09 & lấy link `zalo.me/g/...` (Đã cập nhật: `https://zalo.me/g/awqtf1ayfblnrwi1y4bq`) <!-- id: 5.1 -->
-- [ ] Cập nhật mã Apps Script mới lên Google Spreadsheet dự án <!-- id: 5.2 -->
-- [ ] Xin Cấp độ 3 của Sếp để Deploy Frontend lên Vercel Live <!-- id: 5.3 -->
-- [ ] Chạy kịch bản UAT giả lập Webhook SePay (không tốn tiền thật) để nghiệm thu luồng từ PENDING -> PAID -> Step 3 <!-- id: 5.4 -->
-- [ ] Bắn 1 email thử nghiệm tới `vuhoang2708@gmail.com` qua MCP Gmail để duyệt giao diện <!-- id: 5.5 -->
-- [x] Sao chép Planning Artifacts về thư mục dự án theo quy định Mandatory Planning Artifacts Mirroring Rule <!-- id: 5.6 -->
+- [x] Deploy Frontend lên Vercel Live qua Git push main (`commit e6aa72a`) & verify HTTP 200 Live <!-- id: 5.2 -->
+- [x] Tạo thư mục Audit Dispatch `Artifacts/email_dispatches/20260908_leadership_test_batch/` <!-- id: 5.3 -->
+- [x] Bắn 4 email thử nghiệm tới 4 thành viên Teaching team qua Workspace MCP (`culturecodeproject@gmail.com`) <!-- id: 5.4 -->
+- [x] Ghi nhận 4 Google Message ID thật hợp lệ (`^1a[0-9a-f]{14,}$`) vào audit trail <!-- id: 5.5 -->
+- [x] Soạn thảo tin nhắn Zalo hướng dẫn core team test full luồng cho Sếp Dzũ <!-- id: 5.6 -->
+- [x] Deploy mã Apps Script mới (`Scripts/active_code_gs_final.js`) lên Google Apps Script dự án qua Clasp (Version @70, Deployment AKfycbxMi_bQBceGxVK_TjbcU5rQNAaLyUXOMuQJHyYWCwdeoWlsccq2kFkhRYVG2meySCsPdA) & verify HTTP Live <!-- id: 5.7 -->
+- [ ] Kiểm tra Webhook trên SePay Dashboard (my.sepay.vn): Xác nhận webhook không có bộ lọc từ khóa chặn mã tiền tố DHL <!-- id: 5.9 -->
+- [x] Sao chép Planning Artifacts về thư mục dự án theo quy định Mandatory Planning Artifacts Mirroring Rule <!-- id: 5.8 -->

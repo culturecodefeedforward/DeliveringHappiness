@@ -1,18 +1,36 @@
+<<<<<<< Updated upstream
+=======
+const path = require('path');
+>>>>>>> Stashed changes
 const fs = require('fs');
 const path = require('path');
 const puppeteer = require('puppeteer');
 
+<<<<<<< Updated upstream
 function parseArgs(argv = process.argv.slice(2)) {
+=======
+const { verifyLayer1Http } = require('./verify_layer1_http');
+const { runFullUat } = require('./run_full_uat');
+
+function parseArgs() {
+  const args = process.argv.slice(2);
+>>>>>>> Stashed changes
   const parsed = {
     phase: null,
     deploymentUrl: null,
     productionUrl: null,
+<<<<<<< Updated upstream
     specPath: null,
+=======
+    expectedTexts: [],
+    forbiddenTexts: [],
+>>>>>>> Stashed changes
     releaseId: null,
     commit: null,
     manifestHash: null,
     outDir: null
   };
+<<<<<<< Updated upstream
   for (let i = 0; i < argv.length; i += 1) {
     const value = argv[i + 1];
     if (argv[i] === '--phase' && value) parsed.phase = argv[++i];
@@ -23,10 +41,32 @@ function parseArgs(argv = process.argv.slice(2)) {
     else if (argv[i] === '--commit' && value) parsed.commit = argv[++i];
     else if (argv[i] === '--manifest-hash' && value) parsed.manifestHash = argv[++i];
     else if (argv[i] === '--out-dir' && value) parsed.outDir = path.resolve(argv[++i]);
+=======
+
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === '--deployment-url' && args[i + 1]) {
+      parsed.deploymentUrl = args[++i];
+    } else if (args[i] === '--production-url' && args[i + 1]) {
+      parsed.productionUrl = args[++i];
+    } else if (args[i] === '--expected-text' && args[i + 1]) {
+      parsed.expectedTexts.push(args[++i]);
+    } else if (args[i] === '--forbidden-text' && args[i + 1]) {
+      parsed.forbiddenTexts.push(args[++i]);
+    } else if (args[i] === '--release-id' && args[i + 1]) {
+      parsed.releaseId = args[++i];
+    } else if (args[i] === '--commit' && args[i + 1]) {
+      parsed.commit = args[++i];
+    } else if (args[i] === '--manifest-hash' && args[i + 1]) {
+      parsed.manifestHash = args[++i];
+    } else if (args[i] === '--out-dir' && args[i + 1]) {
+      parsed.outDir = args[++i];
+    }
+>>>>>>> Stashed changes
   }
   return parsed;
 }
 
+<<<<<<< Updated upstream
 function validateArgs(options) {
   const required = ['phase', 'deploymentUrl', 'specPath', 'releaseId', 'commit', 'manifestHash', 'outDir'];
   const missing = required.filter(key => !options[key]);
@@ -192,3 +232,83 @@ run().catch(error => {
   console.error(error.stack || error.message);
   process.exit(1);
 });
+=======
+async function runLiveGateOrchestrator() {
+  const options = parseArgs();
+  console.log('=== VERCEL LIVE VERIFICATION GATE (3-LAYER SINGLE ORCHESTRATOR) ===');
+  console.log('Timestamp:', new Date().toISOString());
+  console.log('Options:', JSON.stringify(options, null, 2));
+
+  const targetUrl = options.productionUrl || options.deploymentUrl;
+
+  if (!targetUrl) {
+    console.error('Error: Either --production-url or --deployment-url parameter is required.');
+    process.exit(1);
+  }
+
+  // Mandatory --expected-text check
+  if (options.expectedTexts.length === 0) {
+    console.error('Error: At least one --expected-text parameter is required.');
+    process.exit(1);
+  }
+
+  // Mandatory Release Spec Parameters check (No default-release!)
+  if (!options.releaseId || !options.commit || !options.manifestHash) {
+    console.error('Error: --release-id, --commit, and --manifest-hash parameters are ALL required!');
+    process.exit(1);
+  }
+
+  const rootDir = path.resolve(__dirname, '..');
+  const outDir = options.outDir || path.join(rootDir, 'UAT', 'releases', options.releaseId);
+  fs.mkdirSync(outDir, { recursive: true });
+
+  const spec = {
+    expectedReleaseId: options.releaseId,
+    expectedCommit: options.commit,
+    expectedManifestHash: options.manifestHash,
+    expectedTexts: options.expectedTexts,
+    forbiddenTexts: options.forbiddenTexts
+  };
+
+  // --- LAYER 1: HTTP / ROUTE PROBING ---
+  const layer1Report = await verifyLayer1Http(targetUrl, spec, outDir);
+
+  // FAIL-CLOSED CHECK
+  if (layer1Report.status !== 'HTTP_RELEASE_VERIFIED') {
+    console.error('\n❌ FAIL-CLOSED GATE TRIGGERED: Layer 1 HTTP Verification failed.');
+    console.error('Layer 2 (Puppeteer Browser CDP) will NOT be executed.');
+
+    const failVerdict = {
+      timestamp: new Date().toISOString(),
+      targetUrl,
+      spec,
+      layer1Status: layer1Report.status,
+      layer2Status: 'SKIPPED_FAIL_CLOSED',
+      verdict: 'LIVE_UNVERIFIED_FAILED',
+      exitCode: 1,
+      reason: 'Layer 1 HTTP Verification failed'
+    };
+
+    fs.writeFileSync(path.join(outDir, 'final-verdict.json'), JSON.stringify(failVerdict, null, 2), 'utf8');
+    process.exit(1);
+  }
+
+  // --- LAYER 2 & 3: PUPPETEER CDP & FINAL VERDICT ---
+  const finalReport = await runFullUat(targetUrl, spec, layer1Report, outDir);
+
+  console.log('\n=== FINAL ORCHESTRATOR VERDICT ===');
+  console.log('Verdict:', finalReport.verdict);
+  console.log('Exit Code:', finalReport.exitCode || (finalReport.verdict === 'LIVE_VERIFIED' ? 0 : 1));
+
+  process.exit(finalReport.exitCode || (finalReport.verdict === 'LIVE_VERIFIED' ? 0 : 1));
+}
+
+if (require.main === module) {
+  runLiveGateOrchestrator().catch(err => {
+    console.error('Fatal Orchestrator Error:', err);
+    process.exit(1);
+  });
+}
+
+module.exports = { runLiveGateOrchestrator };
+>>>>>>> Stashed changes

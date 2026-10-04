@@ -25,7 +25,8 @@ Mọi báo cáo UAT hoặc Handoff phải bao gồm bảng ma trận sau:
 3. **CTA Probe Enforcement:** Mọi URL được trỏ tới từ nút CTA (Call to Action) trên trang chủ bắt buộc phải nằm trong `live probe allowlist`.
 4. **Pre-deploy Audit:** Bắt buộc audit `file inventory` (đối chiếu file tĩnh trong public root vs danh sách public entrypoints/CTA) trước khi gọi lệnh deploy nếu sử dụng phương pháp "thư mục deploy tạm" (partial workspace).
 5. Nếu có bất kỳ bề mặt nào chưa kiểm chứng hoặc thất bại, Trạng thái tổng (`Final verdict`) bắt buộc phải là `UNVERIFIED` hoặc `FAILED`.
-6. **Vercel Live Verification Gate (Hard Gate):** Trạng thái Vercel CLI `READY` chỉ được ghi nhận là `DEPLOYMENT_READY`, tuyệt đối KHÔNG đồng nghĩa với `Live verified`. Mọi tuyên bố `Live verified` bắt buộc phải kèm theo output và artifact của `Scripts/verify_vercel_live_gate.js`. Báo cáo phải ghi đầy đủ: Deployment URL, Production URL, timestamp, HTTP status, final URL, cache result và browser CDP result. Nếu thiếu artifact kiểm chứng này, trạng thái tối đa của báo cáo chỉ được phép ở mức `UNVERIFIED`.
+6. **Vercel Live Verification Gate (Hard Gate 3 Lớp):** Trạng thái Vercel CLI `READY` chỉ được ghi nhận là `DEPLOYMENT_READY`, tuyệt đối KHÔNG đồng nghĩa với `Live verified`. Mọi tuyên bố `Live verified` bắt buộc phải được điều phối qua `Scripts/verify_vercel_live_gate.js` (Bộ điều phối 3 lớp chuẩn duy nhất) và kèm theo artifact bất biến tại `UAT/releases/<release-id>/final-verdict.json`. Báo cáo phải ghi đầy đủ: Deployment URL, Production URL, timestamp, HTTP status, final URL, cache result và browser CDP result. Nếu Lớp 1 (HTTP/Route Verification) không đạt `HTTP_RELEASE_VERIFIED`, Lớp 2 (Puppeteer Browser CDP) bắt buộc phải bị chặn (Fail-Closed). Nếu thiếu artifact kiểm chứng này, trạng thái tối đa của báo cáo chỉ được phép ở mức `UNVERIFIED`.
+
 
 ## 3. Critical Production Change Pipeline
 
@@ -110,3 +111,35 @@ Quy tắc bắt buộc:
    nhật rule/docs, repo có thể còn dirty đúng file rule/docs đó, nhưng Agent phải
    nói rõ đây là intentional dirty state (trạng thái bẩn có chủ đích) và xin
    approval riêng nếu User muốn commit.
+
+## 6. Approval Verdict Consistency Gate
+
+Quy tắc này áp dụng cho mọi Agent khi review plan, report, UAT, handoff hoặc tạo
+prompt chuyển tiếp giữa Codex, Claude và Gemini.
+
+1. **Tách trạng thái bắt buộc:** Báo cáo liên quan đến phê duyệt phải tách rõ:
+   - `Review verdict` (phán quyết rà soát): `APPROVED`, `REQUEST CHANGES` hoặc
+     `BLOCKED`.
+   - `Operational authorization` (ủy quyền thao tác thật): liệt kê chính xác
+     commit/push/deploy/promote/delete/external write nào đã hoặc chưa được User
+     cho phép.
+2. **Verdict-prompt parity:** Phán quyết trong nội dung chính và prompt/handoff
+   cuối câu phải giống nhau. Nếu nội dung chính là `APPROVED`, prompt không được
+   nói plan “vẫn chờ approve”, không yêu cầu duyệt lại cùng plan và không tạo
+   thêm một vòng approval.
+3. **Không tự mở approval lane:** Khi User chỉ hỏi “có duyệt được không?”,
+   Agent chỉ đánh giá artifact và trả verdict. Không tự biến câu hỏi đó thành
+   yêu cầu cấp quyền cho code, commit, push, deploy hoặc promote.
+4. **Không xin duyệt trùng:** Khi User đã trực tiếp duyệt đúng hành động và scope
+   trong session hiện tại, Agent phải ghi nhận và thực hiện/tiếp tục theo scope;
+   cấm hỏi lại cùng approval. Approval mới chỉ được yêu cầu cho một hành động
+   khác có ranh giới rủi ro riêng.
+5. **Handoff giữa session:** Verdict của reviewer được chuyển nguyên trạng sang
+   executor. Nếu executor cần User cấp quyền thao tác thật trong session của
+   executor, executor chỉ hỏi một lần ngay trước hành động đó; reviewer không
+   được chèn yêu cầu này vào câu trả lời verdict theo cách làm User hiểu rằng
+   verdict vừa bị rút lại.
+6. **Recovery bắt buộc:** Nếu Agent tạo câu trả lời tự mâu thuẫn hoặc vòng lặp
+   xin duyệt, lượt kế tiếp phải: nhận lỗi, nêu đúng trạng thái, bỏ yêu cầu lặp và
+   tiếp tục từ checkpoint gần nhất. Không được mở lại review hoặc thêm điều kiện
+   kỹ thuật mới trừ khi có bằng chứng về rủi ro nghiêm trọng mới phát sinh.

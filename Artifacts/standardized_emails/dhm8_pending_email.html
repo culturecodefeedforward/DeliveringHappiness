@@ -7,7 +7,7 @@
     body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333333; margin: 0; padding: 0; background-color: #eae6df; }
     .container { max-width: 600px; margin: 30px auto; background: #ffffff; border-radius: 12px; border: 1px solid #d1c9bd; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .header { background-color: #1a1a1a; padding: 35px 25px; text-align: center; color: #ffffff; }
-    .header img { width: 100px; height: auto; display: block; margin: 0 auto; }
+    .header img { width: 120px; height: auto; display: block; margin: 0 auto; border-radius: 8px; }
     .header h1 { margin: 15px 0 0 0; font-size: 22px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
     .header p { margin: 8px 0 0 0; opacity: 0.8; font-size: 13px; font-weight: 500; line-height: 1.5; color: #aaaaaa; }
     .content { padding: 35px 30px; background-color: #ffffff; }
@@ -31,7 +31,7 @@
     .footer-table { width: 100%; border-collapse: collapse; }
     .footer-left { text-align: left; vertical-align: bottom; }
     .footer-right { text-align: right; vertical-align: bottom; width: 100px; }
-    .footer-logo { width: 90px; height: auto; display: block; margin-left: auto; }
+    .footer-logo { width: 90px; height: auto; display: block; margin-left: auto; border-radius: 4px; }
     .closing { font-size: 14.5px; font-weight: bold; color: #1a1a1a; margin: 0; }
     .team-name { font-size: 14.5px; font-weight: bold; color: #1a1a1a; margin: 4px 0 0 0; }
   </style>
@@ -39,7 +39,7 @@
 <body>
   <div class="container">
     <div class="header">
-      <img src="https://delivering-happiness.vercel.app/culturecode_live_club_logo.jpg" alt="CultureCode Logo" />
+      <img src="https://delivering-happiness.vercel.app/assets/culturecode-logo-dark.jpg" alt="CultureCode Logo" width="120" style="width: 120px !important; max-width: 120px !important; height: auto !important; display: block; margin: 0 auto; border-radius: 8px;" />
       <h1>Delivering Happiness Masterclass</h1>
       <p>Một ngày học sâu về văn hóa hạnh phúc, động lực đội ngũ và cách tổ chức vận hành từ bên trong.</p>
     </div>
@@ -52,7 +52,7 @@
       </p>
       
       <p class="paragraph">
-        Ban Tổ chức (BTC) đã nhận được thông tin đăng ký của bạn. Để đảm bảo quyền lợi và hoàn tất thủ tục <strong>giữ chỗ chính thức</strong>, vui lòng hoàn thành chuyển khoản chi phí hậu cần theo hướng dẫn bên dưới.
+        CultureCode Team đã nhận được thông tin đăng ký của bạn. Để đảm bảo quyền lợi và hoàn tất thủ tục <strong>giữ chỗ chính thức</strong>, vui lòng hoàn thành chuyển khoản chi phí hậu cần theo hướng dẫn bên dưới.
       </p>
       
       <div class="warning-box">
@@ -63,14 +63,21 @@
       <div class="payment-box">
         <div class="payment-title">Thông tin chuyển khoản chi phí hậu cần ({{Amount}}):</div>
         <ul class="payment-list">
-          <li class="payment-item">🏦 <strong>Ngân hàng BIDV</strong> (cá nhân): <strong>8815369431</strong> - Hà Ngọc Hoàn</li>
-          <li class="payment-item">🏦 <strong>Ngân hàng MB</strong> (doanh nghiệp): <strong>9600006868</strong> - CONG TY TNHH HIPER CONSULTING</li>
+          <li class="payment-item">🏦 <strong>Ngân hàng:</strong> BIDV (Ngân hàng TMCP Đầu tư và Phát triển Việt Nam)</li>
+          <li class="payment-item">💳 <strong>Số tài khoản:</strong> <strong>8815369431</strong></li>
+          <li class="payment-item">👤 <strong>Chủ tài khoản:</strong> <strong>Hà Ngọc Hoàn</strong></li>
           <li class="payment-item" style="margin-top: 15px;">✍️ <strong>Nội dung chuyển khoản</strong> (Bắt buộc nhập chính xác): <span class="code-syntax">{{PaymentCode}}</span></li>
         </ul>
       </div>
 
+      <!-- Khối Mã QR Thanh Toán SePay Tự Động -->
+      <div style="text-align: center; margin: 25px 0;">
+        <p style="font-size: 14px; font-weight: bold; color: #1e3a8a; margin-bottom: 10px;">📲 Quét mã QR bên dưới để chuyển khoản nhanh:</p>
+        <img width="260" src="https://qr.sepay.vn/img?acc=8815369431&bank=BIDV&amount=300000&des={{PaymentCode}}&template=compact&showinfo=false" alt="QR thanh toán DHM8" style="display:block; width:100%; max-width: 260px !important; margin:0 auto; background:#ffffff; border:1px solid #e5e7eb; border-radius:12px; padding:10px;">
+      </div>
+
       <p class="paragraph" style="font-size: 13.5px; color: #4b5563; font-style: italic;">
-        * Sau khi bạn chuyển khoản thành công, hệ thống tự động của BTC sẽ ghi nhận giao dịch và gửi email xác nhận giữ chỗ chính thức tới hòm thư này.
+        * Sau khi bạn chuyển khoản thành công, hệ thống tự động của CultureCode Team sẽ ghi nhận giao dịch và gửi email xác nhận giữ chỗ chính thức tới hòm thư này.
       </p>
       
       <p class="paragraph" style="margin-top: 25px;">
@@ -78,15 +85,19 @@
       </p>
     </div>
     
-    <div class="footer">
-      <table class="footer-table">
+        <div class="footer" style="background-color: #ffffff; padding: 25px 30px; border-top: 1px solid #f3f4f6;">
+      <table class="footer-table" style="width: 100%; border-collapse: collapse;">
         <tr>
-          <td class="footer-left">
-            <p class="closing">Trân trọng,</p>
-            <p class="team-name">Ban Tổ chức Delivering Happiness</p>
+          <td class="footer-left" style="text-align: left; vertical-align: top;">
+            <p class="closing" style="margin: 0; color: #4b5563; font-size: 14px;">Trân trọng,</p>
+            <p class="team-name" style="margin: 4px 0 8px 0; font-size: 15px; font-weight: bold; color: #1a1a1a;">CultureCode Team</p>
+            <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #6b7280;">
+              🌐 Website: <a href="https://delivering-happiness.vercel.app" target="_blank" style="color: #0f766e; text-decoration: none; font-weight: 500;">delivering-happiness.vercel.app</a><br>
+              🔗 LinkedIn: <a href="https://www.linkedin.com/company/culturecodecommunity" target="_blank" style="color: #0f766e; text-decoration: none; font-weight: 500;">CultureCode Community</a>
+            </p>
           </td>
-          <td class="footer-right">
-            <img src="https://delivering-happiness.vercel.app/culturecode_live_club_logo.jpg" alt="CultureCode Small Logo" class="footer-logo" />
+          <td class="footer-right" style="text-align: right; vertical-align: top; width: 100px;">
+            <img src="https://delivering-happiness.vercel.app/assets/culturecode-logo-light.jpg" alt="CultureCode Logo" width="90" style="width: 90px !important; max-width: 90px !important; height: auto !important; display: block; margin-left: auto; border-radius: 4px;" class="footer-logo" />
           </td>
         </tr>
       </table>

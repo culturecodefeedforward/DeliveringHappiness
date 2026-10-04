@@ -29,7 +29,7 @@ trường public.
 - Web App URL mới:
   `AKfycbxfbK1IWH_fL-3BzcoYDsdl61L0EpKuuF_MwPgdzDMutHHqECGRRJaDfsBdHqty-Vjtpg`
   đang trả `checkStatus` đúng schema DHM8 mới.
-- README/deployment guide còn trỏ nhầm production URL cũ `dh-crm-landing`.
+- [[README|README]]/deployment guide còn trỏ nhầm production URL cũ `dh-crm-landing`.
 
 `INFERRED`
 

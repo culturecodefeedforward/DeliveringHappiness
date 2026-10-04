@@ -90,7 +90,7 @@ Cảm ơn bạn rất nhiều vì đã thấu hiểu và đồng hành!
       <div class="event-box">
         <span class="event-badge">DHM9 - HÀ NỘI</span>
         <div class="event-title">Hà Nội</div>
-        <div class="event-detail">📅 <strong>Thời gian mới:</strong> Thứ Bảy, ngày 12/09/2026 (08:00 - 18:00)</div>
+        <div class="event-detail">📅 <strong>Thời gian mới:</strong> Thứ Bảy, ngày 12/09/2026 (07:30 - 17:30)</div>
         <div class="event-detail">📍 <strong>Địa điểm chốt:</strong> SBB Healthcare Premium; Tầng 6 - San Tea house; Số 199 Trường Chinh, P. Phương Liệt - Hà Nội (Quận Thanh Xuân cũ)</div>
         <a href="https://www.google.com/maps/search/?api=1&query=SBB+Healthcare+Premium+199+Trường+Chinh+Hà+Nội" target="_blank" class="event-link">📍 Xem bản đồ chỉ đường Google Maps</a>
       </div>

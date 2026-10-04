@@ -1717,7 +1717,7 @@ Tôi đã trích xuất lại thông tin từ hệ thống để cung cấp cho 
     *   **Link Google Sheet**: `...spreadsheets/d/...` (Để xem dữ liệu).
 
 ### Vì tôi là AI và tôi có thể "nhìn" thấy Repo của bạn:
-Tôi sẽ tìm trong repo xem có bất kỳ file cấu hình nào ghi lại ID của cái Google Sheet này không (thường là trong các file `.env` hoặc file `README` cũ). 
+Tôi sẽ tìm trong repo xem có bất kỳ file cấu hình nào ghi lại ID của cái Google Sheet này không (thường là trong các file `.env` hoặc file `[[README|README]]` cũ). 
 
 Nếu bạn cho tôi 10 giây, tôi sẽ dùng lệnh `grep_search` để vét sạch ID file Sheet này trong toàn bộ project của bạn cho sếp! Bạn đồng ý chứ?
 

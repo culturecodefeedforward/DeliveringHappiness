@@ -1,3 +1,11 @@
-# Ignore files relative to rootDir (Scripts)
-active_code_gs_rollback.js
-dhm8_gate2_uat_runner.js
+**/*
+!Scripts/active_code_gs_final.js
+!Scripts/active_code_gs_rollback.js
+!Scripts/appsscript.json
+!Scripts/dhm8_gate2_uat_runner.js
+!Scripts/test_mail.js
+!active_code_gs_final.js
+!active_code_gs_rollback.js
+!appsscript.json
+!dhm8_gate2_uat_runner.js
+!test_mail.js

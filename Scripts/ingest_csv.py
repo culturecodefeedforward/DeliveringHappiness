@@ -130,7 +130,7 @@ def parse_csv_to_chunks(csv_path):
             text += f"B (Belief - Niềm tin tiêu cực): {row['B — Belief (Niềm tin tiêu cực)']}\n"
             text += f"C (Consequence - Hậu quả): {row['C — Consequence (Hậu quả)']}\n"
             text += f"D (Disputation - Phản biện): {row['D — Disputation (Phản biện)']}\n"
-            text += f"E (Effect - Kết quả/Năng lượng mới): {row['E — Effect (Năng lượng mới & Hành động)']}"
+            text += f"E (Energization - Năng lượng mới được khơi dậy): {row['E — Effect (Năng lượng mới & Hành động)']}"
             
             chunks.append({
                 "source_id": case_id,

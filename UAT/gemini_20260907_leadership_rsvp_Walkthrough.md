@@ -23,23 +23,42 @@
 
 ---
 
-## 2. Kết Quả Kiểm Thử (Verification Results)
+## 2. Kết Quả Kiểm Thử & Triển Khai Thực Tế (Live Verified)
 
 1. **Kiểm tra cú pháp JavaScript**:
    - `node -c leadership_rsvp.js` ➔ **Exit code 0 (Pass)**.
    - `node -c Scripts/active_code_gs_final.js` ➔ **Exit code 0 (Pass)**.
 2. **Kiểm tra hợp đồng email động**:
    - `python Scripts/validate_email_template.py Artifacts/standardized_emails/leadership_invitation_email.html` ➔ **Exit code 0 (DYNAMIC VALIDATION PASSED PROPERLY)**.
-3. **Kiểm tra tạo mã QR Group Zalo**:
-   - Endpoint `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fzalo.me%2Fg%2Fawqtf1ayfblnrwi1y4bq` ➔ **HTTP 200 OK**.
+3. **Frontend Vercel Live**:
+   - Đã rebase và `git push origin main` (`commit e6aa72a`).
+   - Probe HTTP: `https://delivering-happiness.vercel.app/leadership_rsvp.html` ➔ **HTTP 200 OK (22,569 bytes)**.
+   - Probe JS: `https://delivering-happiness.vercel.app/leadership_rsvp.js` ➔ **HTTP 200 OK (Has Zalo & Lane dhl: True)**.
+4. **Backend Google Apps Script (Clasp Push & Deploy)**:
+   - Đã cấu hình `.claspignore` cô lập đúng 5 tệp Apps Script.
+   - Lệnh `clasp push -f` ➔ **Pushed 5 files successfully**.
+   - Lệnh `clasp deploy -i AKfycbxMi_bQBceGxVK_TjbcU5rQNAaLyUXOMuQJHyYWCwdeoWlsccq2kFkhRYVG2meySCsPdA -d "feat(leadership): Lane dhl backend integration 20260908"` ➔ **Deployed version @70**.
+   - **Probe Endpoint Live 1**: `curl -L "...?action=checkRegistrationAvailability&lane=dhl"` ➔ Trả về: `{"success":true,"state":"OPEN","registrationOpen":true,"cap":25,"paidCount":0,"dataRowCount":1}`.
+   - **Probe Endpoint Live 2**: `curl -L "...?action=checkStatus&callback=dhm8Jsonp_1725800000123456&paymentCode=DHL0909028088&lane=dhl"` ➔ Trả về: `dhm8Jsonp_1725800000123456({"success":true,"state":"REGISTERED","paymentStatus":"PENDING"});`.
+5. **Gửi 4 Email Thử Nghiệm Qua MCP Gmail (`culturecodeproject@gmail.com`)**:
+   - Hà Ngọc Hoàn: Message ID `1a080654000a7088`.
+   - Hoàng Công Nguyên Vũ: Message ID `1a08064f4312a679`.
+   - Nguyễn Quốc Hưng: Message ID `1a080659e473ffdc`.
+   - Nguyễn Diễm Hân: Message ID `1a08065ea44261fa`.
+   - Toàn bộ được ghi vết kiểm toán tại: `Artifacts/email_dispatches/20260908_leadership_test_batch/audit_record.json`.
 
 ---
 
-## 3. Đường Dẫn Mở Thử Nghiệm Trên Trình Duyệt
+## 3. Đường Dẫn Mở Thử Nghiệm Trực Tiếp (Live & Local)
 
-Sếp có thể mở trực tiếp trang web tại local để trải nghiệm luồng xác nhận và xem hiển thị QR Group Zalo:
+1. **Trang web Live trên Vercel**:
+   ```text
+   https://delivering-happiness.vercel.app/leadership_rsvp.html?name=Nguy%E1%BB%85n%20Di%E1%BB%85m%20H%C3%A2n&email=diemhann@gmail.com&phone=0978092749
+   ```
+   [Mở trang Leadership RSVP trên Vercel Live](https://delivering-happiness.vercel.app/leadership_rsvp.html?name=Nguy%E1%BB%85n%20Di%E1%BB%85m%20H%C3%A2n&email=diemhann@gmail.com&phone=0978092749)
 
-```text
-file:///C:/Users/vu.hoang/.gemini/antigravity/scratch/dh4hn-website/leadership_rsvp.html?name=Nguy%E1%BB%85n%20Di%E1%BB%85m%20H%C3%A2n&email=diemhann@gmail.com&phone=0978092749&company=CultureCode
-```
-[Mở trang Leadership RSVP thử nghiệm](file:///C:/Users/vu.hoang/.gemini/antigravity/scratch/dh4hn-website/leadership_rsvp.html?name=Nguy%E1%BB%85n%20Di%E1%BB%85m%20H%C3%A2n&email=diemhann@gmail.com&phone=0978092749&company=CultureCode)
+2. **Trang web cục bộ**:
+   ```text
+   C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\leadership_rsvp.html
+   ```
+   [leadership_rsvp.html](file:///C:/Users/vu.hoang/.gemini/antigravity/scratch/dh4hn-website/leadership_rsvp.html)
