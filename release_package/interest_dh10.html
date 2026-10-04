@@ -153,6 +153,18 @@
       box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
     }
 
+    .referrer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .referrer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     /* Location Choice Cards */
     .location-group-title {
       color: rgba(255, 255, 255, 0.92);
@@ -378,6 +390,22 @@
         <input type="text" name="jobTitle" autocomplete="organization-title" placeholder="Ví dụ: CEO, Giám đốc Nhân sự, Trưởng bộ phận..." />
       </label>
 
+      <!-- Thông tin Người giới thiệu -->
+      <div class="referrer-grid">
+        <label>
+          Tên người giới thiệu (nếu có)
+          <input type="text" name="referrerName" id="referrerName" placeholder="Ví dụ: Anh/Chị Nguyễn Văn B, đồng nghiệp, cựu học viên..." />
+        </label>
+
+        <label>
+          Số điện thoại người giới thiệu (nếu có)
+          <input type="tel" name="referrerPhone" id="referrerPhone" placeholder="Số điện thoại hoặc Zalo người giới thiệu..." />
+        </label>
+      </div>
+      <div style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); margin-top: -10px; line-height: 1.5;">
+        <i>* CultureCode Team cam kết bảo mật thông tin và chỉ sử dụng để ghi nhận ưu đãi / hỗ trợ xác thực.</i>
+      </div>
+
       <label>
         Kỳ vọng hoặc Lời nhắn dành cho Ban Tổ Chức
         <textarea name="userNote" placeholder="Bạn quan tâm hoặc mong muốn giải quyết thách thức văn hóa / nhân sự nào qua khóa học này?"></textarea>
@@ -439,10 +467,23 @@
       var formValues = Object.fromEntries(formData.entries());
 
       var locationChosen = formValues.preferredLocation || 'Chưa xác định';
-      var noteCombined = '[Địa điểm mong muốn: ' + locationChosen + ']';
-      if (formValues.userNote && formValues.userNote.trim()) {
-        noteCombined += '\n[Kỳ vọng / Lời nhắn]: ' + formValues.userNote.trim();
+      var noteParts = ['[Địa điểm mong muốn: ' + locationChosen + ']'];
+
+      var refName = formValues.referrerName ? formValues.referrerName.trim() : '';
+      var refPhone = formValues.referrerPhone ? formValues.referrerPhone.trim() : '';
+      if (refName || refPhone) {
+        var refStr = '[Người giới thiệu: ' + (refName || 'Không có tên');
+        if (refPhone) {
+          refStr += ' - SĐT: ' + refPhone;
+        }
+        refStr += ']';
+        noteParts.push(refStr);
       }
+
+      if (formValues.userNote && formValues.userNote.trim()) {
+        noteParts.push('[Kỳ vọng / Lời nhắn]: ' + formValues.userNote.trim());
+      }
+      var noteCombined = noteParts.join('\n');
 
       var payload = {
         fullName: formValues.fullName ? formValues.fullName.trim() : '',
@@ -450,6 +491,8 @@
         phone: formValues.phone ? formValues.phone.trim() : '',
         company: formValues.company ? formValues.company.trim() : '',
         jobTitle: formValues.jobTitle ? formValues.jobTitle.trim() : '',
+        referrerName: refName,
+        referrerPhone: refPhone,
         location: locationChosen,
         note: noteCombined,
         type: 'DHM10_INTEREST',
