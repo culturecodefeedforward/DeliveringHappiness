@@ -846,12 +846,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function updatePersonalValueLinks() {
+        updateAssessmentLinks();
+    }
+
+    function updateAssessmentLinks() {
         try {
-            const pvLinks = document.querySelectorAll('a[href*="personal-value.html"]');
+            const selectors = [
+                'a[href*="personal-value.html"]',
+                'a[href*="practice-abcde.html"]',
+                'a[href*="khao-sat-tinh-cach"]',
+                'a[href*="khao-sat-xung-dot-tki"]'
+            ];
+            const targetLinks = document.querySelectorAll(selectors.join(', '));
             const targetEmail = (currentUser && (currentUser.email || currentUser.identity)) 
                 ? (currentUser.email || currentUser.identity).toLowerCase().trim() 
                 : "";
-            pvLinks.forEach(link => {
+            targetLinks.forEach(link => {
                 const href = link.getAttribute("href") || "";
                 const baseUrl = href.split("?")[0];
                 if (targetEmail) {
@@ -861,7 +871,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
         } catch (e) {
-            console.warn("Lỗi cập nhật liên kết personal-value:", e);
+            console.warn("Lỗi cập nhật liên kết khảo sát & thực hành:", e);
         }
     }
 
