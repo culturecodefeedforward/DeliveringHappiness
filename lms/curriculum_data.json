@@ -19,7 +19,7 @@
       "subSections": [
         {
           "id": "sub-1-1",
-          "title": "Mục 1.1: Video & Audio Bài Giảng",
+          "title": "Mục 1.1: Video Khởi Động (The Explainer)",
           "target": "video-player-container",
           "tab": "tab-summary"
         },
@@ -46,38 +46,6 @@
           "title": "🎯 Cổng Vượt Chặng: Bài Kiểm Tra 10 Câu",
           "target": "stage1-mod-quiz",
           "tab": "tab-practice"
-        }
-      ],
-      "audios": [
-        {
-          "id": "a1-0",
-          "title": "0. Lời dẫn & Giới thiệu tổng quan",
-          "file": "data/artifacts/dh4_overview.mp3",
-          "duration": "2:45"
-        },
-        {
-          "id": "a1-1",
-          "title": "1. Khoa học Hạnh phúc & Nền tảng tâm lý",
-          "file": "data/artifacts/khoa_hoc_hanh_phuc.mp3",
-          "duration": "41:30"
-        },
-        {
-          "id": "a1-2",
-          "title": "2. Ba cấp độ hạnh phúc bền vững",
-          "file": "data/artifacts/ba_cap_do_ben_vung.mp3",
-          "duration": "39:50"
-        },
-        {
-          "id": "a1-3",
-          "title": "3. Ẩn dụ Ba tầng lầu & Case Study Zappos",
-          "file": "data/artifacts/ba_tang_zappos.mp3",
-          "duration": "40:15"
-        },
-        {
-          "id": "a1-4",
-          "title": "4. Hạnh phúc không khẩu hiệu",
-          "file": "data/artifacts/hanh_phuc_khong_khau_hieu.mp3",
-          "duration": "38:40"
         }
       ],
       "summary": "Mọi hành động con người đều hội tụ về đích đến là Hạnh phúc (Aristotle). Tuy nhiên, não bộ rất nhanh thích nghi với Thú vui ngắn hạn do cơ chế thích nghi khoái lạc (Hedonic Adaptation). Để bền vững, ta cần nâng cấp lên trạng thái Phiêu (Passion / Flow) và Mục đích cao cả (Higher Purpose) khi cống hiến cho điều lớn lao hơn bản thân.",
@@ -237,15 +205,6 @@
             "I": "Bạn tâm đắc nhất với điều gì từ nội dung 3 Cấp độ Hạnh phúc & Ẩn dụ 3 Tầng Lầu của Phong Tử Khải?",
             "A": "Bạn sẽ áp dụng điều này như thế nào để chuyển dịch dần từ Thú vui ngắn hạn (Pleasure) sang Đam mê (Passion) và Mục đích cao cả (Higher Purpose)?",
             "M": "Tại sao nhận thức này lại có ý nghĩa sâu sắc đối với bạn ở thời điểm hiện tại?"
-          },
-          "practicalScenario": {
-            "id": "scenario-1-1",
-            "title": "Tình Huống Thực Tế 1.1: Trống Rỗng Sau Khi Đạt Đỉnh Doanh Số",
-            "context": "Một trưởng phòng kinh doanh xuất sắc sau 6 tháng miệt mài đã dẫn dắt đội ngũ vượt 130% KPI quý, nhận được khoản tiền thưởng lớn và sự tán dương từ ban giám đốc. Tuy nhiên, chỉ sau đúng 1 tuần ăn mừng, anh rơi vào trạng thái hụt hẫng, mất phương hướng và cảm thấy công việc hoàn toàn vô nghĩa khi bước vào chu kỳ KPI mới.",
-            "facultyAnalysis": "Hiện tượng này trong tâm lý học gọi là Thích Nghi Khoái Lạc (Hedonic Adaptation). Phần thưởng tiền bạc và danh vọng thuộc Cấp độ 1 (Thú vui ngắn hạn - Pleasure). Khi đạt được, dopamine tụt dốc nhanh chóng khiến người ta nhanh chóng trở lại mức cảm xúc ban đầu. Nếu chỉ dùng Cấp độ 1 để dẫn dắt đội ngũ, quản lý sẽ liên tục kiệt sức (burnout).",
-            "modelAnswer": "1. Nhận diện: Thừa nhận đây là quy luật tâm lý tự nhiên của Thú vui Cấp độ 1, không tự dằn vặt hay hoang mang.\n2. Chuyển dịch sang Cấp độ 2 (Flow/Đam mê): Tái thiết kế quy trình làm việc tập trung vào thử thách phát triển năng lực cho nhân viên thay vì chỉ nhìn vào con số.\n3. Nâng cấp lên Cấp độ 3 (Mục đích cao cả): Kết nối mục tiêu bán hàng với giá trị thực sự mang lại cho cuộc sống của khách hàng; xây dựng văn hóa đội ngũ hỗ trợ nhau cùng tiến bộ.",
-            "reflectionPrompt": "Nếu ở vị trí của trưởng phòng này, bạn sẽ làm gì để tìm lại động lực nội tại và giúp đội ngũ không bị kiệt sức sau mỗi đợt chốt KPI?",
-            "actionPrompt": "Hành động cụ thể bạn sẽ áp dụng ngay trong tuần này tại phòng ban/đội ngũ của mình:"
           }
         },
         {
@@ -301,15 +260,6 @@
             "I": "Bạn tâm đắc nhất với giá trị La Bàn nào bạn vừa lựa chọn?",
             "A": "Giá trị này sẽ định hướng cho một quyết định khó khăn hoặc hành vi sắp tới của bạn như thế nào?",
             "M": "Nếu kiên định sống đúng với La Bàn này, bạn sẽ kiến tạo phiên bản tốt đẹp hơn của chính mình ra sao?"
-          },
-          "practicalScenario": {
-            "id": "scenario-1-2",
-            "title": "Tình Huống Thực Tế 1.2: Xung Đột Giữa 'Chính Trực' Và Áp Lực Doanh Số",
-            "context": "Vào tuần cuối cùng của quý, doanh số của phòng kinh doanh còn thiếu 5% để đạt mốc thưởng toàn công ty. Cấp trên gợi ý ghi nhận trước một hợp đồng chưa hoàn tất thủ tục pháp lý sang tháng sau để 'làm đẹp số liệu'. Quản lý cảm thấy bị giằng xé dữ dội giữa áp lực tập thể và giá trị cá nhân 'Sự chính trực'.",
-            "facultyAnalysis": "Đây là bài kiểm tra kinh điển về La Bàn Giá Trị (Me Values). Khi các giá trị bị xung đột với lợi ích ngắn hạn, La Bàn chính là công cụ giúp người lãnh đạo không bị lạc lối. Tony Hsieh tại Zappos từng khẳng định: 'Nếu bạn không sẵn sàng hy sinh lợi nhuận ngắn hạn vì giá trị cốt lõi, thì đó không phải là giá trị cốt lõi mà chỉ là khẩu hiệu quảng cáo'.",
-            "modelAnswer": "1. Định vị La Bàn: Khẳng định 'Sự chính trực' là ranh giới đạo đức không thể thỏa hiệp.\n2. Đối thoại minh bạch (Courageous Conversation): Trình bày trung thực với cấp trên về rủi ro pháp lý và tổn hại uy tín thương hiệu lâu dài.\n3. Đề xuất giải pháp Win-Win: Tập trung toàn lực đội ngũ vào việc chốt các cơ hội bán thêm (upsell) hợp pháp cho khách hàng cũ trong 48 giờ cuối, thay vì gian lận số liệu.",
-            "reflectionPrompt": "Bạn đã từng đối mặt với tình huống nào đòi hỏi phải bảo vệ giá trị cốt lõi trước áp lực ngoại cảnh chưa? Bạn đã phản ứng ra sao?",
-            "actionPrompt": "Một nguyên tắc bất khả xâm phạm bạn cam kết giữ vững khi lãnh đạo hoặc làm việc cùng đội ngũ là gì?"
           }
         },
         {
@@ -347,15 +297,6 @@
             "I": "Trong 3 Đòn bẩy (Cảm giác Kết nối, Cảm giác Tự chủ, Cảm giác Tiến bộ), đòn bẩy nào bạn thấy tâm đắc nhất và đang cần kích hoạt nhất?",
             "A": "Bạn sẽ thiết lập Chiến thắng Nhỏ (Small Wins) nào trong tuần này để nuôi dưỡng cảm giác tiến bộ tự thân mỗi ngày?",
             "M": "Đòn bẩy bạn vừa chọn có ý nghĩa như thế nào đối với sự phát triển cá nhân và gắn kết đội ngũ của bạn?"
-          },
-          "practicalScenario": {
-            "id": "scenario-1-3",
-            "title": "Tình Huống Thực Tế 1.3: Đòn Bẩy Tự Chủ (Báo Cáo MSR Tại Tập Đoàn Công Nghệ, Đối Thoại Khách Hàng 15 Năm) & Đòn Bẩy Kết Nối (Hướng Gió Máy Lạnh)",
-            "context": "Tại một tập đoàn công nghệ toàn cầu, khi cấp trên trực tiếp chưa ghi nhận xứng đáng, thay vì cằn nhằn hay đóng vai nạn nhân thụ động (covert-aggressive), Chị An (nữ quản lý nhân sự) đã chủ động thực hành Đòn bẩy Tự chủ (Autonomy): tự tay viết Báo cáo Tình trạng Hàng tháng (Monthly Status Report - MSR) gửi thẳng ban giám đốc để chứng minh năng suất ngày thứ Sáu làm việc tại nhà (WFH) cao hơn 18% so với văn phòng, từ đó được phê duyệt chính sách linh hoạt ('You cannot change people, but you can change the context'). Tương tự, Chị Hà (Giám đốc Quản lý Khách hàng) khi bị một đối tác lớn 15 năm phản hồi gay gắt, thay vì né tránh, chị chủ động hẹn gặp đối thoại trực tiếp để làm rõ kỳ vọng, giành lại quyền làm chủ tình thế. Song song đó trong giờ làm việc tại văn phòng, Anh Nam (quản lý vận hành) nhận thấy người đồng nghiệp trẻ (Bình) ngồi ngay luồng gió máy lạnh phà thẳng vào đầu rất khó chịu nhưng ngại không dám nói, Anh Nam đã chủ động bước tới hỏi han và chỉnh lại hướng gió thổi sang vị trí khác, tạo nên sự thấu hiểu và gắn kết ấm áp (Đòn bẩy Kết nối).",
-            "facultyAnalysis": "Thuyết Tự Quyết (Self-Determination Theory - Deci & Ryan) chỉ ra 3 nhu cầu tâm lý cốt lõi nuôi dưỡng động lực nội tại: 1) Cảm giác Tự chủ (Autonomy / Sense of Control) - 'You cannot change people, but you can change the context', chuyển hóa từ làm vì SỢ sang làm vì TIN và chủ động kiểm soát kết quả; 2) Cảm giác Kết nối (Relatedness / Connection) - quan tâm tinh tế đến nhu cầu nhỏ của người khác (như hướng gió máy lạnh) để xây dựng an toàn tâm lý (Psychological Safety); 3) Cảm giác Tiến bộ (Competence / Progress) - tôn vinh các chiến thắng nhỏ (Small wins) và tiến trình nỗ lực.",
-            "modelAnswer": "1. Kích hoạt Đòn bẩy Tự chủ: Thay đổi bối cảnh thay vì đóng vai nạn nhân. Chủ động giao tiếp bằng dữ liệu xác thực (như Báo cáo MSR) hoặc đối thoại can đảm (như Chị Hà) để xác lập lại sự hợp tác lành mạnh.\n2. Nuôi dưỡng Đòn bẩy Kết nối: Lắng nghe không phán xét, quan tâm tinh tế đến nhu cầu của đồng đội từ những hành động nhỏ hàng ngày.\n3. Thiết lập Đòn bẩy Tiến bộ: Chia nhỏ mục tiêu, ghi nhận các bước tiến nhỏ (Small wins) và tạo môi trường dám học hỏi từ lỗi lầm.",
-            "reflectionPrompt": "Trong công việc hiện tại, bạn có đang để mình rơi vào thế bị động / đóng vai nạn nhân ở khía cạnh nào không? Bạn có thể chủ động thay đổi bối cảnh như cách Chị An viết MSR hoặc Chị Hà đối thoại ra sao?",
-            "actionPrompt": "Một hành động cụ thể bạn sẽ thực hiện ngay tuần này để kích hoạt đòn bẩy Tự chủ hoặc Kết nối tại đội ngũ:"
           }
         }
       ],
@@ -405,81 +346,7 @@
           "url": "data/artifacts/flashcards",
           "icon": "🃏"
         }
-      ],
-      "deepInsights": {
-        "title": "Khoa Học Hạnh Phúc Bền Vững & 3 Cấp Độ (Martin Seligman)",
-        "zapposCaseStudy": {
-          "title": "Case Study Zappos & Amazon (1,2 Tỷ USD): Khi Hạnh Phúc Là Lợi Thế Cạnh Tranh",
-          "content": "Năm 2009, Amazon chi 1,2 tỷ USD mua lại Zappos không phải chỉ để bán giày, mà để sở hữu 'công nghệ văn hóa' tạo trải nghiệm WOW. Tại Zappos, nhân viên được tặng 3.000 USD để nghỉ việc ngay tuần đầu nếu không hợp văn hóa. Nhân viên CSKH không bị áp KPI thời lượng cuộc gọi (cuộc gọi kỷ lục kéo dài 10 tiếng 43 phút), vì mục đích cao cả là xây dựng sự kết nối con người sâu sắc."
-        },
-        "seligmanLevels": [
-          {
-            "level": "Cấp độ 1: Thú vui (Pleasure)",
-            "nature": "Đến từ Sở hữu (vật chất) hoặc Trải nghiệm ngắn hạn. Nhanh nguội lạnh do cơ chế thích nghi khoái lạc (Hedonic Adaptation).",
-            "duration": "Ngắn hạn (Vài giờ đến vài ngày)",
-            "impact": "Tạo động lực tức thời nhưng dễ dẫn đến trống rỗng nếu thiếu cấp độ cao hơn."
-          },
-          {
-            "level": "Cấp độ 2: Đam mê (Passion / The Engaged Life)",
-            "nature": "Sự dấn thân, gắn kết sâu sắc và phát huy thế mạnh bản thân (Signature Strengths) từ động lực nội tại. Khi đó, trạng thái Dòng chảy (Flow) sẽ tự nhiên xuất hiện.",
-            "duration": "Bền vững theo hành trình/dự án",
-            "impact": "Gắn kết nội tại, nuôi dưỡng sự say mê và tạo nền tảng cho hiệu suất đỉnh cao."
-          },
-          {
-            "level": "Cấp độ 3: Mục đích cao cả (Higher Purpose)",
-            "nature": "Cảm giác thuộc về điều gì đó lớn lao hơn bản thân. Phụng sự và cống hiến cho tập thể và xã hội.",
-            "duration": "Trường tồn (Tính di sản cả đời)",
-            "impact": "Nội lực bền bỉ nhất, tạo sự kiên cường trước mọi biến cố và khủng hoảng."
-          }
-        ],
-        "compassClock": {
-          "title": "La Bàn và Đồng Hồ: Bi kịch Lệch Pha Giữa Giá Trị và Hành Động",
-          "content": "La bàn đại diện cho Giá trị cốt lõi (những gì ta NGHĨ là quan trọng), Đồng hồ đại diện cho Thời gian/Hành động thực tế. Bất hạnh nảy sinh khi ta tuyên bố 'Gia đình là số 1' (La bàn) nhưng 100% thời gian lại dành cho bàn nhậu (Đồng hồ). Khoảnh khắc Quyết định Then chốt (Critical Decision Moment - CBM) sẽ phơi bày Bạn thực sự là ai (Who you are) thay vì Bạn nghĩ mình là ai.",
-          "intelExample": "Tại Intel, văn hóa an toàn bắt đầu từ niềm tin 'Mọi thương vong đều phòng tránh được', và được cụ thể hóa thành kỷ luật thép: 'Phải nắm tay vịn khi lên xuống cầu thang'."
-        },
-        "sdtLevers": [
-          {
-            "lever": "Cảm giác Kết nối (Connection)",
-            "stat": "Thiếu kết nối đánh thuế 21% hiệu suất và tăng 66% lo âu. Kết nối chân thực giúp tăng 50% tuổi thọ.",
-            "action": "Lắng nghe không phán xét, xây dựng không gian an toàn tâm lý (Psychological Safety).",
-            "infographic": "data/artifacts/slides/slide_28.png"
-          },
-          {
-            "lever": "Cảm giác Tự chủ (Autonomy)",
-            "stat": "Khi tỷ lệ nhân viên cảm thấy tiếng nói được lắng nghe tăng từ 3/10 lên 6/10, tỷ lệ thôi việc giảm 27% và năng suất tăng 12%.",
-            "action": "Trao quyền quyết định trong phạm vi trách nhiệm, khuyến khích sáng kiến và thử nghiệm mới.",
-            "infographic": "data/artifacts/slides/slide_30.png"
-          },
-          {
-            "lever": "Cảm giác Tiến bộ (Progress)",
-            "stat": "67% người lao động khẳng định sự ghi nhận của cấp trên là động lực hiệu suất số 1 (McKinsey). 49% bất mãn khi thiếu cơ hội tăng trưởng.",
-            "action": "Ghi nhận tức thì các bước tiến nhỏ (Small Wins), thiết lập cột mốc học tập rõ ràng.",
-            "infographic": "data/artifacts/slides/slide_35.png"
-          }
-        ],
-        "infographics": [
-          {
-            "title": "Slide Bài Giảng: 3 Cấp Độ Hạnh Phúc (Martin Seligman)",
-            "url": "data/artifacts/slides/slide_16.png",
-            "desc": "Trích từ slide bài giảng chính thức DHM: 3 Cấp độ Hạnh phúc — Thú vui, Đam mê (Dấn thân gắn kết) và Mục đích cao cả."
-          },
-          {
-            "title": "Slide Bài Giảng: Ẩn Dụ Ba Tầng Lầu (Phong Tử Khải)",
-            "url": "data/artifacts/slides/slide_17.png",
-            "desc": "Trích từ slide bài giảng chính thức DHM: Tầng 1 Vật chất, Tầng 2 Tinh thần, Tầng 3 Tâm hồn."
-          },
-          {
-            "title": "Slide Bài Giảng: La Bàn Me Values (Giá Trị Cốt Lõi Cá Nhân)",
-            "url": "data/artifacts/slides/slide_23.png",
-            "desc": "Trích từ slide bài giảng chính thức DHM: Mô hình 3 vòng tròn Me - We - Community và Sự thống nhất bắt đầu từ Giá trị cá nhân."
-          },
-          {
-            "title": "Slide Bài Giảng: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy",
-            "url": "data/artifacts/slides/slide_25.png",
-            "desc": "Trích từ slide bài giảng chính thức DHM: Ba đòn bẩy Kết nối, Tự chủ, Tiến bộ."
-          }
-        ]
-      }
+      ]
     },
     {
       "id": "stage-2",
@@ -952,39 +819,39 @@
       "subSections": [
         {
           "id": "sub-3-1",
-          "title": "Tổng Kết Hành Trình",
-          "target": "stage3-recap-section",
-          "tab": "tab-practice"
-        },
-        {
-          "id": "sub-3-2",
-          "title": "Điểm Danh 21 Ngày",
+          "title": "Mục 3.1: Bảng Vinh Danh Chất Liệu & Điểm Danh 21 Ngày",
           "target": "stage3-tracker-section",
           "tab": "tab-practice"
         },
         {
+          "id": "sub-3-2",
+          "title": "Mục 3.2: Đấu Trường Tình Huống Thực Chiến (Bonus +50đ)",
+          "target": "stage3-scenarios-section",
+          "tab": "tab-practice"
+        },
+        {
           "id": "sub-3-3",
-          "title": "Đúc Kết Hàng Tuần",
-          "target": "stage3-weekly-section",
+          "title": "Mục 3.3: Podcast Tiếp Lửa & Tri Thức Chuyên Sâu (+30đ)",
+          "target": "stage3-podcast-section",
           "tab": "tab-practice"
         },
         {
           "id": "sub-3-4",
-          "title": "Tài Liệu & Công Cụ",
-          "target": "tab-resources",
-          "tab": "tab-resources"
+          "title": "Mục 3.4: Đúc Kết Tuần & Cam Kết Hành Động (+100đ)",
+          "target": "stage3-weekly-section",
+          "tab": "tab-practice"
         },
         {
           "id": "sub-3-5",
-          "title": "🎯 Tự Giải Tình Huống Mẫu",
-          "target": "stage3-practice-solve",
+          "title": "Mục 3.5: Cổng Qualifier & Đổi Quà Tri Ân (Reward Vault)",
+          "target": "stage3-reward-section",
           "tab": "tab-practice"
         },
         {
           "id": "sub-3-6",
-          "title": "☀️ Phân Tích Tình Huống Của Tôi",
-          "target": "stage3-my-scenario",
-          "tab": "tab-practice"
+          "title": "Mục 3.6: Kho Tài Liệu & Cẩm Nang Nghiên Cứu",
+          "target": "tab-resources",
+          "tab": "tab-resources"
         }
       ],
       "features": {
@@ -1236,7 +1103,165 @@
         "title": "Đồ Họa Tổng Kết: Khoa Học Hạnh Phúc Toàn Diện",
         "url": "data/artifacts/infographics/infographic_tong_ket_hanh_phuc.png",
         "desc": "Bản đồ thị giác tích hợp trọn vẹn 3 Cấp độ, 3 Đòn bẩy và 5 Thói quen Hạnh phúc để thực hành trong 21 ngày."
-      }
+      },
+      "inspirationPodcasts": [
+        {
+          "id": "a1-0",
+          "title": "0. Lời dẫn & Giới thiệu tổng quan",
+          "file": "data/artifacts/dh4_overview.mp3",
+          "duration": "2:45"
+        },
+        {
+          "id": "a1-1",
+          "title": "1. Khoa học Hạnh phúc & Nền tảng tâm lý",
+          "file": "data/artifacts/khoa_hoc_hanh_phuc.mp3",
+          "duration": "41:30"
+        },
+        {
+          "id": "a1-2",
+          "title": "2. Ba cấp độ hạnh phúc bền vững",
+          "file": "data/artifacts/ba_cap_do_ben_vung.mp3",
+          "duration": "39:50"
+        },
+        {
+          "id": "a1-3",
+          "title": "3. Ẩn dụ Ba tầng lầu & Case Study Zappos",
+          "file": "data/artifacts/ba_tang_zappos.mp3",
+          "duration": "40:15"
+        },
+        {
+          "id": "a1-4",
+          "title": "4. Hạnh phúc không khẩu hiệu",
+          "file": "data/artifacts/hanh_phuc_khong_khau_hieu.mp3",
+          "duration": "38:40"
+        }
+      ],
+      "deepInsights": {
+        "title": "Khoa Học Hạnh Phúc Bền Vững & 3 Cấp Độ (Martin Seligman)",
+        "zapposCaseStudy": {
+          "title": "Case Study Zappos & Amazon (1,2 Tỷ USD): Khi Hạnh Phúc Là Lợi Thế Cạnh Tranh",
+          "content": "Năm 2009, Amazon chi 1,2 tỷ USD mua lại Zappos không phải chỉ để bán giày, mà để sở hữu 'công nghệ văn hóa' tạo trải nghiệm WOW. Tại Zappos, nhân viên được tặng 3.000 USD để nghỉ việc ngay tuần đầu nếu không hợp văn hóa. Nhân viên CSKH không bị áp KPI thời lượng cuộc gọi (cuộc gọi kỷ lục kéo dài 10 tiếng 43 phút), vì mục đích cao cả là xây dựng sự kết nối con người sâu sắc."
+        },
+        "seligmanLevels": [
+          {
+            "level": "Cấp độ 1: Thú vui (Pleasure)",
+            "nature": "Đến từ Sở hữu (vật chất) hoặc Trải nghiệm ngắn hạn. Nhanh nguội lạnh do cơ chế thích nghi khoái lạc (Hedonic Adaptation).",
+            "duration": "Ngắn hạn (Vài giờ đến vài ngày)",
+            "impact": "Tạo động lực tức thời nhưng dễ dẫn đến trống rỗng nếu thiếu cấp độ cao hơn."
+          },
+          {
+            "level": "Cấp độ 2: Đam mê (Passion / The Engaged Life)",
+            "nature": "Sự dấn thân, gắn kết sâu sắc và phát huy thế mạnh bản thân (Signature Strengths) từ động lực nội tại. Khi đó, trạng thái Dòng chảy (Flow) sẽ tự nhiên xuất hiện.",
+            "duration": "Bền vững theo hành trình/dự án",
+            "impact": "Gắn kết nội tại, nuôi dưỡng sự say mê và tạo nền tảng cho hiệu suất đỉnh cao."
+          },
+          {
+            "level": "Cấp độ 3: Mục đích cao cả (Higher Purpose)",
+            "nature": "Cảm giác thuộc về điều gì đó lớn lao hơn bản thân. Phụng sự và cống hiến cho tập thể và xã hội.",
+            "duration": "Trường tồn (Tính di sản cả đời)",
+            "impact": "Nội lực bền bỉ nhất, tạo sự kiên cường trước mọi biến cố và khủng hoảng."
+          }
+        ],
+        "compassClock": {
+          "title": "La Bàn và Đồng Hồ: Bi kịch Lệch Pha Giữa Giá Trị và Hành Động",
+          "content": "La bàn đại diện cho Giá trị cốt lõi (những gì ta NGHĨ là quan trọng), Đồng hồ đại diện cho Thời gian/Hành động thực tế. Bất hạnh nảy sinh khi ta tuyên bố 'Gia đình là số 1' (La bàn) nhưng 100% thời gian lại dành cho bàn nhậu (Đồng hồ). Khoảnh khắc Quyết định Then chốt (Critical Decision Moment - CBM) sẽ phơi bày Bạn thực sự là ai (Who you are) thay vì Bạn nghĩ mình là ai.",
+          "intelExample": "Tại Intel, văn hóa an toàn bắt đầu từ niềm tin 'Mọi thương vong đều phòng tránh được', và được cụ thể hóa thành kỷ luật thép: 'Phải nắm tay vịn khi lên xuống cầu thang'."
+        },
+        "sdtLevers": [
+          {
+            "lever": "Cảm giác Kết nối (Connection)",
+            "stat": "Thiếu kết nối đánh thuế 21% hiệu suất và tăng 66% lo âu. Kết nối chân thực giúp tăng 50% tuổi thọ.",
+            "action": "Lắng nghe không phán xét, xây dựng không gian an toàn tâm lý (Psychological Safety).",
+            "infographic": "data/artifacts/slides/slide_28.png"
+          },
+          {
+            "lever": "Cảm giác Tự chủ (Autonomy)",
+            "stat": "Khi tỷ lệ nhân viên cảm thấy tiếng nói được lắng nghe tăng từ 3/10 lên 6/10, tỷ lệ thôi việc giảm 27% và năng suất tăng 12%.",
+            "action": "Trao quyền quyết định trong phạm vi trách nhiệm, khuyến khích sáng kiến và thử nghiệm mới.",
+            "infographic": "data/artifacts/slides/slide_30.png"
+          },
+          {
+            "lever": "Cảm giác Tiến bộ (Progress)",
+            "stat": "67% người lao động khẳng định sự ghi nhận của cấp trên là động lực hiệu suất số 1 (McKinsey). 49% bất mãn khi thiếu cơ hội tăng trưởng.",
+            "action": "Ghi nhận tức thì các bước tiến nhỏ (Small Wins), thiết lập cột mốc học tập rõ ràng.",
+            "infographic": "data/artifacts/slides/slide_35.png"
+          }
+        ],
+        "infographics": [
+          {
+            "title": "Slide Bài Giảng: 3 Cấp Độ Hạnh Phúc (Martin Seligman)",
+            "url": "data/artifacts/slides/slide_16.png",
+            "desc": "Trích từ slide bài giảng chính thức DHM: 3 Cấp độ Hạnh phúc — Thú vui, Đam mê (Dấn thân gắn kết) và Mục đích cao cả."
+          },
+          {
+            "title": "Slide Bài Giảng: Ẩn Dụ Ba Tầng Lầu (Phong Tử Khải)",
+            "url": "data/artifacts/slides/slide_17.png",
+            "desc": "Trích từ slide bài giảng chính thức DHM: Tầng 1 Vật chất, Tầng 2 Tinh thần, Tầng 3 Tâm hồn."
+          },
+          {
+            "title": "Slide Bài Giảng: La Bàn Me Values (Giá Trị Cốt Lõi Cá Nhân)",
+            "url": "data/artifacts/slides/slide_23.png",
+            "desc": "Trích từ slide bài giảng chính thức DHM: Mô hình 3 vòng tròn Me - We - Community và Sự thống nhất bắt đầu từ Giá trị cá nhân."
+          },
+          {
+            "title": "Slide Bài Giảng: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy",
+            "url": "data/artifacts/slides/slide_25.png",
+            "desc": "Trích từ slide bài giảng chính thức DHM: Ba đòn bẩy Kết nối, Tự chủ, Tiến bộ."
+          }
+        ]
+      },
+      "bonusScenarios": [
+        {
+          "id": "scenario-1-1",
+          "title": "Tình Huống Thực Tế 1.1: Trống Rỗng Sau Khi Đạt Đỉnh Doanh Số",
+          "context": "Một trưởng phòng kinh doanh xuất sắc sau 6 tháng miệt mài đã dẫn dắt đội ngũ vượt 130% KPI quý, nhận được khoản tiền thưởng lớn và sự tán dương từ ban giám đốc. Tuy nhiên, chỉ sau đúng 1 tuần ăn mừng, anh rơi vào trạng thái hụt hẫng, mất phương hướng và cảm thấy công việc hoàn toàn vô nghĩa khi bước vào chu kỳ KPI mới.",
+          "facultyAnalysis": "Hiện tượng này trong tâm lý học gọi là Thích Nghi Khoái Lạc (Hedonic Adaptation). Phần thưởng tiền bạc và danh vọng thuộc Cấp độ 1 (Thú vui ngắn hạn - Pleasure). Khi đạt được, dopamine tụt dốc nhanh chóng khiến người ta nhanh chóng trở lại mức cảm xúc ban đầu. Nếu chỉ dùng Cấp độ 1 để dẫn dắt đội ngũ, quản lý sẽ liên tục kiệt sức (burnout).",
+          "modelAnswer": "1. Nhận diện: Thừa nhận đây là quy luật tâm lý tự nhiên của Thú vui Cấp độ 1, không tự dằn vặt hay hoang mang.\n2. Chuyển dịch sang Cấp độ 2 (Flow/Đam mê): Tái thiết kế quy trình làm việc tập trung vào thử thách phát triển năng lực cho nhân viên thay vì chỉ nhìn vào con số.\n3. Nâng cấp lên Cấp độ 3 (Mục đích cao cả): Kết nối mục tiêu bán hàng với giá trị thực sự mang lại cho cuộc sống của khách hàng; xây dựng văn hóa đội ngũ hỗ trợ nhau cùng tiến bộ.",
+          "reflectionPrompt": "Nếu ở vị trí của trưởng phòng này, bạn sẽ làm gì để tìm lại động lực nội tại và giúp đội ngũ không bị kiệt sức sau mỗi đợt chốt KPI?",
+          "actionPrompt": "Hành động cụ thể bạn sẽ áp dụng ngay trong tuần này tại phòng ban/đội ngũ của mình:"
+        },
+        {
+          "id": "scenario-1-2",
+          "title": "Tình Huống Thực Tế 1.2: Xung Đột Giữa 'Chính Trực' Và Áp Lực Doanh Số",
+          "context": "Vào tuần cuối cùng của quý, doanh số của phòng kinh doanh còn thiếu 5% để đạt mốc thưởng toàn công ty. Cấp trên gợi ý ghi nhận trước một hợp đồng chưa hoàn tất thủ tục pháp lý sang tháng sau để 'làm đẹp số liệu'. Quản lý cảm thấy bị giằng xé dữ dội giữa áp lực tập thể và giá trị cá nhân 'Sự chính trực'.",
+          "facultyAnalysis": "Đây là bài kiểm tra kinh điển về La Bàn Giá Trị (Me Values). Khi các giá trị bị xung đột với lợi ích ngắn hạn, La Bàn chính là công cụ giúp người lãnh đạo không bị lạc lối. Tony Hsieh tại Zappos từng khẳng định: 'Nếu bạn không sẵn sàng hy sinh lợi nhuận ngắn hạn vì giá trị cốt lõi, thì đó không phải là giá trị cốt lõi mà chỉ là khẩu hiệu quảng cáo'.",
+          "modelAnswer": "1. Định vị La Bàn: Khẳng định 'Sự chính trực' là ranh giới đạo đức không thể thỏa hiệp.\n2. Đối thoại minh bạch (Courageous Conversation): Trình bày trung thực với cấp trên về rủi ro pháp lý và tổn hại uy tín thương hiệu lâu dài.\n3. Đề xuất giải pháp Win-Win: Tập trung toàn lực đội ngũ vào việc chốt các cơ hội bán thêm (upsell) hợp pháp cho khách hàng cũ trong 48 giờ cuối, thay vì gian lận số liệu.",
+          "reflectionPrompt": "Bạn đã từng đối mặt với tình huống nào đòi hỏi phải bảo vệ giá trị cốt lõi trước áp lực ngoại cảnh chưa? Bạn đã phản ứng ra sao?",
+          "actionPrompt": "Một nguyên tắc bất khả xâm phạm bạn cam kết giữ vững khi lãnh đạo hoặc làm việc cùng đội ngũ là gì?"
+        },
+        {
+          "id": "scenario-1-3",
+          "title": "Tình Huống Thực Tế 1.3: Đòn Bẩy Tự Chủ (Báo Cáo MSR Tại Tập Đoàn Công Nghệ, Đối Thoại Khách Hàng 15 Năm) & Đòn Bẩy Kết Nối (Hướng Gió Máy Lạnh)",
+          "context": "Tại một tập đoàn công nghệ toàn cầu, khi cấp trên trực tiếp chưa ghi nhận xứng đáng, thay vì cằn nhằn hay đóng vai nạn nhân thụ động (covert-aggressive), Chị An (nữ quản lý nhân sự) đã chủ động thực hành Đòn bẩy Tự chủ (Autonomy): tự tay viết Báo cáo Tình trạng Hàng tháng (Monthly Status Report - MSR) gửi thẳng ban giám đốc để chứng minh năng suất ngày thứ Sáu làm việc tại nhà (WFH) cao hơn 18% so với văn phòng, từ đó được phê duyệt chính sách linh hoạt ('You cannot change people, but you can change the context'). Tương tự, Chị Hà (Giám đốc Quản lý Khách hàng) khi bị một đối tác lớn 15 năm phản hồi gay gắt, thay vì né tránh, chị chủ động hẹn gặp đối thoại trực tiếp để làm rõ kỳ vọng, giành lại quyền làm chủ tình thế. Song song đó trong giờ làm việc tại văn phòng, Anh Nam (quản lý vận hành) nhận thấy người đồng nghiệp trẻ (Bình) ngồi ngay luồng gió máy lạnh phà thẳng vào đầu rất khó chịu nhưng ngại không dám nói, Anh Nam đã chủ động bước tới hỏi han và chỉnh lại hướng gió thổi sang vị trí khác, tạo nên sự thấu hiểu và gắn kết ấm áp (Đòn bẩy Kết nối).",
+          "facultyAnalysis": "Thuyết Tự Quyết (Self-Determination Theory - Deci & Ryan) chỉ ra 3 nhu cầu tâm lý cốt lõi nuôi dưỡng động lực nội tại: 1) Cảm giác Tự chủ (Autonomy / Sense of Control) - 'You cannot change people, but you can change the context', chuyển hóa từ làm vì SỢ sang làm vì TIN và chủ động kiểm soát kết quả; 2) Cảm giác Kết nối (Relatedness / Connection) - quan tâm tinh tế đến nhu cầu nhỏ của người khác (như hướng gió máy lạnh) để xây dựng an toàn tâm lý (Psychological Safety); 3) Cảm giác Tiến bộ (Competence / Progress) - tôn vinh các chiến thắng nhỏ (Small wins) và tiến trình nỗ lực.",
+          "modelAnswer": "1. Kích hoạt Đòn bẩy Tự chủ: Thay đổi bối cảnh thay vì đóng vai nạn nhân. Chủ động giao tiếp bằng dữ liệu xác thực (như Báo cáo MSR) hoặc đối thoại can đảm (như Chị Hà) để xác lập lại sự hợp tác lành mạnh.\n2. Nuôi dưỡng Đòn bẩy Kết nối: Lắng nghe không phán xét, quan tâm tinh tế đến nhu cầu của đồng đội từ những hành động nhỏ hàng ngày.\n3. Thiết lập Đòn bẩy Tiến bộ: Chia nhỏ mục tiêu, ghi nhận các bước tiến nhỏ (Small wins) và tạo môi trường dám học hỏi từ lỗi lầm.",
+          "reflectionPrompt": "Trong công việc hiện tại, bạn có đang để mình rơi vào thế bị động / đóng vai nạn nhân ở khía cạnh nào không? Bạn có thể chủ động thay đổi bối cảnh như cách Chị An viết MSR hoặc Chị Hà đối thoại ra sao?",
+          "actionPrompt": "Một hành động cụ thể bạn sẽ thực hiện ngay tuần này để kích hoạt đòn bẩy Tự chủ hoặc Kết nối tại đội ngũ:"
+        }
+      ],
+      "rewards": [
+        {
+          "id": "tier-bronze",
+          "points": 300,
+          "badge": "Hạt Mầm Hạnh Phúc 🌱",
+          "title": "Ebook Bản Đồ 21 Ngày Chuyển Hóa Hạnh Phúc",
+          "desc": "Cẩm nang độc quyền hướng dẫn chi tiết phương pháp nuôi dưỡng 5 thói quen chuyển hóa tự thân."
+        },
+        {
+          "id": "tier-silver",
+          "points": 700,
+          "badge": "Cây Kỷ Luật Vươn Mình 🌿",
+          "title": "Bộ Thẻ Bỏ Túi 5 Thói Quen (In Màu Ép Kim)",
+          "desc": "Phần quà hiện vật cao cấp do Ban Tổ Chức gửi tặng tận tay để mang theo rèn luyện mỗi ngày."
+        },
+        {
+          "id": "tier-gold",
+          "points": 1200,
+          "badge": "Đại Sứ Hạnh Phúc 🏆",
+          "title": "Vé Tham Gia Chương Trình Đào Tạo Chuyên Sâu Từ Ban Giảng Huấn",
+          "desc": "Chứng nhận Đại Sứ Hạnh Phúc + Suất học bổng chuyên sâu: Lựa chọn 1 (Team Happiness Coaching tiếng Việt) hoặc Lựa chọn 2 (Search Inside Yourself - SIY Jessica tiếng Anh 2027)."
+        }
+      ]
     }
   ]
 }

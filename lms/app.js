@@ -1468,22 +1468,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 8. AUDIO PLAYER CONTROLLER
     function setupAudioPlayer(stage) {
-        audioTrackSelect.innerHTML = "";
+        const audioDetails = document.getElementById("audio-player-details");
         const tracks = stage.audios || [];
 
-        if (tracks.length === 0) {
-            audioTrackSelect.innerHTML = `<option value="">Không có tệp âm thanh ở chặng này</option>`;
-            audioTrackSelect.disabled = true;
-            audioTrackSubtitle.textContent = "Chặng này không có tệp âm thanh bổ trợ.";
-            mainAudioSource.src = "";
-            mainAudioPlayer.pause();
-            mainAudioPlayer.load();
-            mainAudioPlayer.classList.add("opacity-50", "pointer-events-none");
+        if (stage.id === "stage-1" || tracks.length === 0) {
+            if (audioDetails) audioDetails.classList.add("hidden");
+            if (audioTrackSelect) {
+                audioTrackSelect.innerHTML = `<option value="">Không có tệp âm thanh ở chặng này</option>`;
+                audioTrackSelect.disabled = true;
+            }
+            if (audioTrackSubtitle) audioTrackSubtitle.textContent = "Chặng này không có tệp âm thanh bổ trợ.";
+            if (mainAudioSource) mainAudioSource.src = "";
+            if (mainAudioPlayer) {
+                mainAudioPlayer.pause();
+                mainAudioPlayer.load();
+                mainAudioPlayer.classList.add("opacity-50", "pointer-events-none");
+            }
             return;
         }
 
-        audioTrackSelect.disabled = false;
-        mainAudioPlayer.classList.remove("opacity-50", "pointer-events-none");
+        if (audioDetails) audioDetails.classList.remove("hidden");
+        if (audioTrackSelect) {
+            audioTrackSelect.innerHTML = "";
+            audioTrackSelect.disabled = false;
+        }
+        if (mainAudioPlayer) mainAudioPlayer.classList.remove("opacity-50", "pointer-events-none");
 
         tracks.forEach((track, i) => {
             const opt = document.createElement("option");
@@ -2286,20 +2295,6 @@ document.addEventListener("DOMContentLoaded", () => {
         bindInput("iam-1-3-a", val => { sData.iam_1_3 = sData.iam_1_3 || {}; sData.iam_1_3.A = val; debouncedSave(); }, sData.iam_1_3?.A);
         bindInput("iam-1-3-m", val => { sData.iam_1_3 = sData.iam_1_3 || {}; sData.iam_1_3.M = val; debouncedSave(); }, sData.iam_1_3?.M);
 
-        // 9.4 Practical Scenarios (Duy 3-Sections Model)
-        sData.scenarios = sData.scenarios || {};
-        sData.scenarios["scenario-1-1"] = sData.scenarios["scenario-1-1"] || {};
-        bindInput("scenario-1-1-reflection", val => { sData.scenarios["scenario-1-1"].reflection = val; debouncedSave(); }, sData.scenarios["scenario-1-1"].reflection);
-        bindInput("scenario-1-1-action", val => { sData.scenarios["scenario-1-1"].action = val; debouncedSave(); }, sData.scenarios["scenario-1-1"].action);
-
-        sData.scenarios["scenario-1-2"] = sData.scenarios["scenario-1-2"] || {};
-        bindInput("scenario-1-2-reflection", val => { sData.scenarios["scenario-1-2"].reflection = val; debouncedSave(); }, sData.scenarios["scenario-1-2"].reflection);
-        bindInput("scenario-1-2-action", val => { sData.scenarios["scenario-1-2"].action = val; debouncedSave(); }, sData.scenarios["scenario-1-2"].action);
-
-        sData.scenarios["scenario-1-3"] = sData.scenarios["scenario-1-3"] || {};
-        bindInput("scenario-1-3-reflection", val => { sData.scenarios["scenario-1-3"].reflection = val; debouncedSave(); }, sData.scenarios["scenario-1-3"].reflection);
-        bindInput("scenario-1-3-action", val => { sData.scenarios["scenario-1-3"].action = val; debouncedSave(); }, sData.scenarios["scenario-1-3"].action);
-
         evaluateLearnerStatus();
     }
 
@@ -2886,6 +2881,437 @@ document.addEventListener("DOMContentLoaded", () => {
                 e.preventDefault();
                 openInfographicModal("data/artifacts/slides/slide_25.png", "Slide Bài Giảng: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc");
             };
+        }
+
+        // 11.8 Render Bonus Scenarios, Podcasts, and Rewards Hub
+        renderStage3Scenarios(stage, s3);
+        renderStage3Podcasts(stage, s3);
+        renderStage3Rewards(stage, s3);
+    }
+
+    // 11.9 Stage 3 Bonus Gamification Points Calculator
+    function calculateStage3BonusPoints(s3) {
+        let total = 0;
+        const details = {
+            habits: 0,
+            scenarios: 0,
+            podcasts: 0,
+            weekly: 0,
+            linkedin: 0
+        };
+
+        // 1. Habit Tracker points: 5 pts per habit check + 10 bonus if >= 3 in a day
+        const trackerState = s3.habitTracker || {};
+        const habitKeys = ["mindfulness", "gratitude", "optimism", "flow", "altruism"];
+        Object.keys(trackerState).forEach(dayKey => {
+            const dayData = trackerState[dayKey] || {};
+            const checked = habitKeys.filter(k => !!dayData[k]).length;
+            details.habits += checked * 5;
+            if (checked >= 3) {
+                details.habits += 10;
+            }
+        });
+
+        // 2. Bonus Scenarios: +50 pts per completed scenario
+        const completedScenarios = s3.completedScenarios || {};
+        const scCount = Object.keys(completedScenarios).filter(k => !!completedScenarios[k]).length;
+        details.scenarios = scCount * 50;
+
+        // 3. Podcasts: +30 pts per confirmed podcast
+        const listenedPodcasts = s3.listenedPodcasts || {};
+        const podCount = Object.keys(listenedPodcasts).filter(k => !!listenedPodcasts[k]).length;
+        details.podcasts = podCount * 30;
+
+        // 4. Weekly Check-ins: +100 pts per completed week checkin (min 10 chars)
+        const wChecks = s3.weeklyCheckins || {};
+        ['w1', 'w2', 'w3'].forEach(wk => {
+            if (wChecks[wk] && wChecks[wk].trim().length >= 10) {
+                details.weekly += 100;
+            }
+        });
+
+        // 5. LinkedIn Story: +150 pts if verified
+        if (s3.linkedinUrl && s3.linkedinUrl.includes("linkedin.com")) {
+            details.linkedin = 150;
+        }
+
+        total = details.habits + details.scenarios + details.podcasts + details.weekly + details.linkedin;
+        return { total, details };
+    }
+
+    // 11.10 Render Stage 3 Bonus Scenarios
+    function renderStage3Scenarios(stage, s3) {
+        const scenariosListContainer = document.getElementById("stage3-bonus-scenarios-list");
+        const scenariosBadge = document.getElementById("bonus-scenarios-badge");
+        if (!scenariosListContainer) return;
+
+        const scenarios = stage.bonusScenarios || [];
+        s3.completedScenarios = s3.completedScenarios || {};
+        s3.scenarioNotes = s3.scenarioNotes || {};
+
+        const completedCount = scenarios.filter(sc => !!s3.completedScenarios[sc.id]).length;
+        if (scenariosBadge) {
+            scenariosBadge.textContent = `${completedCount}/${scenarios.length} Đã giải (+${completedCount * 50}đ)`;
+        }
+
+        scenariosListContainer.innerHTML = "";
+        if (scenarios.length === 0) {
+            scenariosListContainer.innerHTML = `<p class="text-xs text-slate-500 italic">Không có tình huống bonus ở chặng này.</p>`;
+            return;
+        }
+
+        scenarios.forEach((sc, idx) => {
+            const isCompleted = !!s3.completedScenarios[sc.id];
+            const savedNote = s3.scenarioNotes[sc.id] || "";
+            const card = document.createElement("div");
+            card.className = `p-4 sm:p-5 rounded-xl border transition-all ${
+                isCompleted
+                    ? "bg-brand-dark/90 border-brand-green/50 shadow-sm shadow-green-500/10"
+                    : "bg-brand-dark/70 border-brand-border hover:border-brand-amber/40"
+            } space-y-4`;
+
+            card.innerHTML = `
+                <div class="flex items-start justify-between flex-wrap gap-2">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-7 h-7 rounded-lg ${
+                            isCompleted ? "bg-brand-green text-black" : "bg-brand-amber/20 text-brand-amber border border-brand-amber/30"
+                        } flex items-center justify-center font-bold text-xs">
+                            ${isCompleted ? "✓" : (idx + 1)}
+                        </span>
+                        <div>
+                            <h5 class="text-xs sm:text-sm font-bold text-white">${sc.title}</h5>
+                            <span class="text-[10px] text-slate-400">Bonus Challenge · Phần thưởng +50 điểm</span>
+                        </div>
+                    </div>
+                    <span class="px-2.5 py-1 rounded-full ${
+                        isCompleted ? "bg-brand-green/20 text-brand-green border border-brand-green/40" : "bg-brand-amber/15 text-brand-amber border border-brand-amber/30"
+                    } text-[11px] font-mono font-bold">
+                        ${isCompleted ? "Đã nhận +50đ ✓" : "+50 Điểm Thưởng"}
+                    </span>
+                </div>
+
+                <!-- Bối cảnh tình huống -->
+                <div class="p-3.5 rounded-lg bg-brand-surface/70 border border-brand-border/60 text-xs text-slate-300 leading-relaxed">
+                    <span class="font-bold text-brand-amber">📌 Bối cảnh:</span> ${sc.context}
+                </div>
+
+                <!-- Nút xem phân tích và gợi ý -->
+                <div>
+                    <button type="button" class="btn-toggle-sc-hint w-full py-2 px-3 rounded-lg bg-brand-amber/10 hover:bg-brand-amber/20 text-brand-amber text-xs font-bold border border-brand-amber/30 transition-all flex items-center justify-between gap-2" data-sc-id="${sc.id}">
+                        <span class="flex items-center gap-1.5">
+                            <span>💡 Xem Phân Tích Chuyên Gia & Gợi Ý Lời Giải Mẫu</span>
+                        </span>
+                        <span class="sc-hint-chevron text-xs">▼</span>
+                    </button>
+                    <div id="sc-hint-${sc.id}" class="hidden mt-2 p-3.5 rounded-lg bg-brand-surface border border-brand-amber/40 space-y-2 text-xs text-slate-300">
+                        <div>
+                            <div class="font-bold text-brand-amber mb-0.5">🔍 Phân tích nguyên lý chuyên sâu:</div>
+                            <p class="leading-relaxed text-slate-300">${sc.facultyAnalysis || ""}</p>
+                        </div>
+                        <div class="pt-1.5 border-t border-brand-border/50">
+                            <div class="font-bold text-brand-green mb-0.5">🎯 Gợi ý bài mẫu của Ban Giảng Huấn:</div>
+                            <p class="leading-relaxed text-slate-200 whitespace-pre-line">${sc.modelAnswer || ""}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ô nhập suy ngẫm của học viên -->
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-semibold text-slate-200">
+                        ${sc.reflectionPrompt || "Góc nhìn & Bài học đúc kết của bạn:"}
+                    </label>
+                    <textarea class="sc-note-input w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber" rows="2" placeholder="Ghi lại giải pháp hoặc đúc kết hành động của bạn tại đây..." data-sc-id="${sc.id}">${savedNote}</textarea>
+                </div>
+
+                <!-- Nút bấm hoàn thành -->
+                <div class="flex items-center justify-between flex-wrap gap-2 pt-1">
+                    <span class="sc-save-msg text-[11px] text-brand-green hidden font-semibold">✓ Đã lưu đúc kết!</span>
+                    <button type="button" class="btn-complete-sc px-4 py-2 rounded-xl ${
+                        isCompleted
+                            ? "bg-brand-surface hover:bg-brand-card text-brand-green border border-brand-green/40"
+                            : "bg-gradient-to-r from-brand-orange to-brand-amber hover:brightness-110 text-black font-extrabold shadow-md"
+                    } text-xs transition-all flex items-center gap-1.5 ml-auto active:scale-95" data-sc-id="${sc.id}">
+                        <span>${isCompleted ? "✓ Đã Hoàn Thành (+50đ)" : "✓ Hoàn Thành & Nhận +50 Điểm"}</span>
+                    </button>
+                </div>
+            `;
+
+            // Bind events for hint toggle
+            const hintBtn = card.querySelector(".btn-toggle-sc-hint");
+            const hintBox = card.querySelector(`#sc-hint-${sc.id}`);
+            const hintChevron = card.querySelector(".sc-hint-chevron");
+            if (hintBtn && hintBox) {
+                hintBtn.onclick = () => {
+                    const isHidden = hintBox.classList.contains("hidden");
+                    if (isHidden) {
+                        hintBox.classList.remove("hidden");
+                        hintChevron.textContent = "▲";
+                    } else {
+                        hintBox.classList.add("hidden");
+                        hintChevron.textContent = "▼";
+                    }
+                };
+            }
+
+            // Bind input for note
+            const noteInput = card.querySelector(".sc-note-input");
+            if (noteInput) {
+                noteInput.oninput = () => {
+                    s3.scenarioNotes[sc.id] = noteInput.value;
+                    debouncedSave();
+                };
+            }
+
+            // Bind complete button
+            const completeBtn = card.querySelector(".btn-complete-sc");
+            if (completeBtn) {
+                completeBtn.onclick = () => {
+                    s3.completedScenarios[sc.id] = !s3.completedScenarios[sc.id];
+                    saveLearnerProgress();
+                    renderStage3Scenarios(stage, s3);
+                    renderStage3Rewards(stage, s3);
+                };
+            }
+
+            scenariosListContainer.appendChild(card);
+        });
+    }
+
+    // 11.11 Render Stage 3 Podcasts & Deep Insights
+    function renderStage3Podcasts(stage, s3) {
+        const podBadge = document.getElementById("podcasts-listened-badge");
+        const podSelect = document.getElementById("stage3-podcast-select");
+        const podTitle = document.getElementById("stage3-podcast-title");
+        const podSubtitle = document.getElementById("stage3-podcast-subtitle");
+        const podPlayer = document.getElementById("stage3-podcast-player");
+        const podSource = document.getElementById("stage3-podcast-source");
+        const btnConfirm = document.getElementById("btn-confirm-podcast-listen");
+        const deepInsightsContainer = document.getElementById("stage3-deep-insights-container");
+
+        const podcasts = stage.inspirationPodcasts || [];
+        s3.listenedPodcasts = s3.listenedPodcasts || {};
+
+        const listenedCount = podcasts.filter(p => !!s3.listenedPodcasts[p.id]).length;
+        if (podBadge) {
+            podBadge.textContent = `${listenedCount}/${podcasts.length} Đã nghe (+${listenedCount * 30}đ)`;
+        }
+
+        if (podSelect && podcasts.length > 0) {
+            podSelect.innerHTML = "";
+            podcasts.forEach((p, idx) => {
+                const opt = document.createElement("option");
+                opt.value = p.id;
+                const isListened = !!s3.listenedPodcasts[p.id];
+                opt.textContent = `${isListened ? "✓ " : ""}${p.title} (${p.duration})`;
+                podSelect.appendChild(opt);
+            });
+
+            const updateActivePodcast = (trackId) => {
+                const trk = podcasts.find(p => p.id === trackId) || podcasts[0];
+                if (!trk) return;
+                if (podTitle) podTitle.textContent = trk.title;
+                if (podSubtitle) podSubtitle.textContent = `Thời lượng: ${trk.duration} · Nhận +30 điểm khi nghe xong`;
+                if (podSource && podPlayer) {
+                    podSource.src = trk.file;
+                    podPlayer.load();
+                }
+                if (btnConfirm) {
+                    const isDone = !!s3.listenedPodcasts[trk.id];
+                    btnConfirm.innerHTML = isDone
+                        ? `<span>✓ Đã Nhận 30 Điểm (Bấm để hủy)</span>`
+                        : `<span>✓ Xác Nhận Đã Nghe (+30đ)</span>`;
+                    btnConfirm.className = `w-full sm:w-auto px-4 py-2 rounded-xl ${
+                        isDone ? "bg-brand-green/20 text-brand-green border-brand-green/40" : "bg-brand-amber/20 text-brand-amber border-brand-amber/40"
+                    } hover:brightness-110 text-xs font-bold border transition-all flex items-center justify-center gap-1.5 shrink-0`;
+                    btnConfirm.onclick = () => {
+                        s3.listenedPodcasts[trk.id] = !s3.listenedPodcasts[trk.id];
+                        saveLearnerProgress();
+                        renderStage3Podcasts(stage, s3);
+                        renderStage3Rewards(stage, s3);
+                    };
+                }
+            };
+
+            podSelect.onchange = () => {
+                updateActivePodcast(podSelect.value);
+            };
+
+            // Initialize with first track or saved selection
+            if (podSelect.value) {
+                updateActivePodcast(podSelect.value);
+            }
+        }
+
+        // Render Deep Insights NotebookLM inside accordion
+        if (deepInsightsContainer && stage.deepInsights) {
+            const di = stage.deepInsights;
+            deepInsightsContainer.innerHTML = "";
+
+            let diHtml = "";
+            if (di.zapposCaseStudy) {
+                diHtml += `
+                    <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-2">
+                        <div class="text-xs font-bold text-brand-amber flex items-center gap-1.5">
+                            <span>🏢</span> ${di.zapposCaseStudy.title}
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">${di.zapposCaseStudy.content}</p>
+                    </div>
+                `;
+            }
+
+            if (di.seligmanLevels && di.seligmanLevels.length > 0) {
+                diHtml += `
+                    <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
+                        <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                            <span>📚</span> 3 Cấp Độ Hạnh Phúc Bền Vững (Martin Seligman)
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                            ${di.seligmanLevels.map(lvl => `
+                                <div class="p-3 rounded-lg bg-brand-surface/70 border border-brand-border/60 space-y-1">
+                                    <div class="text-xs font-bold text-brand-amber">${lvl.level}</div>
+                                    <p class="text-[11px] text-slate-300 leading-snug">${lvl.nature}</p>
+                                    <div class="text-[10px] text-slate-400 mt-1 font-mono">Đặc tính: ${lvl.duration}</div>
+                                </div>
+                            `).join("")}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (di.compassClock) {
+                diHtml += `
+                    <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-2">
+                        <div class="text-xs font-bold text-brand-orange flex items-center gap-1.5">
+                            <span>🧭</span> ${di.compassClock.title}
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">${di.compassClock.content}</p>
+                        ${di.compassClock.intelExample ? `<div class="p-2.5 rounded-lg bg-brand-surface border border-brand-border/60 text-[11px] text-slate-300 italic"><strong class="text-white">Ví dụ Intel:</strong> ${di.compassClock.intelExample}</div>` : ""}
+                    </div>
+                `;
+            }
+
+            if (di.sdtLevers && di.sdtLevers.length > 0) {
+                diHtml += `
+                    <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
+                        <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+                            <span>🚀</span> Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hiệu Suất Cao
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                            ${di.sdtLevers.map(s => `
+                                <div class="p-3 rounded-lg bg-brand-surface/70 border border-brand-border/60 space-y-1.5">
+                                    <div class="text-xs font-bold text-emerald-400">${s.lever}</div>
+                                    <div class="text-[11px] text-slate-300">${s.stat}</div>
+                                    <div class="text-[11px] text-brand-amber font-medium">Hành động: ${s.action}</div>
+                                    ${s.infographic ? `<button type="button" onclick="window.openInfographicModal('${s.infographic}', '${s.lever}')" class="text-[10px] text-brand-amber hover:underline flex items-center gap-1 pt-1">🔍 Xem Infographic HD</button>` : ""}
+                                </div>
+                            `).join("")}
+                        </div>
+                    </div>
+                `;
+            }
+
+            deepInsightsContainer.innerHTML = diHtml;
+        }
+    }
+
+    // 11.12 Render Stage 3 Rewards Hub & Qualifier Gate
+    function renderStage3Rewards(stage, s3) {
+        const bonusScoreEl = document.getElementById("bonus-total-points");
+        const bonusQualifierEl = document.getElementById("bonus-qualifier-status");
+        const bonusProgressText = document.getElementById("bonus-progress-text");
+        const bonusProgressBar = document.getElementById("bonus-progress-bar");
+        const linkedinInput = document.getElementById("linkedin-story-url");
+        const btnVerifyLinkedin = document.getElementById("btn-verify-linkedin");
+        const linkedinStatus = document.getElementById("linkedin-verify-status");
+        const rewardsGrid = document.getElementById("rewards-tiers-grid");
+
+        const points = calculateStage3BonusPoints(s3);
+        const targetPoints = 1200;
+        const total = points.total;
+
+        if (bonusScoreEl) bonusScoreEl.textContent = `${total} đ`;
+
+        const pct = Math.min(100, Math.round((total / targetPoints) * 100));
+        if (bonusProgressText) bonusProgressText.textContent = `${total} / ${targetPoints} Điểm (${pct}%)`;
+        if (bonusProgressBar) bonusProgressBar.style.width = `${pct}%`;
+
+        const isGoldQualified = total >= targetPoints;
+        if (bonusQualifierEl) {
+            if (isGoldQualified) {
+                bonusQualifierEl.innerHTML = `<span class="text-brand-green font-bold">✓ ĐÃ ĐỦ ĐIỀU KIỆN VÉ VÀNG QUALIFIER!</span>`;
+            } else {
+                bonusQualifierEl.textContent = `Cần thêm ${targetPoints - total}đ để đạt Cổng Vàng`;
+            }
+        }
+
+        // LinkedIn Handler
+        if (linkedinInput) {
+            linkedinInput.value = s3.linkedinUrl || "";
+        }
+        if (linkedinStatus && s3.linkedinUrl && s3.linkedinUrl.includes("linkedin.com")) {
+            linkedinStatus.classList.remove("hidden");
+            linkedinStatus.className = "text-xs font-semibold text-brand-green";
+            linkedinStatus.innerHTML = `✓ Đã xác thực bài viết LinkedIn (+150đ): <a href="${s3.linkedinUrl}" target="_blank" class="underline text-sky-400">Xem bài viết</a>`;
+        }
+
+        if (btnVerifyLinkedin && linkedinInput) {
+            btnVerifyLinkedin.onclick = () => {
+                const val = linkedinInput.value.trim();
+                if (!val) {
+                    alert("Vui lòng nhập đường dẫn bài viết LinkedIn của bạn.");
+                    return;
+                }
+                if (!val.includes("linkedin.com")) {
+                    alert("Đường dẫn phải thuộc miền linkedin.com hợp lệ.");
+                    return;
+                }
+                s3.linkedinUrl = val;
+                saveLearnerProgress();
+                renderStage3Rewards(stage, s3);
+                alert("Chúc mừng! Đã ghi nhận đường dẫn bài viết LinkedIn và cộng +150 điểm thưởng.");
+            };
+        }
+
+        // Render Reward Tiers
+        if (rewardsGrid) {
+            rewardsGrid.innerHTML = "";
+            const rewards = stage.rewards || [];
+            rewards.forEach(rw => {
+                const isUnlocked = total >= rw.points;
+                const card = document.createElement("div");
+                card.className = `p-4 sm:p-5 rounded-2xl border transition-all flex flex-col justify-between ${
+                    isUnlocked
+                        ? "bg-gradient-to-b from-brand-card to-brand-surface border-brand-amber shadow-lg shadow-amber-500/10"
+                        : "bg-brand-dark/60 border-brand-border/60 opacity-80"
+                } space-y-3`;
+
+                card.innerHTML = `
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-extrabold ${isUnlocked ? "text-brand-amber" : "text-slate-400"}">${rw.badge}</span>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold ${
+                                isUnlocked ? "bg-brand-green/20 text-brand-green border border-brand-green/40" : "bg-brand-dark text-slate-400 border border-brand-border"
+                            }">
+                                ${isUnlocked ? "Đã Mở Khóa ✓" : `${rw.points} Điểm`}
+                            </span>
+                        </div>
+                        <h5 class="text-xs sm:text-sm font-bold text-white">${rw.title}</h5>
+                        <p class="text-[11px] text-slate-300 leading-relaxed">${rw.desc}</p>
+                    </div>
+
+                    <div class="pt-2 border-t border-brand-border/50">
+                        ${
+                            isUnlocked
+                                ? `<button type="button" class="w-full py-2 px-3 rounded-xl bg-brand-amber hover:bg-amber-400 text-black font-extrabold text-xs shadow-md transition-all flex items-center justify-center gap-1.5" onclick="alert('Đã ghi nhận yêu cầu nhận phần thưởng: ${rw.title}! Ban Tổ Chức sẽ liên hệ theo email đăng ký.')">
+                                       <span>🎁 Yêu Cầu Nhận Thưởng</span>
+                                   </button>`
+                                : `<div class="text-[11px] text-slate-500 text-center font-semibold">Cần thêm ${rw.points - total}đ để mở khóa</div>`
+                        }
+                    </div>
+                `;
+
+                rewardsGrid.appendChild(card);
+            });
         }
     }
 
