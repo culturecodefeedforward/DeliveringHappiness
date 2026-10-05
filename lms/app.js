@@ -20,11 +20,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 videoTitle: "Video Explainer: Delivering Happiness Movement (Hệ Điều Hành Hạnh Phúc)",
                 videoType: "mp4",
                 subSections: [
-                    { id: "sub-1-1", title: "Mục 1.1: Video Explainer & Kho Audio Bài Giảng", target: "video-player-container", tab: "tab-summary" },
-                    { id: "sub-1-2", title: "Mục 1.2: Khoa Học Hạnh Phúc & 3 Cấp Độ", target: "stage1-mod-1-1", tab: "tab-practice" },
-                    { id: "sub-1-3", title: "Mục 1.3: La Bàn Giá Trị Cốt Lõi Cá Nhân (Me Values)", target: "stage1-mod-1-2", tab: "tab-practice" },
-                    { id: "sub-1-4", title: "Mục 1.4: 3 Đòn Bẩy Hạnh Phúc (Deci & Ryan)", target: "stage1-mod-1-3", tab: "tab-practice" },
-                    { id: "sub-1-5", title: "Mục 1.5: Bài Kiểm Tra Vượt Chặng 1 (10 Câu Trắc Nghiệm)", target: "stage1-mod-quiz", tab: "tab-practice" }
+                    { id: "sub-1-1", title: "Bài 1.1: 3 Cấp Độ Hạnh Phúc (Martin Seligman)", target: "stage1-mod-1-1", tab: "tab-practice" },
+                    { id: "sub-1-2", title: "Bài 1.2: La Bàn Giá Trị Cốt Lõi Cá Nhân (Me Values)", target: "stage1-mod-1-2", tab: "tab-practice" },
+                    { id: "sub-1-3", title: "Bài 1.3: 3 Đòn Bẩy Hạnh Phúc (Deci & Ryan)", target: "stage1-mod-1-3", tab: "tab-practice" },
+                    { id: "sub-1-4", title: "Bài 1.4: Cổng Vượt Chặng (≥80% Trắc Nghiệm)", target: "stage1-mod-quiz", tab: "tab-practice" }
                 ],
                 audios: [
                     { id: "a1-0", title: "0. Lời dẫn & Giới thiệu tổng quan", file: "data/artifacts/dh4_overview.mp3", duration: "2:45" },
@@ -1153,14 +1152,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     let isSubDone = false;
                     const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
                     if (sub.id === "sub-1-1") {
-                        isSubDone = Boolean(s1Data.videoWatched || s1Data.audioListened);
-                    } else if (sub.id === "sub-1-2") {
                         isSubDone = Boolean(s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i));
-                    } else if (sub.id === "sub-1-3") {
+                    } else if (sub.id === "sub-1-2") {
                         isSubDone = Boolean((s1Data.selectedValues && s1Data.selectedValues.length > 0) && (s1Data.iam_1_2 && (s1Data.iam_1_2.I || s1Data.iam_1_2.i)));
-                    } else if (sub.id === "sub-1-4") {
+                    } else if (sub.id === "sub-1-3") {
                         isSubDone = Boolean(s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i));
-                    } else if (sub.id === "sub-1-5") {
+                    } else if (sub.id === "sub-1-4") {
                         isSubDone = Boolean(s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80);
                     }
 
@@ -3959,6 +3956,41 @@ document.addEventListener("DOMContentLoaded", () => {
     window.openInfographicModal = openInfographicModal;
     window.closeInfographicModal = closeInfographicModal;
 
+    // 12.4B STANDALONE VIDEO OVERVIEW MODAL
+    const modalVideoOverview = document.getElementById("modal-video-overview");
+    const btnCloseVideoOverview = document.getElementById("btn-close-video-overview");
+    const overviewVideoEl = document.getElementById("global-overview-video-el");
+    const btnHeaderOverviewVideo = document.getElementById("btn-header-overview-video");
+    const btnGlobalOverviewVideo = document.getElementById("btn-global-overview-video");
+
+    function openOverviewVideoModal() {
+        if (!modalVideoOverview) return;
+        modalVideoOverview.classList.remove("hidden");
+        if (overviewVideoEl) {
+            overviewVideoEl.play().catch(() => {});
+        }
+    }
+
+    function closeOverviewVideoModal() {
+        if (!modalVideoOverview) return;
+        modalVideoOverview.classList.add("hidden");
+        if (overviewVideoEl) {
+            overviewVideoEl.pause();
+        }
+    }
+
+    if (btnHeaderOverviewVideo) btnHeaderOverviewVideo.addEventListener("click", openOverviewVideoModal);
+    if (btnGlobalOverviewVideo) btnGlobalOverviewVideo.addEventListener("click", openOverviewVideoModal);
+    if (btnCloseVideoOverview) btnCloseVideoOverview.addEventListener("click", closeOverviewVideoModal);
+    if (modalVideoOverview) {
+        modalVideoOverview.addEventListener("click", (e) => {
+            if (e.target === modalVideoOverview) closeOverviewVideoModal();
+        });
+    }
+
+    window.openOverviewVideoModal = openOverviewVideoModal;
+    window.closeOverviewVideoModal = closeOverviewVideoModal;
+
     // 12.5 DOCUMENT READER MODAL
     async function openDocReader(docUrl, title) {
         if (!docReaderModal) return;
@@ -4213,18 +4245,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
         let count = 0;
-        // Mốc 1 (20%): Video giới thiệu hoặc Audio podcast đã xem/nghe
-        if (s1Data.videoWatched || s1Data.audioListened) count++;
-        // Mốc 2 (20%): Hoàn thành phản tư I•A•M 1.1 (3 Cấp Độ Hạnh Phúc)
+        // Mốc 1 (25%): Hoàn thành phản tư I•A•M 1.1 (3 Cấp Độ Hạnh Phúc)
         if (s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i)) count++;
-        // Mốc 3 (20%): Đã chọn ≥1 Giá trị La Bàn VÀ hoàn thành phản tư I•A•M 1.2
+        // Mốc 2 (25%): Đã chọn ≥1 Giá trị La Bàn VÀ hoàn thành phản tư I•A•M 1.2
         if (s1Data.selectedValues && s1Data.selectedValues.length > 0 && s1Data.iam_1_2 && (s1Data.iam_1_2.I || s1Data.iam_1_2.i)) count++;
-        // Mốc 4 (20%): Hoàn thành phản tư I•A•M 1.3 (3 Đòn Bẩy Hạnh Phúc)
+        // Mốc 3 (25%): Hoàn thành phản tư I•A•M 1.3 (3 Đòn Bẩy Hạnh Phúc)
         if (s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i)) count++;
-        // Mốc 5 (20%): Đạt bài kiểm tra vượt chặng (≥8/10 câu hoặc ≥80%)
+        // Mốc 4 (25%): Đạt bài kiểm tra vượt chặng (≥8/10 câu hoặc ≥80%)
         if (s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80) count++;
 
-        return Math.min(100, Math.round(count * 20));
+        return Math.min(100, Math.round(count * 25));
     }
 
     function calculateStage2Progress() {
@@ -4296,16 +4326,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
         const isS1Done = learnerProgress.completedStages && learnerProgress.completedStages.includes("stage-1");
 
-        const mVideoDone = isS1Done || Boolean(s1Data.videoWatched || s1Data.audioListened);
         const mLevelsDone = isS1Done || Boolean(s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i));
         const mValuesDone = isS1Done || Boolean((s1Data.selectedValues && s1Data.selectedValues.length > 0) && (s1Data.iam_1_2 && (s1Data.iam_1_2.I || s1Data.iam_1_2.i)));
         const mDriversDone = isS1Done || Boolean(s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i));
         const mQuizDone = isS1Done || Boolean(s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80);
 
-        const doneCount = [mVideoDone, mLevelsDone, mValuesDone, mDriversDone, mQuizDone].filter(Boolean).length;
+        const doneCount = [mLevelsDone, mValuesDone, mDriversDone, mQuizDone].filter(Boolean).length;
         const milestoneText = document.getElementById("stage1-milestone-text");
         if (milestoneText) {
-            milestoneText.textContent = `${doneCount}/5 Hoàn thành`;
+            milestoneText.textContent = `${doneCount}/4 Hoàn thành`;
         }
 
         function setPill(id, done) {
@@ -4321,7 +4350,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        setPill("m-pill-video", mVideoDone);
         setPill("m-pill-levels", mLevelsDone);
         setPill("m-pill-values", mValuesDone);
         setPill("m-pill-drivers", mDriversDone);
