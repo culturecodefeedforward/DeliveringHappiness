@@ -1334,8 +1334,71 @@ function handleInterestLead_(data, laneKey) {
     lock.releaseLock();
   }
 
+  if (!isDuplicate) {
+    try {
+      sendInterestFacultyNotification_(ss, data, lane, uuid);
+    } catch (e_mail) {
+      writeSystemLog(ss, 'WARN', 'Gửi email thông báo quan tâm DHM10 cho BGH thất bại: ' + e_mail.message, uuid);
+    }
+  }
+
   writeSystemLog(ss, 'INFO', isDuplicate ? 'Duplicate interest lead' : 'Interest lead saved', uuid);
   return jsonOut({ success: true, state: 'INTEREST_SAVED', interestUuid: uuid, duplicate: isDuplicate });
+}
+
+function sendInterestFacultyNotification_(ss, data, lane, uuid) {
+  var props = getScriptProperties_();
+  var facultyStr = props.getProperty('FACULTY_EMAILS') || '';
+  var facultyList = facultyStr ? facultyStr.split(',').map(function(e) { return e.trim(); }).filter(Boolean) : [].concat(BTC_EMAILS);
+  if (!facultyList || !facultyList.length) {
+    facultyList = [].concat(BTC_EMAILS);
+  }
+
+  var name = escapeHtml_(data.fullName || '(Chưa nhập tên)');
+  var phone = escapeHtml_(data.phone || 'Chưa cung cấp');
+  var email = escapeHtml_(data.email || 'Chưa cung cấp');
+  var location = escapeHtml_(data.location || 'Chưa chọn');
+  var company = escapeHtml_(data.company || 'Chưa cung cấp');
+  var jobTitle = escapeHtml_(data.jobTitle || 'Chưa cung cấp');
+  var refName = escapeHtml_(data.referrerName || '');
+  var refPhone = escapeHtml_(data.referrerPhone || '');
+  var note = escapeHtml_(data.note || '');
+  var timeStr = Utilities.formatDate(new Date(), 'Asia/Ho_Chi_Minh', 'HH:mm:ss dd/MM/yyyy');
+
+  var subject = '[CultureCode] Thông báo Ban Giảng Huấn: Đăng ký quan tâm mới - ' + (data.fullName || 'Học viên') + ' (' + (data.location || lane.titleShort) + ')';
+
+  var body =
+    '<div class="greeting">Kính gửi Ban Giảng Huấn & Ban Tổ Chức,</div>' +
+    '<div class="badge-congrats" style="display:inline-block; background-color:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; padding:6px 14px; border-radius:6px; font-size:13px; font-weight:700; margin-bottom:18px; text-transform:uppercase;">' +
+    '✨ Có đăng ký quan tâm mới — ' + escapeHtml_(lane.titleShort) + ' (Hybrid)' +
+    '</div>' +
+    '<div class="event-box" style="background-color:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:20px; margin:20px 0;">' +
+    '<div class="event-title" style="font-size:16px; font-weight:bold; color:#0f766e; margin-bottom:12px;">📋 Chi tiết thông tin người quan tâm:</div>' +
+    '<div class="event-detail"><strong>Họ và tên:</strong> ' + name + '</div>' +
+    '<div class="event-detail"><strong>Số điện thoại / Zalo:</strong> ' + phone + '</div>' +
+    '<div class="event-detail"><strong>Email:</strong> ' + email + '</div>' +
+    '<div class="event-detail"><strong>Điểm cầu mong muốn:</strong> <span style="color:#d97706; font-weight:bold;">' + location + '</span></div>' +
+    '<div class="event-detail"><strong>Đơn vị / Doanh nghiệp:</strong> ' + company + '</div>' +
+    '<div class="event-detail"><strong>Chức danh / Vị trí:</strong> ' + jobTitle + '</div>' +
+    (refName ? '<div class="event-detail"><strong>Người giới thiệu:</strong> ' + refName + (refPhone ? ' (' + refPhone + ')' : '') + '</div>' : '') +
+    (note ? '<div class="event-detail" style="margin-top:8px; padding-top:8px; border-top:1px dashed #cbd5e1;"><strong>Ghi chú / Kỳ vọng:</strong><br><span style="font-style:italic; white-space:pre-wrap;">' + note + '</span></div>' : '') +
+    '<div class="event-detail" style="margin-top:8px; font-size:12px; color:#64748b;"><strong>Thời gian ghi nhận:</strong> ' + timeStr + ' | <strong>Mã UUID:</strong> ' + escapeHtml_(uuid) + '</div>' +
+    '</div>' +
+    '<p class="paragraph" style="font-size:13.5px; color:#64748b; font-style:italic;">Email này được gửi tự động từ hệ thống Delivering Happiness khi có khách hàng để lại thông tin quan tâm khóa DHM10.</p>';
+
+  var fullHtml = renderEmailShell_(
+    lane.titleShort + ' — Thông báo Đăng ký quan tâm mới',
+    'Có người quan tâm mới: ' + name + ' (' + location + ')',
+    body
+  );
+
+  MailApp.sendEmail({
+    to: facultyList.join(','),
+    subject: subject,
+    htmlBody: fullHtml
+  });
+
+  writeSystemLog(ss, 'INFO', 'Đã gửi mail thông báo quan tâm DHM10 cho BGH', uuid + ' to ' + facultyList.join(','));
 }
 
 function isValidProgramInterestUuid_(value) {
