@@ -325,8 +325,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // 2. CONFIGURATION & STATE OBJECT
     const LMS_CONFIG = {
         PHASE: 1,
-        ENABLE_REMOTE_SYNC: false, // Phase 1: Local-only storage. Phase 2: Kích hoạt khi có Webhook chính thức
-        AUTHORIZED_WEBHOOKS: []
+        ENABLE_REMOTE_SYNC: true,
+        AUTHORIZED_WEBHOOKS: [
+            "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec"
+        ]
     };
 
     let currentStageIndex = 0;
@@ -918,6 +920,100 @@ document.addEventListener("DOMContentLoaded", () => {
             navigator.sendBeacon(webhookUrl, JSON.stringify(payload));
         } catch (e) {
             // silent fallback
+        }
+    }
+
+    function syncHabitTrackerToCRM() {
+        const statusEl = document.getElementById("habit-sync-status");
+        if (!currentUser) {
+            if (statusEl) {
+                statusEl.textContent = "⚠️ Vui lòng đăng nhập trước khi đồng bộ";
+                statusEl.className = "text-[10px] text-amber-400 font-medium";
+            }
+            return;
+        }
+
+        const s3 = (learnerProgress.stageData && learnerProgress.stageData["stage-3"]) || { habitTracker: {}, weeklyCheckins: {} };
+        const tracker = s3.habitTracker || {};
+        const habitKeys = ["mindfulness", "gratitude", "optimism", "flow", "altruism"];
+        let totalChecks = 0;
+        for (let d = 1; d <= 21; d++) {
+            const dayData = tracker[`day_${d}`] || {};
+            totalChecks += habitKeys.filter(k => !!dayData[k]).length;
+        }
+
+        if (totalChecks === 0) {
+            if (statusEl) {
+                statusEl.textContent = "⚠️ Chưa có dữ liệu điểm danh để đồng bộ";
+                statusEl.className = "text-[10px] text-amber-400 font-medium";
+            }
+            return;
+        }
+
+        const streakResult = calculateStage3Streak(tracker);
+        const maxChecks = 21 * 5;
+        const completionPct = Math.round((totalChecks / maxChecks) * 1000) / 10;
+
+        const payload = {
+            action: "sync_habit_tracker",
+            learner_id: currentUser.learner_id || "DHM-USER",
+            name: currentUser.name || "",
+            email: currentUser.email || currentUser.identity || "",
+            phone: currentUser.phone || "",
+            cohort: currentUser.cohort || "",
+            sync_timestamp: new Date().toISOString(),
+            habit_tracker: tracker,
+            streak_stats: {
+                current_streak: streakResult.currentStreak || 0,
+                longest_streak: streakResult.longestStreak || 0,
+                total_days_active: streakResult.totalCompletedDays || 0,
+                total_checks: totalChecks,
+                completion_percent: completionPct
+            },
+            weekly_checkins: s3.weeklyCheckins || {}
+        };
+
+        const webhookUrl = LMS_CONFIG.AUTHORIZED_WEBHOOKS[0];
+        if (!webhookUrl) {
+            if (statusEl) {
+                statusEl.textContent = "❌ Lỗi: Chưa cấu hình webhook";
+                statusEl.className = "text-[10px] text-rose-400 font-medium";
+            }
+            return;
+        }
+
+        if (statusEl) {
+            statusEl.textContent = "⏳ Đang gửi dữ liệu về BTC...";
+            statusEl.className = "text-[10px] text-sky-400 font-medium";
+        }
+
+        let sent = false;
+        try {
+            if (navigator.sendBeacon) {
+                sent = navigator.sendBeacon(webhookUrl, JSON.stringify(payload));
+            }
+        } catch (e) {
+            sent = false;
+        }
+
+        if (!sent) {
+            fetch(webhookUrl, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify(payload),
+                keepalive: true,
+                mode: "no-cors"
+            }).catch(() => {});
+        }
+
+        const now = new Date();
+        const syncKey = "dhm_habit_last_sync_" + (currentUser.email || currentUser.identity);
+        localStorage.setItem(syncKey, now.toISOString());
+
+        const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} ${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
+        if (statusEl) {
+            statusEl.textContent = `✅ Đã đồng bộ lúc ${timeStr}`;
+            statusEl.className = "text-[10px] text-emerald-400 font-medium";
         }
     }
 
@@ -2896,6 +2992,25 @@ document.addEventListener("DOMContentLoaded", () => {
         // Kích hoạt Streak Engine & Cập nhật Streak Hero Banner
         const streakStats = calculateStage3Streak(s3.habitTracker);
         renderStage3StreakHero(streakStats);
+
+        // 11.4.1 Habit Tracker CRM Sync Button & Status Badge
+        const btnSyncHabitCRM = document.getElementById("btn-sync-habit-crm");
+        if (btnSyncHabitCRM) {
+            btnSyncHabitCRM.onclick = () => syncHabitTrackerToCRM();
+        }
+        const habitSyncStatusEl = document.getElementById("habit-sync-status");
+        if (habitSyncStatusEl && currentUser) {
+            const syncKey = "dhm_habit_last_sync_" + (currentUser.email || currentUser.identity);
+            const lastSync = localStorage.getItem(syncKey);
+            if (lastSync) {
+                const d = new Date(lastSync);
+                if (!isNaN(d.getTime())) {
+                    const timeStr = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')} ${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+                    habitSyncStatusEl.textContent = `✅ Đã đồng bộ lúc ${timeStr}`;
+                    habitSyncStatusEl.className = "text-[10px] text-emerald-400 font-medium";
+                }
+            }
+        }
 
         // 11.5 Weekly Checkins
         const wChecks = s3.weeklyCheckins || {};

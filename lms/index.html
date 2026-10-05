@@ -1768,14 +1768,23 @@
 
                             <!-- 21-DAY HABIT TRACKER GRID -->
                             <div id="stage3-tracker-section" class="p-5 rounded-2xl bg-brand-card/40 border border-brand-border space-y-4">
-                                <div class="flex items-center justify-between">
+                                <div class="flex flex-wrap items-center justify-between gap-3">
                                     <div>
                                         <h4 class="text-sm font-bold text-white flex items-center gap-2">
                                             <span>📅 Bảng Điểm Danh 5 Thói Quen 21 Ngày</span>
                                         </h4>
                                         <p class="text-xs text-slate-400">Tích chọn các thói quen bạn đã thực hành mỗi ngày (Dữ liệu lưu tự động)</p>
                                     </div>
-                                    <span id="tracker-count-badge" class="text-xs px-2.5 py-1 rounded bg-brand-amber/20 text-brand-amber font-bold border border-brand-amber/30">0/105 Lượt</span>
+                                    <div class="flex items-center gap-3">
+                                        <span id="tracker-count-badge" class="text-xs px-2.5 py-1 rounded bg-brand-amber/20 text-brand-amber font-bold border border-brand-amber/30">0/105 Lượt</span>
+                                        <div class="flex flex-col items-end gap-1">
+                                            <button id="btn-sync-habit-crm"
+                                                class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-brand-green/80 to-teal-500/80 hover:from-brand-green hover:to-teal-500 text-white text-xs font-bold shadow-sm transition-all duration-200 active:scale-95">
+                                                💾 Đồng Bộ Tiến Độ Về BTC
+                                            </button>
+                                            <span id="habit-sync-status" class="text-[10px] text-slate-400"></span>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <!-- Stage 3: Streak Hero Banner -->
