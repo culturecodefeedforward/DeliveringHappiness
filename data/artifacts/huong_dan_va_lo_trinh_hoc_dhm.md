@@ -302,4 +302,67 @@ Trong suốt hành trình học tập, học viên nhận được sự đồng 
 
 ---
 
+## PHẦN V: HƯỚNG DẪN THỰC HÀNH CHẶNG 3: BẢNG ĐIỂM DANH 5 THÓI QUEN 21 NGÀY & ĐỒNG BỘ BAN TỔ CHỨC
+
+### 1. Ý Nghĩa Khoa Học Của Hành Trình 21 Ngày Chuyển Hóa
+Khóa học 2 ngày trực tiếp giúp bạn khai mở nhận thức và thấu suốt hệ điều hành văn hóa hạnh phúc. Tuy nhiên, theo khoa học hành vi và nghiên cứu thần kinh học (*Neuroplasticity*), não bộ cần tối thiểu **21 ngày lặp lại liên tục** để tái cấu trúc các liên kết nơ-ron, biến những kiến thức đã học thành phản xạ tự nhiên trong công việc và cuộc sống.
+
+Chặng 3 trên nền tảng LMS được thiết kế để đồng hành cùng bạn mỗi ngày qua **5 Thói quen Hạnh phúc Cốt lõi**:
+
+| Ký hiệu | Thói quen | Tên tiếng Anh | Phương pháp & Hành động cốt lõi |
+| :---: | :--- | :--- | :--- |
+| **M** | **Tỉnh Thức** | *Mindfulness* | Thực hành kỹ thuật **SCBA 4 bước** (Stop - Calm - Be Aware - Act), quét cơ thể và giữ trọn sự hiện diện. |
+| **G** | **Biết Ơn** | *Gratitude* | Ghi nhận và cảm ơn **4 điều biết ơn mỗi ngày** (kết quả tốt, bài học từ nghịch cảnh, người đồng hành, điều bình dị). |
+| **O** | **Lạc Quan** | *Optimism* | Thực hành **mô hình ABCDE**, nhận diện tiếng nói tiêu cực tự động và hóa giải cái bẫy 3P (*Permanent, Pervasive, Personal*). |
+| **F** | **Phiêu** | *Flow* | Thiết lập công việc có **độ thách thức cao hơn kỹ năng 4%**, vượt qua chu kỳ 4 bước của Flow để đạt hiệu suất đỉnh cao. |
+| **A** | **Vị Nhân** | *Altruism* | Trở thành **Smart Giver (Vị nhân thông thái)** với Bi - Trí - Dũng, lan tỏa những hành động tử tế 5 phút (*5-Minute Favors*). |
+
+---
+
+### 2. Bốn Bước Thực Hành & Điểm Danh Trực Tiếp Trên Web LMS
+
+#### Bước 1: Đăng nhập nhận diện học viên
+Truy cập [https://delivering-happiness.vercel.app/lms/](https://delivering-happiness.vercel.app/lms/). Nhập **Email** của bạn và mật khẩu mặc định là **4 số cuối số điện thoại** (đã được BTC đăng ký danh bạ). Bấm **[ĐĂNG NHẬP VÀO HỌC]**. Hệ thống sẽ tự động nhận diện tên bạn và cấp độ khóa học.
+
+![Bước 1: Màn hình đăng nhập nhận diện học viên](/data/artifacts/images/guide_step1_login_modal.png)
+
+#### Bước 2: Xem tổng quan hành trình trên Dashboard
+Góc trên bên phải màn hình sẽ hiển thị huy hiệu và họ tên của bạn. Cột danh mục bài học bên trái hiển thị rõ ràng lộ trình 3 Chặng. Chặng 3 sẽ được mở khóa tự động cho tất cả học viên chính thức tham gia chương trình.
+
+![Bước 2: Giao diện tổng quan sau khi đăng nhập](/data/artifacts/images/guide_step2_dashboard_overview.png)
+
+#### Bước 3: Điều hướng Chặng 3 và mở tab "Trạm Thực Hành"
+1. Tại menu bên trái, nhấp chọn **Chặng 3 • ONLINE Chặng 3 - Đồng Hành 21 Ngày**.
+2. Ở khung nội dung chính, nhấp vào thẻ **Trạm Thực Hành** (nằm cạnh thẻ *Nội Dung Tóm Tắt*).
+3. Bạn sẽ nhìn thấy ngay: **Bảng Điểm Danh 5 Thói Quen 21 Ngày** cùng khối hướng dẫn thực hành chi tiết.
+
+![Bước 3: Mở Chặng 3 và Trạm Thực Hành](/data/artifacts/images/guide_step3_stage3_practice.png)
+
+#### Bước 4: Tích chọn điểm danh và Bấm Đồng Bộ Về BTC
+1. Tại hàng ngày hiện tại, chạm/nhấp vào các nút tròn thói quen bạn đã thực hành (**M, G, O, F, A**):
+   - Mỗi ngày hoàn thành từ **3/5 thói quen** sẽ được hệ thống đánh dấu là ngày thành công (hiển thị nhãn xanh **Đạt ✓**).
+   - Huy hiệu tiến độ tự động cập nhật số lượt (ví dụ: `3/105 Lượt`).
+2. Nhấp vào nút xanh: **[💾 Đồng Bộ Tiến Độ Về BTC]**.
+3. **Kết quả đạt chuẩn:** Hệ thống gửi dữ liệu về Google Sheets CRM của Ban Giảng Huấn và hiển thị dòng chữ màu xanh ngọc bích:  
+   `✅ Đã đồng bộ lúc HH:mm DD/MM/YYYY`.
+
+![Bước 4: Bảng điểm danh tích chọn và thông báo đồng bộ thành công](/data/artifacts/images/guide_step4_habit_tracker_synced.png)
+
+---
+
+### 3. Động Lực Gamification: Streak Hero & 3 Tầng Phần Thưởng Tri Ân
+- **Chuỗi Kỷ Lục (Streak):** Mỗi ngày bạn đạt tối thiểu 3/5 thói quen, thanh tiến độ Streak Hero sẽ tăng lên.
+- **3 Cột mốc huy hiệu danh dự:**
+  - 🌱 **7 Ngày liên tục:** Mở khóa danh hiệu *Hạt Mầm Hạnh Phúc* + Nhận Ebook Bản Đồ 21 Ngày Chuyển Hóa Hạnh Phúc.
+  - 🌳 **14 Ngày liên tục:** Mở khóa danh hiệu *Cây Kỷ Luật Vươn Mình* + Bộ Thẻ Bỏ Túi 5 Thói Quen (In màu ép kim do BTC trao tặng).
+  - 🌟 **21 Ngày liên tục:** Mở khóa danh hiệu *Đại Thụ Hạnh Phúc Lan Tỏa* + Buổi Cố Vấn 1:1 Trực Tiếp cùng Giảng viên Dẫn dắt.
+
+---
+
+### 4. Cơ Chế Lưu Trữ Đa Tầng (Offline-First) & An Toàn Dữ Liệu
+- Toàn bộ lựa chọn điểm danh của bạn được lưu ngay lập tức vào bộ nhớ cục bộ (`localStorage`) của trình duyệt. Dù mạng chập chờn, dữ liệu của bạn không bao giờ bị mất.
+- Bất cứ khi nào có kết nối mạng ổn định, chỉ cần nhấp nút **[💾 Đồng Bộ Tiến Độ Về BTC]**, hệ thống sẽ tự động đối chiếu và cập nhật phiên bản mới nhất về máy chủ ban tổ chức.
+
+---
+
 *Chúc bạn có một hành trình học tập đầy cảm hứng, bình an nội tâm và chuyển hóa văn hóa rực rỡ cùng Delivering Happiness Masterclass!*

@@ -3012,6 +3012,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
+        // 11.4.2 Open Full Roadmap / Habit Guide Doc Modal
+        const btnOpenHabitFullDoc = document.getElementById("btn-open-habit-full-doc");
+        if (btnOpenHabitFullDoc) {
+            btnOpenHabitFullDoc.onclick = () => openRoadmapDoc();
+        }
+
         // 11.5 Weekly Checkins
         const wChecks = s3.weeklyCheckins || {};
         bindInput("weekly-checkin-1", v => { wChecks.w1 = v; s3.weeklyCheckins = wChecks; debouncedSave(); }, wChecks.w1);
@@ -4045,6 +4051,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 tableHeaderDone = false;
             }
 
+            // Image (![alt](url))
+            if (line.startsWith("![")) {
+                const imgMatch = line.match(/^!\[(.*?)\]\((.*?)\)$/);
+                if (imgMatch) {
+                    if (inList) { html.push("</ul>"); inList = false; }
+                    html.push(`<div class="my-5 text-center"><img src="${imgMatch[2]}" alt="${imgMatch[1]}" class="rounded-2xl border border-brand-border/80 max-w-full mx-auto shadow-2xl hover:border-brand-amber/60 transition-all" loading="lazy" /><p class="text-[11px] text-slate-400 mt-2 italic font-medium">📸 ${formatInline(imgMatch[1])}</p></div>`);
+                    continue;
+                }
+            }
+
             // Headings
             if (line.startsWith("### ")) {
                 if (inList) { html.push("</ul>"); inList = false; }
@@ -4102,7 +4118,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return str
                 .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>')
                 .replace(/\*(.*?)\*/g, '<em class="italic text-slate-300">$1</em>')
-                .replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded bg-brand-card border border-brand-border text-brand-amber text-[11px] font-mono">$1</code>');
+                .replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded bg-brand-card border border-brand-border text-brand-amber text-[11px] font-mono">$1</code>')
+                .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-brand-amber hover:underline font-semibold">$1 ↗</a>');
         }
     }
 

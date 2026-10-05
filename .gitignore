@@ -16,6 +16,7 @@ clasp_out.txt
 !data/artifacts/infographics/*.png
 !data/artifacts/slides/*.png
 !data/artifacts/*.png
+!data/artifacts/images/*.png
 antigravity_export/
 implementation_plan.md
 implementation_plan_20260413_UpdateGeminiRules.md
