@@ -67,41 +67,87 @@
       </span>
     </div>
 
-    <div class="hero-event-grid">
-      <!-- DHM10 HN -->
-      <div class="hero-event-card">
-        <div>
-          <strong style="color: var(--warm-yellow); font-size: 1.18rem; display: block; margin-bottom: 0.5rem; letter-spacing: 0.5px;">DHM10 — Điểm cầu Hà Nội</strong>
-          <strong style="color: #ffffff;">📅 Dự kiến Quý 4/2026</strong>
-          <div style="font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-bottom: 0.4rem; font-style: italic;">(Sẽ công bố ngày chính thức sau khi chốt lịch)</div>
-          <div class="event-location">
-            <span aria-hidden="true">📍</span>
-            <div class="event-location-copy">
-              <span><strong>Địa điểm:</strong> Cơ sở Apollo English — Hà Nội</span>
-              <span>Không gian đào tạo chuẩn quốc tế</span>
-              <span style="color: var(--warm-yellow); font-size: 0.85rem; margin-top: 2px;">Giảng viên cơ hữu CultureCode đồng hành tại chỗ</span>
-            </div>
-          </div>
-        </div>
-        <a href="interest_dh10.html" class="btn-primary" style="margin-top: 1.2rem; width: 100%; box-sizing: border-box;">Để lại quan tâm (Hà Nội)</a>
+    <style>
+      .hero-hybrid-card {
+        max-width: 820px;
+        margin: 1.5rem auto 0 auto;
+        background: rgba(0, 0, 0, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 16px;
+        padding: 1.8rem 2rem;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(8px);
+        text-align: center;
+      }
+      .hybrid-hubs-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 1.2rem;
+        margin: 1.2rem 0 1.5rem 0;
+      }
+      .hybrid-hub-item {
+        padding: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+      }
+      .hybrid-hub-item.hcm-col {
+        border-left: 1px solid rgba(255, 255, 255, 0.12);
+      }
+      @media (max-width: 640px) {
+        .hero-hybrid-card {
+          padding: 1.4rem 1rem;
+        }
+        .hybrid-hubs-grid {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+        .hybrid-hub-item.hcm-col {
+          border-left: none;
+          border-top: 1px solid rgba(255, 255, 255, 0.12);
+          padding-top: 1rem;
+        }
+      }
+    </style>
+
+    <div class="hero-hybrid-card">
+      <div>
+        <strong style="color: var(--warm-yellow); font-size: 1.28rem; display: block; margin-bottom: 0.4rem; letter-spacing: 0.5px;">DHM10 — Mô hình Hybrid Song Song 2 Điểm Cầu</strong>
+        <strong style="color: #ffffff; font-size: 1.05rem;">📅 Dự kiến Quý 4/2026</strong>
+        <div style="font-size: 0.88rem; color: rgba(255,255,255,0.7); margin-top: 0.2rem; font-style: italic;">(Sẽ công bố ngày chính thức sau khi chốt lịch)</div>
       </div>
 
-      <!-- DHM10 HCM -->
-      <div class="hero-event-card">
-        <div>
-          <strong style="color: var(--warm-yellow); font-size: 1.18rem; display: block; margin-bottom: 0.5rem; letter-spacing: 0.5px;">DHM10 — Điểm cầu TP.HCM</strong>
-          <strong style="color: #ffffff;">📅 Dự kiến Quý 4/2026</strong>
-          <div style="font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-bottom: 0.4rem; font-style: italic;">(Sẽ công bố ngày chính thức sau khi chốt lịch)</div>
-          <div class="event-location">
-            <span aria-hidden="true">📍</span>
-            <div class="event-location-copy">
-              <span><strong>Địa điểm:</strong> Cơ sở Apollo English — TP.HCM</span>
-              <span>Không gian đào tạo chuẩn quốc tế</span>
-              <span style="color: var(--warm-yellow); font-size: 0.85rem; margin-top: 2px;">Giảng viên cơ hữu CultureCode đồng hành tại chỗ</span>
-            </div>
+      <div class="hybrid-hubs-grid">
+        <!-- Điểm cầu HN -->
+        <div class="hybrid-hub-item">
+          <div style="display: inline-flex; align-items: center; gap: 6px; color: var(--warm-yellow); font-weight: 700; font-size: 1.05rem;">
+            <span>📍</span> Điểm cầu Hà Nội
           </div>
+          <div style="color: #ffffff; font-weight: 600; font-size: 0.95rem;">Cơ sở SBB</div>
+          <div style="font-size: 0.85rem; color: rgba(255,255,255,0.75);">Không gian đào tạo chuẩn quốc tế</div>
+          <div style="font-size: 0.82rem; color: var(--warm-yellow); margin-top: 2px;">Giảng viên cơ hữu đồng hành tại chỗ</div>
         </div>
-        <a href="interest_dh10.html" class="btn-primary" style="margin-top: 1.2rem; width: 100%; box-sizing: border-box;">Để lại quan tâm (TP.HCM)</a>
+
+        <!-- Điểm cầu HCM -->
+        <div class="hybrid-hub-item hcm-col">
+          <div style="display: inline-flex; align-items: center; gap: 6px; color: var(--warm-yellow); font-weight: 700; font-size: 1.05rem;">
+            <span>📍</span> Điểm cầu TP.HCM
+          </div>
+          <div style="color: #ffffff; font-weight: 600; font-size: 0.95rem;">Cơ sở Apollo English</div>
+          <div style="font-size: 0.85rem; color: rgba(255,255,255,0.75);">Không gian đào tạo chuẩn quốc tế</div>
+          <div style="font-size: 0.82rem; color: var(--warm-yellow); margin-top: 2px;">Giảng viên cơ hữu đồng hành tại chỗ</div>
+        </div>
+      </div>
+
+      <div style="text-align: center;">
+        <a href="interest_dh10.html" class="btn-primary" style="display: inline-block; font-size: 1.05rem; padding: 0.95rem 2.5rem; box-shadow: 0 6px 25px rgba(245, 158, 11, 0.45);">
+          ✨ Đăng ký nhận thông tin quan tâm DHM10
+        </a>
       </div>
     </div>
     
@@ -274,7 +320,7 @@
     <div class="container">
       <h2 class="section-title" style="margin-bottom: 1rem;">Sẵn sàng kiến tạo văn hóa hạnh phúc cùng DHM10?</h2>
       <p class="section-sub" style="color: var(--dark); font-size: 1.1rem; margin-bottom: 2rem; max-width: 820px; margin-left: auto; margin-right: auto; line-height: 1.6;">
-        Khóa học Delivering Happiness Masterclass 10 (DHM10) lần đầu tiên triển khai theo mô hình <strong>Hybrid đa điểm cầu</strong> kết nối song song tại Hà Nội & TP.HCM (Hệ thống Apollo English). Hãy để lại thông tin quan tâm để nhận thông báo ngày học và giữ quyền ưu tiên tham dự!
+        Khóa học Delivering Happiness Masterclass 10 (DHM10) lần đầu tiên triển khai theo mô hình <strong>Hybrid đa điểm cầu</strong> kết nối song song tại Hà Nội (Cơ sở SBB) & TP.HCM (Cơ sở Apollo English). Hãy để lại thông tin quan tâm để nhận thông báo ngày học và giữ quyền ưu tiên tham dự!
       </p>
       <div style="display: flex; flex-direction: row; gap: 15px; flex-wrap: wrap; justify-content: center;">
         <a href="interest_dh10.html" class="btn-primary"
