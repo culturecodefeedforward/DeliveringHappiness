@@ -2693,5 +2693,23 @@
     "phone": "0389942601",
     "cohort": "DHM6",
     "role": "Learner"
+  },
+  {
+    "name": "Apollo Test Learner",
+    "email": "learner.test@apollo.edu.vn",
+    "phone": "",
+    "cohort": "Apollo",
+    "role": "Learner",
+    "force_pwd_change": true,
+    "default_pwd": "1234"
+  },
+  {
+    "name": "Apollo Manager Test",
+    "email": "manager.test@apollo.edu.vn",
+    "phone": "",
+    "cohort": "Apollo",
+    "role": "Learner",
+    "force_pwd_change": true,
+    "default_pwd": "1234"
   }
 ]

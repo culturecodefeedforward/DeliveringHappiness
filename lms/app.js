@@ -541,6 +541,35 @@ document.addEventListener("DOMContentLoaded", () => {
     const completionModal = document.getElementById("completion-modal");
     const btnCloseCompletion = document.getElementById("btn-close-completion");
 
+    // Password Management Elements (Apollo & Self-Change)
+    const forceChangePwdModal = document.getElementById("force-change-pwd-modal");
+    const forceChangePwdForm = document.getElementById("force-change-pwd-form");
+    const forceNewPwdInput = document.getElementById("force-new-pwd");
+    const forceConfirmPwdInput = document.getElementById("force-confirm-pwd");
+    const btnToggleForceNewPwd = document.getElementById("btn-toggle-force-new-pwd");
+    const btnToggleForceConfirmPwd = document.getElementById("btn-toggle-force-confirm-pwd");
+    const forcePwdErrorBanner = document.getElementById("force-pwd-error-banner");
+    const forcePwdErrorTitle = document.getElementById("force-pwd-error-title");
+    const forcePwdErrorDesc = document.getElementById("force-pwd-error-desc");
+    const btnSubmitForcePwd = document.getElementById("btn-submit-force-pwd");
+    const btnSubmitForcePwdText = document.getElementById("btn-submit-force-pwd-text");
+
+    const selfChangePwdModal = document.getElementById("self-change-pwd-modal");
+    const selfChangePwdForm = document.getElementById("self-change-pwd-form");
+    const selfCurrentPwdInput = document.getElementById("self-current-pwd");
+    const selfNewPwdInput = document.getElementById("self-new-pwd");
+    const selfConfirmPwdInput = document.getElementById("self-confirm-pwd");
+    const btnCloseSelfPwd = document.getElementById("btn-close-self-pwd");
+    const btnCancelSelfPwd = document.getElementById("btn-cancel-self-pwd");
+    const btnOpenChangePwd = document.getElementById("btn-open-change-pwd");
+    const selfPwdErrorBanner = document.getElementById("self-pwd-error-banner");
+    const selfPwdErrorTitle = document.getElementById("self-pwd-error-title");
+    const selfPwdErrorDesc = document.getElementById("self-pwd-error-desc");
+    const selfPwdSuccessBanner = document.getElementById("self-pwd-success-banner");
+    const selfPwdSuccessDesc = document.getElementById("self-pwd-success-desc");
+    const btnSubmitSelfPwd = document.getElementById("btn-submit-self-pwd");
+    const btnSubmitSelfPwdText = document.getElementById("btn-submit-self-pwd-text");
+
     // 4. LOAD DYNAMIC CURRICULUM FROM JSON (Fallback to embedded)
     async function loadCurriculumData() {
         try {
@@ -567,15 +596,35 @@ document.addEventListener("DOMContentLoaded", () => {
         return String(val).trim().toLowerCase();
     }
 
+    // SHA-256 HASH HELPER (Web Crypto API)
+    async function sha256(message) {
+        const msgBuffer = new TextEncoder().encode(String(message || "").trim());
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
     // ROSTER & DIRECTORY
     async function loadRoster() {
         try {
-            const res = await fetch("/lms/master_learners_roster.json");
+            let res = await fetch("/lms/master_learners_roster.json");
+            if (!res.ok) {
+                res = await fetch("authorized_roster.json");
+            }
             if (res.ok) {
                 authorizedRoster = await res.json();
+                return;
             }
         } catch (e) {
-            console.warn("Offline/Fallback authorized roster mode");
+            // fallback
+        }
+        try {
+            const resFallback = await fetch("authorized_roster.json");
+            if (resFallback.ok) {
+                authorizedRoster = await resFallback.json();
+            }
+        } catch (err) {
+            console.warn("Offline/Fallback authorized roster mode", err);
         }
     }
 
@@ -604,16 +653,31 @@ document.addEventListener("DOMContentLoaded", () => {
         if (match) {
             let learner = {
                 learner_id: match.learner_id || "DHM-LEARNER",
+                identity: match.email || match.phone || match.learner_id || "DHM-LEARNER",
                 name: match.full_name || match.name || match.email,
                 email: match.email || "",
                 phone: match.phone_full || match.phone_raw || match.phone || "",
                 phone_last4: match.phone_last4 || (match.phone_full ? match.phone_full.slice(-4) : (match.phone ? match.phone.slice(-4) : "")),
                 cohort: match.cohort || "Học viên",
-                missing_phone: match.phone_status === "legacy_partial" || !(match.phone_full || match.phone)
+                role: match.role || "Learner",
+                missing_phone: match.phone_status === "legacy_partial" || !(match.phone_full || match.phone),
+                force_pwd_change: match.force_pwd_change === true,
+                default_pwd: match.default_pwd || "1234",
+                password_hash: match.password_hash || null
             };
             const ov = overrides[learner.email] || overrides[learner.learner_id];
-            if (ov && ov.phone) {
-                learner = { ...learner, phone: ov.phone, phone_last4: ov.phone.slice(-4), missing_phone: false };
+            if (ov) {
+                if (ov.phone) {
+                    learner.phone = ov.phone;
+                    learner.phone_last4 = ov.phone.slice(-4);
+                    learner.missing_phone = false;
+                }
+                if (ov.password_hash !== undefined) {
+                    learner.password_hash = ov.password_hash;
+                }
+                if (ov.force_pwd_change !== undefined) {
+                    learner.force_pwd_change = ov.force_pwd_change;
+                }
             }
             return learner;
         }
@@ -631,7 +695,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (authErrorBanner) authErrorBanner.classList.add("hidden");
         if (authUserDetected) authUserDetected.classList.add("hidden");
         if (passwordGroup) passwordGroup.classList.remove("hidden");
-        if (loginPasswordInput) loginPasswordInput.setAttribute("required", "true");
+        if (loginPasswordInput) {
+            loginPasswordInput.setAttribute("required", "true");
+            loginPasswordInput.placeholder = "Nhập 4 số cuối Số điện thoại của bạn";
+        }
         if (phoneOnboardingGroup) phoneOnboardingGroup.classList.add("hidden");
         if (onboardingPhoneInput) onboardingPhoneInput.removeAttribute("required");
         if (trialTriggerWrapper) trialTriggerWrapper.classList.add("hidden");
@@ -648,6 +715,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (phoneOnboardingGroup) phoneOnboardingGroup.classList.add("hidden");
             if (submitAuthWrapper) submitAuthWrapper.classList.remove("hidden");
             if (btnSubmitText) btnSubmitText.textContent = "Vào Học Ngay";
+            if (loginPasswordInput) loginPasswordInput.placeholder = "Nhập 4 số cuối Số điện thoại hoặc Mật khẩu";
             return;
         }
 
@@ -661,8 +729,10 @@ document.addEventListener("DOMContentLoaded", () => {
             if (detectedUserCohort) detectedUserCohort.textContent = learner.cohort || "Học viên";
         }
 
+        const isApolloOrPwdAuth = learner.force_pwd_change || learner.password_hash || learner.default_pwd || (learner.cohort && learner.cohort.toLowerCase().includes("apollo"));
         const hasPhone = learner.phone && learner.phone.trim().length >= 8 && !learner.missing_phone;
-        if (!hasPhone) {
+
+        if (!hasPhone && !isApolloOrPwdAuth) {
             if (passwordGroup) passwordGroup.classList.add("hidden");
             if (loginPasswordInput) loginPasswordInput.removeAttribute("required");
             if (phoneOnboardingGroup) phoneOnboardingGroup.classList.remove("hidden");
@@ -670,24 +740,101 @@ document.addEventListener("DOMContentLoaded", () => {
             if (btnSubmitText) btnSubmitText.textContent = "Kích Hoạt & Vào Học";
         } else {
             if (passwordGroup) passwordGroup.classList.remove("hidden");
-            if (loginPasswordInput) loginPasswordInput.setAttribute("required", "true");
+            if (loginPasswordInput) {
+                loginPasswordInput.setAttribute("required", "true");
+                if (learner.force_pwd_change) {
+                    loginPasswordInput.placeholder = "Nhập mật khẩu khởi tạo (1234)";
+                } else if (learner.password_hash) {
+                    loginPasswordInput.placeholder = "Nhập mật khẩu truy cập của bạn";
+                } else {
+                    loginPasswordInput.placeholder = "Nhập 4 số cuối Số điện thoại của bạn";
+                }
+            }
             if (phoneOnboardingGroup) phoneOnboardingGroup.classList.add("hidden");
             if (onboardingPhoneInput) onboardingPhoneInput.removeAttribute("required");
             if (btnSubmitText) btnSubmitText.textContent = "Vào Học Ngay";
         }
     }
 
-    function verifyPassword(learner, inputPassword) {
-        if (!learner) return false;
-        const pwd = String(inputPassword).trim();
-        if (pwd === "8888") return true;
+    async function verifyPassword(learner, inputPassword) {
+        if (!learner) return { valid: false };
+        const pwd = String(inputPassword || "").trim();
+        // Ưu tiên 1 (Mã khẩn cấp giảng viên)
+        if (pwd === "8888") return { valid: true, bypass: true, mustChange: false };
 
-        if (learner.phone_last4 && pwd === String(learner.phone_last4).trim()) return true;
+        const overrides = getRosterOverrides();
+        const ov = overrides[learner.email] || overrides[learner.learner_id] || {};
+        const passwordHash = ov.password_hash !== undefined ? ov.password_hash : (learner.password_hash || null);
+        const forcePwdChange = ov.force_pwd_change !== undefined ? ov.force_pwd_change : (learner.force_pwd_change === true);
+
+        // Ưu tiên 2: Mật khẩu cá nhân đã đổi (đã có password_hash)
+        if (passwordHash) {
+            const inputHash = await sha256(pwd);
+            if (inputHash === passwordHash) {
+                return { valid: true, mustChange: false };
+            }
+            return { valid: false, hasCustomPassword: true };
+        }
+
+        // Ưu tiên 3: Mật khẩu mặc định khởi tạo
+        const defaultPwd = learner.default_pwd || "1234";
+        if (forcePwdChange && pwd === defaultPwd) {
+            return { valid: true, mustChange: true };
+        }
+        if (learner.default_pwd && pwd === learner.default_pwd) {
+            return { valid: true, mustChange: forcePwdChange };
+        }
+
+        // Ưu tiên 4: Cơ chế kế thừa 4 số cuối SĐT (học viên cũ có SĐT)
+        if (learner.phone_last4 && pwd === String(learner.phone_last4).trim()) {
+            return { valid: true, mustChange: false };
+        }
         if (learner.phone) {
             const last4 = normalizePhone(learner.phone).slice(-4);
-            if (last4 && pwd === last4) return true;
+            if (last4 && pwd === last4) {
+                return { valid: true, mustChange: false };
+            }
         }
-        return false;
+
+        return { valid: false };
+    }
+
+    async function saveNewPassword(learner, newPassword) {
+        const hash = await sha256(newPassword);
+        const overrides = getRosterOverrides();
+        const currentOv = overrides[learner.email] || overrides[learner.learner_id] || {};
+        const updatedLearner = {
+            ...learner,
+            ...currentOv,
+            password_hash: hash,
+            force_pwd_change: false
+        };
+        overrides[learner.email] = updatedLearner;
+        localStorage.setItem("dhm_roster_overrides", JSON.stringify(overrides));
+
+        // Cập nhật session currentUser
+        currentUser = updatedLearner;
+        localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
+
+        // Webhook đồng bộ về Google Sheets CRM (chạy ngầm, không chặn UI)
+        const webhookUrl = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
+        const payload = {
+            action: "update_password",
+            email: learner.email,
+            password_hash: hash,
+            force_pwd_change: false
+        };
+        try {
+            fetch(webhookUrl, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify(payload)
+            }).catch(err => console.warn("Background password sync notice:", err));
+        } catch (e) {
+            console.warn("Webhook update_password failed to dispatch:", e);
+        }
+
+        return updatedLearner;
     }
 
     async function checkUrlMagicLinkVerification() {
@@ -806,6 +953,9 @@ document.addEventListener("DOMContentLoaded", () => {
         userDisplayName.textContent = currentUser.name || currentUser.email;
 
         // Restore Progress
+        if (!currentUser.identity) {
+            currentUser.identity = currentUser.email || currentUser.learner_id || "guest";
+        }
         const progressKey = `dhm_lms_progress_${currentUser.identity}`;
         const saved = localStorage.getItem(progressKey);
         if (saved) {
@@ -878,6 +1028,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function saveLearnerProgress() {
         if (!currentUser) return;
+        if (!currentUser.identity) {
+            currentUser.identity = currentUser.email || currentUser.learner_id || "guest";
+        }
         const progressKey = `dhm_lms_progress_${currentUser.identity}`;
         localStorage.setItem(progressKey, JSON.stringify(learnerProgress));
 
@@ -1020,9 +1173,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!currentUser) return;
         try {
             let directory = JSON.parse(localStorage.getItem("dhm_master_learners_directory") || "[]");
-            const idx = directory.findIndex(u => u.identity === currentUser.identity);
+            const userIdentifier = currentUser.identity || currentUser.email || currentUser.learner_id || "guest";
+            const idx = directory.findIndex(u => (u.email && u.email === currentUser.email) || (u.identity && u.identity === userIdentifier));
             const userEntry = {
-                learner_id: currentUser.learner_id,
+                learner_id: currentUser.learner_id || userIdentifier,
+                identity: userIdentifier,
                 name: currentUser.name,
                 email: currentUser.email,
                 phone: currentUser.phone,
@@ -4515,7 +4670,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnBottomRoadmap) btnBottomRoadmap.addEventListener("click", openRoadmapDoc);
 
     // 14. AUTH FORM SUBMIT
-    authForm.addEventListener("submit", (e) => {
+    authForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         if (authErrorBanner) authErrorBanner.classList.add("hidden");
         if (trialTriggerWrapper) trialTriggerWrapper.classList.add("hidden");
@@ -4545,11 +4700,12 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // TRƯỜNG HỢP 2: HỌC VIÊN CHÍNH THỨC NHƯNG THIẾU SỐ ĐIỆN THOẠI TRONG ROSTER
+        // TRƯỜNG HỢP 2: HỌC VIÊN CHÍNH THỨC NHƯNG THIẾU SỐ ĐIỆN THOẠI TRONG ROSTER (Không áp dụng cho Apollo/tài khoản có mật khẩu)
+        const isApolloOrPwdAuth = learner.force_pwd_change || learner.password_hash || learner.default_pwd || (learner.cohort && learner.cohort.toLowerCase().includes("apollo"));
         const hasPhone = learner.phone && learner.phone.trim().length >= 8 && !learner.missing_phone;
         const isPhoneOnboarding = !passwordGroup.classList.contains("hidden") ? false : true;
 
-        if (!hasPhone && !isPhoneOnboarding) {
+        if (!hasPhone && !isApolloOrPwdAuth && !isPhoneOnboarding) {
             passwordGroup.classList.add("hidden");
             loginPasswordInput.removeAttribute("required");
             phoneOnboardingGroup.classList.remove("hidden");
@@ -4585,13 +4741,27 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // TRƯỜNG HỢP 3: HỌC VIÊN CHÍNH THỨC CÓ SĐT -> XÁC THỰC MẬT KHẨU
+        // TRƯỜNG HỢP 3: HỌC VIÊN CHÍNH THỨC -> XÁC THỰC MẬT KHẨU
         const inputPassword = loginPasswordInput.value;
-        if (!verifyPassword(learner, inputPassword)) {
+        const authResult = await verifyPassword(learner, inputPassword);
+        if (!authResult.valid) {
             authErrorTitle.textContent = "Mật khẩu không chính xác";
-            authErrorDesc.textContent = "Mật khẩu là 4 số cuối của Số điện thoại đã đăng ký. Vui lòng kiểm tra lại.";
+            if (learner.force_pwd_change) {
+                authErrorDesc.textContent = "Mật khẩu khởi tạo của bạn là 1234. Vui lòng kiểm tra lại.";
+            } else if (learner.password_hash) {
+                authErrorDesc.textContent = "Mật khẩu truy cập không đúng. Vui lòng kiểm tra lại.";
+            } else {
+                authErrorDesc.textContent = "Mật khẩu là 4 số cuối của Số điện thoại đã đăng ký. Vui lòng kiểm tra lại.";
+            }
             authErrorBanner.classList.remove("hidden");
             loginPasswordInput.focus();
+            return;
+        }
+
+        // BẮT BUỘC ĐỔI MẬT KHẨU KHỞI TẠO (Apollo hoặc tài khoản mới gắn cờ force_pwd_change)
+        if (authResult.mustChange) {
+            hideAuthModal();
+            showForceChangePasswordModal(learner);
             return;
         }
 
@@ -4633,20 +4803,22 @@ document.addEventListener("DOMContentLoaded", () => {
         if (authErrorBanner) authErrorBanner.classList.add("hidden");
         if (trialTriggerWrapper) trialTriggerWrapper.classList.add("hidden");
         if (trialOnboardingGroup) trialOnboardingGroup.classList.add("hidden");
-        if (passwordGroup) passwordGroup.classList.remove("hidden");
-        if (submitAuthWrapper) submitAuthWrapper.classList.remove("hidden");
 
         if (val.includes("@") && val.length >= 6) {
             const found = findLearner(val);
             if (found) {
-                authUserDetected.classList.remove("hidden");
-                detectedUserName.textContent = found.name || found.email;
-                detectedUserCohort.textContent = found.cohort || "Học viên";
+                updateAuthModeForLearner(found);
             } else {
-                authUserDetected.classList.add("hidden");
+                if (authUserDetected) authUserDetected.classList.add("hidden");
+                if (passwordGroup) passwordGroup.classList.remove("hidden");
+                if (submitAuthWrapper) submitAuthWrapper.classList.remove("hidden");
+                if (loginPasswordInput) loginPasswordInput.placeholder = "Nhập 4 số cuối Số điện thoại của bạn";
             }
         } else {
-            authUserDetected.classList.add("hidden");
+            if (authUserDetected) authUserDetected.classList.add("hidden");
+            if (passwordGroup) passwordGroup.classList.remove("hidden");
+            if (submitAuthWrapper) submitAuthWrapper.classList.remove("hidden");
+            if (loginPasswordInput) loginPasswordInput.placeholder = "Nhập 4 số cuối Số điện thoại của bạn";
         }
     });
 
@@ -4670,6 +4842,229 @@ document.addEventListener("DOMContentLoaded", () => {
                 evaluateLearnerStatus();
                 loadStage(0);
                 showAuthModal();
+            }
+        });
+    }
+
+    // ==========================================
+    // PASSWORD MANAGEMENT LOGIC (Apollo & Self-Change)
+    // ==========================================
+    let pendingForceChangeUser = null;
+
+    function showForceChangePasswordModal(learner) {
+        pendingForceChangeUser = learner;
+        if (forceNewPwdInput) forceNewPwdInput.value = "";
+        if (forceConfirmPwdInput) forceConfirmPwdInput.value = "";
+        if (forcePwdErrorBanner) forcePwdErrorBanner.classList.add("hidden");
+        if (btnSubmitForcePwdText) btnSubmitForcePwdText.textContent = "Xác Nhận & Vào Học";
+        if (btnSubmitForcePwd) btnSubmitForcePwd.disabled = false;
+        if (forceChangePwdModal) forceChangePwdModal.classList.remove("hidden");
+        setTimeout(() => {
+            if (forceNewPwdInput) forceNewPwdInput.focus();
+        }, 100);
+    }
+
+    function hideForceChangePasswordModal() {
+        if (forceChangePwdModal) forceChangePwdModal.classList.add("hidden");
+        pendingForceChangeUser = null;
+    }
+
+    function showSelfChangePasswordModal() {
+        if (!currentUser) return;
+        if (selfCurrentPwdInput) selfCurrentPwdInput.value = "";
+        if (selfNewPwdInput) selfNewPwdInput.value = "";
+        if (selfConfirmPwdInput) selfConfirmPwdInput.value = "";
+        if (selfPwdErrorBanner) selfPwdErrorBanner.classList.add("hidden");
+        if (selfPwdSuccessBanner) selfPwdSuccessBanner.classList.add("hidden");
+        if (btnSubmitSelfPwdText) btnSubmitSelfPwdText.textContent = "Cập Nhật Mật Khẩu";
+        if (btnSubmitSelfPwd) btnSubmitSelfPwd.disabled = false;
+        if (selfChangePwdModal) selfChangePwdModal.classList.remove("hidden");
+        setTimeout(() => {
+            if (selfCurrentPwdInput) selfCurrentPwdInput.focus();
+        }, 100);
+    }
+
+    function hideSelfChangePasswordModal() {
+        if (selfChangePwdModal) selfChangePwdModal.classList.add("hidden");
+    }
+
+    if (btnOpenChangePwd) {
+        btnOpenChangePwd.addEventListener("click", () => {
+            showSelfChangePasswordModal();
+        });
+    }
+
+    if (btnCloseSelfPwd) {
+        btnCloseSelfPwd.addEventListener("click", () => {
+            hideSelfChangePasswordModal();
+        });
+    }
+
+    if (btnCancelSelfPwd) {
+        btnCancelSelfPwd.addEventListener("click", () => {
+            hideSelfChangePasswordModal();
+        });
+    }
+
+    if (btnToggleForceNewPwd && forceNewPwdInput) {
+        btnToggleForceNewPwd.addEventListener("click", () => {
+            const isPwd = forceNewPwdInput.type === "password";
+            forceNewPwdInput.type = isPwd ? "text" : "password";
+            btnToggleForceNewPwd.textContent = isPwd ? "🔒" : "👁️";
+        });
+    }
+
+    if (btnToggleForceConfirmPwd && forceConfirmPwdInput) {
+        btnToggleForceConfirmPwd.addEventListener("click", () => {
+            const isPwd = forceConfirmPwdInput.type === "password";
+            forceConfirmPwdInput.type = isPwd ? "text" : "password";
+            btnToggleForceConfirmPwd.textContent = isPwd ? "🔒" : "👁️";
+        });
+    }
+
+    if (forceChangePwdForm) {
+        forceChangePwdForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            if (forcePwdErrorBanner) forcePwdErrorBanner.classList.add("hidden");
+
+            const newPwd = (forceNewPwdInput.value || "").trim();
+            const confirmPwd = (forceConfirmPwdInput.value || "").trim();
+            const learner = pendingForceChangeUser || currentUser;
+
+            if (!learner) {
+                if (forcePwdErrorBanner) {
+                    forcePwdErrorTitle.textContent = "Phiên làm việc hết hạn";
+                    forcePwdErrorDesc.textContent = "Vui lòng tải lại trang và đăng nhập lại.";
+                    forcePwdErrorBanner.classList.remove("hidden");
+                }
+                return;
+            }
+
+            const defaultPwd = learner.default_pwd || "1234";
+            if (newPwd === defaultPwd || newPwd === "1234") {
+                if (forcePwdErrorBanner) {
+                    forcePwdErrorTitle.textContent = "Mật khẩu không an toàn";
+                    forcePwdErrorDesc.textContent = "Không được sử dụng lại mật khẩu mặc định (1234). Vui lòng chọn mật khẩu mới.";
+                    forcePwdErrorBanner.classList.remove("hidden");
+                }
+                forceNewPwdInput.focus();
+                return;
+            }
+
+            if (newPwd.length < 6) {
+                if (forcePwdErrorBanner) {
+                    forcePwdErrorTitle.textContent = "Mật khẩu quá ngắn";
+                    forcePwdErrorDesc.textContent = "Mật khẩu mới phải có tối thiểu 6 ký tự.";
+                    forcePwdErrorBanner.classList.remove("hidden");
+                }
+                forceNewPwdInput.focus();
+                return;
+            }
+
+            if (newPwd !== confirmPwd) {
+                if (forcePwdErrorBanner) {
+                    forcePwdErrorTitle.textContent = "Mật khẩu không khớp";
+                    forcePwdErrorDesc.textContent = "Mật khẩu xác nhận không khớp với mật khẩu mới. Vui lòng nhập lại.";
+                    forcePwdErrorBanner.classList.remove("hidden");
+                }
+                forceConfirmPwdInput.focus();
+                return;
+            }
+
+            try {
+                if (btnSubmitForcePwdText) btnSubmitForcePwdText.textContent = "Đang lưu...";
+                if (btnSubmitForcePwd) btnSubmitForcePwd.disabled = true;
+
+                await saveNewPassword(learner, newPwd);
+                hideForceChangePasswordModal();
+                applyUserSession();
+            } catch (err) {
+                console.error("Error saving force new password:", err);
+                if (btnSubmitForcePwdText) btnSubmitForcePwdText.textContent = "Xác Nhận & Vào Học";
+                if (btnSubmitForcePwd) btnSubmitForcePwd.disabled = false;
+                if (forcePwdErrorBanner) {
+                    forcePwdErrorTitle.textContent = "Lỗi lưu mật khẩu";
+                    forcePwdErrorDesc.textContent = "Đã có lỗi xảy ra khi lưu mật khẩu. Vui lòng thử lại.";
+                    forcePwdErrorBanner.classList.remove("hidden");
+                }
+            }
+        });
+    }
+
+    if (selfChangePwdForm) {
+        selfChangePwdForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            if (selfPwdErrorBanner) selfPwdErrorBanner.classList.add("hidden");
+            if (selfPwdSuccessBanner) selfPwdSuccessBanner.classList.add("hidden");
+
+            if (!currentUser) return;
+
+            const currentPwd = (selfCurrentPwdInput.value || "").trim();
+            const newPwd = (selfNewPwdInput.value || "").trim();
+            const confirmPwd = (selfConfirmPwdInput.value || "").trim();
+
+            const verifyResult = await verifyPassword(currentUser, currentPwd);
+            if (!verifyResult.valid) {
+                if (selfPwdErrorBanner) {
+                    selfPwdErrorTitle.textContent = "Mật khẩu hiện tại không đúng";
+                    selfPwdErrorDesc.textContent = "Mật khẩu hiện tại không chính xác. Vui lòng kiểm tra lại.";
+                    selfPwdErrorBanner.classList.remove("hidden");
+                }
+                selfCurrentPwdInput.focus();
+                return;
+            }
+
+            if (newPwd.length < 6) {
+                if (selfPwdErrorBanner) {
+                    selfPwdErrorTitle.textContent = "Mật khẩu quá ngắn";
+                    selfPwdErrorDesc.textContent = "Mật khẩu mới phải có tối thiểu 6 ký tự.";
+                    selfPwdErrorBanner.classList.remove("hidden");
+                }
+                selfNewPwdInput.focus();
+                return;
+            }
+
+            if (newPwd === currentPwd) {
+                if (selfPwdErrorBanner) {
+                    selfPwdErrorTitle.textContent = "Mật khẩu không đổi";
+                    selfPwdErrorDesc.textContent = "Mật khẩu mới phải khác mật khẩu hiện tại.";
+                    selfPwdErrorBanner.classList.remove("hidden");
+                }
+                selfNewPwdInput.focus();
+                return;
+            }
+
+            if (newPwd !== confirmPwd) {
+                if (selfPwdErrorBanner) {
+                    selfPwdErrorTitle.textContent = "Mật khẩu không khớp";
+                    selfPwdErrorDesc.textContent = "Mật khẩu xác nhận không khớp với mật khẩu mới.";
+                    selfPwdErrorBanner.classList.remove("hidden");
+                }
+                selfConfirmPwdInput.focus();
+                return;
+            }
+
+            try {
+                if (btnSubmitSelfPwdText) btnSubmitSelfPwdText.textContent = "Đang lưu...";
+                if (btnSubmitSelfPwd) btnSubmitSelfPwd.disabled = true;
+
+                await saveNewPassword(currentUser, newPwd);
+
+                if (selfPwdSuccessBanner) selfPwdSuccessBanner.classList.remove("hidden");
+                setTimeout(() => {
+                    hideSelfChangePasswordModal();
+                    if (btnSubmitSelfPwdText) btnSubmitSelfPwdText.textContent = "Cập Nhật Mật Khẩu";
+                    if (btnSubmitSelfPwd) btnSubmitSelfPwd.disabled = false;
+                }, 1200);
+            } catch (err) {
+                console.error("Error saving self-service new password:", err);
+                if (btnSubmitSelfPwdText) btnSubmitSelfPwdText.textContent = "Cập Nhật Mật Khẩu";
+                if (btnSubmitSelfPwd) btnSubmitSelfPwd.disabled = false;
+                if (selfPwdErrorBanner) {
+                    selfPwdErrorTitle.textContent = "Lỗi lưu mật khẩu";
+                    selfPwdErrorDesc.textContent = "Đã có lỗi xảy ra khi lưu mật khẩu. Vui lòng thử lại.";
+                    selfPwdErrorBanner.classList.remove("hidden");
+                }
             }
         });
     }
