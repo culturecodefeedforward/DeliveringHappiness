@@ -30,14 +30,26 @@
           "tab": "tab-practice"
         },
         {
+          "id": "sub-1-cp1",
+          "title": "Check point 1: I . A . M",
+          "target": "stage1-mod-cp1",
+          "tab": "tab-practice"
+        },
+        {
           "id": "sub-1-3",
           "title": "Bài 1.3: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc Ở Nơi Làm Việc",
           "target": "stage1-mod-1-3",
           "tab": "tab-practice"
         },
         {
-          "id": "sub-1-4",
-          "title": "Bài 1.4: Cổng Vượt Chặng — Bài Kiểm Tra 10 Câu Trắc Nghiệm",
+          "id": "sub-1-cp2",
+          "title": "Check point 2: I . A . M",
+          "target": "stage1-mod-cp2",
+          "tab": "tab-practice"
+        },
+        {
+          "id": "sub-1-quiz",
+          "title": "Cổng Vượt Chặng — Bài Kiểm Tra",
           "target": "stage1-mod-quiz",
           "tab": "tab-practice"
         }

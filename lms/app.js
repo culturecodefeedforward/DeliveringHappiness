@@ -22,8 +22,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 subSections: [
                     { id: "sub-1-1", title: "Bài 1.1: 3 Cấp Độ Hạnh Phúc (Mihály Csíkszentmihályi & Martin Seligman)", target: "stage1-mod-1-1", tab: "tab-practice" },
                     { id: "sub-1-2", title: "Bài 1.2: Giá Trị Cốt Lõi Cá Nhân (ME Values) & La Bàn Hành Động", target: "stage1-mod-1-2", tab: "tab-practice" },
-                    { id: "sub-1-3", title: "Bài 1.3: SDT & 3 Đòn Bẩy Hạnh Phúc Ở Nơi Làm Việc (Edward Deci & Richard Ryan)", target: "stage1-mod-1-3", tab: "tab-practice" },
-                    { id: "sub-1-4", title: "Bài 1.4: Cổng Vượt Chặng (≥80% Trắc Nghiệm)", target: "stage1-mod-quiz", tab: "tab-practice" }
+                    { id: "sub-1-cp1", title: "Check point 1: I . A . M", target: "stage1-mod-cp1", tab: "tab-practice" },
+                    { id: "sub-1-3", title: "Bài 1.3: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc Ở Nơi Làm Việc", target: "stage1-mod-1-3", tab: "tab-practice" },
+                    { id: "sub-1-cp2", title: "Check point 2: I . A . M", target: "stage1-mod-cp2", tab: "tab-practice" },
+                    { id: "sub-1-quiz", title: "Cổng Vượt Chặng — Bài Kiểm Tra", target: "stage1-mod-quiz", tab: "tab-practice" }
                 ],
                 audios: [
                     { id: "a1-0", title: "0. Lời dẫn & Giới thiệu tổng quan", file: "data/artifacts/dh4_overview.mp3", duration: "2:45" },
@@ -1377,12 +1379,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     let isSubDone = false;
                     const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
                     if (sub.id === "sub-1-1") {
-                        isSubDone = Boolean(s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i));
+                        isSubDone = Boolean((s1Data.viewed && s1Data.viewed["1-1"]) || (s1Data.iam_cp1 && s1Data.iam_cp1.I) || (s1Data.iam_1_1 && s1Data.iam_1_1.I));
                     } else if (sub.id === "sub-1-2") {
-                        isSubDone = Boolean(s1Data.iam_1_2 && ((s1Data.iam_1_2.I && s1Data.iam_1_2.I.trim()) || (s1Data.iam_1_2.i && s1Data.iam_1_2.i.trim())));
+                        isSubDone = Boolean((s1Data.selectedValues && s1Data.selectedValues.length > 0) || (s1Data.iam_cp1 && s1Data.iam_cp1.I) || (s1Data.iam_1_2 && s1Data.iam_1_2.I));
+                    } else if (sub.id === "sub-1-cp1") {
+                        isSubDone = Boolean((s1Data.iam_cp1 && ((s1Data.iam_cp1.I && s1Data.iam_cp1.I.trim()) || (s1Data.iam_cp1.A && s1Data.iam_cp1.A.trim()) || (s1Data.iam_cp1.M && s1Data.iam_cp1.M.trim()))) || (s1Data.iam_1_2 && s1Data.iam_1_2.I) || (s1Data.iam_1_1 && s1Data.iam_1_1.I));
                     } else if (sub.id === "sub-1-3") {
-                        isSubDone = Boolean(s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i));
-                    } else if (sub.id === "sub-1-4") {
+                        isSubDone = Boolean((s1Data.viewed && s1Data.viewed["1-3"]) || (s1Data.iam_cp2 && s1Data.iam_cp2.I) || (s1Data.iam_1_3 && s1Data.iam_1_3.I));
+                    } else if (sub.id === "sub-1-cp2") {
+                        isSubDone = Boolean((s1Data.iam_cp2 && ((s1Data.iam_cp2.I && s1Data.iam_cp2.I.trim()) || (s1Data.iam_cp2.A && s1Data.iam_cp2.A.trim()) || (s1Data.iam_cp2.M && s1Data.iam_cp2.M.trim()))) || (s1Data.iam_1_3 && s1Data.iam_1_3.I));
+                    } else if (sub.id === "sub-1-4" || sub.id === "sub-1-quiz") {
                         isSubDone = Boolean(s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80);
                     }
 
@@ -2209,27 +2215,46 @@ document.addEventListener("DOMContentLoaded", () => {
                         ? `Nhận diện những giá trị đã buông bỏ (${departed.join(", ")}) giúp tôi hiểu sâu sắc rằng việc buông bỏ bớt những kỳ vọng cũ là cần thiết để tập trung trọn vẹn cho những giá trị sống đích thực.`
                         : `Sống trọn vẹn và nhất quán với các giá trị cốt lõi này giúp tôi xây dựng phiên bản chân thật, tràn đầy năng lượng và tự do nội tại.`;
 
-                    const elInputI = document.getElementById("iam-1-2-i");
-                    const elInputA = document.getElementById("iam-1-2-a");
-                    const elInputM = document.getElementById("iam-1-2-m");
+                    const elInputI = document.getElementById("iam-cp1-i");
+                    const elInputA = document.getElementById("iam-cp1-a");
+                    const elInputM = document.getElementById("iam-cp1-m");
 
                     if (!learnerProgress.stageData["stage-1"]) {
                         learnerProgress.stageData["stage-1"] = {};
+                    }
+                    if (!learnerProgress.stageData["stage-1"].iam_cp1) {
+                        learnerProgress.stageData["stage-1"].iam_cp1 = {};
                     }
                     if (!learnerProgress.stageData["stage-1"].iam_1_2) {
                         learnerProgress.stageData["stage-1"].iam_1_2 = {};
                     }
 
-                    if (elInputI) { elInputI.value = valI; learnerProgress.stageData["stage-1"].iam_1_2.I = valI; }
-                    if (elInputA) { elInputA.value = valA; learnerProgress.stageData["stage-1"].iam_1_2.A = valA; }
-                    if (elInputM) { elInputM.value = valM; learnerProgress.stageData["stage-1"].iam_1_2.M = valM; }
+                    if (elInputI) {
+                        elInputI.value = valI;
+                        learnerProgress.stageData["stage-1"].iam_cp1.I = valI;
+                        learnerProgress.stageData["stage-1"].iam_1_2.I = valI;
+                    }
+                    if (elInputA) {
+                        elInputA.value = valA;
+                        learnerProgress.stageData["stage-1"].iam_cp1.A = valA;
+                        learnerProgress.stageData["stage-1"].iam_1_2.A = valA;
+                    }
+                    if (elInputM) {
+                        elInputM.value = valM;
+                        learnerProgress.stageData["stage-1"].iam_cp1.M = valM;
+                        learnerProgress.stageData["stage-1"].iam_1_2.M = valM;
+                    }
 
                     saveLearnerProgress();
                     renderSyllabus();
+                    updateStage1Milestones();
 
                     const oldText = btnFillIam.innerHTML;
-                    btnFillIam.innerHTML = `<span>✓ Đã điền gợi ý vào bài tập IAM!</span>`;
+                    btnFillIam.innerHTML = `<span>✓ Đã điền gợi ý vào Check point 1!</span>`;
                     setTimeout(() => { btnFillIam.innerHTML = oldText; }, 2500);
+
+                    // Mở Check point 1 accordion nếu đang đóng
+                    openAccordionModule("stage1-mod-cp1");
 
                     if (elInputI) {
                         elInputI.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -2597,9 +2622,10 @@ document.addEventListener("DOMContentLoaded", () => {
         // 9.2 Render Me Values Interactive Bridge (Top 7 DNA & 1-Click Fill IAM)
         function renderMeValuesInteractiveBridge(sData) {
             const bridgeBadges = document.getElementById("pv-bridge-badges");
+            const cp1BridgeBadges = document.getElementById("cp1-bridge-badges");
             const bridgeBadge = document.getElementById("pv-bridge-badge");
             const bridgeHint = document.getElementById("pv-bridge-hint");
-            if (!bridgeBadges) return;
+            if (!bridgeBadges && !cp1BridgeBadges) return;
 
             let displayValues = [];
             if (Array.isArray(sData.selectedValues) && sData.selectedValues.length > 0) {
@@ -2625,34 +2651,52 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
 
+            function handleBadgeClick(val) {
+                const iamInput = document.getElementById("iam-cp1-i");
+                if (iamInput) {
+                    iamInput.value = val;
+                    sData.iam_cp1 = sData.iam_cp1 || {};
+                    sData.iam_cp1.I = val;
+                    sData.iam_1_2 = sData.iam_1_2 || {};
+                    sData.iam_1_2.I = val;
+                    debouncedSave();
+                    renderSyllabus();
+                    updateStage1Milestones();
+                    evaluateLearnerStatus();
+                    openAccordionModule("stage1-mod-cp1");
+                    iamInput.focus();
+                    iamInput.classList.add("ring-2", "ring-brand-amber");
+                    setTimeout(() => iamInput.classList.remove("ring-2", "ring-brand-amber"), 1200);
+                }
+            }
+
+            function createBadgeBtn(val, idx) {
+                const badge = document.createElement("button");
+                badge.type = "button";
+                badge.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-brand-surface border border-brand-amber/40 text-xs font-semibold text-white hover:border-brand-amber hover:bg-brand-amber/15 transition-all shadow-sm active:scale-95 group";
+                badge.innerHTML = `
+                    <span class="w-4 h-4 rounded-full bg-brand-amber text-black text-[10px] font-extrabold flex items-center justify-center shrink-0">${idx + 1}</span>
+                    <span class="text-brand-amber group-hover:text-amber-300">${val}</span>
+                    <span class="text-[10px] text-slate-400 group-hover:text-white ml-0.5 opacity-60 group-hover:opacity-100">↵ Chọn</span>
+                `;
+                badge.title = `Nhấp để điền giá trị "${val}" vào ô I (Interested) của Check point 1`;
+                badge.onclick = () => handleBadgeClick(val);
+                return badge;
+            }
+
             if (displayValues.length > 0) {
-                bridgeBadges.innerHTML = "";
-                displayValues.forEach((val, idx) => {
-                    const badge = document.createElement("button");
-                    badge.type = "button";
-                    badge.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-brand-surface border border-brand-amber/40 text-xs font-semibold text-white hover:border-brand-amber hover:bg-brand-amber/15 transition-all shadow-sm active:scale-95 group";
-                    badge.innerHTML = `
-                        <span class="w-4 h-4 rounded-full bg-brand-amber text-black text-[10px] font-extrabold flex items-center justify-center shrink-0">${idx + 1}</span>
-                        <span class="text-brand-amber group-hover:text-amber-300">${val}</span>
-                        <span class="text-[10px] text-slate-400 group-hover:text-white ml-0.5 opacity-60 group-hover:opacity-100">↵ Chọn</span>
-                    `;
-                    badge.title = `Nhấp để điền giá trị "${val}" vào ô I (Interested)`;
-                    badge.onclick = () => {
-                        const iamInput = document.getElementById("iam-1-2-i");
-                        if (iamInput) {
-                            iamInput.value = val;
-                            sData.iam_1_2 = sData.iam_1_2 || {};
-                            sData.iam_1_2.I = val;
-                            debouncedSave();
-                            renderSyllabus();
-                            evaluateLearnerStatus();
-                            iamInput.focus();
-                            iamInput.classList.add("ring-2", "ring-brand-amber");
-                            setTimeout(() => iamInput.classList.remove("ring-2", "ring-brand-amber"), 1200);
-                        }
-                    };
-                    bridgeBadges.appendChild(badge);
-                });
+                if (bridgeBadges) {
+                    bridgeBadges.innerHTML = "";
+                    displayValues.forEach((val, idx) => {
+                        bridgeBadges.appendChild(createBadgeBtn(val, idx));
+                    });
+                }
+                if (cp1BridgeBadges) {
+                    cp1BridgeBadges.innerHTML = "";
+                    displayValues.forEach((val, idx) => {
+                        cp1BridgeBadges.appendChild(createBadgeBtn(val, idx));
+                    });
+                }
 
                 if (bridgeBadge) {
                     bridgeBadge.textContent = `${displayValues.length} Giá Trị (Top DNA)`;
@@ -2662,11 +2706,20 @@ document.addEventListener("DOMContentLoaded", () => {
                     bridgeHint.classList.remove("hidden");
                 }
             } else {
-                bridgeBadges.innerHTML = `
-                    <p class="text-[11px] text-slate-400 italic leading-relaxed">
-                        Bạn chưa hoàn thành bài test La Bàn Giá Trị. Hãy <a href="../personal-value.html" target="_blank" rel="noopener noreferrer" class="text-brand-amber font-bold underline hover:text-amber-300">nhấn vào đây để làm bài test 1vs1 Duel ↗</a> hoặc tự nhập giá trị tâm đắc nhất của bạn vào ô I bên dưới.
-                    </p>
-                `;
+                if (bridgeBadges) {
+                    bridgeBadges.innerHTML = `
+                        <p class="text-[11px] text-slate-400 italic leading-relaxed">
+                            Bạn chưa hoàn thành bài test La Bàn Giá Trị. Hãy <a href="../personal-value.html" target="_blank" rel="noopener noreferrer" class="text-brand-amber font-bold underline hover:text-amber-300">nhấn vào đây để làm bài test 1vs1 Duel ↗</a> hoặc tự nhập giá trị tâm đắc nhất của bạn vào ô I trong Check point 1.
+                        </p>
+                    `;
+                }
+                if (cp1BridgeBadges) {
+                    cp1BridgeBadges.innerHTML = `
+                        <p class="text-[11px] text-slate-400 italic leading-relaxed">
+                            Chưa có kết quả La Bàn Giá Trị. Bạn có thể tự nhập giá trị tâm đắc vào ô I bên dưới hoặc làm bài test 1vs1 ở Bài 1.2.
+                        </p>
+                    `;
+                }
                 if (bridgeBadge) {
                     bridgeBadge.textContent = "Chưa làm bài test";
                     bridgeBadge.className = "text-[10px] px-2 py-0.5 rounded bg-brand-amber/20 text-brand-amber font-mono font-bold";
@@ -2682,18 +2735,73 @@ document.addEventListener("DOMContentLoaded", () => {
         if (valuesCountBadge) valuesCountBadge.textContent = `${(sData.selectedValues || []).length} Đã chọn`;
         loadPersonalValuesTestResult();
 
-        // 9.3 IAM Inputs for Stage 1
-        bindInput("iam-1-1-i", val => { sData.iam_1_1 = sData.iam_1_1 || {}; sData.iam_1_1.I = val; debouncedSave(); renderSyllabus(); }, sData.iam_1_1?.I);
-        bindInput("iam-1-1-a", val => { sData.iam_1_1 = sData.iam_1_1 || {}; sData.iam_1_1.A = val; debouncedSave(); }, sData.iam_1_1?.A);
-        bindInput("iam-1-1-m", val => { sData.iam_1_1 = sData.iam_1_1 || {}; sData.iam_1_1.M = val; debouncedSave(); }, sData.iam_1_1?.M);
+        // 9.3 IAM Inputs for Stage 1 (2 Checkpoints: CP1 & CP2)
+        if (!sData.iam_cp1) {
+            sData.iam_cp1 = sData.iam_1_2 || sData.iam_1_1 || {};
+        }
+        if (!sData.iam_cp2) {
+            sData.iam_cp2 = sData.iam_1_3 || {};
+        }
 
-        bindInput("iam-1-2-i", val => { sData.iam_1_2 = sData.iam_1_2 || {}; sData.iam_1_2.I = val; debouncedSave(); renderSyllabus(); }, sData.iam_1_2?.I);
-        bindInput("iam-1-2-a", val => { sData.iam_1_2 = sData.iam_1_2 || {}; sData.iam_1_2.A = val; debouncedSave(); }, sData.iam_1_2?.A);
-        bindInput("iam-1-2-m", val => { sData.iam_1_2 = sData.iam_1_2 || {}; sData.iam_1_2.M = val; debouncedSave(); }, sData.iam_1_2?.M);
+        bindInput("iam-cp1-i", val => { 
+            sData.iam_cp1 = sData.iam_cp1 || {}; 
+            sData.iam_cp1.I = val; 
+            sData.iam_1_2 = sData.iam_1_2 || {};
+            sData.iam_1_2.I = val;
+            debouncedSave(); 
+            renderSyllabus(); 
+            updateStage1Milestones(); 
+        }, sData.iam_cp1?.I);
 
-        bindInput("iam-1-3-i", val => { sData.iam_1_3 = sData.iam_1_3 || {}; sData.iam_1_3.I = val; debouncedSave(); renderSyllabus(); }, sData.iam_1_3?.I);
-        bindInput("iam-1-3-a", val => { sData.iam_1_3 = sData.iam_1_3 || {}; sData.iam_1_3.A = val; debouncedSave(); }, sData.iam_1_3?.A);
-        bindInput("iam-1-3-m", val => { sData.iam_1_3 = sData.iam_1_3 || {}; sData.iam_1_3.M = val; debouncedSave(); }, sData.iam_1_3?.M);
+        bindInput("iam-cp1-a", val => { 
+            sData.iam_cp1 = sData.iam_cp1 || {}; 
+            sData.iam_cp1.A = val; 
+            sData.iam_1_2 = sData.iam_1_2 || {};
+            sData.iam_1_2.A = val;
+            debouncedSave(); 
+            renderSyllabus(); 
+            updateStage1Milestones(); 
+        }, sData.iam_cp1?.A);
+
+        bindInput("iam-cp1-m", val => { 
+            sData.iam_cp1 = sData.iam_cp1 || {}; 
+            sData.iam_cp1.M = val; 
+            sData.iam_1_2 = sData.iam_1_2 || {};
+            sData.iam_1_2.M = val;
+            debouncedSave(); 
+            renderSyllabus(); 
+            updateStage1Milestones(); 
+        }, sData.iam_cp1?.M);
+
+        bindInput("iam-cp2-i", val => { 
+            sData.iam_cp2 = sData.iam_cp2 || {}; 
+            sData.iam_cp2.I = val; 
+            sData.iam_1_3 = sData.iam_1_3 || {};
+            sData.iam_1_3.I = val;
+            debouncedSave(); 
+            renderSyllabus(); 
+            updateStage1Milestones(); 
+        }, sData.iam_cp2?.I);
+
+        bindInput("iam-cp2-a", val => { 
+            sData.iam_cp2 = sData.iam_cp2 || {}; 
+            sData.iam_cp2.A = val; 
+            sData.iam_1_3 = sData.iam_1_3 || {};
+            sData.iam_1_3.A = val;
+            debouncedSave(); 
+            renderSyllabus(); 
+            updateStage1Milestones(); 
+        }, sData.iam_cp2?.A);
+
+        bindInput("iam-cp2-m", val => { 
+            sData.iam_cp2 = sData.iam_cp2 || {}; 
+            sData.iam_cp2.M = val; 
+            sData.iam_1_3 = sData.iam_1_3 || {};
+            sData.iam_1_3.M = val;
+            debouncedSave(); 
+            renderSyllabus(); 
+            updateStage1Milestones(); 
+        }, sData.iam_cp2?.M);
 
         evaluateLearnerStatus();
     }
@@ -4525,17 +4633,16 @@ document.addEventListener("DOMContentLoaded", () => {
             return 100;
         }
         const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
-        let count = 0;
-        // Mốc 1 (25%): Hoàn thành phản tư I•A•M 1.1 (3 Cấp Độ Hạnh Phúc)
-        if (s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i)) count++;
-        // Mốc 2 (25%): Hoàn thành phản tư I•A•M 1.2 (Giá trị La Bàn)
-        if (s1Data.iam_1_2 && ((s1Data.iam_1_2.I && s1Data.iam_1_2.I.trim()) || (s1Data.iam_1_2.i && s1Data.iam_1_2.i.trim()))) count++;
-        // Mốc 3 (25%): Hoàn thành phản tư I•A•M 1.3 (3 Đòn Bẩy Hạnh Phúc)
-        if (s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i)) count++;
-        // Mốc 4 (25%): Đạt bài kiểm tra vượt chặng (≥8/10 câu hoặc ≥80%)
-        if (s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80) count++;
+        let pct = 0;
+        const cp1Done = Boolean((s1Data.iam_cp1 && (s1Data.iam_cp1.I || s1Data.iam_cp1.i)) || (s1Data.iam_1_2 && (s1Data.iam_1_2.I || s1Data.iam_1_2.i)) || (s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i)));
+        const cp2Done = Boolean((s1Data.iam_cp2 && (s1Data.iam_cp2.I || s1Data.iam_cp2.i)) || (s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i)));
+        const quizDone = Boolean(s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80);
 
-        return Math.min(100, Math.round(count * 25));
+        if (cp1Done) pct += 33;
+        if (cp2Done) pct += 33;
+        if (quizDone) pct += 34;
+
+        return Math.min(100, pct);
     }
 
     function calculateStage2Progress() {
@@ -4607,15 +4714,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
         const isS1Done = learnerProgress.completedStages && learnerProgress.completedStages.includes("stage-1");
 
-        const mLevelsDone = isS1Done || Boolean(s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i));
-        const mValuesDone = isS1Done || Boolean(s1Data.iam_1_2 && ((s1Data.iam_1_2.I && s1Data.iam_1_2.I.trim()) || (s1Data.iam_1_2.i && s1Data.iam_1_2.i.trim())));
-        const mDriversDone = isS1Done || Boolean(s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i));
+        const mLevelsDone = isS1Done || Boolean((s1Data.viewed && s1Data.viewed["1-1"]) || (s1Data.iam_cp1 && s1Data.iam_cp1.I) || (s1Data.iam_1_1 && s1Data.iam_1_1.I));
+        const mValuesDone = isS1Done || Boolean((s1Data.selectedValues && s1Data.selectedValues.length > 0) || (s1Data.iam_cp1 && s1Data.iam_cp1.I) || (s1Data.iam_1_2 && s1Data.iam_1_2.I));
+        const mCp1Done = isS1Done || Boolean((s1Data.iam_cp1 && ((s1Data.iam_cp1.I && s1Data.iam_cp1.I.trim()) || (s1Data.iam_cp1.A && s1Data.iam_cp1.A.trim()) || (s1Data.iam_cp1.M && s1Data.iam_cp1.M.trim()))) || (s1Data.iam_1_2 && s1Data.iam_1_2.I) || (s1Data.iam_1_1 && s1Data.iam_1_1.I));
+        const mDriversDone = isS1Done || Boolean((s1Data.viewed && s1Data.viewed["1-3"]) || (s1Data.iam_cp2 && s1Data.iam_cp2.I) || (s1Data.iam_1_3 && s1Data.iam_1_3.I));
+        const mCp2Done = isS1Done || Boolean((s1Data.iam_cp2 && ((s1Data.iam_cp2.I && s1Data.iam_cp2.I.trim()) || (s1Data.iam_cp2.A && s1Data.iam_cp2.A.trim()) || (s1Data.iam_cp2.M && s1Data.iam_cp2.M.trim()))) || (s1Data.iam_1_3 && s1Data.iam_1_3.I));
         const mQuizDone = isS1Done || Boolean(s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80);
 
-        const doneCount = [mLevelsDone, mValuesDone, mDriversDone, mQuizDone].filter(Boolean).length;
+        const doneCount = [mLevelsDone, mValuesDone, mCp1Done, mDriversDone, mCp2Done, mQuizDone].filter(Boolean).length;
         const milestoneText = document.getElementById("stage1-milestone-text");
         if (milestoneText) {
-            milestoneText.textContent = `${doneCount}/4 Hoàn thành`;
+            milestoneText.textContent = `${doneCount}/6 Hoàn thành`;
         }
 
         function setPill(id, done) {
@@ -4633,7 +4742,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setPill("m-pill-levels", mLevelsDone);
         setPill("m-pill-values", mValuesDone);
+        setPill("m-pill-cp1", mCp1Done);
         setPill("m-pill-drivers", mDriversDone);
+        setPill("m-pill-cp2", mCp2Done);
         setPill("m-pill-quiz", mQuizDone);
     }
 
