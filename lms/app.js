@@ -20,9 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 videoTitle: "Video Explainer: Delivering Happiness Movement (Hệ Điều Hành Hạnh Phúc)",
                 videoType: "mp4",
                 subSections: [
-                    { id: "sub-1-1", title: "Bài 1.1: 3 Cấp Độ Hạnh Phúc (Martin Seligman)", target: "stage1-mod-1-1", tab: "tab-practice" },
-                    { id: "sub-1-2", title: "Bài 1.2: La Bàn Giá Trị Cốt Lõi Cá Nhân (Me Values)", target: "stage1-mod-1-2", tab: "tab-practice" },
-                    { id: "sub-1-3", title: "Bài 1.3: 3 Đòn Bẩy Hạnh Phúc (Deci & Ryan)", target: "stage1-mod-1-3", tab: "tab-practice" },
+                    { id: "sub-1-1", title: "Bài 1.1: 3 Cấp Độ Hạnh Phúc (Mihály Csíkszentmihályi & Martin Seligman)", target: "stage1-mod-1-1", tab: "tab-practice" },
+                    { id: "sub-1-2", title: "Bài 1.2: Giá Trị Cốt Lõi Cá Nhân (ME Values) & La Bàn Hành Động", target: "stage1-mod-1-2", tab: "tab-practice" },
+                    { id: "sub-1-3", title: "Bài 1.3: SDT & 3 Đòn Bẩy Hạnh Phúc Ở Nơi Làm Việc (Edward Deci & Richard Ryan)", target: "stage1-mod-1-3", tab: "tab-practice" },
                     { id: "sub-1-4", title: "Bài 1.4: Cổng Vượt Chặng (≥80% Trắc Nghiệm)", target: "stage1-mod-quiz", tab: "tab-practice" }
                 ],
                 audios: [
@@ -35,13 +35,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 summary: "Mọi hành động con người đều hội tụ về đích đến là Hạnh phúc (Aristotle). Tuy nhiên, não bộ rất nhanh thích nghi với Thú vui ngắn hạn do cơ chế thích nghi khoái lạc (Hedonic Adaptation). Để bền vững, ta cần nâng cấp lên sự Đam mê dấn thân (The Engaged Life) và Mục đích cao cả (Higher Purpose).",
                 insights: [
                     { title: "Cấp độ 1: Thú vui (Pleasure)", desc: "Nhanh nguội lạnh do cơ chế thích nghi khoái lạc. Tiền bạc, tiện nghi vật chất chỉ đem lại thỏa mãn nhất thời." },
-                    { title: "Cấp độ 2: Đam mê (Passion / Engagement)", desc: "Hạnh phúc từ sự dấn thân, gắn kết sâu sắc và phát huy thế mạnh bản thân (Signature Strengths) từ động lực nội tại." },
+                    { title: "Cấp độ 2: Đam mê & Dòng chảy Flow (Passion)", desc: "Phiêu và gắn kết. Thời gian trôi nhanh (Mihály Csíkszentmihályi & Martin Seligman)." },
                     { title: "Cấp độ 3: Mục đích cao cả (Higher Purpose)", desc: "Cấp độ bền vững nhất. Thấy công việc của mình có ý nghĩa, phụng sự và đóng góp giá trị cho cộng đồng." }
                 ],
                 modules: [
                     {
                         id: "mod-1-1",
-                        title: "Bài 1.1: 3 Cấp Độ Hạnh Phúc",
+                        title: "Bài 1.1: 3 Cấp Độ Hạnh Phúc (Mihály Csíkszentmihályi & Martin Seligman)",
                         quizzes: [
                             {
                                 id: "dhm-quiz-1",
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 id: "dhm-quiz-2",
                                 question: "Trong xây dựng văn hóa giao tiếp cởi mở và thấu hiểu không phán xét, An toàn tâm lý (Psychological Safety) đóng vai trò nền tảng cho đòn bẩy nào?",
                                 options: [
-                                    "Tự chủ (Control)",
+                                    "Cảm giác Tự chủ (Autonomy)",
                                     "Kết nối (Connectedness)",
                                     "Đam mê (Passion)",
                                     "Tiến bộ (Progress)"
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             },
                             {
                                 id: "dhm-quiz-3",
-                                question: "Trong công việc, cảm giác 'Tự chủ' (Control) được hiểu đúng nhất là:",
+                                question: "Trong công việc, cảm giác 'Tự chủ' (Autonomy) được hiểu đúng nhất là:",
                                 options: [
                                     "Có quyền lựa chọn và kiểm soát cách thực hiện công việc",
                                     "Được quyền ra lệnh cho người khác",
@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     },
                     {
                         id: "mod-1-2",
-                        title: "Bài 1.2: La Bàn Giá Trị Cốt Lõi Cá Nhân — Personal Core Value Compass (Me Values)",
+                        title: "Bài 1.2: Giá Trị Cốt Lõi Cá Nhân (ME Values) & La Bàn Hành Động",
                         valueOptions: [
                             "Tiến bộ (luôn tiến lên phía trước, phát triển không ngừng)",
                             "Thành công (đạt kết quả, hoàn thành nhiệm vụ)",
@@ -238,7 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     },
                     {
                         id: "mod-1-3",
-                        title: "Bài 1.3: 3 Đòn Bẩy Hạnh Phúc (Deci & Ryan)",
+                        title: "Bài 1.3: SDT & 3 Đòn Bẩy Hạnh Phúc Ở Nơi Làm Việc (Edward Deci & Richard Ryan)",
                         iam: {
                             id: "iam_1_3",
                             title: "Đúc kết I • A • M 1.3 — 3 Đòn Bẩy (Kết Nối • Tự Chủ • Tiến Bộ)",
@@ -249,10 +249,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 ],
                 resources: [
-                    { title: "Đồ họa thông tin: Bí Quyết 3 Cấp Độ Hạnh Phúc", type: "image", url: "data/artifacts/infographic_bi_quyet.png", icon: "🖼️" },
-                    { title: "Đồ họa thông tin: Lộ Trình Khoa Học Hạnh Phúc: Từ Cá Nhân Đến Tổ Chức", type: "image", url: "data/artifacts/infographic.png", icon: "📊" },
-                    { title: "Báo cáo: Khoa học Hạnh phúc & Dòng chảy Tổ chức", type: "markdown", url: "data/artifacts/report_dong_chay.md", icon: "📄" },
-                    { title: "Thẻ ghi nhớ tương tác: Flashcards Hạnh Phúc", type: "html", url: "data/artifacts/flashcards", icon: "🃏" }
+                    { title: "Slide Bài Giảng: Đích Đến Hạnh Phúc (Slide 14)", type: "image", url: "data/artifacts/slides/slide_14.png", icon: "📊" },
+                    { title: "Slide Bài Giảng: Lời Dạy Aristotle 200BC — Hạnh Phúc Là Mục Đích Tồn Tại (Slide 18)", type: "image", url: "data/artifacts/slides/slide_18.png", icon: "📊" },
+                    { title: "Slide Bài Giảng: Điều Gì Khiến Hạnh Phúc Bền Lâu? (Slide 19)", type: "image", url: "data/artifacts/slides/slide_19.png", icon: "📊" },
+                    { title: "Slide Bài Giảng: Ai Khiến Hạnh Phúc Bền Lâu? (Cá Nhân • Tập Thể • Cộng Đồng) (Slide 20)", type: "image", url: "data/artifacts/slides/slide_20.png", icon: "📊" },
+                    { title: "Slide Bài Giảng: Lợi Ích Của Đòn Bẩy Tiến Bộ (Dopamine & Small Wins) (Slide 38)", type: "image", url: "data/artifacts/slides/slide_38.png", icon: "📊" },
+                    { title: "Slide Bài Giảng: Lộ Trình 3 Mini Step DHM (Slide 04)", type: "image", url: "data/artifacts/slides/slide_04.png", icon: "🗺️" },
+                    { title: "Slide Bài Giảng: Triết Lý Văn Hóa Zappos — Tony Hsieh (Slide 09)", type: "image", url: "data/artifacts/slides/slide_09.png", icon: "💡" },
+                    { id: "res-roadmap", title: "Cẩm Nang: Lộ Trình Học Tập & Hướng Dẫn Sử Dụng LMS", type: "markdown", url: "data/artifacts/huong_dan_va_lo_trinh_hoc_dhm.md", icon: "📘", readOnline: true, desc: "Hướng dẫn chi tiết toàn bộ lộ trình 3 Mini-steps, quy chế Cổng Vượt Chặng 1 (≥80%) và thao tác sử dụng hệ thống học tập LMS." },
+                    { title: "Báo cáo Nghiên cứu: Khoa Học Hạnh Phúc & Dòng Chảy Tổ Chức", type: "markdown", url: "data/artifacts/report_dong_chay.md", icon: "📄", readOnline: true },
+                    { title: "Bộ 25 Flashcards Văn Hóa Ghi Nhớ", type: "html", url: "data/artifacts/flashcards.html", icon: "🃏" }
                 ]
             },
             {
@@ -3667,6 +3673,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         </a>
                     </div>
                 `;
+            } else if (r.type === "html") {
+                actionBtnHtml = `
+                    <div class="pt-1 border-t border-brand-border/40">
+                        <a href="${r.url}" target="_blank" class="w-full py-1.5 px-2.5 rounded-lg bg-brand-amber/15 hover:bg-brand-amber/25 text-brand-amber text-xs font-bold border border-brand-amber/30 transition-colors flex items-center justify-center gap-1.5">
+                            <span>🃏 Mở Flashcards Tương Tác ↗</span>
+                        </a>
+                    </div>
+                `;
             } else {
                 actionBtnHtml = `
                     <div class="pt-1 border-t border-brand-border/40">
@@ -4621,6 +4635,24 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // 13.0 CẦU NỐI VÀO NỘI DUNG CHÍNH TỪ TAB TỔNG QUAN
+    const btnGotoMainContent = document.getElementById("btn-goto-main-content");
+    if (btnGotoMainContent) {
+        btnGotoMainContent.addEventListener("click", () => {
+            const practiceTabBtn = document.querySelector('.tab-btn[data-tab="tab-practice"]');
+            if (practiceTabBtn) {
+                practiceTabBtn.click();
+            }
+            setTimeout(() => {
+                openAccordionModule("stage1-mod-1-1");
+                const mod1Sec = document.getElementById("stage1-mod-1-1");
+                if (mod1Sec) {
+                    mod1Sec.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            }, 100);
+        });
+    }
+
     // 13.1 QUIZ JUMP SHORTCUT HANDLER (ĐÁP ỨNG FEEDBACK CÔ CHÂU)
     function jumpToStage1Quiz() {
         if (currentStageIndex !== 0) {
@@ -4889,7 +4921,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (btnOpenChangePwd) {
-        btnOpenChangePwd.addEventListener("click", () => {
+        btnOpenChangePwd.addEventListener("click", (e) => {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
             showSelfChangePasswordModal();
         });
     }
