@@ -64,133 +64,133 @@
           "quizzes": [
             {
               "id": "dhm-quiz-1",
-              "question": "Trong Cảm giác 'Tiến bộ'; yếu tố nào quan trọng nhất để duy trì động lực?",
+              "question": "Trong Cảm giác 'Tiến bộ' (Sense of Progress), yếu tố nào quan trọng nhất để nuôi dưỡng động lực nội tại?",
               "options": [
-                "Sự ghi nhận các bước tiến nhỏ (Small wins)",
-                "Sự phê bình nghiêm khắc",
-                "Phần thưởng lớn cuối năm",
-                "Việc không bao giờ thất bại"
+                "Sự ghi nhận liên tục các bước tiến nhỏ (Small wins) để kích hoạt Dopamine tự nhiên.",
+                "Những phần thưởng tài chính đột biến vào cuối năm (Annual bonuses) dựa trên kết quả KPI.",
+                "Việc duy trì tiêu chuẩn kỷ luật nghiêm ngặt (Strict accountability) để không bao giờ xảy ra lỗi.",
+                "Cán đích hoàn thành các đại dự án chiến lược (Milestone achievements) có quy mô lớn của tổ chức."
               ],
               "correctIndex": 0,
               "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 1: Sự ghi nhận các bước tiến nhỏ (Small wins)"
+              "explanation": "Đáp án đúng là lựa chọn 1: Sự ghi nhận liên tục các bước tiến nhỏ (Small wins) để kích hoạt Dopamine tự nhiên."
             },
             {
               "id": "dhm-quiz-2",
-              "question": "Trong xây dựng văn hóa giao tiếp cởi mở và thấu hiểu không phán xét, An toàn tâm lý (Psychological Safety) đóng vai trò nền tảng cho đòn bẩy nào?",
+              "question": "Trong mô hình 3 Đòn bẩy của Delivering Happiness, An toàn tâm lý (Psychological Safety) là điều kiện nền tảng để xây dựng đòn bẩy nào?",
               "options": [
-                "Cảm giác Tự chủ (Autonomy)",
-                "Kết nối (Connectedness)",
-                "Đam mê (Passion)",
-                "Tiến bộ (Progress)"
-              ],
-              "correctIndex": 1,
-              "timeLimit": 20,
-              "explanation": "An toàn tâm lý giúp mọi người dám cởi mở, lắng nghe không phán xét và gắn kết chân thực, là nền tảng cốt lõi của Cảm giác Kết nối (Connectedness). Đồng thời ở cấp độ tổ chức, nó cũng là tiền đề để nhân viên dám nói lên tiếng nói cá nhân (Tự chủ)."
-            },
-            {
-              "id": "dhm-quiz-3",
-              "question": "Trong công việc, cảm giác 'Tự chủ' (Autonomy) được hiểu đúng nhất là:",
-              "options": [
-                "Có quyền lựa chọn và kiểm soát cách thực hiện công việc",
-                "Được quyền ra lệnh cho người khác",
-                "Không cần làm việc theo quy trình",
-                "Làm việc một mình không cần ai giúp"
+                "Cảm giác Tự chủ (Autonomy) — dám lên tiếng, thử nghiệm và chịu trách nhiệm.",
+                "Cảm giác Kết nối (Connectedness) — tạo dựng mối quan hệ hòa ái và gắn kết sâu sắc.",
+                "Cảm giác Tiến bộ (Progress) — ghi nhận các bước tiến và thành tựu cá nhân.",
+                "Cảm giác Dấn thân (Engagement) — đắm chìm vào công việc với động lực nội tại."
               ],
               "correctIndex": 0,
               "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 1: Có quyền lựa chọn và kiểm soát cách thực hiện công việc"
+              "explanation": "Đáp án đúng là Cảm giác Tự chủ (Autonomy). Theo Slide 31 của Delivering Happiness và lời giảng của Thầy Hưng, An toàn tâm lý (Psychological Safety) là điều kiện tiên quyết thuộc Đòn bẩy Tự chủ, giúp nhân viên cảm thấy an toàn để nói lên tiếng nói cá nhân, thử nghiệm cách làm mới và dám nhận trách nhiệm về kết quả mà không sợ bị trừng phạt hay làm nhục."
+            },
+            {
+              "id": "dhm-quiz-3",
+              "question": "Trong môi trường công việc, cảm giác 'Tự chủ' (Autonomy) được hiểu chính xác nhất là:",
+              "options": [
+                "Có quyền chủ động lựa chọn và kiểm soát phương pháp thực hiện công việc (Method Control).",
+                "Được quyền phân công mệnh lệnh và kiểm soát trực tiếp tiến độ của người khác (Task Authority).",
+                "Tự do làm việc độc lập hoàn toàn mà không cần phối hợp hay báo cáo quy trình (No Oversight).",
+                "Quyền miễn trừ khỏi các cam kết mục tiêu chung khi gặp trở ngại khách quan (Risk Exemption)."
+              ],
+              "correctIndex": 0,
+              "timeLimit": 20,
+              "explanation": "Đáp án đúng là lựa chọn 1: Có quyền chủ động lựa chọn và kiểm soát phương pháp thực hiện công việc (Method Control)."
             },
             {
               "id": "dhm-quiz-4",
               "question": "Tại sao cảm giác 'Tiến bộ' (Progress) lại quan trọng hơn việc Đạt mục tiêu cuối cùng theo khoa học hạnh phúc?",
               "options": [
-                "Vì các Small wins (chiến thắng nhỏ) tạo ra nguồn năng lượng liên tục giúp duy trì động lực",
-                "Vì cảm giác tiến bộ giúp chúng ta không bị tác động bởi những thất bại tạm thời",
-                "Vì việc đạt mục tiêu cuối cùng thường đi kèm với sự lo âu về việc phải đặt ra những mục tiêu cao hơn",
-                "Vì tiến bộ là yếu tố duy nhất có thể đo lường được bằng các chỉ số định lượng trong quản trị nhân sự"
+                "Vì các bước tiến nhỏ (Small wins) giải phóng Dopamine liên tục giúp duy trì năng lượng hành động.",
+                "Vì cảm giác tiến bộ giúp triệt tiêu hoàn toàn tác động tiêu cực của các thất bại tạm thời (Zero failures).",
+                "Vì đích đến cuối cùng luôn kích hoạt bẫy lo âu và áp lực phải liên tục đặt mục tiêu cao hơn (End-goal anxiety).",
+                "Vì sự tiến bộ là chỉ số duy nhất có thể định lượng chính xác bằng các khung đo lường năng lực (KPI metrics)."
               ],
               "correctIndex": 0,
               "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 1: Vì các Small wins (chiến thắng nhỏ) tạo ra nguồn năng lượng liên tục giúp duy trì động lực"
+              "explanation": "Đáp án đúng là lựa chọn 1: Vì các bước tiến nhỏ (Small wins) giải phóng Dopamine liên tục giúp duy trì năng lượng hành động."
             },
             {
               "id": "dhm-quiz-5",
-              "question": "Khái niệm 'Psychological Safety' (An toàn tâm lý) đóng vai trò gì trong Cảm giác ‘Kết nối?",
+              "question": "Khái niệm 'Psychological Safety' (An toàn tâm lý) đóng vai trò gì đối với Đòn bẩy Tự chủ trong tổ chức?",
               "options": [
-                "Thiết lập một hệ thống kiểm soát nội bộ chặt chẽ để ngăn ngừa các hành vi gây mất đoàn kết trong nhóm",
-                "Đảm bảo rằng mọi thành viên trong nhóm luôn có sự đồng thuận tuyệt đối và không bao giờ có tranh luận",
-                "Cung cấp một chế độ bảo hiểm và phúc lợi đầy đủ để nhân viên cảm thấy an tâm về mặt tài chính cá nhân",
-                "Tạo ra môi trường nơi mọi người dám chia sẻ sai lầm và thử nghiệm cái mới mà không sợ bị phán xét"
+                "Thiết lập cơ chế kiểm soát nội bộ nghiêm ngặt để ngăn ngừa rủi ro sai sót quy trình (Internal Control).",
+                "Đảm bảo sự đồng thuận tuyệt đối trong mọi cuộc họp và hạn chế các tranh luận trái chiều (Strict Consensus).",
+                "Cung cấp chính sách phúc lợi và bảo đảm tài chính toàn diện để nhân viên an tâm làm việc (Job Security).",
+                "Tạo môi trường an toàn để mọi người dám chia sẻ sai sót và thử nghiệm ý tưởng mới (Safe to Speak Up)."
               ],
               "correctIndex": 3,
               "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 4: Tạo ra môi trường nơi mọi người dám chia sẻ sai lầm và thử nghiệm cái mới mà không sợ bị phán xét"
+              "explanation": "Đáp án đúng là lựa chọn 4: Tạo môi trường an toàn để mọi người dám chia sẻ sai sót và thử nghiệm ý tưởng mới (Safe to Speak Up)."
             },
             {
               "id": "dhm-quiz-6",
-              "question": "Theo Delivering Happiness, đâu là 3 cấp độ hạnh phúc?",
+              "question": "Theo mô hình Delivering Happiness (kế thừa từ Martin Seligman), đâu là 3 cấp độ hạnh phúc theo thứ tự độ bền vững tăng dần?",
               "options": [
-                "Thú vui (Pleasure) - Đam mê (Passion) - Mục đích cao cả (Higher Purpose)",
-                "Tiến bộ - Tự chủ - Kết nối",
-                "Biết ơn - Flow - Lạc quan",
-                "Giá trị - Hành vi - Văn hóa"
+                "Thú vui (Pleasure) ➔ Đam mê / Dòng chảy (Passion / Flow) ➔ Mục đích cao cả (Higher Purpose).",
+                "Cảm giác Kết nối (Connectedness) ➔ Cảm giác Tự chủ (Autonomy) ➔ Cảm giác Tiến bộ (Progress).",
+                "Thực hành Biết ơn (Gratitude) ➔ Trạng thái Tỉnh thức (Mindfulness) ➔ Tinh thần Vị nhân (Altruism).",
+                "Nhận thức Giá trị (Core Values) ➔ Chuẩn hóa Hành vi (Key Behaviors) ➔ Văn hóa Tổ chức (Culture)."
               ],
               "correctIndex": 0,
               "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 1: Thú vui (Pleasure) - Đam mê (Passion) - Mục đích cao cả (Higher Purpose)"
+              "explanation": "Đáp án đúng là lựa chọn 1: Thú vui (Pleasure) ➔ Đam mê / Dòng chảy (Passion / Flow) ➔ Mục đích cao cả (Higher Purpose)."
             },
             {
               "id": "dhm-quiz-7",
-              "question": "Ai là người phát biểu câu nói:\n\"Xây dựng một văn hóa tuyệt vời và mọi thứ khác sẽ đi đúng hướng\"?",
+              "question": "Ai là tác giả của triết lý quản trị nổi tiếng: \"Xây dựng một văn hóa tuyệt vời và mọi thứ khác sẽ đi đúng hướng\" (Get the right culture, and everything else will fall into place)?",
               "options": [
-                "Martin Seligman",
-                "Aristotle",
-                "Tony Hsieh",
-                "Mihály Csíkszentmihályi"
+                "Martin Seligman (Nhà tâm lý học, cha đẻ Tâm lý học Tích cực).",
+                "Mihály Csíkszentmihályi (Giáo sư tiên phong nghiên cứu về Dòng chảy).",
+                "Tony Hsieh (Cố CEO Zappos & Đồng sáng lập Delivering Happiness).",
+                "Aristotle (Triết gia Hy Lạp cổ đại với khái niệm Hạnh phúc Eudaimonia)."
               ],
               "correctIndex": 2,
               "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 3: Tony Hsieh"
+              "explanation": "Đáp án đúng là lựa chọn 3: Tony Hsieh (Cố CEO Zappos & Đồng sáng lập Delivering Happiness)."
             },
             {
               "id": "dhm-quiz-8",
-              "question": "Đòn bẩy Kết nối được thể hiện qua hòa ái với:",
+              "question": "Trong Đòn bẩy Kết nối (Connectedness), trạng thái 'Sống hòa ái' được thể hiện trọn vẹn qua 3 mối quan hệ nào?",
               "options": [
-                "Với bản thân, với người khác và với thiên nhiên",
-                "Với mục tiêu, với thành tích và với lợi nhuận",
-                "Với tự chủ, với tiến bộ và với thành tựu",
-                "Với tổ chức, với khách hàng và với quy trình"
+                "Hòa ái với Bản thân (Self), với Người khác (Others) và với Thiên nhiên (Nature).",
+                "Hòa hợp với Mục tiêu (Goals), với Thành tích (Results) và với Lợi nhuận (Profit).",
+                "Đồng điệu với Tự chủ (Autonomy), với Tiến bộ (Progress) và với Năng lực (Competence).",
+                "Gắn kết với Tổ chức (Company), với Khách hàng (Clients) và với Quy trình (Process)."
               ],
               "correctIndex": 0,
               "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 1: Với bản thân, với người khác và với thiên nhiên"
+              "explanation": "Đáp án đúng là lựa chọn 1: Hòa ái với Bản thân (Self), với Người khác (Others) và với Thiên nhiên (Nature)."
             },
             {
               "id": "dhm-quiz-9",
-              "question": "Đâu là biểu hiện của Ownership Advantage™ (Tinh thần làm chủ)?",
+              "question": "Đâu là định nghĩa chuẩn xác nhất về Ownership Advantage™ (Lợi thế của tinh thần làm chủ) trên Slide bài giảng?",
               "options": [
-                "Cảm giác được chú ý và lắng nghe ý kiến",
-                "Cảm giác được kết nối, tương tác và quan tâm đến người khác",
-                "Được là chính mình trong môi trường làm việc",
-                "Lựa chọn cá nhân trong việc chịu trách nhiệm về kết quả"
+                "Cảm giác được tổ chức chú ý và tôn trọng ý kiến đóng góp cá nhân (Being Heard & Valued).",
+                "Cảm giác gắn kết, tương tác cởi mở và quan tâm chân thành đến đồng đội (Sense of Connection).",
+                "Được tự do bộc lộ bản sắc con người thật trong môi trường công sở (Authentic Self at Work).",
+                "Lựa chọn cá nhân trong việc tự giác chịu trách nhiệm về kết quả (Personal Choice to Own Results)."
               ],
               "correctIndex": 3,
               "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 4: Lựa chọn cá nhân trong việc chịu trách nhiệm về kết quả"
+              "explanation": "Đáp án đúng là lựa chọn 4: Lựa chọn cá nhân trong việc tự giác chịu trách nhiệm về kết quả (Personal Choice to Own Results)."
             },
             {
               "id": "dhm-quiz-10",
-              "question": "Theo tài liệu, tại sao nhiều mục tiêu như mua nhà, thăng chức hoặc kiếm nhiều tiền không đảm bảo hạnh phúc bền vững?",
+              "question": "Theo khoa học hạnh phúc, tại sao các mục tiêu bên ngoài như mua nhà, thăng chức hay tích lũy tài chính không đảm bảo hạnh phúc bền vững?",
               "options": [
-                "Vì chúng làm giảm động lực nội tại.",
-                "Vì chúng thường mang lại hạnh phúc trong ngắn hạn và khi đạt được ta nhanh chóng đặt mục tiêu mới.",
-                "Vì chúng làm giảm cảm giác kết nối.",
-                "Vì chúng làm suy yếu giá trị cốt lõi cá nhân."
+                "Vì chúng làm triệt tiêu hoàn toàn động lực nội tại (Intrinsic Motivation) và khả năng sáng tạo tự thân.",
+                "Vì cơ chế thích nghi khoái lạc (Hedonic Adaptation) khiến cảm giác thỏa mãn tan biến nhanh và ta lại lập tức đặt cột mốc mới.",
+                "Vì các mục tiêu vật chất luôn làm suy yếu cảm giác kết nối sâu sắc (Deep Connectedness) giữa cá nhân với tổ chức.",
+                "Vì việc theo đuổi danh vọng bên ngoài sẽ trực tiếp phá vỡ la bàn giá trị cốt lõi (Core Values Compass) của mỗi người."
               ],
               "correctIndex": 1,
               "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 2: Vì chúng thường mang lại hạnh phúc trong ngắn hạn và khi đạt được ta nhanh chóng đặt mục tiêu mới."
+              "explanation": "Đáp án đúng là lựa chọn 2: Vì cơ chế thích nghi khoái lạc (Hedonic Adaptation) khiến cảm giác thỏa mãn tan biến nhanh và ta lại lập tức đặt cột mốc mới."
             }
           ],
           "iam": {
