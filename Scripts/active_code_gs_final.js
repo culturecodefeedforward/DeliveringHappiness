@@ -69,7 +69,7 @@ var DEFAULT_DH10_PUBLIC_REGISTER_URL = 'https://delivering-happiness.vercel.app/
 var DEFAULT_DHL_PUBLIC_REGISTER_URL = 'https://delivering-happiness.vercel.app/leadership_rsvp.html';
 var DEFAULT_DHM8_ZALO_GROUP_URL = 'https://zalo.me/g/hpf7qu45j6qkft6hpghx';
 var DEFAULT_DH9_ZALO_GROUP_URL = 'https://zalo.me/g/3wrsaoygrfcjubr0ie44';
-var DEFAULT_DH10_ZALO_GROUP_URL = 'https://zalo.me/g/3wrsaoygrfcjubr0ie44';
+var DEFAULT_DH10_ZALO_GROUP_URL = 'https://zalo.me/g/ukkgeekvhfxkzfdq7v0y';
 var DEFAULT_DHL_ZALO_GROUP_URL = 'https://zalo.me/g/awqtf1ayfblnrwi1y4bq';
 var DHL_REGISTRATION_CAP = 25;
 

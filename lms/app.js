@@ -752,6 +752,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     loginPasswordInput.placeholder = "Nhập mật khẩu khởi tạo (1234)";
                 } else if (learner.password_hash) {
                     loginPasswordInput.placeholder = "Nhập mật khẩu truy cập của bạn";
+                } else if (learner.default_pwd) {
+                    loginPasswordInput.placeholder = `Nhập mật khẩu (${learner.default_pwd})`;
                 } else {
                     loginPasswordInput.placeholder = "Nhập 4 số cuối Số điện thoại của bạn";
                 }
@@ -1197,22 +1199,90 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (e) {}
     }
 
-    // 5.5 STAGE UNLOCKING GATE (Cổng Vượt Chặng)
-    function isStageUnlocked(stageIdx) {
-        if (stageIdx === 0) return true; // Chặng 1 luôn luôn mở
-        // Tài khoản học thử (Trial) bị khóa cứng tại Chặng 2 và Chặng 3
-        if (currentUser && currentUser.isTrial) {
+    // 5.5 STAGE UNLOCKING & PAYMENT GATE (Cổng Vượt Chặng & Kiểm Tra Thanh Toán Các Khóa DH)
+    const DHM_PAID_GATE_CONFIG = {
+        LATEST_COHORTS: ["DHM9", "DHM10"],
+        HISTORICAL_PAID_COHORTS: ["DHM3", "DHM4", "DHM5", "DHM6", "DHM7", "DHM8"],
+        LINKEDIN_URL: "https://www.linkedin.com/company/culturecodecommunity/"
+    };
+
+    function isPaidDHMLearner(user) {
+        if (!user) return false;
+        if (user.isTrial === true || user.role === "trial") return false;
+
+        const isCoach = (
+            user.cohort === "COACH" || 
+            user.cohort === "BTC / Coach" || 
+            user.role === "admin" || 
+            user.role === "Coach"
+        );
+        if (isCoach) return true;
+
+        if (user.cohort === "DHM_Registration" || user.cohort === "REG") return false;
+
+        const cohortStr = String(user.cohort || "").trim().toUpperCase();
+
+        // Các khóa lịch sử đã kết thúc (DHM3 -> DHM8): Học viên đã hoàn tất học phí và tốt nghiệp từ trước
+        const isHistoricalPaid = DHM_PAID_GATE_CONFIG.HISTORICAL_PAID_COHORTS.some(c => cohortStr.includes(c));
+        if (isHistoricalPaid) return true;
+
+        // Khóa gần nhất (DHM9, DHM10): BẮT BUỘC PHẢI CHECK PAYMENT (Theo chỉ đạo trực tiếp từ Sếp Dzũ)
+        const isLatestCohort = DHM_PAID_GATE_CONFIG.LATEST_COHORTS.some(c => cohortStr.includes(c));
+        if (isLatestCohort) {
+            if (user.is_paid === true || String(user.payment_status || "").toUpperCase() === "PAID") {
+                return true;
+            }
+            const sessionPayment = localStorage.getItem("DHM10_lastPaymentStatus") || sessionStorage.getItem("DHM10_lastPaymentStatus");
+            if (sessionPayment && sessionPayment.toUpperCase() === "PAID") {
+                return true;
+            }
             return false;
         }
-        const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
-        const isQuizPassed = Boolean(s1Data.passed || (s1Data.percentage >= 80));
+
+        return Boolean(user.is_paid === true || String(user.payment_status || "").toUpperCase() === "PAID");
+    }
+
+    function isStageUnlocked(stageIdx) {
+        if (stageIdx === 0) return true; // Chặng 1 luôn luôn mở
+
         const isCoach = currentUser && (
             currentUser.cohort === "COACH" || 
             currentUser.cohort === "BTC / Coach" || 
             currentUser.role === "admin" || 
             currentUser.role === "Coach"
         );
-        return Boolean(isQuizPassed || isCoach);
+        if (isCoach) return true;
+
+        // Điều kiện 1: Đã pass bài sát hạch Cổng Vượt Chặng Chặng 1 (>= 80%)
+        const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
+        const isQuizPassed = Boolean(s1Data.passed || (s1Data.percentage >= 80));
+
+        // Điều kiện 2: Đã nằm trong danh sách thanh toán thành công của các khóa DH
+        const isPaid = isPaidDHMLearner(currentUser);
+
+        return Boolean(isQuizPassed && isPaid);
+    }
+
+    function notifyLockedStage(stageIdx) {
+        if (currentUser && currentUser.isTrial) {
+            showTrialUpgradeModal();
+            return;
+        }
+
+        const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
+        const isQuizPassed = Boolean(s1Data.passed || (s1Data.percentage >= 80));
+
+        if (!isQuizPassed) {
+            alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 80% ở Bài 1.4 Cổng Vượt Chặng (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
+            jumpToStage1Quiz();
+            return;
+        }
+
+        // Đã đạt bài test Chặng 1 nhưng chưa nằm trong danh sách thanh toán của các khóa DH
+        const msg = "Chặng 2 và 3 chỉ dành cho học viên DHM offline, vui lòng theo dõi các thông báo từ CultureCode để đăng ký tham gia các chương trình tiếp theo";
+        if (window.confirm(`${msg}\n\n👉 Bạn có muốn mở trang LinkedIn của CultureCode để theo dõi thông báo mới nhất không?`)) {
+            window.open(DHM_PAID_GATE_CONFIG.LINKEDIN_URL, "_blank", "noopener,noreferrer");
+        }
     }
 
     // 6. SYLLABUS RENDERER (Supports Sub-items Navigation & Locked Stages)
@@ -1261,20 +1331,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         ${isCompleted ? '<span class="text-[10px] text-brand-green font-semibold">Đã xong</span>' : ''}
                     </div>
                     <div class="text-xs font-bold truncate ${!isUnlocked ? 'text-slate-400' : 'text-slate-100'}">${stage.title}</div>
-                    <div class="text-[11px] ${!isUnlocked ? 'text-slate-500' : 'text-slate-400'} truncate mt-0.5">${!isUnlocked ? 'Cần đạt ≥80% Cổng Vượt Chặng để mở khóa' : stage.subtitle}</div>
+                    <div class="text-[11px] ${!isUnlocked ? 'text-slate-500' : 'text-slate-400'} truncate mt-0.5">${!isUnlocked ? 'Cần đạt ≥80% Cổng Vượt Chặng & Học viên chính thức' : stage.subtitle}</div>
                 </div>
                 ${stage.subSections && stage.subSections.length > 0 ? `<span class="stage-toggle-chevron text-xs text-slate-400 shrink-0 transform transition-transform ${isActive ? 'rotate-90' : ''}">▸</span>` : ''}
             `;
 
             item.addEventListener("click", () => {
                 if (!isUnlocked) {
-                    if (currentUser && currentUser.isTrial) {
-                        showTrialUpgradeModal();
-                        toggleSidebar(false);
-                        return;
-                    }
-                    alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 80% ở Bài Kiểm Tra Vượt Chặng (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
-                    jumpToStage1Quiz();
+                    notifyLockedStage(idx);
                     toggleSidebar(false);
                     return;
                 }
@@ -1336,13 +1400,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     subBtn.addEventListener("click", (e) => {
                         e.stopPropagation();
                         if (!isUnlocked) {
-                            if (currentUser && currentUser.isTrial) {
-                                showTrialUpgradeModal();
-                                toggleSidebar(false);
-                                return;
-                            }
-                            alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 80% ở Bài Kiểm Tra Vượt Chặng (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
-                            jumpToStage1Quiz();
+                            notifyLockedStage(idx);
                             toggleSidebar(false);
                             return;
                         }
@@ -1610,14 +1668,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // 7. LESSON / STAGE LOADER
     function loadStage(stageIdx) {
         if (!isStageUnlocked(stageIdx)) {
-            if (currentUser && currentUser.isTrial) {
-                showTrialUpgradeModal();
-                currentStageIndex = 0;
-                return;
-            }
-            alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 80% ở Bài 1.4 Cổng Vượt Chặng (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
             currentStageIndex = 0;
-            jumpToStage1Quiz();
+            notifyLockedStage(stageIdx);
             return;
         }
         currentStageIndex = stageIdx;
@@ -4782,6 +4834,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 authErrorDesc.textContent = "Mật khẩu khởi tạo của bạn là 1234. Vui lòng kiểm tra lại.";
             } else if (learner.password_hash) {
                 authErrorDesc.textContent = "Mật khẩu truy cập không đúng. Vui lòng kiểm tra lại.";
+            } else if (learner.default_pwd) {
+                authErrorDesc.textContent = `Mật khẩu truy cập của bạn là ${learner.default_pwd}. Vui lòng kiểm tra lại.`;
             } else {
                 authErrorDesc.textContent = "Mật khẩu là 4 số cuối của Số điện thoại đã đăng ký. Vui lòng kiểm tra lại.";
             }

@@ -1,42 +1,42 @@
-# RESUME PROJECT PROMPT — DELIVERING HAPPINESS (DHM) LMS & CRM
+# RESUME PROJECT PROMPT (BÀN GIAO & TIẾP TỤC DỰ ÁN 1-CHẠM)
 
-> **Mục đích**: Khối mã bên dưới là prompt 1-chạm tự thân đầy đủ (Self-contained 1-Click Code Block). 
-> Khi mở một **New Conversation (Phiên chat mới)** để tránh tràn context window, bạn chỉ cần sao chép toàn bộ khối mã `text` bên dưới và dán vào cửa sổ chat mới. Agent mới sẽ nắm trọn 100% bối cảnh và tiếp tục công việc ngay lập tức.
-
----
+> **Mục đích:** Sao chép toàn bộ khối mã `text` bên dưới và dán vào một **Cuộc hội thoại mới (New Chat)** để tiếp tục dự án ngay lập tức mà không sợ tràn context window hay mất bối cảnh kỹ thuật.
 
 ```text
-RULE_SENTINEL_DZU: đã đọc kỹ rule nghe sếp Dzũ
-Rule evidence: C:\Users\vu.hoang\.gemini\antigravity\scratch\SHARED_AGENT_RULES.md
-Skill evidence: C:\Users\vu.hoang\.gemini\config\skills\dhm-blended-lms\SKILL.md
-Task evidence: C:\Users\vu.hoang\.gemini\antigravity\scratch\Teaching DH\plan_20261004_personal_value_session_sync_and_roster_auth.md
+Tôi đang tiếp tục dự án Delivering Happiness Masterclass (DHM Blended Learning LMS).
+Hãy nạp toàn bộ bối cảnh kỹ thuật và trạng thái đã hoàn thành dưới đây để tiếp tục công việc:
 
-BẮT ĐẦU PHIÊN LÀM VIỆC TIẾP THEO — DỰ ÁN DELIVERING HAPPINESS (DHM)
-
-1. ĐỊNH VỊ TÀI NGUYÊN & NGUỒN CHUẨN (SOURCE OF TRUTH):
-- Thư mục dự án chính: C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website
-- Thư mục tài liệu & kế hoạch: C:\Users\vu.hoang\.gemini\antigravity\scratch\Teaching DH
-- Kho lưu trữ GitHub: https://github.com/culturecodefeedforward/DeliveringHappiness.git (nhánh main, commit cb6ac78)
+1. ĐỊNH VỊ TÀI NGUYÊN & SOURCE OF TRUTH:
+- Thư mục dự án Teaching DH: C:\Users\vu.hoang\.gemini\antigravity\scratch\Teaching DH
+- Thư mục mã nguồn Website LMS: C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website
+- GitHub Repo: https://github.com/culturecodefeedforward/DeliveringHappiness.git (Branch: main)
+- Commit mới nhất trên main: 880bfb8
 - Live Production URL: https://delivering-happiness.vercel.app/lms/
-- Trang La bàn Giá trị: https://delivering-happiness.vercel.app/personal-value.html
-- Kế hoạch đã duyệt: C:\Users\vu.hoang\.gemini\antigravity\scratch\Teaching DH\plan_20261004_personal_value_session_sync_and_roster_auth.md
-- Nguồn dữ liệu danh bạ học viên: dh4hn-website/lms/authorized_roster.json
+- Google Sheets CRM đích: Sheet ID 1ZToRX6J5Vo6UgHzYEE_eUxU0bVnsGxBRLt-8tduI5CA
+- Tệp danh bạ chuẩn (Roster): lms/master_learners_roster.json và lms/authorized_roster.json
+- Tệp giao diện chính: lms/index.html và lms/app.js
+- Cẩm nang học tập & User Guide: data/artifacts/huong_dan_va_lo_trinh_hoc_dhm.md
+- Thư mục ảnh giao diện tĩnh: data/artifacts/images/
 
-2. CÁC HẠNG MỤC ĐÃ HOÀN THÀNH & KIỂM CHỨNG 100% (VERIFIED):
-- Đã hoàn tất tái cấu trúc Micro-LMS Chặng 1 & Chặng 3 (commit cb6ac78):
-  * Chặng 1 tinh gọn từ 14 xuống 11 bài học trọng tâm, loại bỏ slide/video phụ trùng lặp.
-  * Chặng 3 bổ sung Đấu trường Bonus KUBA (game đối kháng xử lý tình huống văn hóa), Podcast chuyên sâu, và thiết lập Cổng Sát Hạch Đầu Vào (Qualifier Gate 1200 điểm) mở khóa chặng.
-  * Kiểm thử UAT tự động Puppeteer 26/26 tests PASS 100%, đã deploy live thành công trên Vercel.
+2. CÁC TÀI KHOẢN KIỂM THỬ ĐẶC BIỆT (COACH ROLE - MỞ 100% 3 CHẶNG):
+- Tài khoản 1: vuhoang2708software@gmail.com | Mật khẩu: 1234
+- Tài khoản 2: culturecodeproject@gmail.com | Mật khẩu: 1234
+(Đã đồng bộ trên cả 3 repo: dh4hn-website, khao-sat-xung-dot-tki, khao-sat-tinh-cach).
 
-3. TRỌNG TÂM CẦN THỰC THI NGAY (ALLOWLIST: personal-value.html, personal-value.js, lms/app.js):
-Khắc phục triệt để 2 vấn đề trải nghiệm tại trang La Bàn Giá Trị (personal-value.html) theo kế hoạch plan_20261004_personal_value_session_sync_and_roster_auth.md:
-- Vấn đề 1 (Lưu & Kế thừa Session tự động): Khi học viên đã đăng nhập trên LMS (đã có session dhm_lms_auth_user), khi bấm liên kết [🧭 Làm bài test 1vs1 ↗] sang personal-value.html phải tự động nhận diện danh tính và mở khóa ngay lập tức vào Bước 1 làm bài, KHÔNG ĐƯỢC bật modal xác thực.
-- Vấn đề 2 (Cổng xác thực Roster-First cho khách vãng lai): Khi truy cập trực tiếp chưa có session, modal ban đầu chỉ hiện 1 ô nhập Email hoặc Số điện thoại. Hệ thống đối chiếu ngay với lms/authorized_roster.json. Nếu có tên học viên chính thức -> Mở khóa vào làm bài ngay lập tức (0 giây chờ, không gửi email). Chỉ khi KHÔNG tìm thấy thông tin mới hiển thị form gửi liên kết kích hoạt bản dùng thử (Trial) qua Email.
+3. CÁC TÍNH NĂNG MỚI ĐÃ HOÀN THÀNH VÀ KIỂM CHỨNG LIVE 100% (LIVE DONE):
+- Bảng Điểm Danh 5 Thói Quen 21 Ngày (Chặng 3): Tích chọn M-G-O-F-A, tính chuỗi Streak Hero, lưu Offline-first vào localStorage.
+- Nút Đồng Bộ Tiến Độ Về BTC: Gửi Webhook lưu dữ liệu về Google Sheets CRM của BTC, phản hồi nhãn xanh ngọc bích kèm mốc thời gian lưu tự động.
+- Khối Accordion Hướng Dẫn & Chú Giải 5 Thói Quen ngay tại Bảng Điểm Danh: Giải thích rõ ràng M (Mindfulness - SCBA), G (Gratitude - 4 điều biết ơn), O (Optimism - ABCDE), F (Flow - 4%), A (Altruism - 5-Minute Favors) cùng 3 bước thao tác chuẩn.
+- Nâng cấp renderSimpleMarkdown trong lms/app.js: Render thẻ ảnh Markdown ![alt](url) thành thẻ <img> bo góc, đổ bóng đẹp mắt trong modal đọc cẩm nang.
+- Bổ sung Phần V vào Cẩm nang học tập (huong_dan_va_lo_trinh_hoc_dhm.md) kèm trọn bộ 4 ảnh chụp giao diện thực tế.
 
-4. QUY TRÌNH THỰC THI BẮT BUỘC:
-- Tạo 3 bản sao lưu .bak_20261004_session cho 3 file trong Allowlist.
-- Chỉnh sửa mã nguồn theo đúng kế hoạch plan_20261004_personal_value_session_sync_and_roster_auth.md.
-- Viết script Puppeteer kiểm thử cục bộ đủ 3 trường hợp: (1) Đã login LMS; (2) Khách có trong Roster; (3) Khách lạ.
-- Git commit & push lên origin main, sau đó dùng Puppeteer kiểm chứng Live Vercel Production.
-- Báo cáo kết quả kèm bằng chứng cụ thể. Bắt đầu thực thi ngay!
+4. QUY TẮC BẤT BIẾN & AN TOÀN (GUARDRAILS):
+- Công nghệ: Vanilla JS, Tailwind CSS CDN (không tự ý cài thêm build tool hay package nặng).
+- Rule 7: Khi verify trên Live Production Vercel sau khi push, bắt buộc chờ ít nhất 30-45 giây để CDN xóa cache trước khi chạy kiểm thử.
+- Mọi thao tác sửa file cần Level 2 Approval; commit/push cần Level 3 Approval từ Sếp Dzũ.
+- Mọi phản hồi mở đầu bằng RULE_SENTINEL_DZU và mỗi đường dẫn tuyệt đối Windows phải đặt trong một khối mã riêng biệt kèm link file:///.
+
+5. NHIỆM VỤ TIẾP THEO CẦN LÀM:
+- Sẵn sàng tiếp nhận phản hồi từ Core Team và học viên sau workshop 2 ngày để tinh chỉnh trải nghiệm Chặng 3.
+- Xác nhận bạn đã đọc kỹ bối cảnh trên và sẵn sàng nhận lệnh tiếp theo từ Sếp Dzũ!
 ```

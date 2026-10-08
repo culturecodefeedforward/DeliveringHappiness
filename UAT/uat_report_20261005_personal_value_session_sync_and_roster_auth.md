@@ -3,8 +3,10 @@
 > **Mã báo cáo:** `UAT-20261005-PV-SESSION-SYNC-ROSTER-AUTH`  
 > **Dự án:** Delivering Happiness Masterclass (DHM) — Website & Micro-LMS  
 > **Kế hoạch triển khai:** `plan_20261004_personal_value_session_sync_and_roster_auth.md`  
-> **Thời điểm kiểm thử:** 05/10/2026 00:25:00 GMT+7  
-> **Trạng thái:** `Local done` — Kiểm thử Puppeteer tự động 7/7 tests PASS (100%)  
+> **Thời điểm kiểm thử:** 05/10/2026 00:37:00 GMT+7  
+> **Trạng thái:** `Live done (VERIFIED)` — Local UAT 7/7 PASS (100%), Live Vercel Production 3/3 PASS (100%)  
+> **Commit Hash:** `994c1c5` (main branch)  
+> **Live Production URL:** `https://delivering-happiness.vercel.app/`  
 
 ---
 
@@ -20,13 +22,13 @@ Khắc phục triệt để 2 vấn đề trải nghiệm người dùng tại t
 
 | Tệp tin tác động | Đường dẫn tuyệt đối | Bản sao lưu an toàn | Trạng thái |
 |---|---|---|---|
-| `personal-value.html` | `C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\personal-value.html` | `personal-value.html.bak_20261004_session` | Đã cập nhật & verify |
-| `personal-value.js` | `C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\personal-value.js` | `personal-value.js.bak_20261004_session` | Đã cập nhật & verify |
-| `lms/app.js` | `C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\lms\app.js` | `lms/app.js.bak_20261004_session` | Đã cập nhật & verify |
+| `personal-value.html` | `C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\personal-value.html` | `personal-value.html.bak_20261004_session` | Đã commit & deploy Live |
+| `personal-value.js` | `C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\personal-value.js` | `personal-value.js.bak_20261004_session` | Đã commit & deploy Live |
+| `lms/app.js` | `C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\lms\app.js` | `lms/app.js.bak_20261004_session` | Đã commit & deploy Live |
 
 ---
 
-## II. KẾT QUẢ KIỂM THỬ UAT PUPPETEER TỰ ĐỘNG (7/7 PASS)
+## II. KẾT QUẢ KIỂM THỬ UAT PUPPETEER CỤC BỘ (7/7 PASS)
 
 Script kiểm thử: `scratch/test_pv_session_sync_and_roster_auth.js` chạy trên máy chủ thử nghiệm cục bộ:
 
@@ -42,16 +44,33 @@ Script kiểm thử: `scratch/test_pv_session_sync_and_roster_auth.js` chạy tr
 
 ---
 
-## III. BẰNG CHỨNG HÌNH ẢNH (SCREENSHOT EVIDENCE)
+## III. KẾT QUẢ KIỂM THỬ LIVE VERCEL PRODUCTION (3/3 PASS 100%)
 
-1. **TC-01 (LMS Sync Auto-Unlock):** `UAT/evidence/pv_tc01_lms_sync_unlocked.png`
-2. **TC-02 (Roster Found 0s Unlock):** `UAT/evidence/pv_tc02_roster_found_unlocked.png`
-3. **TC-03 (Trial Fallback Form):** `UAT/evidence/pv_tc03_trial_fallback_form.png`
-4. **TC-04 (Direct LMS Param Bypass):** `UAT/evidence/pv_tc04_direct_lms_param.png`
+Script kiểm thử trực tiếp: `scratch/verify_vercel_live_pv_session_and_roster.js` trỏ vào endpoint chính thức `https://delivering-happiness.vercel.app/`:
+
+| Mã test Live | Kịch bản kiểm thử trực tuyến | Bằng chứng thực tế trên Live CDN | Đánh giá |
+|---|---|---|:---:|
+| **TC-LIVE-01** | Trực tiếp mở link có param từ LMS | `Modal display=none`, User: Vũ Hoàng | ✅ PASS |
+| **TC-LIVE-02** | Khách vãng lai tra cứu Roster 0s | Nhập `0913503505` -> `Modal display=none`, Learner: Hà Ngọc Hoàn | ✅ PASS |
+| **TC-LIVE-03** | Khách lạ mở form Fallback Trial | Nhập email lạ -> `Trial visible=true`, điền sẵn email | ✅ PASS |
 
 ---
 
-## IV. ĐÁNH GIÁ BẢO MẬT & TÁC ĐỘNG TÀI LIỆU
+## IV. BẰNG CHỨNG HÌNH ẢNH (SCREENSHOT EVIDENCE)
+
+1. **Cục bộ:**
+   - `UAT/evidence/pv_tc01_lms_sync_unlocked.png`
+   - `UAT/evidence/pv_tc02_roster_found_unlocked.png`
+   - `UAT/evidence/pv_tc03_trial_fallback_form.png`
+   - `UAT/evidence/pv_tc04_direct_lms_param.png`
+2. **Live Production:**
+   - `UAT/evidence/live_pv_tc01_unlocked.png`
+   - `UAT/evidence/live_pv_tc02_roster_unlocked.png`
+   - `UAT/evidence/live_pv_tc03_trial_form.png`
+
+---
+
+## V. ĐÁNH GIÁ BẢO MẬT & TÁC ĐỘNG TÀI LIỆU
 
 - **Kiểm toán STRIDE / OWASP:**
   * Toàn bộ input người dùng được chuẩn hóa (`trim`, `toLowerCase`, `replace(/[^\d]/g, "")`).
@@ -59,4 +78,4 @@ Script kiểm thử: `scratch/test_pv_session_sync_and_roster_auth.js` chạy tr
   * Tuân thủ quy định bảo vệ dữ liệu cá nhân theo Nghị định 13/2023/NĐ-CP trên form trải nghiệm dùng thử.
   * Cú pháp JavaScript được xác thực hoàn toàn qua `node --check personal-value.js` và `node --check lms/app.js` (Exit Code 0).
 - **Tác động tài liệu (Docs Impact):**
-  * Cập nhật `docs/RESUME_PROJECT_PROMPT.md` ghi nhận tính năng đồng bộ session và cổng Roster-First.
+  * Đã cập nhật file `docs/RESUME_PROJECT_PROMPT.md` phản ánh đầy đủ trạng thái hoàn thành và nghiệm thu Live.
