@@ -763,7 +763,7 @@
                                         <summary class="cursor-pointer font-bold text-xs text-brand-green flex items-center justify-between select-none p-1">
                                             <div class="flex items-center gap-2">
                                                 <span class="px-2.5 py-0.5 rounded bg-brand-green text-black font-extrabold text-[10px] uppercase tracking-wider">PHẦN 2</span>
-                                                <span class="text-xs font-bold text-brand-green">🎯 Thực Hành Lựa Chọn 41 Giá Trị & Phản Tư I•A•M</span>
+                                                <span class="text-xs font-bold text-brand-green">🎯 Thực Hành Đúc Kết La Bàn Giá Trị & Phản Tư I•A•M</span>
                                             </div>
                                             <span class="text-[11px] text-slate-400 group-hover:text-brand-green flex items-center gap-1">
                                                 <span>Bấm để mở rộng</span>
@@ -771,22 +771,45 @@
                                             </span>
                                         </summary>
 
-                                        <div class="pt-4 space-y-6 border-t border-brand-border/40">
-                                            <div id="values-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 max-h-80 overflow-y-auto pr-1">
-                                                <!-- Dynamic 41 value cards injected via JS -->
+                                        <div class="pt-4 space-y-5 border-t border-brand-border/40">
+                                            <!-- Khối Cầu Nối La Bàn Giá Trị (Top 7 DNA hoặc Gợi ý Test 1vs1) -->
+                                            <div id="pv-interactive-bridge" class="p-3.5 sm:p-4 rounded-xl bg-gradient-to-r from-brand-amber/10 via-brand-surface to-brand-card border border-brand-amber/30 space-y-3">
+                                                <div class="flex items-center justify-between flex-wrap gap-2">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="text-base">🧭</span>
+                                                        <h5 class="text-xs font-bold text-white">Top 7 La Bàn Giá Trị Dẫn Đường</h5>
+                                                        <span id="pv-bridge-badge" class="text-[10px] px-2 py-0.5 rounded bg-brand-amber/20 text-brand-amber font-mono font-bold">Chưa đồng bộ</span>
+                                                    </div>
+                                                    <a href="../personal-value.html" target="_blank" rel="noopener noreferrer" class="text-[11px] text-brand-amber hover:underline inline-flex items-center gap-1">
+                                                        <span>Làm bài test 1vs1 ↗</span>
+                                                    </a>
+                                                </div>
+
+                                                <!-- Container chứa danh sách badges Top 7 bấm chọn nhanh -->
+                                                <div id="pv-bridge-badges" class="flex flex-wrap gap-1.5 pt-1">
+                                                    <p class="text-[11px] text-slate-400 italic">
+                                                        Bạn chưa hoàn thành bài test La Bàn Giá Trị. Hãy <a href="../personal-value.html" target="_blank" rel="noopener noreferrer" class="text-brand-amber font-semibold underline">nhấn vào đây để làm bài test 1vs1 Duel</a> hoặc tự điền giá trị tâm đắc nhất vào ô I (Interested) bên dưới.
+                                                    </p>
+                                                </div>
+
+                                                <p id="pv-bridge-hint" class="hidden text-[10px] text-brand-amber/80 italic">
+                                                    💡 Mẹo: Nhấp vào bất kỳ huy hiệu giá trị nào ở trên để tự động điền vào ô I (Interested) bên dưới.
+                                                </p>
                                             </div>
-                                            <div class="grid grid-cols-1 gap-3 pt-2">
+
+                                            <!-- 3 Ô Nhập Phản Tư I•A•M -->
+                                            <div class="grid grid-cols-1 gap-3 pt-1">
                                                 <div>
-                                                    <label class="block text-[11px] font-semibold text-slate-300 mb-1" for="iam-1-2-i">I (Interested) — Bạn tâm đắc nhất với giá trị La Bàn nào bạn vừa lựa chọn?</label>
-                                                    <textarea id="iam-1-2-i" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber" placeholder="Giá trị tâm đắc nhất..."></textarea>
+                                                    <label class="block text-[11px] font-semibold text-slate-300 mb-1" for="iam-1-2-i">I (Interested) — Bạn tâm đắc nhất với giá trị La Bàn nào của bản thân?</label>
+                                                    <textarea id="iam-1-2-i" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber" placeholder="Ví dụ: Sự chính trực, Tiến bộ, Hợp tác..."></textarea>
                                                 </div>
                                                 <div>
                                                     <label class="block text-[11px] font-semibold text-slate-300 mb-1" for="iam-1-2-a">A (Actionable) — Giá trị này định hướng cho 1 quyết định khó khăn sắp tới của bạn ra sao?</label>
-                                                    <textarea id="iam-1-2-a" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber" placeholder="Hành động theo La Bàn..."></textarea>
+                                                    <textarea id="iam-1-2-a" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber" placeholder="Hành động cụ thể theo La Bàn..."></textarea>
                                                 </div>
                                                 <div>
                                                     <label class="block text-[11px] font-semibold text-slate-300 mb-1" for="iam-1-2-m">M (Meaningful) — Nếu sống đúng với La Bàn này, bạn trở thành phiên bản như thế nào?</label>
-                                                    <textarea id="iam-1-2-m" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber" placeholder="Ý nghĩa nhân bản..."></textarea>
+                                                    <textarea id="iam-1-2-m" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber" placeholder="Ý nghĩa chuyển hóa bản thân..."></textarea>
                                                 </div>
                                             </div>
                                         </div>

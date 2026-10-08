@@ -1379,7 +1379,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (sub.id === "sub-1-1") {
                         isSubDone = Boolean(s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i));
                     } else if (sub.id === "sub-1-2") {
-                        isSubDone = Boolean((s1Data.selectedValues && s1Data.selectedValues.length > 0) && (s1Data.iam_1_2 && (s1Data.iam_1_2.I || s1Data.iam_1_2.i)));
+                        isSubDone = Boolean(s1Data.iam_1_2 && ((s1Data.iam_1_2.I && s1Data.iam_1_2.I.trim()) || (s1Data.iam_1_2.i && s1Data.iam_1_2.i.trim())));
                     } else if (sub.id === "sub-1-3") {
                         isSubDone = Boolean(s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i));
                     } else if (sub.id === "sub-1-4") {
@@ -2135,9 +2135,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         btnApplyEl.classList.remove("bg-brand-green", "text-black");
                     }, 2500);
 
-                    const valuesGrid = document.getElementById("values-grid");
-                    if (valuesGrid) {
-                        valuesGrid.scrollIntoView({ behavior: "smooth", block: "center" });
+                    const bridgeEl = document.getElementById("pv-interactive-bridge") || document.getElementById("values-grid");
+                    if (bridgeEl) {
+                        bridgeEl.scrollIntoView({ behavior: "smooth", block: "center" });
                     }
                 };
             }
@@ -2594,43 +2594,92 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // 9.2 Render Me Values (41 Values - NO LIMIT of 3!)
-        valuesGrid.innerHTML = "";
-        const mod2 = (stage.modules && stage.modules[1]) ? stage.modules[1] : null;
-        const valueOptions = (mod2 && mod2.valueOptions) ? mod2.valueOptions : [];
-        const selectedValues = sData.selectedValues || [];
+        // 9.2 Render Me Values Interactive Bridge (Top 7 DNA & 1-Click Fill IAM)
+        function renderMeValuesInteractiveBridge(sData) {
+            const bridgeBadges = document.getElementById("pv-bridge-badges");
+            const bridgeBadge = document.getElementById("pv-bridge-badge");
+            const bridgeHint = document.getElementById("pv-bridge-hint");
+            if (!bridgeBadges) return;
 
-        valueOptions.forEach(val => {
-            const isSelected = selectedValues.includes(val);
-            const card = document.createElement("button");
-            let cardStyle = isSelected
-                ? "border-brand-amber bg-brand-amber/15 text-white shadow-md shadow-amber-500/10"
-                : "border-brand-border bg-brand-card/50 text-slate-300 hover:border-slate-500";
-
-            card.className = `min-h-[44px] p-3 rounded-xl border text-left transition-all flex items-center justify-between group ${cardStyle}`;
-            card.innerHTML = `
-                <span class="text-xs font-medium leading-snug pr-2">${val}</span>
-                <span class="w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 ${isSelected ? "bg-brand-amber text-black" : "border border-brand-border text-transparent"}">
-                    ${isSelected ? "✓" : ""}
-                </span>
-            `;
-
-            card.addEventListener("click", () => {
-                let cur = learnerProgress.stageData["stage-1"].selectedValues || [];
-                if (cur.includes(val)) {
-                    cur = cur.filter(x => x !== val);
-                } else {
-                    cur.push(val); // No limitation!
+            let displayValues = [];
+            if (Array.isArray(sData.selectedValues) && sData.selectedValues.length > 0) {
+                displayValues = sData.selectedValues;
+            } else {
+                let emailKey = currentUser && currentUser.email ? currentUser.email.toLowerCase().trim() : "";
+                let savedTest = null;
+                if (emailKey) {
+                    try {
+                        const hist = JSON.parse(localStorage.getItem("dhm_pv_history_" + emailKey) || "[]");
+                        if (hist.length > 0 && hist[0].top7) savedTest = hist[0];
+                    } catch (e) {}
+                    if (!savedTest) {
+                        try {
+                            const single = JSON.parse(localStorage.getItem("dhm_pv_" + emailKey) || "null");
+                            if (single && single.top7) savedTest = single;
+                        } catch (e) {}
+                    }
                 }
-                learnerProgress.stageData["stage-1"].selectedValues = cur;
-                saveLearnerProgress();
-                renderStage1View(stage);
-            });
+                if (savedTest && Array.isArray(savedTest.top7)) {
+                    displayValues = savedTest.top7.map(item => typeof item === "string" ? item : (item.name || item));
+                    sData.selectedValues = displayValues;
+                }
+            }
 
-            valuesGrid.appendChild(card);
-        });
+            if (displayValues.length > 0) {
+                bridgeBadges.innerHTML = "";
+                displayValues.forEach((val, idx) => {
+                    const badge = document.createElement("button");
+                    badge.type = "button";
+                    badge.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-brand-surface border border-brand-amber/40 text-xs font-semibold text-white hover:border-brand-amber hover:bg-brand-amber/15 transition-all shadow-sm active:scale-95 group";
+                    badge.innerHTML = `
+                        <span class="w-4 h-4 rounded-full bg-brand-amber text-black text-[10px] font-extrabold flex items-center justify-center shrink-0">${idx + 1}</span>
+                        <span class="text-brand-amber group-hover:text-amber-300">${val}</span>
+                        <span class="text-[10px] text-slate-400 group-hover:text-white ml-0.5 opacity-60 group-hover:opacity-100">↵ Chọn</span>
+                    `;
+                    badge.title = `Nhấp để điền giá trị "${val}" vào ô I (Interested)`;
+                    badge.onclick = () => {
+                        const iamInput = document.getElementById("iam-1-2-i");
+                        if (iamInput) {
+                            iamInput.value = val;
+                            sData.iam_1_2 = sData.iam_1_2 || {};
+                            sData.iam_1_2.I = val;
+                            debouncedSave();
+                            renderSyllabus();
+                            evaluateLearnerStatus();
+                            iamInput.focus();
+                            iamInput.classList.add("ring-2", "ring-brand-amber");
+                            setTimeout(() => iamInput.classList.remove("ring-2", "ring-brand-amber"), 1200);
+                        }
+                    };
+                    bridgeBadges.appendChild(badge);
+                });
 
-        valuesCountBadge.textContent = `${selectedValues.length} Đã chọn`;
+                if (bridgeBadge) {
+                    bridgeBadge.textContent = `${displayValues.length} Giá Trị (Top DNA)`;
+                    bridgeBadge.className = "text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono font-bold border border-emerald-500/30";
+                }
+                if (bridgeHint) {
+                    bridgeHint.classList.remove("hidden");
+                }
+            } else {
+                bridgeBadges.innerHTML = `
+                    <p class="text-[11px] text-slate-400 italic leading-relaxed">
+                        Bạn chưa hoàn thành bài test La Bàn Giá Trị. Hãy <a href="../personal-value.html" target="_blank" rel="noopener noreferrer" class="text-brand-amber font-bold underline hover:text-amber-300">nhấn vào đây để làm bài test 1vs1 Duel ↗</a> hoặc tự nhập giá trị tâm đắc nhất của bạn vào ô I bên dưới.
+                    </p>
+                `;
+                if (bridgeBadge) {
+                    bridgeBadge.textContent = "Chưa làm bài test";
+                    bridgeBadge.className = "text-[10px] px-2 py-0.5 rounded bg-brand-amber/20 text-brand-amber font-mono font-bold";
+                }
+                if (bridgeHint) {
+                    bridgeHint.classList.add("hidden");
+                }
+            }
+        }
+
+        renderMeValuesInteractiveBridge(sData);
+        if (valuesGrid) valuesGrid.innerHTML = "";
+        if (valuesCountBadge) valuesCountBadge.textContent = `${(sData.selectedValues || []).length} Đã chọn`;
         loadPersonalValuesTestResult();
 
         // 9.3 IAM Inputs for Stage 1
@@ -4479,8 +4528,8 @@ document.addEventListener("DOMContentLoaded", () => {
         let count = 0;
         // Mốc 1 (25%): Hoàn thành phản tư I•A•M 1.1 (3 Cấp Độ Hạnh Phúc)
         if (s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i)) count++;
-        // Mốc 2 (25%): Đã chọn ≥1 Giá trị La Bàn VÀ hoàn thành phản tư I•A•M 1.2
-        if (s1Data.selectedValues && s1Data.selectedValues.length > 0 && s1Data.iam_1_2 && (s1Data.iam_1_2.I || s1Data.iam_1_2.i)) count++;
+        // Mốc 2 (25%): Hoàn thành phản tư I•A•M 1.2 (Giá trị La Bàn)
+        if (s1Data.iam_1_2 && ((s1Data.iam_1_2.I && s1Data.iam_1_2.I.trim()) || (s1Data.iam_1_2.i && s1Data.iam_1_2.i.trim()))) count++;
         // Mốc 3 (25%): Hoàn thành phản tư I•A•M 1.3 (3 Đòn Bẩy Hạnh Phúc)
         if (s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i)) count++;
         // Mốc 4 (25%): Đạt bài kiểm tra vượt chặng (≥8/10 câu hoặc ≥80%)
@@ -4559,7 +4608,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const isS1Done = learnerProgress.completedStages && learnerProgress.completedStages.includes("stage-1");
 
         const mLevelsDone = isS1Done || Boolean(s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i));
-        const mValuesDone = isS1Done || Boolean((s1Data.selectedValues && s1Data.selectedValues.length > 0) && (s1Data.iam_1_2 && (s1Data.iam_1_2.I || s1Data.iam_1_2.i)));
+        const mValuesDone = isS1Done || Boolean(s1Data.iam_1_2 && ((s1Data.iam_1_2.I && s1Data.iam_1_2.I.trim()) || (s1Data.iam_1_2.i && s1Data.iam_1_2.i.trim())));
         const mDriversDone = isS1Done || Boolean(s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i));
         const mQuizDone = isS1Done || Boolean(s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80);
 
@@ -4609,7 +4658,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function autoOpenInProgressModule() {
         const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
         const mod1Done = Boolean(s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i));
-        const mod2Done = Boolean((s1Data.selectedValues && s1Data.selectedValues.length > 0) && (s1Data.iam_1_2 && (s1Data.iam_1_2.I || s1Data.iam_1_2.i)));
+        const mod2Done = Boolean(s1Data.iam_1_2 && ((s1Data.iam_1_2.I && s1Data.iam_1_2.I.trim()) || (s1Data.iam_1_2.i && s1Data.iam_1_2.i.trim())));
         const mod3Done = Boolean(s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i));
         const quizDone = Boolean(s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80);
 
