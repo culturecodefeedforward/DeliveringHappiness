@@ -993,7 +993,108 @@ function normalizeIdentity(str) {
   return String(str).trim().toLowerCase();
 }
 
-// Đối chiếu danh bạ học viên
+async function sha256(str) {
+  try {
+    const buffer = new TextEncoder().encode(str);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+  } catch (e) {
+    return "";
+  }
+}
+
+// Đối chiếu mật khẩu học viên (chuẩn 4 số cuối SĐT / 1234 / 8888 / hash)
+async function verifyLearnerPassword(learner, inputPassword) {
+  if (!learner) return false;
+  const pwd = String(inputPassword || "").trim();
+  if (!pwd) return false;
+
+  // 1. Mã khẩn cấp giảng viên
+  if (pwd === "8888") return true;
+
+  // 2. Mật khẩu cá nhân đã đổi trong overrides
+  try {
+    const rawOverrides = localStorage.getItem("dhm_roster_overrides");
+    if (rawOverrides) {
+      const overrides = JSON.parse(rawOverrides);
+      const ov = overrides[learner.email] || overrides[learner.lead_id] || {};
+      if (ov.password_hash) {
+        const inputHash = await sha256(pwd);
+        if (inputHash === ov.password_hash) return true;
+        return false;
+      }
+    }
+  } catch (e) {}
+
+  // 3. Mật khẩu mặc định hoặc cấp riêng
+  if (learner.default_pwd && pwd === String(learner.default_pwd).trim()) return true;
+  if (learner.password && pwd === String(learner.password).trim()) return true;
+  if (pwd === "1234") return true; // Hỗ trợ tài khoản Apollo / Admin / Test mặc định 1234
+
+  // 4. Mật khẩu mặc định kế thừa: 4 số cuối Số điện thoại
+  if (learner.phone_last4 && pwd === String(learner.phone_last4).trim()) return true;
+  const phone = learner.phone || learner.phone_full || learner.phone_raw || "";
+  if (phone) {
+    const norm = normalizePhone(phone);
+    if (norm.length >= 4 && norm.slice(-4) === pwd) return true;
+  }
+
+  return false;
+}
+
+// Tìm học viên theo Email
+function findLearnerByEmail(rawEmail, roster) {
+  if (!rawEmail) return null;
+  const normEmail = normalizeIdentity(rawEmail);
+  const list = roster || authorizedRoster || [];
+
+  for (const item of list) {
+    const itemEmail = item.email ? normalizeIdentity(item.email) : "";
+    if (itemEmail && itemEmail === normEmail) {
+      return {
+        lead_id: item.learner_id || "",
+        full_name: item.name || item.full_name || item.email,
+        email: item.email.toLowerCase().trim(),
+        phone: item.phone || item.phone_full || item.phone_raw || "",
+        phone_last4: item.phone_last4 || (item.phone ? normalizePhone(item.phone).slice(-4) : ""),
+        default_pwd: item.default_pwd || "",
+        password: item.password || "",
+        cohort: item.cohort || "Học viên",
+        role: item.role || "Learner",
+        status: "verified"
+      };
+    }
+  }
+
+  try {
+    const rawOverrides = localStorage.getItem("dhm_roster_overrides");
+    if (rawOverrides) {
+      const overrides = JSON.parse(rawOverrides);
+      for (const ov of Object.values(overrides)) {
+        const ovEmail = ov.email ? normalizeIdentity(ov.email) : "";
+        if (ovEmail && ovEmail === normEmail) {
+          return {
+            lead_id: ov.learner_id || "",
+            full_name: ov.name || ov.full_name || ov.email,
+            email: ov.email.toLowerCase().trim(),
+            phone: ov.phone || "",
+            phone_last4: ov.phone_last4 || (ov.phone ? normalizePhone(ov.phone).slice(-4) : ""),
+            default_pwd: ov.default_pwd || "",
+            password: ov.password || "",
+            cohort: ov.cohort || "Học viên",
+            role: ov.role || "Learner",
+            status: "verified"
+          };
+        }
+      }
+    }
+  } catch (e) {}
+
+  return null;
+}
+
+// Đối chiếu danh bạ học viên (hỗ trợ cả input tổng quát)
 function findLearnerInRoster(rawInput, roster) {
   if (!rawInput) return null;
   const normInput = normalizeIdentity(rawInput);
@@ -1015,6 +1116,9 @@ function findLearnerInRoster(rawInput, roster) {
         full_name: item.name || item.full_name || item.email,
         email: item.email ? item.email.toLowerCase().trim() : (normInput.includes("@") ? normInput : ""),
         phone: item.phone || item.phone_full || normPhone || "",
+        phone_last4: item.phone_last4 || (item.phone ? normalizePhone(item.phone).slice(-4) : ""),
+        default_pwd: item.default_pwd || "",
+        password: item.password || "",
         cohort: item.cohort || "Học viên",
         role: item.role || "Learner",
         status: "verified"
@@ -1036,6 +1140,9 @@ function findLearnerInRoster(rawInput, roster) {
             full_name: ov.name || ov.full_name || ov.email,
             email: ov.email ? ov.email.toLowerCase().trim() : "",
             phone: ov.phone || "",
+            phone_last4: ov.phone_last4 || (ov.phone ? normalizePhone(ov.phone).slice(-4) : ""),
+            default_pwd: ov.default_pwd || "",
+            password: ov.password || "",
             cohort: ov.cohort || "Học viên",
             role: ov.role || "Learner",
             status: "verified"
@@ -1147,7 +1254,9 @@ async function initAuthGate() {
   const waitingSection = document.getElementById("agWaitingSection");
   const successSection = document.getElementById("agSuccessSection");
 
-  const identifierInput = document.getElementById("agIdentifier");
+  const emailLoginInput = document.getElementById("agEmailLogin");
+  const passwordLoginInput = document.getElementById("agPasswordLogin");
+  const btnTogglePwd = document.getElementById("agBtnTogglePwd");
   const rosterMsg = document.getElementById("agRosterMsg");
   const btnVerifyRoster = document.getElementById("agBtnVerifyRoster");
   const linkOpenTrial = document.getElementById("agLinkOpenTrial");
@@ -1275,67 +1384,97 @@ async function initAuthGate() {
   if (trialSection) trialSection.style.display = "none";
   if (waitingSection) waitingSection.style.display = "none";
   if (successSection) successSection.style.display = "none";
-  if (identifierInput) setTimeout(() => identifierInput.focus(), 150);
+  if (emailLoginInput) setTimeout(() => emailLoginInput.focus(), 150);
+
+  // Toggle ẩn/hiện mật khẩu
+  if (btnTogglePwd && passwordLoginInput) {
+    btnTogglePwd.onclick = () => {
+      const isPwd = passwordLoginInput.type === "password";
+      passwordLoginInput.type = isPwd ? "text" : "password";
+      btnTogglePwd.textContent = isPwd ? "🔒 Ẩn mật khẩu" : "👁️ Hiện mật khẩu";
+    };
+  }
 
   // Tải trước danh bạ trong nền
   loadAuthorizedRoster();
 
-  // Hàm xử lý tra cứu Roster (Giai đoạn 1)
+  // Hàm xử lý đăng nhập khóa cứng (Email & Mật khẩu 4 số cuối SĐT)
   async function verifyRosterLearner() {
     clearRosterMsg();
-    const rawVal = identifierInput ? identifierInput.value.trim() : "";
-    if (!rawVal) {
-      showRosterMsg("Vui lòng nhập Email hoặc Số điện thoại đã đăng ký.");
-      if (identifierInput) identifierInput.focus();
+    const emailVal = emailLoginInput ? emailLoginInput.value.trim().toLowerCase() : "";
+    const pwdVal = passwordLoginInput ? passwordLoginInput.value.trim() : "";
+
+    if (!emailVal) {
+      showRosterMsg("Vui lòng nhập Email học viên đã đăng ký với BTC.");
+      if (emailLoginInput) emailLoginInput.focus();
+      return;
+    }
+    if (!emailVal.includes("@")) {
+      showRosterMsg("Địa chỉ email không hợp lệ (cần có ký tự @).");
+      if (emailLoginInput) emailLoginInput.focus();
+      return;
+    }
+    if (!pwdVal) {
+      showRosterMsg("Vui lòng nhập Mật khẩu truy cập (4 số cuối Số điện thoại của bạn).");
+      if (passwordLoginInput) passwordLoginInput.focus();
       return;
     }
 
     if (btnVerifyRoster) {
       btnVerifyRoster.disabled = true;
-      btnVerifyRoster.innerHTML = `<span>⏳ Đang kiểm tra danh bạ...</span>`;
+      btnVerifyRoster.innerHTML = `<span>⏳ Đang xác thực tài khoản...</span>`;
     }
 
     const roster = await loadAuthorizedRoster();
-    const learner = findLearnerInRoster(rawVal, roster);
+    const learner = findLearnerByEmail(emailVal, roster);
 
-    if (learner) {
-      showRosterMsg(`✓ Chào mừng <strong>${learner.full_name}</strong> (${learner.cohort})! Đang mở khóa bài khảo sát...`, true);
-      const saved = saveUserAuth(learner);
-      fillReportFields(saved);
-      setTimeout(() => {
-        modal.style.display = "none";
-      }, 800);
-    } else {
+    if (!learner) {
       if (btnVerifyRoster) {
         btnVerifyRoster.disabled = false;
-        btnVerifyRoster.innerHTML = `<span>🚀 Vào Làm Bài Khảo Sát</span>`;
+        btnVerifyRoster.innerHTML = `<span>🚀 Đăng Nhập & Vào Làm Bài</span>`;
       }
-      // Chuyển sang Giai đoạn 2: Fallback Trial
-      if (rosterSection) rosterSection.style.display = "none";
-      if (trialSection) {
-        trialSection.style.display = "block";
-        if (rawVal.includes("@") && emailInput) {
-          emailInput.value = rawVal.toLowerCase();
-          if (fullNameInput && !fullNameInput.value) fullNameInput.value = rawVal.split("@")[0];
-        } else if (/^[0-9+ ]+$/.test(rawVal) && phoneInput) {
-          phoneInput.value = rawVal;
-        }
-        if (fullNameInput && !fullNameInput.value) {
-          fullNameInput.focus();
-        } else if (phoneInput && !phoneInput.value) {
-          phoneInput.focus();
-        } else if (emailInput && !emailInput.value) {
-          emailInput.focus();
-        }
-      }
+      showRosterMsg(`⚠️ Email <strong>${emailVal}</strong> chưa nằm trong danh sách học viên chính thức. Vui lòng kiểm tra lại hoặc đăng ký trải nghiệm bên dưới.`);
+      if (emailInput) emailInput.value = emailVal;
+      return;
     }
+
+    // Học viên tồn tại -> Kiểm tra mật khẩu (4 số cuối SĐT / 1234 / 8888)
+    const isPwdValid = await verifyLearnerPassword(learner, pwdVal);
+    if (!isPwdValid) {
+      if (btnVerifyRoster) {
+        btnVerifyRoster.disabled = false;
+        btnVerifyRoster.innerHTML = `<span>🚀 Đăng Nhập & Vào Làm Bài</span>`;
+      }
+      showRosterMsg(`❌ Mật khẩu không chính xác. Mật khẩu mặc định là 4 số cuối Số điện thoại bạn đã đăng ký với BTC (hoặc 1234).`);
+      if (passwordLoginInput) {
+        passwordLoginInput.value = "";
+        passwordLoginInput.focus();
+      }
+      return;
+    }
+
+    // Đăng nhập thành công 100%
+    showRosterMsg(`✓ Chào mừng <strong>${learner.full_name}</strong> (${learner.cohort})! Đang mở khóa bài khảo sát...`, true);
+    const saved = saveUserAuth(learner);
+    fillReportFields(saved);
+    setTimeout(() => {
+      modal.style.display = "none";
+    }, 800);
   }
 
   if (btnVerifyRoster) {
     btnVerifyRoster.onclick = verifyRosterLearner;
   }
-  if (identifierInput) {
-    identifierInput.addEventListener("keydown", (e) => {
+  if (emailLoginInput) {
+    emailLoginInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        if (passwordLoginInput) passwordLoginInput.focus();
+      }
+    });
+  }
+  if (passwordLoginInput) {
+    passwordLoginInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
         verifyRosterLearner();
