@@ -1801,6 +1801,17 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             btnNextLesson.innerHTML = `<span>Hoàn thành & Tiếp tục ➔</span>`;
         }
+
+        const footerStageIndicator = document.getElementById("footer-stage-indicator");
+        if (footerStageIndicator) {
+            const subTitle = stage.stageNumber === 1 ? 'Định Vị La Bàn' : stage.stageNumber === 2 ? '5 Thói Quen' : 'Đồng Hành 21 Ngày';
+            footerStageIndicator.innerHTML = `
+                <span class="w-2 h-2 rounded-full bg-brand-amber animate-pulse"></span>
+                <span class="font-bold text-slate-200">Chặng ${stage.stageNumber}</span>
+                <span class="text-slate-600 hidden xs:inline">•</span>
+                <span class="text-slate-400 hidden xs:inline">${subTitle}</span>
+            `;
+        }
     }
 
     // 8. AUDIO PLAYER CONTROLLER

@@ -402,9 +402,9 @@
                                 <!-- Dynamic insight cards -->
                             </div>
 
-                            <!-- CẦU NỐI VÀO NỘI DUNG CHÍNH (LÝ THUYẾT NỀN TẢNG) -->
+                            <!-- CẦU NỐI VÀO NỘI DUNG CHÍNH (LÝ THUYẾT NỀN TẢNG & ME VALUES) -->
                             <div class="mt-8 pt-6 border-t border-brand-border/60">
-                                <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-brand-amber/15 via-brand-surface to-brand-orange/15 border-2 border-brand-amber/50 shadow-xl shadow-amber-500/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+                                <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-brand-amber/15 via-brand-surface to-brand-orange/15 border-2 border-brand-amber/40 shadow-xl shadow-amber-500/10 flex flex-col sm:flex-row items-center justify-between gap-4">
                                     <div class="flex items-center gap-3.5">
                                         <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-brand-amber flex items-center justify-center text-xl sm:text-2xl text-black font-extrabold shadow-md shrink-0">
                                             📖
@@ -417,7 +417,7 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <button id="btn-goto-core-content" type="button" class="w-full sm:w-auto min-h-[44px] px-5 sm:px-6 py-3 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-black font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-orange-500/25 hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0">
+                                    <button id="btn-goto-main-content" type="button" class="w-full sm:w-auto min-h-[44px] px-5 sm:px-6 py-3 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-black font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-orange-500/25 hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0">
                                         <span>Vào Học Nội Dung Chính ➔</span>
                                     </button>
                                 </div>
@@ -430,19 +430,6 @@
                                     <!-- Injected dynamically via JS: Case study, Scientific analysis, Infographic showcase -->
                                 </div>
                             </details>
-
-                            <!-- CẦU NỐI CHUYỂN TIẾP VÀO NỘI DUNG CHÍNH (LÝ THUYẾT & ME VALUES) -->
-                            <div class="mt-8 pt-6 border-t border-brand-border/60 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-brand-surface via-brand-card to-brand-surface border border-brand-amber/30 shadow-lg">
-                                <div class="space-y-1 text-center sm:text-left">
-                                    <div class="text-xs font-bold text-brand-amber uppercase tracking-wider flex items-center justify-center sm:justify-start gap-1.5">
-                                        <span>🚀 Tiếp Tục Hành Trình Học Tập</span>
-                                    </div>
-                                    <p class="text-xs text-slate-300">Bạn đã nắm bức tranh tổng quan. Hãy bước vào 3 bài học lý thuyết nền tảng & thực hành La Bàn Me Values.</p>
-                                </div>
-                                <button type="button" id="btn-goto-main-content" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-black font-extrabold text-xs shadow-md shadow-amber-500/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2 shrink-0">
-                                    <span>📖 Vào Học: Nội Dung Chính ➔</span>
-                                </button>
-                            </div>
                         </div>
                     </div>
 
@@ -2132,32 +2119,28 @@
             </div>
 
             <!-- STICKY BOTTOM ACTION BAR -->
-            <div class="sticky bottom-0 z-20 bg-brand-surface/95 backdrop-blur-md border-t border-brand-border px-3 sm:px-6 lg:px-10 py-3 sm:py-4 flex items-center justify-between gap-2">
-                <button id="btn-prev-lesson" class="min-h-[40px] px-3 sm:px-4 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-300 text-xs sm:text-sm font-semibold border border-brand-border transition-all flex items-center gap-1.5 sm:gap-2 disabled:opacity-40 disabled:cursor-not-allowed shrink-0">
-                    <span>⬅</span>
+            <div class="sticky bottom-0 z-20 bg-brand-surface/95 backdrop-blur-md border-t border-brand-border px-3.5 sm:px-6 lg:px-10 py-2.5 sm:py-3.5 flex items-center justify-between gap-3 shadow-2xl">
+                <!-- Secondary Back Action -->
+                <button id="btn-prev-lesson" type="button" class="min-h-[44px] px-3 sm:px-4 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-300 text-xs sm:text-sm font-semibold border border-brand-border transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:pointer-events-none shrink-0 active:scale-95">
+                    <span class="text-sm">⬅</span>
                     <span class="hidden sm:inline">Chặng trước</span>
-                    <span class="sm:hidden">Trước</span>
                 </button>
 
-                <div class="flex items-center gap-1.5 sm:gap-2.5 justify-end flex-wrap sm:flex-nowrap">
-                    <button id="btn-bottom-roadmap" type="button" class="min-h-[40px] px-2.5 sm:px-3.5 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-200 text-xs font-bold border border-brand-border transition-all flex items-center gap-1 sm:gap-1.5 shadow-sm shrink-0">
-                        <span>📘</span>
-                        <span class="hidden md:inline">Lộ Trình & Hướng Dẫn</span>
-                        <span class="md:hidden">Lộ trình</span>
-                    </button>
-                    <button id="btn-bottom-quiz" type="button" class="min-h-[40px] px-2.5 sm:px-3.5 py-2 rounded-xl bg-brand-amber hover:brightness-110 text-black text-xs font-extrabold shadow-md shadow-amber-500/20 active:scale-95 transition-all flex items-center gap-1 sm:gap-1.5 shrink-0">
-                        <span>⚡</span>
-                        <span class="hidden md:inline">Làm Bài Test (10 câu)</span>
-                        <span class="md:hidden">Vượt chặng</span>
-                    </button>
-                    <button id="btn-manual-save" class="min-h-[40px] px-2.5 sm:px-4 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-300 text-xs sm:text-sm font-semibold border border-brand-border transition-all flex items-center gap-1 sm:gap-1.5 shrink-0">
-                        <span>💾</span>
-                        <span class="hidden sm:inline">Lưu tiến độ</span>
-                        <span class="sm:hidden">Lưu</span>
-                    </button>
-                    <button id="btn-next-lesson" class="min-h-[40px] px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber hover:from-orange-600 hover:to-amber-600 text-black font-extrabold text-xs sm:text-sm shadow-lg shadow-orange-500/20 active:scale-95 transition-all flex items-center gap-1 sm:gap-2 shrink-0">
-                        <span class="hidden sm:inline">Hoàn thành & </span>
-                        <span>Tiếp tục ➔</span>
+                <!-- Center Milestone Indicator (Clean & informative) -->
+                <div class="flex items-center gap-2">
+                    <div id="footer-stage-indicator" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-brand-dark/70 border border-brand-border text-[11px] sm:text-xs text-slate-400 font-mono">
+                        <span class="w-2 h-2 rounded-full bg-brand-amber animate-pulse"></span>
+                        <span class="font-bold text-slate-200">Chặng 1</span>
+                        <span class="text-slate-600 hidden xs:inline">•</span>
+                        <span class="text-slate-400 hidden xs:inline">Định Vị La Bàn</span>
+                    </div>
+                </div>
+
+                <!-- Primary Forward CTA Action (Single prominent button, zero wrapping) -->
+                <div class="flex items-center gap-2 shrink-0">
+                    <button id="btn-next-lesson" type="button" class="min-h-[44px] px-4 sm:px-6 py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber hover:brightness-110 active:scale-95 text-black font-extrabold text-xs sm:text-sm shadow-lg shadow-orange-500/25 transition-all flex items-center gap-1.5 sm:gap-2 shrink-0">
+                        <span>Hoàn thành & Tiếp tục</span>
+                        <span class="text-sm">➔</span>
                     </button>
                 </div>
             </div>
