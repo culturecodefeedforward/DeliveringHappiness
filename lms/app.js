@@ -2743,65 +2743,139 @@ document.addEventListener("DOMContentLoaded", () => {
             sData.iam_cp2 = sData.iam_1_3 || {};
         }
 
+        // Initialize multi-set arrays and backward compatibility migration
+        if (!Array.isArray(sData.iam_cp1_sets)) {
+            sData.iam_cp1_sets = [];
+        }
+        if (sData.iam_cp1_sets.length === 0 && (sData.iam_cp1?.I || sData.iam_cp1?.A || sData.iam_cp1?.M)) {
+            sData.iam_cp1_sets.push({
+                id: "set_cp1_legacy_" + Date.now(),
+                I: sData.iam_cp1.I || "",
+                A: sData.iam_cp1.A || "",
+                M: sData.iam_cp1.M || "",
+                createdAt: new Date().toISOString()
+            });
+        }
+        if (sData.iam_cp1_sets.length > 0) {
+            sData.iam_cp1.I = sData.iam_cp1_sets[0].I;
+            sData.iam_cp1.A = sData.iam_cp1_sets[0].A;
+            sData.iam_cp1.M = sData.iam_cp1_sets[0].M;
+            sData.iam_1_2 = sData.iam_1_2 || {};
+            sData.iam_1_2.I = sData.iam_cp1_sets[0].I;
+            sData.iam_1_2.A = sData.iam_cp1_sets[0].A;
+            sData.iam_1_2.M = sData.iam_cp1_sets[0].M;
+        }
+
+        if (!Array.isArray(sData.iam_cp2_sets)) {
+            sData.iam_cp2_sets = [];
+        }
+        if (sData.iam_cp2_sets.length === 0 && (sData.iam_cp2?.I || sData.iam_cp2?.A || sData.iam_cp2?.M)) {
+            sData.iam_cp2_sets.push({
+                id: "set_cp2_legacy_" + Date.now(),
+                I: sData.iam_cp2.I || "",
+                A: sData.iam_cp2.A || "",
+                M: sData.iam_cp2.M || "",
+                createdAt: new Date().toISOString()
+            });
+        }
+        if (sData.iam_cp2_sets.length > 0) {
+            sData.iam_cp2.I = sData.iam_cp2_sets[0].I;
+            sData.iam_cp2.A = sData.iam_cp2_sets[0].A;
+            sData.iam_cp2.M = sData.iam_cp2_sets[0].M;
+            sData.iam_1_3 = sData.iam_1_3 || {};
+            sData.iam_1_3.I = sData.iam_cp2_sets[0].I;
+            sData.iam_1_3.A = sData.iam_cp2_sets[0].A;
+            sData.iam_1_3.M = sData.iam_cp2_sets[0].M;
+        }
+
+        // Render Multi-Set Cards List
+        renderIamSetsCardList("iam-cp1-saved-sets-list", "iam-cp1-set-counter", sData.iam_cp1_sets, "cp1");
+        renderIamSetsCardList("iam-cp2-saved-sets-list", "iam-cp2-set-counter", sData.iam_cp2_sets, "cp2");
+        updateDrawerIamHistory();
+
+        // Setup save & clear buttons
+        const btnCp1Save = document.getElementById("btn-iam-cp1-save-set");
+        if (btnCp1Save) btnCp1Save.onclick = () => handleSaveIamSet("cp1");
+        const btnCp1Clear = document.getElementById("btn-iam-cp1-clear");
+        if (btnCp1Clear) btnCp1Clear.onclick = () => handleClearIamInputs("cp1");
+
+        const btnCp2Save = document.getElementById("btn-iam-cp2-save-set");
+        if (btnCp2Save) btnCp2Save.onclick = () => handleSaveIamSet("cp2");
+        const btnCp2Clear = document.getElementById("btn-iam-cp2-clear");
+        if (btnCp2Clear) btnCp2Clear.onclick = () => handleClearIamInputs("cp2");
+
+        // Input bindings for draft typing
         bindInput("iam-cp1-i", val => { 
             sData.iam_cp1 = sData.iam_cp1 || {}; 
-            sData.iam_cp1.I = val; 
-            sData.iam_1_2 = sData.iam_1_2 || {};
-            sData.iam_1_2.I = val;
-            debouncedSave(); 
-            renderSyllabus(); 
-            updateStage1Milestones(); 
-        }, sData.iam_cp1?.I);
+            if (sData.iam_cp1_sets.length === 0) {
+                sData.iam_cp1.I = val; 
+                sData.iam_1_2 = sData.iam_1_2 || {};
+                sData.iam_1_2.I = val;
+                debouncedSave(); 
+                renderSyllabus(); 
+                updateStage1Milestones(); 
+            }
+        }, sData.iam_cp1_sets.length === 0 ? sData.iam_cp1?.I : "");
 
         bindInput("iam-cp1-a", val => { 
             sData.iam_cp1 = sData.iam_cp1 || {}; 
-            sData.iam_cp1.A = val; 
-            sData.iam_1_2 = sData.iam_1_2 || {};
-            sData.iam_1_2.A = val;
-            debouncedSave(); 
-            renderSyllabus(); 
-            updateStage1Milestones(); 
-        }, sData.iam_cp1?.A);
+            if (sData.iam_cp1_sets.length === 0) {
+                sData.iam_cp1.A = val; 
+                sData.iam_1_2 = sData.iam_1_2 || {};
+                sData.iam_1_2.A = val;
+                debouncedSave(); 
+                renderSyllabus(); 
+                updateStage1Milestones(); 
+            }
+        }, sData.iam_cp1_sets.length === 0 ? sData.iam_cp1?.A : "");
 
         bindInput("iam-cp1-m", val => { 
             sData.iam_cp1 = sData.iam_cp1 || {}; 
-            sData.iam_cp1.M = val; 
-            sData.iam_1_2 = sData.iam_1_2 || {};
-            sData.iam_1_2.M = val;
-            debouncedSave(); 
-            renderSyllabus(); 
-            updateStage1Milestones(); 
-        }, sData.iam_cp1?.M);
+            if (sData.iam_cp1_sets.length === 0) {
+                sData.iam_cp1.M = val; 
+                sData.iam_1_2 = sData.iam_1_2 || {};
+                sData.iam_1_2.M = val;
+                debouncedSave(); 
+                renderSyllabus(); 
+                updateStage1Milestones(); 
+            }
+        }, sData.iam_cp1_sets.length === 0 ? sData.iam_cp1?.M : "");
 
         bindInput("iam-cp2-i", val => { 
             sData.iam_cp2 = sData.iam_cp2 || {}; 
-            sData.iam_cp2.I = val; 
-            sData.iam_1_3 = sData.iam_1_3 || {};
-            sData.iam_1_3.I = val;
-            debouncedSave(); 
-            renderSyllabus(); 
-            updateStage1Milestones(); 
-        }, sData.iam_cp2?.I);
+            if (sData.iam_cp2_sets.length === 0) {
+                sData.iam_cp2.I = val; 
+                sData.iam_1_3 = sData.iam_1_3 || {};
+                sData.iam_1_3.I = val;
+                debouncedSave(); 
+                renderSyllabus(); 
+                updateStage1Milestones(); 
+            }
+        }, sData.iam_cp2_sets.length === 0 ? sData.iam_cp2?.I : "");
 
         bindInput("iam-cp2-a", val => { 
             sData.iam_cp2 = sData.iam_cp2 || {}; 
-            sData.iam_cp2.A = val; 
-            sData.iam_1_3 = sData.iam_1_3 || {};
-            sData.iam_1_3.A = val;
-            debouncedSave(); 
-            renderSyllabus(); 
-            updateStage1Milestones(); 
-        }, sData.iam_cp2?.A);
+            if (sData.iam_cp2_sets.length === 0) {
+                sData.iam_cp2.A = val; 
+                sData.iam_1_3 = sData.iam_1_3 || {};
+                sData.iam_1_3.A = val;
+                debouncedSave(); 
+                renderSyllabus(); 
+                updateStage1Milestones(); 
+            }
+        }, sData.iam_cp2_sets.length === 0 ? sData.iam_cp2?.A : "");
 
         bindInput("iam-cp2-m", val => { 
             sData.iam_cp2 = sData.iam_cp2 || {}; 
-            sData.iam_cp2.M = val; 
-            sData.iam_1_3 = sData.iam_1_3 || {};
-            sData.iam_1_3.M = val;
-            debouncedSave(); 
-            renderSyllabus(); 
-            updateStage1Milestones(); 
-        }, sData.iam_cp2?.M);
+            if (sData.iam_cp2_sets.length === 0) {
+                sData.iam_cp2.M = val; 
+                sData.iam_1_3 = sData.iam_1_3 || {};
+                sData.iam_1_3.M = val;
+                debouncedSave(); 
+                renderSyllabus(); 
+                updateStage1Milestones(); 
+            }
+        }, sData.iam_cp2_sets.length === 0 ? sData.iam_cp2?.M : "");
 
         evaluateLearnerStatus();
     }
@@ -4716,9 +4790,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const mLevelsDone = isS1Done || Boolean((s1Data.viewed && s1Data.viewed["1-1"]) || (s1Data.iam_cp1 && s1Data.iam_cp1.I) || (s1Data.iam_1_1 && s1Data.iam_1_1.I));
         const mValuesDone = isS1Done || Boolean((s1Data.selectedValues && s1Data.selectedValues.length > 0) || (s1Data.iam_cp1 && s1Data.iam_cp1.I) || (s1Data.iam_1_2 && s1Data.iam_1_2.I));
-        const mCp1Done = isS1Done || Boolean((s1Data.iam_cp1 && ((s1Data.iam_cp1.I && s1Data.iam_cp1.I.trim()) || (s1Data.iam_cp1.A && s1Data.iam_cp1.A.trim()) || (s1Data.iam_cp1.M && s1Data.iam_cp1.M.trim()))) || (s1Data.iam_1_2 && s1Data.iam_1_2.I) || (s1Data.iam_1_1 && s1Data.iam_1_1.I));
+        const mCp1Done = isS1Done || Boolean((s1Data.iam_cp1_sets && s1Data.iam_cp1_sets.length > 0) || (s1Data.iam_cp1 && ((s1Data.iam_cp1.I && s1Data.iam_cp1.I.trim()) || (s1Data.iam_cp1.A && s1Data.iam_cp1.A.trim()) || (s1Data.iam_cp1.M && s1Data.iam_cp1.M.trim()))) || (s1Data.iam_1_2 && s1Data.iam_1_2.I) || (s1Data.iam_1_1 && s1Data.iam_1_1.I));
         const mDriversDone = isS1Done || Boolean((s1Data.viewed && s1Data.viewed["1-3"]) || (s1Data.iam_cp2 && s1Data.iam_cp2.I) || (s1Data.iam_1_3 && s1Data.iam_1_3.I));
-        const mCp2Done = isS1Done || Boolean((s1Data.iam_cp2 && ((s1Data.iam_cp2.I && s1Data.iam_cp2.I.trim()) || (s1Data.iam_cp2.A && s1Data.iam_cp2.A.trim()) || (s1Data.iam_cp2.M && s1Data.iam_cp2.M.trim()))) || (s1Data.iam_1_3 && s1Data.iam_1_3.I));
+        const mCp2Done = isS1Done || Boolean((s1Data.iam_cp2_sets && s1Data.iam_cp2_sets.length > 0) || (s1Data.iam_cp2 && ((s1Data.iam_cp2.I && s1Data.iam_cp2.I.trim()) || (s1Data.iam_cp2.A && s1Data.iam_cp2.A.trim()) || (s1Data.iam_cp2.M && s1Data.iam_cp2.M.trim()))) || (s1Data.iam_1_3 && s1Data.iam_1_3.I));
         const mQuizDone = isS1Done || Boolean(s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80);
 
         const doneCount = [mLevelsDone, mValuesDone, mCp1Done, mDriversDone, mCp2Done, mQuizDone].filter(Boolean).length;
@@ -5472,6 +5546,358 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+    // =========================================================================
+    // 14B. MULTI-SET I•A•M CORE ENGINE & DRAWER
+    // =========================================================================
+
+    function escapeHtml(str) {
+        if (!str) return "";
+        return String(str)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function renderIamSetsCardList(containerId, counterId, setsArray, cpType) {
+        const listEl = document.getElementById(containerId);
+        const counterEl = document.getElementById(counterId);
+        if (!listEl) return;
+        listEl.innerHTML = "";
+
+        const count = Array.isArray(setsArray) ? setsArray.length : 0;
+        if (counterEl) {
+            counterEl.textContent = `Đã lưu: ${count} bộ`;
+        }
+
+        if (!Array.isArray(setsArray) || setsArray.length === 0) {
+            listEl.innerHTML = `
+                <div class="p-3.5 text-center text-xs text-slate-400 italic bg-brand-dark/40 rounded-xl border border-dashed border-brand-border/60">
+                    Chưa có bộ I•A•M nào được lưu. Hãy nhập 3 cột ở trên và bấm <strong class="text-brand-amber">"💾 Lưu & Nhập Tiếp Set Mới"</strong>.
+                </div>`;
+            return;
+        }
+
+        setsArray.forEach((set, idx) => {
+            const card = document.createElement("div");
+            card.className = "p-3.5 rounded-2xl bg-brand-surface/90 border border-brand-border hover:border-brand-amber/40 transition-all space-y-2.5 shadow-sm";
+            card.innerHTML = `
+                <div class="flex items-center justify-between pb-2 border-b border-brand-border/50">
+                    <div class="flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-full bg-brand-amber/20 text-brand-amber font-mono font-bold flex items-center justify-center text-[11px] border border-brand-amber/30">
+                            ${idx + 1}
+                        </span>
+                        <span class="text-xs font-bold text-white">Bộ I•A•M #${idx + 1}</span>
+                        ${set.createdAt ? `<span class="text-[10px] text-slate-500 font-mono hidden sm:inline">(${new Date(set.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})</span>` : ''}
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <button type="button" class="btn-card-copy text-[10.5px] px-2.5 py-1 rounded-lg bg-brand-card hover:bg-brand-border text-slate-300 font-medium transition-colors border border-brand-border/60 flex items-center gap-1 cursor-pointer" title="Sao chép bộ này">
+                            <span>📋</span> Copy
+                        </button>
+                        <button type="button" class="btn-card-edit text-[10.5px] px-2.5 py-1 rounded-lg bg-brand-card hover:bg-brand-amber/20 text-brand-amber font-medium transition-colors border border-brand-amber/30 flex items-center gap-1 cursor-pointer" title="Sửa bộ này (nạp lại vào ô nhập)">
+                            <span>✏️</span> Sửa
+                        </button>
+                        <button type="button" class="btn-card-del text-[10.5px] px-2.5 py-1 rounded-lg bg-brand-card hover:bg-red-500/20 text-red-400 font-medium transition-colors border border-red-500/30 flex items-center gap-1 cursor-pointer" title="Xóa bộ này">
+                            <span>🗑️</span> Xóa
+                        </button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-[11px]">
+                    <div class="p-2.5 rounded-xl bg-brand-dark/60 border border-emerald-500/20 space-y-1">
+                        <div class="font-bold text-emerald-400 text-[10.5px] flex items-center gap-1">
+                            <span>🧭</span> I (Interested / Insight):
+                        </div>
+                        <div class="text-slate-200 whitespace-pre-wrap leading-relaxed">${escapeHtml(set.I || "—")}</div>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-brand-dark/60 border border-sky-500/20 space-y-1">
+                        <div class="font-bold text-sky-400 text-[10.5px] flex items-center gap-1">
+                            <span>🎯</span> A (Actionable):
+                        </div>
+                        <div class="text-slate-200 whitespace-pre-wrap leading-relaxed">${escapeHtml(set.A || "—")}</div>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-brand-dark/60 border border-purple-500/20 space-y-1">
+                        <div class="font-bold text-purple-400 text-[10.5px] flex items-center gap-1">
+                            <span>✨</span> M (Meaningful):
+                        </div>
+                        <div class="text-slate-200 whitespace-pre-wrap leading-relaxed">${escapeHtml(set.M || "—")}</div>
+                    </div>
+                </div>
+            `;
+
+            const btnCopy = card.querySelector(".btn-card-copy");
+            btnCopy.onclick = () => {
+                const copyText = `Bộ I•A•M #${idx + 1} (${cpType === 'cp1' ? 'Trạm 1: Nhận Thức & La Bàn Giá Trị' : 'Trạm 2: Đòn Bẩy & Small Wins'}):\n` +
+                    `- I (Insight): ${set.I || ''}\n` +
+                    `- A (Actionable): ${set.A || ''}\n` +
+                    `- M (Meaningful): ${set.M || ''}`;
+                navigator.clipboard.writeText(copyText).then(() => {
+                    const old = btnCopy.innerHTML;
+                    btnCopy.innerHTML = "<span>✓</span> Đã copy!";
+                    setTimeout(() => { btnCopy.innerHTML = old; }, 1500);
+                });
+            };
+
+            const btnEdit = card.querySelector(".btn-card-edit");
+            btnEdit.onclick = () => {
+                const prefix = cpType === 'cp1' ? 'iam-cp1' : 'iam-cp2';
+                const inputI = document.getElementById(`${prefix}-i`);
+                const inputA = document.getElementById(`${prefix}-a`);
+                const inputM = document.getElementById(`${prefix}-m`);
+                if (inputI) inputI.value = set.I || "";
+                if (inputA) inputA.value = set.A || "";
+                if (inputM) inputM.value = set.M || "";
+
+                // Remove this set from the array so saving will re-save
+                setsArray.splice(idx, 1);
+                syncIamLegacy(cpType);
+                debouncedSave();
+                renderIamSetsCardList(containerId, counterId, setsArray, cpType);
+                updateDrawerIamHistory();
+
+                if (inputI) {
+                    inputI.focus();
+                    inputI.scrollIntoView({ behavior: "smooth", block: "center" });
+                }
+            };
+
+            const btnDel = card.querySelector(".btn-card-del");
+            btnDel.onclick = () => {
+                if (confirm(`Bạn có chắc chắn muốn xóa Bộ I•A•M #${idx + 1} không?`)) {
+                    setsArray.splice(idx, 1);
+                    syncIamLegacy(cpType);
+                    debouncedSave();
+                    renderSyllabus();
+                    updateStage1Milestones();
+                    evaluateLearnerStatus();
+                    renderIamSetsCardList(containerId, counterId, setsArray, cpType);
+                    updateDrawerIamHistory();
+                }
+            };
+
+            listEl.appendChild(card);
+        });
+    }
+
+    function syncIamLegacy(cpType) {
+        const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
+        if (cpType === "cp1") {
+            const sets = s1Data.iam_cp1_sets || [];
+            if (sets.length > 0) {
+                s1Data.iam_cp1 = s1Data.iam_cp1 || {};
+                s1Data.iam_cp1.I = sets[0].I;
+                s1Data.iam_cp1.A = sets[0].A;
+                s1Data.iam_cp1.M = sets[0].M;
+                s1Data.iam_1_2 = s1Data.iam_1_2 || {};
+                s1Data.iam_1_2.I = sets[0].I;
+                s1Data.iam_1_2.A = sets[0].A;
+                s1Data.iam_1_2.M = sets[0].M;
+            } else {
+                const inputI = document.getElementById("iam-cp1-i");
+                const inputA = document.getElementById("iam-cp1-a");
+                const inputM = document.getElementById("iam-cp1-m");
+                s1Data.iam_cp1 = s1Data.iam_cp1 || {};
+                s1Data.iam_cp1.I = inputI ? inputI.value.trim() : "";
+                s1Data.iam_cp1.A = inputA ? inputA.value.trim() : "";
+                s1Data.iam_cp1.M = inputM ? inputM.value.trim() : "";
+            }
+        } else if (cpType === "cp2") {
+            const sets = s1Data.iam_cp2_sets || [];
+            if (sets.length > 0) {
+                s1Data.iam_cp2 = s1Data.iam_cp2 || {};
+                s1Data.iam_cp2.I = sets[0].I;
+                s1Data.iam_cp2.A = sets[0].A;
+                s1Data.iam_cp2.M = sets[0].M;
+                s1Data.iam_1_3 = s1Data.iam_1_3 || {};
+                s1Data.iam_1_3.I = sets[0].I;
+                s1Data.iam_1_3.A = sets[0].A;
+                s1Data.iam_1_3.M = sets[0].M;
+            } else {
+                const inputI = document.getElementById("iam-cp2-i");
+                const inputA = document.getElementById("iam-cp2-a");
+                const inputM = document.getElementById("iam-cp2-m");
+                s1Data.iam_cp2 = s1Data.iam_cp2 || {};
+                s1Data.iam_cp2.I = inputI ? inputI.value.trim() : "";
+                s1Data.iam_cp2.A = inputA ? inputA.value.trim() : "";
+                s1Data.iam_cp2.M = inputM ? inputM.value.trim() : "";
+            }
+        }
+    }
+
+    function handleSaveIamSet(cpType) {
+        const s1Data = learnerProgress.stageData["stage-1"] = learnerProgress.stageData["stage-1"] || {};
+        const prefix = cpType === 'cp1' ? 'iam-cp1' : 'iam-cp2';
+        const inputI = document.getElementById(`${prefix}-i`);
+        const inputA = document.getElementById(`${prefix}-a`);
+        const inputM = document.getElementById(`${prefix}-m`);
+        const saveBtn = document.getElementById(`btn-${prefix}-save-set`);
+
+        const valI = inputI ? inputI.value.trim() : "";
+        const valA = inputA ? inputA.value.trim() : "";
+        const valM = inputM ? inputM.value.trim() : "";
+
+        if (!valI && !valA && !valM) {
+            alert("Vui lòng nhập ít nhất 1 trong 3 ô (I, A hoặc M) trước khi lưu bộ mới.");
+            if (inputI) inputI.focus();
+            return;
+        }
+
+        const setsKey = cpType === 'cp1' ? 'iam_cp1_sets' : 'iam_cp2_sets';
+        s1Data[setsKey] = s1Data[setsKey] || [];
+
+        const newSet = {
+            id: `set_${cpType}_` + Date.now(),
+            I: valI,
+            A: valA,
+            M: valM,
+            createdAt: new Date().toISOString()
+        };
+
+        s1Data[setsKey].push(newSet);
+        syncIamLegacy(cpType);
+
+        // Reset ô nhập để học viên nhập tiếp bộ mới
+        if (inputI) inputI.value = "";
+        if (inputA) inputA.value = "";
+        if (inputM) inputM.value = "";
+
+        saveLearnerProgress();
+        renderSyllabus();
+        updateStage1Milestones();
+        evaluateLearnerStatus();
+
+        // Render lại danh sách
+        const containerId = `${prefix}-saved-sets-list`;
+        const counterId = `${prefix}-set-counter`;
+        renderIamSetsCardList(containerId, counterId, s1Data[setsKey], cpType);
+        updateDrawerIamHistory();
+
+        // Feedback
+        if (saveBtn) {
+            const oldContent = saveBtn.innerHTML;
+            saveBtn.innerHTML = `<span>✓ Đã lưu Bộ #${s1Data[setsKey].length}!</span>`;
+            setTimeout(() => { saveBtn.innerHTML = oldContent; }, 1500);
+        }
+    }
+
+    function handleClearIamInputs(cpType) {
+        const prefix = cpType === 'cp1' ? 'iam-cp1' : 'iam-cp2';
+        const inputI = document.getElementById(`${prefix}-i`);
+        const inputA = document.getElementById(`${prefix}-a`);
+        const inputM = document.getElementById(`${prefix}-m`);
+        if (inputI) inputI.value = "";
+        if (inputA) inputA.value = "";
+        if (inputM) inputM.value = "";
+        syncIamLegacy(cpType);
+        debouncedSave();
+    }
+
+    function updateDrawerIamHistory() {
+        const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
+        const cp1Sets = s1Data.iam_cp1_sets || [];
+        const cp2Sets = s1Data.iam_cp2_sets || [];
+
+        const cp1Counter = document.getElementById("drawer-cp1-counter");
+        const cp2Counter = document.getElementById("drawer-cp2-counter");
+        const cp1List = document.getElementById("drawer-cp1-list");
+        const cp2List = document.getElementById("drawer-cp2-list");
+
+        if (cp1Counter) cp1Counter.textContent = `${cp1Sets.length} bộ`;
+        if (cp2Counter) cp2Counter.textContent = `${cp2Sets.length} bộ`;
+
+        function renderDrawerSets(el, sets, cpLabel) {
+            if (!el) return;
+            el.innerHTML = "";
+            if (!Array.isArray(sets) || sets.length === 0) {
+                el.innerHTML = `<div class="p-3 text-center text-[11px] text-slate-500 italic bg-brand-dark/40 rounded-xl">Chưa có bộ nào được lưu ở phần này.</div>`;
+                return;
+            }
+            sets.forEach((set, idx) => {
+                const card = document.createElement("div");
+                card.className = "p-3 rounded-xl bg-brand-dark/60 border border-brand-border/70 space-y-2 text-[11px]";
+                card.innerHTML = `
+                    <div class="flex items-center justify-between pb-1 border-b border-brand-border/40">
+                        <span class="font-bold text-brand-amber">Bộ #${idx + 1}</span>
+                        <button type="button" class="btn-drawer-item-copy text-[10px] px-2 py-0.5 rounded bg-brand-card hover:bg-brand-border text-slate-300">📋 Copy</button>
+                    </div>
+                    <div class="space-y-1">
+                        <div><strong class="text-emerald-400">I:</strong> <span class="text-slate-200 whitespace-pre-wrap">${escapeHtml(set.I || "—")}</span></div>
+                        <div><strong class="text-sky-400">A:</strong> <span class="text-slate-200 whitespace-pre-wrap">${escapeHtml(set.A || "—")}</span></div>
+                        <div><strong class="text-purple-400">M:</strong> <span class="text-slate-200 whitespace-pre-wrap">${escapeHtml(set.M || "—")}</span></div>
+                    </div>
+                `;
+                card.querySelector(".btn-drawer-item-copy").onclick = (e) => {
+                    const btn = e.currentTarget;
+                    const txt = `Bộ #${idx + 1} (${cpLabel}):\nI: ${set.I}\nA: ${set.A}\nM: ${set.M}`;
+                    navigator.clipboard.writeText(txt).then(() => {
+                        btn.textContent = "✓ Đã copy";
+                        setTimeout(() => { btn.textContent = "📋 Copy"; }, 1500);
+                    });
+                };
+                el.appendChild(card);
+            });
+        }
+
+        renderDrawerSets(cp1List, cp1Sets, "Trạm 1: Nhận Thức & La Bàn Giá Trị");
+        renderDrawerSets(cp2List, cp2Sets, "Trạm 2: Đòn Bẩy & Small Wins");
+    }
+
+    function initIamDrawer() {
+        const btnOpen = document.getElementById("btn-iam-history");
+        const drawer = document.getElementById("iam-history-drawer");
+        const btnClose = document.getElementById("btn-close-iam-drawer");
+        const btnDismiss = document.getElementById("btn-dismiss-iam-drawer");
+        const backdrop = document.getElementById("iam-drawer-backdrop");
+        const btnCopyAll = document.getElementById("btn-copy-all-iam");
+
+        if (btnOpen) {
+            btnOpen.onclick = () => {
+                if (drawer) {
+                    updateDrawerIamHistory();
+                    drawer.classList.remove("hidden");
+                }
+            };
+        }
+
+        const closeDrawer = () => {
+            if (drawer) drawer.classList.add("hidden");
+        };
+
+        if (btnClose) btnClose.onclick = closeDrawer;
+        if (btnDismiss) btnDismiss.onclick = closeDrawer;
+        if (backdrop) backdrop.onclick = closeDrawer;
+
+        if (btnCopyAll) {
+            btnCopyAll.onclick = () => {
+                const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
+                const cp1Sets = s1Data.iam_cp1_sets || [];
+                const cp2Sets = s1Data.iam_cp2_sets || [];
+                let allText = `=== KHO LƯU TRỮ I•A•M (DELIVERING HAPPINESS) ===\nHọc viên: ${(currentUser && (currentUser.full_name || currentUser.name)) || "Học viên"}\nNgày xuất: ${new Date().toLocaleDateString()}\n\n`;
+
+                allText += `--- TRẠM 1: NHẬN THỨC & LA BÀN GIÁ TRỊ (CP1) ---\n`;
+                if (cp1Sets.length === 0) allText += `(Chưa có bộ lưu)\n`;
+                cp1Sets.forEach((s, i) => {
+                    allText += `\nBộ #${i + 1}:\n- I (Insight): ${s.I}\n- A (Actionable): ${s.A}\n- M (Meaningful): ${s.M}\n`;
+                });
+
+                allText += `\n--- TRẠM 2: ĐÒN BẨY HẠNH PHÚC & SMALL WINS (CP2) ---\n`;
+                if (cp2Sets.length === 0) allText += `(Chưa có bộ lưu)\n`;
+                cp2Sets.forEach((s, i) => {
+                    allText += `\nBộ #${i + 1}:\n- I (Insight): ${s.I}\n- A (Actionable): ${s.A}\n- M (Meaningful): ${s.M}\n`;
+                });
+
+                navigator.clipboard.writeText(allText).then(() => {
+                    const old = btnCopyAll.innerHTML;
+                    btnCopyAll.innerHTML = "<span>✓</span> Đã copy tất cả!";
+                    setTimeout(() => { btnCopyAll.innerHTML = old; }, 2000);
+                });
+            };
+        }
+    }
+
+    // Initialize New Component Handlers
+    initIamDrawer();
 
     // 15. INITIAL BOOTSTRAP
     loadCurriculumData().then(() => {

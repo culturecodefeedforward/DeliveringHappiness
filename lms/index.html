@@ -222,6 +222,10 @@
                 <span class="hidden md:inline">Video Tổng Quan (7:27)</span>
                 <span class="hidden sm:inline md:hidden">Video</span>
             </button>
+            <button id="btn-iam-history" type="button" class="inline-flex items-center justify-center gap-1.5 p-1.5 sm:px-3 sm:py-1.5 rounded-full bg-brand-card hover:bg-brand-border text-brand-amber text-xs font-bold border border-brand-amber/30 transition-all shadow-sm shrink-0 cursor-pointer" title="Mở Kho Lưu Trữ I•A•M Của Tôi">
+                <span>📜</span>
+                <span class="hidden sm:inline">Kho I•A•M</span>
+            </button>
             <div id="user-chip" class="hidden flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-brand-card border border-brand-border text-xs shrink-0 select-none">
                 <div id="user-avatar" class="w-5 h-5 rounded-full bg-brand-amber/20 text-brand-amber flex items-center justify-center font-bold text-[10px] shrink-0">H</div>
                 <span id="user-display-name" class="font-medium text-slate-200 truncate max-w-[65px] sm:max-w-[130px]">Khách</span>
@@ -810,26 +814,61 @@
                                             </div>
                                         </div>
 
-                                        <!-- 3 Ô Textarea I . A . M -->
-                                        <div class="grid grid-cols-1 gap-3.5 pt-1">
-                                            <div>
-                                                <label class="block text-[11px] font-semibold text-slate-300 mb-1" for="iam-cp1-i">
-                                                    <span class="text-brand-amber font-bold">I (Interested)</span> — Bạn tâm đắc nhất điều gì từ 3 Cấp độ Hạnh phúc & La Bàn Giá Trị Cốt Lõi (Me Values) vừa xác định?
-                                                </label>
-                                                <textarea id="iam-cp1-i" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber" placeholder="Ghi nhận điểm tâm đắc nhất từ 3 cấp độ hoặc giá trị La Bàn của bạn..."></textarea>
+                                        <!-- MULTI-SET I•A•M CHECKPOINT 1 -->
+                                        <div id="iam-cp1-multiset-container" class="space-y-4 pt-1">
+                                            <!-- Form nhập set mới (3 Cột trên Desktop) -->
+                                            <div class="p-4 rounded-2xl bg-brand-card/70 border border-brand-amber/30 space-y-3">
+                                                <div class="flex items-center justify-between">
+                                                    <span class="text-xs font-bold text-white flex items-center gap-1.5">
+                                                        <span class="text-brand-amber">✍️</span> Nhập Bộ I•A•M Mới
+                                                    </span>
+                                                    <span id="iam-cp1-set-counter" class="text-[11px] font-mono text-brand-amber font-semibold">Đã lưu: 0 bộ</span>
+                                                </div>
+
+                                                <!-- 3 CỘT THÔNG TIN: I • A • M -->
+                                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                                    <!-- Cột 1: I (Insight / Interested) -->
+                                                    <div class="space-y-1">
+                                                        <label class="block text-[11px] font-bold text-emerald-400" for="iam-cp1-i">
+                                                            I (Interested / Insight)
+                                                        </label>
+                                                        <p class="text-[10px] text-slate-400 leading-tight">Điểm tâm đắc từ 3 Cấp độ & La Bàn Giá Trị...</p>
+                                                        <textarea id="iam-cp1-i" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Ghi nhận điểm tâm đắc nhất từ 3 cấp độ hoặc giá trị La Bàn của bạn..."></textarea>
+                                                    </div>
+
+                                                    <!-- Cột 2: A (Actionable) -->
+                                                    <div class="space-y-1">
+                                                        <label class="block text-[11px] font-bold text-sky-400" for="iam-cp1-a">
+                                                            A (Actionable / Action)
+                                                        </label>
+                                                        <p class="text-[10px] text-slate-400 leading-tight">Hành động chuyển dịch hoặc quyết định thực tế...</p>
+                                                        <textarea id="iam-cp1-a" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Hành động cụ thể theo La Bàn và chuyển dịch hạnh phúc..."></textarea>
+                                                    </div>
+
+                                                    <!-- Cột 3: M (Meaningful / Measure) -->
+                                                    <div class="space-y-1">
+                                                        <label class="block text-[11px] font-bold text-purple-400" for="iam-cp1-m">
+                                                            M (Meaningful / Measure)
+                                                        </label>
+                                                        <p class="text-[10px] text-slate-400 leading-tight">Ý nghĩa đối với cuộc sống & phiên bản của bạn...</p>
+                                                        <textarea id="iam-cp1-m" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Ý nghĩa sâu sắc đối với cuộc sống và công việc của bạn..."></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Thanh nút bấm lưu & nhập tiếp -->
+                                                <div class="flex items-center justify-between pt-1">
+                                                    <button id="btn-iam-cp1-clear" type="button" class="text-[11px] text-slate-400 hover:text-slate-200 px-3 py-1.5 rounded-lg hover:bg-brand-dark transition-colors cursor-pointer">
+                                                        Làm mới ô nhập
+                                                    </button>
+                                                    <button id="btn-iam-cp1-save-set" type="button" class="px-4 py-2 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber hover:brightness-110 active:scale-95 text-black font-extrabold text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer">
+                                                        <span>💾 Lưu & Nhập Tiếp Set Mới</span>
+                                                        <span>➔</span>
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <label class="block text-[11px] font-semibold text-slate-300 mb-1" for="iam-cp1-a">
-                                                    <span class="text-brand-amber font-bold">A (Actionable)</span> — Bạn sẽ áp dụng điều này như thế nào để chuyển dịch dần sang Đam mê/Mục đích cao cả hoặc định hướng cho 1 quyết định thực tế?
-                                                </label>
-                                                <textarea id="iam-cp1-a" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber" placeholder="Hành động cụ thể theo La Bàn và chuyển dịch hạnh phúc..."></textarea>
-                                            </div>
-                                            <div>
-                                                <label class="block text-[11px] font-semibold text-slate-300 mb-1" for="iam-cp1-m">
-                                                    <span class="text-brand-amber font-bold">M (Meaningful)</span> — Việc sống đúng với La Bàn giá trị này có ý nghĩa gì đối với cuộc sống và sự chuyển hóa phiên bản của bạn?
-                                                </label>
-                                                <textarea id="iam-cp1-m" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber" placeholder="Ý nghĩa sâu sắc đối với cuộc sống và công việc của bạn..."></textarea>
-                                            </div>
+
+                                            <!-- Danh sách các Set đã lưu -->
+                                            <div id="iam-cp1-saved-sets-list" class="space-y-2.5"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -972,26 +1011,61 @@
                                             </div>
                                         </div>
 
-                                        <!-- 3 Ô Textarea I . A . M -->
-                                        <div class="grid grid-cols-1 gap-3.5 pt-1">
-                                            <div>
-                                                <label class="block text-[11px] font-semibold text-slate-300 mb-1" for="iam-cp2-i">
-                                                    <span class="text-brand-amber font-bold">I (Interested)</span> — Trong 3 đòn bẩy (Kết nối • Tự chủ • Tiến bộ), đòn bẩy nào bạn đang thấy tâm đắc nhất và cần kích hoạt ngay?
-                                                </label>
-                                                <textarea id="iam-cp2-i" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber" placeholder="Đòn bẩy tâm đắc nhất bạn muốn kích hoạt..."></textarea>
+                                        <!-- MULTI-SET I•A•M CHECKPOINT 2 -->
+                                        <div id="iam-cp2-multiset-container" class="space-y-4 pt-1">
+                                            <!-- Form nhập set mới (3 Cột trên Desktop) -->
+                                            <div class="p-4 rounded-2xl bg-brand-card/70 border border-brand-amber/30 space-y-3">
+                                                <div class="flex items-center justify-between">
+                                                    <span class="text-xs font-bold text-white flex items-center gap-1.5">
+                                                        <span class="text-brand-amber">✍️</span> Nhập Bộ I•A•M (Đòn Bẩy & Small Wins)
+                                                    </span>
+                                                    <span id="iam-cp2-set-counter" class="text-[11px] font-mono text-brand-amber font-semibold">Đã lưu: 0 bộ</span>
+                                                </div>
+
+                                                <!-- 3 CỘT THÔNG TIN: I • A • M -->
+                                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                                    <!-- Cột 1: I (Insight / Interested) -->
+                                                    <div class="space-y-1">
+                                                        <label class="block text-[11px] font-bold text-emerald-400" for="iam-cp2-i">
+                                                            I (Interested / Insight)
+                                                        </label>
+                                                        <p class="text-[10px] text-slate-400 leading-tight">Đòn bẩy (Kết nối • Tự chủ • Tiến bộ) tâm đắc nhất...</p>
+                                                        <textarea id="iam-cp2-i" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Đòn bẩy tâm đắc nhất bạn muốn kích hoạt..."></textarea>
+                                                    </div>
+
+                                                    <!-- Cột 2: A (Actionable) -->
+                                                    <div class="space-y-1">
+                                                        <label class="block text-[11px] font-bold text-sky-400" for="iam-cp2-a">
+                                                            A (Actionable / Action)
+                                                        </label>
+                                                        <p class="text-[10px] text-slate-400 leading-tight">Chiến thắng nhỏ (Small Win) trong tuần này...</p>
+                                                        <textarea id="iam-cp2-a" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Chiến thắng nhỏ cụ thể tuần này..."></textarea>
+                                                    </div>
+
+                                                    <!-- Cột 3: M (Meaningful / Measure) -->
+                                                    <div class="space-y-1">
+                                                        <label class="block text-[11px] font-bold text-purple-400" for="iam-cp2-m">
+                                                            M (Meaningful / Measure)
+                                                        </label>
+                                                        <p class="text-[10px] text-slate-400 leading-tight">Ý nghĩa đối với sự gắn kết & nội lực cá nhân...</p>
+                                                        <textarea id="iam-cp2-m" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Ý nghĩa đối với sự gắn kết đội ngũ và nội lực cá nhân..."></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Thanh nút bấm lưu & nhập tiếp -->
+                                                <div class="flex items-center justify-between pt-1">
+                                                    <button id="btn-iam-cp2-clear" type="button" class="text-[11px] text-slate-400 hover:text-slate-200 px-3 py-1.5 rounded-lg hover:bg-brand-dark transition-colors cursor-pointer">
+                                                        Làm mới ô nhập
+                                                    </button>
+                                                    <button id="btn-iam-cp2-save-set" type="button" class="px-4 py-2 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber hover:brightness-110 active:scale-95 text-black font-extrabold text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer">
+                                                        <span>💾 Lưu & Nhập Tiếp Set Mới</span>
+                                                        <span>➔</span>
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <label class="block text-[11px] font-semibold text-slate-300 mb-1" for="iam-cp2-a">
-                                                    <span class="text-brand-amber font-bold">A (Actionable)</span> — Bạn sẽ thiết lập Chiến thắng Nhỏ (Small Win) cụ thể nào ngay trong tuần này để nuôi dưỡng cảm giác tiến bộ?
-                                                </label>
-                                                <textarea id="iam-cp2-a" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber" placeholder="Chiến thắng nhỏ cụ thể tuần này..."></textarea>
-                                            </div>
-                                            <div>
-                                                <label class="block text-[11px] font-semibold text-slate-300 mb-1" for="iam-cp2-m">
-                                                    <span class="text-brand-amber font-bold">M (Meaningful)</span> — Đòn bẩy và chiến thắng nhỏ này giúp ích gì cho sự gắn kết và năng lượng làm việc của bạn với đội ngũ?
-                                                </label>
-                                                <textarea id="iam-cp2-m" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber" placeholder="Ý nghĩa đối với sự gắn kết đội ngũ và nội lực cá nhân..."></textarea>
-                                            </div>
+
+                                            <!-- Danh sách các Set đã lưu -->
+                                            <div id="iam-cp2-saved-sets-list" class="space-y-2.5"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -2695,6 +2769,73 @@
                 <div class="flex items-center gap-2.5 w-full sm:w-auto">
                     <button type="button" id="btn-quick-start-dismiss" class="w-full sm:w-auto min-h-[44px] px-6 py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber hover:from-orange-600 hover:to-amber-600 text-black font-extrabold text-xs shadow-lg shadow-orange-500/20 active:scale-95 transition-all text-center">
                         Bắt Đầu Học Ngay ➔
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KHO LƯU TRỮ I•A•M DRAWER (SLIDE-OVER) -->
+    <div id="iam-history-drawer" class="fixed inset-0 z-50 overflow-hidden hidden" aria-labelledby="iam-drawer-title" role="dialog" aria-modal="true">
+        <!-- Backdrop -->
+        <div id="iam-drawer-backdrop" class="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity"></div>
+        <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md sm:max-w-xl bg-brand-surface border-l border-brand-border flex flex-col shadow-2xl">
+                <!-- Drawer Header -->
+                <div class="p-5 border-b border-brand-border bg-gradient-to-r from-brand-amber/15 via-brand-surface to-brand-orange/15 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-orange to-brand-amber text-black font-extrabold flex items-center justify-center text-base shadow shrink-0">
+                            📜
+                        </div>
+                        <div>
+                            <h3 id="iam-drawer-title" class="text-sm font-extrabold text-white">Kho Lưu Trữ I•A•M Của Tôi</h3>
+                            <p class="text-[11px] text-brand-amber">Tổng hợp các bộ phản tư đã lưu qua các Chặng học</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button id="btn-copy-all-iam" type="button" class="text-[11px] px-2.5 py-1 rounded-lg bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border/60 transition-colors flex items-center gap-1 cursor-pointer" title="Sao chép toàn bộ kho I•A•M">
+                            <span>📋</span> Copy tất cả
+                        </button>
+                        <button id="btn-close-iam-drawer" type="button" class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-brand-card text-base transition-colors cursor-pointer" title="Đóng kho I•A•M">
+                            ✕
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Drawer Content -->
+                <div class="flex-1 overflow-y-auto p-5 space-y-6 text-xs">
+                    <!-- CP1 Section -->
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between pb-1 border-b border-brand-border/60">
+                            <h4 class="font-bold text-brand-amber flex items-center gap-2 text-xs">
+                                <span>🧭</span> Trạm 1: Nhận thức & La Bàn Giá Trị (CP1)
+                            </h4>
+                            <span id="drawer-cp1-counter" class="text-[11px] font-mono text-slate-400 font-semibold">0 bộ</span>
+                        </div>
+                        <div id="drawer-cp1-list" class="space-y-2.5">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+
+                    <!-- CP2 Section -->
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between pb-1 border-b border-brand-border/60">
+                            <h4 class="font-bold text-sky-400 flex items-center gap-2 text-xs">
+                                <span>🚀</span> Trạm 2: Đòn Bẩy Hạnh Phúc & Small Wins (CP2)
+                            </h4>
+                            <span id="drawer-cp2-counter" class="text-[11px] font-mono text-slate-400 font-semibold">0 bộ</span>
+                        </div>
+                        <div id="drawer-cp2-list" class="space-y-2.5">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Drawer Footer -->
+                <div class="p-4 border-t border-brand-border bg-brand-dark/80 flex items-center justify-between text-[11px] text-slate-400">
+                    <span>Dữ liệu tự động đồng bộ theo tài khoản học viên.</span>
+                    <button id="btn-dismiss-iam-drawer" type="button" class="px-4 py-1.5 rounded-xl bg-brand-card hover:bg-brand-border text-slate-200 font-semibold transition-colors cursor-pointer">
+                        Đóng
                     </button>
                 </div>
             </div>
