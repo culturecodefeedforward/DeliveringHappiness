@@ -1004,6 +1004,7 @@ document.addEventListener("DOMContentLoaded", () => {
         evaluateLearnerStatus();
         showQuickStartIfNeeded();
         updatePersonalValueLinks();
+        triggerAutoTelemetryOnBoot();
     }
 
     function updatePersonalValueLinks() {
@@ -1055,6 +1056,34 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 2000);
     }
 
+    function dispatchTelemetryPayload(payload, webhookUrl) {
+        if (!webhookUrl) return false;
+        const bodyStr = JSON.stringify(payload);
+        let sent = false;
+        try {
+            if (navigator.sendBeacon) {
+                sent = navigator.sendBeacon(webhookUrl, bodyStr);
+            }
+        } catch (e) {
+            sent = false;
+        }
+        if (!sent) {
+            try {
+                fetch(webhookUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: bodyStr,
+                    keepalive: true,
+                    mode: "no-cors"
+                }).catch(() => {});
+                sent = true;
+            } catch (err) {
+                sent = false;
+            }
+        }
+        return sent;
+    }
+
     function syncQuizResultToWebhook(score, total, percentage, passed, attempt, answers) {
         if (!currentUser) return;
         const webhookUrl = LMS_CONFIG.AUTHORIZED_WEBHOOKS[0];
@@ -1079,21 +1108,7 @@ document.addEventListener("DOMContentLoaded", () => {
             timestamp: new Date().toISOString()
         };
 
-        try {
-            fetch(webhookUrl, {
-                method: "POST",
-                headers: { "Content-Type": "text/plain;charset=utf-8" },
-                body: JSON.stringify(payload)
-            }).catch(err => console.warn("Background quiz sync notice:", err));
-        } catch (e) {
-            console.warn("Webhook quiz sync dispatch error:", e);
-        }
-
-        try {
-            navigator.sendBeacon(webhookUrl, JSON.stringify(payload));
-        } catch (e) {
-            // silent fallback
-        }
+        dispatchTelemetryPayload(payload, webhookUrl);
     }
 
     function syncMeValuesToWebhook(values) {
@@ -1115,21 +1130,7 @@ document.addEventListener("DOMContentLoaded", () => {
             timestamp: new Date().toISOString()
         };
 
-        try {
-            fetch(webhookUrl, {
-                method: "POST",
-                headers: { "Content-Type": "text/plain;charset=utf-8" },
-                body: JSON.stringify(payload)
-            }).catch(err => console.warn("Background ME Values sync notice:", err));
-        } catch (e) {
-            console.warn("Webhook ME values sync dispatch error:", e);
-        }
-
-        try {
-            navigator.sendBeacon(webhookUrl, JSON.stringify(payload));
-        } catch (e) {
-            // silent fallback
-        }
+        dispatchTelemetryPayload(payload, webhookUrl);
     }
 
     function syncToGoogleSheets() {
@@ -1165,22 +1166,134 @@ document.addEventListener("DOMContentLoaded", () => {
             timestamp: new Date().toISOString()
         };
 
-        try {
-            fetch(webhookUrl, {
-                method: "POST",
-                headers: { "Content-Type": "text/plain;charset=utf-8" },
-                body: JSON.stringify(payload)
-            }).catch(err => console.warn("Background progress sync notice:", err));
-        } catch (e) {
-            // silent fallback
+        dispatchTelemetryPayload(payload, webhookUrl);
+    }
+
+    let autoBootTelemetryTimer = null;
+
+    function triggerAutoTelemetryOnBoot() {
+        // 1. Session Resilience: Trích xuất danh tính học viên từ currentUser hoặc dhm_lms_auth_user
+        let user = currentUser;
+        if (!user) {
+            try {
+                const storedUser = localStorage.getItem("dhm_lms_auth_user");
+                if (storedUser) {
+                    user = JSON.parse(storedUser);
+                }
+            } catch (e) {}
+        }
+        if (!user || (!user.identity && !user.email && !user.learner_id)) {
+            return;
         }
 
+        const identity = user.identity || user.email || user.learner_id;
+
+        // 2. Đọc tiến độ từ dhm_lms_progress_<identity> (ưu tiên bản lưu mới nhất từ localStorage) hoặc learnerProgress
+        let prog = null;
         try {
-            navigator.sendBeacon(webhookUrl, JSON.stringify(payload));
-        } catch (e) {
-            // silent fallback
+            const rawProgress = localStorage.getItem(`dhm_lms_progress_${identity}`);
+            if (rawProgress) {
+                prog = JSON.parse(rawProgress);
+                if (typeof learnerProgress !== "undefined" && learnerProgress) {
+                    learnerProgress = prog;
+                }
+            }
+        } catch (e) {}
+        if (!prog && typeof learnerProgress !== "undefined" && learnerProgress && learnerProgress.stageData) {
+            prog = learnerProgress;
         }
+
+        const s1 = (prog && prog.stageData && prog.stageData["stage-1"]) || {};
+        const answeredCount = Object.keys(s1.quizAnswers || {}).length;
+        const score = (s1.score !== undefined && s1.score !== null) ? s1.score : null;
+
+        // Đọc giá trị cá nhân từ s1.selectedValues hoặc dhm_personal_values_latest
+        let topValues = (s1.selectedValues && Array.isArray(s1.selectedValues) && s1.selectedValues.length > 0)
+            ? s1.selectedValues
+            : [];
+        if (topValues.length === 0) {
+            try {
+                const rawPv = localStorage.getItem("dhm_personal_values_latest");
+                if (rawPv) {
+                    const parsedPv = JSON.parse(rawPv);
+                    if (parsedPv && Array.isArray(parsedPv.top7)) {
+                        topValues = parsedPv.top7.map(v => (typeof v === "object" && v && v.name) ? v.name : String(v));
+                    }
+                }
+            } catch (e) {}
+        }
+
+        // 3. Kiểm tra xem có dữ liệu hoàn thành bài thi Stage 1 hoặc Giá trị cá nhân hay không
+        const hasQuizData = (score !== null) || answeredCount > 0;
+        const hasPvData = topValues.length > 0;
+        if (!hasQuizData && !hasPvData) {
+            return;
+        }
+
+        // 4. Tính toán State Hash (idempotent signature)
+        const topValuesString = topValues.join(",");
+        const stateHash = `${identity}__s:${score !== null ? score : 'none'}__a:${answeredCount}__v:${topValuesString}`;
+
+        const lastHashKey = `dhm_telemetry_last_hash_${identity}`;
+        const lastTimeKey = `dhm_telemetry_last_sync_time_${identity}`;
+        const lastHash = localStorage.getItem(lastHashKey);
+        const lastTime = parseInt(localStorage.getItem(lastTimeKey) || "0", 10);
+        const now = Date.now();
+        const sixtyMinutesMs = 60 * 60 * 1000;
+
+        // Nếu hash trùng khớp VÀ chưa quá 60 phút: Bỏ qua (Skip), không gửi thừa
+        if (lastHash === stateHash && (now - lastTime < sixtyMinutesMs)) {
+            return;
+        }
+
+        // Single-Flight lock: Nếu đã có một lượt hẹn giờ đang chờ, không hẹn thêm lượt thứ 2
+        if (autoBootTelemetryTimer) {
+            return;
+        }
+
+        // 5. Anti-Throttling Jitter Guard: Trễ ngẫu nhiên từ 1.000ms đến 4.000ms
+        const jitterMs = Math.floor(Math.random() * 3000) + 1000;
+
+        autoBootTelemetryTimer = setTimeout(() => {
+            autoBootTelemetryTimer = null;
+            const webhookUrl = LMS_CONFIG.AUTHORIZED_WEBHOOKS[0];
+            if (!webhookUrl) return;
+
+            // 6. Gói payload auto_boot_sync
+            const payload = {
+                action: "auto_boot_sync",
+                type: "AUTO_BOOT_TELEMETRY",
+                learner_id: user.learner_id || "DHM-USER",
+                name: user.name || "",
+                email: user.email || user.identity || "",
+                phone: user.phone || "",
+                cohort: user.cohort || "Team Happiness Apollo",
+                score: score,
+                total_questions: s1.totalQuestions || 10,
+                percentage: s1.percentage !== undefined ? s1.percentage : null,
+                passed: Boolean(s1.passed),
+                attempt_number: s1.quizAttempts || 1,
+                answers: s1.quizAnswers || {},
+                top7_values: topValues,
+                target_sheet_id: "1Ju4y-KNDe7eiMvpbyq2mPfKTijH_1NIC3j8Rykl7cak",
+                target_sheet_name: "Thu Hoạch IAM",
+                telemetry_hash: stateHash,
+                timestamp: new Date().toISOString()
+            };
+
+            // 7. Phát viễn trắc qua dispatchTelemetryPayload
+            dispatchTelemetryPayload(payload, webhookUrl);
+
+            // 8. Lưu hash và timestamp vào localStorage
+            try {
+                localStorage.setItem(lastHashKey, stateHash);
+                localStorage.setItem(lastTimeKey, String(Date.now()));
+            } catch (e) {}
+        }, jitterMs);
     }
+
+    window.triggerAutoTelemetryOnBoot = triggerAutoTelemetryOnBoot;
+    window.dispatchTelemetryPayload = dispatchTelemetryPayload;
 
     function syncHabitTrackerToCRM() {
         const statusEl = document.getElementById("habit-sync-status");
@@ -6326,6 +6439,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else if (currentStageIndex === 1) {
             loadAbcdeLandingSync();
         }
+        triggerAutoTelemetryOnBoot();
     });
     window.addEventListener("storage", (e) => {
         if (e.key && (e.key === "dhm_personal_values_latest" || e.key.startsWith("dhm_pv_"))) {
