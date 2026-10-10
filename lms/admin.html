@@ -131,14 +131,17 @@
             </div>
 
             <div class="flex items-center gap-2.5">
-                <a href="https://docs.google.com/spreadsheets/d/1nZVEowJu3j_WC1b3SO1UJU352g_547813-fWT3MQeac/edit" target="_blank" class="px-3.5 py-2 rounded-xl bg-green-600/20 hover:bg-green-600/30 text-green-400 text-xs font-semibold border border-green-500/30 transition-colors flex items-center gap-1.5" title="Mở trực tiếp Google Sheet Delivering Happiness">
-                    <span>📊 Google Sheet ↗</span>
+                <a href="https://docs.google.com/spreadsheets/d/1Ju4y-KNDe7eiMvpbyq2mPfKTijH_1NIC3j8Rykl7cak/edit" target="_blank" class="px-3.5 py-2 rounded-xl bg-green-600/20 hover:bg-green-600/30 text-green-400 text-xs font-semibold border border-green-500/30 transition-colors flex items-center gap-1.5" title="Mở trực tiếp Google Sheet Thu Hoạch Apollo">
+                    <span>📊 Google Sheet Apollo ↗</span>
                 </a>
                 <button id="btn-sync-roster" class="px-3.5 py-2 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 text-xs font-semibold border border-blue-500/30 transition-all flex items-center gap-1.5 shadow-sm" title="Đồng bộ danh sách 507 học viên từ Roster chuẩn (bao gồm 123 học viên Apollo)">
-                    <span>🔄 Đồng Bộ Roster (500+ HV)</span>
+                    <span>🔄 Đồng Bộ Roster</span>
                 </button>
-                <button id="btn-seed-test-analytics" class="px-3.5 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-brand-amber hover:text-amber-300 text-xs font-semibold border border-brand-amber/30 transition-all flex items-center gap-1.5 shadow-sm" title="Nạp tự động dữ liệu thi lại và điểm số mô phỏng theo danh bạ chuẩn">
-                    <span>🎲 Nạp Dữ Liệu Kiểm Thử Đo Lường</span>
+                <button id="btn-purge-mock-data" class="px-3.5 py-2 rounded-xl bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 text-xs font-semibold border border-rose-500/30 transition-all flex items-center gap-1.5 shadow-sm" title="Dọn dẹp sạch toàn bộ dữ liệu mô phỏng, đưa học viên Apollo về trạng thái dữ liệu thật (0 lượt thi)">
+                    <span>🧹 Dọn Dẹp Mock Data</span>
+                </button>
+                <button id="btn-seed-test-analytics" class="px-3.5 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-400 hover:text-slate-200 text-xs font-semibold border border-brand-border transition-all flex items-center gap-1.5 shadow-sm" title="Chỉ dùng để demo giao diện với học viên mẫu giả lập (không ảnh hưởng Apollo)">
+                    <span>🧪 Dữ Liệu Mẫu Demo</span>
                 </button>
             </div>
         </div>
@@ -768,6 +771,7 @@
             const testTableEmpty = document.getElementById("test-table-empty");
 
             const btnSyncRoster = document.getElementById("btn-sync-roster");
+            const btnPurgeMockData = document.getElementById("btn-purge-mock-data");
             const btnSeedTestAnalytics = document.getElementById("btn-seed-test-analytics");
             const btnExportTestCsv = document.getElementById("btn-export-test-csv");
 
@@ -859,117 +863,32 @@
             }
 
             // ==========================================
-            // APOLLO REALISTIC TEST DATA GENERATOR
+            // CLEAN PURGE OF SIMULATED/MOCK TEST DATA
             // ==========================================
-            function generateApolloTestAttempts(learner, idx) {
-                const idKey = ((learner.email || learner.phone || learner.identity || learner.name || ("apollo_" + idx))).toLowerCase();
-                let hash = 0;
-                for (let i = 0; i < idKey.length; i++) {
-                    hash = (hash << 5) - hash + idKey.charCodeAt(i);
-                    hash |= 0;
-                }
-                const val = Math.abs(hash) % 100;
-
-                // Tài khoản kiểm thử kỹ thuật hoặc chưa kích hoạt (khoảng 3%)
-                if (val >= 97 || idKey.includes("test@apollo")) {
-                    return {
-                        attempts: [],
-                        coachNotes: "Tài khoản kiểm thử kỹ thuật Apollo / Đang chờ học viên kích hoạt làm bài test."
-                    };
-                }
-
-                // Nhóm 1: Đạt >80% ngay Lần 1 (~68% học viên)
-                if (val < 68) {
-                    const scores = [8, 9, 9, 10, 8, 9, 10, 9];
-                    const score = scores[val % scores.length];
-                    const pct = score * 10;
-                    const dur = 110 + (val % 70);
-                    const day = 4 + (val % 4);
-                    const hour = 8 + (val % 12);
-                    const minute = (val * 7) % 60;
-                    const timeStr = `2026-10-0${day}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00.000Z`;
-
-                    return {
-                        attempts: [
-                            {
-                                attempt: 1,
-                                score: score,
-                                total: 10,
-                                percent: pct,
-                                passed80: true,
-                                durationSeconds: dur,
-                                timestamp: timeStr
-                            }
-                        ],
-                        coachNotes: score === 10 ? "Xuất sắc: Nắm trọn vẹn 100% nội dung bài giảng ngay từ lượt đầu." : "Đạt chuẩn xuất sắc ngay sau bài giảng Chặng 1."
-                    };
-                }
-
-                // Nhóm 2: Đạt >80% sau khi thi lại Lần 2 (~18% học viên)
-                if (val < 86) {
-                    const s1List = [5, 6, 6, 7, 7];
-                    const s2List = [8, 9, 9, 10, 8];
-                    const s1 = s1List[val % s1List.length];
-                    const s2 = s2List[(val + 1) % s2List.length];
-                    const day1 = 4 + (val % 2);
-                    const day2 = day1 + 1;
-                    const time1 = `2026-10-0${day1}T09:${String((val * 3) % 60).padStart(2, '0')}:00.000Z`;
-                    const time2 = `2026-10-0${day2}T14:${String((val * 5) % 60).padStart(2, '0')}:00.000Z`;
-
-                    return {
-                        attempts: [
-                            {
-                                attempt: 1,
-                                score: s1,
-                                total: 10,
-                                percent: s1 * 10,
-                                passed80: false,
-                                durationSeconds: 160 + (val % 50),
-                                timestamp: time1
-                            },
-                            {
-                                attempt: 2,
-                                score: s2,
-                                total: 10,
-                                percent: s2 * 10,
-                                passed80: true,
-                                durationSeconds: 130 + (val % 40),
-                                timestamp: time2
-                            }
-                        ],
-                        coachNotes: `Tiến bộ vượt bậc: Lần 1 đạt ${s1 * 10}%, sau khi ôn tập đã bứt phá đạt ${s2 * 10}% ở Lần 2 (Delta +${(s2 - s1) * 10}%).`
-                    };
-                }
-
-                // Nhóm 3: Đạt >80% ở Lần 3 (~9% học viên kiên trì)
-                if (val < 94) {
-                    const s1 = 4 + (val % 2);
-                    const s2 = 6 + (val % 2);
-                    const s3 = 8 + (val % 2);
-                    const time1 = `2026-10-04T10:15:00.000Z`;
-                    const time2 = `2026-10-05T15:30:00.000Z`;
-                    const time3 = `2026-10-07T11:20:00.000Z`;
-
-                    return {
-                        attempts: [
-                            { attempt: 1, score: s1, total: 10, percent: s1 * 10, passed80: false, durationSeconds: 210, timestamp: time1 },
-                            { attempt: 2, score: s2, total: 10, percent: s2 * 10, passed80: false, durationSeconds: 180, timestamp: time2 },
-                            { attempt: 3, score: s3, total: 10, percent: s3 * 10, passed80: true, durationSeconds: 140, timestamp: time3 }
-                        ],
-                        coachNotes: `Tinh thần kiên trì: Vượt qua bài test sau 3 lần thi với mức điểm ${s3 * 10}% (Delta +${(s3 - s1) * 10}%).`
-                    };
-                }
-
-                // Nhóm 4: Cần hỗ trợ (<80% sau ≥2 lần thi) (~5% học viên)
-                const s1 = 4 + (val % 2);
-                const s2 = 5 + (val % 2);
-                return {
-                    attempts: [
-                        { attempt: 1, score: s1, total: 10, percent: s1 * 10, passed80: false, durationSeconds: 220, timestamp: `2026-10-05T08:30:00.000Z` },
-                        { attempt: 2, score: s2, total: 10, percent: s2 * 10, passed80: false, durationSeconds: 190, timestamp: `2026-10-06T16:00:00.000Z` }
-                    ],
-                    coachNotes: "Cần hỗ trợ ôn tập: Học viên chưa nắm chắc Thuyết Tự Quyết (SDT) và An toàn tâm lý. Coach cần hẹn lịch kèm 1-on-1 trước khi thi Lần 3."
-                };
+            function purgeSimulatedApolloData() {
+                let cleanedCount = 0;
+                allLearners.forEach(l => {
+                    const isApollo = (l.cohort && l.cohort.includes("Apollo")) || (l.email && l.email.toLowerCase().includes("apollo.edu.vn"));
+                    if (isApollo) {
+                        // Reset all simulated metrics back to authentic clean state (0 attempts, pending live test)
+                        l.testAttempts = [];
+                        l.coachNotes = "";
+                        l.completedStagesCount = 0;
+                        l.stage1Passed = false;
+                        l.stage2ValuesCount = 0;
+                        l.stage3AbcdeFilled = false;
+                        l.data = { stageData: {} };
+                        l.firstAttemptPassed80 = false;
+                        l.eventualPassed80 = false;
+                        l.bestScore = 0;
+                        l.totalAttempts = 0;
+                        l.improvementDelta = 0;
+                        cleanedCount++;
+                    }
+                });
+                ensureTestMetricsIntegrity();
+                localStorage.setItem(REGISTRY_KEY, JSON.stringify(allLearners));
+                return cleanedCount;
             }
 
             // ==========================================
@@ -1008,60 +927,20 @@
                             }
                             if (r.email && !existing.email) existing.email = r.email;
                             if (r.phone && !existing.phone) existing.phone = r.phone;
+                            if (r.role && !existing.role) existing.role = r.role;
 
-                            // If Apollo and has no test attempts or forceReseed is requested
-                            if (isApollo && (forceReseedApollo || !existing.testAttempts || existing.testAttempts.length === 0)) {
-                                const apolloData = generateApolloTestAttempts(r, idx);
-                                existing.testAttempts = apolloData.attempts;
-                                if (!existing.coachNotes && apolloData.coachNotes) {
-                                    existing.coachNotes = apolloData.coachNotes;
-                                }
-                                if (existing.testAttempts.some(a => a.passed80)) {
-                                    existing.stage1Passed = true;
-                                    if (!existing.completedStagesCount || existing.completedStagesCount < 3) existing.completedStagesCount = 3;
-                                    existing.stage2ValuesCount = 3;
-                                    existing.stage3AbcdeFilled = true;
-                                }
+                            // If Apollo and has mock test attempts, clean them up
+                            if (isApollo && (forceReseedApollo || existing.coachNotes?.includes("Xuất sắc:") || existing.coachNotes?.includes("Tiến bộ vượt bậc:") || existing.coachNotes?.includes("Tài khoản kiểm thử"))) {
+                                existing.testAttempts = [];
+                                existing.coachNotes = "";
+                                existing.completedStagesCount = 0;
+                                existing.stage1Passed = false;
+                                existing.stage2ValuesCount = 0;
+                                existing.stage3AbcdeFilled = false;
+                                existing.data = { stageData: {} };
                             }
                         } else {
-                            // Add new learner from roster
-                            let testAttempts = [];
-                            let coachNotes = "";
-                            let s1Passed = false;
-                            let completedStages = 0;
-                            let s2Count = 0;
-                            let s3Filled = false;
-                            let stageData = {};
-
-                            if (isApollo) {
-                                const apolloData = generateApolloTestAttempts(r, idx);
-                                testAttempts = apolloData.attempts;
-                                coachNotes = apolloData.coachNotes;
-                                s1Passed = testAttempts.some(a => a.passed80);
-                                completedStages = s1Passed ? 3 : 1;
-                                s2Count = 3;
-                                s3Filled = true;
-                                stageData = {
-                                    "stage-1": {
-                                        passed: s1Passed,
-                                        score: testAttempts.length > 0 ? testAttempts[testAttempts.length - 1].score : 0,
-                                        reflection: "Chặng 1 giúp tôi nhận diện rõ 3 cấp độ hạnh phúc và cách kích hoạt năng lượng tích cực cho đội ngũ học viên Apollo."
-                                    },
-                                    "stage-2": {
-                                        selectedValues: ["Chân thật & Trung thực (Integrity)", "Học hỏi & Đổi mới liên tục (Continuous Learning)", "Đồng hành & Tận tâm (Commitment & Empathy)"]
-                                    },
-                                    "stage-3": {
-                                        abcde: {
-                                            A: "Phụ huynh thắc mắc về tiến độ học tập của học viên Apollo",
-                                            B: "Nghĩ rằng phụ huynh đang nghi ngờ năng lực giảng dạy của mình",
-                                            C: "Cảm thấy căng thẳng và tự vệ",
-                                            D: "Thấu hiểu phụ huynh chỉ muốn điều tốt nhất cho con; nhìn nhận đây là cơ hội xây dựng niềm tin",
-                                            E: "Chủ động gửi báo cáo tiến độ chi tiết và lắng nghe sâu nguyện vọng của phụ huynh"
-                                        }
-                                    }
-                                };
-                            }
-
+                            // Add new learner from roster with authentic clean data
                             allLearners.push({
                                 name: r.name,
                                 identity: r.email || r.phone || r.name,
@@ -1070,13 +949,13 @@
                                 cohort: r.cohort || (isApollo ? "Team Happiness Apollo" : "DHM8"),
                                 role: r.role || "Learner",
                                 lastActive: new Date().toISOString(),
-                                completedStagesCount: completedStages,
-                                stage1Passed: s1Passed,
-                                stage2ValuesCount: s2Count,
-                                stage3AbcdeFilled: s3Filled,
-                                coachNotes: coachNotes,
-                                testAttempts: testAttempts,
-                                data: { stageData: stageData }
+                                completedStagesCount: 0,
+                                stage1Passed: false,
+                                stage2ValuesCount: 0,
+                                stage3AbcdeFilled: false,
+                                coachNotes: "",
+                                testAttempts: [],
+                                data: { stageData: {} }
                             });
                         }
                     });
@@ -1100,7 +979,10 @@
                     allLearners = [];
                 }
 
-                // Luôn tự động đồng bộ & nạp toàn bộ học viên từ roster (507 HV, bao gồm 123 HV Apollo)
+                // Tự động dọn dẹp dữ liệu mô phỏng giả lập cũ của học viên Apollo (nếu có từ trước)
+                purgeSimulatedApolloData();
+
+                // Luôn tự động đồng bộ & nạp toàn bộ học viên từ roster (507 HV, bao gồm 123 HV Apollo với dữ liệu thật)
                 await syncAndMergeRoster(false);
 
                 ensureTestMetricsIntegrity();
@@ -1558,27 +1440,23 @@
                     }
                 });
 
-                // Đồng thời làm mới toàn bộ dữ liệu kiểm thử đo lường cho tất cả 123 học viên Apollo
-                let apolloCount = 0;
-                allLearners.forEach((l, idx) => {
-                    const isApollo = (l.cohort && l.cohort.includes("Apollo")) || (l.email && l.email.toLowerCase().includes("apollo.edu.vn"));
-                    if (isApollo) {
-                        const apData = generateApolloTestAttempts(l, idx);
-                        l.testAttempts = apData.attempts;
-                        l.coachNotes = apData.coachNotes;
-                        l.completedStagesCount = l.testAttempts.some(a => a.passed80) ? 3 : 1;
-                        l.stage1Passed = l.testAttempts.some(a => a.passed80);
-                        apolloCount++;
-                    }
-                });
-
                 ensureTestMetricsIntegrity();
                 updateCohortFilterOptions();
                 localStorage.setItem(REGISTRY_KEY, JSON.stringify(allLearners));
                 renderTestAnalytics();
                 renderGeneralDashboard();
-                alert(`Đã nạp thành công bộ dữ liệu đo lường kiểm thử: ${sampleTestProfiles.length} mẫu đa dạng + toàn bộ ${apolloCount} học viên Apollo!`);
+                alert(`Đã nạp thành công bộ dữ liệu kiểm thử mẫu demo (${sampleTestProfiles.length} học viên mẫu)! Dữ liệu học viên Apollo được giữ nguyên trạng thái dữ liệu thật.`);
             });
+
+            // Nút Dọn dẹp sạch toàn bộ dữ liệu mô phỏng (Về dữ liệu thật 0 HV đã làm bài)
+            if (btnPurgeMockData) {
+                btnPurgeMockData.addEventListener("click", () => {
+                    const count = purgeSimulatedApolloData();
+                    renderTestAnalytics();
+                    renderGeneralDashboard();
+                    alert(`Đã dọn dẹp sạch toàn bộ dữ liệu mô phỏng của ${count} học viên Apollo. Danh sách hiện đang ở trạng thái dữ liệu thật (0 lượt thi)!`);
+                });
+            }
 
             // Export Test Analytics CSV with UTF-8 BOM
             btnExportTestCsv.addEventListener("click", () => {

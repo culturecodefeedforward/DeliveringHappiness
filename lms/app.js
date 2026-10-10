@@ -1055,6 +1055,83 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 2000);
     }
 
+    function syncQuizResultToWebhook(score, total, percentage, passed, attempt, answers) {
+        if (!currentUser) return;
+        const webhookUrl = LMS_CONFIG.AUTHORIZED_WEBHOOKS[0];
+        if (!webhookUrl) return;
+
+        const payload = {
+            action: "sync_quiz_result",
+            type: "QUIZ_SUBMISSION",
+            learner_id: currentUser.learner_id || "DHM-USER",
+            name: currentUser.name || "",
+            email: currentUser.email || currentUser.identity || "",
+            phone: currentUser.phone || "",
+            cohort: currentUser.cohort || "Team Happiness Apollo",
+            score: score,
+            total_questions: total,
+            percentage: percentage,
+            passed: passed,
+            attempt_number: attempt || 1,
+            answers: answers || {},
+            target_sheet_id: "1Ju4y-KNDe7eiMvpbyq2mPfKTijH_1NIC3j8Rykl7cak",
+            target_sheet_name: "Thu Hoạch IAM",
+            timestamp: new Date().toISOString()
+        };
+
+        try {
+            fetch(webhookUrl, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify(payload)
+            }).catch(err => console.warn("Background quiz sync notice:", err));
+        } catch (e) {
+            console.warn("Webhook quiz sync dispatch error:", e);
+        }
+
+        try {
+            navigator.sendBeacon(webhookUrl, JSON.stringify(payload));
+        } catch (e) {
+            // silent fallback
+        }
+    }
+
+    function syncMeValuesToWebhook(values) {
+        if (!currentUser) return;
+        const webhookUrl = LMS_CONFIG.AUTHORIZED_WEBHOOKS[0];
+        if (!webhookUrl) return;
+
+        const payload = {
+            action: "sync_me_values",
+            type: "ME_VALUES_SUBMISSION",
+            learner_id: currentUser.learner_id || "DHM-USER",
+            name: currentUser.name || "",
+            email: currentUser.email || currentUser.identity || "",
+            phone: currentUser.phone || "",
+            cohort: currentUser.cohort || "Team Happiness Apollo",
+            top7_values: values || [],
+            target_sheet_id: "1Ju4y-KNDe7eiMvpbyq2mPfKTijH_1NIC3j8Rykl7cak",
+            target_sheet_name: "Thu Hoạch IAM",
+            timestamp: new Date().toISOString()
+        };
+
+        try {
+            fetch(webhookUrl, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify(payload)
+            }).catch(err => console.warn("Background ME Values sync notice:", err));
+        } catch (e) {
+            console.warn("Webhook ME values sync dispatch error:", e);
+        }
+
+        try {
+            navigator.sendBeacon(webhookUrl, JSON.stringify(payload));
+        } catch (e) {
+            // silent fallback
+        }
+    }
+
     function syncToGoogleSheets() {
         if (!currentUser) return;
         if (!LMS_CONFIG.ENABLE_REMOTE_SYNC) {
@@ -1065,18 +1142,38 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        const s1 = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
         const payload = {
+            action: "sync_full_progress",
             learner_id: currentUser.learner_id || "DHM-USER",
             name: currentUser.name || "",
             email: currentUser.email || currentUser.identity,
             phone: currentUser.phone || "",
+            cohort: currentUser.cohort || "",
             completed_stages: learnerProgress.completedStages,
-            stage1_values: (learnerProgress.stageData && learnerProgress.stageData["stage-1"] && learnerProgress.stageData["stage-1"].selectedValues) || [],
+            stage1_quiz_score: s1.score !== undefined ? s1.score : null,
+            stage1_quiz_total: s1.totalQuestions || 10,
+            stage1_quiz_percentage: s1.percentage !== undefined ? s1.percentage : null,
+            stage1_quiz_passed: Boolean(s1.passed),
+            stage1_quiz_attempts: s1.quizAttempts || 0,
+            stage1_quiz_answers: s1.quizAnswers || {},
+            stage1_values: s1.selectedValues || [],
             stage2_habits: (learnerProgress.stageData && learnerProgress.stageData["stage-2"] && learnerProgress.stageData["stage-2"].habits) || {},
             stage2_capstone: (learnerProgress.stageData && learnerProgress.stageData["stage-2"] && learnerProgress.stageData["stage-2"].capstoneIam) || {},
             stage3_tracker: (learnerProgress.stageData && learnerProgress.stageData["stage-3"] && learnerProgress.stageData["stage-3"].habitTracker) || {},
+            target_sheet_id: "1Ju4y-KNDe7eiMvpbyq2mPfKTijH_1NIC3j8Rykl7cak",
             timestamp: new Date().toISOString()
         };
+
+        try {
+            fetch(webhookUrl, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify(payload)
+            }).catch(err => console.warn("Background progress sync notice:", err));
+        } catch (e) {
+            // silent fallback
+        }
 
         try {
             navigator.sendBeacon(webhookUrl, JSON.stringify(payload));
@@ -1383,11 +1480,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     } else if (sub.id === "sub-1-2") {
                         isSubDone = Boolean((s1Data.selectedValues && s1Data.selectedValues.length > 0) || (s1Data.iam_cp1 && s1Data.iam_cp1.I) || (s1Data.iam_1_2 && s1Data.iam_1_2.I));
                     } else if (sub.id === "sub-1-cp1") {
-                        isSubDone = Boolean((s1Data.iam_cp1 && ((s1Data.iam_cp1.I && s1Data.iam_cp1.I.trim()) || (s1Data.iam_cp1.A && s1Data.iam_cp1.A.trim()) || (s1Data.iam_cp1.M && s1Data.iam_cp1.M.trim()))) || (s1Data.iam_1_2 && s1Data.iam_1_2.I) || (s1Data.iam_1_1 && s1Data.iam_1_1.I));
+                        isSubDone = Boolean((s1Data.iam_cp1_sets && s1Data.iam_cp1_sets.length > 0) || (s1Data.iam_cp1 && ((s1Data.iam_cp1.I && s1Data.iam_cp1.I.trim()) || (s1Data.iam_cp1.A && s1Data.iam_cp1.A.trim()) || (s1Data.iam_cp1.M && s1Data.iam_cp1.M.trim()))) || (s1Data.iam_1_2 && s1Data.iam_1_2.I) || (s1Data.iam_1_1 && s1Data.iam_1_1.I));
                     } else if (sub.id === "sub-1-3") {
-                        isSubDone = Boolean((s1Data.viewed && s1Data.viewed["1-3"]) || (s1Data.iam_cp2 && s1Data.iam_cp2.I) || (s1Data.iam_1_3 && s1Data.iam_1_3.I));
+                        isSubDone = Boolean((s1Data.viewed && s1Data.viewed["1-3"]) || (s1Data.iam_cp2_sets && s1Data.iam_cp2_sets.length > 0) || (s1Data.iam_cp2 && s1Data.iam_cp2.I) || (s1Data.iam_1_3 && s1Data.iam_1_3.I));
                     } else if (sub.id === "sub-1-cp2") {
-                        isSubDone = Boolean((s1Data.iam_cp2 && ((s1Data.iam_cp2.I && s1Data.iam_cp2.I.trim()) || (s1Data.iam_cp2.A && s1Data.iam_cp2.A.trim()) || (s1Data.iam_cp2.M && s1Data.iam_cp2.M.trim()))) || (s1Data.iam_1_3 && s1Data.iam_1_3.I));
+                        isSubDone = Boolean((s1Data.iam_cp2_sets && s1Data.iam_cp2_sets.length > 0) || (s1Data.iam_cp2 && ((s1Data.iam_cp2.I && s1Data.iam_cp2.I.trim()) || (s1Data.iam_cp2.A && s1Data.iam_cp2.A.trim()) || (s1Data.iam_cp2.M && s1Data.iam_cp2.M.trim()))) || (s1Data.iam_1_3 && s1Data.iam_1_3.I));
                     } else if (sub.id === "sub-1-4" || sub.id === "sub-1-quiz") {
                         isSubDone = Boolean(s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80);
                     }
@@ -2128,6 +2225,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                     learnerProgress.stageData["stage-1"].selectedValues = uniqueMapped;
                     saveLearnerProgress();
+                    syncMeValuesToWebhook(uniqueMapped);
                     renderStage1View(curriculum.stages[0]);
                     renderSyllabus();
 
@@ -2550,6 +2648,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         learnerProgress.stageData["stage-1"].passed = (currPct >= 80);
 
                         saveLearnerProgress();
+
+                        // Nếu đã trả lời trọn vẹn số câu hỏi của bài quiz, tự động bắn telemetry kết quả về Google Sheet
+                        const answeredCount = Object.keys(learnerProgress.stageData["stage-1"].quizAnswers || {}).length;
+                        if (answeredCount >= quizzes.length) {
+                            syncQuizResultToWebhook(currCorrect, quizzes.length, currPct, (currPct >= 80), learnerProgress.stageData["stage-1"].quizAttempts || 1, learnerProgress.stageData["stage-1"].quizAnswers);
+                        }
+
                         renderStage1View(stage);
                         renderSyllabus();
                         evaluateLearnerStatus();
@@ -2735,7 +2840,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (valuesCountBadge) valuesCountBadge.textContent = `${(sData.selectedValues || []).length} Đã chọn`;
         loadPersonalValuesTestResult();
 
-        // 9.3 IAM Inputs for Stage 1 (2 Checkpoints: CP1 & CP2)
+        // 9.3 IAM Multi-Set Inputs for Stage 1 (2 Checkpoints: CP1 & CP2)
         if (!sData.iam_cp1) {
             sData.iam_cp1 = sData.iam_1_2 || sData.iam_1_1 || {};
         }
@@ -4791,7 +4896,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const mLevelsDone = isS1Done || Boolean((s1Data.viewed && s1Data.viewed["1-1"]) || (s1Data.iam_cp1 && s1Data.iam_cp1.I) || (s1Data.iam_1_1 && s1Data.iam_1_1.I));
         const mValuesDone = isS1Done || Boolean((s1Data.selectedValues && s1Data.selectedValues.length > 0) || (s1Data.iam_cp1 && s1Data.iam_cp1.I) || (s1Data.iam_1_2 && s1Data.iam_1_2.I));
         const mCp1Done = isS1Done || Boolean((s1Data.iam_cp1_sets && s1Data.iam_cp1_sets.length > 0) || (s1Data.iam_cp1 && ((s1Data.iam_cp1.I && s1Data.iam_cp1.I.trim()) || (s1Data.iam_cp1.A && s1Data.iam_cp1.A.trim()) || (s1Data.iam_cp1.M && s1Data.iam_cp1.M.trim()))) || (s1Data.iam_1_2 && s1Data.iam_1_2.I) || (s1Data.iam_1_1 && s1Data.iam_1_1.I));
-        const mDriversDone = isS1Done || Boolean((s1Data.viewed && s1Data.viewed["1-3"]) || (s1Data.iam_cp2 && s1Data.iam_cp2.I) || (s1Data.iam_1_3 && s1Data.iam_1_3.I));
+        const mDriversDone = isS1Done || Boolean((s1Data.viewed && s1Data.viewed["1-3"]) || (s1Data.iam_cp2_sets && s1Data.iam_cp2_sets.length > 0) || (s1Data.iam_cp2 && s1Data.iam_cp2.I) || (s1Data.iam_1_3 && s1Data.iam_1_3.I));
         const mCp2Done = isS1Done || Boolean((s1Data.iam_cp2_sets && s1Data.iam_cp2_sets.length > 0) || (s1Data.iam_cp2 && ((s1Data.iam_cp2.I && s1Data.iam_cp2.I.trim()) || (s1Data.iam_cp2.A && s1Data.iam_cp2.A.trim()) || (s1Data.iam_cp2.M && s1Data.iam_cp2.M.trim()))) || (s1Data.iam_1_3 && s1Data.iam_1_3.I));
         const mQuizDone = isS1Done || Boolean(s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80);
 
@@ -5548,7 +5653,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =========================================================================
-    // 14B. MULTI-SET I•A•M CORE ENGINE & DRAWER
+    // 14B. NEW ENHANCEMENTS: MULTI-SET I•A•M, QUICK NOTE FAB & CULTURECODE CONTACT
     // =========================================================================
 
     function escapeHtml(str) {
@@ -5561,6 +5666,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .replace(/'/g, "&#039;");
     }
 
+    // 14B.1 MULTI-SET I•A•M CORE ENGINE
     function renderIamSetsCardList(containerId, counterId, setsArray, cpType) {
         const listEl = document.getElementById(containerId);
         const counterEl = document.getElementById(counterId);
@@ -5896,8 +6002,315 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // 14B.2 FLOATING QUICK NOTE FAB (DEBOUNCED 400MS)
+    function initQuickNoteFab() {
+        const fabBtn = document.getElementById("btn-quick-note-fab");
+        const popup = document.getElementById("quick-note-popup");
+        const closeBtn = document.getElementById("btn-close-quick-note");
+        const textarea = document.getElementById("quick-note-textarea");
+        const stageBadge = document.getElementById("quick-note-stage-badge");
+        const saveStatus = document.getElementById("quick-note-save-status");
+        const copyBtn = document.getElementById("btn-quick-note-copy");
+        const clearBtn = document.getElementById("btn-quick-note-clear");
+        const toIamBtn = document.getElementById("btn-quick-note-to-iam");
+
+        if (!fabBtn || !popup || !textarea) return;
+
+        function getStorageKey() {
+            const id = (currentUser && (currentUser.identity || currentUser.email)) || "guest";
+            return `dhm_quick_notes_${id}`;
+        }
+
+        function updateStageBadge() {
+            if (!stageBadge) return;
+            const stageName = currentStageIndex === 0 
+                ? "Chặng 1 · Online Pre-Class" 
+                : currentStageIndex === 1 
+                    ? "Chặng 2 · Offline Workshop" 
+                    : "Chặng 3 · Action Learning 21 Ngày";
+            stageBadge.textContent = `📍 Đang học: ${stageName}`;
+        }
+
+        function loadNote() {
+            const key = getStorageKey();
+            const saved = localStorage.getItem(key) || "";
+            textarea.value = saved;
+            if (saveStatus) {
+                saveStatus.textContent = saved ? "Đã lưu" : "";
+            }
+        }
+        loadNote();
+
+        function toggleQuickNote() {
+            const isHidden = popup.classList.contains("hidden");
+            if (isHidden) {
+                popup.classList.remove("hidden");
+                loadNote();
+                updateStageBadge();
+                textarea.focus();
+            } else {
+                popup.classList.add("hidden");
+            }
+        }
+
+        fabBtn.onclick = toggleQuickNote;
+        if (closeBtn) closeBtn.onclick = () => popup.classList.add("hidden");
+
+        // Global shortcut Ctrl+J or Cmd+J
+        window.addEventListener("keydown", (e) => {
+            if ((e.ctrlKey || e.metaKey) && (e.key === "j" || e.key === "J")) {
+                e.preventDefault();
+                toggleQuickNote();
+            }
+        });
+
+        // Debounced 400ms auto-save
+        let saveTimeout = null;
+        textarea.addEventListener("input", () => {
+            if (saveStatus) saveStatus.textContent = "⏳ Đang lưu...";
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                const key = getStorageKey();
+                localStorage.setItem(key, textarea.value);
+                if (saveStatus) {
+                    const now = new Date();
+                    const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+                    saveStatus.textContent = `✓ Đã lưu (${timeStr})`;
+                }
+            }, 400);
+        });
+
+        // Copy note
+        if (copyBtn) {
+            copyBtn.onclick = () => {
+                const val = textarea.value.trim();
+                if (!val) return;
+                navigator.clipboard.writeText(val).then(() => {
+                    const old = copyBtn.innerHTML;
+                    copyBtn.innerHTML = "<span>✓</span> Copy";
+                    setTimeout(() => { copyBtn.innerHTML = old; }, 1500);
+                });
+            };
+        }
+
+        // Clear note
+        if (clearBtn) {
+            clearBtn.onclick = () => {
+                if (!textarea.value.trim()) return;
+                if (confirm("Bạn có chắc chắn muốn xóa nội dung ghi chú nhanh này không?")) {
+                    textarea.value = "";
+                    const key = getStorageKey();
+                    localStorage.removeItem(key);
+                    if (saveStatus) saveStatus.textContent = "Đã xóa";
+                }
+            };
+        }
+
+        // Insert into active IAM
+        if (toIamBtn) {
+            toIamBtn.onclick = () => {
+                const val = textarea.value.trim();
+                if (!val) {
+                    alert("Ghi chú đang trống, vui lòng nhập nội dung trước khi chèn.");
+                    textarea.focus();
+                    return;
+                }
+
+                // Check if CP2 is open/active
+                const modCp2Body = document.getElementById("mod-cp2-body");
+                const isCp2Open = modCp2Body && !modCp2Body.classList.contains("hidden");
+
+                const targetInputId = isCp2Open ? "iam-cp2-i" : "iam-cp1-i";
+                const targetInput = document.getElementById(targetInputId);
+
+                if (targetInput) {
+                    if (!isCp2Open) {
+                        openAccordionModule("stage1-mod-cp1");
+                    }
+                    const oldVal = targetInput.value.trim();
+                    targetInput.value = oldVal ? `${oldVal}\n${val}` : val;
+
+                    // Dispatch input event for listeners
+                    targetInput.dispatchEvent(new Event("input", { bubbles: true }));
+
+                    targetInput.focus();
+                    targetInput.scrollIntoView({ behavior: "smooth", block: "center" });
+
+                    const oldBtnText = toIamBtn.innerHTML;
+                    toIamBtn.innerHTML = `<span>✓ Đã chèn vào ${isCp2Open ? 'CP2' : 'CP1'}!</span>`;
+                    setTimeout(() => { toIamBtn.innerHTML = oldBtnText; }, 2000);
+                }
+            };
+        }
+    }
+
+    // 14B.3 CONTACT CULTURECODE MODAL
+    function initContactCulturecodeModal() {
+        const modal = document.getElementById("culturecode-contact-modal");
+        const openBtn = document.getElementById("btn-open-contact-culturecode");
+        const closeBtn = document.getElementById("btn-close-culturecode-contact");
+        const cancelBtn = document.getElementById("btn-cancel-contact");
+        const nameInput = document.getElementById("contact-sender-name");
+        const emailInput = document.getElementById("contact-sender-email");
+        const subjectInput = document.getElementById("contact-subject");
+        const messageInput = document.getElementById("contact-message");
+        const statusMsg = document.getElementById("contact-status-msg");
+        const sendBtn = document.getElementById("btn-send-contact");
+        const sendBtnText = document.getElementById("btn-send-contact-text");
+        const mailtoFallback = document.getElementById("btn-contact-mailto-fallback");
+        const topicChips = document.querySelectorAll(".contact-topic-chip");
+
+        if (!modal) return;
+
+        function updateMailtoLink() {
+            if (!mailtoFallback) return;
+            const subj = subjectInput ? subjectInput.value.trim() : "";
+            const msg = messageInput ? messageInput.value.trim() : "";
+            const sender = nameInput ? nameInput.value.trim() : "";
+            const email = emailInput ? emailInput.value.trim() : "";
+
+            let bodyText = msg;
+            if (sender || email) {
+                bodyText += `\n\n---\nNgười gửi: ${sender} (${email})`;
+            }
+            mailtoFallback.href = `mailto:culturecodeproject@gmail.com?subject=${encodeURIComponent(subj || "[Liên hệ DHM LMS]")}&body=${encodeURIComponent(bodyText)}`;
+        }
+
+        function openModal() {
+            modal.classList.remove("hidden");
+            if (statusMsg) statusMsg.classList.add("hidden");
+
+            if (currentUser) {
+                if (nameInput && !nameInput.value) {
+                    nameInput.value = currentUser.full_name || currentUser.name || "";
+                }
+                if (emailInput && !emailInput.value) {
+                    emailInput.value = currentUser.email || "";
+                }
+            }
+            updateMailtoLink();
+        }
+
+        function closeModal() {
+            modal.classList.add("hidden");
+        }
+
+        if (openBtn) openBtn.onclick = openModal;
+        if (closeBtn) closeBtn.onclick = closeModal;
+        if (cancelBtn) cancelBtn.onclick = closeModal;
+
+        if (subjectInput) subjectInput.addEventListener("input", updateMailtoLink);
+        if (messageInput) messageInput.addEventListener("input", updateMailtoLink);
+        if (nameInput) nameInput.addEventListener("input", updateMailtoLink);
+        if (emailInput) emailInput.addEventListener("input", updateMailtoLink);
+
+        // 4 Topic Chips
+        topicChips.forEach(chip => {
+            chip.addEventListener("click", () => {
+                topicChips.forEach(c => c.classList.remove("ring-2", "ring-brand-amber", "bg-brand-amber/20"));
+                chip.classList.add("ring-2", "ring-brand-amber", "bg-brand-amber/20");
+
+                const defSubject = chip.getAttribute("data-subject") || "";
+                const defBody = chip.getAttribute("data-body") || "";
+                const senderName = nameInput ? nameInput.value.trim() : "";
+
+                if (subjectInput) {
+                    subjectInput.value = senderName ? `${defSubject} - ${senderName}` : defSubject;
+                }
+                if (messageInput) {
+                    messageInput.value = defBody;
+                }
+                updateMailtoLink();
+                if (messageInput) messageInput.focus();
+            });
+        });
+
+        // Send submission
+        if (sendBtn) {
+            sendBtn.addEventListener("click", async () => {
+                const name = nameInput ? nameInput.value.trim() : "";
+                const email = emailInput ? emailInput.value.trim() : "";
+                const subject = subjectInput ? subjectInput.value.trim() : "";
+                const message = messageInput ? messageInput.value.trim() : "";
+
+                if (!name || !email || !subject || !message) {
+                    if (statusMsg) {
+                        statusMsg.className = "p-3 rounded-xl bg-red-500/15 border border-red-500/30 text-red-300 text-xs";
+                        statusMsg.textContent = "⚠️ Vui lòng điền đầy đủ Họ tên, Email, Tiêu đề và Nội dung tin nhắn.";
+                        statusMsg.classList.remove("hidden");
+                    }
+                    return;
+                }
+
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    if (statusMsg) {
+                        statusMsg.className = "p-3 rounded-xl bg-red-500/15 border border-red-500/30 text-red-300 text-xs";
+                        statusMsg.textContent = "⚠️ Định dạng Email không hợp lệ. Vui lòng kiểm tra lại.";
+                        statusMsg.classList.remove("hidden");
+                    }
+                    if (emailInput) emailInput.focus();
+                    return;
+                }
+
+                sendBtn.disabled = true;
+                if (sendBtnText) sendBtnText.textContent = "⏳ Đang gửi thông điệp...";
+
+                const webhookUrl = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
+                const payload = {
+                    action: "contact_culturecode",
+                    target_email: "culturecodeproject@gmail.com",
+                    sender_name: name,
+                    sender_email: email,
+                    subject: subject,
+                    message: message,
+                    stage_context: currentStageIndex === 0 ? "Chặng 1 · Online" : currentStageIndex === 1 ? "Chặng 2 · Offline" : "Chặng 3 · 21 Ngày",
+                    timestamp: new Date().toISOString()
+                };
+
+                try {
+                    fetch(webhookUrl, {
+                        method: "POST",
+                        headers: { "Content-Type": "text/plain;charset=utf-8" },
+                        body: JSON.stringify(payload),
+                        mode: "no-cors"
+                    }).catch(e => console.warn("Contact Webhook notice:", e));
+
+                    if (statusMsg) {
+                        statusMsg.className = "p-3 rounded-xl bg-brand-green/15 border border-brand-green/30 text-brand-green text-xs leading-relaxed space-y-1";
+                        statusMsg.innerHTML = `<div>🎉 <strong>Thông điệp đã được gửi thành công!</strong></div><div>Hệ thống đã chuyển thư tới <strong>culturecodeproject@gmail.com</strong>. Ban điều phối sẽ phản hồi sớm nhất qua email <strong>${email}</strong>.</div>`;
+                        statusMsg.classList.remove("hidden");
+                    }
+
+                    if (sendBtnText) sendBtnText.textContent = "✓ Gửi Thành Công!";
+
+                    setTimeout(() => {
+                        closeModal();
+                        sendBtn.disabled = false;
+                        if (sendBtnText) sendBtnText.textContent = "🚀 Gửi Thông Điệp";
+                        if (subjectInput) subjectInput.value = "";
+                        if (messageInput) messageInput.value = "";
+                        if (statusMsg) statusMsg.classList.add("hidden");
+                    }, 2500);
+
+                } catch (err) {
+                    console.error("Contact send error:", err);
+                    if (statusMsg) {
+                        statusMsg.className = "p-3 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs";
+                        statusMsg.innerHTML = `<div>⚠️ Không thể kết nối trực tiếp đến máy chủ. Vui lòng bấm vào liên kết <strong>"Mở bằng ứng dụng Email cá nhân ↗"</strong> bên dưới để gửi thư trực tiếp.</div>`;
+                        statusMsg.classList.remove("hidden");
+                    }
+                    sendBtn.disabled = false;
+                    if (sendBtnText) sendBtnText.textContent = "🚀 Thử Gửi Lại";
+                }
+            });
+        }
+    }
+
     // Initialize New Component Handlers
     initIamDrawer();
+    initQuickNoteFab();
+    initContactCulturecodeModal();
 
     // 15. INITIAL BOOTSTRAP
     loadCurriculumData().then(() => {
