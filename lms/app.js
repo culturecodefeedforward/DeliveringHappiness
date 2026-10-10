@@ -1133,6 +1133,78 @@ document.addEventListener("DOMContentLoaded", () => {
         dispatchTelemetryPayload(payload, webhookUrl);
     }
 
+    function hasNonEmptyIamObj(obj) {
+        if (!obj || typeof obj !== "object") return false;
+        return Boolean((obj.I && String(obj.I).trim()) || (obj.A && String(obj.A).trim()) || (obj.M && String(obj.M).trim()));
+    }
+
+    function extractIamAndNotesTelemetry(prog, identity) {
+        const s1 = (prog && prog.stageData && prog.stageData["stage-1"]) || {};
+        const s2 = (prog && prog.stageData && prog.stageData["stage-2"]) || {};
+        const cp1Sets = Array.isArray(s1.iam_cp1_sets) ? s1.iam_cp1_sets : [];
+        const cp2Sets = Array.isArray(s1.iam_cp2_sets) ? s1.iam_cp2_sets : [];
+        const cp1Legacy = s1.iam_cp1 || { I: "", A: "", M: "" };
+        const cp2Legacy = s1.iam_cp2 || { I: "", A: "", M: "" };
+        const iam11 = s1.iam_1_1 || { I: "", A: "", M: "" };
+        const iam12 = s1.iam_1_2 || { I: "", A: "", M: "" };
+        const iam13 = s1.iam_1_3 || { I: "", A: "", M: "" };
+        const capstoneIam = s2.capstoneIam || { I: "", A: "", M: "" };
+        const capstoneSets = Array.isArray(s2.capstone_sets) ? s2.capstone_sets : [];
+        const habits = s2.habits || {};
+
+        const effectiveCp1Sets = cp1Sets.length > 0
+            ? cp1Sets
+            : (hasNonEmptyIamObj(cp1Legacy) ? [{ id: "legacy_cp1", I: cp1Legacy.I || "", A: cp1Legacy.A || "", M: cp1Legacy.M || "" }] : []);
+        const effectiveCp2Sets = cp2Sets.length > 0
+            ? cp2Sets
+            : (hasNonEmptyIamObj(cp2Legacy) ? [{ id: "legacy_cp2", I: cp2Legacy.I || "", A: cp2Legacy.A || "", M: cp2Legacy.M || "" }] : []);
+
+        let quickNotes = "";
+        try {
+            if (identity) {
+                quickNotes = localStorage.getItem(`dhm_quick_notes_${identity}`) || "";
+            }
+        } catch (e) {}
+
+        const hasHabitIam = Object.values(habits).some(h => h && hasNonEmptyIamObj(h.iam));
+        const hasIamData = effectiveCp1Sets.length > 0
+            || effectiveCp2Sets.length > 0
+            || hasNonEmptyIamObj(iam11)
+            || hasNonEmptyIamObj(iam12)
+            || hasNonEmptyIamObj(iam13)
+            || hasNonEmptyIamObj(capstoneIam)
+            || capstoneSets.length > 0
+            || hasHabitIam
+            || Boolean(quickNotes && String(quickNotes).trim());
+
+        const sigParts = [
+            `cp1:${effectiveCp1Sets.map(x => `${x.I || ""}|${x.A || ""}|${x.M || ""}`).join(";")}`,
+            `cp2:${effectiveCp2Sets.map(x => `${x.I || ""}|${x.A || ""}|${x.M || ""}`).join(";")}`,
+            `m11:${iam11.I || ""}|${iam11.A || ""}|${iam11.M || ""}`,
+            `m12:${iam12.I || ""}|${iam12.A || ""}|${iam12.M || ""}`,
+            `m13:${iam13.I || ""}|${iam13.A || ""}|${iam13.M || ""}`,
+            `cap:${capstoneIam.I || ""}|${capstoneIam.A || ""}|${capstoneIam.M || ""}`,
+            `qn:${quickNotes ? String(quickNotes).trim().length : 0}`
+        ];
+        const iamSignature = sigParts.join("__");
+
+        return {
+            iam_cp1: cp1Legacy,
+            iam_cp1_sets: effectiveCp1Sets,
+            iam_cp2: cp2Legacy,
+            iam_cp2_sets: effectiveCp2Sets,
+            iam_1_1: iam11,
+            iam_1_2: iam12,
+            iam_1_3: iam13,
+            stage2_capstone: capstoneIam,
+            stage2_capstone_sets: capstoneSets,
+            stage2_habits: habits,
+            quick_notes: quickNotes,
+            hasIamData: hasIamData,
+            iamSignature: iamSignature
+        };
+    }
+
     function syncToGoogleSheets() {
         if (!currentUser) return;
         if (!LMS_CONFIG.ENABLE_REMOTE_SYNC) {
@@ -1143,7 +1215,9 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        const identity = currentUser.identity || currentUser.email || currentUser.learner_id || "guest";
         const s1 = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
+        const iamTelemetry = extractIamAndNotesTelemetry(learnerProgress, identity);
         const payload = {
             action: "sync_full_progress",
             learner_id: currentUser.learner_id || "DHM-USER",
@@ -1159,10 +1233,20 @@ document.addEventListener("DOMContentLoaded", () => {
             stage1_quiz_attempts: s1.quizAttempts || 0,
             stage1_quiz_answers: s1.quizAnswers || {},
             stage1_values: s1.selectedValues || [],
-            stage2_habits: (learnerProgress.stageData && learnerProgress.stageData["stage-2"] && learnerProgress.stageData["stage-2"].habits) || {},
-            stage2_capstone: (learnerProgress.stageData && learnerProgress.stageData["stage-2"] && learnerProgress.stageData["stage-2"].capstoneIam) || {},
+            stage1_iam_cp1: iamTelemetry.iam_cp1,
+            stage1_iam_cp1_sets: iamTelemetry.iam_cp1_sets,
+            stage1_iam_cp2: iamTelemetry.iam_cp2,
+            stage1_iam_cp2_sets: iamTelemetry.iam_cp2_sets,
+            stage1_iam_1_1: iamTelemetry.iam_1_1,
+            stage1_iam_1_2: iamTelemetry.iam_1_2,
+            stage1_iam_1_3: iamTelemetry.iam_1_3,
+            stage2_habits: iamTelemetry.stage2_habits,
+            stage2_capstone: iamTelemetry.stage2_capstone,
+            stage2_capstone_sets: iamTelemetry.stage2_capstone_sets,
             stage3_tracker: (learnerProgress.stageData && learnerProgress.stageData["stage-3"] && learnerProgress.stageData["stage-3"].habitTracker) || {},
+            quick_notes: iamTelemetry.quick_notes,
             target_sheet_id: "1Ju4y-KNDe7eiMvpbyq2mPfKTijH_1NIC3j8Rykl7cak",
+            target_sheet_name: "Tổng Hợp Học Viên",
             timestamp: new Date().toISOString()
         };
 
@@ -1223,16 +1307,18 @@ document.addEventListener("DOMContentLoaded", () => {
             } catch (e) {}
         }
 
-        // 3. Kiểm tra xem có dữ liệu hoàn thành bài thi Stage 1 hoặc Giá trị cá nhân hay không
+        const iamTelemetry = extractIamAndNotesTelemetry(prog, identity);
+
+        // 3. Kiểm tra xem có dữ liệu hoàn thành bài thi Stage 1, Giá trị cá nhân, hoặc Checkpoint I•A•M hay không
         const hasQuizData = (score !== null) || answeredCount > 0;
         const hasPvData = topValues.length > 0;
-        if (!hasQuizData && !hasPvData) {
+        if (!hasQuizData && !hasPvData && !iamTelemetry.hasIamData) {
             return;
         }
 
-        // 4. Tính toán State Hash (idempotent signature)
+        // 4. Tính toán State Hash (idempotent signature bao gồm cả chữ ký I•A•M)
         const topValuesString = topValues.join(",");
-        const stateHash = `${identity}__s:${score !== null ? score : 'none'}__a:${answeredCount}__v:${topValuesString}`;
+        const stateHash = `${identity}__s:${score !== null ? score : 'none'}__a:${answeredCount}__v:${topValuesString}__iam:${iamTelemetry.iamSignature}`;
 
         const lastHashKey = `dhm_telemetry_last_hash_${identity}`;
         const lastTimeKey = `dhm_telemetry_last_sync_time_${identity}`;
@@ -1259,7 +1345,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const webhookUrl = LMS_CONFIG.AUTHORIZED_WEBHOOKS[0];
             if (!webhookUrl) return;
 
-            // 6. Gói payload auto_boot_sync
+            const latestIam = extractIamAndNotesTelemetry(prog, identity);
+
+            // 6. Gói payload auto_boot_sync đầy đủ Quiz + Values + Checkpoints I•A•M
             const payload = {
                 action: "auto_boot_sync",
                 type: "AUTO_BOOT_TELEMETRY",
@@ -1275,6 +1363,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 attempt_number: s1.quizAttempts || 1,
                 answers: s1.quizAnswers || {},
                 top7_values: topValues,
+                stage1_iam_cp1: latestIam.iam_cp1,
+                stage1_iam_cp1_sets: latestIam.iam_cp1_sets,
+                stage1_iam_cp2: latestIam.iam_cp2,
+                stage1_iam_cp2_sets: latestIam.iam_cp2_sets,
+                stage1_iam_1_1: latestIam.iam_1_1,
+                stage1_iam_1_2: latestIam.iam_1_2,
+                stage1_iam_1_3: latestIam.iam_1_3,
+                stage2_habits: latestIam.stage2_habits,
+                stage2_capstone: latestIam.stage2_capstone,
+                stage2_capstone_sets: latestIam.stage2_capstone_sets,
+                quick_notes: latestIam.quick_notes,
                 target_sheet_id: "1Ju4y-KNDe7eiMvpbyq2mPfKTijH_1NIC3j8Rykl7cak",
                 target_sheet_name: "Thu Hoạch IAM",
                 telemetry_hash: stateHash,
@@ -1294,6 +1393,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.triggerAutoTelemetryOnBoot = triggerAutoTelemetryOnBoot;
     window.dispatchTelemetryPayload = dispatchTelemetryPayload;
+    window.extractIamAndNotesTelemetry = extractIamAndNotesTelemetry;
 
     function syncHabitTrackerToCRM() {
         const statusEl = document.getElementById("habit-sync-status");
