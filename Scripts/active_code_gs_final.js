@@ -3444,7 +3444,7 @@ function enqueueRawTelemetryFallback_(body) {
     } catch (e1) {}
   }
   try {
-    var mainSs = getTargetSpreadsheet();
+    var mainSs = getSpreadsheet();
     if (mainSs) candidateSpreadsheets.push(mainSs);
   } catch (e2) {}
 
@@ -3470,17 +3470,29 @@ function handleLmsUpdatePassword_(body) {
   var forcePwdChange = Boolean(body && body.force_pwd_change);
   var nowStr = Utilities.formatDate(new Date(), 'Asia/Ho_Chi_Minh', 'yyyy-MM-dd HH:mm:ss');
 
+  var sheetsToUpdate = [];
   try {
-    var ss = getTargetSpreadsheet();
-    if (ss) {
+    var apolloSs = SpreadsheetApp.openById(APOLLO_IAM_SPREADSHEET_ID);
+    if (apolloSs) sheetsToUpdate.push(apolloSs);
+  } catch (eApollo) {}
+  try {
+    var mainSs = getSpreadsheet();
+    if (mainSs && (!apolloSs || mainSs.getId() !== APOLLO_IAM_SPREADSHEET_ID)) {
+      sheetsToUpdate.push(mainSs);
+    }
+  } catch (eMain) {}
+
+  for (var i = 0; i < sheetsToUpdate.length; i++) {
+    try {
+      var ss = sheetsToUpdate[i];
       var sheet = ss.getSheetByName('LMS_Password_Updates');
       if (!sheet) {
         sheet = ss.insertSheet('LMS_Password_Updates');
         sheet.appendRow(['Thời Gian', 'Email', 'Password Hash', 'Force Change']);
       }
       sheet.appendRow([nowStr, email, passwordHash, forcePwdChange]);
-    }
-  } catch (e) {}
+    } catch (e) {}
+  }
 
   return {
     success: true,
@@ -3499,17 +3511,29 @@ function handleContactCulturecode_(body) {
   var stageContext = String((body && body.stage_context) || '').trim();
   var nowStr = Utilities.formatDate(new Date(), 'Asia/Ho_Chi_Minh', 'yyyy-MM-dd HH:mm:ss');
 
+  var sheetsToUpdate = [];
   try {
-    var ss = getTargetSpreadsheet();
-    if (ss) {
+    var apolloSs = SpreadsheetApp.openById(APOLLO_IAM_SPREADSHEET_ID);
+    if (apolloSs) sheetsToUpdate.push(apolloSs);
+  } catch (eApollo) {}
+  try {
+    var mainSs = getSpreadsheet();
+    if (mainSs && (!apolloSs || mainSs.getId() !== APOLLO_IAM_SPREADSHEET_ID)) {
+      sheetsToUpdate.push(mainSs);
+    }
+  } catch (eMain) {}
+
+  for (var j = 0; j < sheetsToUpdate.length; j++) {
+    try {
+      var ss = sheetsToUpdate[j];
       var sheet = ss.getSheetByName('LMS_Contact_Messages');
       if (!sheet) {
         sheet = ss.insertSheet('LMS_Contact_Messages');
         sheet.appendRow(['Thời Gian', 'Người Gửi', 'Email', 'Chặng', 'Tiêu Đề', 'Nội Dung']);
       }
       sheet.appendRow([nowStr, senderName, senderEmail, stageContext, subject, message]);
-    }
-  } catch (e) {}
+    } catch (e) {}
+  }
 
   return {
     success: true,
@@ -3563,7 +3587,7 @@ function handleLmsAndIamTelemetry_(body) {
 
     // 2. Ghi đồng thời vào bảng tính chính của hệ thống (Bảo hiểm 100% không mất dữ liệu)
     try {
-      var mainSs = getTargetSpreadsheet();
+      var mainSs = getSpreadsheet();
       if (mainSs && (!apolloSs || mainSs.getId() !== targetSheetId)) {
         writeIamAndLmsToSpreadsheet_(mainSs, body, timestamp);
         wroteMain = true;
@@ -3603,24 +3627,27 @@ function writeIamAndLmsToSpreadsheet_(ss, body, timestamp) {
     var department = String(profile.department || '').trim();
 
     var logSheet = ensureApolloLogsSheet_(ss);
-    if (body.entry) {
-      appendDeduplicatedIamLog_(logSheet, timestamp, {
-        email: email,
-        fullName: fullName,
-        phone: phone,
-        apolloCenter: apolloCenter,
-        department: department,
-        stationId: String(body.entry.stationId || ''),
-        stationTitle: String(body.entry.stationTitle || ''),
-        category: String(body.entry.category || '5-Station App'),
-        selectedTag: String(body.entry.selectedTag || ''),
-        interestedText: String(body.entry.interestedText || ''),
-        actionableText: String(body.entry.actionableText || ''),
-        meaningfulText: String(body.entry.meaningfulText || '')
-      });
-    } else if (Array.isArray(body.allEntries)) {
-      for (var i = 0; i < body.allEntries.length; i++) {
-        var ent = body.allEntries[i] || {};
+    function logEntrySets_(ent) {
+      if (!ent) return;
+      if (Array.isArray(ent.sets) && ent.sets.length > 0) {
+        for (var sIdx = 0; sIdx < ent.sets.length; sIdx++) {
+          var cSet = ent.sets[sIdx] || {};
+          appendDeduplicatedIamLog_(logSheet, timestamp, {
+            email: email,
+            fullName: fullName,
+            phone: phone,
+            apolloCenter: apolloCenter,
+            department: department,
+            stationId: String(ent.stationId || '') + (ent.sets.length > 1 ? ('-#' + (sIdx + 1)) : ''),
+            stationTitle: String(ent.stationTitle || ''),
+            category: ent.sets.length > 1 ? ('5-Station App (Bộ #' + (sIdx + 1) + ')') : String(ent.category || '5-Station App'),
+            selectedTag: String(cSet.selectedTag || ent.selectedTag || ''),
+            interestedText: String(cSet.interestedText || ''),
+            actionableText: String(cSet.actionableText || ''),
+            meaningfulText: String(cSet.meaningfulText || '')
+          });
+        }
+      } else {
         appendDeduplicatedIamLog_(logSheet, timestamp, {
           email: email,
           fullName: fullName,
@@ -3638,6 +3665,14 @@ function writeIamAndLmsToSpreadsheet_(ss, body, timestamp) {
       }
     }
 
+    if (body.entry) {
+      logEntrySets_(body.entry);
+    } else if (Array.isArray(body.allEntries)) {
+      for (var i = 0; i < body.allEntries.length; i++) {
+        logEntrySets_(body.allEntries[i]);
+      }
+    }
+
     var allEntries = body.allEntries || (body.entry ? [body.entry] : []);
     if (email || phone) {
       var summarySheet = ensureApolloSummarySheet_(ss);
@@ -3648,6 +3683,20 @@ function writeIamAndLmsToSpreadsheet_(ss, body, timestamp) {
         apolloCenter: apolloCenter,
         department: department
       }, allEntries, body.analytics, null);
+    }
+
+    if (body.quick_notes) {
+      try {
+        var lmsCpSheet = ensureLmsCheckpointsSheet_(ss);
+        upsertLmsCheckpointsRow_(lmsCpSheet, timestamp, {
+          email: email,
+          phone: phone,
+          name: fullName,
+          cohort: apolloCenter,
+          quick_notes: body.quick_notes,
+          action: 'apollo_quick_notes_sync'
+        }, [], [], [], [], [], []);
+      } catch (eQuickNotes) {}
     }
     return;
   }
@@ -4201,7 +4250,7 @@ function handleGetLmsIamSubmissions_(params) {
     if (apolloSs) sheetsToTry.push(apolloSs);
   } catch (e1) {}
   try {
-    var mainSs = getTargetSpreadsheet();
+    var mainSs = getSpreadsheet();
     if (mainSs) sheetsToTry.push(mainSs);
   } catch (e2) {}
 

@@ -272,10 +272,19 @@
                 <!-- Injected via JavaScript from curriculum_data.json -->
             </div>
 
-            <!-- SIDEBAR FOOTER -->
-            <div class="p-3 border-t border-brand-border bg-brand-dark/50 text-[11px] text-slate-400 flex items-center justify-between">
-                <span>DHM • Standard Architecture</span>
-                <span class="text-brand-amber font-semibold">3 Chặng Chuyển Hóa</span>
+            <!-- SIDEBAR FOOTER: CONTACT CULTURECODE -->
+            <div class="p-3 border-t border-brand-border bg-brand-dark/50 flex flex-col gap-2">
+                <button id="btn-open-contact-culturecode" type="button" class="w-full px-3 py-2 rounded-xl bg-brand-card hover:bg-brand-surface border border-brand-border hover:border-brand-amber/40 text-slate-200 hover:text-brand-amber text-xs font-bold transition-all flex items-center justify-between group shadow-sm cursor-pointer">
+                    <span class="flex items-center gap-2">
+                        <span class="text-base group-hover:scale-110 transition-transform">💬</span>
+                        <span>Liên hệ Culturecode</span>
+                    </span>
+                    <span class="text-[10px] text-brand-amber/80 font-mono">Góp ý ➔</span>
+                </button>
+                <div class="text-[10.5px] text-slate-500 flex items-center justify-between px-1">
+                    <span>DHM • Standard Architecture</span>
+                    <span class="text-brand-amber/70 font-semibold">3 Chặng Chuyển Hóa</span>
+                </div>
             </div>
         </aside>
 
@@ -2836,6 +2845,158 @@
                     <span>Dữ liệu tự động đồng bộ theo tài khoản học viên.</span>
                     <button id="btn-dismiss-iam-drawer" type="button" class="px-4 py-1.5 rounded-xl bg-brand-card hover:bg-brand-border text-slate-200 font-semibold transition-colors cursor-pointer">
                         Đóng
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FLOATING QUICK NOTE FAB & POPUP -->
+    <div id="quick-note-fab-container" class="fixed bottom-6 right-6 z-40 flex flex-col items-end">
+        <!-- Quick Note Popup -->
+        <div id="quick-note-popup" class="hidden mb-3 w-[350px] sm:w-[420px] max-w-[calc(100vw-32px)] bg-brand-surface border border-brand-amber/40 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-md flex flex-col transition-all">
+            <!-- Popup Header -->
+            <div class="px-4 py-3 bg-gradient-to-r from-brand-amber/20 via-brand-surface to-brand-orange/20 border-b border-brand-border flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <span class="text-lg">📝</span>
+                    <div>
+                        <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                            <span>Sổ Ghi Chú Nhanh</span>
+                            <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-brand-amber/20 text-brand-amber border border-brand-amber/30">Ctrl+J</span>
+                        </div>
+                        <div id="quick-note-stage-badge" class="text-[10px] text-brand-amber font-medium">📍 Đang học: Chặng 1 · Online</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <span id="quick-note-save-status" class="text-[10px] text-slate-400 font-mono italic">Đã lưu</span>
+                    <button id="btn-close-quick-note" type="button" class="w-6 h-6 flex items-center justify-center rounded-lg text-slate-400 hover:text-white hover:bg-brand-card transition-colors text-sm cursor-pointer" title="Thu nhỏ ghi chú">✕</button>
+                </div>
+            </div>
+            <!-- Popup Body -->
+            <div class="p-3.5 space-y-3">
+                <textarea id="quick-note-textarea" rows="6" class="w-full bg-brand-dark border border-brand-border rounded-xl p-3 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-y transition-colors leading-relaxed" placeholder="Ghi nhanh suy nghĩ, câu hỏi hoặc ý tưởng vừa nảy ra trong buổi học... (Tự động lưu sau 400ms)"></textarea>
+                <!-- Actions Bar -->
+                <div class="flex items-center justify-between gap-1.5 pt-1">
+                    <div class="flex items-center gap-1.5">
+                        <button id="btn-quick-note-copy" type="button" class="px-2.5 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-slate-300 text-[11px] font-medium transition-colors border border-brand-border/60 flex items-center gap-1 cursor-pointer" title="Sao chép nội dung">
+                            <span>📋</span>
+                            <span>Copy</span>
+                        </button>
+                        <button id="btn-quick-note-clear" type="button" class="px-2.5 py-1.5 rounded-lg bg-brand-card hover:bg-red-500/20 text-slate-400 hover:text-red-400 text-[11px] font-medium transition-colors border border-brand-border/60 flex items-center gap-1 cursor-pointer" title="Xóa trắng ghi chú">
+                            <span>🗑️</span>
+                            <span>Xóa</span>
+                        </button>
+                    </div>
+                    <button id="btn-quick-note-to-iam" type="button" class="px-3 py-1.5 rounded-lg bg-brand-amber/20 hover:bg-brand-amber/30 text-brand-amber hover:text-amber-300 text-[11px] font-bold transition-colors border border-brand-amber/40 flex items-center gap-1 cursor-pointer" title="Chuyển vào ô I (Insight) của Checkpoint đang mở">
+                        <span>➔ Chèn vào I•A•M</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAB Button -->
+        <button id="btn-quick-note-fab" type="button" class="w-13 h-13 rounded-full bg-gradient-to-tr from-brand-orange to-brand-amber text-black font-extrabold flex items-center justify-center text-xl shadow-xl hover:scale-105 active:scale-95 transition-all border-2 border-amber-300/50 cursor-pointer group" title="Mở Sổ Ghi Chú Nhanh (Ctrl+J)" aria-label="Mở Sổ Ghi Chú Nhanh">
+            <span class="group-hover:rotate-12 transition-transform">📝</span>
+        </button>
+    </div>
+
+    <!-- CONTACT CULTURECODE MODAL -->
+    <div id="culturecode-contact-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 hidden">
+        <div class="relative max-w-xl w-full max-h-[92vh] flex flex-col bg-brand-surface border border-brand-amber/40 rounded-3xl overflow-hidden shadow-2xl">
+            <!-- Header -->
+            <div class="p-5 border-b border-brand-border bg-gradient-to-r from-brand-amber/15 via-brand-surface to-brand-orange/15 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-orange to-brand-amber text-black font-extrabold flex items-center justify-center text-lg shadow-md shrink-0">
+                        💬
+                    </div>
+                    <div>
+                        <div class="text-[10px] uppercase font-extrabold tracking-widest text-brand-amber">Culturecode Vietnam · Kênh Đồng Hành</div>
+                        <h3 class="text-base font-extrabold text-white">Liên Hệ & Góp Ý Chuyên Môn</h3>
+                    </div>
+                </div>
+                <button id="btn-close-culturecode-contact" type="button" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-brand-card text-lg transition-colors cursor-pointer" title="Đóng modal">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="flex-1 overflow-y-auto p-5 sm:p-6 space-y-4 text-xs">
+                <!-- Status Message Area -->
+                <div id="contact-status-msg" class="hidden p-3 rounded-xl text-xs"></div>
+
+                <!-- Learner info auto-filled -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1" for="contact-sender-name">Họ và tên học viên</label>
+                        <input id="contact-sender-name" type="text" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber" placeholder="Họ và tên..." />
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1" for="contact-sender-email">Email phản hồi</label>
+                        <input id="contact-sender-email" type="email" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber" placeholder="email@example.com..." />
+                    </div>
+                </div>
+
+                <!-- 4 Topic Chips 1-chạm -->
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-300 mb-1.5">Chủ đề cần kết nối (chọn 1-chạm để nạp mẫu):</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="button" class="contact-topic-chip p-2.5 rounded-xl bg-brand-card hover:bg-brand-amber/15 border border-brand-border hover:border-brand-amber/40 text-left transition-all text-slate-200 hover:text-brand-amber cursor-pointer" data-topic="feedback" data-subject="[Góp ý cải tiến LMS]" data-body="Xin chào Culturecode,&#10;&#10;Tôi có một vài đề xuất nhằm cải tiến trải nghiệm học tập trên DHM Micro-LMS như sau:&#10;- ">
+                            <div class="font-bold text-[11px] text-amber-400 flex items-center gap-1.5">
+                                <span>💡</span> Đề xuất cải tiến
+                            </div>
+                            <div class="text-[10px] text-slate-400 truncate">Ý tưởng nâng cấp tính năng LMS</div>
+                        </button>
+                        <button type="button" class="contact-topic-chip p-2.5 rounded-xl bg-brand-card hover:bg-brand-amber/15 border border-brand-border hover:border-brand-amber/40 text-left transition-all text-slate-200 hover:text-brand-amber cursor-pointer" data-topic="inhouse" data-subject="[Hợp tác đào tạo doanh nghiệp]" data-body="Xin chào Culturecode,&#10;&#10;Doanh nghiệp chúng tôi quan tâm đến việc triển khai chương trình Delivering Happiness In-House cho đội ngũ:&#10;- Quy mối nhân sự:&#10;- Mục tiêu kỳ vọng:">
+                            <div class="font-bold text-[11px] text-sky-400 flex items-center gap-1.5">
+                                <span>🤝</span> Hợp tác doanh nghiệp
+                            </div>
+                            <div class="text-[10px] text-slate-400 truncate">Tổ chức Workshop In-House</div>
+                        </button>
+                        <button type="button" class="contact-topic-chip p-2.5 rounded-xl bg-brand-card hover:bg-brand-amber/15 border border-brand-border hover:border-brand-amber/40 text-left transition-all text-slate-200 hover:text-brand-amber cursor-pointer" data-topic="qa" data-subject="[Hỏi đáp chuyên môn DHM]" data-body="Xin chào Ban Giảng Huấn Culturecode,&#10;&#10;Em có một thắc mắc về nội dung bài giảng / bài tập phản tư như sau:&#10;- ">
+                            <div class="font-bold text-[11px] text-emerald-400 flex items-center gap-1.5">
+                                <span>❓</span> Hỏi đáp chuyên môn
+                            </div>
+                            <div class="text-[10px] text-slate-400 truncate">Thắc mắc nội dung bài giảng / I•A•M</div>
+                        </button>
+                        <button type="button" class="contact-topic-chip p-2.5 rounded-xl bg-brand-card hover:bg-brand-amber/15 border border-brand-border hover:border-brand-amber/40 text-left transition-all text-slate-200 hover:text-brand-amber cursor-pointer" data-topic="support" data-subject="[Hỗ trợ kỹ thuật LMS]" data-body="Xin chào đội ngũ kỹ thuật,&#10;&#10;Tôi gặp sự cố trong quá trình sử dụng hệ thống như sau:&#10;- Thiết bị / Trình duyệt:&#10;- Mô tả lỗi:">
+                            <div class="font-bold text-[11px] text-purple-400 flex items-center gap-1.5">
+                                <span>🛠️</span> Hỗ trợ kỹ thuật
+                            </div>
+                            <div class="text-[10px] text-slate-400 truncate">Báo lỗi hiển thị / tiến độ</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Subject -->
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-300 mb-1" for="contact-subject">Tiêu đề thông điệp</label>
+                    <input id="contact-subject" type="text" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber" placeholder="Nhập tiêu đề hoặc chọn thẻ gợi ý ở trên..." />
+                </div>
+
+                <!-- Message Body -->
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-300 mb-1" for="contact-message">Nội dung chi tiết</label>
+                    <textarea id="contact-message" rows="5" class="w-full bg-brand-dark border border-brand-border rounded-xl p-3 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber leading-relaxed resize-y" placeholder="Nhập nội dung bạn muốn chia sẻ cùng Culturecode..."></textarea>
+                </div>
+
+                <!-- Info callout -->
+                <div class="p-3 rounded-xl bg-brand-dark/70 border border-brand-border/60 text-[11px] text-slate-400 flex items-center gap-2">
+                    <span class="text-brand-amber">📬</span>
+                    <span>Thư sẽ được chuyển thẳng đến hộp thư ban điều phối: <strong class="text-slate-300">culturecodeproject@gmail.com</strong></span>
+                </div>
+            </div>
+
+            <!-- Footer Buttons -->
+            <div class="p-4 sm:p-5 border-t border-brand-border bg-brand-dark/90 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <a id="btn-contact-mailto-fallback" href="mailto:culturecodeproject@gmail.com" target="_blank" rel="noopener noreferrer" class="text-[11px] text-slate-400 hover:text-slate-200 underline">
+                    Mở bằng ứng dụng Email cá nhân ↗
+                </a>
+                <div class="flex items-center gap-2.5 w-full sm:w-auto">
+                    <button id="btn-cancel-contact" type="button" class="w-full sm:w-auto px-4 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-300 font-semibold text-xs transition-colors cursor-pointer">
+                        Hủy
+                    </button>
+                    <button id="btn-send-contact" type="button" class="w-full sm:w-auto px-5 py-2 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber hover:brightness-110 active:scale-95 text-black font-extrabold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                        <span id="btn-send-contact-text">🚀 Gửi Thông Điệp</span>
                     </button>
                 </div>
             </div>

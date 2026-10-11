@@ -1181,6 +1181,24 @@ document.addEventListener("DOMContentLoaded", () => {
                     </a>
                 </div>
             `;
+        } else if (state === "ERROR") {
+            bannerClasses = "p-3.5 rounded-xl bg-rose-500/15 border border-rose-500/40 text-rose-200 text-xs leading-relaxed shadow-lg space-y-2 relative z-[60]";
+            innerHtml = `
+                <div class="font-bold text-rose-300 flex items-start gap-1.5">
+                    <span>⚠️</span>
+                    <span>Chưa thể đồng bộ trực tiếp lên máy chủ BTC do sự cố đường truyền. Dữ liệu bài làm đã được lưu an toàn tại máy/trình duyệt này. Anh/chị có thể nhấn nút thử lại hoặc mở trang 5 Trạm I•A•M.</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 pt-1">
+                    <button type="button" onclick="if(window.triggerAutoTelemetryOnBoot) window.triggerAutoTelemetryOnBoot();" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-500 hover:bg-rose-400 text-white font-extrabold text-[11px] transition-all shadow">
+                        <span>Thử đồng bộ lại</span>
+                        <span>🔄</span>
+                    </button>
+                    <a href="${bridgeUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-[11px] transition-all border border-slate-700">
+                        <span>Mở trang 5 Trạm I•A•M</span>
+                        <span>↗</span>
+                    </a>
+                </div>
+            `;
         } else {
             return;
         }
@@ -1723,6 +1741,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!webhookUrl) return;
 
             const newlySynced = [...syncedItems];
+            const failedSync = [];
             for (let i = 0; i < pendingSyncItems.length; i++) {
                 const item = pendingSyncItems[i];
                 const latestIam = extractIamAndNotesTelemetry(item.prog, item.rawIdentity);
@@ -1765,6 +1784,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         localStorage.setItem(item.lastTimeKey, String(Date.now()));
                     } catch (e) {}
                     newlySynced.push({ user: item.resolvedUser, summaryText: item.summaryText });
+                } else {
+                    failedSync.push(item);
                 }
             }
 
@@ -1773,6 +1794,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     user: newlySynced[0].user,
                     learnerName: newlySynced.map(x => x.user.name || x.user.email).join(", "),
                     summaryText: newlySynced.map(x => x.summaryText).join(" • ")
+                });
+            } else if (failedSync.length > 0) {
+                renderLmsSyncStatusBanner("ERROR", {
+                    user: failedSync[0].resolvedUser,
+                    learnerName: failedSync.map(x => x.resolvedUser.name || x.resolvedUser.email).join(", ")
                 });
             }
         }, bootDelayMs);
@@ -2732,12 +2758,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // Đọc fallback bản latest nếu chưa có
+        // Đọc fallback bản latest nếu chưa có (chỉ nhận nếu khớp email của currentUser để chống rò rỉ session)
         const savedLatest = localStorage.getItem("dhm_personal_values_latest");
         if (savedLatest) {
             try {
                 const latest = JSON.parse(savedLatest);
-                if (latest && latest.top7 && Array.isArray(latest.top7)) {
+                const latestEmail = latest && latest.email ? String(latest.email).toLowerCase().trim() : "";
+                const isMatchingUser = !emailKey || !latestEmail || (latestEmail === emailKey);
+                if (latest && latest.top7 && Array.isArray(latest.top7) && isMatchingUser) {
                     const exists = pvHistory.some(h => 
                         h.timestamp && latest.timestamp && Math.abs(new Date(h.timestamp) - new Date(latest.timestamp)) < 10000
                     );
@@ -3704,7 +3732,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (btnSyncWorkshop) {
             btnSyncWorkshop.onclick = () => {
                 saveLearnerProgress();
-                alert("✓ Toàn bộ bài tập 5 Thói quen & Capstone IAM đã được lưu trữ an toàn trên trình duyệt của bạn!\n\n(Lưu ý: Tính năng đồng bộ tự động về Google Sheets của hệ thống sẽ chính thức khả dụng trong Giai đoạn 2).");
+                alert("✓ Toàn bộ bài tập 5 Thói quen & Capstone IAM đã được lưu an toàn tại trình duyệt và đồng bộ lên hệ thống Google Sheets của BTC!");
             };
         }
     }
