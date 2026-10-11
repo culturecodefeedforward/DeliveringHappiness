@@ -1134,107 +1134,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderLmsSyncStatusBanner(state, detail) {
         if (typeof document === "undefined") return;
-        const info = detail || {};
-        const userObj = info.user || currentUser || null;
-        const bridgeUrl = buildFiveStationBridgeUrl(userObj);
-        const learnerLabel = (userObj && (userObj.name || userObj.full_name || userObj.email || userObj.identity))
-            || info.learnerName
-            || "Học viên";
-        const itemsSummary = info.summaryText || "Bài làm Chặng 1 & I•A•M";
-
-        let bannerClasses = "";
-        let innerHtml = "";
-
-        if (state === "SYNCING") {
-            bannerClasses = "p-3.5 rounded-xl bg-sky-500/15 border border-sky-400/40 text-sky-200 text-xs leading-relaxed shadow-lg relative z-[60]";
-            innerHtml = `
-                <div class="flex items-center gap-2 font-bold text-sky-300">
-                    <span class="animate-spin inline-block">⏳</span>
-                    <span>Đang đồng bộ dữ liệu bài làm lên hệ thống BTC... Vui lòng giữ trang trong giây lát.</span>
-                </div>
-            `;
-        } else if (state === "SUCCESS") {
-            bannerClasses = "p-3.5 rounded-xl bg-emerald-500/15 border border-emerald-400/40 text-emerald-200 text-xs leading-relaxed shadow-lg space-y-2 relative z-[60]";
-            innerHtml = `
-                <div class="font-bold text-emerald-300 flex items-start gap-1.5">
-                    <span>✅</span>
-                    <span>Đã đồng bộ thành công bài làm của <strong class="text-white">${learnerLabel}</strong> (${itemsSummary}) lên hệ thống! Anh/chị có thể đóng trang hoặc chuyển sang trang 5 Trạm I•A•M.</span>
-                </div>
-                <div class="flex flex-wrap items-center gap-2 pt-1">
-                    <a href="${bridgeUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-[11px] transition-all shadow">
-                        <span>Mở tiếp trang 5 Trạm I•A•M (nếu hôm học có làm 5 Trạm)</span>
-                        <span>↗</span>
-                    </a>
-                </div>
-            `;
-        } else if (state === "EMPTY_BROWSER") {
-            bannerClasses = "p-3.5 rounded-xl bg-amber-500/15 border border-amber-400/40 text-amber-200 text-xs leading-relaxed shadow-lg space-y-2 relative z-[60]";
-            innerHtml = `
-                <div class="font-bold text-amber-300 flex items-start gap-1.5">
-                    <span>ℹ️</span>
-                    <span>Trình duyệt này hiện chưa có dữ liệu bài làm ngày 09/10. Nếu hôm học anh/chị mở link trực tiếp trong Zalo hoặc trên Điện thoại / Trình duyệt khác, vui lòng mở lại đúng ứng dụng đó để hệ thống tự động thu hồi kết quả, hoặc đăng nhập bên dưới để làm bài.</span>
-                </div>
-                <div class="flex flex-wrap items-center gap-2 pt-1">
-                    <a href="${bridgeUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-black font-extrabold text-[11px] transition-all shadow">
-                        <span>Chuyển sang trang 5 Trạm I•A•M (team-happiness-iam.vercel.app)</span>
-                        <span>↗</span>
-                    </a>
-                </div>
-            `;
-        } else if (state === "ERROR") {
-            bannerClasses = "p-3.5 rounded-xl bg-rose-500/15 border border-rose-500/40 text-rose-200 text-xs leading-relaxed shadow-lg space-y-2 relative z-[60]";
-            innerHtml = `
-                <div class="font-bold text-rose-300 flex items-start gap-1.5">
-                    <span>⚠️</span>
-                    <span>Chưa thể đồng bộ trực tiếp lên máy chủ BTC do sự cố đường truyền. Dữ liệu bài làm đã được lưu an toàn tại máy/trình duyệt này. Anh/chị có thể nhấn nút thử lại hoặc mở trang 5 Trạm I•A•M.</span>
-                </div>
-                <div class="flex flex-wrap items-center gap-2 pt-1">
-                    <button type="button" onclick="if(window.triggerAutoTelemetryOnBoot) window.triggerAutoTelemetryOnBoot();" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-500 hover:bg-rose-400 text-white font-extrabold text-[11px] transition-all shadow">
-                        <span>Thử đồng bộ lại</span>
-                        <span>🔄</span>
-                    </button>
-                    <a href="${bridgeUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-[11px] transition-all border border-slate-700">
-                        <span>Mở trang 5 Trạm I•A•M</span>
-                        <span>↗</span>
-                    </a>
-                </div>
-            `;
-        } else {
-            return;
-        }
-
-        // 1. Render ngay dưới <header> trên màn hình chính
-        const headerEl = document.querySelector("header");
-        if (headerEl && headerEl.parentNode) {
-            let topBanner = document.getElementById("dhm-sync-status-banner");
-            if (!topBanner) {
-                topBanner = document.createElement("div");
-                topBanner.id = "dhm-sync-status-banner";
-                headerEl.parentNode.insertBefore(topBanner, headerEl.nextSibling);
-            }
-            topBanner.className = `mx-4 lg:mx-8 mt-3 ${bannerClasses}`;
-            topBanner.setAttribute("data-sync-state", state);
-            topBanner.innerHTML = innerHtml;
-        }
-
-        // 2. Render bên trong #auth-modal > div (ngay phía trên #auth-form để không bị lớp nền z-50 che khuất)
-        const authModalCard = document.querySelector("#auth-modal > div");
-        if (authModalCard) {
-            let modalBanner = document.getElementById("dhm-auth-modal-sync-banner");
-            if (!modalBanner) {
-                modalBanner = document.createElement("div");
-                modalBanner.id = "dhm-auth-modal-sync-banner";
-                const authFormEl = document.getElementById("auth-form");
-                if (authFormEl && authFormEl.parentNode === authModalCard) {
-                    authModalCard.insertBefore(modalBanner, authFormEl);
-                } else {
-                    authModalCard.appendChild(modalBanner);
-                }
-            }
-            modalBanner.className = bannerClasses;
-            modalBanner.setAttribute("data-sync-state", state);
-            modalBanner.innerHTML = innerHtml;
-        }
+        // Gỡ bỏ sạch sẽ toàn bộ biểu ngữ đồng bộ kỹ thuật trên giao diện học viên
+        const topBanner = document.getElementById("dhm-sync-status-banner");
+        if (topBanner) topBanner.remove();
+        const modalBanner = document.getElementById("dhm-auth-modal-sync-banner");
+        if (modalBanner) modalBanner.remove();
     }
 
     function syncQuizResultToWebhook(score, total, percentage, passed, attempt, answers) {
@@ -1812,11 +1716,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function syncHabitTrackerToCRM() {
         const statusEl = document.getElementById("habit-sync-status");
+        if (statusEl) statusEl.textContent = "";
         if (!currentUser) {
-            if (statusEl) {
-                statusEl.textContent = "⚠️ Vui lòng đăng nhập trước khi đồng bộ";
-                statusEl.className = "text-[10px] text-amber-400 font-medium";
-            }
             return;
         }
 
@@ -1830,10 +1731,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (totalChecks === 0) {
-            if (statusEl) {
-                statusEl.textContent = "⚠️ Chưa có dữ liệu điểm danh để đồng bộ";
-                statusEl.className = "text-[10px] text-amber-400 font-medium";
-            }
             return;
         }
 
@@ -1862,16 +1759,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const webhookUrl = LMS_CONFIG.AUTHORIZED_WEBHOOKS[0];
         if (!webhookUrl) {
-            if (statusEl) {
-                statusEl.textContent = "❌ Lỗi: Chưa cấu hình webhook";
-                statusEl.className = "text-[10px] text-rose-400 font-medium";
-            }
             return;
-        }
-
-        if (statusEl) {
-            statusEl.textContent = "⏳ Đang gửi dữ liệu về BTC...";
-            statusEl.className = "text-[10px] text-sky-400 font-medium";
         }
 
         let sent = false;
@@ -1896,12 +1784,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const now = new Date();
         const syncKey = "dhm_habit_last_sync_" + (currentUser.email || currentUser.identity);
         localStorage.setItem(syncKey, now.toISOString());
-
-        const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} ${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
-        if (statusEl) {
-            statusEl.textContent = `✅ Đã đồng bộ lúc ${timeStr}`;
-            statusEl.className = "text-[10px] text-emerald-400 font-medium";
-        }
     }
 
     function recordLearnerInDirectory() {
@@ -4188,17 +4070,8 @@ document.addEventListener("DOMContentLoaded", () => {
             btnSyncHabitCRM.onclick = () => syncHabitTrackerToCRM();
         }
         const habitSyncStatusEl = document.getElementById("habit-sync-status");
-        if (habitSyncStatusEl && currentUser) {
-            const syncKey = "dhm_habit_last_sync_" + (currentUser.email || currentUser.identity);
-            const lastSync = localStorage.getItem(syncKey);
-            if (lastSync) {
-                const d = new Date(lastSync);
-                if (!isNaN(d.getTime())) {
-                    const timeStr = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')} ${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
-                    habitSyncStatusEl.textContent = `✅ Đã đồng bộ lúc ${timeStr}`;
-                    habitSyncStatusEl.className = "text-[10px] text-emerald-400 font-medium";
-                }
-            }
+        if (habitSyncStatusEl) {
+            habitSyncStatusEl.textContent = "";
         }
 
         // 11.4.2 Open Full Roadmap / Habit Guide Doc Modal
