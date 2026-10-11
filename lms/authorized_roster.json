@@ -3791,5 +3791,75 @@
     "role": "Learner",
     "force_pwd_change": false,
     "default_pwd": "1234"
+  },
+  {
+    "name": "Học Viên Test 01",
+    "email": "test01@dhm.vn",
+    "phone": "0900000001",
+    "cohort": "Team Happiness Apollo (Test)",
+    "role": "Học viên"
+  },
+  {
+    "name": "Học Viên Test 02",
+    "email": "test02@dhm.vn",
+    "phone": "0900000002",
+    "cohort": "Team Happiness Apollo (Test)",
+    "role": "Học viên"
+  },
+  {
+    "name": "Học Viên Test 03",
+    "email": "test03@dhm.vn",
+    "phone": "0900000003",
+    "cohort": "Team Happiness Apollo (Test)",
+    "role": "Học viên"
+  },
+  {
+    "name": "Học Viên Test 04",
+    "email": "test04@dhm.vn",
+    "phone": "0900000004",
+    "cohort": "Team Happiness Apollo (Test)",
+    "role": "Học viên"
+  },
+  {
+    "name": "Học Viên Test 05",
+    "email": "test05@dhm.vn",
+    "phone": "0900000005",
+    "cohort": "Team Happiness Apollo (Test)",
+    "role": "Học viên"
+  },
+  {
+    "name": "Học Viên Test 06",
+    "email": "test06@dhm.vn",
+    "phone": "0900000006",
+    "cohort": "Team Happiness Apollo (Test)",
+    "role": "Học viên"
+  },
+  {
+    "name": "Học Viên Test 07",
+    "email": "test07@dhm.vn",
+    "phone": "0900000007",
+    "cohort": "Team Happiness Apollo (Test)",
+    "role": "Học viên"
+  },
+  {
+    "name": "Học Viên Test 08",
+    "email": "test08@dhm.vn",
+    "phone": "0900000008",
+    "cohort": "Team Happiness Apollo (Test)",
+    "role": "Học viên"
+  },
+  {
+    "name": "Học Viên Test 09",
+    "email": "test09@dhm.vn",
+    "phone": "0900000009",
+    "cohort": "Team Happiness Apollo (Test)",
+    "role": "Học viên"
+  },
+  {
+    "name": "Học Viên Test 10",
+    "email": "test10@dhm.vn",
+    "phone": "0900000010",
+    "cohort": "Team Happiness Apollo (Test)",
+    "role": "Học viên"
   }
 ]

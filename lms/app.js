@@ -655,7 +655,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let match = authorizedRoster.find(l => {
             const lEmail = l.email ? normalizeIdentity(l.email) : "";
             const lPhone = l.phone_full || l.phone_raw || l.phone || "";
-            const emailMatch = lEmail && lEmail === id;
+            const emailMatch = lEmail && (lEmail === id || lEmail.split('@')[0] === id);
             const phoneMatch = lPhone && normalizePhone(lPhone) === normalizePhone(id);
             return emailMatch || phoneMatch;
         });
