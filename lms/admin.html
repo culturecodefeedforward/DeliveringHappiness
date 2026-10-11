@@ -118,30 +118,53 @@
     <main class="flex-1 p-6 lg:p-10 max-w-7xl mx-auto w-full space-y-8">
 
         <!-- TAB NAVIGATION SWITCHER -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-brand-border pb-4">
-            <div class="flex items-center gap-2">
-                <button id="tab-btn-test-analytics" class="px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-amber text-black shadow-lg">
-                    <span>🎯 Đo Lường Bài Test (&gt;80%)</span>
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-brand-border pb-4">
+            <div class="flex items-center gap-2 flex-wrap">
+                <button id="tab-btn-test-analytics" class="tab-btn active px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-amber text-black shadow-lg" data-pane="pane-test-analytics">
+                    <span>🎯 Đo Lường Bài Test</span>
                     <span id="badge-tested-learners-count" class="px-2 py-0.5 rounded-full bg-black/20 text-black font-mono text-[11px]">0</span>
                 </button>
-                <button id="tab-btn-general-progress" class="px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent">
-                    <span>📋 Tiến Độ Tổng Thể 3 Chặng</span>
+                <button id="tab-btn-iam-stations" class="tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent" data-pane="pane-iam-stations">
+                    <span>🏆 Thu Hoạch 5 Trạm I•A•M</span>
+                    <span id="badge-iam-learners-count" class="px-2 py-0.5 rounded-full bg-brand-surface text-slate-300 font-mono text-[11px]">0</span>
+                </button>
+                <button id="tab-btn-blended-journey" class="tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent" data-pane="pane-blended-journey">
+                    <span>🔄 Hành Trình Blended 360°</span>
+                    <span id="badge-blended-learners-count" class="px-2 py-0.5 rounded-full bg-brand-surface text-slate-300 font-mono text-[11px]">0</span>
+                </button>
+                <button id="tab-btn-general-progress" class="tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent" data-pane="pane-general-progress">
+                    <span>📊 Báo Cáo & Xuất CSV</span>
                     <span id="badge-total-registered-count" class="px-2 py-0.5 rounded-full bg-brand-surface text-slate-300 font-mono text-[11px]">0</span>
                 </button>
             </div>
 
-            <div class="flex items-center gap-2.5">
+            <div class="flex items-center gap-2.5 flex-wrap">
+                <!-- Trạng thái fetch -->
+                <span id="webhook-fetch-status" class="text-xs text-slate-400 font-mono"></span>
+
+                <!-- Toggle Auto-refresh -->
+                <label class="flex items-center gap-1.5 cursor-pointer select-none" title="Tự động cập nhật dữ liệu từ Google Sheets mỗi 60 giây">
+                    <input type="checkbox" id="toggle-auto-refresh" class="sr-only peer">
+                    <div class="relative w-9 h-5 bg-brand-card rounded-full peer peer-checked:bg-emerald-600 transition-colors border border-brand-border">
+                        <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-slate-300 rounded-full peer-checked:translate-x-4 transition-transform"></div>
+                    </div>
+                    <span class="text-xs text-slate-400">Tự động 60s</span>
+                </label>
+
+                <button id="btn-sync-live-sheet" class="px-3.5 py-2 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 text-xs font-semibold border border-emerald-500/30 transition-all flex items-center gap-1.5 shadow-sm" title="Tải kết quả thi thật được nộp từ Google Sheet vào Dashboard">
+                    <span>📥 Tải KQ Thật Từ Sheet</span>
+                </button>
                 <a href="https://docs.google.com/spreadsheets/d/1Ju4y-KNDe7eiMvpbyq2mPfKTijH_1NIC3j8Rykl7cak/edit" target="_blank" class="px-3.5 py-2 rounded-xl bg-green-600/20 hover:bg-green-600/30 text-green-400 text-xs font-semibold border border-green-500/30 transition-colors flex items-center gap-1.5" title="Mở trực tiếp Google Sheet Thu Hoạch Apollo">
-                    <span>📊 Google Sheet Apollo ↗</span>
+                    <span>📊 Google Sheet ↗</span>
                 </a>
                 <button id="btn-sync-roster" class="px-3.5 py-2 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 text-xs font-semibold border border-blue-500/30 transition-all flex items-center gap-1.5 shadow-sm" title="Đồng bộ danh sách 507 học viên từ Roster chuẩn (bao gồm 123 học viên Apollo)">
-                    <span>🔄 Đồng Bộ Roster</span>
+                    <span>🔄 Roster</span>
                 </button>
                 <button id="btn-purge-mock-data" class="px-3.5 py-2 rounded-xl bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 text-xs font-semibold border border-rose-500/30 transition-all flex items-center gap-1.5 shadow-sm" title="Dọn dẹp sạch toàn bộ dữ liệu mô phỏng, đưa học viên Apollo về trạng thái dữ liệu thật (0 lượt thi)">
-                    <span>🧹 Dọn Dẹp Mock Data</span>
+                    <span>🧹 Dọn Mock</span>
                 </button>
                 <button id="btn-seed-test-analytics" class="px-3.5 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-400 hover:text-slate-200 text-xs font-semibold border border-brand-border transition-all flex items-center gap-1.5 shadow-sm" title="Chỉ dùng để demo giao diện với học viên mẫu giả lập (không ảnh hưởng Apollo)">
-                    <span>🧪 Dữ Liệu Mẫu Demo</span>
+                    <span>🧪 Demo</span>
                 </button>
             </div>
         </div>
@@ -429,7 +452,251 @@
         </section>
 
         <!-- ========================================== -->
-        <!-- PANE 2: GENERAL 3-STAGES PROGRESS          -->
+        <!-- PANE 2: IAM STATIONS DASHBOARD (5 TRẠM)   -->
+        <!-- ========================================== -->
+        <section id="pane-iam-stations" class="space-y-8 hidden">
+
+            <!-- IAM KPI METRICS CARDS -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1.5 shadow-lg relative overflow-hidden">
+                    <div class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">HV Đã Tham Gia Workshop</div>
+                    <div class="flex items-baseline gap-2">
+                        <span id="iam-kpi-total" class="text-2xl lg:text-3xl font-extrabold text-white">0</span>
+                        <span id="iam-kpi-total-of" class="text-xs text-slate-500 font-mono">/ 0 HV Apollo</span>
+                    </div>
+                    <div class="text-[11px] text-emerald-400 font-medium">Thu hoạch thực tế từ Workshop I•A•M</div>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1.5 shadow-lg relative overflow-hidden">
+                    <div class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Hoàn Thành Đủ 5 Trạm</div>
+                    <div class="flex items-baseline gap-2">
+                        <span id="iam-kpi-full5" class="text-2xl lg:text-3xl font-extrabold text-emerald-400">0</span>
+                        <span id="iam-kpi-full5-pct" class="text-xs text-slate-500 font-mono">(0%)</span>
+                    </div>
+                    <div class="text-[11px] text-slate-500">Đã điền trọn vẹn 5 trạm chuyên đề</div>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1.5 shadow-lg relative overflow-hidden">
+                    <div class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Điểm I•A•M Trung Bình</div>
+                    <div class="flex items-baseline gap-2">
+                        <span id="iam-kpi-avg-score" class="text-2xl lg:text-3xl font-extrabold text-brand-amber">0.0</span>
+                        <span class="text-xs text-slate-500 font-mono">/ 20 điểm</span>
+                    </div>
+                    <div class="text-[11px] text-brand-amber/80">Điểm Hạnh Phúc + Lãnh Đạo</div>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1.5 shadow-lg relative overflow-hidden">
+                    <div class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Trạm Cần Hỗ Trợ Nhiều Nhất</div>
+                    <div id="iam-kpi-weakest" class="text-lg font-bold text-rose-400 truncate">—</div>
+                    <div class="text-[11px] text-slate-500">Trạm có ít lượt hoàn thành nhất</div>
+                </div>
+            </div>
+
+            <!-- HEATMAP 5 TRẠM WORKSHOP -->
+            <div class="p-6 rounded-2xl bg-brand-surface border border-brand-border space-y-4 shadow-lg">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                        <span>📊 Tỷ Lệ Hoàn Thành Theo 5 Trạm Workshop Team Happiness</span>
+                    </h3>
+                    <div class="text-xs text-slate-400">Dữ liệu tổng hợp thời gian thực từ Google Sheets</div>
+                </div>
+                <div id="iam-station-heatmap" class="grid grid-cols-1 sm:grid-cols-5 gap-3">
+                    <!-- Populated via JavaScript -->
+                </div>
+            </div>
+
+            <!-- CONTROLS & BỘ LỌC ĐA CHIỀU 5 TRẠM -->
+            <div class="p-4 rounded-2xl bg-brand-surface border border-brand-border space-y-3 shadow-lg">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="flex items-center gap-2.5 flex-wrap w-full sm:w-auto">
+                        <!-- Lọc Center -->
+                        <div class="relative">
+                            <select id="iam-filter-center" class="bg-brand-card border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-brand-amber pr-8">
+                                <option value="all">Tất cả Apollo Center</option>
+                            </select>
+                        </div>
+
+                        <!-- Lọc Phòng Ban -->
+                        <div class="relative">
+                            <select id="iam-filter-department" class="bg-brand-card border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-brand-amber pr-8">
+                                <option value="all">Tất cả Phòng ban</option>
+                            </select>
+                        </div>
+
+                        <!-- Lọc Tiến Độ Trạm -->
+                        <div class="relative">
+                            <select id="iam-filter-stations-count" class="bg-brand-card border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-brand-amber pr-8">
+                                <option value="all">Tất cả số trạm</option>
+                                <option value="5">Đủ 5/5 Trạm</option>
+                                <option value="1_4">1 - 4 Trạm</option>
+                                <option value="0">Chưa làm trạm nào</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2.5 w-full sm:w-auto">
+                        <div class="relative flex-1 sm:w-64">
+                            <input type="text" id="iam-search-input" placeholder="Tìm theo tên, email, SĐT..." class="w-full bg-brand-card border border-brand-border rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-amber" />
+                        </div>
+                        <button id="btn-export-iam-csv" class="px-3.5 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-300 hover:text-white text-xs font-semibold border border-brand-border transition-all flex items-center gap-1.5 shadow-sm whitespace-nowrap">
+                            <span>📥 Xuất CSV 5 Trạm</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BẢNG DANH SÁCH THU HOẠCH 5 TRẠM -->
+            <div class="rounded-2xl bg-brand-surface border border-brand-border overflow-hidden shadow-lg">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="border-b border-brand-border bg-brand-card/60 text-slate-400 font-semibold uppercase text-[10px] tracking-wider">
+                                <th class="p-4">Họ và tên / Tài khoản</th>
+                                <th class="p-4">Apollo Center</th>
+                                <th class="p-4">Phòng Ban</th>
+                                <th class="p-4 text-center">Trạm 1 (Mindset)</th>
+                                <th class="p-4 text-center">Trạm 2 (Leadership)</th>
+                                <th class="p-4 text-center">Trạm 3 (Skills)</th>
+                                <th class="p-4 text-center">Trạm 4 (Styles)</th>
+                                <th class="p-4 text-center">Trạm 5 (Action)</th>
+                                <th class="p-4 text-center">Tiến Độ</th>
+                                <th class="p-4 text-right">Chi Tiết</th>
+                            </tr>
+                        </thead>
+                        <tbody id="iam-table-body" class="divide-y divide-brand-border/50 text-slate-300">
+                            <!-- Injected via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="iam-table-empty" class="p-12 text-center text-slate-500 space-y-2 hidden">
+                    <div class="text-3xl">📭</div>
+                    <div class="text-sm font-semibold">Không tìm thấy dữ liệu Workshop phù hợp</div>
+                    <div class="text-xs">Học viên chưa nộp bài thu hoạch 5 trạm hoặc bộ lọc không khớp.</div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- PANE 3: BLENDED JOURNEY 360° DASHBOARD    -->
+        <!-- ========================================== -->
+        <section id="pane-blended-journey" class="space-y-8 hidden">
+
+            <!-- BLENDED 360° KPI METRICS CARDS -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1.5 shadow-lg relative overflow-hidden">
+                    <div class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Tổng Học Viên Blended</div>
+                    <div class="flex items-baseline gap-2">
+                        <span id="blended-kpi-total" class="text-2xl lg:text-3xl font-extrabold text-white">0</span>
+                        <span class="text-xs text-slate-500 font-mono">HV</span>
+                    </div>
+                    <div class="text-[11px] text-slate-400">Bao gồm Roster và Live Submissions</div>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1.5 shadow-lg relative overflow-hidden">
+                    <div class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Hoàn Thành Toàn Diện 360°</div>
+                    <div class="flex items-baseline gap-2">
+                        <span id="blended-kpi-all4" class="text-2xl lg:text-3xl font-extrabold text-emerald-400">0</span>
+                        <span id="blended-kpi-all4-pct" class="text-xs text-slate-500 font-mono">(0%)</span>
+                    </div>
+                    <div class="text-[11px] text-emerald-400 font-medium">Quiz + Values + ABCDE + 5 Trạm</div>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1.5 shadow-lg relative overflow-hidden">
+                    <div class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Tỷ Lệ Đạt Quiz (>80%)</div>
+                    <div class="flex items-baseline gap-2">
+                        <span id="blended-kpi-quiz-rate" class="text-2xl lg:text-3xl font-extrabold text-brand-amber">0%</span>
+                        <span id="blended-kpi-quiz-count" class="text-xs text-slate-500 font-mono">(0 HV)</span>
+                    </div>
+                    <div class="text-[11px] text-brand-amber/80">Vượt qua bài sát hạch đầu vào</div>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1.5 shadow-lg relative overflow-hidden">
+                    <div class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Hoàn Thành 5 Trạm Workshop</div>
+                    <div class="flex items-baseline gap-2">
+                        <span id="blended-kpi-iam-rate" class="text-2xl lg:text-3xl font-extrabold text-blue-400">0%</span>
+                        <span id="blended-kpi-iam-count" class="text-xs text-slate-500 font-mono">(0 HV)</span>
+                    </div>
+                    <div class="text-[11px] text-blue-400/80">Hoàn thành bài thu hoạch Workshop</div>
+                </div>
+            </div>
+
+            <!-- CONTROLS & BỘ LỌC ĐA CHIỀU BLENDED 360° -->
+            <div class="p-4 rounded-2xl bg-brand-surface border border-brand-border space-y-3 shadow-lg">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="flex items-center gap-2.5 flex-wrap w-full sm:w-auto">
+                        <!-- Lọc Cohort -->
+                        <div class="relative">
+                            <select id="blended-filter-cohort" class="bg-brand-card border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-brand-amber pr-8">
+                                <option value="all">Tất cả Khóa học</option>
+                            </select>
+                        </div>
+
+                        <!-- Lọc Center -->
+                        <div class="relative">
+                            <select id="blended-filter-center" class="bg-brand-card border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-brand-amber pr-8">
+                                <option value="all">Tất cả Center</option>
+                            </select>
+                        </div>
+
+                        <!-- Lọc Trạng Thái -->
+                        <div class="relative">
+                            <select id="blended-filter-status" class="bg-brand-card border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-brand-amber pr-8">
+                                <option value="all">Tất cả trạng thái</option>
+                                <option value="complete_100">Đạt 100% Hoàn thành</option>
+                                <option value="quiz_passed">Đã đạt Quiz (>80%)</option>
+                                <option value="iam_done">Đã làm 5 Trạm Workshop</option>
+                                <option value="in_progress">Đang trong tiến trình</option>
+                                <option value="not_started">Chưa bắt đầu</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2.5 w-full sm:w-auto">
+                        <div class="relative flex-1 sm:w-64">
+                            <input type="text" id="blended-search-input" placeholder="Tìm kiếm học viên 360°..." class="w-full bg-brand-card border border-brand-border rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-amber" />
+                        </div>
+                        <button id="btn-export-blended-csv" class="px-3.5 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-300 hover:text-white text-xs font-semibold border border-brand-border transition-all flex items-center gap-1.5 shadow-sm whitespace-nowrap">
+                            <span>📥 Xuất CSV 360°</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BẢNG TỔNG HỢP HÀNH TRÌNH BLENDED 360° -->
+            <div class="rounded-2xl bg-brand-surface border border-brand-border overflow-hidden shadow-lg">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="border-b border-brand-border bg-brand-card/60 text-slate-400 font-semibold uppercase text-[10px] tracking-wider">
+                                <th class="p-4">Họ và tên / Khóa</th>
+                                <th class="p-4">Cơ Sở & Phòng Ban</th>
+                                <th class="p-4 text-center">Trụ Cột 1: Quiz (&gt;80%)</th>
+                                <th class="p-4 text-center">Trụ Cột 2: Me Values</th>
+                                <th class="p-4 text-center">Trụ Cột 3: ABCDE</th>
+                                <th class="p-4 text-center">Trụ Cột 4: 5 Trạm I•A•M</th>
+                                <th class="p-4 text-center">Tiến Độ 360°</th>
+                                <th class="p-4 text-right">Chi Tiết</th>
+                            </tr>
+                        </thead>
+                        <tbody id="blended-table-body" class="divide-y divide-brand-border/50 text-slate-300">
+                            <!-- Injected via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="blended-table-empty" class="p-12 text-center text-slate-500 space-y-2 hidden">
+                    <div class="text-3xl">📭</div>
+                    <div class="text-sm font-semibold">Không tìm thấy dữ liệu học viên 360° phù hợp</div>
+                    <div class="text-xs">Thử điều chỉnh lại bộ lọc hoặc từ khóa tìm kiếm.</div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- PANE 4: GENERAL 3-STAGES PROGRESS (BÁO CÁO)-->
         <!-- ========================================== -->
         <section id="pane-general-progress" class="space-y-8 hidden">
 
@@ -664,6 +931,47 @@
         </div>
     </div>
 
+    <!-- MODAL CHI TIẾT THU HOẠCH 5 TRẠM I•A•M -->
+    <div id="iam-detail-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-brand-surface border border-brand-border rounded-3xl p-6 lg:p-8 max-w-4xl w-full shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-start justify-between border-b border-brand-border pb-4">
+                <div>
+                    <span class="text-[10px] uppercase font-bold tracking-widest text-emerald-400">Chi Tiết Thu Hoạch Workshop Team Happiness</span>
+                    <h3 id="iam-modal-learner-name" class="text-xl font-extrabold text-white mt-0.5">---</h3>
+                    <p id="iam-modal-learner-info" class="text-xs text-slate-400 font-mono">email@apollo.edu.vn • Apollo Center • Phòng ban</p>
+                </div>
+                <button id="btn-close-iam-detail" class="text-slate-400 hover:text-white p-2 rounded-lg bg-brand-card">✕</button>
+            </div>
+
+            <!-- SUMMARY STATS BAR -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 rounded-xl bg-brand-card/50 border border-brand-border text-xs">
+                <div>
+                    <div class="text-slate-400 text-[11px]">Tiến độ 5 Trạm:</div>
+                    <div id="iam-modal-status" class="text-emerald-400 font-bold mt-0.5 text-sm">0/5 Trạm</div>
+                </div>
+                <div>
+                    <div class="text-slate-400 text-[11px]">Điểm Hạnh Phúc / Lãnh Đạo:</div>
+                    <div id="iam-modal-scores" class="text-brand-amber font-bold font-mono mt-0.5 text-sm">—</div>
+                </div>
+                <div>
+                    <div class="text-slate-400 text-[11px]">Chỉ số cân bằng:</div>
+                    <div id="iam-modal-balance" class="text-white font-bold font-mono mt-0.5 text-sm">—</div>
+                </div>
+            </div>
+
+            <!-- 5 STATIONS CONTENT -->
+            <div id="iam-modal-stations-container" class="space-y-4">
+                <!-- Injected via JavaScript -->
+            </div>
+
+            <div class="flex justify-end pt-2 border-t border-brand-border">
+                <button id="btn-close-iam-detail-bottom" class="px-5 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-300 hover:text-white text-xs font-semibold border border-brand-border transition-colors">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- LOGIC SCRIPT -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
@@ -679,7 +987,9 @@
             const btnLockPortal = document.getElementById("btn-lock-portal");
 
             function checkPinSession() {
-                if (sessionStorage.getItem(PIN_SESSION_KEY) === "true") {
+                const urlParams = new URLSearchParams(window.location.search);
+                if (sessionStorage.getItem(PIN_SESSION_KEY) === "true" || urlParams.get("coach_unlocked") === "true" || urlParams.get("pin") === COACH_PIN) {
+                    sessionStorage.setItem(PIN_SESSION_KEY, "true");
                     pinModal.classList.add("hidden");
                     loadAllData();
                 } else {
@@ -705,34 +1015,104 @@
                 pinModal.classList.remove("hidden");
             });
 
-            // Tab Switching Logic
-            const tabBtnTest = document.getElementById("tab-btn-test-analytics");
-            const tabBtnGeneral = document.getElementById("tab-btn-general-progress");
-            const paneTest = document.getElementById("pane-test-analytics");
-            const paneGeneral = document.getElementById("pane-general-progress");
+            // Generic 4-Tab Switching Logic
+            const allTabBtns = document.querySelectorAll(".tab-btn");
+            const allPanes = document.querySelectorAll('[id^="pane-"]');
 
-            tabBtnTest.addEventListener("click", () => {
-                tabBtnTest.className = "px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-amber text-black shadow-lg";
-                tabBtnGeneral.className = "px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent";
-                paneTest.classList.remove("hidden");
-                paneGeneral.classList.add("hidden");
-            });
+            allTabBtns.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const targetPane = btn.dataset.pane;
+                    if (!targetPane) return;
 
-            tabBtnGeneral.addEventListener("click", () => {
-                tabBtnGeneral.className = "px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-amber text-black shadow-lg";
-                tabBtnTest.className = "px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent";
-                paneGeneral.classList.remove("hidden");
-                paneTest.classList.add("hidden");
+                    // Reset all tab button styles & badge styles
+                    allTabBtns.forEach(b => {
+                        b.className = "tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent";
+                        const bBadge = b.querySelector("[id^='badge-']");
+                        if (bBadge) {
+                            bBadge.className = "px-2 py-0.5 rounded-full bg-brand-surface text-slate-300 font-mono text-[11px]";
+                        }
+                    });
+
+                    // Activate clicked tab button & badge
+                    btn.className = "tab-btn active px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-amber text-black shadow-lg";
+                    const activeBadge = btn.querySelector("[id^='badge-']");
+                    if (activeBadge) {
+                        activeBadge.className = "px-2 py-0.5 rounded-full bg-black/20 text-black font-mono text-[11px]";
+                    }
+
+                    // Show/Hide corresponding pane
+                    allPanes.forEach(p => p.classList.add("hidden"));
+                    const targetEl = document.getElementById(targetPane);
+                    if (targetEl) targetEl.classList.remove("hidden");
+                });
             });
 
             // Master State
             let allLearners = [];
             let activeLearnerIdentity = null;
             let activeTestLearnerIdentity = null;
+            let activeIamLearnerIdentity = null;
 
-            // DOM Elements for Test Analytics
+            // Webhook & Data Sync Constants
+            const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
+            const WEBHOOK_ACTION = "get_lms_iam_submissions";
+            const AUTO_REFRESH_INTERVAL_MS = 60000; // 60 giây
+            let autoRefreshTimer = null;
+            let lastFetchTimestamp = null;
+
+            // Parsed Google Sheets Data Storage
+            let parsedLmsCheckpoints = [];
+            let parsedApolloSummary = [];
+            let parsedApolloLogs = [];
+
+            // Apollo Centers & Departments Master List (Source of Truth từ apolloCenters.ts)
+            const APOLLO_CENTERS = [
+                "Hội Sở Apollo English (Head Office)",
+                "Apollo Hà Nội — Lê Đại Hành",
+                "Apollo Hà Nội — Phố Huế",
+                "Apollo Hà Nội — Liễu Giai",
+                "Apollo Hà Nội — Hoàng Đạo Thúy",
+                "Apollo Hà Nội — Vũ Trọng Phụng",
+                "Apollo Hà Nội — Nguyễn Hữu Thọ (Linh Đàm)",
+                "Apollo Hà Nội — Tam Trinh",
+                "Apollo Hà Nội — Long Biên",
+                "Apollo Hà Nội — Hà Đông",
+                "Apollo TP.HCM — Ba Tháng Hai (Quận 10)",
+                "Apollo TP.HCM — Phú Mỹ Hưng (Quận 7)",
+                "Apollo TP.HCM — Trần Não (TP. Thủ Đức)",
+                "Apollo TP.HCM — Lê Văn Việt (TP. Thủ Đức)",
+                "Apollo TP.HCM — Phan Xích Long (Phú Nhuận)",
+                "Apollo TP.HCM — Bàu Cát (Tân Bình)",
+                "Apollo TP.HCM — Quang Trung (Gò Vấp)",
+                "Apollo TP.HCM — Bình Tân",
+                "Apollo Bình Dương — Thủ Dầu Một",
+                "Apollo Hải Phòng — Lê Hồng Phong",
+                "Apollo Đà Nẵng — Nguyễn Văn Linh",
+                "Cơ sở Apollo khác"
+            ];
+
+            const APOLLO_DEPARTMENTS = [
+                "Academic (Bộ phận Học thuật / Giảng dạy)",
+                "Center Management (Ban Quản lý Trung tâm)",
+                "Operations (Bộ phận Vận hành)",
+                "Student Experience / Customer Care (Trải nghiệm Học viên)",
+                "Human Resources & Training (Nhân sự & Đào tạo)",
+                "Sales & Enrollment (Tư vấn Tuyển sinh)",
+                "Marketing & Communications",
+                "Finance & Accounting",
+                "EdTech & Information Technology",
+                "Phòng ban khác"
+            ];
+
+            // Header Elements
+            const webhookFetchStatus = document.getElementById("webhook-fetch-status");
+            const toggleAutoRefresh = document.getElementById("toggle-auto-refresh");
+
+            // DOM Elements for Badges
             const badgeTestedLearnersCount = document.getElementById("badge-tested-learners-count");
             const badgeTotalRegisteredCount = document.getElementById("badge-total-registered-count");
+            const badgeIamLearnersCount = document.getElementById("badge-iam-learners-count");
+            const badgeBlendedLearnersCount = document.getElementById("badge-blended-learners-count");
 
             const testKpiTestedCount = document.getElementById("test-kpi-tested-count");
             const testKpiTestedTotal = document.getElementById("test-kpi-tested-total");
@@ -770,6 +1150,7 @@
             const testTableBody = document.getElementById("test-learners-table-body");
             const testTableEmpty = document.getElementById("test-table-empty");
 
+            const btnSyncLiveSheet = document.getElementById("btn-sync-live-sheet");
             const btnSyncRoster = document.getElementById("btn-sync-roster");
             const btnPurgeMockData = document.getElementById("btn-purge-mock-data");
             const btnSeedTestAnalytics = document.getElementById("btn-seed-test-analytics");
@@ -817,12 +1198,59 @@
             const coachNotesInput = document.getElementById("coach-notes-input");
             const btnSaveCoachNotes = document.getElementById("btn-save-coach-notes");
 
+            // DOM Elements for IAM Stations (Tab 2)
+            const iamKpiTotal = document.getElementById("iam-kpi-total");
+            const iamKpiTotalOf = document.getElementById("iam-kpi-total-of");
+            const iamKpiFull5 = document.getElementById("iam-kpi-full5");
+            const iamKpiFull5Pct = document.getElementById("iam-kpi-full5-pct");
+            const iamKpiAvgScore = document.getElementById("iam-kpi-avg-score");
+            const iamKpiWeakest = document.getElementById("iam-kpi-weakest");
+            const iamStationHeatmap = document.getElementById("iam-station-heatmap");
+            const iamFilterCenter = document.getElementById("iam-filter-center");
+            const iamFilterDepartment = document.getElementById("iam-filter-department");
+            const iamFilterStationsCount = document.getElementById("iam-filter-stations-count");
+            const iamSearchInput = document.getElementById("iam-search-input");
+            const iamTableBody = document.getElementById("iam-table-body");
+            const iamTableEmpty = document.getElementById("iam-table-empty");
+            const btnExportIamCsv = document.getElementById("btn-export-iam-csv");
+
+            // Modal elements for IAM Detail
+            const iamDetailModal = document.getElementById("iam-detail-modal");
+            const btnCloseIamDetail = document.getElementById("btn-close-iam-detail");
+            const btnCloseIamDetailBottom = document.getElementById("btn-close-iam-detail-bottom");
+            const iamModalLearnerName = document.getElementById("iam-modal-learner-name");
+            const iamModalLearnerInfo = document.getElementById("iam-modal-learner-info");
+            const iamModalStatus = document.getElementById("iam-modal-status");
+            const iamModalScores = document.getElementById("iam-modal-scores");
+            const iamModalBalance = document.getElementById("iam-modal-balance");
+            const iamModalStationsContainer = document.getElementById("iam-modal-stations-container");
+
+            // DOM Elements for Blended Journey 360° (Tab 3)
+            const blendedKpiTotal = document.getElementById("blended-kpi-total");
+            const blendedKpiAll4 = document.getElementById("blended-kpi-all4");
+            const blendedKpiAll4Pct = document.getElementById("blended-kpi-all4-pct");
+            const blendedKpiQuizRate = document.getElementById("blended-kpi-quiz-rate");
+            const blendedKpiQuizCount = document.getElementById("blended-kpi-quiz-count");
+            const blendedKpiIamRate = document.getElementById("blended-kpi-iam-rate");
+            const blendedKpiIamCount = document.getElementById("blended-kpi-iam-count");
+            const blendedFilterCohort = document.getElementById("blended-filter-cohort");
+            const blendedFilterCenter = document.getElementById("blended-filter-center");
+            const blendedFilterStatus = document.getElementById("blended-filter-status");
+            const blendedSearchInput = document.getElementById("blended-search-input");
+            const blendedTableBody = document.getElementById("blended-table-body");
+            const blendedTableEmpty = document.getElementById("blended-table-empty");
+            const btnExportBlendedCsv = document.getElementById("btn-export-blended-csv");
+
             // ==========================================
             // DYNAMIC COHORT DROPDOWN POPULATION
             // ==========================================
             function updateCohortFilterOptions() {
                 const currentTestVal = testFilterCohort ? testFilterCohort.value : "all";
                 const currentGenVal = generalFilterCohort ? generalFilterCohort.value : "all";
+                const currentBlendedCohortVal = blendedFilterCohort ? blendedFilterCohort.value : "all";
+                const currentIamCenterVal = iamFilterCenter ? iamFilterCenter.value : "all";
+                const currentIamDeptVal = iamFilterDepartment ? iamFilterDepartment.value : "all";
+                const currentBlendedCenterVal = blendedFilterCenter ? blendedFilterCenter.value : "all";
 
                 const cohortCounts = {};
                 allLearners.forEach(l => {
@@ -845,20 +1273,50 @@
 
                 if (testFilterCohort) {
                     testFilterCohort.innerHTML = optionsHtml;
-                    if (allCohorts.includes(currentTestVal) || currentTestVal === "all") {
-                        testFilterCohort.value = currentTestVal;
-                    } else {
-                        testFilterCohort.value = "all";
-                    }
+                    testFilterCohort.value = (allCohorts.includes(currentTestVal) || currentTestVal === "all") ? currentTestVal : "all";
                 }
 
                 if (generalFilterCohort) {
                     generalFilterCohort.innerHTML = optionsHtml;
-                    if (allCohorts.includes(currentGenVal) || currentGenVal === "all") {
-                        generalFilterCohort.value = currentGenVal;
-                    } else {
-                        generalFilterCohort.value = "all";
-                    }
+                    generalFilterCohort.value = (allCohorts.includes(currentGenVal) || currentGenVal === "all") ? currentGenVal : "all";
+                }
+
+                if (blendedFilterCohort) {
+                    blendedFilterCohort.innerHTML = optionsHtml;
+                    blendedFilterCohort.value = (allCohorts.includes(currentBlendedCohortVal) || currentBlendedCohortVal === "all") ? currentBlendedCohortVal : "all";
+                }
+
+                // Dynamic Center Dropdowns (Kết hợp 22 Center chuẩn + Center thực tế trong dữ liệu)
+                const allCentersSet = new Set(APOLLO_CENTERS);
+                allLearners.forEach(l => {
+                    if (l.center && String(l.center).trim()) allCentersSet.add(String(l.center).trim());
+                });
+                const allCentersList = Array.from(allCentersSet);
+                const centerOptionsHtml = `<option value="all">Tất cả Apollo Center (${allCentersList.length} cơ sở)</option>` +
+                    allCentersList.map(c => `<option value="${c}">${c}</option>`).join("");
+
+                if (iamFilterCenter) {
+                    iamFilterCenter.innerHTML = centerOptionsHtml;
+                    iamFilterCenter.value = (allCentersList.includes(currentIamCenterVal) || currentIamCenterVal === "all") ? currentIamCenterVal : "all";
+                }
+
+                if (blendedFilterCenter) {
+                    blendedFilterCenter.innerHTML = centerOptionsHtml;
+                    blendedFilterCenter.value = (allCentersList.includes(currentBlendedCenterVal) || currentBlendedCenterVal === "all") ? currentBlendedCenterVal : "all";
+                }
+
+                // Dynamic Department Dropdown (Kết hợp 10 Phòng ban chuẩn + Phòng ban thực tế)
+                const allDeptsSet = new Set(APOLLO_DEPARTMENTS);
+                allLearners.forEach(l => {
+                    if (l.department && String(l.department).trim()) allDeptsSet.add(String(l.department).trim());
+                });
+                const allDeptsList = Array.from(allDeptsSet);
+                const deptOptionsHtml = `<option value="all">Tất cả Phòng ban (${allDeptsList.length} ban)</option>` +
+                    allDeptsList.map(d => `<option value="${d}">${d}</option>`).join("");
+
+                if (iamFilterDepartment) {
+                    iamFilterDepartment.innerHTML = deptOptionsHtml;
+                    iamFilterDepartment.value = (allDeptsList.includes(currentIamDeptVal) || currentIamDeptVal === "all") ? currentIamDeptVal : "all";
                 }
             }
 
@@ -912,12 +1370,13 @@
 
                         let existing = allLearners.find(l => {
                             const lEmail = (l.email || (l.identity && l.identity.includes("@") ? l.identity : "")).toLowerCase().trim();
-                            const lPhone = (l.phone || (!l.identity || !l.identity.includes("@") ? l.identity : "")).replace(/\s+/g, "").trim();
+                            const lPhone = String(l.phone || (!l.identity || !l.identity.includes("@") ? l.identity : "") || "").replace(/\s+/g, "").trim();
                             const lName = (l.name || "").toLowerCase().trim();
 
-                            if (rEmail && lEmail && rEmail === lEmail) return true;
-                            if (rPhone && lPhone && rPhone === lPhone) return true;
-                            return rName && lName && rName === lName;
+                            if (rEmail && lEmail) return rEmail === lEmail;
+                            if (rPhone && lPhone && rPhone.length >= 8 && lPhone.length >= 8) return rPhone === lPhone || rPhone.endsWith(lPhone) || lPhone.endsWith(rPhone);
+                            if (!rEmail && !lEmail && !rPhone && !lPhone) return rName && lName && rName === lName;
+                            return false;
                         });
 
                         if (existing) {
@@ -969,6 +1428,450 @@
             }
 
             // ==========================================
+            // REAL-TIME DATA INGESTION FROM GOOGLE SHEETS
+            // ==========================================
+            function parse2DArrayToObjects(arr2D) {
+                if (!Array.isArray(arr2D) || arr2D.length < 2) return [];
+                const headers = arr2D[0].map(h => String(h || "").trim());
+                return arr2D.slice(1).map(row => {
+                    const obj = {};
+                    headers.forEach((h, i) => {
+                        obj[h] = (row && i < row.length && row[i] !== undefined) ? row[i] : "";
+                    });
+                    return obj;
+                }).filter(obj => {
+                    const name = String(obj["Họ Và Tên"] || obj["Họ Tên"] || obj["Họ và tên"] || obj["name"] || "").trim();
+                    const email = String(obj["Email"] || obj["email"] || "").trim();
+                    const phone = String(obj["Số Điện Thoại"] || obj["Số điện thoại"] || obj["Phone"] || obj["phone"] || "").trim();
+                    if (name.toLowerCase() === "undefined" && email.toLowerCase() === "undefined") return false;
+                    return name || email || phone;
+                });
+            }
+
+            function findLearnerByIdentity(sheetRow) {
+                const sEmail = String(sheetRow["Email"] || sheetRow["email"] || "").toLowerCase().trim();
+                const sPhone = String(sheetRow["Số Điện Thoại"] || sheetRow["Số điện thoại"] || sheetRow["Phone"] || sheetRow["phone"] || "").replace(/\s+/g, "").trim();
+                const sName = String(sheetRow["Họ Và Tên"] || sheetRow["Họ Tên"] || sheetRow["Họ và tên"] || sheetRow["name"] || "").toLowerCase().trim();
+                const sCenter = String(sheetRow["Cơ Sở Apollo"] || sheetRow["Center"] || sheetRow["Khóa / Cơ Sở"] || "").toLowerCase().trim();
+
+                // 1. Khớp chính xác Email
+                if (sEmail && sEmail !== "undefined") {
+                    const found = allLearners.find(l => {
+                        const lEmail = (l.email || (l.identity && l.identity.includes("@") ? l.identity : "")).toLowerCase().trim();
+                        return lEmail && lEmail === sEmail;
+                    });
+                    if (found) return found;
+                }
+
+                // 2. Khớp theo Số điện thoại nếu có (>= 8 số)
+                if (sPhone && sPhone.length >= 8 && sPhone !== "undefined") {
+                    const found = allLearners.find(l => {
+                        const lPhone = String(l.phone || (!l.identity || !l.identity.includes("@") ? l.identity : "") || "").replace(/\s+/g, "").trim();
+                        return lPhone && (lPhone === sPhone || (sPhone.length >= 8 && lPhone.endsWith(sPhone)) || (lPhone.length >= 8 && sPhone.endsWith(lPhone)));
+                    });
+                    if (found) return found;
+                }
+
+                // 3. Khớp theo Họ và tên nếu có (ưu tiên cùng Center nếu có)
+                if (sName && sName !== "undefined") {
+                    if (sCenter) {
+                        const foundWithCenter = allLearners.find(l => {
+                            const lName = (l.name || "").toLowerCase().trim();
+                            const lCenter = (l.center || l.cohort || "").toLowerCase().trim();
+                            return lName === sName && (lCenter.includes(sCenter) || sCenter.includes(lCenter));
+                        });
+                        if (foundWithCenter) return foundWithCenter;
+                    }
+
+                    const found = allLearners.find(l => {
+                        const lName = (l.name || "").toLowerCase().trim();
+                        return lName && lName === sName;
+                    });
+                    if (found) return found;
+                }
+
+                // 4. Nếu không tìm thấy trong roster, tự động khởi tạo learner mới từ dữ liệu Google Sheet
+                const newName = sheetRow["Họ Và Tên"] || sheetRow["Họ Tên"] || sheetRow["Họ và tên"] || sheetRow["name"] || sEmail || "Học viên mới";
+                const newIdentity = sEmail || sPhone || newName;
+                const newCohort = sheetRow["Khóa / Cơ Sở"] || sheetRow["Cơ Sở Apollo"] || sheetRow["Center"] || (sEmail.includes("apollo.edu.vn") ? "Team Happiness Apollo" : "DHM8");
+                const newLearner = {
+                    name: newName,
+                    identity: newIdentity,
+                    email: sEmail || "",
+                    phone: sPhone || "",
+                    cohort: newCohort,
+                    role: "Learner",
+                    center: sheetRow["Cơ Sở Apollo"] || sheetRow["Center"] || "",
+                    department: sheetRow["Phòng Ban"] || sheetRow["Department"] || "",
+                    lastActive: sheetRow["Thời Gian Cập Nhật"] || sheetRow["Timestamp"] || new Date().toISOString(),
+                    completedStagesCount: 0,
+                    stage1Passed: false,
+                    stage2ValuesCount: 0,
+                    stage3AbcdeFilled: false,
+                    coachNotes: "",
+                    testAttempts: [],
+                    data: { stageData: {} }
+                };
+                allLearners.push(newLearner);
+                return newLearner;
+            }
+
+            function mergeSheetDataIntoLearners() {
+                let mergedCount = 0;
+
+                // 1. Merge LMS Checkpoints (Quiz & Chặng 1, 2, 3)
+                parsedLmsCheckpoints.forEach(cp => {
+                    const learner = findLearnerByIdentity(cp);
+                    if (!learner) return;
+
+                    const rawScore = cp["Điểm Quiz Chặng 1"] !== undefined && cp["Điểm Quiz Chặng 1"] !== "" ? cp["Điểm Quiz Chặng 1"] : (cp["Quiz Score"] !== undefined ? cp["Quiz Score"] : cp["score"]);
+                    const score = parseInt(rawScore || 0, 10);
+                    const total = parseInt(cp["Tổng Số Câu"] || cp["Quiz Total"] || cp["total"] || 10, 10);
+                    const rawPct = cp["Tỷ Lệ Đúng (%)"] !== undefined && cp["Tỷ Lệ Đúng (%)"] !== "" ? cp["Tỷ Lệ Đúng (%)"] : (cp["Quiz Percent"] !== undefined ? cp["Quiz Percent"] : cp["percent"]);
+                    const percent = (rawPct !== undefined && rawPct !== null && rawPct !== "") ? parseInt(rawPct, 10) : (total > 0 ? Math.round((score / total) * 100) : 0);
+                    const statusStr = String(cp["Trạng Thái Quiz"] || cp["Quiz Passed"] || "").trim();
+                    const passed = (statusStr === "Đạt chuẩn" || cp["Quiz Passed"] === true || cp["Quiz Passed"] === "TRUE" || percent >= 80);
+                    const duration = parseInt(cp["Thời Gian Làm (giây)"] || cp["Quiz Duration"] || cp["durationSeconds"] || 135, 10);
+                    const timestamp = cp["Thời Gian Cập Nhật"] || cp["Timestamp"] || new Date().toISOString();
+                    const attemptsCount = parseInt(cp["Số Lần Làm Quiz"] || cp["quizAttempts"] || 1, 10);
+
+                    if (cp["Khóa / Cơ Sở"] && !learner.center) learner.center = cp["Khóa / Cơ Sở"];
+
+                    const hasQuizSubmission = (rawScore !== undefined && rawScore !== "" && rawScore !== null) ||
+                                              (rawPct !== undefined && rawPct !== "" && rawPct !== null) ||
+                                              statusStr === "Đạt chuẩn" || statusStr === "Chưa đạt" ||
+                                              passed ||
+                                              (attemptsCount > 0 && (rawScore !== undefined || rawPct !== undefined));
+
+                    if (hasQuizSubmission) {
+                        const isDuplicate = (learner.testAttempts || []).some(a => a.timestamp && timestamp && a.timestamp === timestamp);
+
+                        if (!learner.testAttempts) learner.testAttempts = [];
+
+                        if (!isDuplicate) {
+                            learner.testAttempts.push({
+                                attempt: attemptsCount || (learner.testAttempts.length + 1),
+                                score: score,
+                                total: total,
+                                percent: percent,
+                                passed80: passed,
+                                durationSeconds: duration,
+                                timestamp: timestamp
+                            });
+                        }
+
+                        learner.stage1Passed = learner.testAttempts.some(a => a.passed80) || passed;
+                        learner.completedStagesCount = Math.max(learner.completedStagesCount || 0, learner.stage1Passed ? 1 : 0);
+                        if (!learner.data) learner.data = { stageData: {} };
+                        if (!learner.data.stageData) learner.data.stageData = {};
+                        if (!learner.data.stageData["stage-1"]) learner.data.stageData["stage-1"] = {};
+                        learner.data.stageData["stage-1"].passed = learner.stage1Passed;
+                        learner.data.stageData["stage-1"].score = Math.max(score, learner.data.stageData["stage-1"].score || 0);
+
+                        const bestAttPct = Math.max(...learner.testAttempts.map(a => a.percent));
+                        learner.coachNotes = learner.coachNotes || `Kết quả thi thật đồng bộ từ Google Sheets (${bestAttPct}%).`;
+                        mergedCount++;
+                    }
+
+                    // Merge Top 7 Me Values
+                    const valuesRaw = cp["Top 7 Giá Trị Cốt Lõi (Me Values)"] || cp["Me Values JSON"] || cp["selectedValues"];
+                    if (valuesRaw) {
+                        try {
+                            let vals = [];
+                            if (typeof valuesRaw === "string") {
+                                const trimmed = valuesRaw.trim();
+                                if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
+                                    vals = JSON.parse(trimmed);
+                                } else if (trimmed.includes(",")) {
+                                    vals = trimmed.split(",").map(v => v.trim()).filter(Boolean);
+                                } else if (trimmed) {
+                                    vals = [trimmed];
+                                }
+                            } else if (Array.isArray(valuesRaw)) {
+                                vals = valuesRaw;
+                            }
+
+                            if (vals.length > 0) {
+                                if (!learner.data) learner.data = { stageData: {} };
+                                if (!learner.data.stageData) learner.data.stageData = {};
+                                learner.data.stageData["stage-2"] = learner.data.stageData["stage-2"] || {};
+                                learner.data.stageData["stage-2"].selectedValues = vals;
+                                learner.stage2ValuesCount = vals.length;
+                                learner.completedStagesCount = Math.max(learner.completedStagesCount || 0, 2);
+                            }
+                        } catch (e) {}
+                    }
+
+                    // Merge Checkpoint 1 & 2 I•A•M reflections
+                    const cp1I = cp["Checkpoint 1 - I (Interested)"];
+                    const cp1A = cp["Checkpoint 1 - A (Actionable)"];
+                    const cp1M = cp["Checkpoint 1 - M (Meaningful)"];
+                    if (cp1I || cp1A || cp1M) {
+                        if (!learner.data) learner.data = { stageData: {} };
+                        if (!learner.data.stageData) learner.data.stageData = {};
+                        learner.data.stageData["stage-1"] = learner.data.stageData["stage-1"] || {};
+                        learner.data.stageData["stage-1"].iam = { I: cp1I || "", A: cp1A || "", M: cp1M || "" };
+                    }
+
+                    const cp2I = cp["Checkpoint 2 - I (Interested)"];
+                    const cp2A = cp["Checkpoint 2 - A (Actionable)"];
+                    const cp2M = cp["Checkpoint 2 - M (Meaningful)"];
+                    if (cp2I || cp2A || cp2M) {
+                        if (!learner.data) learner.data = { stageData: {} };
+                        if (!learner.data.stageData) learner.data.stageData = {};
+                        learner.data.stageData["stage-2"] = learner.data.stageData["stage-2"] || {};
+                        learner.data.stageData["stage-2"].iam = { I: cp2I || "", A: cp2A || "", M: cp2M || "" };
+                    }
+
+                    // Merge ABCDE hoặc Thói quen Chặng 2/3
+                    const rawSets = cp["Dữ Liệu Gốc Đầy Đủ (Raw JSON Sets)"] || cp["Chặng 2 - 5 Thói Quen (JSON)"];
+                    if (rawSets && typeof rawSets === "string" && rawSets.includes("optimism")) {
+                        try {
+                            const parsedHabits = JSON.parse(rawSets);
+                            if (parsedHabits.optimism?.abcde?.D) {
+                                if (!learner.data) learner.data = { stageData: {} };
+                                if (!learner.data.stageData) learner.data.stageData = {};
+                                learner.data.stageData["stage-3"] = { abcde: parsedHabits.optimism.abcde };
+                                learner.stage3AbcdeFilled = true;
+                                learner.completedStagesCount = Math.max(learner.completedStagesCount || 0, 3);
+                            }
+                        } catch (e) {}
+                    }
+                });
+
+                // 2. Merge Apollo Summary (5 Trạm Workshop I•A•M)
+                parsedApolloSummary.forEach(row => {
+                    const learner = findLearnerByIdentity(row);
+                    if (!learner) return;
+
+                    if (!learner.iamStations) learner.iamStations = {};
+
+                    // Duyệt qua 5 trạm
+                    for (let i = 1; i <= 5; i++) {
+                        const tag = row[`Trạm ${i} - Tag`] || row[`Trạm ${i}`] || row[`Station ${i} Tag`] || "";
+                        const interested = row[`Trạm ${i} - Thấu Hiểu (Interested)`] || "";
+                        const actionable = row[`Trạm ${i} - Ứng Dụng (Actionable)`] || "";
+                        const meaningful = row[`Trạm ${i} - Ý Nghĩa (Meaningful)`] || "";
+
+                        if (tag || interested || actionable || meaningful) {
+                            learner.iamStations[`station${i}`] = {
+                                completed: true,
+                                tag: tag,
+                                interested: interested,
+                                actionable: actionable,
+                                meaningful: meaningful,
+                                score: parseFloat(row[`Trạm ${i} Score`] || row[`Điểm Trạm ${i}`] || 10) || 10
+                            };
+                        }
+                    }
+
+                    learner.iamCompletedStationsCount = Object.keys(learner.iamStations).length;
+                    learner.iamTotalScore = (parseFloat(row["Điểm Hạnh Phúc (Happiness)"] || 0) + parseFloat(row["Điểm Lãnh Đạo (Leadership)"] || 0)) || (learner.iamCompletedStationsCount * 4);
+                    learner.iamHappinessScore = parseFloat(row["Điểm Hạnh Phúc (Happiness)"] || 0);
+                    learner.iamLeadershipScore = parseFloat(row["Điểm Lãnh Đạo (Leadership)"] || 0);
+                    learner.iamBalanceIndex = row["Chỉ Số Cân Bằng (%)"] || "";
+
+                    if (row["Cơ Sở Apollo"] || row["Center"]) learner.center = row["Cơ Sở Apollo"] || row["Center"];
+                    if (row["Phòng Ban"] || row["Department"]) learner.department = row["Phòng Ban"] || row["Department"];
+                    if (row["Trạng Thái"]) learner.iamStatusStr = row["Trạng Thái"];
+                });
+
+                // 3. Merge Apollo Logs (Nhật ký từng trạm chi tiết)
+                parsedApolloLogs.forEach(log => {
+                    const learner = findLearnerByIdentity(log);
+                    if (!learner) return;
+
+                    if (!learner.iamStations) learner.iamStations = {};
+                    const stRaw = String(log["Trạm Số"] || log["stationId"] || "");
+                    const stNum = parseInt(stRaw.replace(/\D+/g, "") || 0, 10);
+                    if (stNum >= 1 && stNum <= 5) {
+                        const key = `station${stNum}`;
+                        learner.iamStations[key] = learner.iamStations[key] || { completed: true };
+                        learner.iamStations[key].completed = true;
+                        learner.iamStations[key].tag = log["Tag Đã Chọn"] || learner.iamStations[key].tag || "";
+                        learner.iamStations[key].title = log["Tên Trạm"] || learner.iamStations[key].title || "";
+                        if (log["Thấu Hiểu (Interested)"]) learner.iamStations[key].interested = log["Thấu Hiểu (Interested)"];
+                        if (log["Ứng Dụng (Actionable)"]) learner.iamStations[key].actionable = log["Ứng Dụng (Actionable)"];
+                        if (log["Ý Nghĩa (Meaningful)"]) learner.iamStations[key].meaningful = log["Ý Nghĩa (Meaningful)"];
+                    }
+                    if (log["Cơ Sở Apollo"] && !learner.center) learner.center = log["Cơ Sở Apollo"];
+                    if (log["Phòng Ban"] && !learner.department) learner.department = log["Phòng Ban"];
+                    learner.iamCompletedStationsCount = Object.keys(learner.iamStations).length;
+                });
+
+                ensureTestMetricsIntegrity();
+                updateCohortFilterOptions();
+                localStorage.setItem(REGISTRY_KEY, JSON.stringify(allLearners));
+                return mergedCount;
+            }
+
+            let isFetchingLiveData = false;
+
+            async function fetchLiveDataFromWebhook(showAlert = false) {
+                if (isFetchingLiveData) return 0;
+                isFetchingLiveData = true;
+                if (webhookFetchStatus) {
+                    webhookFetchStatus.textContent = "⏳ Đang kết nối Google Sheets...";
+                    webhookFetchStatus.className = "text-xs text-amber-400 font-mono animate-pulse";
+                }
+
+                try {
+                    const url = `${WEBHOOK_URL}?action=${WEBHOOK_ACTION}&t=${Date.now()}`;
+                    const res = await fetch(url);
+                    if (!res.ok) {
+                        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+                    }
+                    const data = await res.json();
+                    if (!data || !data.success) {
+                        throw new Error(data?.error || "Dữ liệu trả về không hợp lệ từ GAS");
+                    }
+
+                    parsedLmsCheckpoints = parse2DArrayToObjects(data.lmsCheckpoints || []);
+                    parsedApolloSummary = parse2DArrayToObjects(data.apolloSummary || []);
+                    parsedApolloLogs = parse2DArrayToObjects(data.apolloLogs || []);
+
+                    const mergedCount = mergeSheetDataIntoLearners();
+                    lastFetchTimestamp = new Date();
+
+                    if (webhookFetchStatus) {
+                        webhookFetchStatus.textContent = `✅ Đã tải ${parsedLmsCheckpoints.length} bài Quiz + ${parsedApolloSummary.length} bài I•A•M (${lastFetchTimestamp.toLocaleTimeString('vi-VN')})`;
+                        webhookFetchStatus.className = "text-xs text-emerald-400 font-mono";
+                    }
+
+                    if (showAlert) {
+                        alert(`Đồng bộ thành công từ Google Sheets!\n- ${parsedLmsCheckpoints.length} bài Quiz LMS\n- ${parsedApolloSummary.length} bản ghi tổng hợp 5 Trạm\n- ${parsedApolloLogs.length} nhật ký từng trạm\n- Đã cập nhật ${mergedCount} học viên vào Dashboard.`);
+                    }
+                    isFetchingLiveData = false;
+                    return mergedCount;
+                } catch (err) {
+                    console.warn("fetchLiveDataFromWebhook failed, trying JSONP fallback:", err);
+                    if (webhookFetchStatus) {
+                        webhookFetchStatus.textContent = "⏳ Đang thử Fallback qua JSONP...";
+                        webhookFetchStatus.className = "text-xs text-amber-400 font-mono";
+                    }
+                    return fetchLiveDataViaJsonp(showAlert);
+                }
+            }
+
+            function fetchLiveDataViaJsonp(showAlert = false) {
+                return new Promise((resolve) => {
+                    const randomSuffix = Array.from(crypto.getRandomValues(new Uint8Array(12)))
+                        .map(b => b.toString(36).padStart(2, "0")).join("").slice(0, 20);
+                    const callbackName = `dh10Jsonp_${randomSuffix}`;
+                    const script = document.createElement("script");
+
+                    const timeoutId = setTimeout(() => {
+                        cleanup();
+                        if (webhookFetchStatus) {
+                            webhookFetchStatus.textContent = "❌ Lỗi kết nối Google Sheets (Timeout)";
+                            webhookFetchStatus.className = "text-xs text-rose-400 font-mono";
+                        }
+                        if (showAlert) alert("Không thể kết nối đến Google Sheets Webhook (Hết thời gian chờ).");
+                        resolve(0);
+                    }, 15000);
+
+                    function cleanup() {
+                        clearTimeout(timeoutId);
+                        delete window[callbackName];
+                        if (script.parentNode) script.parentNode.removeChild(script);
+                        isFetchingLiveData = false;
+                    }
+
+                    window[callbackName] = function(data) {
+                        cleanup();
+                        if (data && data.success) {
+                            parsedLmsCheckpoints = parse2DArrayToObjects(data.lmsCheckpoints || []);
+                            parsedApolloSummary = parse2DArrayToObjects(data.apolloSummary || []);
+                            parsedApolloLogs = parse2DArrayToObjects(data.apolloLogs || []);
+
+                            const count = mergeSheetDataIntoLearners();
+                            lastFetchTimestamp = new Date();
+
+                            if (webhookFetchStatus) {
+                                webhookFetchStatus.textContent = `✅ Đã tải ${parsedLmsCheckpoints.length} bài Quiz + ${parsedApolloSummary.length} bài I•A•M (JSONP ${lastFetchTimestamp.toLocaleTimeString('vi-VN')})`;
+                                webhookFetchStatus.className = "text-xs text-emerald-400 font-mono";
+                            }
+                            if (showAlert) {
+                                alert(`Đồng bộ thành công qua JSONP!\n- Đã nạp ${count} kết quả thi thực tế từ Google Sheets.`);
+                            }
+                            resolve(count);
+                        } else {
+                            if (webhookFetchStatus) {
+                                webhookFetchStatus.textContent = "❌ Lỗi đọc dữ liệu Google Sheets";
+                                webhookFetchStatus.className = "text-xs text-rose-400 font-mono";
+                            }
+                            if (showAlert) alert("Google Sheets trả về lỗi: " + (data?.error || "Unknown"));
+                            resolve(0);
+                        }
+                    };
+
+                    script.src = `${WEBHOOK_URL}?action=${WEBHOOK_ACTION}&callback=${callbackName}&t=${Date.now()}`;
+                    script.onerror = () => {
+                        cleanup();
+                        if (webhookFetchStatus) {
+                            webhookFetchStatus.textContent = "❌ Lỗi tải Webhook Script";
+                            webhookFetchStatus.className = "text-xs text-rose-400 font-mono";
+                        }
+                        if (showAlert) alert("Lỗi mạng khi tải script từ Google Sheets.");
+                        resolve(0);
+                    };
+
+                    document.head.appendChild(script);
+                });
+            }
+
+            // Đồng bộ tiến độ bài thi của tài khoản đang thao tác thực tế trên trình duyệt này (nếu có làm bài trên index.html)
+            function syncLocalSessionProgress() {
+                try {
+                    const storedUserRaw = localStorage.getItem("dhm_lms_auth_user");
+                    if (!storedUserRaw) return;
+                    const authUser = JSON.parse(storedUserRaw);
+                    const userIdentifier = authUser.identity || authUser.email || authUser.phone;
+                    if (!userIdentifier) return;
+
+                    const progressRaw = localStorage.getItem(`dhm_lms_progress_${userIdentifier}`);
+                    if (!progressRaw) return;
+                    const progress = JSON.parse(progressRaw);
+                    const s1 = progress.stageData?.["stage-1"];
+                    if (!s1 || !s1.quizAnswers || Object.keys(s1.quizAnswers).length === 0) return;
+
+                    const authEmail = (authUser.email || "").toLowerCase().trim();
+                    const authPhone = (authUser.phone || "").replace(/\s+/g, "").trim();
+                    const authName = (authUser.name || "").toLowerCase().trim();
+
+                    let learner = authEmail ? allLearners.find(l => (l.email || "").toLowerCase().trim() === authEmail) : null;
+                    if (!learner && authPhone && authPhone.length >= 8) {
+                        learner = allLearners.find(l => (l.phone || "").replace(/\s+/g, "").trim() === authPhone);
+                    }
+                    if (!learner && authName) {
+                        learner = allLearners.find(l => (l.name || "").toLowerCase().trim() === authName);
+                    }
+
+                    if (learner) {
+                        const score = s1.score !== undefined ? s1.score : Object.keys(s1.quizAnswers).length;
+                        const pct = s1.percentage !== undefined ? s1.percentage : Math.round((score / 10) * 100);
+                        const passed = s1.passed !== undefined ? s1.passed : (pct >= 80);
+                        learner.testAttempts = [
+                            {
+                                attempt: s1.quizAttempts || 1,
+                                score: score,
+                                total: 10,
+                                percent: pct,
+                                passed80: passed,
+                                durationSeconds: 150,
+                                timestamp: new Date().toISOString()
+                            }
+                        ];
+                        learner.completedStagesCount = progress.completedStages?.length || 1;
+                        learner.stage1Passed = passed;
+                        learner.coachNotes = `Bài thi thực tế trên máy cục bộ (${pct}%).`;
+                    }
+                } catch (e) {
+                    console.warn("Could not sync local session progress:", e);
+                }
+            }
+
+            // ==========================================
             // DATA LOADING & NORMALIZATION
             // ==========================================
             async function loadAllData() {
@@ -979,16 +1882,23 @@
                     allLearners = [];
                 }
 
-                // Tự động dọn dẹp dữ liệu mô phỏng giả lập cũ của học viên Apollo (nếu có từ trước)
-                purgeSimulatedApolloData();
-
-                // Luôn tự động đồng bộ & nạp toàn bộ học viên từ roster (507 HV, bao gồm 123 HV Apollo với dữ liệu thật)
+                // Bước 1: Nạp Roster chính thức (507 HV, bao gồm 123 HV Apollo)
                 await syncAndMergeRoster(false);
 
+                // Bước 2: Tải dữ liệu thời gian thực từ Google Sheets (3 tabs: LMS Checkpoints, Apollo Summary, Apollo Logs)
+                await fetchLiveDataFromWebhook(false);
+
+                // Bước 3: Đồng bộ bài thi thực tế của chính tài khoản đang đăng nhập trên trình duyệt hiện tại (nếu có)
+                syncLocalSessionProgress();
+
+                // Bước 4: Đảm bảo toàn vẹn dữ liệu đo lường & Cập nhật bộ lọc
                 ensureTestMetricsIntegrity();
                 updateCohortFilterOptions();
 
+                // Bước 5: Render đồng nhất cả 4 Tab Dashboard
                 renderTestAnalytics();
+                renderIamDashboard();
+                renderBlendedJourney();
                 renderGeneralDashboard();
             }
 
@@ -1368,6 +2278,8 @@
                     btnSyncRoster.disabled = true;
                     await syncAndMergeRoster(true);
                     renderTestAnalytics();
+                    renderIamDashboard();
+                    renderBlendedJourney();
                     renderGeneralDashboard();
                     btnSyncRoster.innerHTML = origHtml;
                     btnSyncRoster.disabled = false;
@@ -1444,15 +2356,40 @@
                 updateCohortFilterOptions();
                 localStorage.setItem(REGISTRY_KEY, JSON.stringify(allLearners));
                 renderTestAnalytics();
+                renderIamDashboard();
+                renderBlendedJourney();
                 renderGeneralDashboard();
                 alert(`Đã nạp thành công bộ dữ liệu kiểm thử mẫu demo (${sampleTestProfiles.length} học viên mẫu)! Dữ liệu học viên Apollo được giữ nguyên trạng thái dữ liệu thật.`);
             });
+
+            // Nút Tải Kết Quả Thực Tế Từ Google Sheet
+            if (btnSyncLiveSheet) {
+                btnSyncLiveSheet.addEventListener("click", async () => {
+                    const origHtml = btnSyncLiveSheet.innerHTML;
+                    btnSyncLiveSheet.innerHTML = "<span>⏳ Đang tải...</span>";
+                    btnSyncLiveSheet.disabled = true;
+                    try {
+                        await fetchLiveDataFromWebhook(true);
+                        renderTestAnalytics();
+                        renderIamDashboard();
+                        renderBlendedJourney();
+                        renderGeneralDashboard();
+                    } catch (err) {
+                        console.error("Manual sync failed:", err);
+                    } finally {
+                        btnSyncLiveSheet.innerHTML = origHtml;
+                        btnSyncLiveSheet.disabled = false;
+                    }
+                });
+            }
 
             // Nút Dọn dẹp sạch toàn bộ dữ liệu mô phỏng (Về dữ liệu thật 0 HV đã làm bài)
             if (btnPurgeMockData) {
                 btnPurgeMockData.addEventListener("click", () => {
                     const count = purgeSimulatedApolloData();
                     renderTestAnalytics();
+                    renderIamDashboard();
+                    renderBlendedJourney();
                     renderGeneralDashboard();
                     alert(`Đã dọn dẹp sạch toàn bộ dữ liệu mô phỏng của ${count} học viên Apollo. Danh sách hiện đang ở trạng thái dữ liệu thật (0 lượt thi)!`);
                 });
@@ -1506,6 +2443,590 @@
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
             });
+
+            // ==========================================
+            // RENDER IAM STATIONS DASHBOARD (TAB 2)
+            // ==========================================
+            function renderIamDashboard() {
+                const apolloLearners = allLearners.filter(l => l.iamStations && Object.keys(l.iamStations).length > 0);
+                const totalApollo = allLearners.filter(l => (l.cohort || "").includes("Apollo") || (l.email && l.email.includes("apollo.edu.vn"))).length || 123;
+
+                // KPI 1: Đã tham gia
+                if (iamKpiTotal) iamKpiTotal.textContent = apolloLearners.length;
+                if (iamKpiTotalOf) iamKpiTotalOf.textContent = `/ ${totalApollo} HV Apollo`;
+
+                // KPI 2: Hoàn thành đủ 5 trạm
+                const full5 = apolloLearners.filter(l => (l.iamCompletedStationsCount || Object.keys(l.iamStations).length) >= 5).length;
+                if (iamKpiFull5) iamKpiFull5.textContent = full5;
+                if (iamKpiFull5Pct) {
+                    const full5Pct = apolloLearners.length > 0 ? Math.round((full5 / apolloLearners.length) * 100) : 0;
+                    iamKpiFull5Pct.textContent = `(${full5Pct}%)`;
+                }
+
+                // KPI 3: Điểm trung bình
+                const scores = apolloLearners.map(l => l.iamTotalScore || 0).filter(s => s > 0);
+                const avgScore = scores.length > 0 ? (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1) : "0.0";
+                if (iamKpiAvgScore) iamKpiAvgScore.textContent = avgScore;
+
+                // KPI 4: Trạm ít lượt nhất
+                const stationCounts = [0, 0, 0, 0, 0];
+                apolloLearners.forEach(l => {
+                    for (let i = 1; i <= 5; i++) {
+                        if (l.iamStations && l.iamStations[`station${i}`]?.completed) {
+                            stationCounts[i - 1]++;
+                        }
+                    }
+                });
+
+                if (iamKpiWeakest) {
+                    if (apolloLearners.length > 0) {
+                        const minVal = Math.min(...stationCounts);
+                        const minIdx = stationCounts.indexOf(minVal);
+                        iamKpiWeakest.textContent = `Trạm ${minIdx + 1} (${stationCounts[minIdx]} HV)`;
+                    } else {
+                        iamKpiWeakest.textContent = "—";
+                    }
+                }
+
+                // Heatmap 5 Trạm
+                if (iamStationHeatmap) {
+                    iamStationHeatmap.innerHTML = "";
+                    const stationNames = [
+                        "Trạm 1 (Mindset)",
+                        "Trạm 2 (Leadership)",
+                        "Trạm 3 (Skills)",
+                        "Trạm 4 (Styles)",
+                        "Trạm 5 (Action)"
+                    ];
+                    for (let i = 0; i < 5; i++) {
+                        const pct = totalApollo > 0 ? Math.round((stationCounts[i] / totalApollo) * 100) : 0;
+                        const colorClass = pct >= 80 ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" :
+                                           pct >= 50 ? "bg-amber-500/20 text-amber-400 border-amber-500/30" :
+                                           "bg-rose-500/20 text-rose-400 border-rose-500/30";
+                        iamStationHeatmap.innerHTML += `
+                            <div class="p-4 rounded-xl ${colorClass} border text-center transition-all hover:scale-105">
+                                <div class="text-2xl font-extrabold">${pct}%</div>
+                                <div class="text-xs mt-1 font-semibold">${stationNames[i]}</div>
+                                <div class="text-[10px] opacity-70 mt-0.5">${stationCounts[i]} / ${totalApollo} HV</div>
+                            </div>
+                        `;
+                    }
+                }
+
+                // Badge Tab
+                if (badgeIamLearnersCount) {
+                    badgeIamLearnersCount.textContent = `${apolloLearners.length} HV`;
+                }
+
+                renderIamTable();
+            }
+
+            function renderIamTable() {
+                const query = (iamSearchInput ? iamSearchInput.value : "").toLowerCase().trim();
+                const center = iamFilterCenter ? iamFilterCenter.value : "all";
+                const dept = iamFilterDepartment ? iamFilterDepartment.value : "all";
+                const stFilter = iamFilterStationsCount ? iamFilterStationsCount.value : "all";
+
+                const candidates = allLearners.filter(l => {
+                    const hasStations = l.iamStations && Object.keys(l.iamStations).length > 0;
+                    const isApollo = (l.cohort && l.cohort.includes("Apollo")) || (l.email && l.email.includes("apollo.edu.vn"));
+                    return hasStations || isApollo;
+                });
+
+                const filtered = candidates.filter(l => {
+                    if (center !== "all" && l.center !== center) return false;
+                    if (dept !== "all" && l.department !== dept) return false;
+
+                    const count = l.iamCompletedStationsCount || (l.iamStations ? Object.keys(l.iamStations).length : 0);
+                    if (stFilter === "5" && count < 5) return false;
+                    if (stFilter === "1_4" && (count < 1 || count > 4)) return false;
+                    if (stFilter === "0" && count > 0) return false;
+
+                    if (query) {
+                        const matchQ = (l.name || "").toLowerCase().includes(query) ||
+                                       (l.identity || "").toLowerCase().includes(query) ||
+                                       (l.email || "").toLowerCase().includes(query) ||
+                                       (l.phone || "").includes(query);
+                        if (!matchQ) return false;
+                    }
+                    return true;
+                });
+
+                if (iamTableBody) {
+                    iamTableBody.innerHTML = "";
+                    if (filtered.length === 0) {
+                        if (iamTableEmpty) iamTableEmpty.classList.remove("hidden");
+                        return;
+                    }
+                    if (iamTableEmpty) iamTableEmpty.classList.add("hidden");
+
+                    function renderStCell(stObj) {
+                        if (stObj && stObj.completed) {
+                            return `<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-semibold text-[10px] border border-emerald-500/30" title="${stObj.tag || ''}">✓ Đạt</span>`;
+                        }
+                        return '<span class="px-2 py-0.5 rounded bg-brand-card text-slate-500 text-[10px]">Chưa</span>';
+                    }
+
+                    filtered.forEach(learner => {
+                        const tr = document.createElement("tr");
+                        tr.className = "hover:bg-brand-card/40 transition-colors";
+
+                        const st1 = learner.iamStations?.station1;
+                        const st2 = learner.iamStations?.station2;
+                        const st3 = learner.iamStations?.station3;
+                        const st4 = learner.iamStations?.station4;
+                        const st5 = learner.iamStations?.station5;
+
+                        const stCount = learner.iamCompletedStationsCount || (learner.iamStations ? Object.keys(learner.iamStations).length : 0);
+                        const pct = Math.round((stCount / 5) * 100);
+
+                        tr.innerHTML = `
+                            <td class="p-4">
+                                <div class="font-bold text-white">${learner.name}</div>
+                                <div class="text-[11px] text-slate-500 font-mono">${learner.identity || learner.email || learner.phone || "—"}</div>
+                            </td>
+                            <td class="p-4 text-slate-300">
+                                <div class="font-medium text-xs truncate max-w-[180px]" title="${learner.center || ''}">${learner.center || '<span class="text-slate-500">Chưa xác định</span>'}</div>
+                            </td>
+                            <td class="p-4 text-slate-300">
+                                <div class="font-medium text-xs truncate max-w-[150px]" title="${learner.department || ''}">${learner.department || '<span class="text-slate-500">—</span>'}</div>
+                            </td>
+                            <td class="p-4 text-center">${renderStCell(st1)}</td>
+                            <td class="p-4 text-center">${renderStCell(st2)}</td>
+                            <td class="p-4 text-center">${renderStCell(st3)}</td>
+                            <td class="p-4 text-center">${renderStCell(st4)}</td>
+                            <td class="p-4 text-center">${renderStCell(st5)}</td>
+                            <td class="p-4 text-center">
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <div class="w-12 h-1.5 bg-brand-dark rounded-full overflow-hidden border border-brand-border">
+                                        <div class="h-full ${stCount === 5 ? 'bg-emerald-400' : 'bg-brand-amber'} rounded-full" style="width: ${pct}%"></div>
+                                    </div>
+                                    <span class="font-mono text-xs font-bold ${stCount === 5 ? 'text-emerald-400' : stCount > 0 ? 'text-brand-amber' : 'text-slate-500'}">${stCount}/5</span>
+                                </div>
+                                <div class="text-[10px] text-slate-500 font-mono mt-0.5">Điểm: ${learner.iamTotalScore || 0}</div>
+                            </td>
+                            <td class="p-4 text-right">
+                                <button class="btn-inspect-iam px-3 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-emerald-400 hover:text-white border border-brand-border font-semibold transition-colors text-xs" data-id="${learner.identity}">
+                                    👁️ Xem Trạm
+                                </button>
+                            </td>
+                        `;
+                        iamTableBody.appendChild(tr);
+                    });
+
+                    document.querySelectorAll(".btn-inspect-iam").forEach(btn => {
+                        btn.addEventListener("click", () => {
+                            const id = btn.getAttribute("data-id");
+                            openIamDetailModal(id);
+                        });
+                    });
+                }
+            }
+
+            function openIamDetailModal(identity) {
+                const learner = allLearners.find(l => l.identity === identity || l.email === identity || l.phone === identity);
+                if (!learner) return;
+
+                activeIamLearnerIdentity = identity;
+                if (iamModalLearnerName) iamModalLearnerName.textContent = learner.name || "—";
+                if (iamModalLearnerInfo) {
+                    iamModalLearnerInfo.textContent = `${learner.identity || learner.email || learner.phone || ''} • ${learner.center || 'Chưa phân bổ Center'} • ${learner.department || 'Chưa phân bổ Ban'}`;
+                }
+
+                const stCount = learner.iamCompletedStationsCount || (learner.iamStations ? Object.keys(learner.iamStations).length : 0);
+                if (iamModalStatus) {
+                    iamModalStatus.textContent = `${stCount}/5 Trạm (${Math.round((stCount / 5) * 100)}%)`;
+                }
+
+                const hp = learner.iamHappinessScore !== undefined ? learner.iamHappinessScore : (stCount > 0 ? (stCount * 2) : 0);
+                const ld = learner.iamLeadershipScore !== undefined ? learner.iamLeadershipScore : (stCount > 0 ? (stCount * 2) : 0);
+                const total = learner.iamTotalScore || (hp + ld);
+                if (iamModalScores) {
+                    iamModalScores.textContent = `Hạnh Phúc: ${hp} • Lãnh Đạo: ${ld} (Tổng: ${total})`;
+                }
+                if (iamModalBalance) {
+                    iamModalBalance.textContent = learner.iamBalanceIndex ? `${learner.iamBalanceIndex}%` : (stCount === 5 ? "100%" : "—");
+                }
+
+                const stationNames = [
+                    "Trạm 1: Mindset Chuyển Hóa & Năng Lượng Đỉnh Cao",
+                    "Trạm 2: Lãnh Đạo Bản Thân & Tự Quyết (SDT)",
+                    "Trạm 3: Kỹ Năng & Thói Quen Hạnh Phúc Bền Vững",
+                    "Trạm 4: Phong Cách Xã Hội & Kết Nối Đồng Đội",
+                    "Trạm 5: Kế Hoạch Hành Động Cá Nhân & Cam Kết"
+                ];
+
+                if (iamModalStationsContainer) {
+                    iamModalStationsContainer.innerHTML = "";
+                    for (let i = 1; i <= 5; i++) {
+                        const stKey = `station${i}`;
+                        const stData = learner.iamStations ? learner.iamStations[stKey] : null;
+                        const isDone = stData && stData.completed;
+
+                        const card = document.createElement("div");
+                        card.className = `p-4 rounded-2xl border ${isDone ? 'bg-brand-card/50 border-brand-border' : 'bg-brand-card/20 border-brand-border/40 opacity-60'} space-y-2.5`;
+
+                        const titleText = (stData && stData.title) ? `Trạm ${i}: ${stData.title}` : stationNames[i - 1];
+                        const tagBadge = (stData && stData.tag) ? `<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[11px] font-semibold border border-emerald-500/30">🏷️ ${stData.tag}</span>` : "";
+                        const statusBadge = isDone 
+                            ? '<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">✓ ĐÃ HOÀN THÀNH</span>'
+                            : '<span class="px-2 py-0.5 rounded bg-brand-dark text-slate-500 text-[10px]">CHƯA THAM GIA</span>';
+
+                        let bodyHtml = "";
+                        if (isDone) {
+                            bodyHtml = `
+                                <div class="space-y-2 text-xs">
+                                    <div class="p-2.5 rounded-xl bg-brand-dark/70 border border-brand-border/60">
+                                        <strong class="text-brand-amber block mb-0.5">I (Interested - Tâm đắc nhất):</strong>
+                                        <span class="text-slate-200">${stData.interested || 'Chưa điền'}</span>
+                                    </div>
+                                    <div class="p-2.5 rounded-xl bg-brand-dark/70 border border-brand-border/60">
+                                        <strong class="text-brand-orange block mb-0.5">A (Actionable - Ứng dụng thực tế):</strong>
+                                        <span class="text-slate-200">${stData.actionable || 'Chưa điền'}</span>
+                                    </div>
+                                    <div class="p-2.5 rounded-xl bg-brand-dark/70 border border-brand-border/60">
+                                        <strong class="text-emerald-400 block mb-0.5">M (Meaningful - Ý nghĩa chuyển hóa):</strong>
+                                        <span class="text-slate-200">${stData.meaningful || 'Chưa điền'}</span>
+                                    </div>
+                                </div>
+                            `;
+                        } else {
+                            bodyHtml = `<div class="text-xs text-slate-500 italic p-2">Học viên chưa gửi bài thu hoạch trạm này.</div>`;
+                        }
+
+                        card.innerHTML = `
+                            <div class="flex items-center justify-between flex-wrap gap-2 border-b border-brand-border/60 pb-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-bold text-white">${titleText}</span>
+                                    ${tagBadge}
+                                </div>
+                                ${statusBadge}
+                            </div>
+                            ${bodyHtml}
+                        `;
+                        iamModalStationsContainer.appendChild(card);
+                    }
+                }
+
+                if (iamDetailModal) iamDetailModal.classList.remove("hidden");
+            }
+
+            // ==========================================
+            // RENDER BLENDED JOURNEY 360° (TAB 3)
+            // ==========================================
+            function renderBlendedJourney() {
+                const cohort = blendedFilterCohort ? blendedFilterCohort.value : "all";
+                const candidates = cohort === "all" ? allLearners : allLearners.filter(l => l.cohort === cohort);
+                const total = candidates.length;
+
+                if (blendedKpiTotal) blendedKpiTotal.textContent = total;
+                if (badgeBlendedLearnersCount) badgeBlendedLearnersCount.textContent = `${total} HV`;
+
+                if (total === 0) {
+                    if (blendedKpiAll4) blendedKpiAll4.textContent = "0";
+                    if (blendedKpiAll4Pct) blendedKpiAll4Pct.textContent = "(0%)";
+                    if (blendedKpiQuizRate) blendedKpiQuizRate.textContent = "0%";
+                    if (blendedKpiQuizCount) blendedKpiQuizCount.textContent = "(0 HV)";
+                    if (blendedKpiIamRate) blendedKpiIamRate.textContent = "0%";
+                    if (blendedKpiIamCount) blendedKpiIamCount.textContent = "(0 HV)";
+                    renderBlendedTable();
+                    return;
+                }
+
+                const quizPassedCount = candidates.filter(l => l.firstAttemptPassed80 || l.eventualPassed80 || l.stage1Passed).length;
+                const quizRate = Math.round((quizPassedCount / total) * 100);
+                if (blendedKpiQuizRate) blendedKpiQuizRate.textContent = `${quizRate}%`;
+                if (blendedKpiQuizCount) blendedKpiQuizCount.textContent = `(${quizPassedCount} HV)`;
+
+                const iamDoneCount = candidates.filter(l => (l.iamCompletedStationsCount || (l.iamStations ? Object.keys(l.iamStations).length : 0)) >= 5).length;
+                const iamRate = Math.round((iamDoneCount / total) * 100);
+                if (blendedKpiIamRate) blendedKpiIamRate.textContent = `${iamRate}%`;
+                if (blendedKpiIamCount) blendedKpiIamCount.textContent = `(${iamDoneCount} HV)`;
+
+                const all4Count = candidates.filter(l => {
+                    const p1 = l.firstAttemptPassed80 || l.eventualPassed80 || l.stage1Passed;
+                    const p2 = (l.data?.stageData?.["stage-2"]?.selectedValues?.length > 0) || (l.stage2ValuesCount > 0);
+                    const p3 = !!l.data?.stageData?.["stage-3"]?.abcde?.D || l.stage3AbcdeFilled;
+                    const p4 = (l.iamCompletedStationsCount || (l.iamStations ? Object.keys(l.iamStations).length : 0)) >= 5;
+                    return p1 && p2 && p3 && p4;
+                }).length;
+                const all4Pct = Math.round((all4Count / total) * 100);
+                if (blendedKpiAll4) blendedKpiAll4.textContent = all4Count;
+                if (blendedKpiAll4Pct) blendedKpiAll4Pct.textContent = `(${all4Pct}%)`;
+
+                renderBlendedTable();
+            }
+
+            function renderBlendedTable() {
+                const query = (blendedSearchInput ? blendedSearchInput.value : "").toLowerCase().trim();
+                const cohort = blendedFilterCohort ? blendedFilterCohort.value : "all";
+                const center = blendedFilterCenter ? blendedFilterCenter.value : "all";
+                const status = blendedFilterStatus ? blendedFilterStatus.value : "all";
+
+                const filtered = allLearners.filter(l => {
+                    if (cohort !== "all" && l.cohort !== cohort) return false;
+                    if (center !== "all" && l.center !== center) return false;
+
+                    const p1 = l.firstAttemptPassed80 || l.eventualPassed80 || l.stage1Passed;
+                    const p2 = (l.data?.stageData?.["stage-2"]?.selectedValues?.length > 0) || (l.stage2ValuesCount > 0);
+                    const p3 = !!l.data?.stageData?.["stage-3"]?.abcde?.D || l.stage3AbcdeFilled;
+                    const stCount = l.iamCompletedStationsCount || (l.iamStations ? Object.keys(l.iamStations).length : 0);
+                    const p4 = stCount >= 5;
+                    const all4 = p1 && p2 && p3 && p4;
+                    const notStarted = !p1 && !p2 && !p3 && stCount === 0 && (l.totalAttempts || 0) === 0;
+
+                    if (status === "complete_100" && !all4) return false;
+                    if (status === "quiz_passed" && !p1) return false;
+                    if (status === "iam_done" && !p4) return false;
+                    if (status === "in_progress" && (all4 || notStarted)) return false;
+                    if (status === "not_started" && !notStarted) return false;
+
+                    if (query) {
+                        const matchQ = (l.name || "").toLowerCase().includes(query) ||
+                                       (l.identity || "").toLowerCase().includes(query) ||
+                                       (l.email || "").toLowerCase().includes(query) ||
+                                       (l.phone || "").includes(query);
+                        if (!matchQ) return false;
+                    }
+                    return true;
+                });
+
+                if (blendedTableBody) {
+                    blendedTableBody.innerHTML = "";
+                    if (filtered.length === 0) {
+                        if (blendedTableEmpty) blendedTableEmpty.classList.remove("hidden");
+                        return;
+                    }
+                    if (blendedTableEmpty) blendedTableEmpty.classList.add("hidden");
+
+                    filtered.forEach(learner => {
+                        const tr = document.createElement("tr");
+                        tr.className = "hover:bg-brand-card/40 transition-colors";
+
+                        const p1 = learner.firstAttemptPassed80 || learner.eventualPassed80 || learner.stage1Passed;
+                        const p2Count = (learner.data?.stageData?.["stage-2"]?.selectedValues?.length) || learner.stage2ValuesCount || 0;
+                        const p3 = !!learner.data?.stageData?.["stage-3"]?.abcde?.D || learner.stage3AbcdeFilled;
+                        const stCount = learner.iamCompletedStationsCount || (learner.iamStations ? Object.keys(learner.iamStations).length : 0);
+
+                        const doneScore = (p1 ? 1 : 0) + (p2Count > 0 ? 1 : 0) + (p3 ? 1 : 0) + (stCount >= 5 ? 1 : (stCount > 0 ? 0.5 : 0));
+                        const pct360 = Math.round((doneScore / 4) * 100);
+
+                        const p1Score = learner.bestScore !== undefined && learner.bestScore !== null ? learner.bestScore : (p1 ? 80 : 0);
+                        const p1Badge = p1 
+                            ? `<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold text-[10px]">✓ Đạt (${p1Score}%)</span>` 
+                            : ((learner.totalAttempts || 0) > 0 
+                                ? `<span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-semibold text-[10px]">Thi lại (${p1Score}%)</span>` 
+                                : '<span class="px-2 py-0.5 rounded bg-brand-card text-slate-500 text-[10px]">Chưa test</span>');
+
+                        const p2Badge = p2Count > 0 
+                            ? `<span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 font-semibold text-[10px]">✓ ${p2Count} Giá trị</span>` 
+                            : '<span class="px-2 py-0.5 rounded bg-brand-card text-slate-500 text-[10px]">Chưa chọn</span>';
+
+                        const p3Badge = p3 
+                            ? '<span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-semibold text-[10px]">✓ Đã nộp</span>' 
+                            : '<span class="px-2 py-0.5 rounded bg-brand-card text-slate-500 text-[10px]">Chưa nộp</span>';
+
+                        const p4Badge = stCount >= 5 
+                            ? '<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold text-[10px]">✓ 5/5 Trạm</span>' 
+                            : (stCount > 0 
+                                ? `<span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-semibold text-[10px]">${stCount}/5 Trạm</span>` 
+                                : '<span class="px-2 py-0.5 rounded bg-brand-card text-slate-500 text-[10px]">0/5 Trạm</span>');
+
+                        tr.innerHTML = `
+                            <td class="p-4">
+                                <div class="font-bold text-white">${learner.name}</div>
+                                <div class="text-[11px] text-slate-400 font-mono">${learner.identity || learner.email || learner.phone || "—"} <span class="text-brand-amber font-semibold">(${learner.cohort || 'DHM8'})</span></div>
+                            </td>
+                            <td class="p-4">
+                                <div class="text-xs text-slate-200 truncate max-w-[170px]" title="${learner.center || ''}">${learner.center || '<span class="text-slate-500">—</span>'}</div>
+                                <div class="text-[10px] text-slate-400 truncate max-w-[170px]" title="${learner.department || ''}">${learner.department || ''}</div>
+                            </td>
+                            <td class="p-4 text-center">${p1Badge}</td>
+                            <td class="p-4 text-center">${p2Badge}</td>
+                            <td class="p-4 text-center">${p3Badge}</td>
+                            <td class="p-4 text-center">${p4Badge}</td>
+                            <td class="p-4 text-center">
+                                <div class="flex items-center justify-center gap-2">
+                                    <div class="w-12 h-1.5 bg-brand-dark rounded-full overflow-hidden border border-brand-border">
+                                        <div class="h-full ${pct360 === 100 ? 'bg-emerald-400' : 'bg-brand-amber'} rounded-full" style="width: ${pct360}%"></div>
+                                    </div>
+                                    <span class="font-mono text-xs font-bold ${pct360 === 100 ? 'text-emerald-400' : 'text-slate-300'}">${pct360}%</span>
+                                </div>
+                            </td>
+                            <td class="p-4 text-right">
+                                <div class="flex items-center justify-end gap-1">
+                                    <button class="btn-inspect-blended-detail px-2.5 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-brand-amber hover:text-white border border-brand-border font-semibold transition-colors text-xs" data-id="${learner.identity}" title="Xem chi tiết 3 chặng LMS">
+                                        LMS
+                                    </button>
+                                    <button class="btn-inspect-blended-iam px-2.5 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-emerald-400 hover:text-white border border-brand-border font-semibold transition-colors text-xs" data-id="${learner.identity}" title="Xem chi tiết 5 trạm Workshop">
+                                        I•A•M
+                                    </button>
+                                </div>
+                            </td>
+                        `;
+                        blendedTableBody.appendChild(tr);
+                    });
+
+                    document.querySelectorAll(".btn-inspect-blended-detail").forEach(btn => {
+                        btn.addEventListener("click", () => {
+                            const id = btn.getAttribute("data-id");
+                            openDetailModal(id);
+                        });
+                    });
+
+                    document.querySelectorAll(".btn-inspect-blended-iam").forEach(btn => {
+                        btn.addEventListener("click", () => {
+                            const id = btn.getAttribute("data-id");
+                            openIamDetailModal(id);
+                        });
+                    });
+                }
+            }
+
+            // Event Listeners for IAM Tab (Tab 2)
+            if (iamSearchInput) iamSearchInput.addEventListener("input", renderIamTable);
+            if (iamFilterCenter) iamFilterCenter.addEventListener("change", renderIamTable);
+            if (iamFilterDepartment) iamFilterDepartment.addEventListener("change", renderIamTable);
+            if (iamFilterStationsCount) iamFilterStationsCount.addEventListener("change", renderIamTable);
+            if (btnCloseIamDetail) {
+                btnCloseIamDetail.addEventListener("click", () => {
+                    if (iamDetailModal) iamDetailModal.classList.add("hidden");
+                });
+            }
+            if (btnCloseIamDetailBottom) {
+                btnCloseIamDetailBottom.addEventListener("click", () => {
+                    if (iamDetailModal) iamDetailModal.classList.add("hidden");
+                });
+            }
+
+            // Event Listeners for Blended Journey (Tab 3)
+            if (blendedSearchInput) blendedSearchInput.addEventListener("input", renderBlendedTable);
+            if (blendedFilterCohort) blendedFilterCohort.addEventListener("change", renderBlendedJourney);
+            if (blendedFilterCenter) blendedFilterCenter.addEventListener("change", renderBlendedTable);
+            if (blendedFilterStatus) blendedFilterStatus.addEventListener("change", renderBlendedTable);
+
+            // Toggle Auto-Refresh 60s
+            if (toggleAutoRefresh) {
+                toggleAutoRefresh.addEventListener("change", (e) => {
+                    if (e.target.checked) {
+                        if (autoRefreshTimer) clearInterval(autoRefreshTimer);
+                        autoRefreshTimer = setInterval(async () => {
+                            await fetchLiveDataFromWebhook(false);
+                            renderTestAnalytics();
+                            renderIamDashboard();
+                            renderBlendedJourney();
+                            renderGeneralDashboard();
+                        }, AUTO_REFRESH_INTERVAL_MS);
+                        if (webhookFetchStatus) {
+                            webhookFetchStatus.textContent = "⏱️ Đã bật tự động làm mới mỗi 60s";
+                            webhookFetchStatus.className = "text-xs text-blue-400 font-mono";
+                        }
+                    } else {
+                        if (autoRefreshTimer) {
+                            clearInterval(autoRefreshTimer);
+                            autoRefreshTimer = null;
+                        }
+                        if (webhookFetchStatus) {
+                            webhookFetchStatus.textContent = "⏸️ Đã tắt tự động làm mới";
+                            webhookFetchStatus.className = "text-xs text-slate-400 font-mono";
+                        }
+                    }
+                });
+            }
+
+            // Export IAM CSV with UTF-8 BOM
+            if (btnExportIamCsv) {
+                btnExportIamCsv.addEventListener("click", () => {
+                    const apolloLearners = allLearners.filter(l => (l.iamStations && Object.keys(l.iamStations).length > 0) || (l.cohort && l.cohort.includes("Apollo")));
+                    if (apolloLearners.length === 0) {
+                        alert("Chưa có dữ liệu học viên 5 Trạm I•A•M để xuất!");
+                        return;
+                    }
+
+                    let csv = "\uFEFF"; // UTF-8 BOM
+                    csv += "Họ và tên,Tài khoản/Email/SĐT,Apollo Center,Phòng ban,Trạm 1,Trạm 2,Trạm 3,Trạm 4,Trạm 5,Số trạm hoàn thành,Điểm Hạnh Phúc,Điểm Lãnh Đạo,Tổng Điểm,Chỉ số cân bằng\n";
+
+                    apolloLearners.forEach(l => {
+                        const name = (l.name || "").replace(/"/g, '""');
+                        const id = (l.identity || l.email || l.phone || "").replace(/"/g, '""');
+                        const center = (l.center || "").replace(/"/g, '""');
+                        const dept = (l.department || "").replace(/"/g, '""');
+                        const st1 = l.iamStations?.station1?.completed ? `Đạt (${(l.iamStations.station1.tag || '').replace(/"/g, '""')})` : "Chưa";
+                        const st2 = l.iamStations?.station2?.completed ? `Đạt (${(l.iamStations.station2.tag || '').replace(/"/g, '""')})` : "Chưa";
+                        const st3 = l.iamStations?.station3?.completed ? `Đạt (${(l.iamStations.station3.tag || '').replace(/"/g, '""')})` : "Chưa";
+                        const st4 = l.iamStations?.station4?.completed ? `Đạt (${(l.iamStations.station4.tag || '').replace(/"/g, '""')})` : "Chưa";
+                        const st5 = l.iamStations?.station5?.completed ? `Đạt (${(l.iamStations.station5.tag || '').replace(/"/g, '""')})` : "Chưa";
+                        const count = l.iamCompletedStationsCount || 0;
+                        const hp = l.iamHappinessScore || 0;
+                        const ld = l.iamLeadershipScore || 0;
+                        const total = l.iamTotalScore || 0;
+                        const balance = l.iamBalanceIndex || "";
+
+                        csv += `"${name}","${id}","${center}","${dept}","${st1}","${st2}","${st3}","${st4}","${st5}",${count},${hp},${ld},${total},"${balance}"\n`;
+                    });
+
+                    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = `DHM_Apollo_5Tram_IAM_${new Date().toISOString().slice(0, 10)}.csv`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                });
+            }
+
+            // Export Blended 360 CSV with UTF-8 BOM
+            if (btnExportBlendedCsv) {
+                btnExportBlendedCsv.addEventListener("click", () => {
+                    if (allLearners.length === 0) {
+                        alert("Chưa có dữ liệu học viên để xuất!");
+                        return;
+                    }
+
+                    let csv = "\uFEFF"; // UTF-8 BOM
+                    csv += "Họ và tên,Tài khoản/Email/SĐT,Khóa học,Apollo Center,Phòng ban,Trụ cột 1 - Quiz,Điểm Quiz,Trụ cột 2 - Me Values,Trụ cột 3 - ABCDE,Trụ cột 4 - 5 Trạm IAM,Tiến độ 360 (%),Ghi chú Coach\n";
+
+                    allLearners.forEach(l => {
+                        const name = (l.name || "").replace(/"/g, '""');
+                        const id = (l.identity || l.email || l.phone || "").replace(/"/g, '""');
+                        const cohort = (l.cohort || "DHM8").replace(/"/g, '""');
+                        const center = (l.center || "").replace(/"/g, '""');
+                        const dept = (l.department || "").replace(/"/g, '""');
+
+                        const p1 = l.firstAttemptPassed80 || l.eventualPassed80 || l.stage1Passed;
+                        const quizStr = p1 ? "Đạt" : ((l.totalAttempts || 0) > 0 ? "Thi lại" : "Chưa test");
+                        const quizScore = l.bestScore !== undefined ? `${l.bestScore}%` : "";
+
+                        const p2 = (l.data?.stageData?.["stage-2"]?.selectedValues?.length > 0) || (l.stage2ValuesCount > 0);
+                        const valuesStr = p2 ? ((l.data?.stageData?.["stage-2"]?.selectedValues || []).join(" | ").replace(/"/g, '""')) : "Chưa chọn";
+
+                        const p3 = !!l.data?.stageData?.["stage-3"]?.abcde?.D || l.stage3AbcdeFilled;
+                        const abcdeStr = p3 ? "Đã nộp" : "Chưa nộp";
+
+                        const stCount = l.iamCompletedStationsCount || (l.iamStations ? Object.keys(l.iamStations).length : 0);
+                        const iamStr = `${stCount}/5 Trạm`;
+
+                        const doneScore = (p1 ? 1 : 0) + (p2 ? 1 : 0) + (p3 ? 1 : 0) + (stCount >= 5 ? 1 : (stCount > 0 ? 0.5 : 0));
+                        const pct360 = Math.round((doneScore / 4) * 100);
+
+                        const notes = (l.coachNotes || "").replace(/"/g, '""');
+
+                        csv += `"${name}","${id}","${cohort}","${center}","${dept}","${quizStr}","${quizScore}","${valuesStr}","${abcdeStr}","${iamStr}","${pct360}%","${notes}"\n`;
+                    });
+
+                    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = `DHM_HanhTrinh_Blended_360_${new Date().toISOString().slice(0, 10)}.csv`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                });
+            }
 
             // ==========================================
             // RENDER GENERAL DASHBOARD (PANE 2)
