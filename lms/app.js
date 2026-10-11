@@ -348,8 +348,10 @@ document.addEventListener("DOMContentLoaded", () => {
             stageData: {
                 "stage-1": {
                     quizAnswers: {},
-                    score: 0,
+                    score: null,
+                    percentage: null,
                     passed: false,
+                    quizAttempts: 0,
                     selectedValues: [],
                     iam_1_1: { I: "", A: "", M: "" },
                     iam_1_2: { I: "", A: "", M: "" },
@@ -751,11 +753,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (loginPasswordInput) {
                 loginPasswordInput.setAttribute("required", "true");
                 if (learner.force_pwd_change) {
-                    loginPasswordInput.placeholder = "Nhập mật khẩu khởi tạo (1234)";
-                } else if (learner.password_hash) {
+                    loginPasswordInput.placeholder = "Nhập mật khẩu khởi tạo của bạn";
+                } else if (learner.password_hash || learner.default_pwd) {
                     loginPasswordInput.placeholder = "Nhập mật khẩu truy cập của bạn";
-                } else if (learner.default_pwd) {
-                    loginPasswordInput.placeholder = `Nhập mật khẩu (${learner.default_pwd})`;
                 } else {
                     loginPasswordInput.placeholder = "Nhập 4 số cuối Số điện thoại của bạn";
                 }
@@ -934,9 +934,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 applyUserSession();
             } catch (e) {
                 showAuthModal();
+                triggerAutoTelemetryOnBoot();
             }
         } else {
             showAuthModal();
+            triggerAutoTelemetryOnBoot();
         }
     }
 
@@ -1056,32 +1058,165 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 2000);
     }
 
-    function dispatchTelemetryPayload(payload, webhookUrl) {
-        if (!webhookUrl) return false;
+    async function dispatchTelemetryPayloadWithAck(payload, webhookUrl, maxRetries = 2) {
+        if (!webhookUrl) return { success: false, error: "MISSING_WEBHOOK_URL" };
         const bodyStr = JSON.stringify(payload);
-        let sent = false;
-        try {
-            if (navigator.sendBeacon) {
-                sent = navigator.sendBeacon(webhookUrl, bodyStr);
-            }
-        } catch (e) {
-            sent = false;
-        }
-        if (!sent) {
+        const retryDelayMs = (typeof window !== "undefined" && window.__DHM_TELEMETRY_RETRY_DELAY_MS !== undefined)
+            ? Number(window.__DHM_TELEMETRY_RETRY_DELAY_MS)
+            : 2000;
+
+        for (let attempt = 0; attempt <= maxRetries; attempt++) {
             try {
-                fetch(webhookUrl, {
+                const resp = await fetch(webhookUrl, {
                     method: "POST",
                     headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: bodyStr,
-                    keepalive: true,
-                    mode: "no-cors"
-                }).catch(() => {});
-                sent = true;
+                    redirect: "follow"
+                });
+                const text = await resp.text();
+                let data = null;
+                try {
+                    data = JSON.parse(text);
+                } catch (parseErr) {
+                    data = null;
+                }
+                if (data && data.success === true) {
+                    return { success: true, data: data, attempts: attempt + 1 };
+                }
+                if (data && data.retry === true && attempt < maxRetries) {
+                    await new Promise(r => setTimeout(r, retryDelayMs));
+                    continue;
+                }
+                if (!resp.ok && attempt < maxRetries) {
+                    await new Promise(r => setTimeout(r, retryDelayMs));
+                    continue;
+                }
+                return {
+                    success: false,
+                    error: (data && data.error) ? data.error : `HTTP_${resp.status}`,
+                    retry: Boolean(data && data.retry),
+                    data: data,
+                    attempts: attempt + 1
+                };
             } catch (err) {
-                sent = false;
+                if (attempt < maxRetries) {
+                    await new Promise(r => setTimeout(r, retryDelayMs));
+                    continue;
+                }
+                return {
+                    success: false,
+                    error: err && err.message ? err.message : "NETWORK_ERROR",
+                    attempts: attempt + 1
+                };
             }
         }
-        return sent;
+        return { success: false, error: "MAX_RETRIES_EXCEEDED" };
+    }
+
+    function dispatchTelemetryPayload(payload, webhookUrl) {
+        if (!webhookUrl) return false;
+        dispatchTelemetryPayloadWithAck(payload, webhookUrl, 2).catch(() => {});
+        return true;
+    }
+
+    function buildFiveStationBridgeUrl(userObj) {
+        const base = "https://team-happiness-iam.vercel.app/";
+        const u = userObj || currentUser || null;
+        if (!u) return base;
+        const params = new URLSearchParams();
+        if (u.name || u.full_name) params.set("name", u.name || u.full_name);
+        if (u.email || u.identity) params.set("email", u.email || u.identity);
+        if (u.phone) params.set("phone", u.phone);
+        if (u.cohort) params.set("center", u.cohort);
+        const qs = params.toString();
+        return qs ? `${base}?${qs}` : base;
+    }
+
+    function renderLmsSyncStatusBanner(state, detail) {
+        if (typeof document === "undefined") return;
+        const info = detail || {};
+        const userObj = info.user || currentUser || null;
+        const bridgeUrl = buildFiveStationBridgeUrl(userObj);
+        const learnerLabel = (userObj && (userObj.name || userObj.full_name || userObj.email || userObj.identity))
+            || info.learnerName
+            || "Học viên";
+        const itemsSummary = info.summaryText || "Bài làm Chặng 1 & I•A•M";
+
+        let bannerClasses = "";
+        let innerHtml = "";
+
+        if (state === "SYNCING") {
+            bannerClasses = "p-3.5 rounded-xl bg-sky-500/15 border border-sky-400/40 text-sky-200 text-xs leading-relaxed shadow-lg relative z-[60]";
+            innerHtml = `
+                <div class="flex items-center gap-2 font-bold text-sky-300">
+                    <span class="animate-spin inline-block">⏳</span>
+                    <span>Đang đồng bộ dữ liệu bài làm lên hệ thống BTC... Vui lòng giữ trang trong giây lát.</span>
+                </div>
+            `;
+        } else if (state === "SUCCESS") {
+            bannerClasses = "p-3.5 rounded-xl bg-emerald-500/15 border border-emerald-400/40 text-emerald-200 text-xs leading-relaxed shadow-lg space-y-2 relative z-[60]";
+            innerHtml = `
+                <div class="font-bold text-emerald-300 flex items-start gap-1.5">
+                    <span>✅</span>
+                    <span>Đã đồng bộ thành công bài làm của <strong class="text-white">${learnerLabel}</strong> (${itemsSummary}) lên hệ thống! Anh/chị có thể đóng trang hoặc chuyển sang trang 5 Trạm I•A•M.</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 pt-1">
+                    <a href="${bridgeUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-[11px] transition-all shadow">
+                        <span>Mở tiếp trang 5 Trạm I•A•M (nếu hôm học có làm 5 Trạm)</span>
+                        <span>↗</span>
+                    </a>
+                </div>
+            `;
+        } else if (state === "EMPTY_BROWSER") {
+            bannerClasses = "p-3.5 rounded-xl bg-amber-500/15 border border-amber-400/40 text-amber-200 text-xs leading-relaxed shadow-lg space-y-2 relative z-[60]";
+            innerHtml = `
+                <div class="font-bold text-amber-300 flex items-start gap-1.5">
+                    <span>ℹ️</span>
+                    <span>Trình duyệt này hiện chưa có dữ liệu bài làm ngày 09/10. Nếu hôm học anh/chị mở link trực tiếp trong Zalo hoặc trên Điện thoại / Trình duyệt khác, vui lòng mở lại đúng ứng dụng đó để hệ thống tự động thu hồi kết quả, hoặc đăng nhập bên dưới để làm bài.</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 pt-1">
+                    <a href="${bridgeUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-black font-extrabold text-[11px] transition-all shadow">
+                        <span>Chuyển sang trang 5 Trạm I•A•M (team-happiness-iam.vercel.app)</span>
+                        <span>↗</span>
+                    </a>
+                </div>
+            `;
+        } else {
+            return;
+        }
+
+        // 1. Render ngay dưới <header> trên màn hình chính
+        const headerEl = document.querySelector("header");
+        if (headerEl && headerEl.parentNode) {
+            let topBanner = document.getElementById("dhm-sync-status-banner");
+            if (!topBanner) {
+                topBanner = document.createElement("div");
+                topBanner.id = "dhm-sync-status-banner";
+                headerEl.parentNode.insertBefore(topBanner, headerEl.nextSibling);
+            }
+            topBanner.className = `mx-4 lg:mx-8 mt-3 ${bannerClasses}`;
+            topBanner.setAttribute("data-sync-state", state);
+            topBanner.innerHTML = innerHtml;
+        }
+
+        // 2. Render bên trong #auth-modal > div (ngay phía trên #auth-form để không bị lớp nền z-50 che khuất)
+        const authModalCard = document.querySelector("#auth-modal > div");
+        if (authModalCard) {
+            let modalBanner = document.getElementById("dhm-auth-modal-sync-banner");
+            if (!modalBanner) {
+                modalBanner = document.createElement("div");
+                modalBanner.id = "dhm-auth-modal-sync-banner";
+                const authFormEl = document.getElementById("auth-form");
+                if (authFormEl && authFormEl.parentNode === authModalCard) {
+                    authModalCard.insertBefore(modalBanner, authFormEl);
+                } else {
+                    authModalCard.appendChild(modalBanner);
+                }
+            }
+            modalBanner.className = bannerClasses;
+            modalBanner.setAttribute("data-sync-state", state);
+            modalBanner.innerHTML = innerHtml;
+        }
     }
 
     function syncQuizResultToWebhook(score, total, percentage, passed, attempt, answers) {
@@ -1108,7 +1243,7 @@ document.addEventListener("DOMContentLoaded", () => {
             timestamp: new Date().toISOString()
         };
 
-        dispatchTelemetryPayload(payload, webhookUrl);
+        dispatchTelemetryPayloadWithAck(payload, webhookUrl, 2).catch(() => {});
     }
 
     function syncMeValuesToWebhook(values) {
@@ -1130,12 +1265,36 @@ document.addEventListener("DOMContentLoaded", () => {
             timestamp: new Date().toISOString()
         };
 
-        dispatchTelemetryPayload(payload, webhookUrl);
+        dispatchTelemetryPayloadWithAck(payload, webhookUrl, 2).catch(() => {});
     }
 
     function hasNonEmptyIamObj(obj) {
         if (!obj || typeof obj !== "object") return false;
         return Boolean((obj.I && String(obj.I).trim()) || (obj.A && String(obj.A).trim()) || (obj.M && String(obj.M).trim()));
+    }
+
+    function hasStage2HabitContent(habits) {
+        if (!habits || typeof habits !== "object") return false;
+        const g = habits.gratitude || {};
+        const m = habits.mindfulness || {};
+        const o = habits.optimism || {};
+        const f = habits.flow || {};
+        const a = habits.altruism || {};
+
+        const hasGratitude = (Array.isArray(g.items) && g.items.some(x => String(x || "").trim()))
+            || Boolean(g.card && (String(g.card.to || "").trim() || String(g.card.msg || "").trim()))
+            || hasNonEmptyIamObj(g.iam);
+        const hasMindfulness = Boolean(String(m.situation || "").trim())
+            || Boolean(m.sbaChecks && (m.sbaChecks.s || m.sbaChecks.b || m.sbaChecks.a))
+            || hasNonEmptyIamObj(m.iam);
+        const hasOptimism = Boolean(o.abcde && Object.values(o.abcde).some(v => String(v || "").trim()))
+            || hasNonEmptyIamObj(o.iam);
+        const hasFlow = Boolean(String(f.boringTask || "").trim() || String(f.redesign || "").trim())
+            || hasNonEmptyIamObj(f.iam);
+        const hasAltruism = Boolean(String(a.style || "").trim() || String(a.act || "").trim())
+            || hasNonEmptyIamObj(a.iam);
+
+        return hasGratitude || hasMindfulness || hasOptimism || hasFlow || hasAltruism;
     }
 
     function extractIamAndNotesTelemetry(prog, identity) {
@@ -1166,7 +1325,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         } catch (e) {}
 
-        const hasHabitIam = Object.values(habits).some(h => h && hasNonEmptyIamObj(h.iam));
+        const hasHabitIam = hasStage2HabitContent(habits);
         const hasIamData = effectiveCp1Sets.length > 0
             || effectiveCp2Sets.length > 0
             || hasNonEmptyIamObj(iam11)
@@ -1177,6 +1336,7 @@ document.addEventListener("DOMContentLoaded", () => {
             || hasHabitIam
             || Boolean(quickNotes && String(quickNotes).trim());
 
+        const habitsSig = hasHabitIam ? JSON.stringify(habits).length : 0;
         const sigParts = [
             `cp1:${effectiveCp1Sets.map(x => `${x.I || ""}|${x.A || ""}|${x.M || ""}`).join(";")}`,
             `cp2:${effectiveCp2Sets.map(x => `${x.I || ""}|${x.A || ""}|${x.M || ""}`).join(";")}`,
@@ -1184,6 +1344,8 @@ document.addEventListener("DOMContentLoaded", () => {
             `m12:${iam12.I || ""}|${iam12.A || ""}|${iam12.M || ""}`,
             `m13:${iam13.I || ""}|${iam13.A || ""}|${iam13.M || ""}`,
             `cap:${capstoneIam.I || ""}|${capstoneIam.A || ""}|${capstoneIam.M || ""}`,
+            `capsets:${capstoneSets.length}`,
+            `hab:${habitsSig}`,
             `qn:${quickNotes ? String(quickNotes).trim().length : 0}`
         ];
         const iamSignature = sigParts.join("__");
@@ -1217,6 +1379,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const identity = currentUser.identity || currentUser.email || currentUser.learner_id || "guest";
         const s1 = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
+        const s1AnsweredCount = Object.keys(s1.quizAnswers || {}).length;
+        const hasRealQuizAttempt = s1AnsweredCount > 0 || (typeof s1.score === "number" && s1.score > 0) || s1.passed === true;
         const iamTelemetry = extractIamAndNotesTelemetry(learnerProgress, identity);
         const payload = {
             action: "sync_full_progress",
@@ -1226,12 +1390,12 @@ document.addEventListener("DOMContentLoaded", () => {
             phone: currentUser.phone || "",
             cohort: currentUser.cohort || "",
             completed_stages: learnerProgress.completedStages,
-            stage1_quiz_score: s1.score !== undefined ? s1.score : null,
+            stage1_quiz_score: hasRealQuizAttempt && s1.score !== undefined ? s1.score : null,
             stage1_quiz_total: s1.totalQuestions || 10,
-            stage1_quiz_percentage: s1.percentage !== undefined ? s1.percentage : null,
-            stage1_quiz_passed: Boolean(s1.passed),
-            stage1_quiz_attempts: s1.quizAttempts || 0,
-            stage1_quiz_answers: s1.quizAnswers || {},
+            stage1_quiz_percentage: hasRealQuizAttempt && s1.percentage !== undefined ? s1.percentage : null,
+            stage1_quiz_passed: hasRealQuizAttempt ? Boolean(s1.passed) : null,
+            stage1_quiz_attempts: hasRealQuizAttempt ? (s1.quizAttempts || 1) : 0,
+            stage1_quiz_answers: hasRealQuizAttempt ? (s1.quizAnswers || {}) : {},
             stage1_values: s1.selectedValues || [],
             stage1_iam_cp1: iamTelemetry.iam_cp1,
             stage1_iam_cp1_sets: iamTelemetry.iam_cp1_sets,
@@ -1250,149 +1414,374 @@ document.addEventListener("DOMContentLoaded", () => {
             timestamp: new Date().toISOString()
         };
 
-        dispatchTelemetryPayload(payload, webhookUrl);
+        dispatchTelemetryPayloadWithAck(payload, webhookUrl, 2).catch(() => {});
     }
 
     let autoBootTelemetryTimer = null;
 
-    function triggerAutoTelemetryOnBoot() {
-        // 1. Session Resilience: Trích xuất danh tính học viên từ currentUser hoặc dhm_lms_auth_user
-        let user = currentUser;
-        if (!user) {
-            try {
-                const storedUser = localStorage.getItem("dhm_lms_auth_user");
-                if (storedUser) {
-                    user = JSON.parse(storedUser);
-                }
-            } catch (e) {}
+    function resolveLearnerProfileForIdentity(rawIdentity, storedAuthUser, directoryList) {
+        const normId = normalizeIdentity(rawIdentity);
+        if (currentUser) {
+            const curId = normalizeIdentity(currentUser.identity || currentUser.email || currentUser.learner_id);
+            if (curId && curId === normId) {
+                return {
+                    learner_id: currentUser.learner_id || "DHM-USER",
+                    identity: rawIdentity,
+                    name: currentUser.name || currentUser.full_name || rawIdentity,
+                    email: currentUser.email || rawIdentity,
+                    phone: currentUser.phone || "",
+                    cohort: currentUser.cohort || "Team Happiness Apollo"
+                };
+            }
         }
-        if (!user || (!user.identity && !user.email && !user.learner_id)) {
-            return;
+        if (storedAuthUser) {
+            const stId = normalizeIdentity(storedAuthUser.identity || storedAuthUser.email || storedAuthUser.learner_id);
+            if (stId && stId === normId) {
+                return {
+                    learner_id: storedAuthUser.learner_id || "DHM-USER",
+                    identity: rawIdentity,
+                    name: storedAuthUser.name || storedAuthUser.full_name || rawIdentity,
+                    email: storedAuthUser.email || rawIdentity,
+                    phone: storedAuthUser.phone || "",
+                    cohort: storedAuthUser.cohort || "Team Happiness Apollo"
+                };
+            }
         }
-
-        const identity = user.identity || user.email || user.learner_id;
-
-        // 2. Đọc tiến độ từ dhm_lms_progress_<identity> (ưu tiên bản lưu mới nhất từ localStorage) hoặc learnerProgress
-        let prog = null;
+        if (Array.isArray(directoryList)) {
+            const dirMatch = directoryList.find(u => u && (normalizeIdentity(u.email) === normId || normalizeIdentity(u.identity) === normId || normalizeIdentity(u.learner_id) === normId));
+            if (dirMatch) {
+                return {
+                    learner_id: dirMatch.learner_id || "DHM-USER",
+                    identity: rawIdentity,
+                    name: dirMatch.name || dirMatch.full_name || dirMatch.email || rawIdentity,
+                    email: dirMatch.email || rawIdentity,
+                    phone: dirMatch.phone || "",
+                    cohort: dirMatch.cohort || "Team Happiness Apollo"
+                };
+            }
+        }
+        const rosterMatch = findLearner(rawIdentity);
+        if (rosterMatch) {
+            return {
+                learner_id: rosterMatch.learner_id || "DHM-USER",
+                identity: rawIdentity,
+                name: rosterMatch.name || rosterMatch.full_name || rosterMatch.email || rawIdentity,
+                email: rosterMatch.email || rawIdentity,
+                phone: rosterMatch.phone || "",
+                cohort: rosterMatch.cohort || "Team Happiness Apollo"
+            };
+        }
         try {
-            const rawProgress = localStorage.getItem(`dhm_lms_progress_${identity}`);
-            if (rawProgress) {
-                prog = JSON.parse(rawProgress);
-                if (typeof learnerProgress !== "undefined" && learnerProgress) {
-                    learnerProgress = prog;
+            const pvHist = JSON.parse(localStorage.getItem(`dhm_pv_history_${rawIdentity}`) || "[]");
+            if (Array.isArray(pvHist) && pvHist.length > 0 && pvHist[0]) {
+                const p0 = pvHist[0];
+                return {
+                    learner_id: p0.learner_id || "DHM-USER",
+                    identity: rawIdentity,
+                    name: p0.name || p0.fullName || p0.email || rawIdentity,
+                    email: p0.email || rawIdentity,
+                    phone: p0.phone || "",
+                    cohort: p0.cohort || "Team Happiness Apollo"
+                };
+            }
+        } catch (e) {}
+
+        return {
+            learner_id: "DHM-USER",
+            identity: rawIdentity,
+            name: rawIdentity,
+            email: rawIdentity,
+            phone: "",
+            cohort: "Team Happiness Apollo"
+        };
+    }
+
+    function triggerAutoTelemetryOnBoot() {
+        let storedAuthUser = null;
+        try {
+            const rawStoredUser = localStorage.getItem("dhm_lms_auth_user");
+            if (rawStoredUser) {
+                storedAuthUser = JSON.parse(rawStoredUser);
+            }
+        } catch (e) {}
+
+        let directoryList = [];
+        try {
+            directoryList = JSON.parse(localStorage.getItem("dhm_master_learners_directory") || "[]");
+        } catch (e) {
+            directoryList = [];
+        }
+
+        // 1. Quét toàn bộ khóa trong localStorage kể cả khi đã đăng xuất
+        const candidateMap = new Map();
+        const addCandidate = (idVal) => {
+            if (!idVal) return;
+            const trimmed = String(idVal).trim();
+            const norm = normalizeIdentity(trimmed);
+            if (!norm) return;
+            if (!candidateMap.has(norm)) {
+                candidateMap.set(norm, trimmed);
+            }
+        };
+
+        if (currentUser && (currentUser.identity || currentUser.email || currentUser.learner_id)) {
+            addCandidate(currentUser.identity || currentUser.email || currentUser.learner_id);
+        }
+        if (storedAuthUser && (storedAuthUser.identity || storedAuthUser.email || storedAuthUser.learner_id)) {
+            addCandidate(storedAuthUser.identity || storedAuthUser.email || storedAuthUser.learner_id);
+        }
+
+        const allKeys = new Set();
+        try {
+            if (typeof localStorage.length === "number" && typeof localStorage.key === "function") {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const k = localStorage.key(i);
+                    if (k) allKeys.add(k);
+                }
+            }
+            Object.keys(localStorage).forEach(k => allKeys.add(k));
+        } catch (e) {}
+
+        allKeys.forEach(k => {
+            if (k.startsWith("dhm_lms_progress_")) {
+                addCandidate(k.substring("dhm_lms_progress_".length));
+            } else if (k.startsWith("dhm_quick_notes_")) {
+                addCandidate(k.substring("dhm_quick_notes_".length));
+            } else if (k.startsWith("dhm_pv_history_")) {
+                addCandidate(k.substring("dhm_pv_history_".length));
+            } else if (k.startsWith("dhm_pv_") && k !== "dhm_personal_values_latest") {
+                addCandidate(k.substring("dhm_pv_".length));
+            }
+        });
+
+        // Kiểm tra thêm dhm_personal_values_latest nếu chưa có candidate nào
+        let latestPvObj = null;
+        try {
+            const rawLatestPv = localStorage.getItem("dhm_personal_values_latest");
+            if (rawLatestPv) {
+                latestPvObj = JSON.parse(rawLatestPv);
+                if (latestPvObj && latestPvObj.email) {
+                    addCandidate(latestPvObj.email);
                 }
             }
         } catch (e) {}
-        if (!prog && typeof learnerProgress !== "undefined" && learnerProgress && learnerProgress.stageData) {
-            prog = learnerProgress;
-        }
 
-        const s1 = (prog && prog.stageData && prog.stageData["stage-1"]) || {};
-        const answeredCount = Object.keys(s1.quizAnswers || {}).length;
-        const score = (s1.score !== undefined && s1.score !== null) ? s1.score : null;
+        const candidateEntries = Array.from(candidateMap.entries());
+        const currentActiveNormId = currentUser
+            ? normalizeIdentity(currentUser.identity || currentUser.email || currentUser.learner_id)
+            : "";
 
-        // Đọc giá trị cá nhân từ s1.selectedValues hoặc dhm_personal_values_latest
-        let topValues = (s1.selectedValues && Array.isArray(s1.selectedValues) && s1.selectedValues.length > 0)
-            ? s1.selectedValues
-            : [];
-        if (topValues.length === 0) {
-            try {
-                const rawPv = localStorage.getItem("dhm_personal_values_latest");
-                if (rawPv) {
-                    const parsedPv = JSON.parse(rawPv);
-                    if (parsedPv && Array.isArray(parsedPv.top7)) {
-                        topValues = parsedPv.top7.map(v => (typeof v === "object" && v && v.name) ? v.name : String(v));
-                    }
-                }
-            } catch (e) {}
-        }
-
-        const iamTelemetry = extractIamAndNotesTelemetry(prog, identity);
-
-        // 3. Kiểm tra xem có dữ liệu hoàn thành bài thi Stage 1, Giá trị cá nhân, hoặc Checkpoint I•A•M hay không
-        const hasQuizData = (score !== null) || answeredCount > 0;
-        const hasPvData = topValues.length > 0;
-        if (!hasQuizData && !hasPvData && !iamTelemetry.hasIamData) {
-            return;
-        }
-
-        // 4. Tính toán State Hash (idempotent signature bao gồm cả chữ ký I•A•M)
-        const topValuesString = topValues.join(",");
-        const stateHash = `${identity}__s:${score !== null ? score : 'none'}__a:${answeredCount}__v:${topValuesString}__iam:${iamTelemetry.iamSignature}`;
-
-        const lastHashKey = `dhm_telemetry_last_hash_${identity}`;
-        const lastTimeKey = `dhm_telemetry_last_sync_time_${identity}`;
-        const lastHash = localStorage.getItem(lastHashKey);
-        const lastTime = parseInt(localStorage.getItem(lastTimeKey) || "0", 10);
+        const pendingSyncItems = [];
+        const syncedItems = [];
+        let totalFoundWithRealData = 0;
         const now = Date.now();
         const sixtyMinutesMs = 60 * 60 * 1000;
 
-        // Nếu hash trùng khớp VÀ chưa quá 60 phút: Bỏ qua (Skip), không gửi thừa
-        if (lastHash === stateHash && (now - lastTime < sixtyMinutesMs)) {
+        for (let idx = 0; idx < candidateEntries.length; idx++) {
+            const [normId, rawIdentity] = candidateEntries[idx];
+            const isCurrentActiveUser = Boolean(currentActiveNormId && normId === currentActiveNormId);
+
+            let prog = null;
+            try {
+                const rawProgress = localStorage.getItem(`dhm_lms_progress_${rawIdentity}`)
+                    || localStorage.getItem(`dhm_lms_progress_${normId}`);
+                if (rawProgress) {
+                    prog = JSON.parse(rawProgress);
+                    // Tuyệt đối chỉ gán biến toàn cục learnerProgress nếu khớp với currentUser đang đăng nhập
+                    if (isCurrentActiveUser && typeof learnerProgress !== "undefined" && learnerProgress) {
+                        learnerProgress = prog;
+                    }
+                }
+            } catch (e) {}
+
+            if (!prog && isCurrentActiveUser && typeof learnerProgress !== "undefined" && learnerProgress && learnerProgress.stageData) {
+                prog = learnerProgress;
+            }
+
+            const s1 = (prog && prog.stageData && prog.stageData["stage-1"]) || {};
+            const answeredCount = Object.keys(s1.quizAnswers || {}).length;
+            const hasRealQuizAttempt = answeredCount > 0 || (typeof s1.score === "number" && s1.score > 0) || s1.passed === true;
+            const score = hasRealQuizAttempt && s1.score !== undefined && s1.score !== null ? s1.score : null;
+            const percentage = hasRealQuizAttempt && s1.percentage !== undefined && s1.percentage !== null ? s1.percentage : null;
+            const passed = hasRealQuizAttempt ? Boolean(s1.passed) : null;
+            const attemptNumber = hasRealQuizAttempt ? (s1.quizAttempts || 1) : 0;
+            const quizAnswers = hasRealQuizAttempt ? (s1.quizAnswers || {}) : {};
+
+            // Đọc giá trị cá nhân từ s1.selectedValues, dhm_pv_history_<id>, dhm_pv_<id>, hoặc dhm_personal_values_latest (có kiểm tra quyền sở hữu)
+            let topValues = (s1.selectedValues && Array.isArray(s1.selectedValues) && s1.selectedValues.length > 0)
+                ? s1.selectedValues
+                : [];
+            if (topValues.length === 0) {
+                try {
+                    const pvHist = JSON.parse(localStorage.getItem(`dhm_pv_history_${rawIdentity}`) || localStorage.getItem(`dhm_pv_history_${normId}`) || "[]");
+                    if (Array.isArray(pvHist) && pvHist.length > 0 && Array.isArray(pvHist[0].top7)) {
+                        topValues = pvHist[0].top7.map(v => (typeof v === "object" && v && v.name) ? v.name : String(v));
+                    }
+                } catch (e) {}
+            }
+            if (topValues.length === 0) {
+                try {
+                    const pvSingle = JSON.parse(localStorage.getItem(`dhm_pv_${rawIdentity}`) || localStorage.getItem(`dhm_pv_${normId}`) || "null");
+                    if (pvSingle && Array.isArray(pvSingle.top7)) {
+                        topValues = pvSingle.top7.map(v => (typeof v === "object" && v && v.name) ? v.name : String(v));
+                    }
+                } catch (e) {}
+            }
+            if (topValues.length === 0 && latestPvObj && Array.isArray(latestPvObj.top7)) {
+                const pvEmailNorm = latestPvObj.email ? normalizeIdentity(latestPvObj.email) : "";
+                if ((pvEmailNorm && pvEmailNorm === normId) || (!pvEmailNorm && candidateEntries.length === 1)) {
+                    topValues = latestPvObj.top7.map(v => (typeof v === "object" && v && v.name) ? v.name : String(v));
+                }
+            }
+
+            const iamTelemetry = extractIamAndNotesTelemetry(prog, rawIdentity);
+            const hasQuizData = hasRealQuizAttempt;
+            const hasPvData = topValues.length > 0;
+
+            if (!hasQuizData && !hasPvData && !iamTelemetry.hasIamData) {
+                continue;
+            }
+
+            totalFoundWithRealData++;
+            const resolvedUser = resolveLearnerProfileForIdentity(rawIdentity, storedAuthUser, directoryList);
+
+            const summaryParts = [];
+            if (hasQuizData) summaryParts.push(`Quiz ${score !== null ? score + "/10" : ""}`);
+            if (hasPvData) summaryParts.push(`${topValues.length} Giá trị cốt lõi`);
+            if (iamTelemetry.iam_cp1_sets.length > 0) summaryParts.push(`${iamTelemetry.iam_cp1_sets.length} bộ CP1`);
+            if (iamTelemetry.iam_cp2_sets.length > 0) summaryParts.push(`${iamTelemetry.iam_cp2_sets.length} bộ CP2`);
+            if (iamTelemetry.hasIamData && iamTelemetry.iam_cp1_sets.length === 0 && iamTelemetry.iam_cp2_sets.length === 0) {
+                summaryParts.push("Thu hoạch I•A•M");
+            }
+            const itemSummaryText = summaryParts.join(", ") || "Bài làm LMS";
+
+            const topValuesString = topValues.join(",");
+            const stateHash = `${rawIdentity}__s:${score !== null ? score : 'none'}__a:${answeredCount}__v:${topValuesString}__iam:${iamTelemetry.iamSignature}`;
+
+            const lastHashKey = `dhm_telemetry_last_hash_${rawIdentity}`;
+            const lastTimeKey = `dhm_telemetry_last_sync_time_${rawIdentity}`;
+            const lastHash = localStorage.getItem(lastHashKey);
+            const lastTime = parseInt(localStorage.getItem(lastTimeKey) || "0", 10);
+
+            if (lastHash === stateHash && (now - lastTime < sixtyMinutesMs)) {
+                syncedItems.push({ user: resolvedUser, summaryText: itemSummaryText });
+                continue;
+            }
+
+            pendingSyncItems.push({
+                rawIdentity,
+                normId,
+                prog,
+                s1,
+                resolvedUser,
+                score,
+                percentage,
+                passed,
+                attemptNumber,
+                quizAnswers,
+                topValues,
+                stateHash,
+                lastHashKey,
+                lastTimeKey,
+                summaryText: itemSummaryText
+            });
+        }
+
+        if (totalFoundWithRealData === 0) {
+            renderLmsSyncStatusBanner("EMPTY_BROWSER", { user: currentUser || storedAuthUser });
             return;
         }
 
-        // Single-Flight lock: Nếu đã có một lượt hẹn giờ đang chờ, không hẹn thêm lượt thứ 2
+        if (pendingSyncItems.length === 0 && syncedItems.length > 0) {
+            const firstSynced = syncedItems[0];
+            renderLmsSyncStatusBanner("SUCCESS", {
+                user: firstSynced.user,
+                learnerName: syncedItems.map(x => x.user.name || x.user.email).join(", "),
+                summaryText: syncedItems.map(x => x.summaryText).join(" • ")
+            });
+            return;
+        }
+
         if (autoBootTelemetryTimer) {
             return;
         }
 
-        // 5. Anti-Throttling Jitter Guard: Trễ ngẫu nhiên từ 1.000ms đến 4.000ms
-        const jitterMs = Math.floor(Math.random() * 3000) + 1000;
+        const firstPending = pendingSyncItems[0];
+        renderLmsSyncStatusBanner("SYNCING", {
+            user: firstPending.resolvedUser,
+            learnerName: pendingSyncItems.map(x => x.resolvedUser.name || x.resolvedUser.email).join(", "),
+            summaryText: pendingSyncItems.map(x => x.summaryText).join(" • ")
+        });
 
-        autoBootTelemetryTimer = setTimeout(() => {
+        const bootDelayMs = (typeof window !== "undefined" && window.__DHM_BOOT_TELEMETRY_DELAY_MS !== undefined)
+            ? Number(window.__DHM_BOOT_TELEMETRY_DELAY_MS)
+            : 250;
+
+        autoBootTelemetryTimer = setTimeout(async () => {
             autoBootTelemetryTimer = null;
             const webhookUrl = LMS_CONFIG.AUTHORIZED_WEBHOOKS[0];
             if (!webhookUrl) return;
 
-            const latestIam = extractIamAndNotesTelemetry(prog, identity);
+            const newlySynced = [...syncedItems];
+            for (let i = 0; i < pendingSyncItems.length; i++) {
+                const item = pendingSyncItems[i];
+                const latestIam = extractIamAndNotesTelemetry(item.prog, item.rawIdentity);
+                const payload = {
+                    action: "auto_boot_sync",
+                    type: "AUTO_BOOT_TELEMETRY",
+                    learner_id: item.resolvedUser.learner_id || "DHM-USER",
+                    name: item.resolvedUser.name || "",
+                    email: item.resolvedUser.email || item.rawIdentity || "",
+                    phone: item.resolvedUser.phone || "",
+                    cohort: item.resolvedUser.cohort || "Team Happiness Apollo",
+                    score: item.score,
+                    total_questions: item.s1.totalQuestions || 10,
+                    percentage: item.percentage,
+                    passed: item.passed,
+                    attempt_number: item.attemptNumber,
+                    answers: item.quizAnswers,
+                    top7_values: item.topValues,
+                    stage1_iam_cp1: latestIam.iam_cp1,
+                    stage1_iam_cp1_sets: latestIam.iam_cp1_sets,
+                    stage1_iam_cp2: latestIam.iam_cp2,
+                    stage1_iam_cp2_sets: latestIam.iam_cp2_sets,
+                    stage1_iam_1_1: latestIam.iam_1_1,
+                    stage1_iam_1_2: latestIam.iam_1_2,
+                    stage1_iam_1_3: latestIam.iam_1_3,
+                    stage2_habits: latestIam.stage2_habits,
+                    stage2_capstone: latestIam.stage2_capstone,
+                    stage2_capstone_sets: latestIam.stage2_capstone_sets,
+                    quick_notes: latestIam.quick_notes,
+                    target_sheet_id: "1Ju4y-KNDe7eiMvpbyq2mPfKTijH_1NIC3j8Rykl7cak",
+                    target_sheet_name: "Thu Hoạch IAM",
+                    telemetry_hash: item.stateHash,
+                    timestamp: new Date().toISOString()
+                };
 
-            // 6. Gói payload auto_boot_sync đầy đủ Quiz + Values + Checkpoints I•A•M
-            const payload = {
-                action: "auto_boot_sync",
-                type: "AUTO_BOOT_TELEMETRY",
-                learner_id: user.learner_id || "DHM-USER",
-                name: user.name || "",
-                email: user.email || user.identity || "",
-                phone: user.phone || "",
-                cohort: user.cohort || "Team Happiness Apollo",
-                score: score,
-                total_questions: s1.totalQuestions || 10,
-                percentage: s1.percentage !== undefined ? s1.percentage : null,
-                passed: Boolean(s1.passed),
-                attempt_number: s1.quizAttempts || 1,
-                answers: s1.quizAnswers || {},
-                top7_values: topValues,
-                stage1_iam_cp1: latestIam.iam_cp1,
-                stage1_iam_cp1_sets: latestIam.iam_cp1_sets,
-                stage1_iam_cp2: latestIam.iam_cp2,
-                stage1_iam_cp2_sets: latestIam.iam_cp2_sets,
-                stage1_iam_1_1: latestIam.iam_1_1,
-                stage1_iam_1_2: latestIam.iam_1_2,
-                stage1_iam_1_3: latestIam.iam_1_3,
-                stage2_habits: latestIam.stage2_habits,
-                stage2_capstone: latestIam.stage2_capstone,
-                stage2_capstone_sets: latestIam.stage2_capstone_sets,
-                quick_notes: latestIam.quick_notes,
-                target_sheet_id: "1Ju4y-KNDe7eiMvpbyq2mPfKTijH_1NIC3j8Rykl7cak",
-                target_sheet_name: "Thu Hoạch IAM",
-                telemetry_hash: stateHash,
-                timestamp: new Date().toISOString()
-            };
+                const ack = await dispatchTelemetryPayloadWithAck(payload, webhookUrl, 2);
+                if (ack && ack.success === true) {
+                    try {
+                        localStorage.setItem(item.lastHashKey, item.stateHash);
+                        localStorage.setItem(item.lastTimeKey, String(Date.now()));
+                    } catch (e) {}
+                    newlySynced.push({ user: item.resolvedUser, summaryText: item.summaryText });
+                }
+            }
 
-            // 7. Phát viễn trắc qua dispatchTelemetryPayload
-            dispatchTelemetryPayload(payload, webhookUrl);
-
-            // 8. Lưu hash và timestamp vào localStorage
-            try {
-                localStorage.setItem(lastHashKey, stateHash);
-                localStorage.setItem(lastTimeKey, String(Date.now()));
-            } catch (e) {}
-        }, jitterMs);
+            if (newlySynced.length > 0) {
+                renderLmsSyncStatusBanner("SUCCESS", {
+                    user: newlySynced[0].user,
+                    learnerName: newlySynced.map(x => x.user.name || x.user.email).join(", "),
+                    summaryText: newlySynced.map(x => x.summaryText).join(" • ")
+                });
+            }
+        }, bootDelayMs);
     }
 
     window.triggerAutoTelemetryOnBoot = triggerAutoTelemetryOnBoot;
     window.dispatchTelemetryPayload = dispatchTelemetryPayload;
+    window.dispatchTelemetryPayloadWithAck = dispatchTelemetryPayloadWithAck;
+    window.renderLmsSyncStatusBanner = renderLmsSyncStatusBanner;
     window.extractIamAndNotesTelemetry = extractIamAndNotesTelemetry;
 
     function syncHabitTrackerToCRM() {
@@ -2911,6 +3300,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (btnRetry) {
                         btnRetry.addEventListener("click", () => {
                             learnerProgress.stageData["stage-1"].quizAnswers = {};
+                            learnerProgress.stageData["stage-1"].score = null;
+                            learnerProgress.stageData["stage-1"].percentage = null;
                             learnerProgress.stageData["stage-1"].quizAttempts = attempts + 1;
                             learnerProgress.stageData["stage-1"].passed = false;
                             saveLearnerProgress();
@@ -5394,11 +5785,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!authResult.valid) {
             authErrorTitle.textContent = "Mật khẩu không chính xác";
             if (learner.force_pwd_change) {
-                authErrorDesc.textContent = "Mật khẩu khởi tạo của bạn là 1234. Vui lòng kiểm tra lại.";
-            } else if (learner.password_hash) {
+                authErrorDesc.textContent = "Mật khẩu khởi tạo không đúng. Vui lòng kiểm tra lại.";
+            } else if (learner.password_hash || learner.default_pwd) {
                 authErrorDesc.textContent = "Mật khẩu truy cập không đúng. Vui lòng kiểm tra lại.";
-            } else if (learner.default_pwd) {
-                authErrorDesc.textContent = `Mật khẩu truy cập của bạn là ${learner.default_pwd}. Vui lòng kiểm tra lại.`;
             } else {
                 authErrorDesc.textContent = "Mật khẩu là 4 số cuối của Số điện thoại đã đăng ký. Vui lòng kiểm tra lại.";
             }

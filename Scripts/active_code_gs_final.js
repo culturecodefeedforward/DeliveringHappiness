@@ -843,6 +843,14 @@ function doPost(e) {
       return jsonOut(handleAbcdeSubmission(body));
     }
 
+    // --- ĐỔI MẬT KHẨU HỌC VIÊN LMS & LIÊN HỆ CULTURECODE ---
+    if (body.action === 'update_password') {
+      return jsonOut(handleLmsUpdatePassword_(body));
+    }
+    if (body.action === 'contact_culturecode') {
+      return jsonOut(handleContactCulturecode_(body));
+    }
+
     // --- LMS TELEMETRY, CHECKPOINT I•A•M & 5 TRẠM APOLLO ---
     if (
       body.action === 'sync_full_progress' ||
@@ -3374,12 +3382,162 @@ function normalizeIamSetsFromPayload_(setsArr, legacyObj, prefix) {
   return result;
 }
 
+function mergeIamSets_(existingSets, incomingSets, prefix) {
+  var merged = [];
+  var seenContent = {};
+
+  function addSet(item, idx) {
+    if (!item || typeof item !== 'object') return;
+    var iVal = String(item.I || item.interestedText || '').trim();
+    var aVal = String(item.A || item.actionableText || '').trim();
+    var mVal = String(item.M || item.meaningfulText || '').trim();
+    if (!iVal && !aVal && !mVal) return;
+
+    var contentSig = iVal.toLowerCase() + '||' + aVal.toLowerCase() + '||' + mVal.toLowerCase();
+    if (seenContent[contentSig]) {
+      return;
+    }
+    seenContent[contentSig] = true;
+    merged.push({
+      id: item.id || ((prefix || 'set') + '_' + (merged.length + 1)),
+      I: iVal,
+      A: aVal,
+      M: mVal,
+      createdAt: item.createdAt || ''
+    });
+  }
+
+  if (Array.isArray(existingSets)) {
+    for (var i = 0; i < existingSets.length; i++) {
+      addSet(existingSets[i], i);
+    }
+  }
+  if (Array.isArray(incomingSets)) {
+    for (var j = 0; j < incomingSets.length; j++) {
+      addSet(incomingSets[j], j);
+    }
+  }
+  return merged;
+}
+
+function enqueueRawTelemetryFallback_(body) {
+  var queued = false;
+  var nowStr = Utilities.formatDate(new Date(), 'Asia/Ho_Chi_Minh', 'yyyy-MM-dd HH:mm:ss');
+  var profile = (body && body.profile) ? body.profile : {};
+  var email = String(profile.email || (body && body.email) || '').trim().toLowerCase();
+  var fullName = String(profile.fullName || (body && body.name) || '').trim();
+  var phone = String(profile.phone || (body && body.phone) || '').trim();
+  var actionType = String((body && (body.action || body.type)) || 'telemetry').trim();
+  var rawJson = '';
+  try {
+    rawJson = JSON.stringify(body || {});
+  } catch (eJson) {
+    rawJson = '{}';
+  }
+
+  var targetSheetId = (body && body.target_sheet_id) || APOLLO_IAM_SPREADSHEET_ID;
+  var candidateSpreadsheets = [];
+  if (targetSheetId) {
+    try {
+      var apolloSs = SpreadsheetApp.openById(targetSheetId);
+      if (apolloSs) candidateSpreadsheets.push(apolloSs);
+    } catch (e1) {}
+  }
+  try {
+    var mainSs = getTargetSpreadsheet();
+    if (mainSs) candidateSpreadsheets.push(mainSs);
+  } catch (e2) {}
+
+  for (var idx = 0; idx < candidateSpreadsheets.length; idx++) {
+    try {
+      var ss = candidateSpreadsheets[idx];
+      var qSheet = ss.getSheetByName('Raw_Telemetry_Queue');
+      if (!qSheet) {
+        qSheet = ss.insertSheet('Raw_Telemetry_Queue');
+        qSheet.appendRow(['Thời Gian', 'Action / Type', 'Email', 'Họ Tên', 'Số Điện Thoại', 'Raw Payload JSON']);
+      }
+      qSheet.appendRow([nowStr, actionType, email, fullName, phone, rawJson]);
+      queued = true;
+      break;
+    } catch (eQueue) {}
+  }
+  return queued;
+}
+
+function handleLmsUpdatePassword_(body) {
+  var email = String((body && body.email) || '').trim().toLowerCase();
+  var passwordHash = String((body && body.password_hash) || '').trim();
+  var forcePwdChange = Boolean(body && body.force_pwd_change);
+  var nowStr = Utilities.formatDate(new Date(), 'Asia/Ho_Chi_Minh', 'yyyy-MM-dd HH:mm:ss');
+
+  try {
+    var ss = getTargetSpreadsheet();
+    if (ss) {
+      var sheet = ss.getSheetByName('LMS_Password_Updates');
+      if (!sheet) {
+        sheet = ss.insertSheet('LMS_Password_Updates');
+        sheet.appendRow(['Thời Gian', 'Email', 'Password Hash', 'Force Change']);
+      }
+      sheet.appendRow([nowStr, email, passwordHash, forcePwdChange]);
+    }
+  } catch (e) {}
+
+  return {
+    success: true,
+    action: 'update_password',
+    email: email,
+    updated: true,
+    timestamp: nowStr
+  };
+}
+
+function handleContactCulturecode_(body) {
+  var senderName = String((body && body.sender_name) || '').trim();
+  var senderEmail = String((body && body.sender_email) || '').trim();
+  var subject = String((body && body.subject) || '[Liên hệ DHM LMS]').trim();
+  var message = String((body && body.message) || '').trim();
+  var stageContext = String((body && body.stage_context) || '').trim();
+  var nowStr = Utilities.formatDate(new Date(), 'Asia/Ho_Chi_Minh', 'yyyy-MM-dd HH:mm:ss');
+
+  try {
+    var ss = getTargetSpreadsheet();
+    if (ss) {
+      var sheet = ss.getSheetByName('LMS_Contact_Messages');
+      if (!sheet) {
+        sheet = ss.insertSheet('LMS_Contact_Messages');
+        sheet.appendRow(['Thời Gian', 'Người Gửi', 'Email', 'Chặng', 'Tiêu Đề', 'Nội Dung']);
+      }
+      sheet.appendRow([nowStr, senderName, senderEmail, stageContext, subject, message]);
+    }
+  } catch (e) {}
+
+  return {
+    success: true,
+    action: 'contact_culturecode',
+    sender_email: senderEmail,
+    timestamp: nowStr
+  };
+}
+
 function handleLmsAndIamTelemetry_(body) {
   var lock = LockService.getScriptLock();
   var hasLock = false;
   try {
-    hasLock = lock.tryLock(10000);
-  } catch (e) {}
+    hasLock = lock.tryLock(25000);
+  } catch (e) {
+    hasLock = false;
+  }
+
+  // Tuyệt đối không chạy không khóa vào writeIamAndLmsToSpreadsheet_
+  if (!hasLock) {
+    var queued = enqueueRawTelemetryFallback_(body);
+    return {
+      success: false,
+      error: 'LOCK_TIMEOUT',
+      retry: true,
+      queued: queued
+    };
+  }
 
   try {
     var now = new Date();
@@ -3387,12 +3545,13 @@ function handleLmsAndIamTelemetry_(body) {
     var wroteApollo = false;
     var wroteMain = false;
     var errors = [];
+    var apolloSs = null;
 
     // 1. Ghi vào bảng tính Team Happiness Apollo - Thu Hoạch IAM (nếu có quyền truy cập)
     var targetSheetId = body.target_sheet_id || APOLLO_IAM_SPREADSHEET_ID;
     if (targetSheetId) {
       try {
-        var apolloSs = SpreadsheetApp.openById(targetSheetId);
+        apolloSs = SpreadsheetApp.openById(targetSheetId);
         if (apolloSs) {
           writeIamAndLmsToSpreadsheet_(apolloSs, body, timestamp);
           wroteApollo = true;
@@ -3506,13 +3665,15 @@ function writeIamAndLmsToSpreadsheet_(ss, body, timestamp) {
   var iam13Sets = normalizeIamSetsFromPayload_(null, body.stage1_iam_1_3, 'm1_3');
   var capstoneSets = normalizeIamSetsFromPayload_(body.stage2_capstone_sets, body.stage2_capstone, 'capstone');
 
-  // 1. Ghi vào trang tính chuyên biệt Thu Hoạch LMS & Checkpoints
+  // 1. Ghi vào trang tính chuyên biệt Thu Hoạch LMS & Checkpoints (có High-Water Mark & hợp nhất cp1_sets/cp2_sets)
   var lmsSheet = ensureLmsCheckpointsSheet_(ss);
-  upsertLmsCheckpointsRow_(lmsSheet, timestamp, body, cp1Sets, cp2Sets, iam11Sets, iam12Sets, iam13Sets, capstoneSets);
+  var upsertedLms = upsertLmsCheckpointsRow_(lmsSheet, timestamp, body, cp1Sets, cp2Sets, iam11Sets, iam12Sets, iam13Sets, capstoneSets);
+  var mergedCp1Sets = (upsertedLms && Array.isArray(upsertedLms.cp1Sets)) ? upsertedLms.cp1Sets : cp1Sets;
+  var mergedCp2Sets = (upsertedLms && Array.isArray(upsertedLms.cp2Sets)) ? upsertedLms.cp2Sets : cp2Sets;
 
   // 2. Ghi từng bộ I•A•M vào Nhật Ký Từng Trạm (chống trùng lặp)
   var logSheetLms = ensureApolloLogsSheet_(ss);
-  for (var c1 = 0; c1 < cp1Sets.length; c1++) {
+  for (var c1 = 0; c1 < mergedCp1Sets.length; c1++) {
     appendDeduplicatedIamLog_(logSheetLms, timestamp, {
       email: lmsEmail,
       fullName: lmsName,
@@ -3522,13 +3683,13 @@ function writeIamAndLmsToSpreadsheet_(ss, body, timestamp) {
       stationId: 'CP1-#' + (c1 + 1),
       stationTitle: 'Checkpoint 1: Nhận Thức & La Bàn Giá Trị',
       category: 'LMS Checkpoint 1',
-      selectedTag: cp1Sets[c1].id || ('Bộ #' + (c1 + 1)),
-      interestedText: cp1Sets[c1].I,
-      actionableText: cp1Sets[c1].A,
-      meaningfulText: cp1Sets[c1].M
+      selectedTag: mergedCp1Sets[c1].id || ('Bộ #' + (c1 + 1)),
+      interestedText: mergedCp1Sets[c1].I,
+      actionableText: mergedCp1Sets[c1].A,
+      meaningfulText: mergedCp1Sets[c1].M
     });
   }
-  for (var c2 = 0; c2 < cp2Sets.length; c2++) {
+  for (var c2 = 0; c2 < mergedCp2Sets.length; c2++) {
     appendDeduplicatedIamLog_(logSheetLms, timestamp, {
       email: lmsEmail,
       fullName: lmsName,
@@ -3538,10 +3699,10 @@ function writeIamAndLmsToSpreadsheet_(ss, body, timestamp) {
       stationId: 'CP2-#' + (c2 + 1),
       stationTitle: 'Checkpoint 2: Đòn Bẩy Hạnh Phúc & Small Wins',
       category: 'LMS Checkpoint 2',
-      selectedTag: cp2Sets[c2].id || ('Bộ #' + (c2 + 1)),
-      interestedText: cp2Sets[c2].I,
-      actionableText: cp2Sets[c2].A,
-      meaningfulText: cp2Sets[c2].M
+      selectedTag: mergedCp2Sets[c2].id || ('Bộ #' + (c2 + 1)),
+      interestedText: mergedCp2Sets[c2].I,
+      actionableText: mergedCp2Sets[c2].A,
+      meaningfulText: mergedCp2Sets[c2].M
     });
   }
 
@@ -3549,7 +3710,7 @@ function writeIamAndLmsToSpreadsheet_(ss, body, timestamp) {
   if (lmsEmail || lmsPhone) {
     var summarySheetLms = ensureApolloSummarySheet_(ss);
     var syntheticEntries = [];
-    var effectiveCp1 = cp1Sets.length > 0 ? cp1Sets : iam11Sets.concat(iam12Sets);
+    var effectiveCp1 = mergedCp1Sets.length > 0 ? mergedCp1Sets : iam11Sets.concat(iam12Sets);
     if (effectiveCp1.length > 0) {
       syntheticEntries.push({
         stationId: 1,
@@ -3559,7 +3720,7 @@ function writeIamAndLmsToSpreadsheet_(ss, body, timestamp) {
         meaningfulText: formatIamSetsColumn_(effectiveCp1, 'M')
       });
     }
-    var effectiveCp2 = cp2Sets.length > 0 ? cp2Sets : iam13Sets;
+    var effectiveCp2 = mergedCp2Sets.length > 0 ? mergedCp2Sets : iam13Sets;
     if (effectiveCp2.length > 0) {
       syntheticEntries.push({
         stationId: 2,
@@ -3591,13 +3752,13 @@ function writeIamAndLmsToSpreadsheet_(ss, body, timestamp) {
       });
     }
 
-    var quizScore = body.score !== undefined && body.score !== null
-      ? body.score
-      : (body.stage1_quiz_score !== undefined ? body.stage1_quiz_score : null);
-    var quizPct = body.percentage !== undefined && body.percentage !== null
-      ? body.percentage
-      : (body.stage1_quiz_percentage !== undefined ? body.stage1_quiz_percentage : null);
-    var quizPassed = Boolean(body.passed !== undefined ? body.passed : body.stage1_quiz_passed);
+    var quizMetaForSummary = (upsertedLms && upsertedLms.quizScore !== '' && upsertedLms.quizScore !== null && upsertedLms.quizScore !== undefined)
+      ? {
+          score: upsertedLms.quizScore,
+          percentage: upsertedLms.quizPct,
+          passed: upsertedLms.quizStatusStr === 'Đạt chuẩn'
+        }
+      : null;
 
     upsertApolloSummaryRow_(summarySheetLms, timestamp, {
       fullName: lmsName,
@@ -3605,11 +3766,7 @@ function writeIamAndLmsToSpreadsheet_(ss, body, timestamp) {
       email: lmsEmail,
       apolloCenter: lmsCohort,
       department: 'LMS'
-    }, syntheticEntries, null, {
-      score: quizScore,
-      percentage: quizPct,
-      passed: quizPassed
-    });
+    }, syntheticEntries, null, quizMetaForSummary);
   }
 }
 
@@ -3713,6 +3870,14 @@ function appendDeduplicatedIamLog_(sheet, timestamp, entryObj) {
   ]);
 }
 
+function isLmsSyntheticTag_(tagStr) {
+  var t = String(tagStr || '').trim();
+  if (!t) return false;
+  return t.indexOf('LMS Checkpoint') === 0 ||
+         t.indexOf('La Bàn Giá Trị') === 0 ||
+         t.indexOf('Capstone Chặng 2') === 0;
+}
+
 function upsertApolloSummaryRow_(sheet, timestamp, profile, entries, analytics, lmsQuizMeta) {
   var data = sheet.getDataRange().getValues();
   var emailColIdx = 3;
@@ -3731,6 +3896,7 @@ function upsertApolloSummaryRow_(sheet, timestamp, profile, entries, analytics, 
     }
   }
 
+  var isLmsSource = String(profile.department || '').trim().toUpperCase() === 'LMS';
   var stationMap = {};
   if (Array.isArray(entries)) {
     for (var j = 0; j < entries.length; j++) {
@@ -3741,43 +3907,80 @@ function upsertApolloSummaryRow_(sheet, timestamp, profile, entries, analytics, 
     }
   }
 
-  if (targetRowIdx > 0) {
-    var existingRow = data[targetRowIdx - 1];
+  var prevRow = targetRowIdx > 0 ? data[targetRowIdx - 1] : null;
+  if (prevRow) {
     for (var sId = 1; sId <= 5; sId++) {
-      if (!stationMap[sId]) {
-        var baseCol = 8 + (sId - 1) * 4;
-        var tag = existingRow[baseCol];
-        var intr = existingRow[baseCol + 1];
-        var act = existingRow[baseCol + 2];
-        var mng = existingRow[baseCol + 3];
-        if (tag || intr || act || mng) {
-          stationMap[sId] = {
-            stationId: sId,
-            selectedTag: tag || '',
-            interestedText: intr || '',
-            actionableText: act || '',
-            meaningfulText: mng || ''
-          };
-        }
+      var baseCol = 8 + (sId - 1) * 4;
+      var exTag = prevRow[baseCol];
+      var exIntr = prevRow[baseCol + 1];
+      var exAct = prevRow[baseCol + 2];
+      var exMng = prevRow[baseCol + 3];
+      var hasExistingStation = Boolean(exTag || exIntr || exAct || exMng);
+      var existingIsFromFiveStationApp = hasExistingStation && !isLmsSyntheticTag_(exTag);
+
+      // Bảo vệ không để syntheticEntries từ LMS ghi đè lên dữ liệu 5 Trạm đã có
+      if (hasExistingStation && (!stationMap[sId] || (isLmsSource && existingIsFromFiveStationApp))) {
+        stationMap[sId] = {
+          stationId: sId,
+          selectedTag: exTag || '',
+          interestedText: exIntr || '',
+          actionableText: exAct || '',
+          meaningfulText: exMng || ''
+        };
       }
     }
   }
 
   var completedStations = Object.keys(stationMap).length;
-  var statusStr = completedStations >= 5 ? 'Đã hoàn thành 5 trạm' : ('Đang làm (' + completedStations + '/5)');
-  if (lmsQuizMeta && lmsQuizMeta.score !== null && lmsQuizMeta.score !== undefined) {
-    var pctStr = lmsQuizMeta.percentage !== null && lmsQuizMeta.percentage !== undefined ? (lmsQuizMeta.percentage + '%') : (lmsQuizMeta.score + '/10');
-    statusStr = (lmsQuizMeta.passed ? ('Đạt Quiz ' + pctStr) : ('Quiz ' + pctStr)) + (completedStations > 0 ? (' • IAM (' + completedStations + ' mục)') : '');
+  var prevStatusStr = prevRow ? String(prevRow[7] || '').trim() : '';
+  var prevQuizPrefix = '';
+  if (prevStatusStr.indexOf('Đạt Quiz ') === 0 || prevStatusStr.indexOf('Quiz ') === 0) {
+    prevQuizPrefix = prevStatusStr.split(' • ')[0].trim();
   }
 
-  var prevRow = targetRowIdx > 0 ? data[targetRowIdx - 1] : null;
+  var incomingQuizPrefix = '';
+  if (lmsQuizMeta && lmsQuizMeta.score !== null && lmsQuizMeta.score !== undefined && lmsQuizMeta.score !== '') {
+    var scoreNum = Number(lmsQuizMeta.score);
+    var isRealAttempt = !isNaN(scoreNum) && (scoreNum > 0 || lmsQuizMeta.passed === true);
+    if (isRealAttempt) {
+      var pctStr = (lmsQuizMeta.percentage !== null && lmsQuizMeta.percentage !== undefined && lmsQuizMeta.percentage !== '')
+        ? (lmsQuizMeta.percentage + '%')
+        : (scoreNum + '/10');
+      incomingQuizPrefix = lmsQuizMeta.passed ? ('Đạt Quiz ' + pctStr) : ('Quiz ' + pctStr);
+    }
+  }
+
+  // High-Water Mark cho tiền tố 'Đạt Quiz ...' trên cột H (Trạng Thái)
+  var effectiveQuizPrefix = incomingQuizPrefix || prevQuizPrefix;
+  if (prevQuizPrefix.indexOf('Đạt Quiz ') === 0 && incomingQuizPrefix.indexOf('Đạt Quiz ') !== 0) {
+    effectiveQuizPrefix = prevQuizPrefix;
+  }
+
+  var statusStr = '';
+  if (effectiveQuizPrefix) {
+    if (!isLmsSource && completedStations >= 5) {
+      statusStr = effectiveQuizPrefix + ' • Đã hoàn thành 5 trạm';
+    } else if (completedStations > 0) {
+      statusStr = effectiveQuizPrefix + ' • IAM (' + completedStations + ' mục)';
+    } else {
+      statusStr = effectiveQuizPrefix;
+    }
+  } else {
+    statusStr = completedStations >= 5 ? 'Đã hoàn thành 5 trạm' : ('Đang làm (' + completedStations + '/5)');
+  }
+
+  var resolvedDept = profile.department || (prevRow ? prevRow[5] : '');
+  if (isLmsSource && prevRow && prevRow[5] && String(prevRow[5]).trim() !== '' && String(prevRow[5]).trim().toUpperCase() !== 'LMS') {
+    resolvedDept = prevRow[5];
+  }
+
   var rowValues = [
     timestamp,
     profile.fullName || (prevRow ? prevRow[1] : ''),
     profile.phone || (prevRow ? prevRow[2] : ''),
     profile.email || (prevRow ? prevRow[3] : ''),
     profile.apolloCenter || (prevRow ? prevRow[4] : ''),
-    profile.department || (prevRow ? prevRow[5] : ''),
+    resolvedDept,
     completedStations > 0 ? (completedStations + '/5') : (prevRow && prevRow[6] ? prevRow[6] : '0/5'),
     statusStr,
     stationMap[1] ? (stationMap[1].selectedTag || '') : '',
@@ -3832,35 +4035,95 @@ function upsertLmsCheckpointsRow_(sheet, timestamp, body, cp1Sets, cp2Sets, iam1
 
   var prev = targetRowIdx > 0 ? data[targetRowIdx - 1] : null;
 
-  var quizScore = body.score !== undefined && body.score !== null
+  // 1. High-Water Mark Protection cho điểm Quiz
+  var rawScore = body.score !== undefined && body.score !== null
     ? body.score
-    : (body.stage1_quiz_score !== undefined && body.stage1_quiz_score !== null ? body.stage1_quiz_score : (prev ? prev[7] : ''));
-  var quizPct = body.percentage !== undefined && body.percentage !== null
+    : (body.stage1_quiz_score !== undefined && body.stage1_quiz_score !== null ? body.stage1_quiz_score : null);
+  var rawScoreVal = (rawScore !== null && rawScore !== '' && !isNaN(Number(rawScore))) ? Number(rawScore) : null;
+
+  var rawPct = body.percentage !== undefined && body.percentage !== null
     ? body.percentage
-    : (body.stage1_quiz_percentage !== undefined && body.stage1_quiz_percentage !== null ? body.stage1_quiz_percentage : (prev ? prev[8] : ''));
-  var quizPassedVal = body.passed !== undefined
-    ? body.passed
-    : (body.stage1_quiz_passed !== undefined ? body.stage1_quiz_passed : null);
-  var quizStatusStr = quizPassedVal === true ? 'Đạt chuẩn' : (quizPassedVal === false && quizScore !== '' ? 'Chưa đạt' : (prev ? prev[9] : ''));
-  var quizAttempts = body.attempt_number || body.stage1_quiz_attempts || (prev ? prev[10] : '');
+    : (body.stage1_quiz_percentage !== undefined && body.stage1_quiz_percentage !== null ? body.stage1_quiz_percentage : null);
+  var rawPctVal = (rawPct !== null && rawPct !== '' && !isNaN(Number(rawPct))) ? Number(rawPct) : null;
+
+  var rawPassedVal = body.passed !== undefined && body.passed !== null
+    ? Boolean(body.passed)
+    : (body.stage1_quiz_passed !== undefined && body.stage1_quiz_passed !== null ? Boolean(body.stage1_quiz_passed) : null);
 
   var quizAnswersObj = body.answers || body.stage1_quiz_answers || {};
-  var quizAnswersJson = Object.keys(quizAnswersObj).length > 0 ? JSON.stringify(quizAnswersObj) : (prev ? prev[11] : '');
+  var incomingAnswersCount = (quizAnswersObj && typeof quizAnswersObj === 'object') ? Object.keys(quizAnswersObj).length : 0;
+
+  var prevScore = (prev && prev[7] !== '' && prev[7] !== null && prev[7] !== undefined && !isNaN(Number(prev[7])))
+    ? Number(prev[7])
+    : null;
+  var prevPct = (prev && prev[8] !== '' && prev[8] !== null && prev[8] !== undefined && !isNaN(Number(prev[8])))
+    ? Number(prev[8])
+    : null;
+  var prevStatusStr = prev ? String(prev[9] || '') : '';
+  var prevPassed = prevStatusStr === 'Đạt chuẩn' || (prevPct !== null && prevPct >= 80) || (prevScore !== null && prevScore >= 8);
+
+  var hasValidIncomingQuiz = (rawScoreVal !== null && !isNaN(rawScoreVal)) && (incomingAnswersCount > 0 || rawScoreVal > 0 || rawPassedVal === true);
+  var useIncomingQuiz = hasValidIncomingQuiz && (
+    prevScore === null ||
+    rawScoreVal > prevScore ||
+    (rawScoreVal === prevScore && incomingAnswersCount > 0)
+  );
+  if (prevPassed && rawPassedVal === false && (rawScoreVal === null || rawScoreVal < (prevScore !== null ? prevScore : 8))) {
+    useIncomingQuiz = false;
+  }
+
+  var quizScore = '';
+  var quizPct = '';
+  var quizStatusStr = '';
+  var quizAttempts = '';
+  var quizAnswersJson = '';
+
+  if (useIncomingQuiz) {
+    quizScore = rawScoreVal;
+    var totalQ = Number(body.total_questions || body.stage1_quiz_total || 10) || 10;
+    quizPct = rawPctVal !== null ? rawPctVal : Math.round((rawScoreVal / totalQ) * 100);
+    var effectivePassed = (rawPassedVal === true) || prevPassed || (quizPct >= 80);
+    quizStatusStr = effectivePassed ? 'Đạt chuẩn' : 'Chưa đạt';
+    quizAttempts = body.attempt_number || body.stage1_quiz_attempts || (prev && prev[10] ? prev[10] : 1);
+    quizAnswersJson = incomingAnswersCount > 0 ? JSON.stringify(quizAnswersObj) : (prev ? prev[11] : '');
+  } else {
+    quizScore = prevScore !== null ? prevScore : (prev ? prev[7] : '');
+    quizPct = prevPct !== null ? prevPct : (prev ? prev[8] : '');
+    quizStatusStr = prev ? prev[9] : '';
+    quizAttempts = prev && prev[10] ? prev[10] : '';
+    quizAnswersJson = prev ? prev[11] : '';
+  }
 
   var topVals = Array.isArray(body.top7_values) && body.top7_values.length > 0
     ? body.top7_values
     : (Array.isArray(body.stage1_values) && body.stage1_values.length > 0 ? body.stage1_values : []);
   var topValsStr = topVals.length > 0 ? topVals.join(', ') : (prev ? prev[12] : '');
 
-  var cp1Count = cp1Sets.length > 0 ? cp1Sets.length : (prev ? prev[13] : 0);
-  var cp1I = cp1Sets.length > 0 ? formatIamSetsColumn_(cp1Sets, 'I') : (prev ? prev[14] : '');
-  var cp1A = cp1Sets.length > 0 ? formatIamSetsColumn_(cp1Sets, 'A') : (prev ? prev[15] : '');
-  var cp1M = cp1Sets.length > 0 ? formatIamSetsColumn_(cp1Sets, 'M') : (prev ? prev[16] : '');
+  // 2. Giải mã prev[25] (rawSetsJson) và dùng mergeIamSets_ hợp nhất cp1_sets, cp2_sets giữa các thiết bị
+  var prevCp1Sets = [];
+  var prevCp2Sets = [];
+  if (prev && prev[25]) {
+    try {
+      var parsedRawSets = JSON.parse(String(prev[25]));
+      if (parsedRawSets && typeof parsedRawSets === 'object') {
+        if (Array.isArray(parsedRawSets.cp1_sets)) prevCp1Sets = parsedRawSets.cp1_sets;
+        if (Array.isArray(parsedRawSets.cp2_sets)) prevCp2Sets = parsedRawSets.cp2_sets;
+      }
+    } catch (eParseRaw) {}
+  }
 
-  var cp2Count = cp2Sets.length > 0 ? cp2Sets.length : (prev ? prev[17] : 0);
-  var cp2I = cp2Sets.length > 0 ? formatIamSetsColumn_(cp2Sets, 'I') : (prev ? prev[18] : '');
-  var cp2A = cp2Sets.length > 0 ? formatIamSetsColumn_(cp2Sets, 'A') : (prev ? prev[19] : '');
-  var cp2M = cp2Sets.length > 0 ? formatIamSetsColumn_(cp2Sets, 'M') : (prev ? prev[20] : '');
+  var mergedCp1Sets = mergeIamSets_(prevCp1Sets, cp1Sets, 'cp1');
+  var mergedCp2Sets = mergeIamSets_(prevCp2Sets, cp2Sets, 'cp2');
+
+  var cp1Count = mergedCp1Sets.length > 0 ? mergedCp1Sets.length : (prev ? prev[13] : 0);
+  var cp1I = mergedCp1Sets.length > 0 ? formatIamSetsColumn_(mergedCp1Sets, 'I') : (prev ? prev[14] : '');
+  var cp1A = mergedCp1Sets.length > 0 ? formatIamSetsColumn_(mergedCp1Sets, 'A') : (prev ? prev[15] : '');
+  var cp1M = mergedCp1Sets.length > 0 ? formatIamSetsColumn_(mergedCp1Sets, 'M') : (prev ? prev[16] : '');
+
+  var cp2Count = mergedCp2Sets.length > 0 ? mergedCp2Sets.length : (prev ? prev[17] : 0);
+  var cp2I = mergedCp2Sets.length > 0 ? formatIamSetsColumn_(mergedCp2Sets, 'I') : (prev ? prev[18] : '');
+  var cp2A = mergedCp2Sets.length > 0 ? formatIamSetsColumn_(mergedCp2Sets, 'A') : (prev ? prev[19] : '');
+  var cp2M = mergedCp2Sets.length > 0 ? formatIamSetsColumn_(mergedCp2Sets, 'M') : (prev ? prev[20] : '');
 
   var lessonsIamArr = [];
   if (iam11Sets.length > 0) lessonsIamArr.push('1.1: I=' + iam11Sets[0].I + ' | A=' + iam11Sets[0].A + ' | M=' + iam11Sets[0].M);
@@ -3876,8 +4139,8 @@ function upsertLmsCheckpointsRow_(sheet, timestamp, body, cp1Sets, cp2Sets, iam1
   var habitsStr = Object.keys(habitsObj).length > 0 ? JSON.stringify(habitsObj) : (prev ? prev[23] : '');
   var quickNotesStr = body.quick_notes ? String(body.quick_notes).trim() : (prev ? prev[24] : '');
 
-  var rawSetsJson = (cp1Sets.length > 0 || cp2Sets.length > 0)
-    ? JSON.stringify({ cp1_sets: cp1Sets, cp2_sets: cp2Sets })
+  var rawSetsJson = (mergedCp1Sets.length > 0 || mergedCp2Sets.length > 0)
+    ? JSON.stringify({ cp1_sets: mergedCp1Sets, cp2_sets: mergedCp2Sets })
     : (prev ? prev[25] : '');
 
   var rowValues = [
@@ -3914,6 +4177,14 @@ function upsertLmsCheckpointsRow_(sheet, timestamp, body, cp1Sets, cp2Sets, iam1
   } else {
     sheet.appendRow(rowValues);
   }
+
+  return {
+    cp1Sets: mergedCp1Sets,
+    cp2Sets: mergedCp2Sets,
+    quizScore: quizScore,
+    quizPct: quizPct,
+    quizStatusStr: quizStatusStr
+  };
 }
 
 function handleGetLmsIamSubmissions_(params) {
