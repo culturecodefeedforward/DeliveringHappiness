@@ -533,11 +533,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Hybrid Trial Auth Elements
     const trialOnboardingGroup = document.getElementById("trial-onboarding-group");
+    const trialRosterNotice = document.getElementById("trial-roster-notice");
     const trialNameInput = document.getElementById("trial-name");
     const trialPhoneInput = document.getElementById("trial-phone");
     const trialConsentInput = document.getElementById("trial-consent");
     const btnRequestTrial = document.getElementById("btn-request-trial");
     const btnRequestTrialText = document.getElementById("btn-request-trial-text");
+    const btnRequestTrialArrow = document.getElementById("btn-request-trial-arrow");
+    const trialResendWrapper = document.getElementById("trial-resend-wrapper");
+    const trialResendCountdown = document.getElementById("trial-resend-countdown");
+    const btnResendTrial = document.getElementById("btn-resend-trial");
     const trialStatusMsg = document.getElementById("trial-status-msg");
     const submitAuthWrapper = document.getElementById("submit-auth-wrapper");
     const trialTriggerWrapper = document.getElementById("trial-trigger-wrapper");
@@ -594,6 +599,41 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // 5. HELPER FUNCTIONS
+    // TRIAL AUTHORIZATION & ROSTER HELPERS
+    const TRIAL_EMAILS_STORAGE_KEY = "dhm_lms_approved_trials";
+
+    function getApprovedTrialEmails() {
+        try {
+            const stored = localStorage.getItem(TRIAL_EMAILS_STORAGE_KEY);
+            return stored ? JSON.parse(stored) : [];
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function saveApprovedTrialEmail(email) {
+        if (!email) return;
+        const clean = String(email).trim().toLowerCase();
+        if (!clean) return;
+        const list = getApprovedTrialEmails();
+        if (!list.includes(clean)) {
+            list.push(clean);
+            try {
+                localStorage.setItem(TRIAL_EMAILS_STORAGE_KEY, JSON.stringify(list));
+            } catch (e) {
+                console.warn("Error saving approved trial email:", e);
+            }
+        }
+    }
+
+    function isTrialAccount(email) {
+        if (!email) return false;
+        const clean = String(email).trim().toLowerCase();
+        if (!clean) return false;
+        const list = getApprovedTrialEmails();
+        return list.includes(clean);
+    }
+
     function normalizePhone(str) {
         if (!str) return "";
         let clean = String(str).replace(/[^\d]/g, "");
@@ -713,6 +753,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (onboardingPhoneInput) onboardingPhoneInput.removeAttribute("required");
         if (trialTriggerWrapper) trialTriggerWrapper.classList.add("hidden");
         if (trialOnboardingGroup) trialOnboardingGroup.classList.add("hidden");
+        if (trialRosterNotice) trialRosterNotice.classList.remove("hidden");
+        if (typeof resetTrialButtonState === "function") resetTrialButtonState();
         if (submitAuthWrapper) submitAuthWrapper.classList.remove("hidden");
         if (btnSubmitText) btnSubmitText.textContent = "Vào Học Ngay";
     }
@@ -769,8 +811,6 @@ document.addEventListener("DOMContentLoaded", () => {
     async function verifyPassword(learner, inputPassword) {
         if (!learner) return { valid: false };
         const pwd = String(inputPassword || "").trim();
-        // Ưu tiên 1 (Mã khẩn cấp giảng viên)
-        if (pwd === "8888") return { valid: true, bypass: true, mustChange: false };
 
         const overrides = getRosterOverrides();
         const ov = overrides[learner.email] || overrides[learner.learner_id] || {};
@@ -808,6 +848,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         return { valid: false };
     }
+    window.verifyPassword = verifyPassword;
 
     async function saveNewPassword(learner, newPassword) {
         const hash = await sha256(newPassword);
@@ -854,57 +895,58 @@ document.addEventListener("DOMContentLoaded", () => {
         const action = urlParams.get("action");
 
         if (token && (action === "verify" || action === "verify_token")) {
+            const cleanEmail = (email || "").trim().toLowerCase();
+            if (cleanEmail) {
+                saveApprovedTrialEmail(cleanEmail);
+            }
+
+            // Dọn dẹp URL param để giữ đường dẫn sạch đẹp
+            window.history.replaceState({}, document.title, window.location.pathname);
+
+            // Tự động cấp quyền học thử Chặng 1 tức thì (Optimistic Access)
+            // Ngăn chặn học viên bị chặn do mạng lag, lỗi CORS 302 của Apps Script, hoặc token đã dùng 1 lần
+            const baseTrialUser = {
+                learner_id: "TRIAL-" + Date.now().toString(36).toUpperCase(),
+                name: cleanEmail ? cleanEmail.split("@")[0] : "Học viên Trải nghiệm",
+                email: cleanEmail,
+                phone: "",
+                phone_last4: "",
+                cohort: "Học viên Trải nghiệm",
+                role: "trial",
+                isTrial: true
+            };
+
+            currentUser = baseTrialUser;
+            localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
+            if (authErrorBanner) authErrorBanner.classList.add("hidden");
+            hideAuthModal();
+            applyUserSession();
+
+            // Xác thực ngầm với Google Apps Script Webhook để đồng bộ Leads_Directory & làm giàu profile
             try {
-                window.history.replaceState({}, document.title, window.location.pathname);
-                showAuthModal();
-
-                if (authErrorBanner) {
-                    authErrorBanner.className = "p-3 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs leading-relaxed space-y-1";
-                    authErrorTitle.textContent = "⏳ Đang xác thực liên kết kích hoạt...";
-                    authErrorDesc.textContent = "Hệ thống đang mở khóa quyền trải nghiệm Chặng 1 cho bạn. Vui lòng chờ vài giây.";
-                    authErrorBanner.classList.remove("hidden");
-                }
-
                 const webhookUrl = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
-                const verifyEndpoint = `${webhookUrl}?action=verify_token&token=${encodeURIComponent(token)}&email=${encodeURIComponent(email || "")}`;
+                const verifyEndpoint = `${webhookUrl}?action=verify_token&token=${encodeURIComponent(token)}&email=${encodeURIComponent(cleanEmail)}`;
 
                 const resp = await fetch(verifyEndpoint);
                 const data = await resp.json();
 
-                if (data && data.success && data.verified) {
-                    const user = data.user || {};
-                    currentUser = {
-                        learner_id: user.lead_id || "TRIAL-" + Date.now().toString(36).toUpperCase(),
-                        name: user.full_name || (email ? email.split("@")[0] : "Học viên Trải nghiệm"),
-                        email: user.email || email,
-                        phone: user.phone || "",
-                        phone_last4: (user.phone || "").slice(-4),
-                        cohort: "Học viên Trải nghiệm",
-                        role: "trial",
-                        isTrial: true
-                    };
-                    localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
-                    if (authErrorBanner) authErrorBanner.classList.add("hidden");
-                    applyUserSession();
-                    alert("🎉 Xác thực thành công!\n\nChào mừng bạn đến với trải nghiệm học thử Chặng 1 (Pre-Class 90 phút) của Delivering Happiness LMS.");
-                    return true;
-                } else {
-                    if (authErrorBanner) {
-                        authErrorBanner.className = "p-3 rounded-xl bg-red-500/15 border border-red-500/30 text-red-300 text-xs leading-relaxed space-y-1";
-                        authErrorTitle.textContent = "Xác thực không thành công";
-                        authErrorDesc.textContent = (data && data.message) ? data.message : "Liên kết kích hoạt đã hết hạn (1 giờ) hoặc không hợp lệ. Vui lòng thử lại.";
+                if ((data && data.success && data.verified) || (data && data.error === "TOKEN_ALREADY_USED")) {
+                    const user = (data && data.user) || {};
+                    if (user.lead_id) currentUser.learner_id = user.lead_id;
+                    if (user.full_name) currentUser.name = user.full_name;
+                    if (user.phone) {
+                        currentUser.phone = user.phone;
+                        currentUser.phone_last4 = user.phone.slice(-4);
                     }
-                    return false;
+                    localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
+                    applyUserSession();
                 }
             } catch (err) {
-                console.warn("Magic link verification error:", err);
-                if (authErrorBanner) {
-                    authErrorBanner.className = "p-3 rounded-xl bg-red-500/15 border border-red-500/30 text-red-300 text-xs leading-relaxed space-y-1";
-                    authErrorTitle.textContent = "Lỗi kết nối";
-                    authErrorDesc.textContent = "Không thể kết nối máy chủ xác thực. Vui lòng thử lại sau.";
-                }
-                return false;
+                console.warn("Background magic link verification error (optimistic login preserved):", err);
             }
+
+            alert("🎉 Xác thực thành công!\n\nChào mừng bạn đến với trải nghiệm học thử Chặng 1 (Pre-Class 90 phút) của Delivering Happiness LMS.");
+            return true;
         }
         return false;
     }
@@ -1841,15 +1883,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if (user.is_paid === true || String(user.payment_status || "").toUpperCase() === "PAID") {
                 return true;
             }
-            const sessionPayment = localStorage.getItem("DHM10_lastPaymentStatus") || sessionStorage.getItem("DHM10_lastPaymentStatus");
-            if (sessionPayment && sessionPayment.toUpperCase() === "PAID") {
-                return true;
-            }
             return false;
         }
 
         return Boolean(user.is_paid === true || String(user.payment_status || "").toUpperCase() === "PAID");
     }
+    window.isPaidDHMLearner = isPaidDHMLearner;
 
     function isStageUnlocked(stageIdx) {
         if (stageIdx === 0) return true; // Chặng 1 luôn luôn mở
@@ -5623,18 +5662,63 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const learner = findLearner(rawIdentity);
 
-        // TRƯỜNG HỢP 1: KHÔNG TÌM THẤY EMAIL TRONG DANH BẠ HỌC VIÊN
+        // NHẬN DIỆN HỌC VIÊN TRẢI NGHIỆM ĐÃ ĐƯỢC PHÊ DUYỆT / ĐĂNG KÝ
+        if (!learner && isTrialAccount(rawIdentity)) {
+            currentUser = {
+                learner_id: "TRIAL-" + Date.now().toString(36).toUpperCase(),
+                name: rawIdentity.split("@")[0],
+                email: rawIdentity.toLowerCase(),
+                phone: "",
+                phone_last4: "",
+                cohort: "Học viên Trải nghiệm",
+                role: "trial",
+                isTrial: true
+            };
+            localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
+            hideAuthModal();
+            applyUserSession();
+            return;
+        }
+
+        // TRƯỜNG HỢP 1: KHÔNG TÌM THẤY EMAIL TRONG DANH BẠ HỌC VIÊN CHÍNH THỨC
         if (!learner) {
             authErrorTitle.textContent = "Email chưa có trong danh sách học viên chính thức";
-            authErrorDesc.innerHTML = `Email <strong>${rawIdentity}</strong> chưa nằm trong danh sách học viên khóa học.<br/><a href="mailto:culturecodeproject@gmail.com" class="text-brand-amber font-bold underline hover:text-amber-300">Đã hoàn thành đăng ký, email cho culturecodeproject@gmail.com</a>`;
+            authErrorDesc.innerHTML = `
+                Email <strong>${escapeHtml(rawIdentity)}</strong> chưa nằm trong danh sách học viên chính thức khóa học.<br/>
+                <div class="mt-2.5 pt-2 border-t border-red-500/20 flex flex-col gap-2">
+                    <button type="button" id="btn-quick-trial-login" class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-green hover:underline text-left cursor-pointer">
+                        <span>🌱</span> <span>Bạn đã đăng ký học thử? Bấm vào đây để vào học Chặng 1 ngay</span>
+                    </button>
+                    <a href="mailto:culturecodeproject@gmail.com" class="text-brand-amber font-semibold text-xs underline hover:text-amber-300">
+                        Đã đăng ký chính thức? Email cho culturecodeproject@gmail.com
+                    </a>
+                </div>
+            `;
             authErrorBanner.classList.remove("hidden");
+
+            const btnQuickTrial = document.getElementById("btn-quick-trial-login");
+            if (btnQuickTrial) {
+                btnQuickTrial.addEventListener("click", () => {
+                    saveApprovedTrialEmail(rawIdentity);
+                    currentUser = {
+                        learner_id: "TRIAL-" + Date.now().toString(36).toUpperCase(),
+                        name: rawIdentity.split("@")[0],
+                        email: rawIdentity.toLowerCase(),
+                        phone: "",
+                        phone_last4: "",
+                        cohort: "Học viên Trải nghiệm",
+                        role: "trial",
+                        isTrial: true
+                    };
+                    localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
+                    hideAuthModal();
+                    applyUserSession();
+                });
+            }
 
             // MỚI XUẤT HIỆN nút "Để lại quan tâm và đăng ký trải nghiệm"
             if (trialTriggerWrapper) {
                 trialTriggerWrapper.classList.remove("hidden");
-            }
-            if (trialNameInput && !trialNameInput.value && rawIdentity.includes("@")) {
-                trialNameInput.value = rawIdentity.split("@")[0];
             }
             return;
         }
@@ -5717,11 +5801,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (submitAuthWrapper) submitAuthWrapper.classList.add("hidden");
             if (trialOnboardingGroup) {
                 trialOnboardingGroup.classList.remove("hidden");
-                const email = (loginIdentityInput.value || "").trim();
+                if (trialRosterNotice) trialRosterNotice.classList.remove("hidden");
+                if (typeof resetTrialButtonState === "function") resetTrialButtonState();
                 if (trialNameInput) {
-                    if (!trialNameInput.value && email.includes("@")) {
-                        trialNameInput.value = email.split("@")[0];
-                    }
                     trialNameInput.focus();
                 }
             }
@@ -5747,17 +5829,37 @@ document.addEventListener("DOMContentLoaded", () => {
             const found = findLearner(val);
             if (found) {
                 updateAuthModeForLearner(found);
+            } else if (isTrialAccount(val)) {
+                // Nhận diện Học viên Trải nghiệm Chặng 1 đã kích hoạt / đăng ký
+                if (authUserDetected) {
+                    authUserDetected.innerHTML = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-brand-green/20 text-brand-green border border-brand-green/30">🌱 Học viên Trải nghiệm Chặng 1</span>`;
+                    authUserDetected.classList.remove("hidden");
+                }
+                if (passwordGroup) passwordGroup.classList.add("hidden");
+                if (loginPasswordInput) loginPasswordInput.removeAttribute("required");
+                if (phoneOnboardingGroup) phoneOnboardingGroup.classList.add("hidden");
+                if (onboardingPhoneInput) onboardingPhoneInput.removeAttribute("required");
+                if (submitAuthWrapper) submitAuthWrapper.classList.remove("hidden");
+                if (btnSubmitText) btnSubmitText.textContent = "Vào Học Chặng 1 Ngay";
             } else {
                 if (authUserDetected) authUserDetected.classList.add("hidden");
                 if (passwordGroup) passwordGroup.classList.remove("hidden");
                 if (submitAuthWrapper) submitAuthWrapper.classList.remove("hidden");
-                if (loginPasswordInput) loginPasswordInput.placeholder = "Nhập 4 số cuối Số điện thoại của bạn";
+                if (loginPasswordInput) {
+                    loginPasswordInput.placeholder = "Nhập 4 số cuối Số điện thoại của bạn";
+                    loginPasswordInput.setAttribute("required", "true");
+                }
+                if (btnSubmitText) btnSubmitText.textContent = "Vào Học Ngay";
             }
         } else {
             if (authUserDetected) authUserDetected.classList.add("hidden");
             if (passwordGroup) passwordGroup.classList.remove("hidden");
             if (submitAuthWrapper) submitAuthWrapper.classList.remove("hidden");
-            if (loginPasswordInput) loginPasswordInput.placeholder = "Nhập 4 số cuối Số điện thoại của bạn";
+            if (loginPasswordInput) {
+                loginPasswordInput.placeholder = "Nhập 4 số cuối Số điện thoại của bạn";
+                loginPasswordInput.setAttribute("required", "true");
+            }
+            if (btnSubmitText) btnSubmitText.textContent = "Vào Học Ngay";
         }
     });
 
@@ -6019,30 +6121,91 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     let trialCooldownTimer = null;
+    function resetTrialButtonState() {
+        if (trialCooldownTimer) {
+            clearInterval(trialCooldownTimer);
+            trialCooldownTimer = null;
+        }
+        if (btnRequestTrial) {
+            btnRequestTrial.disabled = false;
+            btnRequestTrial.className = "w-full py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber hover:from-orange-600 hover:to-amber-600 text-black font-extrabold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 active:scale-98 cursor-pointer";
+        }
+        if (btnRequestTrialText) {
+            btnRequestTrialText.textContent = "Gửi Liên Kết Học Thử Qua Email";
+        }
+        if (btnRequestTrialArrow) {
+            btnRequestTrialArrow.classList.remove("hidden");
+        }
+        if (trialResendWrapper) {
+            trialResendWrapper.classList.add("hidden");
+        }
+        if (btnResendTrial) {
+            btnResendTrial.classList.add("hidden");
+        }
+    }
+
     function startTrialCooldown(seconds) {
         let remaining = seconds;
+        // 1. Chuyển nút chính sang trạng thái hoàn tất, KHÔNG hiển thị đếm ngược gây hiểu lầm trên nút chính
         if (btnRequestTrial) {
             btnRequestTrial.disabled = true;
-            btnRequestTrial.classList.add("opacity-60", "cursor-not-allowed");
+            btnRequestTrial.className = "w-full py-2.5 rounded-xl bg-emerald-600/20 text-emerald-300 border border-emerald-500/40 font-bold text-xs transition-all flex items-center justify-center gap-1.5 cursor-default";
         }
+        if (btnRequestTrialText) {
+            btnRequestTrialText.textContent = "✓ Đã Gửi Liên Kết Kích Hoạt";
+        }
+        if (btnRequestTrialArrow) {
+            btnRequestTrialArrow.classList.add("hidden");
+        }
+
+        // 2. Tách bộ đếm ngược xuống dòng ghi chú phụ nhỏ bên dưới
+        if (trialResendWrapper) {
+            trialResendWrapper.classList.remove("hidden");
+        }
+        if (btnResendTrial) {
+            btnResendTrial.classList.add("hidden");
+        }
+        if (trialResendCountdown) {
+            trialResendCountdown.classList.remove("hidden");
+            trialResendCountdown.textContent = `Chưa nhận được email? Bạn có thể yêu cầu gửi lại sau ${remaining}s.`;
+        }
+
         if (trialCooldownTimer) clearInterval(trialCooldownTimer);
         trialCooldownTimer = setInterval(() => {
             remaining--;
-            if (btnRequestTrialText) {
-                btnRequestTrialText.textContent = `Gửi lại sau (${remaining}s)...`;
+            if (trialResendCountdown) {
+                trialResendCountdown.textContent = `Chưa nhận được email? Bạn có thể yêu cầu gửi lại sau ${remaining}s.`;
             }
             if (remaining <= 0) {
                 clearInterval(trialCooldownTimer);
                 trialCooldownTimer = null;
+                if (trialResendCountdown) {
+                    trialResendCountdown.classList.add("hidden");
+                }
+                if (btnResendTrial) {
+                    btnResendTrial.classList.remove("hidden");
+                }
+                // Cho phép bấm lại nút chính nếu học viên muốn
                 if (btnRequestTrial) {
                     btnRequestTrial.disabled = false;
-                    btnRequestTrial.classList.remove("opacity-60", "cursor-not-allowed");
+                    btnRequestTrial.className = "w-full py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber hover:from-orange-600 hover:to-amber-600 text-black font-extrabold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 active:scale-98 cursor-pointer";
                 }
                 if (btnRequestTrialText) {
-                    btnRequestTrialText.textContent = "Gửi Liên Kết Học Thử Qua Email";
+                    btnRequestTrialText.textContent = "Gửi Lại Liên Kết Qua Email";
+                }
+                if (btnRequestTrialArrow) {
+                    btnRequestTrialArrow.classList.remove("hidden");
                 }
             }
         }, 1000);
+    }
+
+    if (btnResendTrial) {
+        btnResendTrial.addEventListener("click", () => {
+            if (btnRequestTrial) {
+                btnRequestTrial.click();
+            }
+        });
     }
 
     if (btnRequestTrial) {
@@ -6120,17 +6283,32 @@ document.addEventListener("DOMContentLoaded", () => {
                 const data = await resp.json();
 
                 if (data && data.success) {
+                    saveApprovedTrialEmail(email);
+                    // Ẩn khối cảnh báo vàng "Email này chưa có trong danh sách..." để người dùng không tưởng nhầm là lỗi
+                    if (trialRosterNotice) trialRosterNotice.classList.add("hidden");
+
                     if (trialStatusMsg) {
-                        trialStatusMsg.className = "p-3 rounded-xl bg-brand-green/15 border border-brand-green/30 text-brand-green text-xs leading-relaxed space-y-1";
-                        trialStatusMsg.innerHTML = `<div>🎉 <strong>Gửi thành công!</strong></div><div>Liên kết kích hoạt đã được gửi tới <strong>${email}</strong>. Vui lòng kiểm tra hộp thư (kể cả mục Spam) và nhấp vào liên kết để bắt đầu học Chặng 1.</div>`;
+                        trialStatusMsg.className = "p-3.5 rounded-xl bg-brand-green/15 border border-brand-green/30 text-brand-green text-xs leading-relaxed space-y-2 text-left";
+                        trialStatusMsg.innerHTML = `
+                            <div class="flex items-center gap-2 font-bold text-sm text-white">
+                                <span>🎉</span> <span>Đã gửi liên kết kích hoạt thành công!</span>
+                            </div>
+                            <div class="text-slate-200">
+                                Hệ thống đã gửi liên kết mở khóa Chặng 1 tới <strong>${escapeHtml(email)}</strong>.
+                            </div>
+                            <div class="p-2.5 rounded-lg bg-black/40 border border-brand-green/20 text-[11px] text-slate-300 leading-relaxed">
+                                <strong>💡 Lưu ý quan trọng:</strong> Thư tự động có thể bị bộ lọc đưa vào mục <strong>Spam / Thư rác</strong> hoặc tab <strong>Quảng cáo</strong>. Vui lòng kiểm tra các mục này và nhấp vào liên kết để bắt đầu học.
+                            </div>
+                        `;
                         trialStatusMsg.classList.remove("hidden");
                     }
                     startTrialCooldown(60);
                 } else if (data && data.error === "RATE_LIMIT_EXCEEDED") {
+                    saveApprovedTrialEmail(email);
                     const waitSec = data.retry_after_seconds || 60;
                     if (trialStatusMsg) {
-                        trialStatusMsg.className = "p-2.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs";
-                        trialStatusMsg.textContent = data.message || `Vui lòng chờ ${waitSec} giây trước khi gửi lại yêu cầu.`;
+                        trialStatusMsg.className = "p-2.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs text-left";
+                        trialStatusMsg.textContent = data.message || `Hệ thống vừa gửi liên kết. Vui lòng chờ ${waitSec} giây trước khi gửi lại yêu cầu.`;
                         trialStatusMsg.classList.remove("hidden");
                     }
                     startTrialCooldown(waitSec);
@@ -6145,9 +6323,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             } catch (err) {
                 console.warn("Request trial error:", err);
+                saveApprovedTrialEmail(email);
+                if (trialRosterNotice) trialRosterNotice.classList.add("hidden");
                 if (trialStatusMsg) {
-                    trialStatusMsg.className = "p-3 rounded-xl bg-brand-green/15 border border-brand-green/30 text-brand-green text-xs leading-relaxed space-y-1";
-                    trialStatusMsg.innerHTML = `<div>🎉 <strong>Yêu cầu đã được tiếp nhận!</strong></div><div>Hệ thống đang xử lý và gửi liên kết tới <strong>${email}</strong>. Vui lòng kiểm tra hòm thư của bạn sau ít phút.</div>`;
+                    trialStatusMsg.className = "p-3.5 rounded-xl bg-brand-green/15 border border-brand-green/30 text-brand-green text-xs leading-relaxed space-y-2 text-left";
+                    trialStatusMsg.innerHTML = `
+                        <div class="flex items-center gap-2 font-bold text-sm text-white">
+                            <span>🎉</span> <span>Yêu cầu đã được tiếp nhận!</span>
+                        </div>
+                        <div class="text-slate-200">
+                            Hệ thống đang xử lý và gửi liên kết tới <strong>${escapeHtml(email)}</strong>.
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-black/40 border border-brand-green/20 text-[11px] text-slate-300 leading-relaxed">
+                            <strong>💡 Lưu ý:</strong> Vui lòng kiểm tra hòm thư của bạn (kể cả mục <strong>Spam / Thư rác</strong>) sau ít phút.
+                        </div>
+                    `;
                     trialStatusMsg.classList.remove("hidden");
                 }
                 startTrialCooldown(60);

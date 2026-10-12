@@ -1032,9 +1032,29 @@
     <!-- LOGIC SCRIPT -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const COACH_PIN = "2026";
+            const COACH_PIN_HASH = "158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab";
             const PIN_SESSION_KEY = "dhm_lms_coach_unlocked";
             const REGISTRY_KEY = "dhm_lms_all_learners_registry";
+
+            function escapeHTML(str) {
+                if (!str) return "";
+                return String(str)
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+            window.escapeHTML = escapeHTML;
+
+            async function hashString(str) {
+                if (window.crypto && window.crypto.subtle) {
+                    const msgBuffer = new TextEncoder().encode(str);
+                    const hashBuffer = await window.crypto.subtle.digest("SHA-256", msgBuffer);
+                    return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, "0")).join("");
+                }
+                return "";
+            }
 
             // PIN Gate Logic
             const pinModal = document.getElementById("pin-modal");
@@ -1044,9 +1064,7 @@
             const btnLockPortal = document.getElementById("btn-lock-portal");
 
             function checkPinSession() {
-                const urlParams = new URLSearchParams(window.location.search);
-                if (sessionStorage.getItem(PIN_SESSION_KEY) === "true" || urlParams.get("coach_unlocked") === "true" || urlParams.get("pin") === COACH_PIN) {
-                    sessionStorage.setItem(PIN_SESSION_KEY, "true");
+                if (sessionStorage.getItem(PIN_SESSION_KEY) === "true") {
                     pinModal.classList.add("hidden");
                     loadAllData();
                 } else {
@@ -1054,9 +1072,10 @@
                 }
             }
 
-            pinForm.addEventListener("submit", (e) => {
+            pinForm.addEventListener("submit", async (e) => {
                 e.preventDefault();
-                if (pinInput.value.trim() === COACH_PIN) {
+                const inputHash = await hashString(pinInput.value.trim());
+                if (inputHash === COACH_PIN_HASH) {
                     sessionStorage.setItem(PIN_SESSION_KEY, "true");
                     pinModal.classList.add("hidden");
                     pinError.classList.add("hidden");
@@ -1335,7 +1354,7 @@
                 });
 
                 const optionsHtml = `<option value="all">Tất cả Khóa học (${allLearners.length} HV)</option>` +
-                    allCohorts.map(c => `<option value="${c}">${c} (${cohortCounts[c]} HV)</option>`).join("");
+                    allCohorts.map(c => `<option value="${escapeHTML(c)}">${escapeHTML(c)} (${cohortCounts[c]} HV)</option>`).join("");
 
                 if (testFilterCohort) {
                     testFilterCohort.innerHTML = optionsHtml;
@@ -1359,7 +1378,7 @@
                 });
                 const allCentersList = Array.from(allCentersSet);
                 const centerOptionsHtml = `<option value="all">Tất cả Apollo Center (${allCentersList.length} cơ sở)</option>` +
-                    allCentersList.map(c => `<option value="${c}">${c}</option>`).join("");
+                    allCentersList.map(c => `<option value="${escapeHTML(c)}">${escapeHTML(c)}</option>`).join("");
 
                 if (iamFilterCenter) {
                     iamFilterCenter.innerHTML = centerOptionsHtml;
@@ -1378,7 +1397,7 @@
                 });
                 const allDeptsList = Array.from(allDeptsSet);
                 const deptOptionsHtml = `<option value="all">Tất cả Phòng ban (${allDeptsList.length} ban)</option>` +
-                    allDeptsList.map(d => `<option value="${d}">${d}</option>`).join("");
+                    allDeptsList.map(d => `<option value="${escapeHTML(d)}">${escapeHTML(d)}</option>`).join("");
 
                 if (iamFilterDepartment) {
                     iamFilterDepartment.innerHTML = deptOptionsHtml;
@@ -2243,10 +2262,10 @@
                     tr.innerHTML = `
                         <td class="p-4">
                             <div class="font-bold text-white flex items-center gap-1.5">
-                                ${learner.name}
-                                <span class="text-[9px] px-1.5 py-0.2 rounded bg-brand-card text-brand-amber border border-brand-border font-mono">${learner.cohort || 'DHM8'}</span>
+                                ${escapeHTML(learner.name)}
+                                <span class="text-[9px] px-1.5 py-0.2 rounded bg-brand-card text-brand-amber border border-brand-border font-mono">${escapeHTML(learner.cohort || 'DHM8')}</span>
                             </div>
-                            <div class="text-[11px] text-slate-500 font-mono mt-0.5">${learner.identity || learner.email || learner.phone}</div>
+                            <div class="text-[11px] text-slate-500 font-mono mt-0.5">${escapeHTML(learner.identity || learner.email || learner.phone)}</div>
                         </td>
                         <td class="p-4 text-center font-mono">
                             <span class="px-2 py-0.5 rounded bg-brand-dark text-slate-200 border border-brand-border font-bold text-xs">${learner.totalAttempts}</span>
@@ -2258,7 +2277,7 @@
                         <td class="p-4 text-center">${deltaHtml}</td>
                         <td class="p-4">${statusBadgeHtml}</td>
                         <td class="p-4 text-right">
-                            <button class="btn-inspect-test px-3 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-brand-amber hover:text-white border border-brand-border font-semibold transition-colors flex items-center gap-1 ml-auto" data-id="${learner.identity}">
+                            <button class="btn-inspect-test px-3 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-brand-amber hover:text-white border border-brand-border font-semibold transition-colors flex items-center gap-1 ml-auto" data-id="${escapeHTML(learner.identity)}">
                                 <span>👁️ Lịch Sử</span>
                             </button>
                         </td>
@@ -2399,14 +2418,14 @@
                     { name: "Nguyễn Thị Phương Thảo", id: "thao.nguyen@company.com", phone: "0903112233", cohort: "DHM8", attempts: [{ attempt: 1, score: 9, total: 10, percent: 90, passed80: true, durationSeconds: 140 }] },
                     { name: "Trần Minh Quân", id: "0982345678", phone: "0982345678", cohort: "DHM8", attempts: [{ attempt: 1, score: 8, total: 10, percent: 80, passed80: true, durationSeconds: 165 }] },
                     { name: "Phạm Hải Đăng", id: "haidang.lead@gmail.com", phone: "0912445566", cohort: "DHM8", attempts: [{ attempt: 1, score: 10, total: 10, percent: 100, passed80: true, durationSeconds: 120 }] },
-                    { name: "Hoàng Thùy Trang", id: "trang.hoang@bmwindows.vn", phone: "0949566222", cohort: "DHM8", attempts: [{ attempt: 1, score: 9, total: 10, percent: 90, passed80: true, durationSeconds: 155 }] },
+                    { name: "Học viên Thử nghiệm 4", id: "test.learner4@example.com", phone: "0900000004", cohort: "DHM8", attempts: [{ attempt: 1, score: 9, total: 10, percent: 90, passed80: true, durationSeconds: 155 }] },
                     { name: "Lê Văn Tùng", id: "tung.le@techcorp.vn", phone: "0908776655", cohort: "DHM9", attempts: [{ attempt: 1, score: 9, total: 10, percent: 90, passed80: true, durationSeconds: 135 }] },
                     { name: "Đỗ Bích Ngọc", id: "ngoc.dobic@fpt.com.vn", phone: "0977889900", cohort: "DHM9", attempts: [{ attempt: 1, score: 8, total: 10, percent: 80, passed80: true, durationSeconds: 180 }] },
 
                     // Group 2: Passed at Attempt 2 (Retake and achieved >80%)
-                    { name: "Bùi Thùy Hương", id: "thuyhuong.261291@gmail.com", phone: "0349574656", cohort: "DHM8", attempts: [{ attempt: 1, score: 6, total: 10, percent: 60, passed80: false, durationSeconds: 190 }, { attempt: 2, score: 9, total: 10, percent: 90, passed80: true, durationSeconds: 130 }] },
-                    { name: "Châu Phạm", id: "chaupp89@gmail.com", phone: "0961941943", cohort: "DHM8", attempts: [{ attempt: 1, score: 7, total: 10, percent: 70, passed80: false, durationSeconds: 175 }, { attempt: 2, score: 8, total: 10, percent: 80, passed80: true, durationSeconds: 145 }] },
-                    { name: "Huỳnh Bá Bích Vân", id: "huynhbabichvan@gmail.com", phone: "0933112244", cohort: "DHM8", attempts: [{ attempt: 1, score: 5, total: 10, percent: 50, passed80: false, durationSeconds: 210 }, { attempt: 2, score: 9, total: 10, percent: 90, passed80: true, durationSeconds: 140 }] },
+                    { name: "Học viên Thử nghiệm 1", id: "test.learner1@example.com", phone: "0900000001", cohort: "DHM8", attempts: [{ attempt: 1, score: 6, total: 10, percent: 60, passed80: false, durationSeconds: 190 }, { attempt: 2, score: 9, total: 10, percent: 90, passed80: true, durationSeconds: 130 }] },
+                    { name: "Học viên Thử nghiệm 2", id: "test.learner2@example.com", phone: "0900000002", cohort: "DHM8", attempts: [{ attempt: 1, score: 7, total: 10, percent: 70, passed80: false, durationSeconds: 175 }, { attempt: 2, score: 8, total: 10, percent: 80, passed80: true, durationSeconds: 145 }] },
+                    { name: "Học viên Thử nghiệm 3", id: "test.learner3@example.com", phone: "0900000003", cohort: "DHM8", attempts: [{ attempt: 1, score: 5, total: 10, percent: 50, passed80: false, durationSeconds: 210 }, { attempt: 2, score: 9, total: 10, percent: 90, passed80: true, durationSeconds: 140 }] },
                     { name: "Vũ Khánh Linh", id: "linh.vk@growth.edu.vn", phone: "0915667788", cohort: "DHM9", attempts: [{ attempt: 1, score: 6, total: 10, percent: 60, passed80: false, durationSeconds: 185 }, { attempt: 2, score: 9, total: 10, percent: 90, passed80: true, durationSeconds: 125 }] },
                     { name: "Nguyễn Hoàng Nam", id: "nam.hoang@logistics.vn", phone: "0988123456", cohort: "DHM9", attempts: [{ attempt: 1, score: 7, total: 10, percent: 70, passed80: false, durationSeconds: 160 }, { attempt: 2, score: 10, total: 10, percent: 100, passed80: true, durationSeconds: 110 }] },
 
@@ -2703,14 +2722,14 @@
 
                         tr.innerHTML = `
                             <td class="p-4">
-                                <div class="font-bold text-white">${learner.name}</div>
-                                <div class="text-[11px] text-slate-500 font-mono">${learner.identity || learner.email || learner.phone || "—"}</div>
+                                <div class="font-bold text-white">${escapeHTML(learner.name)}</div>
+                                <div class="text-[11px] text-slate-500 font-mono">${escapeHTML(learner.identity || learner.email || learner.phone || "—")}</div>
                             </td>
                             <td class="p-4 text-slate-300">
-                                <div class="font-medium text-xs truncate max-w-[180px]" title="${learner.center || ''}">${learner.center || '<span class="text-slate-500">Chưa xác định</span>'}</div>
+                                <div class="font-medium text-xs truncate max-w-[180px]" title="${escapeHTML(learner.center || '')}">${escapeHTML(learner.center) || '<span class="text-slate-500">Chưa xác định</span>'}</div>
                             </td>
                             <td class="p-4 text-slate-300">
-                                <div class="font-medium text-xs truncate max-w-[150px]" title="${learner.department || ''}">${learner.department || '<span class="text-slate-500">—</span>'}</div>
+                                <div class="font-medium text-xs truncate max-w-[150px]" title="${escapeHTML(learner.department || '')}">${escapeHTML(learner.department) || '<span class="text-slate-500">—</span>'}</div>
                             </td>
                             <td class="p-4 text-center">${renderStCell(st1)}</td>
                             <td class="p-4 text-center">${renderStCell(st2)}</td>
@@ -2727,7 +2746,7 @@
                                 <div class="text-[10px] text-slate-500 font-mono mt-0.5">Điểm: ${learner.iamTotalScore || 0}</div>
                             </td>
                             <td class="p-4 text-right">
-                                <button class="btn-inspect-iam px-3 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-emerald-400 hover:text-white border border-brand-border font-semibold transition-colors text-xs" data-id="${learner.identity}">
+                                <button class="btn-inspect-iam px-3 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-emerald-400 hover:text-white border border-brand-border font-semibold transition-colors text-xs" data-id="${escapeHTML(learner.identity)}">
                                     👁️ Xem Trạm
                                 </button>
                             </td>
@@ -2815,7 +2834,7 @@
                         card.className = `p-4 rounded-2xl border ${isDone ? 'bg-brand-card/50 border-brand-border' : 'bg-brand-card/20 border-brand-border/40 opacity-60'} space-y-2.5`;
 
                         const titleText = (stData && stData.title) ? `Trạm ${i}: ${stData.title}` : stationNames[i - 1];
-                        const tagBadge = (stData && stData.tag) ? `<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[11px] font-semibold border border-emerald-500/30">🏷️ ${stData.tag}</span>` : "";
+                        const tagBadge = (stData && stData.tag) ? `<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[11px] font-semibold border border-emerald-500/30">🏷️ ${escapeHTML(stData.tag)}</span>` : "";
                         const statusBadge = isDone 
                             ? '<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">✓ ĐÃ HOÀN THÀNH</span>'
                             : '<span class="px-2 py-0.5 rounded bg-brand-dark text-slate-500 text-[10px]">CHƯA THAM GIA</span>';
@@ -2826,15 +2845,15 @@
                                 <div class="space-y-2 text-xs">
                                     <div class="p-2.5 rounded-xl bg-brand-dark/70 border border-brand-border/60">
                                         <strong class="text-brand-amber block mb-0.5">I (Interested - Tâm đắc nhất):</strong>
-                                        <span class="text-slate-200">${stData.interested || 'Chưa điền'}</span>
+                                        <span class="text-slate-200">${escapeHTML(stData.interested) || 'Chưa điền'}</span>
                                     </div>
                                     <div class="p-2.5 rounded-xl bg-brand-dark/70 border border-brand-border/60">
                                         <strong class="text-brand-orange block mb-0.5">A (Actionable - Ứng dụng thực tế):</strong>
-                                        <span class="text-slate-200">${stData.actionable || 'Chưa điền'}</span>
+                                        <span class="text-slate-200">${escapeHTML(stData.actionable) || 'Chưa điền'}</span>
                                     </div>
                                     <div class="p-2.5 rounded-xl bg-brand-dark/70 border border-brand-border/60">
                                         <strong class="text-emerald-400 block mb-0.5">M (Meaningful - Ý nghĩa chuyển hóa):</strong>
-                                        <span class="text-slate-200">${stData.meaningful || 'Chưa điền'}</span>
+                                        <span class="text-slate-200">${escapeHTML(stData.meaningful) || 'Chưa điền'}</span>
                                     </div>
                                 </div>
                             `;
@@ -2845,7 +2864,7 @@
                         card.innerHTML = `
                             <div class="flex items-center justify-between flex-wrap gap-2 border-b border-brand-border/60 pb-2">
                                 <div class="flex items-center gap-2">
-                                    <span class="text-xs font-bold text-white">${titleText}</span>
+                                    <span class="text-xs font-bold text-white">${escapeHTML(titleText)}</span>
                                     ${tagBadge}
                                 </div>
                                 ${statusBadge}
@@ -3003,12 +3022,12 @@
 
                         tr.innerHTML = `
                             <td class="p-4">
-                                <div class="font-bold text-white">${learner.name}</div>
-                                <div class="text-[11px] text-slate-400 font-mono">${learner.identity || learner.email || learner.phone || "—"} <span class="text-brand-amber font-semibold">(${learner.cohort || 'DHM8'})</span></div>
+                                <div class="font-bold text-white">${escapeHTML(learner.name)}</div>
+                                <div class="text-[11px] text-slate-400 font-mono">${escapeHTML(learner.identity || learner.email || learner.phone || "—")} <span class="text-brand-amber font-semibold">(${escapeHTML(learner.cohort || 'DHM8')})</span></div>
                             </td>
                             <td class="p-4">
-                                <div class="text-xs text-slate-200 truncate max-w-[170px]" title="${learner.center || ''}">${learner.center || '<span class="text-slate-500">—</span>'}</div>
-                                <div class="text-[10px] text-slate-400 truncate max-w-[170px]" title="${learner.department || ''}">${learner.department || ''}</div>
+                                <div class="text-xs text-slate-200 truncate max-w-[170px]" title="${escapeHTML(learner.center || '')}">${escapeHTML(learner.center) || '<span class="text-slate-500">—</span>'}</div>
+                                <div class="text-[10px] text-slate-400 truncate max-w-[170px]" title="${escapeHTML(learner.department || '')}">${escapeHTML(learner.department) || ''}</div>
                             </td>
                             <td class="p-4 text-center">${p1Badge}</td>
                             <td class="p-4 text-center">${p2Badge}</td>
@@ -3024,10 +3043,10 @@
                             </td>
                             <td class="p-4 text-right">
                                 <div class="flex items-center justify-end gap-1">
-                                    <button class="btn-inspect-blended-detail px-2.5 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-brand-amber hover:text-white border border-brand-border font-semibold transition-colors text-xs" data-id="${learner.identity}" title="Xem chi tiết 3 chặng LMS">
+                                    <button class="btn-inspect-blended-detail px-2.5 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-brand-amber hover:text-white border border-brand-border font-semibold transition-colors text-xs" data-id="${escapeHTML(learner.identity)}" title="Xem chi tiết 3 chặng LMS">
                                         LMS
                                     </button>
-                                    <button class="btn-inspect-blended-iam px-2.5 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-emerald-400 hover:text-white border border-brand-border font-semibold transition-colors text-xs" data-id="${learner.identity}" title="Xem chi tiết 5 trạm Workshop">
+                                    <button class="btn-inspect-blended-iam px-2.5 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-emerald-400 hover:text-white border border-brand-border font-semibold transition-colors text-xs" data-id="${escapeHTML(learner.identity)}" title="Xem chi tiết 5 trạm Workshop">
                                         I•A•M
                                     </button>
                                 </div>
@@ -3300,8 +3319,8 @@
 
                     tr.innerHTML = `
                         <td class="p-4">
-                            <div class="font-bold text-white">${learner.name}</div>
-                            <div class="text-[11px] text-slate-500 font-mono">${learner.identity}</div>
+                            <div class="font-bold text-white">${escapeHTML(learner.name)}</div>
+                            <div class="text-[11px] text-slate-500 font-mono">${escapeHTML(learner.identity)}</div>
                         </td>
                         <td class="p-4">
                             <div class="flex items-center gap-2">
@@ -3318,8 +3337,8 @@
                                 : '<span class="px-2 py-0.5 rounded bg-brand-card text-slate-400">Chưa xong</span>'}
                         </td>
                         <td class="p-4">
-                            <div class="text-xs text-slate-300 truncate max-w-[150px]" title="${valuesList.join(', ')}">
-                                ${valuesList.length > 0 ? valuesList.join(', ') : '<span class="text-slate-500">Chưa chọn</span>'}
+                            <div class="text-xs text-slate-300 truncate max-w-[150px]" title="${escapeHTML(valuesList.join(', '))}">
+                                ${valuesList.length > 0 ? escapeHTML(valuesList.join(', ')) : '<span class="text-slate-500">Chưa chọn</span>'}
                             </div>
                         </td>
                         <td class="p-4">
@@ -3329,7 +3348,7 @@
                         </td>
                         <td class="p-4 text-slate-400 font-mono text-[11px]">${dateStr}</td>
                         <td class="p-4 text-right">
-                            <button class="btn-inspect px-3 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-brand-amber hover:text-white border border-brand-border font-semibold transition-colors" data-id="${learner.identity}">
+                            <button class="btn-inspect px-3 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-brand-amber hover:text-white border border-brand-border font-semibold transition-colors" data-id="${escapeHTML(learner.identity)}">
                                 👁️ Xem Bài Làm
                             </button>
                         </td>
@@ -3358,13 +3377,13 @@
                     if (stageObj && stageObj.iam && (stageObj.iam.I || stageObj.iam.A || stageObj.iam.M)) {
                         return `
                             <div class="space-y-1.5 text-xs not-italic">
-                                <div><strong class="text-brand-amber">I (Tâm đắc nhất):</strong> <span class="text-slate-200">${stageObj.iam.I || "Chưa điền"}</span></div>
-                                <div><strong class="text-brand-orange">A (Hành động áp dụng):</strong> <span class="text-slate-200">${stageObj.iam.A || "Chưa điền"}</span></div>
-                                <div><strong class="text-emerald-400">M (Ý nghĩa sâu sắc):</strong> <span class="text-slate-200">${stageObj.iam.M || "Chưa điền"}</span></div>
+                                <div><strong class="text-brand-amber">I (Tâm đắc nhất):</strong> <span class="text-slate-200">${escapeHTML(stageObj.iam.I) || "Chưa điền"}</span></div>
+                                <div><strong class="text-brand-orange">A (Hành động áp dụng):</strong> <span class="text-slate-200">${escapeHTML(stageObj.iam.A) || "Chưa điền"}</span></div>
+                                <div><strong class="text-emerald-400">M (Ý nghĩa sâu sắc):</strong> <span class="text-slate-200">${escapeHTML(stageObj.iam.M) || "Chưa điền"}</span></div>
                             </div>
                         `;
                     }
-                    return stageObj?.reflection || defaultText;
+                    return escapeHTML(stageObj?.reflection) || defaultText;
                 }
 
                 const s1 = learner.data?.stageData?.["stage-1"] || {};
@@ -3389,16 +3408,17 @@
                 const s3 = learner.data?.stageData?.["stage-3"] || {};
                 const abcde = s3.abcde || {};
                 modalC3AbcdeGrid.innerHTML = `
-                    <div class="p-2.5 rounded-lg bg-brand-dark/70 border border-brand-border/60"><strong class="text-slate-300">A (Nghịch cảnh):</strong> <span class="text-slate-200">${abcde.A || "Chưa điền"}</span></div>
-                    <div class="p-2.5 rounded-lg bg-brand-dark/70 border border-brand-border/60"><strong class="text-slate-300">B (Niềm tin tự động):</strong> <span class="text-slate-200">${abcde.B || "Chưa điền"}</span></div>
-                    <div class="p-2.5 rounded-lg bg-brand-dark/70 border border-brand-border/60"><strong class="text-slate-300">C (Hậu quả cảm xúc):</strong> <span class="text-slate-200">${abcde.C || "Chưa điền"}</span></div>
-                    <div class="p-2.5 rounded-lg bg-brand-dark/70 border border-brand-amber/50 bg-amber-500/5"><strong class="text-brand-amber">D (Phản biện lý trí):</strong> <span class="text-slate-100 font-medium">${abcde.D || "Chưa điền"}</span></div>
-                    <div class="p-2.5 rounded-lg bg-brand-dark/70 border border-brand-border/60"><strong class="text-brand-green">E (Hành động mới):</strong> <span class="text-slate-200">${abcde.E || "Chưa điền"}</span></div>
+                    <div class="p-2.5 rounded-lg bg-brand-dark/70 border border-brand-border/60"><strong class="text-slate-300">A (Nghịch cảnh):</strong> <span class="text-slate-200">${escapeHTML(abcde.A) || "Chưa điền"}</span></div>
+                    <div class="p-2.5 rounded-lg bg-brand-dark/70 border border-brand-border/60"><strong class="text-slate-300">B (Niềm tin tự động):</strong> <span class="text-slate-200">${escapeHTML(abcde.B) || "Chưa điền"}</span></div>
+                    <div class="p-2.5 rounded-lg bg-brand-dark/70 border border-brand-border/60"><strong class="text-slate-300">C (Hậu quả cảm xúc):</strong> <span class="text-slate-200">${escapeHTML(abcde.C) || "Chưa điền"}</span></div>
+                    <div class="p-2.5 rounded-lg bg-brand-dark/70 border border-brand-amber/50 bg-amber-500/5"><strong class="text-brand-amber">D (Phản biện lý trí):</strong> <span class="text-slate-100 font-medium">${escapeHTML(abcde.D) || "Chưa điền"}</span></div>
+                    <div class="p-2.5 rounded-lg bg-brand-dark/70 border border-brand-border/60"><strong class="text-brand-green">E (Hành động mới):</strong> <span class="text-slate-200">${escapeHTML(abcde.E) || "Chưa điền"}</span></div>
                 `;
 
                 coachNotesInput.value = learner.coachNotes || "";
                 detailModal.classList.remove("hidden");
             }
+            window.openDetailModal = openDetailModal;
 
             btnCloseDetail.addEventListener("click", () => {
                 detailModal.classList.add("hidden");
