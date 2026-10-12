@@ -99,9 +99,72 @@
       .hybrid-hub-item.hcm-col {
         border-left: 1px solid rgba(255, 255, 255, 0.12);
       }
+      .hero-tools-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        max-width: 820px;
+        margin: 2.5rem auto 0 auto;
+        padding: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .tool-card-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: var(--warm-cream);
+        color: var(--warm-dark);
+        font-weight: 700;
+        font-size: 0.98rem;
+        padding: 0.95rem 1.2rem;
+        border-radius: 999px;
+        text-decoration: none;
+        box-shadow: 0 4px 15px rgba(250, 240, 230, 0.2);
+        transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+        border: none;
+        cursor: pointer;
+        white-space: normal;
+        line-height: 1.35;
+        text-align: center;
+        box-sizing: border-box;
+        min-height: 54px;
+        width: 100%;
+      }
+      .tool-card-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(250, 240, 230, 0.35);
+        background: #ffffff;
+      }
+      .tool-subtext {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #78716c;
+        margin-top: 3px;
+        line-height: 1.2;
+      }
       @media (max-width: 640px) {
+        .hero {
+          padding: 2rem 1rem !important;
+        }
+        .btn-primary {
+          white-space: normal !important;
+          max-width: 100% !important;
+          box-sizing: border-box !important;
+          padding: 0.85rem 1.2rem !important;
+          font-size: 0.95rem !important;
+          line-height: 1.4 !important;
+        }
         .hero-hybrid-card {
           padding: 1.4rem 1rem;
+          width: 100%;
+          box-sizing: border-box;
+        }
+        .hero-hybrid-card .btn-primary {
+          width: 100% !important;
+          border-radius: 14px !important;
         }
         .hybrid-hubs-grid {
           grid-template-columns: 1fr;
@@ -111,6 +174,19 @@
           border-left: none;
           border-top: 1px solid rgba(255, 255, 255, 0.12);
           padding-top: 1rem;
+        }
+        .hero-tools-grid {
+          grid-template-columns: 1fr;
+          gap: 10px;
+          margin-top: 1.8rem;
+          width: 100%;
+          padding: 0;
+        }
+        .tool-card-btn {
+          border-radius: 14px;
+          padding: 0.85rem 1rem;
+          font-size: 0.92rem;
+          min-height: 48px;
         }
       }
     </style>
@@ -145,30 +221,31 @@
       </div>
 
       <div style="text-align: center;">
-        <a href="interest_dh10.html" class="btn-primary" style="display: inline-block; font-size: 1.05rem; padding: 0.95rem 2.5rem; box-shadow: 0 6px 25px rgba(245, 158, 11, 0.45);">
+        <a href="interest_dh10.html" class="btn-primary" style="display: inline-block; font-size: 1.05rem; box-shadow: 0 6px 25px rgba(245, 158, 11, 0.45);">
           ✨ Đăng ký quan tâm và nhận thông tin về DHM10
         </a>
       </div>
     </div>
     
-    <div class="hero-tools-container" style="text-align: center; margin-top: 2.5rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; max-width: 980px; margin-left: auto; margin-right: auto;">
-      <a href="personal-value.html" class="btn-primary" style="background: var(--warm-cream); color: var(--warm-dark); font-weight: 700; box-shadow: 0 4px 15px rgba(250, 240, 230, 0.2); font-size: 1.05rem; padding: 0.9rem 1.6rem;">
-        🔍 Khám phá La bàn Giá trị Cá nhân
+    <div class="hero-tools-grid">
+      <a href="personal-value.html" class="tool-card-btn">
+        <span>🔍 Khám phá La bàn Giá trị Cá nhân</span>
       </a>
-      <button id="btn-abcde-chat" class="btn-primary" style="background: var(--warm-cream); color: var(--warm-dark); font-weight: 700; box-shadow: 0 4px 15px rgba(250, 240, 230, 0.2); font-size: 1.05rem; padding: 0.9rem 1.6rem; border: none; cursor: pointer;">
-        🧠 Thực hành Lạc quan ABCDE
+      <button id="btn-abcde-chat" class="tool-card-btn">
+        <span>🧠 Thực hành Lạc quan ABCDE</span>
       </button>
-      <a href="https://khao-sat-xung-dot-tki.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background: var(--warm-cream); color: var(--warm-dark); font-weight: 700; box-shadow: 0 4px 15px rgba(250, 240, 230, 0.2); font-size: 1.05rem; padding: 0.9rem 1.6rem;">
-        ⚔️ Khảo sát Xung đột TKI
+      <a href="https://khao-sat-xung-dot-tki.vercel.app/" target="_blank" rel="noopener noreferrer" class="tool-card-btn">
+        <span>⚔️ Khảo sát Xung đột TKI</span>
       </a>
-      <a href="https://khao-sat-tinh-cach.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background: var(--warm-cream); color: var(--warm-dark); font-weight: 700; box-shadow: 0 4px 15px rgba(250, 240, 230, 0.2); font-size: 1.05rem; padding: 0.9rem 1.6rem;">
-        🎭 Khảo sát Phong cách Xã hội
+      <a href="https://khao-sat-tinh-cach.vercel.app/" target="_blank" rel="noopener noreferrer" class="tool-card-btn">
+        <span>🎭 Khảo sát Phong cách Xã hội</span>
       </a>
-      <a href="https://team-happiness-iam-v2.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background: var(--warm-cream); color: var(--warm-dark); font-weight: 700; box-shadow: 0 4px 15px rgba(250, 240, 230, 0.2); font-size: 1.05rem; padding: 0.9rem 1.6rem;">
-        💡 Trạm thu hoạch I . A . M (dành cho khóa Team Happiness)
+      <a href="https://team-happiness-iam-v2.vercel.app/" target="_blank" rel="noopener noreferrer" class="tool-card-btn">
+        <span>💡 Trạm thu hoạch I . A . M</span>
+        <span class="tool-subtext">(Dành cho khóa Team Happiness)</span>
       </a>
-      <a href="assessment.html" class="btn-primary" style="background: var(--warm-cream); color: var(--warm-dark); font-weight: 700; box-shadow: 0 4px 15px rgba(250, 240, 230, 0.2); font-size: 1.05rem; padding: 0.9rem 1.6rem;">
-        📊 Trắc nghiệm Hệ điều hành Hạnh phúc
+      <a href="assessment.html" class="tool-card-btn">
+        <span>📊 Trắc nghiệm Hệ điều hành Hạnh phúc</span>
       </a>
     </div>
   </header>
