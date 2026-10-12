@@ -447,6 +447,25 @@
                     <div class="text-sm font-semibold">Không tìm thấy dữ liệu học viên phù hợp</div>
                     <div class="text-xs">Thử điều chỉnh lại bộ lọc hoặc bấm "Nạp Dữ Liệu Kiểm Thử Đo Lường".</div>
                 </div>
+
+                <!-- ACCORDION: HỌC VIÊN CHƯA LÀM TEST -->
+                <details id="test-inactive-accordion" class="border-t border-brand-border bg-brand-dark/40 group hidden">
+                    <summary class="p-4 flex items-center justify-between cursor-pointer hover:bg-brand-card/50 transition-colors select-none text-xs font-semibold text-slate-400">
+                        <div class="flex items-center gap-2">
+                            <span class="transform group-open:rotate-90 transition-transform text-brand-amber">▶</span>
+                            <span>💤 Danh sách học viên chưa làm bài test</span>
+                            <span id="test-inactive-count-badge" class="px-2 py-0.5 rounded-full bg-brand-card text-slate-400 font-mono text-[10px] border border-brand-border">0 HV</span>
+                        </div>
+                        <span class="text-[11px] text-slate-500 font-normal italic">Bấm để mở rộng / thu gọn</span>
+                    </summary>
+                    <div class="overflow-x-auto border-t border-brand-border/40">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <tbody id="test-inactive-table-body" class="divide-y divide-brand-border/30 text-slate-400">
+                                <!-- Injected via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
             </div>
 
         </section>
@@ -574,6 +593,25 @@
                     <div class="text-sm font-semibold">Không tìm thấy dữ liệu Workshop phù hợp</div>
                     <div class="text-xs">Học viên chưa nộp bài thu hoạch 5 trạm hoặc bộ lọc không khớp.</div>
                 </div>
+
+                <!-- ACCORDION: HỌC VIÊN CHƯA THAM GIA TRẠM I•A•M -->
+                <details id="iam-inactive-accordion" class="border-t border-brand-border bg-brand-dark/40 group hidden">
+                    <summary class="p-4 flex items-center justify-between cursor-pointer hover:bg-brand-card/50 transition-colors select-none text-xs font-semibold text-slate-400">
+                        <div class="flex items-center gap-2">
+                            <span class="transform group-open:rotate-90 transition-transform text-emerald-400">▶</span>
+                            <span>💤 Danh sách học viên Apollo chưa nộp bài trạm I•A•M</span>
+                            <span id="iam-inactive-count-badge" class="px-2 py-0.5 rounded-full bg-brand-card text-slate-400 font-mono text-[10px] border border-brand-border">0 HV</span>
+                        </div>
+                        <span class="text-[11px] text-slate-500 font-normal italic">Bấm để mở rộng / thu gọn</span>
+                    </summary>
+                    <div class="overflow-x-auto border-t border-brand-border/40">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <tbody id="iam-inactive-table-body" class="divide-y divide-brand-border/30 text-slate-400">
+                                <!-- Injected via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
             </div>
 
         </section>
@@ -691,6 +729,25 @@
                     <div class="text-sm font-semibold">Không tìm thấy dữ liệu học viên 360° phù hợp</div>
                     <div class="text-xs">Thử điều chỉnh lại bộ lọc hoặc từ khóa tìm kiếm.</div>
                 </div>
+
+                <!-- ACCORDION: HỌC VIÊN CHƯA THAM GIA HOẠT ĐỘNG BLENDED NÀO (0%) -->
+                <details id="blended-inactive-accordion" class="border-t border-brand-border bg-brand-dark/40 group hidden">
+                    <summary class="p-4 flex items-center justify-between cursor-pointer hover:bg-brand-card/50 transition-colors select-none text-xs font-semibold text-slate-400">
+                        <div class="flex items-center gap-2">
+                            <span class="transform group-open:rotate-90 transition-transform text-brand-amber">▶</span>
+                            <span>💤 Danh sách học viên chưa bắt đầu hành trình (0%)</span>
+                            <span id="blended-inactive-count-badge" class="px-2 py-0.5 rounded-full bg-brand-card text-slate-400 font-mono text-[10px] border border-brand-border">0 HV</span>
+                        </div>
+                        <span class="text-[11px] text-slate-500 font-normal italic">Bấm để mở rộng / thu gọn</span>
+                    </summary>
+                    <div class="overflow-x-auto border-t border-brand-border/40">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <tbody id="blended-inactive-table-body" class="divide-y divide-brand-border/30 text-slate-400">
+                                <!-- Injected via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
             </div>
 
         </section>
@@ -1149,6 +1206,9 @@
 
             const testTableBody = document.getElementById("test-learners-table-body");
             const testTableEmpty = document.getElementById("test-table-empty");
+            const testInactiveAccordion = document.getElementById("test-inactive-accordion");
+            const testInactiveCountBadge = document.getElementById("test-inactive-count-badge");
+            const testInactiveTableBody = document.getElementById("test-inactive-table-body");
 
             const btnSyncLiveSheet = document.getElementById("btn-sync-live-sheet");
             const btnSyncRoster = document.getElementById("btn-sync-roster");
@@ -1212,6 +1272,9 @@
             const iamSearchInput = document.getElementById("iam-search-input");
             const iamTableBody = document.getElementById("iam-table-body");
             const iamTableEmpty = document.getElementById("iam-table-empty");
+            const iamInactiveAccordion = document.getElementById("iam-inactive-accordion");
+            const iamInactiveCountBadge = document.getElementById("iam-inactive-count-badge");
+            const iamInactiveTableBody = document.getElementById("iam-inactive-table-body");
             const btnExportIamCsv = document.getElementById("btn-export-iam-csv");
 
             // Modal elements for IAM Detail
@@ -1239,6 +1302,9 @@
             const blendedSearchInput = document.getElementById("blended-search-input");
             const blendedTableBody = document.getElementById("blended-table-body");
             const blendedTableEmpty = document.getElementById("blended-table-empty");
+            const blendedInactiveAccordion = document.getElementById("blended-inactive-accordion");
+            const blendedInactiveCountBadge = document.getElementById("blended-inactive-count-badge");
+            const blendedInactiveTableBody = document.getElementById("blended-inactive-table-body");
             const btnExportBlendedCsv = document.getElementById("btn-export-blended-csv");
 
             // ==========================================
@@ -2096,19 +2162,35 @@
                     return true;
                 });
 
+                // Sắp xếp ưu tiên: Người đã test lên đầu (điểm cao -> thấp, số lần test), sau đó đến người chưa test
+                filtered.sort((a, b) => {
+                    const attA = a.totalAttempts || (a.testAttempts?.length || 0);
+                    const attB = b.totalAttempts || (b.testAttempts?.length || 0);
+                    if (attA > 0 && attB === 0) return -1;
+                    if (attA === 0 && attB > 0) return 1;
+
+                    const scoreA = a.bestScore !== undefined && a.bestScore !== null ? a.bestScore : (a.testAttempts?.[0]?.percent || 0);
+                    const scoreB = b.bestScore !== undefined && b.bestScore !== null ? b.bestScore : (b.testAttempts?.[0]?.percent || 0);
+                    if (scoreA !== scoreB) return scoreB - scoreA;
+
+                    if (attA !== attB) return attB - attA;
+                    return (a.name || "").localeCompare(b.name || "", "vi");
+                });
+
                 testTableBody.innerHTML = "";
+                if (testInactiveTableBody) testInactiveTableBody.innerHTML = "";
 
                 if (filtered.length === 0) {
                     testTableEmpty.classList.remove("hidden");
+                    if (testInactiveAccordion) testInactiveAccordion.classList.add("hidden");
                     return;
                 }
                 testTableEmpty.classList.add("hidden");
 
-                filtered.forEach(learner => {
+                function createTestRow(learner, isInactive = false) {
                     const tr = document.createElement("tr");
-                    tr.className = "hover:bg-brand-card/40 transition-colors";
+                    tr.className = isInactive ? "hover:bg-brand-card/30 transition-colors opacity-80" : "hover:bg-brand-card/40 transition-colors";
 
-                    // Attempts items
                     const att1 = learner.testAttempts[0] || null;
                     const att2 = learner.testAttempts[1] || null;
                     const att3 = learner.testAttempts[2] || null;
@@ -2125,7 +2207,6 @@
                         `;
                     }
 
-                    // Reached Milestone Cell
                     let reachedMilestoneHtml = '<span class="text-slate-600 font-mono">—</span>';
                     if (learner.passedAttemptNumber === 1) {
                         reachedMilestoneHtml = '<span class="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 font-semibold text-[10px] border border-emerald-500/30">⚡ Lần 1</span>';
@@ -2137,7 +2218,6 @@
                         reachedMilestoneHtml = '<span class="px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-400 font-semibold text-[10px] border border-rose-500/30">Chưa Đạt</span>';
                     }
 
-                    // Delta Cell
                     let deltaHtml = '<span class="text-slate-600 font-mono text-xs">—</span>';
                     if (learner.totalAttempts > 1) {
                         if (learner.improvementDelta > 0) {
@@ -2149,7 +2229,6 @@
                         }
                     }
 
-                    // Status Badge
                     let statusBadgeHtml = '<span class="px-2.5 py-1 rounded-lg bg-brand-dark text-slate-500 text-[10px] font-medium border border-brand-border">⏳ Chưa test</span>';
                     if (learner.firstAttemptPassed80) {
                         statusBadgeHtml = '<span class="px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-400 text-[10px] font-bold border border-emerald-500/30">✓ Đạt Chuẩn Lần 1</span>';
@@ -2184,9 +2263,35 @@
                             </button>
                         </td>
                     `;
+                    return tr;
+                }
 
-                    testTableBody.appendChild(tr);
-                });
+                const activeTestLearners = filtered.filter(l => (l.totalAttempts || (l.testAttempts?.length || 0)) > 0);
+                const inactiveTestLearners = filtered.filter(l => (l.totalAttempts || (l.testAttempts?.length || 0)) === 0);
+
+                if (statusFilter === "not_tested") {
+                    // Nếu người quản trị chủ động chọn lọc "Chưa tham gia làm test", hiển thị trực tiếp ở bảng chính
+                    inactiveTestLearners.forEach(l => testTableBody.appendChild(createTestRow(l, false)));
+                    if (testInactiveAccordion) testInactiveAccordion.classList.add("hidden");
+                } else {
+                    // Mặc định: Bảng chính chỉ hiển thị học viên đã test
+                    if (activeTestLearners.length > 0) {
+                        activeTestLearners.forEach(l => testTableBody.appendChild(createTestRow(l, false)));
+                    } else if (inactiveTestLearners.length > 0) {
+                        testTableBody.innerHTML = '<tr><td colspan="9" class="p-8 text-center text-slate-500 text-xs">Chưa có học viên nào trong bộ lọc hoàn thành bài test. Xem danh sách chi tiết ở Accordion bên dưới.</td></tr>';
+                    }
+
+                    // Gom học viên chưa test vào Accordion thu gọn
+                    if (testInactiveTableBody && testInactiveAccordion) {
+                        if (inactiveTestLearners.length > 0) {
+                            inactiveTestLearners.forEach(l => testInactiveTableBody.appendChild(createTestRow(l, true)));
+                            testInactiveAccordion.classList.remove("hidden");
+                            if (testInactiveCountBadge) testInactiveCountBadge.textContent = `${inactiveTestLearners.length} HV`;
+                        } else {
+                            testInactiveAccordion.classList.add("hidden");
+                        }
+                    }
+                }
 
                 document.querySelectorAll(".btn-inspect-test").forEach(btn => {
                     btn.addEventListener("click", () => {
@@ -2552,10 +2657,26 @@
                     return true;
                 });
 
+                // Sắp xếp ưu tiên: Số trạm I•A•M hoàn thành giảm dần (5 -> 4 -> 3 -> 2 -> 1 -> 0), sau đó tổng điểm I•A•M giảm dần
+                filtered.sort((a, b) => {
+                    const stCountA = a.iamCompletedStationsCount || (a.iamStations ? Object.keys(a.iamStations).length : 0);
+                    const stCountB = b.iamCompletedStationsCount || (b.iamStations ? Object.keys(b.iamStations).length : 0);
+                    if (stCountA !== stCountB) return stCountB - stCountA;
+
+                    const scoreA = a.iamTotalScore || 0;
+                    const scoreB = b.iamTotalScore || 0;
+                    if (scoreA !== scoreB) return scoreB - scoreA;
+
+                    return (a.name || "").localeCompare(b.name || "", "vi");
+                });
+
                 if (iamTableBody) {
                     iamTableBody.innerHTML = "";
+                    if (iamInactiveTableBody) iamInactiveTableBody.innerHTML = "";
+
                     if (filtered.length === 0) {
                         if (iamTableEmpty) iamTableEmpty.classList.remove("hidden");
+                        if (iamInactiveAccordion) iamInactiveAccordion.classList.add("hidden");
                         return;
                     }
                     if (iamTableEmpty) iamTableEmpty.classList.add("hidden");
@@ -2567,9 +2688,9 @@
                         return '<span class="px-2 py-0.5 rounded bg-brand-card text-slate-500 text-[10px]">Chưa</span>';
                     }
 
-                    filtered.forEach(learner => {
+                    function createIamRow(learner, isInactive = false) {
                         const tr = document.createElement("tr");
-                        tr.className = "hover:bg-brand-card/40 transition-colors";
+                        tr.className = isInactive ? "hover:bg-brand-card/30 transition-colors opacity-80" : "hover:bg-brand-card/40 transition-colors";
 
                         const st1 = learner.iamStations?.station1;
                         const st2 = learner.iamStations?.station2;
@@ -2611,8 +2732,35 @@
                                 </button>
                             </td>
                         `;
-                        iamTableBody.appendChild(tr);
-                    });
+                        return tr;
+                    }
+
+                    const activeIamLearners = filtered.filter(l => (l.iamCompletedStationsCount || (l.iamStations ? Object.keys(l.iamStations).length : 0)) > 0);
+                    const inactiveIamLearners = filtered.filter(l => (l.iamCompletedStationsCount || (l.iamStations ? Object.keys(l.iamStations).length : 0)) === 0);
+
+                    if (stFilter === "0") {
+                        // Người quản trị chọn xem riêng nhóm chưa làm trạm
+                        inactiveIamLearners.forEach(l => iamTableBody.appendChild(createIamRow(l, false)));
+                        if (iamInactiveAccordion) iamInactiveAccordion.classList.add("hidden");
+                    } else {
+                        // Mặc định: Bảng chính chỉ hiển thị học viên đã có ít nhất 1 trạm
+                        if (activeIamLearners.length > 0) {
+                            activeIamLearners.forEach(l => iamTableBody.appendChild(createIamRow(l, false)));
+                        } else if (inactiveIamLearners.length > 0) {
+                            iamTableBody.innerHTML = '<tr><td colspan="10" class="p-8 text-center text-slate-500 text-xs">Chưa có học viên nào hoàn thành trạm I•A•M trong bộ lọc này. Xem danh sách chi tiết ở Accordion bên dưới.</td></tr>';
+                        }
+
+                        // Gom học viên chưa tham gia trạm vào Accordion thu gọn
+                        if (iamInactiveTableBody && iamInactiveAccordion) {
+                            if (inactiveIamLearners.length > 0) {
+                                inactiveIamLearners.forEach(l => iamInactiveTableBody.appendChild(createIamRow(l, true)));
+                                iamInactiveAccordion.classList.remove("hidden");
+                                if (iamInactiveCountBadge) iamInactiveCountBadge.textContent = `${inactiveIamLearners.length} HV`;
+                            } else {
+                                iamInactiveAccordion.classList.add("hidden");
+                            }
+                        }
+                    }
 
                     document.querySelectorAll(".btn-inspect-iam").forEach(btn => {
                         btn.addEventListener("click", () => {
@@ -2791,17 +2939,38 @@
                     return true;
                 });
 
+                // Sắp xếp ưu tiên: Tiến độ 360° giảm dần -> Tên học viên
+                filtered.sort((a, b) => {
+                    const p1A = a.firstAttemptPassed80 || a.eventualPassed80 || a.stage1Passed;
+                    const p2CountA = (a.data?.stageData?.["stage-2"]?.selectedValues?.length) || a.stage2ValuesCount || 0;
+                    const p3A = !!a.data?.stageData?.["stage-3"]?.abcde?.D || a.stage3AbcdeFilled;
+                    const stCountA = a.iamCompletedStationsCount || (a.iamStations ? Object.keys(a.iamStations).length : 0);
+                    const doneScoreA = (p1A ? 1 : 0) + (p2CountA > 0 ? 1 : 0) + (p3A ? 1 : 0) + (stCountA >= 5 ? 1 : (stCountA > 0 ? 0.5 : 0));
+
+                    const p1B = b.firstAttemptPassed80 || b.eventualPassed80 || b.stage1Passed;
+                    const p2CountB = (b.data?.stageData?.["stage-2"]?.selectedValues?.length) || b.stage2ValuesCount || 0;
+                    const p3B = !!b.data?.stageData?.["stage-3"]?.abcde?.D || b.stage3AbcdeFilled;
+                    const stCountB = b.iamCompletedStationsCount || (b.iamStations ? Object.keys(b.iamStations).length : 0);
+                    const doneScoreB = (p1B ? 1 : 0) + (p2CountB > 0 ? 1 : 0) + (p3B ? 1 : 0) + (stCountB >= 5 ? 1 : (stCountB > 0 ? 0.5 : 0));
+
+                    if (doneScoreB !== doneScoreA) return doneScoreB - doneScoreA;
+                    return (a.name || "").localeCompare(b.name || "", "vi");
+                });
+
                 if (blendedTableBody) {
                     blendedTableBody.innerHTML = "";
+                    if (blendedInactiveTableBody) blendedInactiveTableBody.innerHTML = "";
+
                     if (filtered.length === 0) {
                         if (blendedTableEmpty) blendedTableEmpty.classList.remove("hidden");
+                        if (blendedInactiveAccordion) blendedInactiveAccordion.classList.add("hidden");
                         return;
                     }
                     if (blendedTableEmpty) blendedTableEmpty.classList.add("hidden");
 
-                    filtered.forEach(learner => {
+                    function createBlendedRow(learner, isInactive = false) {
                         const tr = document.createElement("tr");
-                        tr.className = "hover:bg-brand-card/40 transition-colors";
+                        tr.className = isInactive ? "hover:bg-brand-card/20 transition-colors opacity-75" : "hover:bg-brand-card/40 transition-colors";
 
                         const p1 = learner.firstAttemptPassed80 || learner.eventualPassed80 || learner.stage1Passed;
                         const p2Count = (learner.data?.stageData?.["stage-2"]?.selectedValues?.length) || learner.stage2ValuesCount || 0;
@@ -2864,8 +3033,47 @@
                                 </div>
                             </td>
                         `;
-                        blendedTableBody.appendChild(tr);
+                        return tr;
+                    }
+
+                    const activeBlendedLearners = filtered.filter(l => {
+                        const p1 = l.firstAttemptPassed80 || l.eventualPassed80 || l.stage1Passed;
+                        const p2Count = (l.data?.stageData?.["stage-2"]?.selectedValues?.length) || l.stage2ValuesCount || 0;
+                        const p3 = !!l.data?.stageData?.["stage-3"]?.abcde?.D || l.stage3AbcdeFilled;
+                        const stCount = l.iamCompletedStationsCount || (l.iamStations ? Object.keys(l.iamStations).length : 0);
+                        return p1 || p2Count > 0 || p3 || stCount > 0 || (l.totalAttempts || 0) > 0;
                     });
+                    const inactiveBlendedLearners = filtered.filter(l => {
+                        const p1 = l.firstAttemptPassed80 || l.eventualPassed80 || l.stage1Passed;
+                        const p2Count = (l.data?.stageData?.["stage-2"]?.selectedValues?.length) || l.stage2ValuesCount || 0;
+                        const p3 = !!l.data?.stageData?.["stage-3"]?.abcde?.D || l.stage3AbcdeFilled;
+                        const stCount = l.iamCompletedStationsCount || (l.iamStations ? Object.keys(l.iamStations).length : 0);
+                        return !p1 && p2Count === 0 && !p3 && stCount === 0 && (l.totalAttempts || 0) === 0;
+                    });
+
+                    if (status === "not_started") {
+                        // Người quản trị chủ động lọc học viên Chưa bắt đầu
+                        inactiveBlendedLearners.forEach(l => blendedTableBody.appendChild(createBlendedRow(l, false)));
+                        if (blendedInactiveAccordion) blendedInactiveAccordion.classList.add("hidden");
+                    } else {
+                        // Mặc định: Bảng chính chỉ hiển thị học viên đã có tiến độ
+                        if (activeBlendedLearners.length > 0) {
+                            activeBlendedLearners.forEach(l => blendedTableBody.appendChild(createBlendedRow(l, false)));
+                        } else if (inactiveBlendedLearners.length > 0) {
+                            blendedTableBody.innerHTML = '<tr><td colspan="8" class="p-8 text-center text-slate-500 text-xs">Chưa có học viên nào hoàn thành hoạt động Blended trong bộ lọc này. Xem danh sách chi tiết ở Accordion bên dưới.</td></tr>';
+                        }
+
+                        // Gom học viên chưa tham gia hoạt động vào Accordion thu gọn
+                        if (blendedInactiveTableBody && blendedInactiveAccordion) {
+                            if (inactiveBlendedLearners.length > 0) {
+                                inactiveBlendedLearners.forEach(l => blendedInactiveTableBody.appendChild(createBlendedRow(l, true)));
+                                blendedInactiveAccordion.classList.remove("hidden");
+                                if (blendedInactiveCountBadge) blendedInactiveCountBadge.textContent = `${inactiveBlendedLearners.length} HV`;
+                            } else {
+                                blendedInactiveAccordion.classList.add("hidden");
+                            }
+                        }
+                    }
 
                     document.querySelectorAll(".btn-inspect-blended-detail").forEach(btn => {
                         btn.addEventListener("click", () => {
