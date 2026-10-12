@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập LMS - CultureCode</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --dark: #0f172a;
+            --mid: #334155;
+            --light: #f8fafc;
+            --accent: #3b82f6;
+            --warm-yellow: #f59e0b;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top right, #1e293b, #0f172a);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 3rem;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .logo {
+            width: 120px;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        p.subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .input-group {
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--warm-yellow);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 1rem;
+            background: var(--warm-yellow);
+            color: var(--dark);
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            margin-top: 1rem;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            background: #fbbf24;
+        }
+
+        .status-badge {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.5rem 1rem;
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 100px;
+            color: var(--warm-yellow);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 1.5rem;
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .back-link:hover {
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-card">
+        <img src="data/logo.jpg" alt="Logo" class="logo" style="border-radius: 12px;">
+        <h1>Hệ thống LMS</h1>
+        <p class="subtitle">Truy cập Thư viện kiến thức CultureCode</p>
+
+        <div class="input-group">
+            <label>Tên đăng nhập</label>
+            <input type="text" id="username" placeholder="Nhập email hoặc username">
+        </div>
+
+        <div class="input-group">
+            <label>Mật khẩu</label>
+            <input type="password" id="password" placeholder="••••••••">
+        </div>
+
+        <button class="btn-login" id="loginBtn">Đăng nhập</button>
+
+        <div class="status-badge">🏗️ Đang xây dựng</div>
+
+        <a href="index.html" class="back-link">← Quay lại trang chủ</a>
+    </div>
+
+    <script>
+        async function hashString(str) {
+            if (window.crypto && window.crypto.subtle) {
+                const msgBuffer = new TextEncoder().encode(str);
+                const hashBuffer = await window.crypto.subtle.digest("SHA-256", msgBuffer);
+                return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, "0")).join("");
+            }
+            return "";
+        }
+
+        const ADMIN_USER_HASH = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918";
+        const ADMIN_PASS_HASH = "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5";
+        const ADMIN_SESSION_KEY = "dhm_admin_authenticated";
+
+        async function handleLogin() {
+            const user = document.getElementById('username').value.trim().toLowerCase();
+            const pass = document.getElementById('password').value.trim();
+
+            const userHash = await hashString(user);
+            const passHash = await hashString(pass);
+
+            if (userHash === ADMIN_USER_HASH && passHash === ADMIN_PASS_HASH) {
+                sessionStorage.setItem(ADMIN_SESSION_KEY, 'true');
+                alert('Đăng nhập thành công!');
+                window.location.href = 'lms_dashboard.html';
+            } else {
+                alert('Tên đăng nhập hoặc mật khẩu không đúng!');
+            }
+        }
+
+        document.getElementById('loginBtn').addEventListener('click', handleLogin);
+        document.getElementById('password').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') handleLogin();
+        });
+        document.getElementById('username').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') handleLogin();
+        });
+    </script>
+</body>
+
+</html>
