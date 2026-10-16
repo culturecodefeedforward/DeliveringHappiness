@@ -57,7 +57,141 @@
             background: #1E293B;
             border-radius: 4px;
         }
+    
+        /* ========================================== */
+        /* APOLLO HEATMAP & TKI MATRIX STYLES         */
+        /* ========================================== */
+        :root {
+            --color-driver: #ef4444;
+            --color-expressive: #f59e0b;
+            --color-amiable: #10b981;
+            --color-analytical: #06b6d4;
+            --color-competing: #ef4444;
+            --color-collaborating: #10b981;
+            --color-compromising: #f59e0b;
+            --color-avoiding: #64748b;
+            --color-accommodating: #6366f1;
+        }
+
+        .heatmap-container {
+            position: relative;
+            width: 100%;
+            height: 520px;
+            background: radial-gradient(circle at center, #0f172a 0%, #070b14 100%);
+            user-select: none;
+            overflow: hidden;
+            border-radius: 0.75rem;
+        }
+        canvas.heatmap-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            pointer-events: none;
+        }
+        svg.heatmap-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 20;
+        }
+        .axis-label {
+            position: absolute;
+            font-size: 0.675rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            pointer-events: none;
+            z-index: 25;
+        }
+        .quadrant-bg-label {
+            position: absolute;
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            opacity: 0.45;
+            pointer-events: auto;
+            cursor: pointer;
+            z-index: 25;
+            padding: 0.25rem 0.6rem;
+            border-radius: 0.5rem;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .quadrant-bg-label:hover {
+            opacity: 0.95;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: currentColor;
+            transform: scale(1.05);
+        }
+        .quadrant-bg-label.active {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: currentColor;
+            box-shadow: 0 0 12px currentColor;
+        }
+        .student-dot {
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+        .student-dot:hover {
+            transform: scale(1.4);
+            filter: drop-shadow(0 0 6px currentColor);
+        }
+        #heatmap-tooltip {
+            position: absolute;
+            display: none;
+            z-index: 50;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 0.625rem;
+            padding: 0.75rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.85);
+            pointer-events: none;
+            width: 250px;
+            font-size: 0.75rem;
+        }
+        .stat-card-kpi {
+            position: relative;
+            background: #111827;
+            border: 1px solid #1e293b;
+            border-radius: 0.875rem;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            overflow: hidden;
+        }
+        .stat-card-kpi::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 4px;
+        }
+        .stat-card-kpi.driver::before { background: var(--color-driver); }
+        .stat-card-kpi.expressive::before { background: var(--color-expressive); }
+        .stat-card-kpi.amiable::before { background: var(--color-amiable); }
+        .stat-card-kpi.analytical::before { background: var(--color-analytical); }
+        .stat-card-kpi.competing::before { background: var(--color-competing); }
+        .stat-card-kpi.collaborating::before { background: var(--color-collaborating); }
+        .stat-card-kpi.compromising::before { background: var(--color-compromising); }
+        .stat-card-kpi.avoiding::before { background: var(--color-avoiding); }
+        .stat-card-kpi.accommodating::before { background: var(--color-accommodating); }
+        .stat-card-kpi:hover, .stat-card-kpi.active {
+            border-color: #3b82f6;
+            background: #1e293b;
+            transform: translateY(-2px);
+        }
+
     </style>
+    <!-- Apollo Heatmap Baseline Data (Offline-First) -->
+    <script src="apollo_heatmap_data.js"></script>
 </head>
 
 <body class="min-h-screen bg-brand-dark text-slate-100 flex flex-col">
@@ -136,6 +270,10 @@
                     <span>📊 Báo Cáo & Xuất CSV</span>
                     <span id="badge-total-registered-count" class="px-2 py-0.5 rounded-full bg-brand-surface text-slate-300 font-mono text-[11px]">0</span>
                 </button>
+            <button id="tab-btn-apollo-heatmap" class="tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent" data-pane="pane-apollo-heatmap">
+                    <span>🗺️ Bản Đồ Nhiệt Tọa Độ Đội Ngũ</span>
+                    <span id="badge-heatmap-learners-count" class="px-2 py-0.5 rounded-full bg-brand-surface text-slate-300 font-mono text-[11px]">97 HV</span>
+                </button>
             </div>
 
             <div class="flex items-center gap-2.5 flex-wrap">
@@ -154,16 +292,16 @@
                 <button id="btn-sync-live-sheet" class="px-3.5 py-2 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 text-xs font-semibold border border-emerald-500/30 transition-all flex items-center gap-1.5 shadow-sm" title="Tải kết quả thi thật được nộp từ Google Sheet vào Dashboard">
                     <span>📥 Tải KQ Thật Từ Sheet</span>
                 </button>
-                <a href="https://docs.google.com/spreadsheets/d/1Ju4y-KNDe7eiMvpbyq2mPfKTijH_1NIC3j8Rykl7cak/edit" target="_blank" class="px-3.5 py-2 rounded-xl bg-green-600/20 hover:bg-green-600/30 text-green-400 text-xs font-semibold border border-green-500/30 transition-colors flex items-center gap-1.5" title="Mở trực tiếp Google Sheet Thu Hoạch Apollo">
+                <a href="https://docs.google.com/spreadsheets/d/1Ju4y-KNDe7eiMvpbyq2mPfKTijH_1NIC3j8Rykl7cak/edit" target="_blank" class="px-3.5 py-2 rounded-xl bg-green-600/20 hover:bg-green-600/30 text-green-400 text-xs font-semibold border border-green-500/30 transition-colors flex items-center gap-1.5" title="Mở trực tiếp Google Sheet Thu Hoạch">
                     <span>📊 Google Sheet ↗</span>
                 </a>
-                <button id="btn-sync-roster" class="px-3.5 py-2 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 text-xs font-semibold border border-blue-500/30 transition-all flex items-center gap-1.5 shadow-sm" title="Đồng bộ danh sách 507 học viên từ Roster chuẩn (bao gồm 123 học viên Apollo)">
+                <button id="btn-sync-roster" class="px-3.5 py-2 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 text-xs font-semibold border border-blue-500/30 transition-all flex items-center gap-1.5 shadow-sm" title="Đồng bộ danh sách học viên từ Roster chuẩn">
                     <span>🔄 Roster</span>
                 </button>
-                <button id="btn-purge-mock-data" class="px-3.5 py-2 rounded-xl bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 text-xs font-semibold border border-rose-500/30 transition-all flex items-center gap-1.5 shadow-sm" title="Dọn dẹp sạch toàn bộ dữ liệu mô phỏng, đưa học viên Apollo về trạng thái dữ liệu thật (0 lượt thi)">
+                <button id="btn-purge-mock-data" class="px-3.5 py-2 rounded-xl bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 text-xs font-semibold border border-rose-500/30 transition-all flex items-center gap-1.5 shadow-sm" title="Dọn dẹp sạch toàn bộ dữ liệu mô phỏng, đưa học viên về trạng thái dữ liệu thật (0 lượt thi)">
                     <span>🧹 Dọn Mock</span>
                 </button>
-                <button id="btn-seed-test-analytics" class="px-3.5 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-400 hover:text-slate-200 text-xs font-semibold border border-brand-border transition-all flex items-center gap-1.5 shadow-sm" title="Chỉ dùng để demo giao diện với học viên mẫu giả lập (không ảnh hưởng Apollo)">
+                <button id="btn-seed-test-analytics" class="px-3.5 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-400 hover:text-slate-200 text-xs font-semibold border border-brand-border transition-all flex items-center gap-1.5 shadow-sm" title="Chỉ dùng để demo giao diện với học viên mẫu giả lập">
                     <span>🧪 Demo</span>
                 </button>
             </div>
@@ -385,8 +523,7 @@
                     <!-- Filter Cohort -->
                     <select id="test-filter-cohort" class="bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-brand-amber">
                         <option value="all">Tất cả Khóa học (Cohorts)</option>
-                        <option value="Team Happiness Apollo">Team Happiness Apollo (120 HV)</option>
-                        <option value="Apollo">Apollo (Test/Pilot) (2 HV)</option>
+                        <option value="Team happiness Apollo OCT2026">Team happiness Apollo OCT2026</option>
                         <option value="DHM8">Khóa DHM8</option>
                         <option value="DHM9">Khóa DHM9</option>
                         <option value="BTC / Coach">Ban Giảng Huấn / Coach</option>
@@ -481,7 +618,7 @@
                     <div class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">HV Đã Tham Gia Workshop</div>
                     <div class="flex items-baseline gap-2">
                         <span id="iam-kpi-total" class="text-2xl lg:text-3xl font-extrabold text-white">0</span>
-                        <span id="iam-kpi-total-of" class="text-xs text-slate-500 font-mono">/ 0 HV Apollo</span>
+                        <span id="iam-kpi-total-of" class="text-xs text-slate-500 font-mono">/ 0 HV</span>
                     </div>
                     <div class="text-[11px] text-emerald-400 font-medium">Thu hoạch thực tế từ Workshop I•A•M</div>
                 </div>
@@ -528,10 +665,18 @@
             <div class="p-4 rounded-2xl bg-brand-surface border border-brand-border space-y-3 shadow-lg">
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
                     <div class="flex items-center gap-2.5 flex-wrap w-full sm:w-auto">
+                        <!-- Lọc Khóa học / Cohort -->
+                        <div class="relative">
+                            <select id="iam-filter-cohort" class="bg-brand-card border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-brand-amber pr-8">
+                                <option value="Team happiness Apollo OCT2026">Team happiness Apollo OCT2026</option>
+                                <option value="all">Tất cả Khóa học</option>
+                            </select>
+                        </div>
+
                         <!-- Lọc Center -->
                         <div class="relative">
                             <select id="iam-filter-center" class="bg-brand-card border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-brand-amber pr-8">
-                                <option value="all">Tất cả Apollo Center</option>
+                                <option value="all">Tất cả cơ sở / chi nhánh</option>
                             </select>
                         </div>
 
@@ -567,11 +712,11 @@
             <!-- BẢNG DANH SÁCH THU HOẠCH 5 TRẠM -->
             <div class="rounded-2xl bg-brand-surface border border-brand-border overflow-hidden shadow-lg">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse text-xs">
+                    <table class="w-full min-w-[950px] text-left border-collapse text-xs">
                         <thead>
                             <tr class="border-b border-brand-border bg-brand-card/60 text-slate-400 font-semibold uppercase text-[10px] tracking-wider">
                                 <th class="p-4">Họ và tên / Tài khoản</th>
-                                <th class="p-4">Apollo Center</th>
+                                <th class="p-4">Cơ Sở / Chi Nhánh</th>
                                 <th class="p-4">Phòng Ban</th>
                                 <th class="p-4 text-center">Trạm 1 (Mindset)</th>
                                 <th class="p-4 text-center">Trạm 2 (Leadership)</th>
@@ -599,13 +744,13 @@
                     <summary class="p-4 flex items-center justify-between cursor-pointer hover:bg-brand-card/50 transition-colors select-none text-xs font-semibold text-slate-400">
                         <div class="flex items-center gap-2">
                             <span class="transform group-open:rotate-90 transition-transform text-emerald-400">▶</span>
-                            <span>💤 Danh sách học viên Apollo chưa nộp bài trạm I•A•M</span>
+                            <span>💤 Danh sách học viên chưa nộp bài trạm I•A•M</span>
                             <span id="iam-inactive-count-badge" class="px-2 py-0.5 rounded-full bg-brand-card text-slate-400 font-mono text-[10px] border border-brand-border">0 HV</span>
                         </div>
                         <span class="text-[11px] text-slate-500 font-normal italic">Bấm để mở rộng / thu gọn</span>
                     </summary>
                     <div class="overflow-x-auto border-t border-brand-border/40">
-                        <table class="w-full text-left border-collapse text-xs">
+                        <table class="w-full min-w-[950px] text-left border-collapse text-xs">
                             <tbody id="iam-inactive-table-body" class="divide-y divide-brand-border/30 text-slate-400">
                                 <!-- Injected via JavaScript -->
                             </tbody>
@@ -671,10 +816,10 @@
                             </select>
                         </div>
 
-                        <!-- Lọc Center -->
+                        <!-- Lọc Cơ sở / Chi nhánh -->
                         <div class="relative">
                             <select id="blended-filter-center" class="bg-brand-card border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-brand-amber pr-8">
-                                <option value="all">Tất cả Center</option>
+                                <option value="all">Tất cả cơ sở / chi nhánh</option>
                             </select>
                         </div>
 
@@ -800,8 +945,7 @@
 
                     <select id="general-filter-cohort" class="bg-brand-dark border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-brand-amber">
                         <option value="all">Tất cả Khóa học (Cohorts)</option>
-                        <option value="Team Happiness Apollo">Team Happiness Apollo (120 HV)</option>
-                        <option value="Apollo">Apollo (Test/Pilot) (2 HV)</option>
+                        <option value="Team happiness Apollo OCT2026">Team happiness Apollo OCT2026</option>
                         <option value="DHM8">Khóa DHM8</option>
                         <option value="DHM9">Khóa DHM9</option>
                         <option value="BTC / Coach">Ban Giảng Huấn / Coach</option>
@@ -844,6 +988,213 @@
                     <div class="text-3xl">📭</div>
                     <div class="text-sm font-semibold">Chưa có dữ liệu học viên</div>
                     <div class="text-xs">Bấm "Thêm Dữ Liệu Mẫu" hoặc làm bài từ giao diện học viên để ghi nhận.</div>
+                </div>
+            </div>
+
+        </section>
+
+            <!-- ========================================== -->
+        <!-- PANE 5: APOLLO HEATMAP & TKI MATRIX        -->
+        <!-- ========================================== -->
+        <section id="pane-apollo-heatmap" class="space-y-6 hidden">
+
+            <!-- SUB-TAB SWITCHER (SOCIAL / TKI / IAM / REPORT) -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-brand-surface p-3.5 rounded-2xl border border-brand-border">
+                <div class="flex items-center gap-2 flex-wrap">
+                    <button type="button" class="heatmap-subtab-btn active px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-brand-card text-brand-amber border border-brand-amber/40 shadow-sm" data-subtab="social">
+                        <span>🦚 Ma Trận Social Style</span>
+                    </button>
+                    <button type="button" class="heatmap-subtab-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-brand-card/60 transition-all border border-transparent" data-subtab="tki">
+                        <span>⚔️ Ma Trận TKI (5 Phong Cách)</span>
+                    </button>
+                    <button type="button" class="heatmap-subtab-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-brand-card/60 transition-all border border-transparent" data-subtab="iam">
+                        <span>📋 Thu Hoạch 5 Trạm & I•A•M</span>
+                    </button>
+                    <button type="button" class="heatmap-subtab-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-brand-card/60 transition-all border border-transparent" data-subtab="report">
+                        <span>📈 Báo Cáo Đội Ngũ</span>
+                    </button>
+                </div>
+                <div class="flex items-center gap-2.5">
+                    <button type="button" id="btn-export-heatmap-csv" class="px-3.5 py-2 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 text-xs font-semibold border border-blue-500/30 transition-all flex items-center gap-1.5 shadow-sm" title="Xuất toàn bộ tọa độ và hồ sơ học viên đang lọc ra file CSV">
+                        <span>📥 Xuất CSV Heatmap</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- FILTER TOOLBAR -->
+            <div class="p-4 rounded-2xl bg-brand-surface border border-brand-border flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center gap-3 flex-wrap">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Khóa học / Lớp:</span>
+                        <select id="heatmap-filter-cohort" class="bg-brand-card border border-brand-border text-white text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-brand-amber min-w-[200px]">
+                            <option value="Team happiness Apollo OCT2026">Team happiness Apollo OCT2026 (97 HV)</option>
+                            <option value="all">Tất cả Nhóm đối tượng</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Phòng ban:</span>
+                        <select id="heatmap-filter-dept" class="bg-brand-card border border-brand-border text-white text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-brand-amber">
+                            <option value="ALL">Tất cả phòng ban</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Cơ sở:</span>
+                        <select id="heatmap-filter-center" class="bg-brand-card border border-brand-border text-white text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-brand-amber">
+                            <option value="ALL">Tất cả cơ sở</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Hiển thị:</span>
+                        <select id="heatmap-filter-mode" class="bg-brand-card border border-brand-border text-white text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-brand-amber">
+                            <option value="COMBINED">Vầng Nhiệt + Điểm Tọa Độ</option>
+                            <option value="HEATMAP">Chỉ Vầng Nhiệt Mật Độ</option>
+                            <option value="DOTS">Chỉ Điểm Chấm Tọa Độ</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 flex-wrap">
+                    <div class="relative">
+                        <input type="text" id="heatmap-search-input" placeholder="🔍 Tìm tên, email, cơ sở..." class="bg-brand-card border border-brand-border text-white text-xs rounded-xl px-3.5 py-2 focus:outline-none focus:border-brand-amber min-w-[220px]" />
+                    </div>
+                    <button type="button" id="btn-reset-heatmap-filters" class="px-3.5 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-300 text-xs font-semibold border border-brand-border transition-colors" title="Đặt lại toàn bộ bộ lọc về mặc định">
+                        ↺ Đặt lại
+                    </button>
+                </div>
+            </div>
+
+            <!-- DYNAMIC KPI METRICS CARDS -->
+            <div id="heatmap-kpi-container" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3.5">
+                <!-- Injected via JavaScript (4 cards for Social Style / 5 cards for TKI) -->
+            </div>
+
+            <!-- VIEW 1 & 2: MATRIX HEATMAP & STUDENT LIST (SHARED 12-COL GRID) -->
+            <div id="heatmap-view-matrix" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Left: Canvas + SVG Heatmap (7 cols) -->
+                <div class="lg:col-span-7 bg-brand-surface border border-brand-border rounded-2xl p-4 space-y-3 flex flex-col shadow-lg">
+                    <div class="flex items-center justify-between pb-2 border-b border-brand-border">
+                        <div>
+                            <h4 id="heatmap-panel-title" class="font-bold text-white text-sm">Bản Đồ Nhiệt Mật Độ Phong Cách Xã Hội (Social Styles Heatmap)</h4>
+                            <p id="heatmap-panel-subtitle" class="text-[11px] text-slate-400">Phân bổ học viên / ban quản lý: Tính Khẳng Định (X) × Tính Đáp Ứng (Y)</p>
+                        </div>
+                        <span id="heatmap-filtered-count-badge" class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-mono font-bold border border-emerald-500/30">
+                            97 / 97 Quản lý
+                        </span>
+                    </div>
+
+                    <!-- Canvas & SVG Area -->
+                    <div class="heatmap-container" id="admin-heatmap-container">
+                        <canvas id="admin-heatmap-canvas" class="heatmap-canvas"></canvas>
+                        <svg id="admin-heatmap-svg" class="heatmap-svg"></svg>
+
+                        <!-- Axis Labels -->
+                        <div id="axis-top" class="axis-label" style="top: 10px; left: 50%; transform: translateX(-50%);">
+                            ▲ Hướng Người / Bộc Lộ Cảm Xúc (High Responsiveness)
+                        </div>
+                        <div id="axis-bottom" class="axis-label" style="bottom: 10px; left: 50%; transform: translateX(-50%);">
+                            ▼ Hướng Việc / Kiểm Soát Cảm Xúc (Low Responsiveness)
+                        </div>
+                        <div id="axis-left" class="axis-label" style="top: 50%; left: 10px; transform: translateY(-50%);">
+                            ◄ Hỏi / Tiếp Nhận (Low Assertiveness)
+                        </div>
+                        <div id="axis-right" class="axis-label" style="top: 50%; right: 10px; transform: translateY(-50%);">
+                            Báo / Chỉ Thị (High Assertiveness) ►
+                        </div>
+
+                        <!-- Quadrant Labels -->
+                        <div id="quad-tl" class="quadrant-bg-label" style="top: 18%; left: 12%; color: var(--color-amiable);" data-zone="tl" title="Nhấp để lọc phân khúc này">
+                            HÒA NHÃ (AMIABLE)
+                        </div>
+                        <div id="quad-tr" class="quadrant-bg-label" style="top: 18%; right: 12%; color: var(--color-expressive);" data-zone="tr" title="Nhấp để lọc phân khúc này">
+                            BIỂU CẢM (EXPRESSIVE)
+                        </div>
+                        <div id="quad-center" class="quadrant-bg-label" style="top: 45%; left: 50%; transform: translate(-50%, -50%); display: none; color: var(--color-compromising);" data-zone="center" title="Nhấp để lọc phân khúc này">
+                            THỎA HIỆP (COMPROMISING)
+                        </div>
+                        <div id="quad-bl" class="quadrant-bg-label" style="bottom: 18%; left: 12%; color: var(--color-analytical);" data-zone="bl" title="Nhấp để lọc phân khúc này">
+                            PHÂN TÍCH (ANALYTICAL)
+                        </div>
+                        <div id="quad-br" class="quadrant-bg-label" style="bottom: 18%; right: 12%; color: var(--color-driver);" data-zone="br" title="Nhấp để lọc phân khúc này">
+                            TIÊN PHONG (DRIVER)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Student List Table (5 cols) -->
+                <div class="lg:col-span-5 bg-brand-surface border border-brand-border rounded-2xl flex flex-col overflow-hidden shadow-lg" style="max-height: 595px;">
+                    <div class="p-3.5 bg-brand-card border-b border-brand-border flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-200">Danh Sách Quản Lý Phân Khúc</span>
+                        <span id="heatmap-table-count" class="text-[11px] font-mono text-brand-amber font-bold">97 người</span>
+                    </div>
+                    <div class="overflow-y-auto flex-1">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead class="sticky top-0 bg-brand-dark/95 backdrop-blur-sm border-b border-brand-border text-slate-400 z-10">
+                                <tr>
+                                    <th class="p-3">Học Viên</th>
+                                    <th class="p-3">Phòng Ban</th>
+                                    <th id="th-heatmap-style" class="p-3">Phong Cách</th>
+                                    <th class="p-3 font-mono">Tọa Độ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="heatmap-student-table-body" class="divide-y divide-brand-border/60">
+                                <!-- Injected via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 3: 5 STATIONS & I•A•M HARVESTER -->
+            <div id="heatmap-view-iam" class="space-y-4 hidden">
+                <div class="flex items-center gap-2 flex-wrap">
+                    <button type="button" class="heatmap-iam-filter-pill active px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-amber text-black shadow-sm" data-station="ALL">Tất cả Trạm (97)</button>
+                    <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="1">Trạm 1: Nền tảng Hạnh phúc</button>
+                    <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="2">Trạm 2: Bóng Lãnh Đạo</button>
+                    <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="3">Trạm 3: Lãnh Đạo Tình Huống S1-S4</button>
+                    <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="4">Trạm 4: Kỹ Năng OILS & TKI</button>
+                    <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="5">Trạm 5: My Colors 4 Phong Cách</button>
+                    <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="ACTION">🎯 Cam Kết Stop • Start • Continue</button>
+                </div>
+                <div id="heatmap-iam-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Injected via JavaScript -->
+                </div>
+            </div>
+
+            <!-- VIEW 4: EXECUTIVE TEAM REPORT -->
+            <div id="heatmap-view-report" class="space-y-6 hidden">
+                <div class="p-6 rounded-2xl bg-brand-surface border border-brand-border space-y-4 shadow-lg">
+                    <div class="flex items-center justify-between pb-3 border-b border-brand-border">
+                        <div>
+                            <h3 id="heatmap-report-main-title" class="text-base font-extrabold text-white">Báo Cáo Phân Tích Đội Ngũ Quản Lý</h3>
+                            <p id="heatmap-report-main-subtitle" class="text-xs text-slate-400 mt-0.5">Dành cho Ban Giảng Huấn (Chị Châu, Thầy Hưng, Anh Hoàng Vũ) — Tổng hợp từ dữ liệu khảo sát và bài tập thu hoạch I•A•M</p>
+                        </div>
+                        <span id="heatmap-report-scope-badge" class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-mono font-bold border border-blue-500/30">
+                            Quy mô: 97 Quản lý
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-4 rounded-xl bg-brand-card/70 border border-brand-border space-y-2">
+                            <h5 class="text-xs font-bold text-brand-amber uppercase tracking-wider">Phân Bổ Phong Cách Xã Hội (Social Styles)</h5>
+                            <div id="heatmap-report-social-summary" class="text-xs text-slate-300 space-y-1.5 leading-relaxed">
+                                <!-- Injected via JavaScript -->
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-brand-card/70 border border-brand-border space-y-2">
+                            <h5 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Chiến Lược Xử Lý Xung Đột (TKI Modes)</h5>
+                            <div id="heatmap-report-tki-summary" class="text-xs text-slate-300 space-y-1.5 leading-relaxed">
+                                <!-- Injected via JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-brand-dark/80 border border-brand-border/80 space-y-2">
+                        <h5 class="text-xs font-bold text-blue-400 uppercase tracking-wider">Khuyến Nghị Sư Phạm Thực Chiến Cho Ban Giảng Huấn</h5>
+                        <ul class="text-xs text-slate-300 space-y-1.5 list-disc list-inside leading-relaxed">
+                            <li><strong>Khối Học Thuật & Vận Hành:</strong> Tỷ trọng Phân Tích (Cú Mèo) cao. Khi thảo luận Trạm 3 & 4, giảng viên nên trình bày số liệu khảo sát, cấu trúc khung OILS mạch lạc trước khi yêu cầu đóng vai (role-play).</li>
+                            <li><strong>Khối Trung Tâm & Tư Vấn Tuyển Sinh:</strong> Tỷ trọng Biểu Cảm (Chim Công) và Tiên Phong (Đại Bàng) chiếm ưu thế. Cần kích hoạt năng lượng hành động và gắn kết mục tiêu văn hóa với kết quả kinh doanh.</li>
+                            <li><strong>Cân Bằng Xung Đột TKI:</strong> Hơn 28% quản lý có xu hướng Hợp Tác Win-Win, nhưng cần chú ý 16% có xu hướng Né Tránh khi gặp mâu thuẫn nhạy cảm giữa các phòng ban. Trạm 4 sẽ là đòn bẩy quan trọng để gỡ bỏ tâm lý này.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
@@ -995,7 +1346,7 @@
                 <div>
                     <span class="text-[10px] uppercase font-bold tracking-widest text-emerald-400">Chi Tiết Thu Hoạch Workshop Team Happiness</span>
                     <h3 id="iam-modal-learner-name" class="text-xl font-extrabold text-white mt-0.5">---</h3>
-                    <p id="iam-modal-learner-info" class="text-xs text-slate-400 font-mono">email@apollo.edu.vn • Apollo Center • Phòng ban</p>
+                    <p id="iam-modal-learner-info" class="text-xs text-slate-400 font-mono">hocvien@doanhnghiep.vn • Cơ sở / Chi nhánh • Phòng ban</p>
                 </div>
                 <button id="btn-close-iam-detail" class="text-slate-400 hover:text-white p-2 rounded-lg bg-brand-card">✕</button>
             </div>
@@ -1028,6 +1379,36 @@
             </div>
         </div>
     </div>
+
+        <!-- HEATMAP 360° STUDENT DETAIL MODAL -->
+    <div id="heatmap-student-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 hidden">
+        <div class="bg-brand-surface border border-brand-border rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl relative overflow-hidden">
+            <!-- Modal Header -->
+            <div class="p-5 lg:p-6 border-b border-brand-border flex items-center justify-between bg-brand-card/60 relative pr-16">
+                <div class="flex items-center gap-3.5">
+                    <div id="heatmap-modal-avatar" class="w-12 h-12 rounded-xl bg-blue-600 text-white font-extrabold flex items-center justify-center text-base shadow-md">
+                        VT
+                    </div>
+                    <div>
+                        <h3 id="heatmap-modal-name" class="text-base font-bold text-white">Vũ Diệu Trang</h3>
+                        <p id="heatmap-modal-info" class="text-xs text-slate-400 mt-0.5">Ban Quản lý • Cơ sở / Chi nhánh</p>
+                    </div>
+                </div>
+                <!-- Top-Right Close Button adhering to KISS Rule -->
+                <button type="button" id="btn-close-heatmap-modal" class="absolute top-4 right-4 sm:top-5 sm:right-5 w-10 h-10 rounded-xl bg-brand-card hover:bg-red-500/20 text-slate-400 hover:text-red-400 border border-brand-border hover:border-red-500/40 text-xl font-bold flex items-center justify-center transition-all cursor-pointer" title="Đóng cửa sổ">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Modal Content Body -->
+            <div id="heatmap-modal-body" class="p-5 lg:p-6 overflow-y-auto space-y-5 text-xs text-slate-200">
+                <!-- Injected via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- HEATMAP FLOATING TOOLTIP -->
+    <div id="heatmap-tooltip"></div>
 
     <!-- LOGIC SCRIPT -->
     <script>
@@ -1120,6 +1501,10 @@
                     allPanes.forEach(p => p.classList.add("hidden"));
                     const targetEl = document.getElementById(targetPane);
                     if (targetEl) targetEl.classList.remove("hidden");
+
+                    if (targetPane === "pane-apollo-heatmap") {
+                        onHeatmapTabActivated();
+                    }
                 });
             });
 
@@ -1164,7 +1549,7 @@
                 "Apollo Bình Dương — Thủ Dầu Một",
                 "Apollo Hải Phòng — Lê Hồng Phong",
                 "Apollo Đà Nẵng — Nguyễn Văn Linh",
-                "Cơ sở Apollo khác"
+                "Cơ sở khác"
             ];
 
             const APOLLO_DEPARTMENTS = [
@@ -1285,6 +1670,7 @@
             const iamKpiAvgScore = document.getElementById("iam-kpi-avg-score");
             const iamKpiWeakest = document.getElementById("iam-kpi-weakest");
             const iamStationHeatmap = document.getElementById("iam-station-heatmap");
+            const iamFilterCohort = document.getElementById("iam-filter-cohort");
             const iamFilterCenter = document.getElementById("iam-filter-center");
             const iamFilterDepartment = document.getElementById("iam-filter-department");
             const iamFilterStationsCount = document.getElementById("iam-filter-stations-count");
@@ -1333,6 +1719,7 @@
                 const currentTestVal = testFilterCohort ? testFilterCohort.value : "all";
                 const currentGenVal = generalFilterCohort ? generalFilterCohort.value : "all";
                 const currentBlendedCohortVal = blendedFilterCohort ? blendedFilterCohort.value : "all";
+                const currentIamCohortVal = iamFilterCohort ? iamFilterCohort.value : "Team happiness Apollo OCT2026";
                 const currentIamCenterVal = iamFilterCenter ? iamFilterCenter.value : "all";
                 const currentIamDeptVal = iamFilterDepartment ? iamFilterDepartment.value : "all";
                 const currentBlendedCenterVal = blendedFilterCenter ? blendedFilterCenter.value : "all";
@@ -1343,7 +1730,7 @@
                     cohortCounts[c] = (cohortCounts[c] || 0) + 1;
                 });
 
-                const priority = ["Team Happiness Apollo", "Apollo", "DHM8", "DHM9", "BTC / Coach"];
+                const priority = ["Team happiness Apollo OCT2026", "DHM8", "DHM9", "BTC / Coach"];
                 const allCohorts = Object.keys(cohortCounts).sort((a, b) => {
                     const idxA = priority.indexOf(a);
                     const idxB = priority.indexOf(b);
@@ -1371,13 +1758,18 @@
                     blendedFilterCohort.value = (allCohorts.includes(currentBlendedCohortVal) || currentBlendedCohortVal === "all") ? currentBlendedCohortVal : "all";
                 }
 
+                if (iamFilterCohort) {
+                    iamFilterCohort.innerHTML = optionsHtml;
+                    iamFilterCohort.value = (allCohorts.includes(currentIamCohortVal) || currentIamCohortVal === "all") ? currentIamCohortVal : (allCohorts.includes("Team happiness Apollo OCT2026") ? "Team happiness Apollo OCT2026" : "all");
+                }
+
                 // Dynamic Center Dropdowns (Kết hợp 22 Center chuẩn + Center thực tế trong dữ liệu)
                 const allCentersSet = new Set(APOLLO_CENTERS);
                 allLearners.forEach(l => {
                     if (l.center && String(l.center).trim()) allCentersSet.add(String(l.center).trim());
                 });
                 const allCentersList = Array.from(allCentersSet);
-                const centerOptionsHtml = `<option value="all">Tất cả Apollo Center (${allCentersList.length} cơ sở)</option>` +
+                const centerOptionsHtml = `<option value="all">Tất cả cơ sở / chi nhánh (${allCentersList.length} cơ sở)</option>` +
                     allCentersList.map(c => `<option value="${escapeHTML(c)}">${escapeHTML(c)}</option>`).join("");
 
                 if (iamFilterCenter) {
@@ -1402,6 +1794,10 @@
                 if (iamFilterDepartment) {
                     iamFilterDepartment.innerHTML = deptOptionsHtml;
                     iamFilterDepartment.value = (allDeptsList.includes(currentIamDeptVal) || currentIamDeptVal === "all") ? currentIamDeptVal : "all";
+                }
+
+                if (typeof populateHeatmapDropdowns === "function") {
+                    populateHeatmapDropdowns();
                 }
             }
 
@@ -1490,7 +1886,7 @@
                                 identity: r.email || r.phone || r.name,
                                 email: r.email || "",
                                 phone: r.phone || "",
-                                cohort: r.cohort || (isApollo ? "Team Happiness Apollo" : "DHM8"),
+                                cohort: r.cohort || (isApollo ? "Team happiness Apollo OCT2026" : "DHM8"),
                                 role: r.role || "Learner",
                                 lastActive: new Date().toISOString(),
                                 completedStagesCount: 0,
@@ -1578,7 +1974,7 @@
                 // 4. Nếu không tìm thấy trong roster, tự động khởi tạo learner mới từ dữ liệu Google Sheet
                 const newName = sheetRow["Họ Và Tên"] || sheetRow["Họ Tên"] || sheetRow["Họ và tên"] || sheetRow["name"] || sEmail || "Học viên mới";
                 const newIdentity = sEmail || sPhone || newName;
-                const newCohort = sheetRow["Khóa / Cơ Sở"] || sheetRow["Cơ Sở Apollo"] || sheetRow["Center"] || (sEmail.includes("apollo.edu.vn") ? "Team Happiness Apollo" : "DHM8");
+                const newCohort = sheetRow["Khóa / Cơ Sở"] || (sEmail.includes("apollo.edu.vn") ? "Team happiness Apollo OCT2026" : (sheetRow["Cơ Sở Apollo"] || sheetRow["Center"] || "DHM8"));
                 const newLearner = {
                     name: newName,
                     identity: newIdentity,
@@ -1967,6 +2363,9 @@
                     allLearners = [];
                 }
 
+                // Bước 0: Khởi tạo tức thì Tab Heatmap Apollo từ Baseline (không phụ thuộc độ trễ mạng)
+                initApolloHeatmap();
+
                 // Bước 1: Nạp Roster chính thức (507 HV, bao gồm 123 HV Apollo)
                 await syncAndMergeRoster(false);
 
@@ -1985,6 +2384,10 @@
                 renderIamDashboard();
                 renderBlendedJourney();
                 renderGeneralDashboard();
+
+                // Bước 6: Đồng bộ dữ liệu Live mới nhất từ Google Sheets vào Heatmap
+                mergeLiveRosterIntoHeatmap();
+                applyHeatmapFilters();
             }
 
             // Ensure every learner has consistent testAttempts data structure
@@ -2405,6 +2808,9 @@
                     renderIamDashboard();
                     renderBlendedJourney();
                     renderGeneralDashboard();
+                    mergeLiveRosterIntoHeatmap();
+                    populateHeatmapDropdowns();
+                    applyHeatmapFilters();
                     btnSyncRoster.innerHTML = origHtml;
                     btnSyncRoster.disabled = false;
                     alert(`Đã đồng bộ thành công ${allLearners.length} học viên từ Roster chuẩn (bao gồm 123 học viên Apollo)!`);
@@ -2498,6 +2904,9 @@
                         renderIamDashboard();
                         renderBlendedJourney();
                         renderGeneralDashboard();
+                        mergeLiveRosterIntoHeatmap();
+                        populateHeatmapDropdowns();
+                        applyHeatmapFilters();
                     } catch (err) {
                         console.error("Manual sync failed:", err);
                     } finally {
@@ -2515,7 +2924,10 @@
                     renderIamDashboard();
                     renderBlendedJourney();
                     renderGeneralDashboard();
-                    alert(`Đã dọn dẹp sạch toàn bộ dữ liệu mô phỏng của ${count} học viên Apollo. Danh sách hiện đang ở trạng thái dữ liệu thật (0 lượt thi)!`);
+                    mergeLiveRosterIntoHeatmap();
+                    populateHeatmapDropdowns();
+                    applyHeatmapFilters();
+                    alert(`Đã dọn dẹp sạch toàn bộ dữ liệu mô phỏng của ${count} học viên. Danh sách hiện đang ở trạng thái dữ liệu thật (0 lượt thi)!`);
                 });
             }
 
@@ -2572,29 +2984,38 @@
             // RENDER IAM STATIONS DASHBOARD (TAB 2)
             // ==========================================
             function renderIamDashboard() {
-                const apolloLearners = allLearners.filter(l => l.iamStations && Object.keys(l.iamStations).length > 0);
-                const totalApollo = allLearners.filter(l => (l.cohort || "").includes("Apollo") || (l.email && l.email.includes("apollo.edu.vn"))).length || 123;
+                const cohort = iamFilterCohort ? iamFilterCohort.value : "Team happiness Apollo OCT2026";
+                const targetPool = allLearners.filter(l => {
+                    if (cohort === "all") return true;
+                    if (cohort === "Team happiness Apollo OCT2026") {
+                        return l.cohort === "Team happiness Apollo OCT2026" || (l.email && l.email.toLowerCase().includes("apollo.edu.vn"));
+                    }
+                    return l.cohort === cohort;
+                });
+
+                const activeLearners = targetPool.filter(l => l.iamStations && Object.keys(l.iamStations).length > 0);
+                const totalInCohort = targetPool.length || (cohort === "Team happiness Apollo OCT2026" ? 124 : 0);
 
                 // KPI 1: Đã tham gia
-                if (iamKpiTotal) iamKpiTotal.textContent = apolloLearners.length;
-                if (iamKpiTotalOf) iamKpiTotalOf.textContent = `/ ${totalApollo} HV Apollo`;
+                if (iamKpiTotal) iamKpiTotal.textContent = activeLearners.length;
+                if (iamKpiTotalOf) iamKpiTotalOf.textContent = `/ ${totalInCohort} HV`;
 
                 // KPI 2: Hoàn thành đủ 5 trạm
-                const full5 = apolloLearners.filter(l => (l.iamCompletedStationsCount || Object.keys(l.iamStations).length) >= 5).length;
+                const full5 = activeLearners.filter(l => (l.iamCompletedStationsCount || Object.keys(l.iamStations).length) >= 5).length;
                 if (iamKpiFull5) iamKpiFull5.textContent = full5;
                 if (iamKpiFull5Pct) {
-                    const full5Pct = apolloLearners.length > 0 ? Math.round((full5 / apolloLearners.length) * 100) : 0;
+                    const full5Pct = activeLearners.length > 0 ? Math.round((full5 / activeLearners.length) * 100) : 0;
                     iamKpiFull5Pct.textContent = `(${full5Pct}%)`;
                 }
 
                 // KPI 3: Điểm trung bình
-                const scores = apolloLearners.map(l => l.iamTotalScore || 0).filter(s => s > 0);
+                const scores = activeLearners.map(l => l.iamTotalScore || 0).filter(s => s > 0);
                 const avgScore = scores.length > 0 ? (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1) : "0.0";
                 if (iamKpiAvgScore) iamKpiAvgScore.textContent = avgScore;
 
                 // KPI 4: Trạm ít lượt nhất
                 const stationCounts = [0, 0, 0, 0, 0];
-                apolloLearners.forEach(l => {
+                activeLearners.forEach(l => {
                     for (let i = 1; i <= 5; i++) {
                         if (l.iamStations && l.iamStations[`station${i}`]?.completed) {
                             stationCounts[i - 1]++;
@@ -2603,7 +3024,7 @@
                 });
 
                 if (iamKpiWeakest) {
-                    if (apolloLearners.length > 0) {
+                    if (activeLearners.length > 0) {
                         const minVal = Math.min(...stationCounts);
                         const minIdx = stationCounts.indexOf(minVal);
                         iamKpiWeakest.textContent = `Trạm ${minIdx + 1} (${stationCounts[minIdx]} HV)`;
@@ -2623,7 +3044,7 @@
                         "Trạm 5 (Action)"
                     ];
                     for (let i = 0; i < 5; i++) {
-                        const pct = totalApollo > 0 ? Math.round((stationCounts[i] / totalApollo) * 100) : 0;
+                        const pct = totalInCohort > 0 ? Math.round((stationCounts[i] / totalInCohort) * 100) : 0;
                         const colorClass = pct >= 80 ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" :
                                            pct >= 50 ? "bg-amber-500/20 text-amber-400 border-amber-500/30" :
                                            "bg-rose-500/20 text-rose-400 border-rose-500/30";
@@ -2631,7 +3052,7 @@
                             <div class="p-4 rounded-xl ${colorClass} border text-center transition-all hover:scale-105">
                                 <div class="text-2xl font-extrabold">${pct}%</div>
                                 <div class="text-xs mt-1 font-semibold">${stationNames[i]}</div>
-                                <div class="text-[10px] opacity-70 mt-0.5">${stationCounts[i]} / ${totalApollo} HV</div>
+                                <div class="text-[10px] opacity-70 mt-0.5">${stationCounts[i]} / ${totalInCohort} HV</div>
                             </div>
                         `;
                     }
@@ -2639,7 +3060,7 @@
 
                 // Badge Tab
                 if (badgeIamLearnersCount) {
-                    badgeIamLearnersCount.textContent = `${apolloLearners.length} HV`;
+                    badgeIamLearnersCount.textContent = `${activeLearners.length} HV`;
                 }
 
                 renderIamTable();
@@ -2647,17 +3068,25 @@
 
             function renderIamTable() {
                 const query = (iamSearchInput ? iamSearchInput.value : "").toLowerCase().trim();
+                const cohort = iamFilterCohort ? iamFilterCohort.value : "Team happiness Apollo OCT2026";
                 const center = iamFilterCenter ? iamFilterCenter.value : "all";
                 const dept = iamFilterDepartment ? iamFilterDepartment.value : "all";
                 const stFilter = iamFilterStationsCount ? iamFilterStationsCount.value : "all";
 
                 const candidates = allLearners.filter(l => {
                     const hasStations = l.iamStations && Object.keys(l.iamStations).length > 0;
-                    const isApollo = (l.cohort && l.cohort.includes("Apollo")) || (l.email && l.email.includes("apollo.edu.vn"));
-                    return hasStations || isApollo;
+                    const isSelectedCohort = (cohort === "all") || (l.cohort === cohort) || (cohort === "Team happiness Apollo OCT2026" && (l.cohort === "Team happiness Apollo OCT2026" || (l.email && l.email.toLowerCase().includes("apollo.edu.vn"))));
+                    return hasStations || isSelectedCohort;
                 });
 
                 const filtered = candidates.filter(l => {
+                    if (cohort !== "all") {
+                        if (cohort === "Team happiness Apollo OCT2026") {
+                            if (l.cohort !== "Team happiness Apollo OCT2026" && (!l.email || !l.email.toLowerCase().includes("apollo.edu.vn"))) return false;
+                        } else if (l.cohort !== cohort) {
+                            return false;
+                        }
+                    }
                     if (center !== "all" && l.center !== center) return false;
                     if (dept !== "all" && l.department !== dept) return false;
 
@@ -3111,6 +3540,7 @@
             }
 
             // Event Listeners for IAM Tab (Tab 2)
+            if (iamFilterCohort) iamFilterCohort.addEventListener("change", renderIamDashboard);
             if (iamSearchInput) iamSearchInput.addEventListener("input", renderIamTable);
             if (iamFilterCenter) iamFilterCenter.addEventListener("change", renderIamTable);
             if (iamFilterDepartment) iamFilterDepartment.addEventListener("change", renderIamTable);
@@ -3143,6 +3573,8 @@
                             renderIamDashboard();
                             renderBlendedJourney();
                             renderGeneralDashboard();
+                            mergeLiveRosterIntoHeatmap();
+                            applyHeatmapFilters();
                         }, AUTO_REFRESH_INTERVAL_MS);
                         if (webhookFetchStatus) {
                             webhookFetchStatus.textContent = "⏱️ Đã bật tự động làm mới mỗi 60s";
@@ -3171,7 +3603,7 @@
                     }
 
                     let csv = "\uFEFF"; // UTF-8 BOM
-                    csv += "Họ và tên,Tài khoản/Email/SĐT,Apollo Center,Phòng ban,Trạm 1,Trạm 2,Trạm 3,Trạm 4,Trạm 5,Số trạm hoàn thành,Điểm Hạnh Phúc,Điểm Lãnh Đạo,Tổng Điểm,Chỉ số cân bằng\n";
+                    csv += "Họ và tên,Tài khoản/Email/SĐT,Cơ sở,Phòng ban,Trạm 1,Trạm 2,Trạm 3,Trạm 4,Trạm 5,Số trạm hoàn thành,Điểm Hạnh Phúc,Điểm Lãnh Đạo,Tổng Điểm,Chỉ số cân bằng\n";
 
                     apolloLearners.forEach(l => {
                         const name = (l.name || "").replace(/"/g, '""');
@@ -3196,7 +3628,7 @@
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement("a");
                     a.href = url;
-                    a.download = `DHM_Apollo_5Tram_IAM_${new Date().toISOString().slice(0, 10)}.csv`;
+                    a.download = `DHM_Thu_Hoach_5Tram_IAM_${new Date().toISOString().slice(0, 10)}.csv`;
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
@@ -3469,6 +3901,1114 @@
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
             });
+
+
+            // ==========================================
+            // APOLLO HEATMAP & TKI MATRIX MODULE
+            // ==========================================
+            let heatmapLearners = [];
+            let heatmapFilteredLearners = [];
+            let heatmapActiveSubtab = "social"; // "social" | "tki" | "iam" | "report"
+            let heatmapSelectedQuadrant = "ALL";
+            let heatmapSelectedStationFilter = "ALL";
+            let heatmapKdePalette = null;
+
+            // DOM Elements for Heatmap
+            const badgeHeatmapLearnersCount = document.getElementById("badge-heatmap-learners-count");
+            const heatmapFilterCohort = document.getElementById("heatmap-filter-cohort");
+            const heatmapFilterDept = document.getElementById("heatmap-filter-dept");
+            const heatmapFilterCenter = document.getElementById("heatmap-filter-center");
+            const heatmapFilterMode = document.getElementById("heatmap-filter-mode");
+            const heatmapSearchInput = document.getElementById("heatmap-search-input");
+            const btnResetHeatmapFilters = document.getElementById("btn-reset-heatmap-filters");
+            const btnExportHeatmapCsv = document.getElementById("btn-export-heatmap-csv");
+            const heatmapKpiContainer = document.getElementById("heatmap-kpi-container");
+            const heatmapFilteredCountBadge = document.getElementById("heatmap-filtered-count-badge");
+            const heatmapTableCount = document.getElementById("heatmap-table-count");
+            const heatmapStudentTableBody = document.getElementById("heatmap-student-table-body");
+            const heatmapContainer = document.getElementById("admin-heatmap-container");
+            const heatmapCanvas = document.getElementById("admin-heatmap-canvas");
+            const heatmapSvg = document.getElementById("admin-heatmap-svg");
+            const heatmapTooltip = document.getElementById("heatmap-tooltip");
+            const heatmapStudentModal = document.getElementById("heatmap-student-modal");
+            const btnCloseHeatmapModal = document.getElementById("btn-close-heatmap-modal");
+            const heatmapModalAvatar = document.getElementById("heatmap-modal-avatar");
+            const heatmapModalName = document.getElementById("heatmap-modal-name");
+            const heatmapModalInfo = document.getElementById("heatmap-modal-info");
+            const heatmapModalBody = document.getElementById("heatmap-modal-body");
+
+            async function initApolloHeatmap() {
+                try {
+                    // Bước A: Nạp tức thì đồng bộ từ window.APOLLO_HEATMAP_BASELINE (chống trễ mạng/chờ fetch)
+                    let baseData = window.APOLLO_HEATMAP_BASELINE || null;
+                    if (baseData && baseData.learners && baseData.learners.length > 0) {
+                        heatmapLearners = JSON.parse(JSON.stringify(baseData.learners));
+                        mergeLiveRosterIntoHeatmap();
+                        populateHeatmapDropdowns();
+                        if (badgeHeatmapLearnersCount) {
+                            badgeHeatmapLearnersCount.textContent = `${heatmapLearners.length} HV`;
+                        }
+                        applyHeatmapFilters();
+                    }
+
+                    // Bước B: Thử fetch phiên bản JSON mới nhất từ máy chủ (nếu có cập nhật)
+                    try {
+                        const res = await fetch(`apollo_heatmap_data.json?t=${Date.now()}`);
+                        if (res.ok) {
+                            const fetched = await res.json();
+                            if (fetched && fetched.learners && fetched.learners.length > 0) {
+                                heatmapLearners = JSON.parse(JSON.stringify(fetched.learners));
+                                mergeLiveRosterIntoHeatmap();
+                                populateHeatmapDropdowns();
+                                if (badgeHeatmapLearnersCount) {
+                                    badgeHeatmapLearnersCount.textContent = `${heatmapLearners.length} HV`;
+                                }
+                                applyHeatmapFilters();
+                            }
+                        }
+                    } catch (e) {
+                        // Ngoại tuyến file:/// không gây lỗi do đã có fallback baseline
+                    }
+
+                    if (heatmapLearners.length === 0) {
+                        console.warn("Không tìm thấy dữ liệu baseline cho Heatmap Apollo");
+                    }
+                } catch (err) {
+                    console.error("Lỗi khởi tạo Apollo Heatmap:", err);
+                }
+            }
+
+            function mergeLiveRosterIntoHeatmap() {
+                if (!Array.isArray(allLearners) || allLearners.length === 0) return;
+
+                let liveLinkedCount = 0;
+                const matchedEmails = new Set();
+                const matchedNames = new Set();
+
+                // 1. Cập nhật các học viên đã có trong danh sách Heatmap (Baseline 97 Quản lý)
+                heatmapLearners.forEach(hl => {
+                    const hlEmail = (hl.email || "").toLowerCase().trim();
+                    const hlName = (hl.name || "").toLowerCase().trim();
+
+                    const matched = allLearners.find(l => {
+                        const lEmail = (l.email || (l.identity && l.identity.includes("@") ? l.identity : "")).toLowerCase().trim();
+                        const lName = (l.name || "").toLowerCase().trim();
+                        if (hlEmail && lEmail) return hlEmail === lEmail;
+                        if (hlName && lName) return hlName === lName;
+                        return false;
+                    });
+
+                    if (matched) {
+                        liveLinkedCount++;
+                        if (hlEmail) matchedEmails.add(hlEmail);
+                        if (hlName) matchedNames.add(hlName);
+
+                        // 1. Cập nhật phòng ban & cơ sở từ Live Roster nếu có
+                        if (matched.department) hl.department = matched.department;
+                        if (matched.center) hl.center = matched.center;
+
+                        // 2. Cập nhật Me Values thực tế
+                        const liveVals = matched.data?.stageData?.["stage-2"]?.selectedValues;
+                        if (Array.isArray(liveVals) && liveVals.length > 0) {
+                            hl.progress.meValue = liveVals[0];
+                        } else if (matched.meValue) {
+                            hl.progress.meValue = matched.meValue;
+                        }
+
+                        // 3. Cập nhật bài nộp 5 trạm thực tế từ Google Sheets / LMS
+                        if (matched.iamStations && Object.keys(matched.iamStations).length > 0) {
+                            for (let i = 1; i <= 5; i++) {
+                                const stLive = matched.iamStations[`station${i}`];
+                                if (stLive && (stLive.interested || stLive.actionable || stLive.meaningful || stLive.title)) {
+                                    if (!hl.progress.stations[i - 1]) {
+                                        hl.progress.stations[i - 1] = { stationId: i, title: `Trạm ${String(i).padStart(2, '0')}`, interested: "", actionable: "", meaningful: "" };
+                                    }
+                                    hl.progress.stations[i - 1].interested = stLive.interested || hl.progress.stations[i - 1].interested;
+                                    hl.progress.stations[i - 1].actionable = stLive.actionable || hl.progress.stations[i - 1].actionable;
+                                    hl.progress.stations[i - 1].meaningful = stLive.meaningful || hl.progress.stations[i - 1].meaningful;
+                                    if (stLive.title) hl.progress.stations[i - 1].title = stLive.title;
+                                }
+                            }
+                            hl.progress.completedStations = matched.iamCompletedStationsCount || Object.keys(matched.iamStations).length;
+                            if (hl.progress.completedStations >= 5) {
+                                hl.progress.status = "Đã hoàn thành xuất sắc";
+                                hl.progress.percent = 100;
+                            }
+                        }
+
+                        // 4. Cập nhật Cam kết Stop • Start • Continue từ bài nộp thực tế nếu có
+                        if (matched.actionCommitment && typeof matched.actionCommitment === "object") {
+                            hl.progress.actionCommitment = { ...(hl.progress.actionCommitment || {}), ...matched.actionCommitment };
+                        } else if (matched.data?.stageData?.["stage-2"]?.actionCommitment) {
+                            hl.progress.actionCommitment = { ...(hl.progress.actionCommitment || {}), ...matched.data.stageData["stage-2"].actionCommitment };
+                        }
+
+                        // 5. Cập nhật tọa độ & phong cách Social Style và TKI nếu học viên đã nộp bài trắc nghiệm
+                        if (matched.social && typeof matched.social === "object") {
+                            hl.social = { ...(hl.social || {}), ...matched.social };
+                        }
+                        if (matched.tki && typeof matched.tki === "object") {
+                            hl.tki = { ...(hl.tki || {}), ...matched.tki };
+                        }
+                    }
+                });
+
+                if (badgeHeatmapLearnersCount) {
+                    badgeHeatmapLearnersCount.textContent = `${heatmapLearners.length} HV`;
+                }
+            }
+
+            function populateHeatmapDropdowns() {
+                if (!heatmapFilterDept || !heatmapFilterCenter) return;
+
+                if (heatmapFilterCohort) {
+                    const curCohort = heatmapFilterCohort.value;
+                    const cohortsSet = new Set();
+                    heatmapLearners.forEach(l => {
+                        if (l.cohort) cohortsSet.add(l.cohort);
+                    });
+                    allLearners.forEach(l => {
+                        if (l.cohort) cohortsSet.add(l.cohort);
+                    });
+                    cohortsSet.add("Team happiness Apollo OCT2026");
+                    cohortsSet.add("DHM8");
+                    cohortsSet.add("DHM9");
+
+                    const sortedCohorts = Array.from(cohortsSet).sort((a, b) => {
+                        if (a === "Team happiness Apollo OCT2026") return -1;
+                        if (b === "Team happiness Apollo OCT2026") return 1;
+                        return a.localeCompare(b);
+                    });
+
+                    const cohortCountMap = {};
+                    sortedCohorts.forEach(c => {
+                        const cnt = heatmapLearners.filter(l => l.cohort === c || (c === "Team happiness Apollo OCT2026" && (l.cohort === "Team happiness Apollo OCT2026" || (l.email && l.email.toLowerCase().includes("apollo.edu.vn"))))).length;
+                        cohortCountMap[c] = cnt;
+                    });
+
+                    heatmapFilterCohort.innerHTML = `<option value="all">Tất cả Nhóm đối tượng (${heatmapLearners.length} HV)</option>` +
+                        sortedCohorts.map(c => `<option value="${escapeHTML(c)}">${escapeHTML(c)} (${cohortCountMap[c] || 0} HV)</option>`).join("");
+
+                    if (curCohort && (sortedCohorts.includes(curCohort) || curCohort === "all")) {
+                        heatmapFilterCohort.value = curCohort;
+                    } else {
+                        heatmapFilterCohort.value = "Team happiness Apollo OCT2026";
+                    }
+                }
+
+                const depts = new Set();
+                const centers = new Set();
+
+                heatmapLearners.forEach(l => {
+                    if (l.department) depts.add(l.department);
+                    if (l.center) centers.add(l.center);
+                });
+
+                const curDept = heatmapFilterDept.value;
+                const curCenter = heatmapFilterCenter.value;
+
+                heatmapFilterDept.innerHTML = `<option value="ALL">Tất cả phòng ban (${depts.size} ban)</option>` +
+                    Array.from(depts).sort().map(d => `<option value="${escapeHTML(d)}">${escapeHTML(d)}</option>`).join("");
+
+                heatmapFilterCenter.innerHTML = `<option value="ALL">Tất cả cơ sở (${centers.size} cơ sở)</option>` +
+                    Array.from(centers).sort().map(c => `<option value="${escapeHTML(c)}">${escapeHTML(c)}</option>`).join("");
+
+                if (curDept && Array.from(depts).includes(curDept)) heatmapFilterDept.value = curDept;
+                if (curCenter && Array.from(centers).includes(curCenter)) heatmapFilterCenter.value = curCenter;
+            }
+
+            function switchHeatmapSubtab(subtabId) {
+                heatmapActiveSubtab = subtabId;
+                heatmapSelectedQuadrant = "ALL";
+
+                document.querySelectorAll(".heatmap-subtab-btn").forEach(btn => {
+                    if (btn.dataset.subtab === subtabId) {
+                        btn.className = "heatmap-subtab-btn active px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-brand-card text-brand-amber border border-brand-amber/40 shadow-sm";
+                    } else {
+                        btn.className = "heatmap-subtab-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-brand-card/60 transition-all border border-transparent";
+                    }
+                });
+
+                const viewMatrix = document.getElementById("heatmap-view-matrix");
+                const viewIam = document.getElementById("heatmap-view-iam");
+                const viewReport = document.getElementById("heatmap-view-report");
+
+                if (subtabId === "social" || subtabId === "tki") {
+                    viewMatrix.classList.remove("hidden");
+                    viewIam.classList.add("hidden");
+                    viewReport.classList.add("hidden");
+                    updateHeatmapLabels(subtabId);
+                    applyHeatmapFilters();
+                } else if (subtabId === "iam") {
+                    viewMatrix.classList.add("hidden");
+                    viewIam.classList.remove("hidden");
+                    viewReport.classList.add("hidden");
+                    renderHeatmapIAMGrid();
+                } else if (subtabId === "report") {
+                    viewMatrix.classList.add("hidden");
+                    viewIam.classList.add("hidden");
+                    viewReport.classList.remove("hidden");
+                    renderHeatmapExecutiveReport();
+                }
+            }
+
+            function updateHeatmapLabels(mode) {
+                const title = document.getElementById("heatmap-panel-title");
+                const sub = document.getElementById("heatmap-panel-subtitle");
+                const top = document.getElementById("axis-top");
+                const bottom = document.getElementById("axis-bottom");
+                const left = document.getElementById("axis-left");
+                const right = document.getElementById("axis-right");
+                const qTL = document.getElementById("quad-tl");
+                const qTR = document.getElementById("quad-tr");
+                const qCenter = document.getElementById("quad-center");
+                const qBL = document.getElementById("quad-bl");
+                const qBR = document.getElementById("quad-br");
+                const thStyle = document.getElementById("th-heatmap-style");
+
+                const countDisplay = heatmapFilteredLearners.length;
+                if (mode === "social") {
+                    title.textContent = "Bản Đồ Nhiệt Mật Độ Phong Cách Xã Hội (Social Styles Heatmap)";
+                    sub.textContent = `Mật độ phân bổ ${countDisplay} học viên / quản lý dựa trên 2 trục: Tính Khẳng Định (X) × Tính Đáp Ứng (Y)`;
+                    top.textContent = "▲ Hướng Người / Bộc Lộ Cảm Xúc (High Responsiveness)";
+                    bottom.textContent = "▼ Hướng Việc / Kiểm Soát Cảm Xúc (Low Responsiveness)";
+                    left.textContent = "◄ Hỏi / Tiếp Nhận (Low Assertiveness)";
+                    right.textContent = "Báo / Chỉ Thị (High Assertiveness) ►";
+                    qTL.textContent = "HÒA NHÃ (AMIABLE)";
+                    qTL.style.color = "var(--color-amiable)";
+                    qTR.textContent = "BIỂU CẢM (EXPRESSIVE)";
+                    qTR.style.color = "var(--color-expressive)";
+                    if (qCenter) qCenter.style.display = "none";
+                    qBL.textContent = "PHÂN TÍCH (ANALYTICAL)";
+                    qBL.style.color = "var(--color-analytical)";
+                    qBR.textContent = "TIÊN PHONG (DRIVER)";
+                    qBR.style.color = "var(--color-driver)";
+                    if (thStyle) thStyle.textContent = "Phong Cách";
+                } else {
+                    title.textContent = "Bản Đồ Nhiệt Xử Lý Xung Đột TKI (Thomas-Kilmann Heatmap)";
+                    sub.textContent = `Mật độ phân bổ ${countDisplay} học viên / quản lý dựa trên 2 trục: Tính Hợp Tác (X) × Tính Quyết Đoán (Y) với 5 phong cách`;
+                    top.textContent = "▲ Sự Quyết Đoán Cao (High Assertiveness)";
+                    bottom.textContent = "▼ Sự Quyết Đoán Thấp (Low Assertiveness)";
+                    left.textContent = "◄ Ít Hợp Tác (Low Cooperativeness)";
+                    right.textContent = "Rất Hợp Tác (High Cooperativeness) ►";
+                    qTL.textContent = "CẠNH TRANH (COMPETING)";
+                    qTL.style.color = "var(--color-competing)";
+                    qTR.textContent = "HỢP TÁC (COLLABORATING)";
+                    qTR.style.color = "var(--color-collaborating)";
+                    if (qCenter) {
+                        qCenter.style.display = "block";
+                        qCenter.textContent = "THỎA HIỆP (COMPROMISING)";
+                        qCenter.style.color = "var(--color-compromising)";
+                    }
+                    qBL.textContent = "NÉ TRÁNH (AVOIDING)";
+                    qBL.style.color = "var(--color-avoiding)";
+                    qBR.textContent = "NHƯỢNG BỘ (ACCOMMODATING)";
+                    qBR.style.color = "var(--color-accommodating)";
+                    if (thStyle) thStyle.textContent = "Chế Độ TKI";
+                }
+            }
+
+            function applyHeatmapFilters() {
+                const cohort = heatmapFilterCohort ? heatmapFilterCohort.value : "Team happiness Apollo OCT2026";
+                const dept = heatmapFilterDept ? heatmapFilterDept.value : "ALL";
+                const center = heatmapFilterCenter ? heatmapFilterCenter.value : "ALL";
+                const search = heatmapSearchInput ? heatmapSearchInput.value.trim().toLowerCase() : "";
+
+                heatmapFilteredLearners = heatmapLearners.filter(l => {
+                    const matchCohort = (cohort === "all" || l.cohort === cohort || (cohort === "Team happiness Apollo OCT2026" && (l.cohort === "Team happiness Apollo OCT2026" || (l.email && l.email.toLowerCase().includes("apollo.edu.vn")))));
+                    const matchDept = (dept === "ALL" || l.department === dept);
+                    const matchCenter = (center === "ALL" || l.center === center);
+                    const matchSearch = (!search || l.name.toLowerCase().includes(search) || l.email.toLowerCase().includes(search) || (l.center && l.center.toLowerCase().includes(search)));
+
+                    let matchQuadrant = true;
+                    if (heatmapSelectedQuadrant !== "ALL") {
+                        if (heatmapActiveSubtab === "social") {
+                            matchQuadrant = (l.social?.style === heatmapSelectedQuadrant);
+                        } else {
+                            matchQuadrant = (l.tki?.dominantMode === heatmapSelectedQuadrant);
+                        }
+                    }
+                    return matchCohort && matchDept && matchCenter && matchSearch && matchQuadrant;
+                });
+
+                const totalInCohortPool = heatmapLearners.filter(l => (cohort === "all" || l.cohort === cohort || (cohort === "Team happiness Apollo OCT2026" && (l.cohort === "Team happiness Apollo OCT2026" || (l.email && l.email.toLowerCase().includes("apollo.edu.vn")))))).length;
+
+                if (heatmapFilteredCountBadge) {
+                    heatmapFilteredCountBadge.textContent = `${heatmapFilteredLearners.length} / ${totalInCohortPool} Quản lý`;
+                }
+
+                if (badgeHeatmapLearnersCount) {
+                    badgeHeatmapLearnersCount.textContent = `${totalInCohortPool} HV`;
+                }
+
+                updateHeatmapLabels(heatmapActiveSubtab);
+                updateHeatmapQuadrantActiveState();
+                initHeatmapKPIs();
+                renderHeatmapActiveView();
+                populateHeatmapStudentTable();
+                renderHeatmapIAMGrid();
+                if (heatmapActiveSubtab === "report") renderHeatmapExecutiveReport();
+            }
+
+            function updateHeatmapQuadrantActiveState() {
+                document.querySelectorAll(".quadrant-bg-label").forEach(el => el.classList.remove("active"));
+                if (heatmapSelectedQuadrant === "ALL") return;
+
+                let activeId = null;
+                if (heatmapActiveSubtab === "social") {
+                    const keyToId = { "Amiable": "quad-tl", "Expressive": "quad-tr", "Analytical": "quad-bl", "Driver": "quad-br" };
+                    activeId = keyToId[heatmapSelectedQuadrant];
+                } else {
+                    const keyToId = { "competing": "quad-tl", "collaborating": "quad-tr", "compromising": "quad-center", "avoiding": "quad-bl", "accommodating": "quad-br" };
+                    activeId = keyToId[heatmapSelectedQuadrant];
+                }
+                if (activeId) {
+                    const el = document.getElementById(activeId);
+                    if (el) el.classList.add("active");
+                }
+            }
+
+            function resetHeatmapFilters() {
+                if (heatmapFilterCohort) heatmapFilterCohort.value = "Team happiness Apollo OCT2026";
+                if (heatmapFilterDept) heatmapFilterDept.value = "ALL";
+                if (heatmapFilterCenter) heatmapFilterCenter.value = "ALL";
+                if (heatmapSearchInput) heatmapSearchInput.value = "";
+                heatmapSelectedQuadrant = "ALL";
+                applyHeatmapFilters();
+            }
+
+            function initHeatmapKPIs() {
+                if (!heatmapKpiContainer) return;
+                heatmapKpiContainer.innerHTML = "";
+
+                const cohort = heatmapFilterCohort ? heatmapFilterCohort.value : "Team happiness Apollo OCT2026";
+                const dept = heatmapFilterDept ? heatmapFilterDept.value : "ALL";
+                const center = heatmapFilterCenter ? heatmapFilterCenter.value : "ALL";
+
+                const basePool = heatmapLearners.filter(l => {
+                    const matchCohort = (cohort === "all" || l.cohort === cohort || (cohort === "Team happiness Apollo OCT2026" && (l.cohort === "Team happiness Apollo OCT2026" || (l.email && l.email.toLowerCase().includes("apollo.edu.vn")))));
+                    const matchDept = (dept === "ALL" || l.department === dept);
+                    const matchCenter = (center === "ALL" || l.center === center);
+                    return matchCohort && matchDept && matchCenter;
+                });
+
+                if (heatmapActiveSubtab === "social") {
+                    const styles = [
+                        { key: "Expressive", name: "Biểu Cảm", icon: "🦚", cls: "expressive", color: "#f59e0b" },
+                        { key: "Driver", name: "Tiên Phong", icon: "🦅", cls: "driver", color: "#ef4444" },
+                        { key: "Analytical", name: "Phân Tích", icon: "🦉", cls: "analytical", color: "#06b6d4" },
+                        { key: "Amiable", name: "Hòa Nhã", icon: "🕊️", cls: "amiable", color: "#10b981" }
+                    ];
+
+                    styles.forEach(s => {
+                        const count = basePool.filter(l => l.social?.style === s.key).length;
+                        const pct = basePool.length > 0 ? Math.round((count / basePool.length) * 100) : 0;
+                        const card = document.createElement("div");
+                        card.className = `stat-card-kpi ${s.cls} ${heatmapSelectedQuadrant === s.key ? "active" : ""}`;
+                        card.onclick = () => selectHeatmapQuadrantFilter(s.key);
+                        card.title = `Nhấp để lọc danh sách học viên phong cách ${s.name}`;
+                        card.innerHTML = `
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs font-bold" style="color: ${s.color}">${s.icon} ${s.name}</span>
+                                <span class="text-[11px] text-slate-400 font-mono">${pct}%</span>
+                            </div>
+                            <div class="text-xl font-extrabold text-white mt-1">${count} <span class="text-xs font-normal text-slate-400">người</span></div>
+                        `;
+                        heatmapKpiContainer.appendChild(card);
+                    });
+                } else {
+                    const modes = [
+                        { key: "collaborating", name: "Hợp Tác", icon: "🤝", cls: "collaborating", color: "#10b981" },
+                        { key: "competing", name: "Cạnh Tranh", icon: "⚡", cls: "competing", color: "#ef4444" },
+                        { key: "compromising", name: "Thỏa Hiệp", icon: "⚖️", cls: "compromising", color: "#f59e0b" },
+                        { key: "avoiding", name: "Né Tránh", icon: "🛡️", cls: "avoiding", color: "#64748b" },
+                        { key: "accommodating", name: "Nhượng Bộ", icon: "🤲", cls: "accommodating", color: "#6366f1" }
+                    ];
+
+                    modes.forEach(m => {
+                        const count = basePool.filter(l => l.tki?.dominantMode === m.key).length;
+                        const pct = basePool.length > 0 ? Math.round((count / basePool.length) * 100) : 0;
+                        const card = document.createElement("div");
+                        card.className = `stat-card-kpi ${m.cls} ${heatmapSelectedQuadrant === m.key ? "active" : ""}`;
+                        card.onclick = () => selectHeatmapQuadrantFilter(m.key);
+                        card.title = `Nhấp để lọc danh sách học viên chế độ ${m.name}`;
+                        card.innerHTML = `
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs font-bold" style="color: ${m.color}">${m.icon} ${m.name}</span>
+                                <span class="text-[11px] text-slate-400 font-mono">${pct}%</span>
+                            </div>
+                            <div class="text-xl font-extrabold text-white mt-1">${count} <span class="text-xs font-normal text-slate-400">người</span></div>
+                        `;
+                        heatmapKpiContainer.appendChild(card);
+                    });
+                }
+            }
+
+            function selectHeatmapQuadrantFilter(key) {
+                if (heatmapSelectedQuadrant === key) {
+                    heatmapSelectedQuadrant = "ALL";
+                } else {
+                    heatmapSelectedQuadrant = key;
+                }
+                applyHeatmapFilters();
+            }
+
+            function onHeatmapQuadrantClick(zone) {
+                let key = "ALL";
+                if (heatmapActiveSubtab === "social") {
+                    const zoneMap = { "tl": "Amiable", "tr": "Expressive", "bl": "Analytical", "br": "Driver" };
+                    key = zoneMap[zone] || "ALL";
+                } else {
+                    const zoneMap = { "tl": "competing", "tr": "collaborating", "center": "compromising", "bl": "avoiding", "br": "accommodating" };
+                    key = zoneMap[zone] || "ALL";
+                }
+                selectHeatmapQuadrantFilter(key);
+            }
+
+            function renderHeatmapActiveView() {
+                if (!heatmapFilterMode || !heatmapCanvas || !heatmapSvg) return;
+                const mode = heatmapFilterMode.value;
+
+                if (mode === "DOTS") {
+                    heatmapCanvas.style.display = "none";
+                    heatmapSvg.style.display = "block";
+                } else if (mode === "HEATMAP") {
+                    heatmapCanvas.style.display = "block";
+                    heatmapSvg.style.display = "none";
+                } else {
+                    heatmapCanvas.style.display = "block";
+                    heatmapSvg.style.display = "block";
+                }
+
+                renderHeatmapCanvas();
+                renderHeatmapSVGScatter();
+            }
+
+            function getKDEPaletteCached() {
+                if (heatmapKdePalette) return heatmapKdePalette;
+                const pCanvas = document.createElement("canvas");
+                pCanvas.width = 256;
+                pCanvas.height = 1;
+                const pCtx = pCanvas.getContext("2d");
+                const grad = pCtx.createLinearGradient(0, 0, 256, 1);
+                grad.addColorStop(0.00, "rgba(6, 182, 212, 0)");      // Transparent cyan
+                grad.addColorStop(0.18, "rgba(6, 182, 212, 0.45)");   // Cool cyan
+                grad.addColorStop(0.40, "rgba(16, 185, 129, 0.65)");  // Emerald green
+                grad.addColorStop(0.65, "rgba(245, 158, 11, 0.80)");  // Warm amber
+                grad.addColorStop(0.85, "rgba(249, 115, 22, 0.90)");  // Vivid orange
+                grad.addColorStop(1.00, "rgba(239, 68, 68, 0.98)");   // Hot red
+                pCtx.fillStyle = grad;
+                pCtx.fillRect(0, 0, 256, 1);
+                heatmapKdePalette = pCtx.getImageData(0, 0, 256, 1).data;
+                return heatmapKdePalette;
+            }
+
+            function renderHeatmapCanvas() {
+                if (heatmapActiveSubtab !== "social" && heatmapActiveSubtab !== "tki") return;
+                if (!heatmapContainer || !heatmapCanvas) return;
+
+                const rect = heatmapContainer.getBoundingClientRect();
+                const width = rect.width;
+                const height = rect.height;
+                if (!width || !height) return;
+
+                const dpr = window.devicePixelRatio || 1;
+                const targetW = Math.round(width * dpr);
+                const targetH = Math.round(height * dpr);
+
+                heatmapCanvas.width = targetW;
+                heatmapCanvas.height = targetH;
+
+                const ctx = heatmapCanvas.getContext("2d");
+                ctx.clearRect(0, 0, targetW, targetH);
+
+                if (heatmapFilteredLearners.length === 0) return;
+
+                const offCanvas = document.createElement("canvas");
+                offCanvas.width = targetW;
+                offCanvas.height = targetH;
+                const offCtx = offCanvas.getContext("2d");
+                offCtx.clearRect(0, 0, targetW, targetH);
+
+                const radius = Math.min(targetW, targetH) * 0.13;
+
+                heatmapFilteredLearners.forEach(l => {
+                    let xPct, yPct;
+                    if (heatmapActiveSubtab === "social") {
+                        xPct = l.social?.assertiveness ?? 50;
+                        yPct = 100 - (l.social?.responsiveness ?? 50);
+                    } else {
+                        xPct = l.tki?.cooperativeness ?? 50;
+                        yPct = 100 - (l.tki?.assertiveness ?? 50);
+                    }
+
+                    const px = (xPct / 100.0) * targetW;
+                    const py = (yPct / 100.0) * targetH;
+
+                    const grad = offCtx.createRadialGradient(px, py, 0, px, py, radius);
+                    grad.addColorStop(0, "rgba(0, 0, 0, 0.35)");
+                    grad.addColorStop(1, "rgba(0, 0, 0, 0)");
+
+                    offCtx.fillStyle = grad;
+                    offCtx.beginPath();
+                    offCtx.arc(px, py, radius, 0, Math.PI * 2);
+                    offCtx.fill();
+                });
+
+                const imgData = offCtx.getImageData(0, 0, targetW, targetH);
+                const data = imgData.data;
+                const palette = getKDEPaletteCached();
+
+                for (let i = 0; i < data.length; i += 4) {
+                    const alpha = data[i + 3];
+                    if (alpha > 0) {
+                        const pIdx = alpha * 4;
+                        data[i] = palette[pIdx];
+                        data[i + 1] = palette[pIdx + 1];
+                        data[i + 2] = palette[pIdx + 2];
+                        data[i + 3] = palette[pIdx + 3];
+                    }
+                }
+
+                ctx.putImageData(imgData, 0, 0);
+            }
+
+            function renderHeatmapSVGScatter() {
+                if (heatmapActiveSubtab !== "social" && heatmapActiveSubtab !== "tki") return;
+                if (!heatmapContainer || !heatmapSvg) return;
+
+                const rect = heatmapContainer.getBoundingClientRect();
+                const width = rect.width;
+                const height = rect.height;
+                if (!width || !height) return;
+
+                heatmapSvg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+                heatmapSvg.innerHTML = "";
+
+                // 1. Grid Crosshairs
+                const gridG = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                gridG.setAttribute("stroke", "#334155");
+                gridG.setAttribute("stroke-width", "1.5");
+                gridG.setAttribute("stroke-dasharray", "4,4");
+                gridG.setAttribute("opacity", "0.6");
+
+                const lineX = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                lineX.setAttribute("x1", width / 2); lineX.setAttribute("y1", 0);
+                lineX.setAttribute("x2", width / 2); lineX.setAttribute("y2", height);
+
+                const lineY = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                lineY.setAttribute("x1", 0); lineY.setAttribute("y1", height / 2);
+                lineY.setAttribute("x2", width); lineY.setAttribute("y2", height / 2);
+
+                gridG.appendChild(lineX);
+                gridG.appendChild(lineY);
+                heatmapSvg.appendChild(gridG);
+
+                // Central box for TKI Compromising mode
+                if (heatmapActiveSubtab === "tki") {
+                    const centerRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    centerRect.setAttribute("x", width * 0.40);
+                    centerRect.setAttribute("y", height * 0.40);
+                    centerRect.setAttribute("width", width * 0.20);
+                    centerRect.setAttribute("height", height * 0.20);
+                    centerRect.setAttribute("rx", "8");
+                    centerRect.setAttribute("fill", "rgba(245, 158, 11, 0.05)");
+                    centerRect.setAttribute("stroke", "rgba(245, 158, 11, 0.4)");
+                    centerRect.setAttribute("stroke-width", "1.5");
+                    centerRect.setAttribute("stroke-dasharray", "3,3");
+                    heatmapSvg.appendChild(centerRect);
+                }
+
+                // Interactive Background click to filter by quadrant
+                heatmapSvg.onclick = (e) => {
+                    if (e.target.tagName.toLowerCase() === "circle") return;
+                    const sRect = heatmapSvg.getBoundingClientRect();
+                    const clickX = e.clientX - sRect.left;
+                    const clickY = e.clientY - sRect.top;
+                    const xPct = (clickX / width) * 100;
+                    const yPct = 100 - (clickY / height) * 100;
+
+                    let targetKey = "ALL";
+                    if (heatmapActiveSubtab === "social") {
+                        if (xPct >= 50 && yPct >= 50) targetKey = "Expressive";
+                        else if (xPct >= 50 && yPct < 50) targetKey = "Driver";
+                        else if (xPct < 50 && yPct >= 50) targetKey = "Amiable";
+                        else targetKey = "Analytical";
+                    } else {
+                        if (xPct >= 42 && xPct <= 58 && yPct >= 42 && yPct <= 58) targetKey = "compromising";
+                        else if (xPct < 50 && yPct >= 50) targetKey = "competing";
+                        else if (xPct >= 50 && yPct >= 50) targetKey = "collaborating";
+                        else if (xPct < 50 && yPct < 50) targetKey = "avoiding";
+                        else targetKey = "accommodating";
+                    }
+                    selectHeatmapQuadrantFilter(targetKey);
+                };
+
+                // 2. Interactive Student Dots
+                heatmapFilteredLearners.forEach(l => {
+                    let xPct, yPct, color;
+                    if (heatmapActiveSubtab === "social") {
+                        xPct = l.social?.assertiveness ?? 50;
+                        yPct = 100 - (l.social?.responsiveness ?? 50);
+                        color = l.social?.color || "#38bdf8";
+                    } else {
+                        xPct = l.tki?.cooperativeness ?? 50;
+                        yPct = 100 - (l.tki?.assertiveness ?? 50);
+                        color = l.tki?.dominantColor || "#f59e0b";
+                    }
+
+                    const px = (xPct / 100.0) * width;
+                    const py = (yPct / 100.0) * height;
+
+                    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                    g.setAttribute("class", "student-dot");
+                    g.style.color = color;
+
+                    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                    circle.setAttribute("cx", px);
+                    circle.setAttribute("cy", py);
+                    circle.setAttribute("r", "6");
+                    circle.setAttribute("fill", color);
+                    circle.setAttribute("stroke", "#ffffff");
+                    circle.setAttribute("stroke-width", "1.5");
+                    g.appendChild(circle);
+
+                    g.addEventListener("mouseenter", (e) => {
+                        if (!heatmapTooltip) return;
+                        heatmapTooltip.style.display = "block";
+                        const styleLabel = heatmapActiveSubtab === 'social' ? (l.social?.styleVN || "Phân Tích") : (l.tki?.dominantVN || "Thỏa Hiệp");
+                        heatmapTooltip.innerHTML = `
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="font-extrabold text-white text-xs">${escapeHTML(l.name || "Học viên")}</span>
+                                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold" style="background: rgba(255,255,255,0.1); color: ${color};">
+                                    ${escapeHTML(styleLabel)}
+                                </span>
+                            </div>
+                            <div class="text-[11px] text-slate-400 space-y-0.5">
+                                <div>• <strong>Ban:</strong> ${escapeHTML(l.department || "Ban Quản lý")}</div>
+                                <div>• <strong>Cơ sở:</strong> ${escapeHTML(l.center || "Cơ sở / Chi nhánh")}</div>
+                                <div>• <strong>Tọa độ:</strong> X: ${Math.round(xPct)}% | Y: ${Math.round(100 - yPct)}%</div>
+                                <div>• <strong>Me Value:</strong> ${escapeHTML(l.progress?.meValue || "Cam kết")}</div>
+                            </div>
+                            <div class="mt-1.5 pt-1 border-t border-brand-border text-[10px] text-blue-400 font-semibold">
+                                👉 Nhấp để mở hồ sơ 360°
+                            </div>
+                        `;
+                        positionHeatmapTooltip(e, heatmapContainer, heatmapTooltip);
+                    });
+
+                    g.addEventListener("mousemove", (e) => {
+                        positionHeatmapTooltip(e, heatmapContainer, heatmapTooltip);
+                    });
+
+                    g.addEventListener("mouseleave", () => {
+                        if (heatmapTooltip) heatmapTooltip.style.display = "none";
+                    });
+
+                    g.addEventListener("click", (e) => {
+                        e.stopPropagation();
+                        openHeatmapStudentModal(l);
+                    });
+
+                    heatmapSvg.appendChild(g);
+                });
+            }
+
+            function positionHeatmapTooltip(e, container, tooltip) {
+                if (!container || !tooltip) return;
+                const cRect = container.getBoundingClientRect();
+                let left = e.clientX - cRect.left + 15;
+                let top = e.clientY - cRect.top + 15;
+
+                if (left + 230 > cRect.width) left = left - 240;
+                if (top + 130 > cRect.height) top = top - 135;
+
+                tooltip.style.left = left + "px";
+                tooltip.style.top = top + "px";
+            }
+
+            function populateHeatmapStudentTable() {
+                if (!heatmapStudentTableBody) return;
+                heatmapStudentTableBody.innerHTML = "";
+
+                if (heatmapTableCount) {
+                    heatmapTableCount.textContent = `${heatmapFilteredLearners.length} người`;
+                }
+
+                if (heatmapFilteredLearners.length === 0) {
+                    heatmapStudentTableBody.innerHTML = `<tr><td colspan="4" class="text-center p-6 text-slate-500">Không tìm thấy quản lý nào phù hợp với bộ lọc.</td></tr>`;
+                    return;
+                }
+
+                heatmapFilteredLearners.forEach(l => {
+                    const tr = document.createElement("tr");
+                    tr.className = "hover:bg-brand-card/50 cursor-pointer transition-colors";
+                    tr.onclick = () => openHeatmapStudentModal(l);
+
+                    const styleText = heatmapActiveSubtab === "social" ? (l.social?.styleVN || "Phân Tích") : (l.tki?.dominantVN || "Thỏa Hiệp");
+                    const styleColor = heatmapActiveSubtab === "social" ? (l.social?.color || "#38bdf8") : (l.tki?.dominantColor || "#f59e0b");
+                    const coords = heatmapActiveSubtab === "social"
+                        ? `(${l.social?.assertiveness ?? 50}, ${l.social?.responsiveness ?? 50})`
+                        : `(${l.tki?.cooperativeness ?? 50}, ${l.tki?.assertiveness ?? 50})`;
+
+                    const deptShort = (l.department || "Ban Quản lý").split("(")[0].trim();
+
+                    tr.innerHTML = `
+                        <td class="p-3">
+                            <div class="font-bold text-white">${escapeHTML(l.name || "Học viên")}</div>
+                            <div class="text-[10px] text-slate-400 font-mono">${escapeHTML(l.email || "")}</div>
+                        </td>
+                        <td class="p-3 text-slate-300 text-[11px]">${escapeHTML(deptShort)}</td>
+                        <td class="p-3">
+                            <span class="inline-block w-2 h-2 rounded-full mr-1.5" style="background: ${styleColor}"></span>
+                            <span class="font-bold" style="color: ${styleColor}">${escapeHTML(styleText)}</span>
+                        </td>
+                        <td class="p-3 font-mono text-[11px] text-blue-400">${coords}</td>
+                    `;
+                    heatmapStudentTableBody.appendChild(tr);
+                });
+            }
+
+            function openHeatmapStudentModal(learner) {
+                if (!heatmapStudentModal || !learner) return;
+
+                const initials = (learner.name || "HV").split(" ").map(n => n[0]).slice(-2).join("").toUpperCase();
+                const socColor = learner.social?.color || "#38bdf8";
+                heatmapModalAvatar.textContent = initials;
+                heatmapModalAvatar.style.background = socColor;
+
+                heatmapModalName.textContent = learner.name || "";
+                heatmapModalInfo.textContent = `${learner.department || "Ban Quản lý"} • ${learner.center || "Cơ sở / Chi nhánh"} (${learner.email || ""})`;
+
+                const soc = learner.social || { icon: "🦉", styleVN: "Phân Tích (Cú Mèo)", color: "#06b6d4", assertiveness: 50, responsiveness: 50, scores: { eagle: 0, peacock: 0, dove: 0, owl: 0 } };
+                const tki = learner.tki || { dominantVN: "Thỏa Hiệp", dominantColor: "#f59e0b", secondaryVN: "Hợp Tác", assertiveness: 50, cooperativeness: 50, rawScores: { competing: 0, collaborating: 0, compromising: 0, avoiding: 0, accommodating: 0 } };
+                const actionCommit = learner.progress?.actionCommitment || { stop: "Chưa cập nhật cam kết", start: "Chưa cập nhật cam kết", continue: "Chưa cập nhật cam kết" };
+                const stations = learner.progress?.stations || [];
+
+                heatmapModalBody.innerHTML = `
+                    <!-- 2 THẺ HỒ SƠ: SOCIAL STYLE & TKI -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-4 rounded-xl bg-brand-card/80 border border-brand-border space-y-2">
+                            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Hồ Sơ Phong Cách Xã Hội</div>
+                            <div class="text-base font-extrabold" style="color: ${soc.color}">
+                                ${soc.icon || "🦉"} ${soc.styleVN || ""}
+                            </div>
+                            <div class="space-y-1 text-slate-300 text-[11px]">
+                                <div>• Tính Khẳng Định: <strong class="text-white">${soc.assertiveness ?? 50}%</strong></div>
+                                <div>• Tính Đáp Ứng: <strong class="text-white">${soc.responsiveness ?? 50}%</strong></div>
+                                <div>• Điểm 4 Phong Cách: Đại Bàng: ${soc.scores?.eagle ?? 0} | Chim Công: ${soc.scores?.peacock ?? 0} | Bồ Câu: ${soc.scores?.dove ?? 0} | Cú Mèo: ${soc.scores?.owl ?? 0}</div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-brand-card/80 border border-brand-border space-y-2">
+                            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Xử Lý Xung Đột TKI</div>
+                            <div class="text-base font-extrabold" style="color: ${tki.dominantColor}">
+                                ⚔️ ${tki.dominantVN || ""}
+                            </div>
+                            <div class="space-y-1 text-slate-300 text-[11px]">
+                                <div>• Tọa độ TKI: Hợp tác: <strong class="text-white">${tki.cooperativeness ?? 50}%</strong> | Quyết đoán: <strong class="text-white">${tki.assertiveness ?? 50}%</strong></div>
+                                <div>• Phong cách phụ: <span class="text-white font-medium">${tki.secondaryVN || ""}</span></div>
+                                <div>• 5 Chế độ: CP: ${tki.rawScores?.competing ?? 0} | CL: ${tki.rawScores?.collaborating ?? 0} | CO: ${tki.rawScores?.compromising ?? 0} | AV: ${tki.rawScores?.avoiding ?? 0} | AC: ${tki.rawScores?.accommodating ?? 0}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CAM KẾT HÀNH ĐỘNG STOP • START • CONTINUE -->
+                    <div class="p-4 rounded-xl bg-blue-950/30 border border-blue-500/30 space-y-2">
+                        <div class="font-bold text-blue-300 text-xs uppercase tracking-wider flex items-center gap-1.5">
+                            <span>🎯 CAM KẾT HÀNH ĐỘNG THỰC CHIẾN (STOP • START • CONTINUE)</span>
+                        </div>
+                        <div class="space-y-1.5 text-slate-200 text-xs">
+                            <div>🛑 <strong class="text-rose-400">STOP (Dừng lại):</strong> ${escapeHTML(actionCommit.stop || "")}</div>
+                            <div>🚀 <strong class="text-emerald-400">START (Bắt đầu):</strong> ${escapeHTML(actionCommit.start || "")}</div>
+                            <div>⭐ <strong class="text-amber-400">CONTINUE (Duy trì):</strong> ${escapeHTML(actionCommit.continue || "")}</div>
+                        </div>
+                    </div>
+
+                    <!-- NHẬT KÝ THU HOẠCH 5 TRẠM (I•A•M) -->
+                    <div class="space-y-3">
+                        <div class="font-bold text-white text-xs uppercase tracking-wider">
+                            NHẬT KÝ THU HOẠCH 5 TRẠM (I•A•M)
+                        </div>
+                        <div class="space-y-2.5">
+                            ${stations.length > 0 ? stations.map(st => `
+                                <div class="p-3 rounded-xl bg-brand-card/50 border border-brand-border space-y-1.5">
+                                    <div class="font-bold text-blue-400 text-xs">${escapeHTML(st.title || "")}</div>
+                                    <div class="space-y-1 text-slate-300 text-[11px]">
+                                        <div>💡 <strong class="text-slate-200">Tâm đắc (I):</strong> ${escapeHTML(st.interested || "")}</div>
+                                        <div>⚡ <strong class="text-slate-200">Hành động (A):</strong> ${escapeHTML(st.actionable || "")}</div>
+                                        <div>🌱 <strong class="text-slate-200">Ý nghĩa (M):</strong> ${escapeHTML(st.meaningful || "")}</div>
+                                    </div>
+                                </div>
+                            `).join("") : '<div class="p-3 text-xs text-slate-500">Chưa có nhật ký thu hoạch trạm nào.</div>'}
+                        </div>
+                    </div>
+                `;
+
+                heatmapStudentModal.classList.remove("hidden");
+            }
+
+            function closeHeatmapStudentModal() {
+                if (heatmapStudentModal) heatmapStudentModal.classList.add("hidden");
+            }
+
+            if (btnCloseHeatmapModal) {
+                btnCloseHeatmapModal.addEventListener("click", closeHeatmapStudentModal);
+            }
+            if (heatmapStudentModal) {
+                heatmapStudentModal.addEventListener("click", (e) => {
+                    if (e.target === heatmapStudentModal) closeHeatmapStudentModal();
+                });
+            }
+
+            function filterHeatmapStation(stationId) {
+                heatmapSelectedStationFilter = stationId;
+                document.querySelectorAll(".heatmap-iam-filter-pill").forEach(btn => {
+                    if (btn.dataset.station === String(stationId)) {
+                        btn.className = "heatmap-iam-filter-pill active px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-amber text-black shadow-sm";
+                    } else {
+                        btn.className = "heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors";
+                    }
+                });
+                renderHeatmapIAMGrid();
+            }
+
+            function renderHeatmapIAMGrid() {
+                const grid = document.getElementById("heatmap-iam-cards-grid");
+                if (!grid) return;
+                grid.innerHTML = "";
+
+                if (heatmapFilteredLearners.length === 0) {
+                    grid.innerHTML = `<div class="col-span-full text-center p-8 text-slate-500">Không tìm thấy bài tập thu hoạch nào phù hợp.</div>`;
+                    return;
+                }
+
+                heatmapFilteredLearners.forEach(l => {
+                    const card = document.createElement("div");
+                    card.className = "p-4 rounded-xl bg-brand-surface border border-brand-border hover:border-brand-amber/50 transition-all cursor-pointer shadow-md space-y-2.5";
+                    card.onclick = () => openHeatmapStudentModal(l);
+
+                    let contentHtml = "";
+                    const st1 = (l.progress?.stations && l.progress.stations[0]) || { title: "Trạm 01 • Nền Tảng", interested: "Chưa nộp" };
+                    const actionCommit = l.progress?.actionCommitment || { stop: "Chưa cập nhật", start: "Chưa cập nhật", continue: "Chưa cập nhật" };
+
+                    if (heatmapSelectedStationFilter === "ALL") {
+                        contentHtml = `
+                            <div class="text-[11px] text-slate-300 space-y-1">
+                                <div class="text-blue-400 font-bold">${escapeHTML(st1.title || "Trạm 1: Nền tảng Hạnh phúc")}</div>
+                                <div>💡 ${escapeHTML(st1.interested || "")}</div>
+                                <div class="pt-1.5 border-t border-brand-border/60">
+                                    🛑 <strong class="text-slate-200">Stop:</strong> ${escapeHTML(actionCommit.stop || "")}
+                                </div>
+                            </div>
+                        `;
+                    } else if (heatmapSelectedStationFilter === "ACTION") {
+                        contentHtml = `
+                            <div class="text-[11px] text-slate-300 space-y-1">
+                                <div>🛑 <strong class="text-rose-400">Stop:</strong> ${escapeHTML(actionCommit.stop || "")}</div>
+                                <div>🚀 <strong class="text-emerald-400">Start:</strong> ${escapeHTML(actionCommit.start || "")}</div>
+                                <div>⭐ <strong class="text-amber-400">Continue:</strong> ${escapeHTML(actionCommit.continue || "")}</div>
+                            </div>
+                        `;
+                    } else {
+                        const stIdx = parseInt(heatmapSelectedStationFilter, 10) - 1;
+                        const st = (l.progress?.stations && l.progress.stations[stIdx]) || st1;
+                        contentHtml = `
+                            <div class="text-[11px] text-slate-300 space-y-1">
+                                <div class="text-blue-400 font-bold">${escapeHTML(st.title || "")}</div>
+                                <div>💡 <strong>Tâm đắc:</strong> ${escapeHTML(st.interested || "")}</div>
+                                <div>⚡ <strong>Hành động:</strong> ${escapeHTML(st.actionable || "")}</div>
+                                <div>🌱 <strong>Ý nghĩa:</strong> ${escapeHTML(st.meaningful || "")}</div>
+                            </div>
+                        `;
+                    }
+
+                    const socColor = l.social?.color || "#38bdf8";
+                    const socStyleVN = l.social?.styleVN || "Chưa phân loại";
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-bold text-white text-xs">${escapeHTML(l.name || "Học viên")}</div>
+                                <div class="text-[10px] text-slate-400">${escapeHTML((l.department || "Ban Quản lý").split('(')[0].trim())}</div>
+                            </div>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold" style="background: rgba(255,255,255,0.08); color: ${socColor}">
+                                ${escapeHTML(socStyleVN.split('(')[0].trim())}
+                            </span>
+                        </div>
+                        ${contentHtml}
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+
+            function renderHeatmapExecutiveReport() {
+                const scopeData = heatmapFilteredLearners;
+                const total = scopeData.length;
+
+                const cohortVal = heatmapFilterCohort ? heatmapFilterCohort.value : "Team happiness Apollo OCT2026";
+                const deptVal = heatmapFilterDept ? heatmapFilterDept.value : "ALL";
+
+                const mainTitle = document.getElementById("heatmap-report-main-title");
+                if (mainTitle) {
+                    if (cohortVal && cohortVal !== "all") {
+                        mainTitle.textContent = `Báo Cáo Phân Tích Đội Ngũ Quản Lý — ${cohortVal}`;
+                    } else {
+                        mainTitle.textContent = `Báo Cáo Phân Tích Đội Ngũ Quản Lý`;
+                    }
+                }
+
+                const scopeBadge = document.getElementById("heatmap-report-scope-badge");
+                if (scopeBadge) {
+                    scopeBadge.textContent = `Quy mô: ${total} Quản lý / Học viên (${deptVal === "ALL" ? "Toàn bộ phòng ban" : deptVal})`;
+                }
+
+                const socEl = document.getElementById("heatmap-report-social-summary");
+                const tkiEl = document.getElementById("heatmap-report-tki-summary");
+
+                if (total === 0) {
+                    if (socEl) {
+                        socEl.innerHTML = `<div class="text-xs text-slate-500 italic p-3">Chưa có dữ liệu trắc nghiệm Social Style phù hợp với bộ lọc hiện tại.</div>`;
+                    }
+                    if (tkiEl) {
+                        tkiEl.innerHTML = `<div class="text-xs text-slate-500 italic p-3">Chưa có dữ liệu trắc nghiệm TKI phù hợp với bộ lọc hiện tại.</div>`;
+                    }
+                    return;
+                }
+
+                const socStats = { Driver: 0, Expressive: 0, Amiable: 0, Analytical: 0 };
+                const tkiStats = { competing: 0, collaborating: 0, compromising: 0, avoiding: 0, accommodating: 0 };
+
+                scopeData.forEach(l => {
+                    const socKey = l.social?.style;
+                    if (socKey && socStats[socKey] !== undefined) socStats[socKey]++;
+                    const tkiKey = l.tki?.dominantMode;
+                    if (tkiKey && tkiStats[tkiKey] !== undefined) tkiStats[tkiKey]++;
+                });
+
+                if (socEl) {
+                    socEl.innerHTML = `
+                        <div>• <strong class="text-rose-400">Tiên Phong (Driver - ${(socStats.Driver * 100 / total).toFixed(1)}% / ${socStats.Driver} người):</strong> Quyết đoán, kiên định, hướng đến kết quả và KPI trung tâm.</div>
+                        <div>• <strong class="text-cyan-400">Phân Tích (Analytical - ${(socStats.Analytical * 100 / total).toFixed(1)}% / ${socStats.Analytical} người):</strong> Chiếm tỷ trọng cao ở khối Học thuật và Vận hành, coi trọng số liệu và quy trình chuẩn.</div>
+                        <div>• <strong class="text-emerald-400">Hòa Nhã (Amiable - ${(socStats.Amiable * 100 / total).toFixed(1)}% / ${socStats.Amiable} người):</strong> Nuôi dưỡng quan hệ, tập trung ở Khối Trải nghiệm khách hàng & Nhân sự.</div>
+                        <div>• <strong class="text-amber-400">Biểu Cảm (Expressive - ${(socStats.Expressive * 100 / total).toFixed(1)}% / ${socStats.Expressive} người):</strong> Tràn đầy năng lượng, hoạt ngôn, truyền cảm hứng tại các cơ sở.</div>
+                    `;
+                }
+
+                if (tkiEl) {
+                    tkiEl.innerHTML = `
+                        <div>• <strong class="text-emerald-400">Hợp Tác (Collaborating - ${(tkiStats.collaborating * 100 / total).toFixed(1)}% / ${tkiStats.collaborating} người):</strong> Sẵn sàng cùng ngồi lại tìm giải pháp Win-Win.</div>
+                        <div>• <strong class="text-amber-400">Thỏa Hiệp (Compromising - ${(tkiStats.compromising * 100 / total).toFixed(1)}% / ${tkiStats.compromising} người):</strong> Phong cách thực tiễn trung tâm, mỗi bên lùi một bước để đạt thỏa thuận.</div>
+                        <div>• <strong class="text-rose-400">Cạnh Tranh (Competing - ${(tkiStats.competing * 100 / total).toFixed(1)}% / ${tkiStats.competing} người):</strong> Quyết liệt bảo vệ mục tiêu kinh doanh của trung tâm.</div>
+                        <div>• <strong class="text-slate-400">Né Tránh (Avoiding - ${(tkiStats.avoiding * 100 / total).toFixed(1)}% / ${tkiStats.avoiding} người):</strong> Trì hoãn khi có bất đồng nhạy cảm giữa các bộ phận.</div>
+                        <div>• <strong class="text-indigo-400">Nhượng Bộ (Accommodating - ${(tkiStats.accommodating * 100 / total).toFixed(1)}% / ${tkiStats.accommodating} người):</strong> Ưu tiên bảo vệ hòa khí trong đội ngũ cơ sở.</div>
+                    `;
+                }
+            }
+
+            function exportHeatmapDataCSV() {
+                const scopeList = heatmapFilteredLearners;
+                if (scopeList.length === 0) {
+                    alert("Không có học viên nào phù hợp với bộ lọc hiện tại để xuất CSV!");
+                    return;
+                }
+
+                const headers = [
+                    "STT", "Họ và Tên", "Email", "Phòng Ban", "Cơ Sở",
+                    "Social Style", "Tính Khẳng Định (%)", "Tính Đáp Ứng (%)",
+                    "TKI Chủ Đạo", "TKI Phụ", "Hợp Tác (%)", "Quyết Đoán (%)",
+                    "Giá Trị Me Value", "Số Trạm Hoàn Thành",
+                    "Cam Kết Stop", "Cam Kết Start", "Cam Kết Continue"
+                ];
+
+                const rows = scopeList.map(l => [
+                    l.stt || 0,
+                    `"${(l.name || '').replace(/"/g, '""')}"`,
+                    l.email || "",
+                    `"${(l.department || '').replace(/"/g, '""')}"`,
+                    `"${(l.center || '').replace(/"/g, '""')}"`,
+                    l.social?.style || "",
+                    l.social?.assertiveness || 0,
+                    l.social?.responsiveness || 0,
+                    l.tki?.dominantMode || "",
+                    l.tki?.secondaryMode || "",
+                    l.tki?.cooperativeness || 0,
+                    l.tki?.assertiveness || 0,
+                    `"${(l.progress?.meValue || '').replace(/"/g, '""')}"`,
+                    l.progress?.completedStations || 5,
+                    `"${(l.progress?.actionCommitment?.stop || '').replace(/"/g, '""')}"`,
+                    `"${(l.progress?.actionCommitment?.start || '').replace(/"/g, '""')}"`,
+                    `"${(l.progress?.actionCommitment?.continue || '').replace(/"/g, '""')}"`
+                ]);
+
+                let csvContent = "\uFEFF" + headers.join(",") + "\n" + rows.map(r => r.join(",")).join("\n");
+                const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `Team_Heatmap_Dataset_${scopeList.length}_Learners_${new Date().toISOString().slice(0, 10)}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+
+            function onHeatmapTabActivated() {
+                mergeLiveRosterIntoHeatmap();
+                populateHeatmapDropdowns();
+                applyHeatmapFilters();
+                setTimeout(() => {
+                    renderHeatmapActiveView();
+                }, 100);
+            }
+
+            // Register Event Listeners for Heatmap
+            if (heatmapFilterCohort) heatmapFilterCohort.addEventListener("change", applyHeatmapFilters);
+            if (heatmapFilterDept) heatmapFilterDept.addEventListener("change", applyHeatmapFilters);
+            if (heatmapFilterCenter) heatmapFilterCenter.addEventListener("change", applyHeatmapFilters);
+            if (heatmapFilterMode) heatmapFilterMode.addEventListener("change", renderHeatmapActiveView);
+            if (heatmapSearchInput) heatmapSearchInput.addEventListener("input", applyHeatmapFilters);
+            if (btnResetHeatmapFilters) btnResetHeatmapFilters.addEventListener("click", resetHeatmapFilters);
+            if (btnExportHeatmapCsv) btnExportHeatmapCsv.addEventListener("click", exportHeatmapDataCSV);
+
+            document.querySelectorAll(".heatmap-subtab-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const st = btn.dataset.subtab;
+                    if (st) switchHeatmapSubtab(st);
+                });
+            });
+
+            document.querySelectorAll(".quadrant-bg-label").forEach(lbl => {
+                lbl.addEventListener("click", () => {
+                    const zone = lbl.dataset.zone;
+                    if (zone) onHeatmapQuadrantClick(zone);
+                });
+            });
+
+            document.querySelectorAll(".heatmap-iam-filter-pill").forEach(pill => {
+                pill.addEventListener("click", () => {
+                    const st = pill.dataset.station;
+                    if (st) filterHeatmapStation(st);
+                });
+            });
+
+            function debounce(fn, ms) {
+                let timer;
+                return function(...args) {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => fn.apply(this, args), ms);
+                };
+            }
+
+            window.addEventListener("resize", debounce(() => {
+                const pane = document.getElementById("pane-apollo-heatmap");
+                if (pane && !pane.classList.contains("hidden")) {
+                    renderHeatmapActiveView();
+                }
+            }, 150));
+
+            // Khởi tạo trước dữ liệu Heatmap ngay khi DOM sẵn sàng
+            initApolloHeatmap(); // Boot immediate
 
             // Run
             checkPinSession();
