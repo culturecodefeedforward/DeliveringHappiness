@@ -2318,7 +2318,7 @@
             <form id="auth-form" class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1.5" for="login-identity">
-                        Email học viên đã đăng ký
+                        <span id="login-identity-label">Email học viên đã đăng ký</span>
                     </label>
                     <input type="email" id="login-identity" required placeholder="Ví dụ: hocvien@gmail.com" class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-amber transition-colors" autocomplete="email" />
                 </div>
@@ -2362,6 +2362,15 @@
                     </button>
                 </div>
 
+                <!-- Nút chuyển đổi nhanh cho Người Mới / Đăng ký học thử Chặng 1 kích hoạt qua Email -->
+                <div id="newcomer-toggle-wrapper" class="pt-2 text-center border-t border-brand-border/40">
+                    <button type="button" id="btn-toggle-newcomer-trial" class="text-xs text-brand-amber hover:text-amber-300 font-semibold transition-colors inline-flex items-center gap-1.5 cursor-pointer py-1 px-2.5 rounded-lg hover:bg-white/5">
+                        <span>🌱</span>
+                        <span>Người mới chưa có tài khoản? Nhận liên kết kích hoạt học thử Chặng 1</span>
+                        <span>➔</span>
+                    </button>
+                </div>
+
                 <!-- Nút xuất hiện khi KHÔNG tìm thấy email trong danh bạ -->
                 <div id="trial-trigger-wrapper" class="hidden pt-1">
                     <button type="button" id="btn-show-trial-lead" class="w-full py-2.5 px-4 rounded-xl bg-amber-500/15 border border-brand-amber/40 hover:bg-amber-500/25 text-brand-amber font-bold text-xs transition-all flex items-center justify-center gap-2">
@@ -2373,7 +2382,7 @@
 
                 <!-- Trial Onboarding Group (for new users not in roster) -->
                 <div id="trial-onboarding-group" class="hidden space-y-3.5 p-4 rounded-2xl bg-brand-card/90 border border-brand-border">
-                    <div class="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs flex items-start gap-2">
+                    <div id="trial-roster-notice" class="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs flex items-start gap-2">
                         <span class="text-base shrink-0">ℹ️</span>
                         <div class="leading-relaxed">
                             Email này chưa có trong danh sách học viên chính thức.
@@ -2404,7 +2413,7 @@
                                 <label class="block text-[11px] font-semibold text-slate-300 mb-1" for="trial-phone">
                                     Số điện thoại (10 chữ số)
                                 </label>
-                                <input type="tel" id="trial-phone" maxlength="11" placeholder="Ví dụ: 0912345678" class="w-full bg-brand-dark border border-brand-border rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-amber transition-colors" />
+                                <input type="tel" id="trial-phone" maxlength="11" inputmode="tel" placeholder="Ví dụ: 0912345678" class="w-full bg-brand-dark border border-brand-border rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-amber transition-colors" />
                             </div>
 
                             <label class="flex items-start gap-2 cursor-pointer pt-1">
@@ -2416,8 +2425,16 @@
 
                             <button type="button" id="btn-request-trial" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber hover:from-orange-600 hover:to-amber-600 text-black font-extrabold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 active:scale-98">
                                 <span id="btn-request-trial-text">Gửi Liên Kết Học Thử Qua Email</span>
-                                <span>➔</span>
+                                <span id="btn-request-trial-arrow">➔</span>
                             </button>
+
+                            <!-- Dòng đếm ngược gửi lại phụ, tách biệt khỏi nút chính -->
+                            <div id="trial-resend-wrapper" class="hidden text-center text-[11px] text-slate-400 pt-1">
+                                <span id="trial-resend-countdown">Chưa nhận được email? Bạn có thể gửi lại sau 60s.</span>
+                                <button type="button" id="btn-resend-trial" class="hidden text-brand-amber font-semibold underline hover:text-amber-300 ml-1">
+                                    Gửi lại liên kết
+                                </button>
+                            </div>
 
                             <div id="trial-status-msg" class="hidden p-2.5 rounded-xl text-center text-xs"></div>
 
@@ -2945,7 +2962,7 @@
                             </div>
                             <div class="text-[10px] text-slate-400 truncate">Ý tưởng nâng cấp tính năng LMS</div>
                         </button>
-                        <button type="button" class="contact-topic-chip p-2.5 rounded-xl bg-brand-card hover:bg-brand-amber/15 border border-brand-border hover:border-brand-amber/40 text-left transition-all text-slate-200 hover:text-brand-amber cursor-pointer" data-topic="inhouse" data-subject="[Hợp tác đào tạo doanh nghiệp]" data-body="Xin chào Culturecode,&#10;&#10;Doanh nghiệp chúng tôi quan tâm đến việc triển khai chương trình Delivering Happiness In-House cho đội ngũ:&#10;- Quy mối nhân sự:&#10;- Mục tiêu kỳ vọng:">
+                        <button type="button" class="contact-topic-chip p-2.5 rounded-xl bg-brand-card hover:bg-brand-amber/15 border border-brand-border hover:border-brand-amber/40 text-left transition-all text-slate-200 hover:text-brand-amber cursor-pointer" data-topic="inhouse" data-subject="[Hợp tác đào tạo doanh nghiệp]" data-body="Xin chào Culturecode,&#10;&#10;Doanh nghiệp chúng tôi quan tâm đến việc triển khai chương trình Delivering Happiness In-House cho đội ngũ:&#10;- Quy mô nhân sự:&#10;- Mục tiêu kỳ vọng:">
                             <div class="font-bold text-[11px] text-sky-400 flex items-center gap-1.5">
                                 <span>🤝</span> Hợp tác doanh nghiệp
                             </div>

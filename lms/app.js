@@ -532,6 +532,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const detectedUserCohort = document.getElementById("detected-user-cohort");
 
     // Hybrid Trial Auth Elements
+    const loginIdentityLabel = document.getElementById("login-identity-label");
     const trialOnboardingGroup = document.getElementById("trial-onboarding-group");
     const trialRosterNotice = document.getElementById("trial-roster-notice");
     const trialNameInput = document.getElementById("trial-name");
@@ -545,6 +546,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnResendTrial = document.getElementById("btn-resend-trial");
     const trialStatusMsg = document.getElementById("trial-status-msg");
     const submitAuthWrapper = document.getElementById("submit-auth-wrapper");
+    const newcomerToggleWrapper = document.getElementById("newcomer-toggle-wrapper");
+    const btnToggleNewcomerTrial = document.getElementById("btn-toggle-newcomer-trial");
     const trialTriggerWrapper = document.getElementById("trial-trigger-wrapper");
     const btnShowTrialLead = document.getElementById("btn-show-trial-lead");
     const btnBackToLogin = document.getElementById("btn-back-to-login");
@@ -623,6 +626,35 @@ document.addEventListener("DOMContentLoaded", () => {
             } catch (e) {
                 console.warn("Error saving approved trial email:", e);
             }
+        }
+    }
+
+    function saveTrialUserProfile(email, name, phone) {
+        if (!email) return;
+        const clean = String(email).trim().toLowerCase();
+        try {
+            const raw = localStorage.getItem("dhm_lms_trial_profiles");
+            const profiles = raw ? JSON.parse(raw) : {};
+            profiles[clean] = {
+                name: name || clean.split("@")[0],
+                phone: phone || "",
+                updatedAt: new Date().toISOString()
+            };
+            localStorage.setItem("dhm_lms_trial_profiles", JSON.stringify(profiles));
+        } catch (e) {
+            console.warn("Error saving trial user profile:", e);
+        }
+    }
+
+    function getTrialUserProfile(email) {
+        if (!email) return {};
+        const clean = String(email).trim().toLowerCase();
+        try {
+            const raw = localStorage.getItem("dhm_lms_trial_profiles");
+            const profiles = raw ? JSON.parse(raw) : {};
+            return profiles[clean] || {};
+        } catch (e) {
+            return {};
         }
     }
 
@@ -746,17 +778,78 @@ document.addEventListener("DOMContentLoaded", () => {
         if (authUserDetected) authUserDetected.classList.add("hidden");
         if (passwordGroup) passwordGroup.classList.remove("hidden");
         if (loginPasswordInput) {
-            loginPasswordInput.setAttribute("required", "true");
+            loginPasswordInput.removeAttribute("required");
+            loginPasswordInput.value = "";
             loginPasswordInput.placeholder = "Nhập 4 số cuối Số điện thoại của bạn";
         }
+        if (loginIdentityLabel) loginIdentityLabel.textContent = "Email học viên đã đăng ký";
         if (phoneOnboardingGroup) phoneOnboardingGroup.classList.add("hidden");
         if (onboardingPhoneInput) onboardingPhoneInput.removeAttribute("required");
         if (trialTriggerWrapper) trialTriggerWrapper.classList.add("hidden");
         if (trialOnboardingGroup) trialOnboardingGroup.classList.add("hidden");
-        if (trialRosterNotice) trialRosterNotice.classList.remove("hidden");
+        if (trialRosterNotice) trialRosterNotice.classList.add("hidden");
+        if (trialNameInput && trialNameInput.dataset.autoFilled === "true") {
+            trialNameInput.value = "";
+        }
+        if (trialStatusMsg) {
+            trialStatusMsg.classList.add("hidden");
+            trialStatusMsg.textContent = "";
+        }
         if (typeof resetTrialButtonState === "function") resetTrialButtonState();
         if (submitAuthWrapper) submitAuthWrapper.classList.remove("hidden");
+        if (newcomerToggleWrapper) newcomerToggleWrapper.classList.remove("hidden");
         if (btnSubmitText) btnSubmitText.textContent = "Vào Học Ngay";
+
+        const currentVal = (loginIdentityInput.value || "").trim();
+        if (currentVal.includes("@") && currentVal.length >= 6) {
+            const found = findLearner(currentVal);
+            if (found) {
+                updateAuthModeForLearner(found);
+            }
+        }
+    }
+
+    function showTrialOnboardingView(rawEmail, fromFailedLogin = false) {
+        if (authErrorBanner) authErrorBanner.classList.add("hidden");
+        if (authUserDetected) authUserDetected.classList.add("hidden");
+        if (passwordGroup) passwordGroup.classList.add("hidden");
+        if (loginPasswordInput) loginPasswordInput.removeAttribute("required");
+        if (phoneOnboardingGroup) phoneOnboardingGroup.classList.add("hidden");
+        if (submitAuthWrapper) submitAuthWrapper.classList.add("hidden");
+        if (newcomerToggleWrapper) newcomerToggleWrapper.classList.add("hidden");
+        if (trialTriggerWrapper) trialTriggerWrapper.classList.add("hidden");
+
+        if (loginIdentityLabel) loginIdentityLabel.textContent = "Email nhận liên kết kích hoạt học thử";
+
+        if (trialOnboardingGroup) {
+            trialOnboardingGroup.classList.remove("hidden");
+            if (trialRosterNotice) {
+                if (fromFailedLogin) {
+                    trialRosterNotice.classList.remove("hidden");
+                } else {
+                    trialRosterNotice.classList.add("hidden");
+                }
+            }
+            if (typeof resetTrialButtonState === "function") resetTrialButtonState();
+
+            const email = (rawEmail || loginIdentityInput.value || "").trim();
+            if (email) {
+                loginIdentityInput.value = email;
+                if (trialNameInput && (!trialNameInput.value || trialNameInput.dataset.autoFilled === "true")) {
+                    if (email.includes("@")) {
+                        trialNameInput.value = email.split("@")[0];
+                        trialNameInput.dataset.autoFilled = "true";
+                    }
+                }
+                if (trialPhoneInput) {
+                    trialPhoneInput.focus();
+                } else if (trialNameInput) {
+                    trialNameInput.focus();
+                }
+            } else {
+                loginIdentityInput.focus();
+            }
+        }
     }
 
     function updateAuthModeForLearner(learner) {
@@ -766,8 +859,13 @@ document.addEventListener("DOMContentLoaded", () => {
             if (passwordGroup) passwordGroup.classList.remove("hidden");
             if (phoneOnboardingGroup) phoneOnboardingGroup.classList.add("hidden");
             if (submitAuthWrapper) submitAuthWrapper.classList.remove("hidden");
+            if (newcomerToggleWrapper) newcomerToggleWrapper.classList.remove("hidden");
             if (btnSubmitText) btnSubmitText.textContent = "Vào Học Ngay";
-            if (loginPasswordInput) loginPasswordInput.placeholder = "Nhập 4 số cuối Số điện thoại hoặc Mật khẩu";
+            if (loginPasswordInput) {
+                loginPasswordInput.removeAttribute("required");
+                loginPasswordInput.placeholder = "Nhập 4 số cuối Số điện thoại hoặc để trống nếu là người mới";
+            }
+            if (loginIdentityLabel) loginIdentityLabel.textContent = "Email học viên đã đăng ký";
             return;
         }
 
@@ -775,6 +873,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (trialTriggerWrapper) trialTriggerWrapper.classList.add("hidden");
         if (trialOnboardingGroup) trialOnboardingGroup.classList.add("hidden");
         if (submitAuthWrapper) submitAuthWrapper.classList.remove("hidden");
+        if (newcomerToggleWrapper) newcomerToggleWrapper.classList.remove("hidden");
+        if (loginIdentityLabel) loginIdentityLabel.textContent = "Email học viên đã đăng ký";
         if (authUserDetected) {
             authUserDetected.classList.remove("hidden");
             if (detectedUserName) detectedUserName.textContent = learner.name || learner.email;
@@ -793,7 +893,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             if (passwordGroup) passwordGroup.classList.remove("hidden");
             if (loginPasswordInput) {
-                loginPasswordInput.setAttribute("required", "true");
+                loginPasswordInput.removeAttribute("required");
                 if (learner.force_pwd_change) {
                     loginPasswordInput.placeholder = "Nhập mật khẩu khởi tạo của bạn";
                 } else if (learner.password_hash || learner.default_pwd) {
@@ -5650,6 +5750,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // 14. AUTH FORM SUBMIT
     authForm.addEventListener("submit", async (e) => {
         e.preventDefault();
+
+        // NẾU ĐANG Ở GIAO DIỆN HỌC THỬ / NGƯỜI MỚI -> DELEGATE SANG NÚT GỬI LIÊN KẾT HỌC THỬ
+        if (trialOnboardingGroup && !trialOnboardingGroup.classList.contains("hidden")) {
+            if (btnRequestTrial) {
+                btnRequestTrial.click();
+            }
+            return;
+        }
+
         if (authErrorBanner) authErrorBanner.classList.add("hidden");
         if (trialTriggerWrapper) trialTriggerWrapper.classList.add("hidden");
         if (trialOnboardingGroup) trialOnboardingGroup.classList.add("hidden");
@@ -5664,12 +5773,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // NHẬN DIỆN HỌC VIÊN TRẢI NGHIỆM ĐÃ ĐƯỢC PHÊ DUYỆT / ĐĂNG KÝ
         if (!learner && isTrialAccount(rawIdentity)) {
+            const profile = getTrialUserProfile(rawIdentity);
             currentUser = {
-                learner_id: "TRIAL-" + Date.now().toString(36).toUpperCase(),
-                name: rawIdentity.split("@")[0],
+                learner_id: profile.learner_id || ("TRIAL-" + Date.now().toString(36).toUpperCase()),
+                name: profile.name || rawIdentity.split("@")[0],
                 email: rawIdentity.toLowerCase(),
-                phone: "",
-                phone_last4: "",
+                phone: profile.phone || "",
+                phone_last4: profile.phone ? profile.phone.slice(-4) : "",
                 cohort: "Học viên Trải nghiệm",
                 role: "trial",
                 isTrial: true
@@ -5681,45 +5791,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // TRƯỜNG HỢP 1: KHÔNG TÌM THẤY EMAIL TRONG DANH BẠ HỌC VIÊN CHÍNH THỨC
+        // -> Tự động kích hoạt form Đăng ký & Nhận liên kết học thử Chặng 1 cho Người mới (kèm notice từ failed login)
         if (!learner) {
-            authErrorTitle.textContent = "Email chưa có trong danh sách học viên chính thức";
-            authErrorDesc.innerHTML = `
-                Email <strong>${escapeHtml(rawIdentity)}</strong> chưa nằm trong danh sách học viên chính thức khóa học.<br/>
-                <div class="mt-2.5 pt-2 border-t border-red-500/20 flex flex-col gap-2">
-                    <button type="button" id="btn-quick-trial-login" class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-green hover:underline text-left cursor-pointer">
-                        <span>🌱</span> <span>Bạn đã đăng ký học thử? Bấm vào đây để vào học Chặng 1 ngay</span>
-                    </button>
-                    <a href="mailto:culturecodeproject@gmail.com" class="text-brand-amber font-semibold text-xs underline hover:text-amber-300">
-                        Đã đăng ký chính thức? Email cho culturecodeproject@gmail.com
-                    </a>
-                </div>
-            `;
-            authErrorBanner.classList.remove("hidden");
-
-            const btnQuickTrial = document.getElementById("btn-quick-trial-login");
-            if (btnQuickTrial) {
-                btnQuickTrial.addEventListener("click", () => {
-                    saveApprovedTrialEmail(rawIdentity);
-                    currentUser = {
-                        learner_id: "TRIAL-" + Date.now().toString(36).toUpperCase(),
-                        name: rawIdentity.split("@")[0],
-                        email: rawIdentity.toLowerCase(),
-                        phone: "",
-                        phone_last4: "",
-                        cohort: "Học viên Trải nghiệm",
-                        role: "trial",
-                        isTrial: true
-                    };
-                    localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
-                    hideAuthModal();
-                    applyUserSession();
-                });
-            }
-
-            // MỚI XUẤT HIỆN nút "Để lại quan tâm và đăng ký trải nghiệm"
-            if (trialTriggerWrapper) {
-                trialTriggerWrapper.classList.remove("hidden");
-            }
+            showTrialOnboardingView(rawIdentity, true);
             return;
         }
 
@@ -5765,7 +5839,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // TRƯỜNG HỢP 3: HỌC VIÊN CHÍNH THỨC -> XÁC THỰC MẬT KHẨU
-        const inputPassword = loginPasswordInput.value;
+        const inputPassword = (loginPasswordInput.value || "").trim();
+        if (!inputPassword) {
+            authErrorTitle.textContent = "Vui lòng nhập mật khẩu";
+            if (learner.force_pwd_change) {
+                authErrorDesc.textContent = "Mật khẩu khởi tạo không đúng hoặc chưa nhập. Vui lòng kiểm tra lại.";
+            } else if (learner.password_hash || learner.default_pwd) {
+                authErrorDesc.textContent = "Mật khẩu truy cập không đúng hoặc chưa nhập. Vui lòng kiểm tra lại.";
+            } else {
+                authErrorDesc.textContent = "Mật khẩu là 4 số cuối của Số điện thoại đã đăng ký. Vui lòng nhập mật khẩu.";
+            }
+            authErrorBanner.classList.remove("hidden");
+            loginPasswordInput.focus();
+            return;
+        }
+
         const authResult = await verifyPassword(learner, inputPassword);
         if (!authResult.valid) {
             authErrorTitle.textContent = "Mật khẩu không chính xác";
@@ -5793,20 +5881,17 @@ document.addEventListener("DOMContentLoaded", () => {
         applyUserSession();
     });
 
+    // Nút chuyển sang form đăng ký học thử cho Người Mới
+    if (btnToggleNewcomerTrial) {
+        btnToggleNewcomerTrial.addEventListener("click", () => {
+            showTrialOnboardingView(loginIdentityInput.value, false);
+        });
+    }
+
     // Khi người dùng bấm nút: "Để lại quan tâm và đăng ký trải nghiệm"
     if (btnShowTrialLead) {
         btnShowTrialLead.addEventListener("click", () => {
-            if (trialTriggerWrapper) trialTriggerWrapper.classList.add("hidden");
-            if (passwordGroup) passwordGroup.classList.add("hidden");
-            if (submitAuthWrapper) submitAuthWrapper.classList.add("hidden");
-            if (trialOnboardingGroup) {
-                trialOnboardingGroup.classList.remove("hidden");
-                if (trialRosterNotice) trialRosterNotice.classList.remove("hidden");
-                if (typeof resetTrialButtonState === "function") resetTrialButtonState();
-                if (trialNameInput) {
-                    trialNameInput.focus();
-                }
-            }
+            showTrialOnboardingView(loginIdentityInput.value, true);
         });
     }
 
@@ -5818,12 +5903,33 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    if (trialNameInput) {
+        trialNameInput.addEventListener("input", () => {
+            trialNameInput.dataset.autoFilled = "false";
+        });
+    }
+
     loginIdentityInput.addEventListener("input", () => {
         const val = loginIdentityInput.value.trim();
+
+        // NẾU ĐANG Ở GIAO DIỆN HỌC THỬ (TRIAL ONBOARDING GROUP ĐANG MỞ):
+        // Tuyệt đối không tự ý ẩn form học thử hay bung lại ô mật khẩu khi người dùng đang gõ email!
+        if (trialOnboardingGroup && !trialOnboardingGroup.classList.contains("hidden")) {
+            if (trialNameInput && (!trialNameInput.value || trialNameInput.dataset.autoFilled === "true")) {
+                if (val.includes("@")) {
+                    trialNameInput.value = val.split("@")[0];
+                    trialNameInput.dataset.autoFilled = "true";
+                }
+            }
+            return;
+        }
+
         // Giữ ô mật khẩu và nút submit luôn hiển thị, ẩn lỗi cũ nếu có
         if (authErrorBanner) authErrorBanner.classList.add("hidden");
         if (trialTriggerWrapper) trialTriggerWrapper.classList.add("hidden");
         if (trialOnboardingGroup) trialOnboardingGroup.classList.add("hidden");
+        if (newcomerToggleWrapper) newcomerToggleWrapper.classList.remove("hidden");
+        if (loginIdentityLabel) loginIdentityLabel.textContent = "Email học viên đã đăng ký";
 
         if (val.includes("@") && val.length >= 6) {
             const found = findLearner(val);
@@ -5846,10 +5952,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (passwordGroup) passwordGroup.classList.remove("hidden");
                 if (submitAuthWrapper) submitAuthWrapper.classList.remove("hidden");
                 if (loginPasswordInput) {
-                    loginPasswordInput.placeholder = "Nhập 4 số cuối Số điện thoại của bạn";
-                    loginPasswordInput.setAttribute("required", "true");
+                    loginPasswordInput.placeholder = "Nhập 4 số cuối SĐT (hoặc để trống nếu đăng ký mới)";
+                    loginPasswordInput.removeAttribute("required");
                 }
-                if (btnSubmitText) btnSubmitText.textContent = "Vào Học Ngay";
+                if (btnSubmitText) btnSubmitText.textContent = "Vào Học / Đăng Ký";
             }
         } else {
             if (authUserDetected) authUserDetected.classList.add("hidden");
@@ -5857,7 +5963,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (submitAuthWrapper) submitAuthWrapper.classList.remove("hidden");
             if (loginPasswordInput) {
                 loginPasswordInput.placeholder = "Nhập 4 số cuối Số điện thoại của bạn";
-                loginPasswordInput.setAttribute("required", "true");
+                loginPasswordInput.removeAttribute("required");
             }
             if (btnSubmitText) btnSubmitText.textContent = "Vào Học Ngay";
         }
@@ -6284,6 +6390,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (data && data.success) {
                     saveApprovedTrialEmail(email);
+                    saveTrialUserProfile(email, fullName, cleanPhone);
                     // Ẩn khối cảnh báo vàng "Email này chưa có trong danh sách..." để người dùng không tưởng nhầm là lỗi
                     if (trialRosterNotice) trialRosterNotice.classList.add("hidden");
 
@@ -6305,6 +6412,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     startTrialCooldown(60);
                 } else if (data && data.error === "RATE_LIMIT_EXCEEDED") {
                     saveApprovedTrialEmail(email);
+                    saveTrialUserProfile(email, fullName, cleanPhone);
                     const waitSec = data.retry_after_seconds || 60;
                     if (trialStatusMsg) {
                         trialStatusMsg.className = "p-2.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs text-left";
@@ -6324,6 +6432,7 @@ document.addEventListener("DOMContentLoaded", () => {
             } catch (err) {
                 console.warn("Request trial error:", err);
                 saveApprovedTrialEmail(email);
+                saveTrialUserProfile(email, fullName, cleanPhone);
                 if (trialRosterNotice) trialRosterNotice.classList.add("hidden");
                 if (trialStatusMsg) {
                     trialStatusMsg.className = "p-3.5 rounded-xl bg-brand-green/15 border border-brand-green/30 text-brand-green text-xs leading-relaxed space-y-2 text-left";
