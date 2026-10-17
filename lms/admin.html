@@ -144,10 +144,54 @@
         .student-dot circle {
             transition: r 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), stroke-width 0.18s ease, filter 0.18s ease;
         }
-        .student-dot:hover circle {
+        .student-dot:hover circle, .student-dot.highlighted circle {
             r: 9;
             stroke-width: 2.5;
             filter: drop-shadow(0 0 8px currentColor);
+        }
+
+        /* Toast Notification tinh gọn thay thế alert() */
+        #admin-toast-container {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            pointer-events: none;
+            max-width: 90vw;
+        }
+        .admin-toast {
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #ffffff;
+            background: #1e293b;
+            border: 1px solid #334155;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.75);
+            transition: all 0.25s ease;
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: auto;
+            line-height: 1.4;
+        }
+        .admin-toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .admin-toast.success { border-color: #10b981; color: #34d399; }
+        .admin-toast.info { border-color: #f59e0b; color: #fbbf24; }
+        .admin-toast.error { border-color: #f43f5e; color: #fb7185; }
+
+        /* Hỗ trợ cuộn ngang mượt mà trên Mobile không hiện thanh cuộn xấu */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
         #heatmap-tooltip {
             position: absolute;
@@ -259,24 +303,24 @@
 
         <!-- TAB NAVIGATION SWITCHER -->
         <div class="border-b border-brand-border pb-4">
-            <div class="flex items-center gap-2 flex-wrap">
-                <button id="tab-btn-test-analytics" class="tab-btn active px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-amber text-black shadow-lg" data-pane="pane-test-analytics">
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar flex-nowrap pb-1 sm:pb-0 sm:flex-wrap">
+                <button id="tab-btn-test-analytics" class="tab-btn active px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-amber text-black shadow-lg shrink-0 whitespace-nowrap" data-pane="pane-test-analytics">
                     <span>🎯 Đo Lường Bài Test</span>
                     <span id="badge-tested-learners-count" class="px-2 py-0.5 rounded-full bg-black/20 text-black font-mono text-[11px]">0</span>
                 </button>
-                <button id="tab-btn-iam-stations" class="tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent" data-pane="pane-iam-stations">
+                <button id="tab-btn-iam-stations" class="tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent shrink-0 whitespace-nowrap" data-pane="pane-iam-stations">
                     <span>🏆 Thu Hoạch 5 Trạm I•A•M</span>
                     <span id="badge-iam-learners-count" class="px-2 py-0.5 rounded-full bg-brand-surface text-slate-300 font-mono text-[11px]">0</span>
                 </button>
-                <button id="tab-btn-blended-journey" class="tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent" data-pane="pane-blended-journey">
+                <button id="tab-btn-blended-journey" class="tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent shrink-0 whitespace-nowrap" data-pane="pane-blended-journey">
                     <span>🔄 Hành Trình Blended 360°</span>
                     <span id="badge-blended-learners-count" class="px-2 py-0.5 rounded-full bg-brand-surface text-slate-300 font-mono text-[11px]">0</span>
                 </button>
-                <button id="tab-btn-general-progress" class="tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent" data-pane="pane-general-progress">
+                <button id="tab-btn-general-progress" class="tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent shrink-0 whitespace-nowrap" data-pane="pane-general-progress">
                     <span>📊 Báo Cáo & Xuất CSV</span>
                     <span id="badge-total-registered-count" class="px-2 py-0.5 rounded-full bg-brand-surface text-slate-300 font-mono text-[11px]">0</span>
                 </button>
-            <button id="tab-btn-apollo-heatmap" class="tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent" data-pane="pane-apollo-heatmap">
+                <button id="tab-btn-apollo-heatmap" class="tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent shrink-0 whitespace-nowrap" data-pane="pane-apollo-heatmap">
                     <span>🗺️ Bản Đồ Nhiệt Tọa Độ Đội Ngũ</span>
                     <span id="badge-heatmap-learners-count" class="px-2 py-0.5 rounded-full bg-brand-surface text-slate-300 font-mono text-[11px]">97 HV</span>
                 </button>
@@ -973,63 +1017,63 @@
 
             <!-- SUB-TAB SWITCHER (SOCIAL / TKI / IAM / REPORT) -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-brand-surface p-3.5 rounded-2xl border border-brand-border">
-                <div class="flex items-center gap-2 flex-wrap">
-                    <button type="button" class="heatmap-subtab-btn active px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-brand-card text-brand-amber border border-brand-amber/40 shadow-sm" data-subtab="social">
+                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar flex-nowrap pb-1 sm:pb-0 sm:flex-wrap">
+                    <button type="button" class="heatmap-subtab-btn active px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-brand-card text-brand-amber border border-brand-amber/40 shadow-sm shrink-0 whitespace-nowrap" data-subtab="social">
                         <span>🦚 Ma Trận Social Style</span>
                     </button>
-                    <button type="button" class="heatmap-subtab-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-brand-card/60 transition-all border border-transparent" data-subtab="tki">
+                    <button type="button" class="heatmap-subtab-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-brand-card/60 transition-all border border-transparent shrink-0 whitespace-nowrap" data-subtab="tki">
                         <span>⚔️ Ma Trận TKI (5 Phong Cách)</span>
                     </button>
-                    <button type="button" class="heatmap-subtab-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-brand-card/60 transition-all border border-transparent" data-subtab="iam">
+                    <button type="button" class="heatmap-subtab-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-brand-card/60 transition-all border border-transparent shrink-0 whitespace-nowrap" data-subtab="iam">
                         <span>📋 Thu Hoạch 5 Trạm & I•A•M</span>
                     </button>
-                    <button type="button" class="heatmap-subtab-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-brand-card/60 transition-all border border-transparent" data-subtab="report">
+                    <button type="button" class="heatmap-subtab-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-brand-card/60 transition-all border border-transparent shrink-0 whitespace-nowrap" data-subtab="report">
                         <span>📈 Báo Cáo Đội Ngũ</span>
                     </button>
                 </div>
-                <div class="flex items-center gap-2.5">
-                    <button type="button" id="btn-export-heatmap-csv" class="px-3.5 py-2 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 text-xs font-semibold border border-blue-500/30 transition-all flex items-center gap-1.5 shadow-sm" title="Xuất toàn bộ tọa độ và hồ sơ học viên đang lọc ra file CSV">
+                <div class="flex items-center gap-2.5 shrink-0">
+                    <button type="button" id="btn-export-heatmap-csv" class="w-full sm:w-auto justify-center px-3.5 py-2 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 text-xs font-semibold border border-blue-500/30 transition-all flex items-center gap-1.5 shadow-sm" title="Xuất toàn bộ tọa độ và hồ sơ học viên đang lọc ra file CSV">
                         <span>📥 Xuất CSV Heatmap</span>
                     </button>
                 </div>
             </div>
 
             <!-- FILTER TOOLBAR -->
-            <div class="p-4 rounded-2xl bg-brand-surface border border-brand-border flex flex-wrap items-center justify-between gap-4">
-                <div class="flex items-center gap-3 flex-wrap">
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Khóa học / Lớp:</span>
-                        <select id="heatmap-filter-cohort" class="bg-brand-card border border-brand-border text-white text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-brand-amber min-w-[200px]">
+            <div class="p-4 rounded-2xl bg-brand-surface border border-brand-border flex flex-col sm:flex-row flex-wrap items-start sm:items-center justify-between gap-4">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto flex-wrap">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 w-full sm:w-auto">
+                        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider shrink-0">Khóa học / Lớp:</span>
+                        <select id="heatmap-filter-cohort" class="w-full sm:w-auto bg-brand-card border border-brand-border text-white text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-brand-amber sm:min-w-[200px]">
                             <option value="Team happiness Apollo OCT2026">Team happiness Apollo OCT2026 (97 HV)</option>
                             <option value="all">Tất cả Nhóm đối tượng</option>
                         </select>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Phòng ban:</span>
-                        <select id="heatmap-filter-dept" class="bg-brand-card border border-brand-border text-white text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-brand-amber">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 w-full sm:w-auto">
+                        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider shrink-0">Phòng ban:</span>
+                        <select id="heatmap-filter-dept" class="w-full sm:w-auto bg-brand-card border border-brand-border text-white text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-brand-amber">
                             <option value="ALL">Tất cả phòng ban</option>
                         </select>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Cơ sở:</span>
-                        <select id="heatmap-filter-center" class="bg-brand-card border border-brand-border text-white text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-brand-amber">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 w-full sm:w-auto">
+                        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider shrink-0">Cơ sở:</span>
+                        <select id="heatmap-filter-center" class="w-full sm:w-auto bg-brand-card border border-brand-border text-white text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-brand-amber">
                             <option value="ALL">Tất cả cơ sở</option>
                         </select>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Hiển thị:</span>
-                        <select id="heatmap-filter-mode" class="bg-brand-card border border-brand-border text-white text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-brand-amber">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 w-full sm:w-auto">
+                        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider shrink-0">Hiển thị:</span>
+                        <select id="heatmap-filter-mode" class="w-full sm:w-auto bg-brand-card border border-brand-border text-white text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-brand-amber">
                             <option value="COMBINED">Vầng Nhiệt + Điểm Tọa Độ</option>
                             <option value="HEATMAP">Chỉ Vầng Nhiệt Mật Độ</option>
                             <option value="DOTS">Chỉ Điểm Chấm Tọa Độ</option>
                         </select>
                     </div>
                 </div>
-                <div class="flex items-center gap-3 flex-wrap">
-                    <div class="relative">
-                        <input type="text" id="heatmap-search-input" placeholder="🔍 Tìm tên, email, cơ sở..." class="bg-brand-card border border-brand-border text-white text-xs rounded-xl px-3.5 py-2 focus:outline-none focus:border-brand-amber min-w-[220px]" />
+                <div class="flex items-center gap-3 w-full sm:w-auto flex-wrap">
+                    <div class="relative w-full sm:w-auto">
+                        <input type="text" id="heatmap-search-input" placeholder="🔍 Tìm tên, email, cơ sở..." class="w-full sm:w-auto bg-brand-card border border-brand-border text-white text-xs rounded-xl px-3.5 py-2 focus:outline-none focus:border-brand-amber sm:min-w-[220px]" />
                     </div>
-                    <button type="button" id="btn-reset-heatmap-filters" class="px-3.5 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-300 text-xs font-semibold border border-brand-border transition-colors" title="Đặt lại toàn bộ bộ lọc về mặc định">
+                    <button type="button" id="btn-reset-heatmap-filters" class="w-full sm:w-auto justify-center px-3.5 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-300 text-xs font-semibold border border-brand-border transition-colors flex items-center gap-1" title="Đặt lại toàn bộ bộ lọc về mặc định">
                         ↺ Đặt lại
                     </button>
                 </div>
@@ -4569,7 +4613,17 @@
 
                     const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
                     g.setAttribute("class", "student-dot");
+                    g.setAttribute("data-learner-id", l.id || "");
                     g.style.color = color;
+
+                    // Vòng cảm ứng trong suốt (Hit Target) tối ưu cho ngón tay trên mobile
+                    const hitCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                    hitCircle.setAttribute("cx", px);
+                    hitCircle.setAttribute("cy", py);
+                    hitCircle.setAttribute("r", "16");
+                    hitCircle.setAttribute("fill", "transparent");
+                    hitCircle.setAttribute("cursor", "pointer");
+                    g.appendChild(hitCircle);
 
                     const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
                     circle.setAttribute("cx", px);
@@ -4617,6 +4671,13 @@
                         openHeatmapStudentModal(l);
                     });
 
+                    g.addEventListener("touchend", (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (heatmapTooltip) heatmapTooltip.style.display = "none";
+                        openHeatmapStudentModal(l);
+                    });
+
                     heatmapSvg.appendChild(g);
                 });
             }
@@ -4627,8 +4688,10 @@
                 let left = e.clientX - cRect.left + 15;
                 let top = e.clientY - cRect.top + 15;
 
-                if (left + 230 > cRect.width) left = left - 240;
-                if (top + 130 > cRect.height) top = top - 135;
+                if (left + 240 > cRect.width) left = left - 250;
+                if (top + 140 > cRect.height) top = top - 145;
+                if (left < 10) left = 10;
+                if (top < 10) top = 10;
 
                 tooltip.style.left = left + "px";
                 tooltip.style.top = top + "px";
@@ -4651,6 +4714,16 @@
                     const tr = document.createElement("tr");
                     tr.className = "hover:bg-brand-card/50 cursor-pointer transition-colors";
                     tr.onclick = () => openHeatmapStudentModal(l);
+
+                    // Liên kết hover dòng bảng với điểm chấm tọa độ trên bản đồ SVG
+                    tr.onmouseenter = () => {
+                        const dot = document.querySelector(`.student-dot[data-learner-id="${l.id}"]`);
+                        if (dot) dot.classList.add("highlighted");
+                    };
+                    tr.onmouseleave = () => {
+                        const dot = document.querySelector(`.student-dot[data-learner-id="${l.id}"]`);
+                        if (dot) dot.classList.remove("highlighted");
+                    };
 
                     const styleText = heatmapActiveSubtab === "social" ? (l.social?.styleVN || "Phân Tích") : (l.tki?.dominantVN || "Thỏa Hiệp");
                     const styleColor = heatmapActiveSubtab === "social" ? (l.social?.color || "#38bdf8") : (l.tki?.dominantColor || "#f59e0b");
@@ -4753,10 +4826,14 @@
                 `;
 
                 heatmapStudentModal.classList.remove("hidden");
+                document.body.classList.add("overflow-hidden");
             }
 
             function closeHeatmapStudentModal() {
-                if (heatmapStudentModal) heatmapStudentModal.classList.add("hidden");
+                if (heatmapStudentModal) {
+                    heatmapStudentModal.classList.add("hidden");
+                    document.body.classList.remove("overflow-hidden");
+                }
             }
 
             if (btnCloseHeatmapModal) {
@@ -5013,6 +5090,83 @@
                     renderHeatmapActiveView();
                 }
             }, 150));
+
+            // =========================================================================
+            // CHUẨN HÓA ĐÓNG MỞ MODAL & PHÍM TẮT ESCAPE TOÀN CỤC (GLOBAL MODAL HANDLERS)
+            // =========================================================================
+            const allAdminContentModals = [
+                document.getElementById('test-detail-modal'),
+                document.getElementById('detail-modal'),
+                document.getElementById('iam-detail-modal'),
+                document.getElementById('heatmap-student-modal')
+            ];
+
+            function closeAnyOpenModal() {
+                let closed = false;
+                allAdminContentModals.forEach(m => {
+                    if (m && !m.classList.contains('hidden')) {
+                        m.classList.add('hidden');
+                        closed = true;
+                    }
+                });
+                document.body.classList.remove('overflow-hidden');
+                return closed;
+            }
+
+            // Bắt sự kiện phím Escape (ESC) toàn cục đóng modal
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' || e.key === 'Esc') {
+                    closeAnyOpenModal();
+                }
+            });
+
+            // Bổ sung sự kiện đóng khi nhấp backdrop bên ngoài cho tất cả modal
+            allAdminContentModals.forEach(modal => {
+                if (modal) {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            modal.classList.add('hidden');
+                            document.body.classList.remove('overflow-hidden');
+                        }
+                    });
+                }
+            });
+
+            // =========================================================================
+            // HỆ THỐNG TOAST NOTIFICATION TINH GỌN THAY THẾ ALERT NATIVE
+            // =========================================================================
+            window.showAdminToast = function(message, type = 'info') {
+                let container = document.getElementById('admin-toast-container');
+                if (!container) {
+                    container = document.createElement('div');
+                    container.id = 'admin-toast-container';
+                    document.body.appendChild(container);
+                }
+                const toast = document.createElement('div');
+                toast.className = `admin-toast ${type}`;
+                const lines = String(message || '').split('\n').filter(Boolean);
+                if (lines.length > 1) {
+                    toast.innerHTML = lines.map(line => `<div>${escapeHTML(line)}</div>`).join('');
+                } else {
+                    toast.textContent = message;
+                }
+                container.appendChild(toast);
+                requestAnimationFrame(() => toast.classList.add('show'));
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3500);
+            };
+
+            // Ghi đè alert native để không chặn luồng giao diện người dùng
+            window.alert = function(msg) {
+                const str = String(msg || '');
+                let toastType = 'info';
+                if (/thành công|hoàn tất/i.test(str)) toastType = 'success';
+                else if (/lỗi|thất bại|không thể/i.test(str)) toastType = 'error';
+                else if (/chưa có|cảnh báo|không có/i.test(str)) toastType = 'info';
+                showAdminToast(str, toastType);
+            };
 
             // Khởi tạo trước dữ liệu Heatmap ngay khi DOM sẵn sàng
             initApolloHeatmap(); // Boot immediate
