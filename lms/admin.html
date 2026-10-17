@@ -309,7 +309,7 @@
                     <span id="badge-tested-learners-count" class="px-2 py-0.5 rounded-full bg-black/20 text-black font-mono text-[11px]">0</span>
                 </button>
                 <button id="tab-btn-iam-stations" class="tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent shrink-0 whitespace-nowrap" data-pane="pane-iam-stations">
-                    <span>🏆 Thu Hoạch 5 Trạm I•A•M</span>
+                    <span>🏆 Thu Hoạch 6 Trạm I•A•M</span>
                     <span id="badge-iam-learners-count" class="px-2 py-0.5 rounded-full bg-brand-surface text-slate-300 font-mono text-[11px]">0</span>
                 </button>
                 <button id="tab-btn-blended-journey" class="tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent shrink-0 whitespace-nowrap" data-pane="pane-blended-journey">
@@ -628,7 +628,7 @@
         </section>
 
         <!-- ========================================== -->
-        <!-- PANE 2: IAM STATIONS DASHBOARD (5 TRẠM)   -->
+        <!-- PANE 2: IAM STATIONS DASHBOARD (6 TRẠM)   -->
         <!-- ========================================== -->
         <section id="pane-iam-stations" class="space-y-8 hidden">
 
@@ -644,12 +644,12 @@
                 </div>
 
                 <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1.5 shadow-lg relative overflow-hidden">
-                    <div class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Hoàn Thành Đủ 5 Trạm</div>
+                    <div class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Hoàn Thành Đủ 6 Trạm</div>
                     <div class="flex items-baseline gap-2">
                         <span id="iam-kpi-full5" class="text-2xl lg:text-3xl font-extrabold text-emerald-400">0</span>
                         <span id="iam-kpi-full5-pct" class="text-xs text-slate-500 font-mono">(0%)</span>
                     </div>
-                    <div class="text-[11px] text-slate-500">Đã điền trọn vẹn 5 trạm chuyên đề</div>
+                    <div class="text-[11px] text-slate-500">Đã điền trọn vẹn 6 trạm chuyên đề</div>
                 </div>
 
                 <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1.5 shadow-lg relative overflow-hidden">
@@ -668,20 +668,20 @@
                 </div>
             </div>
 
-            <!-- HEATMAP 5 TRẠM WORKSHOP -->
+            <!-- HEATMAP 6 TRẠM WORKSHOP -->
             <div class="p-6 rounded-2xl bg-brand-surface border border-brand-border space-y-4 shadow-lg">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                        <span>📊 Tỷ Lệ Hoàn Thành Theo 5 Trạm Workshop Team Happiness</span>
+                        <span>📊 Tỷ Lệ Hoàn Thành Theo 6 Trạm Workshop Team Happiness</span>
                     </h3>
                     <div class="text-xs text-slate-400">Dữ liệu tổng hợp thời gian thực từ Google Sheets</div>
                 </div>
-                <div id="iam-station-heatmap" class="grid grid-cols-1 sm:grid-cols-5 gap-3">
+                <div id="iam-station-heatmap" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
                     <!-- Populated via JavaScript -->
                 </div>
             </div>
 
-            <!-- CONTROLS & BỘ LỌC ĐA CHIỀU 5 TRẠM -->
+            <!-- CONTROLS & BỘ LỌC ĐA CHIỀU 6 TRẠM -->
             <div class="p-4 rounded-2xl bg-brand-surface border border-brand-border space-y-3 shadow-lg">
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
                     <div class="flex items-center gap-2.5 flex-wrap w-full sm:w-auto">
@@ -711,8 +711,8 @@
                         <div class="relative">
                             <select id="iam-filter-stations-count" class="bg-brand-card border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-brand-amber pr-8">
                                 <option value="all">Tất cả số trạm</option>
-                                <option value="5">Đủ 5/5 Trạm</option>
-                                <option value="1_4">1 - 4 Trạm</option>
+                                <option value="6">Đủ 6/6 Trạm</option>
+                                <option value="1_5">1 - 5 Trạm</option>
                                 <option value="0">Chưa làm trạm nào</option>
                             </select>
                         </div>
@@ -723,13 +723,13 @@
                             <input type="text" id="iam-search-input" placeholder="Tìm theo tên, email, SĐT..." class="w-full bg-brand-card border border-brand-border rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-amber" />
                         </div>
                         <button id="btn-export-iam-csv" class="px-3.5 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-300 hover:text-white text-xs font-semibold border border-brand-border transition-all flex items-center gap-1.5 shadow-sm whitespace-nowrap">
-                            <span>📥 Xuất CSV 5 Trạm</span>
+                            <span>📥 Xuất CSV 6 Trạm</span>
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- BẢNG DANH SÁCH THU HOẠCH 5 TRẠM -->
+            <!-- BẢNG DANH SÁCH THU HOẠCH 6 TRẠM -->
             <div class="rounded-2xl bg-brand-surface border border-brand-border overflow-hidden shadow-lg">
                 <div class="overflow-x-auto">
                     <table class="w-full min-w-[950px] text-left border-collapse text-xs">
@@ -740,9 +740,10 @@
                                 <th class="p-4">Phòng Ban</th>
                                 <th class="p-4 text-center">Trạm 1 (Mindset)</th>
                                 <th class="p-4 text-center">Trạm 2 (Leadership)</th>
-                                <th class="p-4 text-center">Trạm 3 (Skills)</th>
-                                <th class="p-4 text-center">Trạm 4 (Styles)</th>
-                                <th class="p-4 text-center">Trạm 5 (Action)</th>
+                                <th class="p-4 text-center">Trạm 3 (Situational)</th>
+                                <th class="p-4 text-center">Trạm 4 (Skills & OILS)</th>
+                                <th class="p-4 text-center">Trạm 5 (Styles)</th>
+                                <th class="p-4 text-center">Trạm 6 (Action Plan)</th>
                                 <th class="p-4 text-center">Tiến Độ</th>
                                 <th class="p-4 text-right">Chi Tiết</th>
                             </tr>
@@ -756,7 +757,7 @@
                 <div id="iam-table-empty" class="p-12 text-center text-slate-500 space-y-2 hidden">
                     <div class="text-3xl">📭</div>
                     <div class="text-sm font-semibold">Không tìm thấy dữ liệu Workshop phù hợp</div>
-                    <div class="text-xs">Học viên chưa nộp bài thu hoạch 5 trạm hoặc bộ lọc không khớp.</div>
+                    <div class="text-xs">Học viên chưa nộp bài thu hoạch 6 trạm hoặc bộ lọc không khớp.</div>
                 </div>
 
                 <!-- ACCORDION: HỌC VIÊN CHƯA THAM GIA TRẠM I•A•M -->
@@ -803,7 +804,7 @@
                         <span id="blended-kpi-all4" class="text-2xl lg:text-3xl font-extrabold text-emerald-400">0</span>
                         <span id="blended-kpi-all4-pct" class="text-xs text-slate-500 font-mono">(0%)</span>
                     </div>
-                    <div class="text-[11px] text-emerald-400 font-medium">Quiz + Values + ABCDE + 5 Trạm</div>
+                    <div class="text-[11px] text-emerald-400 font-medium">Quiz + Values + ABCDE + 6 Trạm</div>
                 </div>
 
                 <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1.5 shadow-lg relative overflow-hidden">
@@ -816,7 +817,7 @@
                 </div>
 
                 <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1.5 shadow-lg relative overflow-hidden">
-                    <div class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Hoàn Thành 5 Trạm Workshop</div>
+                    <div class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Hoàn Thành 6 Trạm Workshop</div>
                     <div class="flex items-baseline gap-2">
                         <span id="blended-kpi-iam-rate" class="text-2xl lg:text-3xl font-extrabold text-blue-400">0%</span>
                         <span id="blended-kpi-iam-count" class="text-xs text-slate-500 font-mono">(0 HV)</span>
@@ -849,7 +850,7 @@
                                 <option value="all">Tất cả trạng thái</option>
                                 <option value="complete_100">Đạt 100% Hoàn thành</option>
                                 <option value="quiz_passed">Đã đạt Quiz (>80%)</option>
-                                <option value="iam_done">Đã làm 5 Trạm Workshop</option>
+                                <option value="iam_done">Đã làm 6 Trạm Workshop</option>
                                 <option value="in_progress">Đang trong tiến trình</option>
                                 <option value="not_started">Chưa bắt đầu</option>
                             </select>
@@ -878,7 +879,7 @@
                                 <th class="p-4 text-center">Trụ Cột 1: Quiz (&gt;80%)</th>
                                 <th class="p-4 text-center">Trụ Cột 2: Me Values</th>
                                 <th class="p-4 text-center">Trụ Cột 3: ABCDE</th>
-                                <th class="p-4 text-center">Trụ Cột 4: 5 Trạm I•A•M</th>
+                                <th class="p-4 text-center">Trụ Cột 4: 6 Trạm I•A•M</th>
                                 <th class="p-4 text-center">Tiến Độ 360°</th>
                                 <th class="p-4 text-right">Chi Tiết</th>
                             </tr>
@@ -1025,7 +1026,7 @@
                         <span>⚔️ Ma Trận TKI (5 Phong Cách)</span>
                     </button>
                     <button type="button" class="heatmap-subtab-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-brand-card/60 transition-all border border-transparent shrink-0 whitespace-nowrap" data-subtab="iam">
-                        <span>📋 Thu Hoạch 5 Trạm & I•A•M</span>
+                        <span>📋 Thu Hoạch 6 Trạm & I•A•M</span>
                     </button>
                     <button type="button" class="heatmap-subtab-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-brand-card/60 transition-all border border-transparent shrink-0 whitespace-nowrap" data-subtab="report">
                         <span>📈 Báo Cáo Đội Ngũ</span>
@@ -1160,7 +1161,7 @@
                 </div>
             </div>
 
-            <!-- VIEW 3: 5 STATIONS & I•A•M HARVESTER -->
+            <!-- VIEW 3: 6 STATIONS & I•A•M HARVESTER -->
             <div id="heatmap-view-iam" class="space-y-4 hidden">
                 <div class="flex items-center gap-2 flex-wrap">
                     <button type="button" class="heatmap-iam-filter-pill active px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-amber text-black shadow-sm" data-station="ALL">Tất cả Trạm (97)</button>
@@ -1169,6 +1170,7 @@
                     <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="3">Trạm 3: Lãnh Đạo Tình Huống S1-S4</button>
                     <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="4">Trạm 4: Kỹ Năng OILS & TKI</button>
                     <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="5">Trạm 5: My Colors 4 Phong Cách</button>
+                    <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="6">Trạm 6: Kế Hoạch Hành Động (Action Plan)</button>
                     <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="ACTION">🎯 Cam Kết Stop • Start • Continue</button>
                 </div>
                 <div id="heatmap-iam-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -1390,7 +1392,7 @@
         </div>
     </div>
 
-    <!-- MODAL CHI TIẾT THU HOẠCH 5 TRẠM I•A•M -->
+    <!-- MODAL CHI TIẾT THU HOẠCH 6 TRẠM I•A•M -->
     <div id="iam-detail-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
         <div class="bg-brand-surface border border-brand-border rounded-3xl p-6 lg:p-8 max-w-4xl w-full shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
             <div class="flex items-start justify-between border-b border-brand-border pb-4">
@@ -1405,8 +1407,8 @@
             <!-- SUMMARY STATS BAR -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 rounded-xl bg-brand-card/50 border border-brand-border text-xs">
                 <div>
-                    <div class="text-slate-400 text-[11px]">Tiến độ 5 Trạm:</div>
-                    <div id="iam-modal-status" class="text-emerald-400 font-bold mt-0.5 text-sm">0/5 Trạm</div>
+                    <div class="text-slate-400 text-[11px]">Tiến độ 6 Trạm:</div>
+                    <div id="iam-modal-status" class="text-emerald-400 font-bold mt-0.5 text-sm">0/6 Trạm</div>
                 </div>
                 <div>
                     <div class="text-slate-400 text-[11px]">Điểm Hạnh Phúc / Lãnh Đạo:</div>
@@ -1418,7 +1420,7 @@
                 </div>
             </div>
 
-            <!-- 5 STATIONS CONTENT -->
+            <!-- 6 STATIONS CONTENT -->
             <div id="iam-modal-stations-container" class="space-y-4">
                 <!-- Injected via JavaScript -->
             </div>
@@ -2171,15 +2173,15 @@
                     }
                 });
 
-                // 2. Merge Apollo Summary (5 Trạm Workshop I•A•M)
+                // 2. Merge Apollo Summary (6 Trạm Workshop I•A•M)
                 parsedApolloSummary.forEach(row => {
                     const learner = findLearnerByIdentity(row);
                     if (!learner) return;
 
                     if (!learner.iamStations) learner.iamStations = {};
 
-                    // Duyệt qua 5 trạm
-                    for (let i = 1; i <= 5; i++) {
+                    // Duyệt qua 6 trạm
+                    for (let i = 1; i <= 6; i++) {
                         const tag = row[`Trạm ${i} - Tag`] || row[`Trạm ${i}`] || row[`Station ${i} Tag`] || "";
                         const interested = row[`Trạm ${i} - Thấu Hiểu (Interested)`] || "";
                         const actionable = row[`Trạm ${i} - Ứng Dụng (Actionable)`] || "";
@@ -2216,7 +2218,7 @@
                     if (!learner.iamStations) learner.iamStations = {};
                     const stRaw = String(log["Trạm Số"] || log["stationId"] || "");
                     const stNum = parseInt(stRaw.replace(/\D+/g, "") || 0, 10);
-                    if (stNum >= 1 && stNum <= 5) {
+                    if (stNum >= 1 && stNum <= 6) {
                         const key = `station${stNum}`;
                         learner.iamStations[key] = learner.iamStations[key] || { completed: true };
                         learner.iamStations[key].completed = true;
@@ -2271,7 +2273,7 @@
                     }
 
                     if (showAlert) {
-                        alert(`Đồng bộ thành công từ Google Sheets!\n- ${parsedLmsCheckpoints.length} bài Quiz LMS\n- ${parsedApolloSummary.length} bản ghi tổng hợp 5 Trạm\n- ${parsedApolloLogs.length} nhật ký từng trạm\n- Đã cập nhật ${mergedCount} học viên vào Dashboard.`);
+                        alert(`Đồng bộ thành công từ Google Sheets!\n- ${parsedLmsCheckpoints.length} bài Quiz LMS\n- ${parsedApolloSummary.length} bản ghi tổng hợp 6 Trạm\n- ${parsedApolloLogs.length} nhật ký từng trạm\n- Đã cập nhật ${mergedCount} học viên vào Dashboard.`);
                     }
                     isFetchingLiveData = false;
                     return mergedCount;
@@ -3053,8 +3055,8 @@
                 if (iamKpiTotal) iamKpiTotal.textContent = activeLearners.length;
                 if (iamKpiTotalOf) iamKpiTotalOf.textContent = `/ ${totalInCohort} HV`;
 
-                // KPI 2: Hoàn thành đủ 5 trạm
-                const full5 = activeLearners.filter(l => (l.iamCompletedStationsCount || Object.keys(l.iamStations).length) >= 5).length;
+                // KPI 2: Hoàn thành đủ 6 trạm
+                const full5 = activeLearners.filter(l => (l.iamCompletedStationsCount || Object.keys(l.iamStations).length) >= 6).length;
                 if (iamKpiFull5) iamKpiFull5.textContent = full5;
                 if (iamKpiFull5Pct) {
                     const full5Pct = activeLearners.length > 0 ? Math.round((full5 / activeLearners.length) * 100) : 0;
@@ -3067,9 +3069,9 @@
                 if (iamKpiAvgScore) iamKpiAvgScore.textContent = avgScore;
 
                 // KPI 4: Trạm ít lượt nhất
-                const stationCounts = [0, 0, 0, 0, 0];
+                const stationCounts = [0, 0, 0, 0, 0, 0];
                 activeLearners.forEach(l => {
-                    for (let i = 1; i <= 5; i++) {
+                    for (let i = 1; i <= 6; i++) {
                         if (l.iamStations && l.iamStations[`station${i}`]?.completed) {
                             stationCounts[i - 1]++;
                         }
@@ -3086,17 +3088,18 @@
                     }
                 }
 
-                // Heatmap 5 Trạm
+                // Heatmap 6 Trạm
                 if (iamStationHeatmap) {
                     iamStationHeatmap.innerHTML = "";
                     const stationNames = [
                         "Trạm 1 (Mindset)",
                         "Trạm 2 (Leadership)",
-                        "Trạm 3 (Skills)",
-                        "Trạm 4 (Styles)",
-                        "Trạm 5 (Action)"
+                        "Trạm 3 (Situational)",
+                        "Trạm 4 (Skills & OILS)",
+                        "Trạm 5 (Styles)",
+                        "Trạm 6 (Action Plan)"
                     ];
-                    for (let i = 0; i < 5; i++) {
+                    for (let i = 0; i < 6; i++) {
                         const pct = totalInCohort > 0 ? Math.round((stationCounts[i] / totalInCohort) * 100) : 0;
                         const colorClass = pct >= 80 ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" :
                                            pct >= 50 ? "bg-amber-500/20 text-amber-400 border-amber-500/30" :
@@ -3144,8 +3147,8 @@
                     if (dept !== "all" && l.department !== dept) return false;
 
                     const count = l.iamCompletedStationsCount || (l.iamStations ? Object.keys(l.iamStations).length : 0);
-                    if (stFilter === "5" && count < 5) return false;
-                    if (stFilter === "1_4" && (count < 1 || count > 4)) return false;
+                    if ((stFilter === "6" || stFilter === "5") && count < 6) return false;
+                    if ((stFilter === "1_5" || stFilter === "1_4") && (count < 1 || count > 5)) return false;
                     if (stFilter === "0" && count > 0) return false;
 
                     if (query) {
@@ -3198,9 +3201,10 @@
                         const st3 = learner.iamStations?.station3;
                         const st4 = learner.iamStations?.station4;
                         const st5 = learner.iamStations?.station5;
+                        const st6 = learner.iamStations?.station6;
 
                         const stCount = learner.iamCompletedStationsCount || (learner.iamStations ? Object.keys(learner.iamStations).length : 0);
-                        const pct = Math.round((stCount / 5) * 100);
+                        const pct = Math.round((stCount / 6) * 100);
 
                         tr.innerHTML = `
                             <td class="p-4">
@@ -3218,12 +3222,13 @@
                             <td class="p-4 text-center">${renderStCell(st3)}</td>
                             <td class="p-4 text-center">${renderStCell(st4)}</td>
                             <td class="p-4 text-center">${renderStCell(st5)}</td>
+                            <td class="p-4 text-center">${renderStCell(st6)}</td>
                             <td class="p-4 text-center">
                                 <div class="flex items-center justify-center gap-1.5">
                                     <div class="w-12 h-1.5 bg-brand-dark rounded-full overflow-hidden border border-brand-border">
-                                        <div class="h-full ${stCount === 5 ? 'bg-emerald-400' : 'bg-brand-amber'} rounded-full" style="width: ${pct}%"></div>
+                                        <div class="h-full ${stCount === 6 ? 'bg-emerald-400' : 'bg-brand-amber'} rounded-full" style="width: ${pct}%"></div>
                                     </div>
-                                    <span class="font-mono text-xs font-bold ${stCount === 5 ? 'text-emerald-400' : stCount > 0 ? 'text-brand-amber' : 'text-slate-500'}">${stCount}/5</span>
+                                    <span class="font-mono text-xs font-bold ${stCount === 6 ? 'text-emerald-400' : stCount > 0 ? 'text-brand-amber' : 'text-slate-500'}">${stCount}/6</span>
                                 </div>
                                 <div class="text-[10px] text-slate-500 font-mono mt-0.5">Điểm: ${learner.iamTotalScore || 0}</div>
                             </td>
@@ -3248,7 +3253,7 @@
                         if (activeIamLearners.length > 0) {
                             activeIamLearners.forEach(l => iamTableBody.appendChild(createIamRow(l, false)));
                         } else if (inactiveIamLearners.length > 0) {
-                            iamTableBody.innerHTML = '<tr><td colspan="10" class="p-8 text-center text-slate-500 text-xs">Chưa có học viên nào hoàn thành trạm I•A•M trong bộ lọc này. Xem danh sách chi tiết ở Accordion bên dưới.</td></tr>';
+                            iamTableBody.innerHTML = '<tr><td colspan="11" class="p-8 text-center text-slate-500 text-xs">Chưa có học viên nào hoàn thành trạm I•A•M trong bộ lọc này. Xem danh sách chi tiết ở Accordion bên dưới.</td></tr>';
                         }
 
                         // Gom học viên chưa tham gia trạm vào Accordion thu gọn
@@ -3284,7 +3289,7 @@
 
                 const stCount = learner.iamCompletedStationsCount || (learner.iamStations ? Object.keys(learner.iamStations).length : 0);
                 if (iamModalStatus) {
-                    iamModalStatus.textContent = `${stCount}/5 Trạm (${Math.round((stCount / 5) * 100)}%)`;
+                    iamModalStatus.textContent = `${stCount}/6 Trạm (${Math.round((stCount / 6) * 100)}%)`;
                 }
 
                 const hp = learner.iamHappinessScore !== undefined ? learner.iamHappinessScore : (stCount > 0 ? (stCount * 2) : 0);
@@ -3294,20 +3299,21 @@
                     iamModalScores.textContent = `Hạnh Phúc: ${hp} • Lãnh Đạo: ${ld} (Tổng: ${total})`;
                 }
                 if (iamModalBalance) {
-                    iamModalBalance.textContent = learner.iamBalanceIndex ? `${learner.iamBalanceIndex}%` : (stCount === 5 ? "100%" : "—");
+                    iamModalBalance.textContent = learner.iamBalanceIndex ? `${learner.iamBalanceIndex}%` : (stCount === 6 ? "100%" : "—");
                 }
 
                 const stationNames = [
-                    "Trạm 1: Mindset Chuyển Hóa & Năng Lượng Đỉnh Cao",
-                    "Trạm 2: Lãnh Đạo Bản Thân & Tự Quyết (SDT)",
-                    "Trạm 3: Kỹ Năng & Thói Quen Hạnh Phúc Bền Vững",
-                    "Trạm 4: Phong Cách Xã Hội & Kết Nối Đồng Đội",
-                    "Trạm 5: Kế Hoạch Hành Động Cá Nhân & Cam Kết"
+                    "Trạm 1: Nền Tảng Hạnh Phúc & Mindset",
+                    "Trạm 2: Bóng Lãnh Đạo (Shadow of the Leader)",
+                    "Trạm 3: Lãnh Đạo Tình Huống S1–S4 & An Toàn Tâm Lý",
+                    "Trạm 4: Kỹ Năng Đối Thoại (OILS, GROW & TKI)",
+                    "Trạm 5: My Colors 4 Phong Cách & Thấu Cảm Đội Ngũ",
+                    "Trạm 6: Kế Hoạch Hành Động (Action Plan) & Cam Kết Thực Thi"
                 ];
 
                 if (iamModalStationsContainer) {
                     iamModalStationsContainer.innerHTML = "";
-                    for (let i = 1; i <= 5; i++) {
+                    for (let i = 1; i <= 6; i++) {
                         const stKey = `station${i}`;
                         const stData = learner.iamStations ? learner.iamStations[stKey] : null;
                         const isDone = stData && stData.completed;
@@ -3387,7 +3393,7 @@
                 if (blendedKpiQuizRate) blendedKpiQuizRate.textContent = `${quizRate}%`;
                 if (blendedKpiQuizCount) blendedKpiQuizCount.textContent = `(${quizPassedCount} HV)`;
 
-                const iamDoneCount = candidates.filter(l => (l.iamCompletedStationsCount || (l.iamStations ? Object.keys(l.iamStations).length : 0)) >= 5).length;
+                const iamDoneCount = candidates.filter(l => (l.iamCompletedStationsCount || (l.iamStations ? Object.keys(l.iamStations).length : 0)) >= 6).length;
                 const iamRate = Math.round((iamDoneCount / total) * 100);
                 if (blendedKpiIamRate) blendedKpiIamRate.textContent = `${iamRate}%`;
                 if (blendedKpiIamCount) blendedKpiIamCount.textContent = `(${iamDoneCount} HV)`;
@@ -3396,7 +3402,7 @@
                     const p1 = l.firstAttemptPassed80 || l.eventualPassed80 || l.stage1Passed;
                     const p2 = (l.data?.stageData?.["stage-2"]?.selectedValues?.length > 0) || (l.stage2ValuesCount > 0);
                     const p3 = !!l.data?.stageData?.["stage-3"]?.abcde?.D || l.stage3AbcdeFilled;
-                    const p4 = (l.iamCompletedStationsCount || (l.iamStations ? Object.keys(l.iamStations).length : 0)) >= 5;
+                    const p4 = (l.iamCompletedStationsCount || (l.iamStations ? Object.keys(l.iamStations).length : 0)) >= 6;
                     return p1 && p2 && p3 && p4;
                 }).length;
                 const all4Pct = Math.round((all4Count / total) * 100);
@@ -3420,7 +3426,7 @@
                     const p2 = (l.data?.stageData?.["stage-2"]?.selectedValues?.length > 0) || (l.stage2ValuesCount > 0);
                     const p3 = !!l.data?.stageData?.["stage-3"]?.abcde?.D || l.stage3AbcdeFilled;
                     const stCount = l.iamCompletedStationsCount || (l.iamStations ? Object.keys(l.iamStations).length : 0);
-                    const p4 = stCount >= 5;
+                    const p4 = stCount >= 6;
                     const all4 = p1 && p2 && p3 && p4;
                     const notStarted = !p1 && !p2 && !p3 && stCount === 0 && (l.totalAttempts || 0) === 0;
 
@@ -3446,13 +3452,13 @@
                     const p2CountA = (a.data?.stageData?.["stage-2"]?.selectedValues?.length) || a.stage2ValuesCount || 0;
                     const p3A = !!a.data?.stageData?.["stage-3"]?.abcde?.D || a.stage3AbcdeFilled;
                     const stCountA = a.iamCompletedStationsCount || (a.iamStations ? Object.keys(a.iamStations).length : 0);
-                    const doneScoreA = (p1A ? 1 : 0) + (p2CountA > 0 ? 1 : 0) + (p3A ? 1 : 0) + (stCountA >= 5 ? 1 : (stCountA > 0 ? 0.5 : 0));
+                    const doneScoreA = (p1A ? 1 : 0) + (p2CountA > 0 ? 1 : 0) + (p3A ? 1 : 0) + (stCountA >= 6 ? 1 : (stCountA > 0 ? 0.5 : 0));
 
                     const p1B = b.firstAttemptPassed80 || b.eventualPassed80 || b.stage1Passed;
                     const p2CountB = (b.data?.stageData?.["stage-2"]?.selectedValues?.length) || b.stage2ValuesCount || 0;
                     const p3B = !!b.data?.stageData?.["stage-3"]?.abcde?.D || b.stage3AbcdeFilled;
                     const stCountB = b.iamCompletedStationsCount || (b.iamStations ? Object.keys(b.iamStations).length : 0);
-                    const doneScoreB = (p1B ? 1 : 0) + (p2CountB > 0 ? 1 : 0) + (p3B ? 1 : 0) + (stCountB >= 5 ? 1 : (stCountB > 0 ? 0.5 : 0));
+                    const doneScoreB = (p1B ? 1 : 0) + (p2CountB > 0 ? 1 : 0) + (p3B ? 1 : 0) + (stCountB >= 6 ? 1 : (stCountB > 0 ? 0.5 : 0));
 
                     if (doneScoreB !== doneScoreA) return doneScoreB - doneScoreA;
                     return (a.name || "").localeCompare(b.name || "", "vi");
@@ -3478,7 +3484,7 @@
                         const p3 = !!learner.data?.stageData?.["stage-3"]?.abcde?.D || learner.stage3AbcdeFilled;
                         const stCount = learner.iamCompletedStationsCount || (learner.iamStations ? Object.keys(learner.iamStations).length : 0);
 
-                        const doneScore = (p1 ? 1 : 0) + (p2Count > 0 ? 1 : 0) + (p3 ? 1 : 0) + (stCount >= 5 ? 1 : (stCount > 0 ? 0.5 : 0));
+                        const doneScore = (p1 ? 1 : 0) + (p2Count > 0 ? 1 : 0) + (p3 ? 1 : 0) + (stCount >= 6 ? 1 : (stCount > 0 ? 0.5 : 0));
                         const pct360 = Math.round((doneScore / 4) * 100);
 
                         const p1Score = learner.bestScore !== undefined && learner.bestScore !== null ? learner.bestScore : (p1 ? 80 : 0);
@@ -3496,11 +3502,11 @@
                             ? '<span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-semibold text-[10px]">✓ Đã nộp</span>' 
                             : '<span class="px-2 py-0.5 rounded bg-brand-card text-slate-500 text-[10px]">Chưa nộp</span>';
 
-                        const p4Badge = stCount >= 5 
-                            ? '<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold text-[10px]">✓ 5/5 Trạm</span>' 
+                        const p4Badge = stCount >= 6 
+                            ? '<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold text-[10px]">✓ 6/6 Trạm</span>' 
                             : (stCount > 0 
-                                ? `<span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-semibold text-[10px]">${stCount}/5 Trạm</span>` 
-                                : '<span class="px-2 py-0.5 rounded bg-brand-card text-slate-500 text-[10px]">0/5 Trạm</span>');
+                                ? `<span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-semibold text-[10px]">${stCount}/6 Trạm</span>` 
+                                : '<span class="px-2 py-0.5 rounded bg-brand-card text-slate-500 text-[10px]">0/6 Trạm</span>');
 
                         tr.innerHTML = `
                             <td class="p-4">
@@ -3528,7 +3534,7 @@
                                     <button class="btn-inspect-blended-detail px-2.5 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-brand-amber hover:text-white border border-brand-border font-semibold transition-colors text-xs" data-id="${escapeHTML(learner.identity)}" title="Xem chi tiết 3 chặng LMS">
                                         LMS
                                     </button>
-                                    <button class="btn-inspect-blended-iam px-2.5 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-emerald-400 hover:text-white border border-brand-border font-semibold transition-colors text-xs" data-id="${escapeHTML(learner.identity)}" title="Xem chi tiết 5 trạm Workshop">
+                                    <button class="btn-inspect-blended-iam px-2.5 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-emerald-400 hover:text-white border border-brand-border font-semibold transition-colors text-xs" data-id="${escapeHTML(learner.identity)}" title="Xem chi tiết 6 trạm Workshop">
                                         I•A•M
                                     </button>
                                 </div>
@@ -3649,12 +3655,12 @@
                 btnExportIamCsv.addEventListener("click", () => {
                     const apolloLearners = allLearners.filter(l => (l.iamStations && Object.keys(l.iamStations).length > 0) || (l.cohort && l.cohort.includes("Apollo")));
                     if (apolloLearners.length === 0) {
-                        alert("Chưa có dữ liệu học viên 5 Trạm I•A•M để xuất!");
+                        alert("Chưa có dữ liệu học viên 6 Trạm I•A•M để xuất!");
                         return;
                     }
 
                     let csv = "\uFEFF"; // UTF-8 BOM
-                    csv += "Họ và tên,Tài khoản/Email/SĐT,Cơ sở,Phòng ban,Trạm 1,Trạm 2,Trạm 3,Trạm 4,Trạm 5,Số trạm hoàn thành,Điểm Hạnh Phúc,Điểm Lãnh Đạo,Tổng Điểm,Chỉ số cân bằng\n";
+                    csv += "Họ và tên,Tài khoản/Email/SĐT,Cơ sở,Phòng ban,Trạm 1,Trạm 2,Trạm 3,Trạm 4,Trạm 5,Trạm 6,Số trạm hoàn thành,Điểm Hạnh Phúc,Điểm Lãnh Đạo,Tổng Điểm,Chỉ số cân bằng\n";
 
                     apolloLearners.forEach(l => {
                         const name = (l.name || "").replace(/"/g, '""');
@@ -3666,20 +3672,21 @@
                         const st3 = l.iamStations?.station3?.completed ? `Đạt (${(l.iamStations.station3.tag || '').replace(/"/g, '""')})` : "Chưa";
                         const st4 = l.iamStations?.station4?.completed ? `Đạt (${(l.iamStations.station4.tag || '').replace(/"/g, '""')})` : "Chưa";
                         const st5 = l.iamStations?.station5?.completed ? `Đạt (${(l.iamStations.station5.tag || '').replace(/"/g, '""')})` : "Chưa";
+                        const st6 = l.iamStations?.station6?.completed ? `Đạt (${(l.iamStations.station6.tag || '').replace(/"/g, '""')})` : "Chưa";
                         const count = l.iamCompletedStationsCount || 0;
                         const hp = l.iamHappinessScore || 0;
                         const ld = l.iamLeadershipScore || 0;
                         const total = l.iamTotalScore || 0;
                         const balance = l.iamBalanceIndex || "";
 
-                        csv += `"${name}","${id}","${center}","${dept}","${st1}","${st2}","${st3}","${st4}","${st5}",${count},${hp},${ld},${total},"${balance}"\n`;
+                        csv += `"${name}","${id}","${center}","${dept}","${st1}","${st2}","${st3}","${st4}","${st5}","${st6}",${count},${hp},${ld},${total},"${balance}"\n`;
                     });
 
                     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement("a");
                     a.href = url;
-                    a.download = `DHM_Thu_Hoach_5Tram_IAM_${new Date().toISOString().slice(0, 10)}.csv`;
+                    a.download = `DHM_Thu_Hoach_6Tram_IAM_${new Date().toISOString().slice(0, 10)}.csv`;
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
@@ -3696,7 +3703,7 @@
                     }
 
                     let csv = "\uFEFF"; // UTF-8 BOM
-                    csv += "Họ và tên,Tài khoản/Email/SĐT,Khóa học,Apollo Center,Phòng ban,Trụ cột 1 - Quiz,Điểm Quiz,Trụ cột 2 - Me Values,Trụ cột 3 - ABCDE,Trụ cột 4 - 5 Trạm IAM,Tiến độ 360 (%),Ghi chú Coach\n";
+                    csv += "Họ và tên,Tài khoản/Email/SĐT,Khóa học,Apollo Center,Phòng ban,Trụ cột 1 - Quiz,Điểm Quiz,Trụ cột 2 - Me Values,Trụ cột 3 - ABCDE,Trụ cột 4 - 6 Trạm IAM,Tiến độ 360 (%),Ghi chú Coach\n";
 
                     allLearners.forEach(l => {
                         const name = (l.name || "").replace(/"/g, '""');
@@ -3716,9 +3723,9 @@
                         const abcdeStr = p3 ? "Đã nộp" : "Chưa nộp";
 
                         const stCount = l.iamCompletedStationsCount || (l.iamStations ? Object.keys(l.iamStations).length : 0);
-                        const iamStr = `${stCount}/5 Trạm`;
+                        const iamStr = `${stCount}/6 Trạm`;
 
-                        const doneScore = (p1 ? 1 : 0) + (p2 ? 1 : 0) + (p3 ? 1 : 0) + (stCount >= 5 ? 1 : (stCount > 0 ? 0.5 : 0));
+                        const doneScore = (p1 ? 1 : 0) + (p2 ? 1 : 0) + (p3 ? 1 : 0) + (stCount >= 6 ? 1 : (stCount > 0 ? 0.5 : 0));
                         const pct360 = Math.round((doneScore / 4) * 100);
 
                         const notes = (l.coachNotes || "").replace(/"/g, '""');
@@ -4066,9 +4073,9 @@
                             hl.progress.meValue = matched.meValue;
                         }
 
-                        // 3. Cập nhật bài nộp 5 trạm thực tế từ Google Sheets / LMS
+                        // 3. Cập nhật bài nộp 6 trạm thực tế từ Google Sheets / LMS
                         if (matched.iamStations && Object.keys(matched.iamStations).length > 0) {
-                            for (let i = 1; i <= 5; i++) {
+                            for (let i = 1; i <= 6; i++) {
                                 const stLive = matched.iamStations[`station${i}`];
                                 if (stLive && (stLive.interested || stLive.actionable || stLive.meaningful || stLive.title)) {
                                     if (!hl.progress.stations[i - 1]) {
@@ -4081,7 +4088,7 @@
                                 }
                             }
                             hl.progress.completedStations = matched.iamCompletedStationsCount || Object.keys(matched.iamStations).length;
-                            if (hl.progress.completedStations >= 5) {
+                            if (hl.progress.completedStations >= 6) {
                                 hl.progress.status = "Đã hoàn thành xuất sắc";
                                 hl.progress.percent = 100;
                             }
@@ -4805,10 +4812,10 @@
                         </div>
                     </div>
 
-                    <!-- NHẬT KÝ THU HOẠCH 5 TRẠM (I•A•M) -->
+                    <!-- NHẬT KÝ THU HOẠCH 6 TRẠM (I•A•M) -->
                     <div class="space-y-3">
                         <div class="font-bold text-white text-xs uppercase tracking-wider">
-                            NHẬT KÝ THU HOẠCH 5 TRẠM (I•A•M)
+                            NHẬT KÝ THU HOẠCH 6 TRẠM (I•A•M)
                         </div>
                         <div class="space-y-2.5">
                             ${stations.length > 0 ? stations.map(st => `
@@ -5019,7 +5026,7 @@
                     l.tki?.cooperativeness || 0,
                     l.tki?.assertiveness || 0,
                     `"${(l.progress?.meValue || '').replace(/"/g, '""')}"`,
-                    l.progress?.completedStations || 5,
+                    l.progress?.completedStations || 6,
                     `"${(l.progress?.actionCommitment?.stop || '').replace(/"/g, '""')}"`,
                     `"${(l.progress?.actionCommitment?.start || '').replace(/"/g, '""')}"`,
                     `"${(l.progress?.actionCommitment?.continue || '').replace(/"/g, '""')}"`
