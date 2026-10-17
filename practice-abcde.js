@@ -195,6 +195,8 @@
       };
       localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(authData));
       currentUserAuth = authData;
+      const btnHeaderLogin = document.getElementById("agBtnHeaderLogin");
+      if (btnHeaderLogin) btnHeaderLogin.style.display = "none";
       return authData;
     } catch (e) {
       console.warn("Không thể lưu dhm_user_auth:", e);
@@ -218,6 +220,8 @@
     const btnVerifyRoster = document.getElementById("agBtnVerifyRoster");
     const linkOpenTrial = document.getElementById("agLinkOpenTrial");
     const btnBackToRoster = document.getElementById("agBtnBackToRoster");
+    const btnCloseModal = document.getElementById("agBtnCloseModal");
+    const btnHeaderLogin = document.getElementById("agBtnHeaderLogin");
 
     const fullNameInput = document.getElementById("agFullName");
     const phoneInput = document.getElementById("agPhone");
@@ -229,6 +233,41 @@
     const countdownSpan = document.getElementById("agCountdown");
     const waitingEmail = document.getElementById("agWaitingEmail");
     const successName = document.getElementById("agSuccessName");
+
+    // Nút đóng modal [X], click nền ngoài (backdrop) và phím Escape cho Chế độ Xem trước (Guest Preview)
+    if (btnCloseModal) {
+      btnCloseModal.onclick = () => {
+        modal.style.display = "none";
+      };
+    }
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.style.display === "flex") {
+        modal.style.display = "none";
+      }
+    });
+
+    // Nút Đăng nhập trên Header
+    if (btnHeaderLogin) {
+      btnHeaderLogin.onclick = () => {
+        modal.style.display = "flex";
+        if (formSection) formSection.style.display = "block";
+        if (rosterSection) rosterSection.style.display = "block";
+        if (trialSection) trialSection.style.display = "none";
+        if (waitingSection) waitingSection.style.display = "none";
+        if (successSection) successSection.style.display = "none";
+        if (identifierInput) setTimeout(() => identifierInput.focus(), 150);
+      };
+      if (getStoredUserAuth()) {
+        btnHeaderLogin.style.display = "none";
+      }
+    }
 
     const urlParams = new URLSearchParams(window.location.search);
     const tokenParam = urlParams.get("token");
@@ -665,6 +704,12 @@
 
   // Handle submit action
   function handleSubmit() {
+    if (!getStoredUserAuth()) {
+      const modal = document.getElementById("authGateModal");
+      if (modal) modal.style.display = "flex";
+      return;
+    }
+
     const valB = inputB.value.trim();
     const valC = inputC.value.trim();
     const valD = inputD.value.trim();

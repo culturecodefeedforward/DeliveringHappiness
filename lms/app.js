@@ -515,6 +515,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Auth Elements
     const authModal = document.getElementById("auth-modal");
+    const btnCloseAuthModal = document.getElementById("btn-close-auth-modal");
+    const btnHeaderLogin = document.getElementById("btn-header-login");
     const authForm = document.getElementById("auth-form");
     const loginIdentityInput = document.getElementById("login-identity");
     const loginPasswordInput = document.getElementById("login-password");
@@ -1063,6 +1065,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    function initGuestPreview() {
+        if (btnHeaderLogin) btnHeaderLogin.classList.remove("hidden");
+        if (userChip) userChip.classList.add("hidden");
+        renderSyllabus();
+        loadStage(0);
+        updateGlobalProgress();
+    }
+
     async function initAuth() {
         const isVerifiedFromUrl = await checkUrlMagicLinkVerification();
         if (isVerifiedFromUrl) {
@@ -1075,10 +1085,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 currentUser = JSON.parse(storedUser);
                 applyUserSession();
             } catch (e) {
+                initGuestPreview();
                 showAuthModal();
                 triggerAutoTelemetryOnBoot();
             }
         } else {
+            initGuestPreview();
             showAuthModal();
             triggerAutoTelemetryOnBoot();
         }
@@ -1092,10 +1104,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function hideAuthModal() {
         authModal.classList.add("hidden");
+        if (!currentUser) {
+            initGuestPreview();
+        }
     }
 
     function applyUserSession() {
         hideAuthModal();
+        if (btnHeaderLogin) btnHeaderLogin.classList.add("hidden");
         userChip.classList.remove("hidden");
         const initials = (currentUser.name || currentUser.email || "H")
             .split(" ")
@@ -2012,6 +2028,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function notifyLockedStage(stageIdx) {
+        if (!currentUser) {
+            showAuthModal();
+            return;
+        }
+
         if (currentUser && currentUser.isTrial) {
             showTrialUpgradeModal();
             return;
@@ -5402,6 +5423,11 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     btnNextLesson.onclick = () => {
+        if (!currentUser) {
+            showAuthModal();
+            return;
+        }
+
         const curStage = curriculum.stages[currentStageIndex];
 
         // Gate for Stage 1: Must pass the qualifying quiz (>= 80%) unless Coach/Admin
@@ -5977,6 +6003,32 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    if (btnCloseAuthModal) {
+        btnCloseAuthModal.addEventListener("click", () => {
+            hideAuthModal();
+        });
+    }
+
+    if (btnHeaderLogin) {
+        btnHeaderLogin.addEventListener("click", () => {
+            showAuthModal();
+        });
+    }
+
+    if (authModal) {
+        authModal.addEventListener("click", (e) => {
+            if (e.target === authModal) {
+                hideAuthModal();
+            }
+        });
+    }
+
+    window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && authModal && !authModal.classList.contains("hidden")) {
+            hideAuthModal();
+        }
+    });
+
     if (btnLogout) {
         btnLogout.addEventListener("click", () => {
             if (confirm("Bạn có chắc chắn muốn đăng xuất không?")) {
@@ -5985,6 +6037,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 updatePersonalValueLinks();
                 learnerProgress = getInitialLearnerProgress();
                 userChip.classList.add("hidden");
+                if (btnHeaderLogin) btnHeaderLogin.classList.remove("hidden");
                 renderSyllabus();
                 evaluateLearnerStatus();
                 loadStage(0);
@@ -6233,6 +6286,7 @@ document.addEventListener("DOMContentLoaded", () => {
             trialCooldownTimer = null;
         }
         if (btnRequestTrial) {
+            btnRequestTrial.classList.remove("hidden");
             btnRequestTrial.disabled = false;
             btnRequestTrial.className = "w-full py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber hover:from-orange-600 hover:to-amber-600 text-black font-extrabold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 active:scale-98 cursor-pointer";
         }
@@ -6246,61 +6300,39 @@ document.addEventListener("DOMContentLoaded", () => {
             trialResendWrapper.classList.add("hidden");
         }
         if (btnResendTrial) {
-            btnResendTrial.classList.add("hidden");
+            btnResendTrial.disabled = true;
+            btnResendTrial.className = "w-full py-2.5 px-4 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-1.5 bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700";
+            btnResendTrial.textContent = "Gửi lại liên kết sau (60s)";
         }
     }
 
     function startTrialCooldown(seconds) {
         let remaining = seconds;
-        // 1. Chuyển nút chính sang trạng thái hoàn tất, KHÔNG hiển thị đếm ngược gây hiểu lầm trên nút chính
+        // Ẩn nút gửi ban đầu, chỉ hiển thị duy nhất 1 nút đếm ngược / gửi lại (Single State - Single CTA)
         if (btnRequestTrial) {
-            btnRequestTrial.disabled = true;
-            btnRequestTrial.className = "w-full py-2.5 rounded-xl bg-emerald-600/20 text-emerald-300 border border-emerald-500/40 font-bold text-xs transition-all flex items-center justify-center gap-1.5 cursor-default";
+            btnRequestTrial.classList.add("hidden");
         }
-        if (btnRequestTrialText) {
-            btnRequestTrialText.textContent = "✓ Đã Gửi Liên Kết Kích Hoạt";
-        }
-        if (btnRequestTrialArrow) {
-            btnRequestTrialArrow.classList.add("hidden");
-        }
-
-        // 2. Tách bộ đếm ngược xuống dòng ghi chú phụ nhỏ bên dưới
         if (trialResendWrapper) {
             trialResendWrapper.classList.remove("hidden");
         }
         if (btnResendTrial) {
-            btnResendTrial.classList.add("hidden");
-        }
-        if (trialResendCountdown) {
-            trialResendCountdown.classList.remove("hidden");
-            trialResendCountdown.textContent = `Chưa nhận được email? Bạn có thể yêu cầu gửi lại sau ${remaining}s.`;
+            btnResendTrial.disabled = true;
+            btnResendTrial.className = "w-full py-2.5 px-4 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-1.5 bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700";
+            btnResendTrial.textContent = `Gửi lại liên kết sau (${remaining}s)`;
         }
 
         if (trialCooldownTimer) clearInterval(trialCooldownTimer);
         trialCooldownTimer = setInterval(() => {
             remaining--;
-            if (trialResendCountdown) {
-                trialResendCountdown.textContent = `Chưa nhận được email? Bạn có thể yêu cầu gửi lại sau ${remaining}s.`;
-            }
-            if (remaining <= 0) {
-                clearInterval(trialCooldownTimer);
-                trialCooldownTimer = null;
-                if (trialResendCountdown) {
-                    trialResendCountdown.classList.add("hidden");
-                }
-                if (btnResendTrial) {
-                    btnResendTrial.classList.remove("hidden");
-                }
-                // Cho phép bấm lại nút chính nếu học viên muốn
-                if (btnRequestTrial) {
-                    btnRequestTrial.disabled = false;
-                    btnRequestTrial.className = "w-full py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber hover:from-orange-600 hover:to-amber-600 text-black font-extrabold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 active:scale-98 cursor-pointer";
-                }
-                if (btnRequestTrialText) {
-                    btnRequestTrialText.textContent = "Gửi Lại Liên Kết Qua Email";
-                }
-                if (btnRequestTrialArrow) {
-                    btnRequestTrialArrow.classList.remove("hidden");
+            if (btnResendTrial) {
+                if (remaining > 0) {
+                    btnResendTrial.textContent = `Gửi lại liên kết sau (${remaining}s)`;
+                } else {
+                    clearInterval(trialCooldownTimer);
+                    trialCooldownTimer = null;
+                    btnResendTrial.disabled = false;
+                    btnResendTrial.className = "w-full py-2.5 px-4 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-1.5 bg-gradient-to-r from-brand-orange to-brand-amber hover:brightness-110 active:scale-98 text-black shadow-md cursor-pointer";
+                    btnResendTrial.textContent = "Gửi lại liên kết mới";
                 }
             }
         }, 1000);
@@ -6308,6 +6340,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (btnResendTrial) {
         btnResendTrial.addEventListener("click", () => {
+            if (btnResendTrial.disabled) return;
             if (btnRequestTrial) {
                 btnRequestTrial.click();
             }

@@ -990,6 +990,11 @@ function doGet(e) {
     return jsonOut(lmsData);
   }
 
+  if (action === 'migrate_apollo_35_columns') {
+    var migRes = migrateApolloSheetTo35Columns_();
+    return jsonOut({ success: true, result: migRes });
+  }
+
   return jsonOut({ success: false, error: 'UNKNOWN_ACTION' });
 }
 
@@ -2870,6 +2875,11 @@ var AUTH_GATE_CONFIG = {
       id: "LMS_TRIAL",
       name: "Trải nghiệm Học thử Chặng 1 - Delivering Happiness LMS",
       url: "https://delivering-happiness.vercel.app/lms/"
+    },
+    "ABCDE": {
+      id: "ABCDE",
+      name: "Thực hành Lạc quan Thông thái (Socratic ABCDE)",
+      url: "https://delivering-happiness.vercel.app/practice-abcde.html"
     }
   }
 };
@@ -3008,6 +3018,7 @@ function handleAuthGateRegisterOrRequestLink_(payload) {
     var emailResult = sendAuthGateActivationEmail_({
       toEmail: email,
       fullName: fullName || 'Học viên',
+      surveyType: surveyType,
       surveyName: surveyInfo.name,
       activationUrl: activationUrl,
       expirationMinutes: 60
@@ -3163,13 +3174,22 @@ function handleAuthGateSyncSurveyCompletion_(payload) {
       return jsonOut({ success: false, error: 'LEAD_NOT_FOUND', message: 'Không tìm thấy hồ sơ người dùng.' });
     }
 
-    // Cột I (9): ss_completed, Cột J (10): tki_completed, Cột K (11): gtcl_completed
-    var colIndex = 9;
-    if (surveyType === 'TKI') colIndex = 10;
-    if (surveyType === 'GTCL') colIndex = 11;
+    // Cột I (9): ss_completed, Cột J (10): tki_completed, Cột K (11): gtcl_completed, Cột L (12): abcde_completed
+    var colIndex = -1;
+    if (surveyType === 'SS') colIndex = 9;
+    else if (surveyType === 'TKI') colIndex = 10;
+    else if (surveyType === 'GTCL') colIndex = 11;
+    else if (surveyType === 'ABCDE') colIndex = 12;
 
-    var completionValue = 'TRUE (' + Utilities.formatDate(now, 'GMT+7', 'yyyy-MM-dd HH:mm') + ')';
-    leadsSheet.getRange(targetRow, colIndex).setValue(completionValue);
+    if (colIndex === 12 && leadsSheet.getMaxColumns() < 12) {
+      leadsSheet.insertColumnAfter(11);
+      leadsSheet.getRange(1, 12).setValue("abcde_completed").setFontWeight("bold").setBackground("#F3F4F6");
+    }
+
+    if (colIndex > 0) {
+      var completionValue = 'TRUE (' + Utilities.formatDate(now, 'GMT+7', 'yyyy-MM-dd HH:mm') + ')';
+      leadsSheet.getRange(targetRow, colIndex).setValue(completionValue);
+    }
 
     logAuthGateActivity_(ss, 'SYNC_COMPLETION', email, surveyType, 'Kết quả: ' + (resultSummary || 'Hoàn thành'));
 
@@ -3277,11 +3297,33 @@ function sendAuthGateActivationEmail_(opts) {
   try {
     var toEmail = opts.toEmail;
     var fullName = opts.fullName;
+    var surveyType = opts.surveyType || '';
     var surveyName = opts.surveyName;
     var activationUrl = opts.activationUrl;
     var expirationMinutes = opts.expirationMinutes || 60;
 
-    var subject = '[Delivering Happiness] Liên kết mở khóa bài ' + surveyName;
+    var isLmsTrial = (surveyType === 'LMS_TRIAL') || (activationUrl && activationUrl.indexOf('/lms') !== -1);
+
+    var subject = isLmsTrial
+      ? '[Delivering Happiness] Liên kết kích hoạt học thử Chặng 1'
+      : ('[Delivering Happiness] Liên kết mở khóa bài ' + surveyName);
+
+    var headerTitle = isLmsTrial
+      ? 'Kích Hoạt Tài Khoản Học Thử'
+      : 'Xác Thực Danh Tính Học Viên';
+
+    var greetingIntro = isLmsTrial
+      ? 'Anh/chị vừa yêu cầu mở khóa tài khoản học thử Chặng 1 chương trình Delivering Happiness.'
+      : ('Anh/chị vừa yêu cầu thực hiện bài khảo sát <strong>' + escapeHtml_(surveyName) + '</strong> trong khuôn khổ chương trình <em>Delivering Happiness</em>.');
+
+    var callToActionText = isLmsTrial
+      ? 'KÍCH HOẠT TÀI KHOẢN VÀ HỌC THỬ NGAY'
+      : 'BẮT ĐẦU LÀM BÀI KHẢO SÁT NGAY';
+
+    var ctaInstruction = isLmsTrial
+      ? 'Vui lòng nhấp vào nút bên dưới để mở khóa học phần tự học Chặng 1 (Pre-Class 90 phút) hoàn toàn miễn phí:'
+      : 'Vui lòng nhấp vào nút bên dưới để mở khóa bài làm của anh/chị:';
+
     var htmlBody = '<!DOCTYPE html><html><head><meta charset="utf-8">' +
       '<style>' +
       'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background-color:#FAFAFA;color:#111827;margin:0;padding:24px;}' +
@@ -3295,20 +3337,24 @@ function sendAuthGateActivationEmail_(opts) {
       '.meta{background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:14px;font-size:13px;color:#92400E;margin-top:20px;}' +
       '.footer{background:#F9FAFB;padding:20px 32px;font-size:12px;color:#9CA3AF;text-align:center;border-top:1px solid #F3F4F6;}' +
       '</style></head><body><div class="container">' +
-      '<div class="header"><div class="brand">DELIVERING HAPPINESS &bull; CULTURECODE</div><h1 class="title">Xác Thực Danh Tính Học Viên</h1></div>' +
+      '<div class="header"><div class="brand">DELIVERING HAPPINESS &bull; CULTURECODE</div><h1 class="title">' + headerTitle + '</h1></div>' +
       '<div class="body">' +
       '<p>Kính gửi anh/chị <strong>' + escapeHtml_(fullName) + '</strong>,</p>' +
-      '<p>Anh/chị vừa yêu cầu thực hiện bài khảo sát <strong>' + escapeHtml_(surveyName) + '</strong> trong khuôn khổ chương trình <em>Delivering Happiness</em>.</p>' +
-      '<p>Vui lòng nhấp vào nút bên dưới để mở khóa bài làm của anh/chị:</p>' +
-      '<div class="btn-wrap"><a class="btn" href="' + activationUrl + '" target="_blank">BẮT ĐẦU LÀM BÀI KHẢO SÁT NGAY</a></div>' +
+      '<p>' + greetingIntro + '</p>' +
+      '<p>' + ctaInstruction + '</p>' +
+      '<div class="btn-wrap"><a class="btn" href="' + activationUrl + '" target="_blank">' + callToActionText + '</a></div>' +
       '<div class="meta"><strong>Lưu ý bảo mật:</strong> Liên kết có hiệu lực trong <strong>1 giờ</strong> và chỉ sử dụng được <strong>một lần duy nhất</strong>. Thiết bị của anh/chị sẽ tự động được nhận diện trong 30 ngày.</div>' +
       '<p style="font-size:12px;color:#6B7280;word-break:break-all;margin-top:20px;">Hoặc copy đường dẫn:<br><a href="' + activationUrl + '" style="color:#D97706;">' + activationUrl + '</a></p>' +
       '</div>' +
       '<div class="footer">Thư gửi tự động từ Cổng Khảo Sát & Đo Lường Delivering Happiness Model.</div>' +
       '</div></body></html>';
 
+    var plainIntro = isLmsTrial
+      ? 'Anh/chị vừa yêu cầu mở khóa tài khoản học thử Chặng 1 chương trình Delivering Happiness.'
+      : ('Anh/chị vừa yêu cầu thực hiện bài khảo sát: ' + surveyName + '.');
+
     var plainBody = 'Kính gửi ' + fullName + ',\n\n' +
-      'Anh/chị vừa yêu cầu thực hiện bài khảo sát: ' + surveyName + '.\n' +
+      plainIntro + '\n' +
       'Vui lòng truy cập liên kết sau (hiệu lực 1 giờ):\n' +
       activationUrl + '\n\n' +
       'Trân trọng,\nDelivering Happiness Model';
@@ -3831,6 +3877,7 @@ function ensureApolloSummarySheet_(ss) {
     'Trạm 3 - Tag', 'Trạm 3 - Thấu Hiểu (Interested)', 'Trạm 3 - Ứng Dụng (Actionable)', 'Trạm 3 - Ý Nghĩa (Meaningful)',
     'Trạm 4 - Tag', 'Trạm 4 - Thấu Hiểu (Interested)', 'Trạm 4 - Ứng Dụng (Actionable)', 'Trạm 4 - Ý Nghĩa (Meaningful)',
     'Trạm 5 - Tag', 'Trạm 5 - Thấu Hiểu (Interested)', 'Trạm 5 - Ứng Dụng (Actionable)', 'Trạm 5 - Ý Nghĩa (Meaningful)',
+    'Trạm 6 - Tag', 'Trạm 6 - Thấu Hiểu (Interested)', 'Trạm 6 - Ứng Dụng (Actionable)', 'Trạm 6 - Ý Nghĩa (Meaningful)',
     'Điểm Hạnh Phúc (Happiness)', 'Điểm Lãnh Đạo (Leadership)', 'Chỉ Số Cân Bằng (%)'
   ];
   sheet.appendRow(headers);
@@ -3957,8 +4004,9 @@ function upsertApolloSummaryRow_(sheet, timestamp, profile, entries, analytics, 
   }
 
   var prevRow = targetRowIdx > 0 ? data[targetRowIdx - 1] : null;
+  var maxPrevStation = (prevRow && prevRow.length > 31) ? 6 : 5;
   if (prevRow) {
-    for (var sId = 1; sId <= 5; sId++) {
+    for (var sId = 1; sId <= maxPrevStation; sId++) {
       var baseCol = 8 + (sId - 1) * 4;
       var exTag = prevRow[baseCol];
       var exIntr = prevRow[baseCol + 1];
@@ -3967,7 +4015,7 @@ function upsertApolloSummaryRow_(sheet, timestamp, profile, entries, analytics, 
       var hasExistingStation = Boolean(exTag || exIntr || exAct || exMng);
       var existingIsFromFiveStationApp = hasExistingStation && !isLmsSyntheticTag_(exTag);
 
-      // Bảo vệ không để syntheticEntries từ LMS ghi đè lên dữ liệu 5 Trạm đã có
+      // Bảo vệ không để syntheticEntries từ LMS ghi đè lên dữ liệu Trạm đã có
       if (hasExistingStation && (!stationMap[sId] || (isLmsSource && existingIsFromFiveStationApp))) {
         stationMap[sId] = {
           stationId: sId,
@@ -4007,15 +4055,15 @@ function upsertApolloSummaryRow_(sheet, timestamp, profile, entries, analytics, 
 
   var statusStr = '';
   if (effectiveQuizPrefix) {
-    if (!isLmsSource && completedStations >= 5) {
-      statusStr = effectiveQuizPrefix + ' • Đã hoàn thành 5 trạm';
+    if (!isLmsSource && completedStations >= 6) {
+      statusStr = effectiveQuizPrefix + ' • Đã hoàn thành 6 trạm';
     } else if (completedStations > 0) {
       statusStr = effectiveQuizPrefix + ' • IAM (' + completedStations + ' mục)';
     } else {
       statusStr = effectiveQuizPrefix;
     }
   } else {
-    statusStr = completedStations >= 5 ? 'Đã hoàn thành 5 trạm' : ('Đang làm (' + completedStations + '/5)');
+    statusStr = completedStations >= 6 ? 'Đã hoàn thành 6 trạm' : ('Đang làm (' + completedStations + '/6)');
   }
 
   var resolvedDept = profile.department || (prevRow ? prevRow[5] : '');
@@ -4030,7 +4078,7 @@ function upsertApolloSummaryRow_(sheet, timestamp, profile, entries, analytics, 
     profile.email || (prevRow ? prevRow[3] : ''),
     profile.apolloCenter || (prevRow ? prevRow[4] : ''),
     resolvedDept,
-    completedStations > 0 ? (completedStations + '/5') : (prevRow && prevRow[6] ? prevRow[6] : '0/5'),
+    completedStations > 0 ? ("'" + completedStations + '/6') : (prevRow && prevRow[6] ? prevRow[6] : "'0/6"),
     statusStr,
     stationMap[1] ? (stationMap[1].selectedTag || '') : '',
     stationMap[1] ? (stationMap[1].interestedText || '') : '',
@@ -4052,9 +4100,13 @@ function upsertApolloSummaryRow_(sheet, timestamp, profile, entries, analytics, 
     stationMap[5] ? (stationMap[5].interestedText || '') : '',
     stationMap[5] ? (stationMap[5].actionableText || '') : '',
     stationMap[5] ? (stationMap[5].meaningfulText || '') : '',
-    (analytics && analytics.averageHappinessScore) ? analytics.averageHappinessScore : (prevRow ? prevRow[28] : ''),
-    (analytics && analytics.averageLeadershipScore) ? analytics.averageLeadershipScore : (prevRow ? prevRow[29] : ''),
-    (analytics && analytics.balanceIndex) ? (analytics.balanceIndex + '%') : (prevRow ? prevRow[30] : '')
+    stationMap[6] ? (stationMap[6].selectedTag || '') : '',
+    stationMap[6] ? (stationMap[6].interestedText || '') : '',
+    stationMap[6] ? (stationMap[6].actionableText || '') : '',
+    stationMap[6] ? (stationMap[6].meaningfulText || '') : '',
+    (analytics && analytics.averageHappinessScore) ? analytics.averageHappinessScore : (prevRow ? (prevRow.length > 31 ? prevRow[32] : prevRow[28]) : ''),
+    (analytics && analytics.averageLeadershipScore) ? analytics.averageLeadershipScore : (prevRow ? (prevRow.length > 31 ? prevRow[33] : prevRow[29]) : ''),
+    (analytics && analytics.balanceIndex) ? (analytics.balanceIndex + '%') : (prevRow ? (prevRow.length > 31 ? prevRow[34] : prevRow[30]) : '')
   ];
 
   if (targetRowIdx > 0) {
@@ -4271,5 +4323,95 @@ function handleGetLmsIamSubmissions_(params) {
   }
 
   return results;
+}
+
+function migrateApolloSheetTo35Columns_() {
+  var ss = SpreadsheetApp.openById(APOLLO_IAM_SPREADSHEET_ID);
+  var sheet = ss.getSheetByName(SHEET_APOLLO_SUMMARY);
+  if (!sheet) return 'Sheet not found';
+
+  var maxCols = sheet.getMaxColumns();
+  if (maxCols < 35) {
+    sheet.insertColumnsAfter(maxCols, 35 - maxCols);
+  }
+
+  var headers = [
+    'Thời Gian Cập Nhật', 'Họ Và Tên', 'Số Điện Thoại', 'Email', 'Cơ Sở Apollo', 'Phòng Ban',
+    'Số Trạm Hoàn Thành', 'Trạng Thái',
+    'Trạm 1 - Tag', 'Trạm 1 - Thấu Hiểu (Interested)', 'Trạm 1 - Ứng Dụng (Actionable)', 'Trạm 1 - Ý Nghĩa (Meaningful)',
+    'Trạm 2 - Tag', 'Trạm 2 - Thấu Hiểu (Interested)', 'Trạm 2 - Ứng Dụng (Actionable)', 'Trạm 2 - Ý Nghĩa (Meaningful)',
+    'Trạm 3 - Tag', 'Trạm 3 - Thấu Hiểu (Interested)', 'Trạm 3 - Ứng Dụng (Actionable)', 'Trạm 3 - Ý Nghĩa (Meaningful)',
+    'Trạm 4 - Tag', 'Trạm 4 - Thấu Hiểu (Interested)', 'Trạm 4 - Ứng Dụng (Actionable)', 'Trạm 4 - Ý Nghĩa (Meaningful)',
+    'Trạm 5 - Tag', 'Trạm 5 - Thấu Hiểu (Interested)', 'Trạm 5 - Ứng Dụng (Actionable)', 'Trạm 5 - Ý Nghĩa (Meaningful)',
+    'Trạm 6 - Tag', 'Trạm 6 - Thấu Hiểu (Interested)', 'Trạm 6 - Ứng Dụng (Actionable)', 'Trạm 6 - Ý Nghĩa (Meaningful)',
+    'Điểm Hạnh Phúc (Happiness)', 'Điểm Lãnh Đạo (Leadership)', 'Chỉ Số Cân Bằng (%)'
+  ];
+  sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+  var headerRange = sheet.getRange(1, 1, 1, headers.length);
+  headerRange.setBackground('#991B1B');
+  headerRange.setFontColor('#FFFFFF');
+  headerRange.setFontWeight('bold');
+
+  // Di chuyển 3 cột Analytics cũ của các hàng hiện có (từ cột 29..31 sang 33..35)
+  var lastRow = sheet.getLastRow();
+  if (lastRow > 1) {
+    // Format cột Điểm Hạnh Phúc và Điểm Lãnh Đạo dạng số, Chỉ Số Cân Bằng dạng %
+    sheet.getRange(2, 33, lastRow - 1, 2).setNumberFormat('0.0');
+    for (var ri = 2; ri <= lastRow; ri++) {
+      var hVal = sheet.getRange(ri, 33).getValue();
+      var lVal = sheet.getRange(ri, 34).getValue();
+      if (typeof hVal === 'number' && hVal > 10) {
+        sheet.getRange(ri, 33).setValue(Math.round(hVal / 10) / 10);
+      }
+      if (typeof lVal === 'number' && lVal > 10) {
+        sheet.getRange(ri, 34).setValue(Math.round(lVal / 10) / 10);
+      }
+    }
+  }
+
+  // Tự động đồng bộ ngược Trạm 6 từ tab SHEET_APOLLO_LOGS nếu đã nộp
+  var logSheet = ss.getSheetByName(SHEET_APOLLO_LOGS);
+  var backfilled = 0;
+  if (logSheet) {
+    var logs = logSheet.getDataRange().getValues();
+    var sumData = sheet.getDataRange().getValues();
+    for (var i = 1; i < logs.length; i++) {
+      var sNum = String(logs[i][6] || '').replace(/\D+/g, '');
+      if (sNum === '6') {
+        var logEmail = String(logs[i][1] || '').trim().toLowerCase();
+        var logPhone = normalizePhone(logs[i][3] || '');
+        for (var r = 1; r < sumData.length; r++) {
+          var sumEmail = String(sumData[r][3] || '').trim().toLowerCase();
+          var sumPhone = normalizePhone(sumData[r][2] || '');
+          if ((logEmail && sumEmail === logEmail) || (logPhone && sumPhone === logPhone)) {
+            var tag = logs[i][9] || '';
+            var intr = logs[i][10] || '';
+            var act = logs[i][11] || '';
+            var mng = logs[i][12] || '';
+            sheet.getRange(r + 1, 29, 1, 4).setValues([[tag, intr, act, mng]]);
+            // Tính lại số trạm hoàn thành
+            var comp = 0;
+            for (var st = 1; st <= 6; st++) {
+              var stVal = sheet.getRange(r + 1, 8 + (st - 1) * 4 + 1).getValue();
+              if (stVal) comp++;
+            }
+            sheet.getRange(r + 1, 7).setValue("'" + comp + "/6");
+            var stStatus = comp >= 6 ? 'Đã hoàn thành 6 trạm' : ('Đang làm (' + comp + '/6)');
+            var curStat = String(sheet.getRange(r + 1, 8).getValue() || '');
+            if (curStat.indexOf(' • ') > -1) {
+              var prefix = curStat.split(' • ')[0].trim();
+              sheet.getRange(r + 1, 8).setValue(prefix + ' • ' + (comp >= 6 ? 'Đã hoàn thành 6 trạm' : ('IAM (' + comp + ' mục)')));
+            } else {
+              sheet.getRange(r + 1, 8).setValue(stStatus);
+            }
+            backfilled++;
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  return 'Migration complete: ' + lastRow + ' rows processed, backfilled ' + backfilled + ' station 6 entries.';
 }
 

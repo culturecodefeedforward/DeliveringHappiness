@@ -24,9 +24,14 @@
     }
 
     .app-header {
-      padding: 1.5rem;
+      padding: 1.25rem 6.5rem;
       text-align: center;
       position: relative;
+    }
+    @media (max-width: 640px) {
+      .app-header {
+        padding: 1.25rem 6.5rem 1.25rem 3rem;
+      }
     }
     
     .back-btn {
@@ -40,6 +45,18 @@
       transition: color 0.2s;
     }
     .back-btn:hover { color: var(--warm-yellow); }
+
+    #agBtnHeaderLogin:hover {
+      background: #fef3c7 !important;
+      border-color: #b45309 !important;
+      transform: translateY(-1px);
+    }
+
+    #agBtnCloseModal:hover {
+      background: #fee2e2 !important;
+      color: #ef4444 !important;
+      border-color: #fca5a5 !important;
+    }
 
     .app-title {
       font-size: 1.2rem;
@@ -551,14 +568,17 @@
 </head>
 
 <body>
-  <header class="app-header">
+  <header class="app-header" style="position: relative;">
     <a href="index.html" class="back-btn">&larr;</a>
     <h1 class="app-title">La bàn giá trị cốt lõi cá nhân - Personal Core Value Compass</h1>
+    <button type="button" id="agBtnHeaderLogin" style="position: absolute; right: 1rem; top: 1.5rem; display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.4rem 0.85rem; border-radius: 8px; border: 1px solid #d97706; background: #fffbeb; color: #b45309; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.2s;" title="Đăng nhập để lưu kết quả">🔑 Đăng Nhập</button>
   </header>
 
   <!-- STEP 0: CỔNG ĐỊNH DANH BẮT BUỘC (AUTH GATE MODAL) -->
   <div id="authGateModal" class="custom-modal" style="display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 1rem;">
-    <div style="background: #ffffff; border-radius: 16px; width: 100%; max-width: 520px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); overflow: hidden; border: 1px solid #e2e8f0; animation: modalPop 0.3s ease;">
+    <div style="background: #ffffff; border-radius: 16px; width: 100%; max-width: 520px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); overflow: hidden; border: 1px solid #e2e8f0; animation: modalPop 0.3s ease; position: relative;">
+      <!-- Nút đóng [X] cho Chế độ Xem trước (Guest Preview Mode) -->
+      <button type="button" id="agBtnCloseModal" style="position: absolute; top: 14px; right: 14px; z-index: 10; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #e2e8f0; background: #ffffff; color: #64748b; font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.06); line-height: 1;" title="Đóng &amp; Xem trước La bàn Giá trị (Guest Preview)">&times;</button>
       <!-- Top Bar Amber -->
       <div style="height: 6px; background: linear-gradient(90deg, #d97706, #f59e0b);"></div>
       <div style="padding: 2rem;">
@@ -574,27 +594,22 @@
 
         <!-- FORM NHẬP THÔNG TIN -->
         <div id="agFormSection">
-          <!-- GIAI ĐOẠN 1: CỔNG XÁC THỰC KHÓA CỨNG (EMAIL & MẬT KHẨU 4 SỐ CUỐI SĐT) -->
+          <!-- GIAI ĐOẠN 1: CỔNG XÁC THỰC ROSTER-FIRST (TỐI GIẢN 1 Ô NHẬP) -->
           <div id="agRosterSection">
             <div style="margin-bottom: 1rem;">
-              <label style="display: block; font-size: 0.88rem; font-weight: 700; color: #334155; margin-bottom: 0.4rem;">Email học viên đã đăng ký *</label>
-              <input type="email" id="agEmailLogin" placeholder="Ví dụ: hocvien@gmail.com" style="width: 100%; padding: 0.8rem 1rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; box-sizing: border-box; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#d97706'" onblur="this.style.borderColor='#cbd5e1'" autocomplete="email" />
-            </div>
-
-            <div style="margin-bottom: 1rem;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
-                <label style="font-size: 0.88rem; font-weight: 700; color: #334155;">Mật khẩu truy cập *</label>
-                <button type="button" id="agBtnTogglePwd" style="background: none; border: none; font-size: 0.78rem; color: #d97706; cursor: pointer; font-weight: 600;">👁️ Hiện mật khẩu</button>
-              </div>
-              <input type="password" id="agPasswordLogin" placeholder="Nhập 4 số cuối Số điện thoại của bạn" style="width: 100%; padding: 0.8rem 1rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; box-sizing: border-box; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#d97706'" onblur="this.style.borderColor='#cbd5e1'" autocomplete="current-password" />
-              <p style="font-size: 0.78rem; color: #64748b; margin-top: 0.35rem; margin-bottom: 0;">💡 Mật khẩu mặc định là 4 số cuối Số điện thoại đăng ký với BTC.</p>
+              <label style="display: block; font-size: 0.88rem; font-weight: 700; color: #334155; margin-bottom: 0.4rem;">Email hoặc Số điện thoại *</label>
+              <input type="text" id="agIdentifierLogin" placeholder="Nhập Email hoặc SĐT đã đăng ký với BTC..." style="width: 100%; padding: 0.8rem 1rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; box-sizing: border-box; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#d97706'" onblur="this.style.borderColor='#cbd5e1'" />
             </div>
 
             <div id="agRosterMsg" style="display: none; margin-bottom: 1rem;"></div>
 
             <button type="button" id="agBtnVerifyRoster" style="width: 100%; padding: 0.9rem; background: linear-gradient(135deg, #d97706, #f59e0b); color: #ffffff; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25); display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
-              <span>🚀 Đăng Nhập & Vào Làm Bài</span>
+              <span>🚀 Bắt Đầu Làm Bài</span>
             </button>
+
+            <p style="font-size: 0.78rem; color: #64748b; margin: 0.9rem 0 0 0; line-height: 1.4; text-align: center;">
+              💡 Học viên chính thức của DHM sẽ được mở khóa làm bài ngay lập tức (0 giây chờ, không cần check mail).
+            </p>
 
             <div style="margin-top: 1rem; text-align: center; border-top: 1px dashed #e2e8f0; padding-top: 0.8rem;">
               <a href="javascript:void(0)" id="agLinkOpenTrial" style="font-size: 0.82rem; color: #d97706; text-decoration: underline; font-weight: 600;">

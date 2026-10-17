@@ -226,6 +226,10 @@
                 <span>📜</span>
                 <span class="hidden sm:inline">Kho I•A•M</span>
             </button>
+            <button id="btn-header-login" type="button" class="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-brand-orange to-brand-amber text-black font-extrabold text-xs shadow-md hover:brightness-110 active:scale-95 transition-all cursor-pointer shrink-0" title="Đăng nhập tài khoản học viên">
+                <span>🔑</span>
+                <span>Đăng Nhập</span>
+            </button>
             <div id="user-chip" class="hidden flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-brand-card border border-brand-border text-xs shrink-0 select-none">
                 <div id="user-avatar" class="w-5 h-5 rounded-full bg-brand-amber/20 text-brand-amber flex items-center justify-center font-bold text-[10px] shrink-0">H</div>
                 <span id="user-display-name" class="font-medium text-slate-200 truncate max-w-[65px] sm:max-w-[130px]">Khách</span>
@@ -2292,6 +2296,8 @@
     <!-- AUTHENTICATION MODAL (Learner Login Gate) -->
     <div id="auth-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 hidden">
         <div class="bg-brand-surface border border-brand-border rounded-2xl p-6 lg:p-8 max-w-md w-full shadow-2xl space-y-5 relative glow-amber">
+            <!-- Close Button [X] for Guest Preview Mode -->
+            <button type="button" id="btn-close-auth-modal" class="absolute top-4 right-4 sm:top-5 sm:right-5 w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-brand-card hover:bg-red-500/20 text-slate-400 hover:text-red-400 border border-brand-border hover:border-red-500/40 text-lg font-bold flex items-center justify-center transition-all cursor-pointer z-10" title="Đóng cửa sổ (Xem trước khóa học)" aria-label="Đóng cửa sổ">✕</button>
             <div class="text-center space-y-2">
                 <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-orange to-brand-amber text-black font-extrabold flex items-center justify-center mx-auto text-xl shadow-lg shadow-orange-500/30">
                     DH
@@ -2419,20 +2425,22 @@
                             <label class="flex items-start gap-2 cursor-pointer pt-1">
                                 <input type="checkbox" id="trial-consent" checked class="mt-0.5 rounded border-slate-700 text-brand-amber focus:ring-brand-amber" />
                                 <span class="text-[10.5px] text-slate-400 leading-tight">
-                                    Đồng ý nhận liên kết kích hoạt học thử qua email theo Nghị định 13/2023/NĐ-CP.
+                                    Đăng ký thông tin &amp; nhận liên kết kích hoạt học thử qua email.
                                 </span>
                             </label>
 
-                            <button type="button" id="btn-request-trial" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber hover:from-orange-600 hover:to-amber-600 text-black font-extrabold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 active:scale-98">
+                            <button type="button" id="btn-request-trial" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber hover:from-orange-600 hover:to-amber-600 text-black font-extrabold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 active:scale-98 cursor-pointer">
                                 <span id="btn-request-trial-text">Gửi Liên Kết Học Thử Qua Email</span>
                                 <span id="btn-request-trial-arrow">➔</span>
                             </button>
 
-                            <!-- Dòng đếm ngược gửi lại phụ, tách biệt khỏi nút chính -->
-                            <div id="trial-resend-wrapper" class="hidden text-center text-[11px] text-slate-400 pt-1">
-                                <span id="trial-resend-countdown">Chưa nhận được email? Bạn có thể gửi lại sau 60s.</span>
-                                <button type="button" id="btn-resend-trial" class="hidden text-brand-amber font-semibold underline hover:text-amber-300 ml-1">
-                                    Gửi lại liên kết
+                            <!-- Trạng thái chờ kích hoạt (Single State - Single CTA) -->
+                            <div id="trial-resend-wrapper" class="hidden space-y-2 pt-1 text-center">
+                                <div id="trial-sent-notice" class="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs text-left">
+                                    📩 Liên kết kích hoạt đã được gửi tới email của bạn. Vui lòng kiểm tra hộp thư (kể cả mục Spam).
+                                </div>
+                                <button type="button" id="btn-resend-trial" disabled class="w-full py-2.5 px-4 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-1.5 bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700">
+                                    Gửi lại liên kết sau (60s)
                                 </button>
                             </div>
 
