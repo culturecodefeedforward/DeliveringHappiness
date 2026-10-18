@@ -738,12 +738,12 @@
                                 <th class="p-4">Họ và tên / Tài khoản</th>
                                 <th class="p-4">Cơ Sở / Chi Nhánh</th>
                                 <th class="p-4">Phòng Ban</th>
-                                <th class="p-4 text-center">Trạm 1 (Mindset)</th>
-                                <th class="p-4 text-center">Trạm 2 (Leadership)</th>
-                                <th class="p-4 text-center">Trạm 3 (Situational)</th>
-                                <th class="p-4 text-center">Trạm 4 (Skills & OILS)</th>
-                                <th class="p-4 text-center">Trạm 5 (Styles)</th>
-                                <th class="p-4 text-center">Trạm 6 (Action Plan)</th>
+                                <th class="p-4 text-center">TRẠM 1</th>
+                                <th class="p-4 text-center">TRẠM 2</th>
+                                <th class="p-4 text-center">TRẠM 3</th>
+                                <th class="p-4 text-center">TRẠM 4</th>
+                                <th class="p-4 text-center">TRẠM 5</th>
+                                <th class="p-4 text-center">TRẠM 6</th>
                                 <th class="p-4 text-center">Tiến Độ</th>
                                 <th class="p-4 text-right">Chi Tiết</th>
                             </tr>
@@ -1165,12 +1165,12 @@
             <div id="heatmap-view-iam" class="space-y-4 hidden">
                 <div class="flex items-center gap-2 flex-wrap">
                     <button type="button" class="heatmap-iam-filter-pill active px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-amber text-black shadow-sm" data-station="ALL">Tất cả Trạm (97)</button>
-                    <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="1">Trạm 1: Nền tảng Hạnh phúc</button>
-                    <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="2">Trạm 2: Bóng Lãnh Đạo</button>
-                    <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="3">Trạm 3: Lãnh Đạo Tình Huống S1-S4</button>
-                    <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="4">Trạm 4: Kỹ Năng OILS & TKI</button>
-                    <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="5">Trạm 5: My Colors 4 Phong Cách</button>
-                    <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="6">Trạm 6: Kế Hoạch Hành Động (Action Plan)</button>
+                    <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="1">Trạm 1</button>
+                    <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="2">Trạm 2</button>
+                    <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="3">Trạm 3</button>
+                    <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="4">Trạm 4</button>
+                    <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="5">Trạm 5</button>
+                    <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="6">Trạm 6</button>
                     <button type="button" class="heatmap-iam-filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="ACTION">🎯 Cam Kết Stop • Start • Continue</button>
                 </div>
                 <div id="heatmap-iam-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -3092,12 +3092,12 @@
                 if (iamStationHeatmap) {
                     iamStationHeatmap.innerHTML = "";
                     const stationNames = [
-                        "Trạm 1 (Mindset)",
-                        "Trạm 2 (Leadership)",
-                        "Trạm 3 (Situational)",
-                        "Trạm 4 (Skills & OILS)",
-                        "Trạm 5 (Styles)",
-                        "Trạm 6 (Action Plan)"
+                        "Trạm 1",
+                        "Trạm 2",
+                        "Trạm 3",
+                        "Trạm 4",
+                        "Trạm 5",
+                        "Trạm 6"
                     ];
                     for (let i = 0; i < 6; i++) {
                         const pct = totalInCohort > 0 ? Math.round((stationCounts[i] / totalInCohort) * 100) : 0;
@@ -3303,12 +3303,12 @@
                 }
 
                 const stationNames = [
-                    "Trạm 1: Nền Tảng Hạnh Phúc & Mindset",
-                    "Trạm 2: Bóng Lãnh Đạo (Shadow of the Leader)",
-                    "Trạm 3: Lãnh Đạo Tình Huống S1–S4 & An Toàn Tâm Lý",
-                    "Trạm 4: Kỹ Năng Đối Thoại (OILS, GROW & TKI)",
-                    "Trạm 5: My Colors 4 Phong Cách & Thấu Cảm Đội Ngũ",
-                    "Trạm 6: Kế Hoạch Hành Động (Action Plan) & Cam Kết Thực Thi"
+                    "Trạm 1",
+                    "Trạm 2",
+                    "Trạm 3",
+                    "Trạm 4",
+                    "Trạm 5",
+                    "Trạm 6"
                 ];
 
                 if (iamModalStationsContainer) {
@@ -3321,7 +3321,7 @@
                         const card = document.createElement("div");
                         card.className = `p-4 rounded-2xl border ${isDone ? 'bg-brand-card/50 border-brand-border' : 'bg-brand-card/20 border-brand-border/40 opacity-60'} space-y-2.5`;
 
-                        const titleText = (stData && stData.title) ? `Trạm ${i}: ${stData.title}` : stationNames[i - 1];
+                        const titleText = stationNames[i - 1];
                         const tagBadge = (stData && stData.tag) ? `<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[11px] font-semibold border border-emerald-500/30">🏷️ ${escapeHTML(stData.tag)}</span>` : "";
                         const statusBadge = isDone 
                             ? '<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">✓ ĐÃ HOÀN THÀNH</span>'
@@ -4079,12 +4079,12 @@
                                 const stLive = matched.iamStations[`station${i}`];
                                 if (stLive && (stLive.interested || stLive.actionable || stLive.meaningful || stLive.title)) {
                                     if (!hl.progress.stations[i - 1]) {
-                                        hl.progress.stations[i - 1] = { stationId: i, title: `Trạm ${String(i).padStart(2, '0')}`, interested: "", actionable: "", meaningful: "" };
+                                        hl.progress.stations[i - 1] = { stationId: i, title: `Trạm ${i}`, interested: "", actionable: "", meaningful: "" };
                                     }
                                     hl.progress.stations[i - 1].interested = stLive.interested || hl.progress.stations[i - 1].interested;
                                     hl.progress.stations[i - 1].actionable = stLive.actionable || hl.progress.stations[i - 1].actionable;
                                     hl.progress.stations[i - 1].meaningful = stLive.meaningful || hl.progress.stations[i - 1].meaningful;
-                                    if (stLive.title) hl.progress.stations[i - 1].title = stLive.title;
+                                    hl.progress.stations[i - 1].title = `Trạm ${i}`;
                                 }
                             }
                             hl.progress.completedStations = matched.iamCompletedStationsCount || Object.keys(matched.iamStations).length;
@@ -4818,9 +4818,9 @@
                             NHẬT KÝ THU HOẠCH 6 TRẠM (I•A•M)
                         </div>
                         <div class="space-y-2.5">
-                            ${stations.length > 0 ? stations.map(st => `
+                            ${stations.length > 0 ? stations.map((st, sIdx) => `
                                 <div class="p-3 rounded-xl bg-brand-card/50 border border-brand-border space-y-1.5">
-                                    <div class="font-bold text-blue-400 text-xs">${escapeHTML(st.title || "")}</div>
+                                    <div class="font-bold text-blue-400 text-xs">Trạm ${st.stationId || (sIdx + 1)}</div>
                                     <div class="space-y-1 text-slate-300 text-[11px]">
                                         <div>💡 <strong class="text-slate-200">Tâm đắc (I):</strong> ${escapeHTML(st.interested || "")}</div>
                                         <div>⚡ <strong class="text-slate-200">Hành động (A):</strong> ${escapeHTML(st.actionable || "")}</div>
@@ -4880,13 +4880,13 @@
                     card.onclick = () => openHeatmapStudentModal(l);
 
                     let contentHtml = "";
-                    const st1 = (l.progress?.stations && l.progress.stations[0]) || { title: "Trạm 01 • Nền Tảng", interested: "Chưa nộp" };
+                    const st1 = (l.progress?.stations && l.progress.stations[0]) || { title: "Trạm 1", interested: "Chưa nộp" };
                     const actionCommit = l.progress?.actionCommitment || { stop: "Chưa cập nhật", start: "Chưa cập nhật", continue: "Chưa cập nhật" };
 
                     if (heatmapSelectedStationFilter === "ALL") {
                         contentHtml = `
                             <div class="text-[11px] text-slate-300 space-y-1">
-                                <div class="text-blue-400 font-bold">${escapeHTML(st1.title || "Trạm 1: Nền tảng Hạnh phúc")}</div>
+                                <div class="text-blue-400 font-bold">Trạm 1</div>
                                 <div>💡 ${escapeHTML(st1.interested || "")}</div>
                                 <div class="pt-1.5 border-t border-brand-border/60">
                                     🛑 <strong class="text-slate-200">Stop:</strong> ${escapeHTML(actionCommit.stop || "")}
@@ -4906,7 +4906,7 @@
                         const st = (l.progress?.stations && l.progress.stations[stIdx]) || st1;
                         contentHtml = `
                             <div class="text-[11px] text-slate-300 space-y-1">
-                                <div class="text-blue-400 font-bold">${escapeHTML(st.title || "")}</div>
+                                <div class="text-blue-400 font-bold">Trạm ${stIdx + 1}</div>
                                 <div>💡 <strong>Tâm đắc:</strong> ${escapeHTML(st.interested || "")}</div>
                                 <div>⚡ <strong>Hành động:</strong> ${escapeHTML(st.actionable || "")}</div>
                                 <div>🌱 <strong>Ý nghĩa:</strong> ${escapeHTML(st.meaningful || "")}</div>
