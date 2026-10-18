@@ -4818,16 +4818,27 @@
                             NHẬT KÝ THU HOẠCH 6 TRẠM (I•A•M)
                         </div>
                         <div class="space-y-2.5">
-                            ${stations.length > 0 ? stations.map((st, sIdx) => `
-                                <div class="p-3 rounded-xl bg-brand-card/50 border border-brand-border space-y-1.5">
-                                    <div class="font-bold text-blue-400 text-xs">Trạm ${st.stationId || (sIdx + 1)}</div>
-                                    <div class="space-y-1 text-slate-300 text-[11px]">
-                                        <div>💡 <strong class="text-slate-200">Tâm đắc (I):</strong> ${escapeHTML(st.interested || "")}</div>
-                                        <div>⚡ <strong class="text-slate-200">Hành động (A):</strong> ${escapeHTML(st.actionable || "")}</div>
-                                        <div>🌱 <strong class="text-slate-200">Ý nghĩa (M):</strong> ${escapeHTML(st.meaningful || "")}</div>
+                            ${[1, 2, 3, 4, 5, 6].map(i => {
+                                const st = (stations && stations.find(s => s.stationId === i)) || (stations && stations[i - 1]);
+                                const hasData = st && (st.interested || st.actionable || st.meaningful);
+                                return `
+                                    <div class="p-3 rounded-xl ${hasData ? 'bg-brand-card/50 border-brand-border' : 'bg-brand-card/20 border-brand-border/40 opacity-70'} border space-y-1.5">
+                                        <div class="flex items-center justify-between">
+                                            <div class="font-bold text-blue-400 text-xs">Trạm ${i}</div>
+                                            ${hasData ? '<span class="text-[10px] font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">✓ Đã nộp</span>' : '<span class="text-[10px] text-slate-500 bg-brand-dark px-2 py-0.5 rounded">Chưa nộp</span>'}
+                                        </div>
+                                        ${hasData ? `
+                                            <div class="space-y-1 text-slate-300 text-[11px]">
+                                                <div>💡 <strong class="text-slate-200">Tâm đắc (I):</strong> ${escapeHTML(st.interested || "—")}</div>
+                                                <div>⚡ <strong class="text-slate-200">Hành động (A):</strong> ${escapeHTML(st.actionable || "—")}</div>
+                                                <div>🌱 <strong class="text-slate-200">Ý nghĩa (M):</strong> ${escapeHTML(st.meaningful || "—")}</div>
+                                            </div>
+                                        ` : `
+                                            <div class="text-xs text-slate-500 italic p-1">Học viên chưa gửi bài thu hoạch trạm này.</div>
+                                        `}
                                     </div>
-                                </div>
-                            `).join("") : '<div class="p-3 text-xs text-slate-500">Chưa có nhật ký thu hoạch trạm nào.</div>'}
+                                `;
+                            }).join("")}
                         </div>
                     </div>
                 `;
@@ -4903,15 +4914,25 @@
                         `;
                     } else {
                         const stIdx = parseInt(heatmapSelectedStationFilter, 10) - 1;
-                        const st = (l.progress?.stations && l.progress.stations[stIdx]) || st1;
-                        contentHtml = `
-                            <div class="text-[11px] text-slate-300 space-y-1">
-                                <div class="text-blue-400 font-bold">Trạm ${stIdx + 1}</div>
-                                <div>💡 <strong>Tâm đắc:</strong> ${escapeHTML(st.interested || "")}</div>
-                                <div>⚡ <strong>Hành động:</strong> ${escapeHTML(st.actionable || "")}</div>
-                                <div>🌱 <strong>Ý nghĩa:</strong> ${escapeHTML(st.meaningful || "")}</div>
-                            </div>
-                        `;
+                        const targetStationId = stIdx + 1;
+                        const st = (l.progress?.stations && l.progress.stations.find(s => s.stationId === targetStationId)) || (l.progress?.stations && l.progress.stations[stIdx]);
+                        if (st && (st.interested || st.actionable || st.meaningful)) {
+                            contentHtml = `
+                                <div class="text-[11px] text-slate-300 space-y-1">
+                                    <div class="text-blue-400 font-bold">Trạm ${targetStationId}</div>
+                                    <div>💡 <strong>Tâm đắc:</strong> ${escapeHTML(st.interested || "—")}</div>
+                                    <div>⚡ <strong>Hành động:</strong> ${escapeHTML(st.actionable || "—")}</div>
+                                    <div>🌱 <strong>Ý nghĩa:</strong> ${escapeHTML(st.meaningful || "—")}</div>
+                                </div>
+                            `;
+                        } else {
+                            contentHtml = `
+                                <div class="text-[11px] text-slate-300 space-y-1">
+                                    <div class="text-blue-400 font-bold">Trạm ${targetStationId}</div>
+                                    <div class="text-xs text-slate-500 italic p-1">Học viên chưa gửi bài thu hoạch trạm này.</div>
+                                </div>
+                            `;
+                        }
                     }
 
                     const socColor = l.social?.color || "#38bdf8";
@@ -5026,7 +5047,7 @@
                     l.tki?.cooperativeness || 0,
                     l.tki?.assertiveness || 0,
                     `"${(l.progress?.meValue || '').replace(/"/g, '""')}"`,
-                    l.progress?.completedStations || 6,
+                    l.progress?.completedStations !== undefined ? l.progress.completedStations : (l.progress?.stations ? l.progress.stations.length : 0),
                     `"${(l.progress?.actionCommitment?.stop || '').replace(/"/g, '""')}"`,
                     `"${(l.progress?.actionCommitment?.start || '').replace(/"/g, '""')}"`,
                     `"${(l.progress?.actionCommitment?.continue || '').replace(/"/g, '""')}"`
