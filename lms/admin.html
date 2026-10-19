@@ -66,10 +66,10 @@
         /* ========================================== */
         :root {
             /* Social Styles (Slide 93 My Color - v11) */
-            --color-driver: #C00000;       /* Đỏ - Đại Bàng (Tiên Phong) */
-            --color-expressive: #FFC000;   /* Vàng - Chim Công (Biểu Cảm) */
-            --color-amiable: #92D050;      /* Xanh Lá - Bồ Câu (Hòa Nhã) */
-            --color-analytical: #2563EB;   /* Xanh Dương - Cú Mèo (Phân Tích) */
+            --color-driver: #C00000;       /* Đỏ - Đại Bàng (Chỉ Đạo) */
+            --color-expressive: #FFC000;   /* Vàng - Chim Công (Thể Hiện) */
+            --color-amiable: #92D050;      /* Xanh Lá - Bồ Câu (Dễ Chịu) */
+            --color-analytical: #2563EB;   /* Xanh Dương - Chim Cú (Phân Tích) */
 
             /* TKI Conflict Modes (Slide 82 v11: What's the best way to handle conflict) */
             --color-competing: #DFAB45;     /* Vàng Gold - Cạnh Tranh (Top-Left) */
@@ -1128,10 +1128,10 @@
 
                         <!-- Quadrant Labels: Mỗi ô thể hiện số lượng phần tử và biểu đạt chung bằng 1 màu duy nhất -->
                         <div id="quad-tl" class="quadrant-bg-label" style="top: 5%; left: 4%; color: var(--color-amiable);" data-zone="tl" title="Nhấp để lọc phân khúc này">
-                            HÒA NHÃ (AMIABLE)
+                            DỄ CHỊU (AMIABLE)
                         </div>
                         <div id="quad-tr" class="quadrant-bg-label" style="top: 5%; right: 4%; color: var(--color-expressive); text-align: right;" data-zone="tr" title="Nhấp để lọc phân khúc này">
-                            BIỂU CẢM (EXPRESSIVE)
+                            THỂ HIỆN (EXPRESSIVE)
                         </div>
                         <div id="quad-center" class="quadrant-bg-label" style="top: 50%; left: 50%; transform: translate(-50%, -50%); display: none; color: var(--color-compromising); text-align: center;" data-zone="center" title="Nhấp để lọc phân khúc này">
                             THỎA HIỆP (COMPROMISING)
@@ -1140,7 +1140,7 @@
                             PHÂN TÍCH (ANALYTICAL)
                         </div>
                         <div id="quad-br" class="quadrant-bg-label" style="bottom: 5%; right: 4%; color: var(--color-driver); text-align: right;" data-zone="br" title="Nhấp để lọc phân khúc này">
-                            TIÊN PHONG (DRIVER)
+                            CHỈ ĐẠO (DRIVER)
                         </div>
                     </div>
                 </div>
@@ -1217,8 +1217,8 @@
                     <div class="p-4 rounded-xl bg-brand-dark/80 border border-brand-border/80 space-y-2">
                         <h5 class="text-xs font-bold text-blue-400 uppercase tracking-wider">Khuyến Nghị Sư Phạm Thực Chiến Cho Ban Giảng Huấn</h5>
                         <ul class="text-xs text-slate-300 space-y-1.5 list-disc list-inside leading-relaxed">
-                            <li><strong>Khối Học Thuật & Vận Hành:</strong> Tỷ trọng Phân Tích (Cú Mèo) cao. Khi thảo luận Trạm 3 & 4, giảng viên nên trình bày số liệu khảo sát, cấu trúc khung OILS mạch lạc trước khi yêu cầu đóng vai (role-play).</li>
-                            <li><strong>Khối Trung Tâm & Tư Vấn Tuyển Sinh:</strong> Tỷ trọng Biểu Cảm (Chim Công) và Tiên Phong (Đại Bàng) chiếm ưu thế. Cần kích hoạt năng lượng hành động và gắn kết mục tiêu văn hóa với kết quả kinh doanh.</li>
+                            <li><strong>Khối Học Thuật & Vận Hành:</strong> Tỷ trọng Phân Tích (Chim Cú) cao. Khi thảo luận Trạm 3 & 4, giảng viên nên trình bày số liệu khảo sát, cấu trúc khung OILS mạch lạc trước khi yêu cầu đóng vai (role-play).</li>
+                            <li><strong>Khối Trung Tâm & Tư Vấn Tuyển Sinh:</strong> Tỷ trọng Thể Hiện (Chim Công) và Chỉ Đạo (Đại Bàng) chiếm ưu thế. Cần kích hoạt năng lượng hành động và gắn kết mục tiêu văn hóa với kết quả kinh doanh.</li>
                             <li><strong>Cân Bằng Xung Đột TKI:</strong> Hơn 28% quản lý có xu hướng Hợp Tác Win-Win, nhưng cần chú ý 16% có xu hướng Né Tránh khi gặp mâu thuẫn nhạy cảm giữa các phòng ban. Trạm 4 sẽ là đòn bẩy quan trọng để gỡ bỏ tâm lý này.</li>
                         </ul>
                     </div>
@@ -3974,10 +3974,10 @@
             // ==========================================
             // Bảng màu chuẩn hóa: Slide 93 My Color (Social Styles) & Slide 82 (TKI) trong v11
             const SOCIAL_STYLE_CONFIG = {
-                "Driver": { name: "Tiên Phong (Đại Bàng)", icon: "🦅", color: "#C00000", cls: "driver" },
-                "Expressive": { name: "Biểu Cảm (Chim Công)", icon: "🦚", color: "#FFC000", cls: "expressive" },
-                "Amiable": { name: "Hòa Nhã (Bồ Câu)", icon: "🕊️", color: "#92D050", cls: "amiable" },
-                "Analytical": { name: "Phân Tích (Cú Mèo)", icon: "🦉", color: "#2563EB", cls: "analytical" }
+                "Driver": { name: "Chỉ Đạo (Đại Bàng)", icon: "🦅", color: "#C00000", cls: "driver" },
+                "Expressive": { name: "Thể Hiện (Chim Công)", icon: "🦚", color: "#FFC000", cls: "expressive" },
+                "Amiable": { name: "Dễ Chịu (Chim Bồ Câu)", icon: "🕊️", color: "#92D050", cls: "amiable" },
+                "Analytical": { name: "Phân Tích (Chim Cú)", icon: "🦉", color: "#2563EB", cls: "analytical" }
             };
 
             const TKI_MODE_CONFIG = {
@@ -4299,10 +4299,10 @@
                     const anPct = totalInPool > 0 ? ((analyticalCount / totalInPool) * 100).toFixed(1) : 0;
                     const dPct = totalInPool > 0 ? ((driverCount / totalInPool) * 100).toFixed(1) : 0;
 
-                    qTL.innerHTML = `<div class="flex flex-col items-start gap-0.5"><div class="flex items-center gap-1 font-extrabold text-[11px] leading-tight"><span>🕊️ HÒA NHÃ</span><span class="text-[9px] opacity-75">(AMIABLE)</span></div><div class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 border border-white/10" style="color: var(--color-amiable);">${amiableCount} HV (${aPct}%)</div></div>`;
+                    qTL.innerHTML = `<div class="flex flex-col items-start gap-0.5"><div class="flex items-center gap-1 font-extrabold text-[11px] leading-tight"><span>🕊️ DỄ CHỊU</span><span class="text-[9px] opacity-75">(AMIABLE)</span></div><div class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 border border-white/10" style="color: var(--color-amiable);">${amiableCount} HV (${amPct}%)</div></div>`;
                     qTL.style.color = "var(--color-amiable)";
 
-                    qTR.innerHTML = `<div class="flex flex-col items-end gap-0.5"><div class="flex items-center gap-1 font-extrabold text-[11px] leading-tight"><span>🦚 BIỂU CẢM</span><span class="text-[9px] opacity-75">(EXPRESSIVE)</span></div><div class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 border border-white/10" style="color: var(--color-expressive);">${expressiveCount} HV (${ePct}%)</div></div>`;
+                    qTR.innerHTML = `<div class="flex flex-col items-end gap-0.5"><div class="flex items-center gap-1 font-extrabold text-[11px] leading-tight"><span>🦚 THỂ HIỆN</span><span class="text-[9px] opacity-75">(EXPRESSIVE)</span></div><div class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 border border-white/10" style="color: var(--color-expressive);">${expressiveCount} HV (${ePct}%)</div></div>`;
                     qTR.style.color = "var(--color-expressive)";
 
                     if (qCenter) qCenter.style.display = "none";
@@ -4310,7 +4310,7 @@
                     qBL.innerHTML = `<div class="flex flex-col items-start gap-0.5"><div class="flex items-center gap-1 font-extrabold text-[11px] leading-tight"><span>🦉 PHÂN TÍCH</span><span class="text-[9px] opacity-75">(ANALYTICAL)</span></div><div class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 border border-white/10" style="color: var(--color-analytical);">${analyticalCount} HV (${anPct}%)</div></div>`;
                     qBL.style.color = "var(--color-analytical)";
 
-                    qBR.innerHTML = `<div class="flex flex-col items-end gap-0.5"><div class="flex items-center gap-1 font-extrabold text-[11px] leading-tight"><span>🦅 TIÊN PHONG</span><span class="text-[9px] opacity-75">(DRIVER)</span></div><div class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 border border-white/10" style="color: var(--color-driver);">${driverCount} HV (${dPct}%)</div></div>`;
+                    qBR.innerHTML = `<div class="flex flex-col items-end gap-0.5"><div class="flex items-center gap-1 font-extrabold text-[11px] leading-tight"><span>🦅 CHỈ ĐẠO</span><span class="text-[9px] opacity-75">(DRIVER)</span></div><div class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 border border-white/10" style="color: var(--color-driver);">${driverCount} HV (${dPct}%)</div></div>`;
                     qBR.style.color = "var(--color-driver)";
 
                     if (thStyle) thStyle.textContent = "Phong Cách";
@@ -4442,10 +4442,10 @@
 
                 if (heatmapActiveSubtab === "social") {
                     const styles = [
-                        { key: "Expressive", name: "Biểu Cảm", icon: "🦚", cls: "expressive", color: "#FFC000" },
-                        { key: "Driver", name: "Tiên Phong", icon: "🦅", cls: "driver", color: "#C00000" },
+                        { key: "Expressive", name: "Thể Hiện", icon: "🦚", cls: "expressive", color: "#FFC000" },
+                        { key: "Driver", name: "Chỉ Đạo", icon: "🦅", cls: "driver", color: "#C00000" },
                         { key: "Analytical", name: "Phân Tích", icon: "🦉", cls: "analytical", color: "#2563EB" },
-                        { key: "Amiable", name: "Hòa Nhã", icon: "🕊️", cls: "amiable", color: "#92D050" }
+                        { key: "Amiable", name: "Dễ Chịu", icon: "🕊️", cls: "amiable", color: "#92D050" }
                     ];
 
                     styles.forEach(s => {
@@ -5106,10 +5106,10 @@
 
                 if (socEl) {
                     socEl.innerHTML = `
-                        <div>• <strong class="text-rose-400">Tiên Phong (Driver - ${(socStats.Driver * 100 / total).toFixed(1)}% / ${socStats.Driver} người):</strong> Quyết đoán, kiên định, hướng đến kết quả và KPI trung tâm.</div>
+                        <div>• <strong class="text-rose-400">Chỉ Đạo (Driver - ${(socStats.Driver * 100 / total).toFixed(1)}% / ${socStats.Driver} người):</strong> Quyết đoán, kiên định, hướng đến kết quả và KPI trung tâm.</div>
                         <div>• <strong class="text-cyan-400">Phân Tích (Analytical - ${(socStats.Analytical * 100 / total).toFixed(1)}% / ${socStats.Analytical} người):</strong> Chiếm tỷ trọng cao ở khối Học thuật và Vận hành, coi trọng số liệu và quy trình chuẩn.</div>
-                        <div>• <strong class="text-emerald-400">Hòa Nhã (Amiable - ${(socStats.Amiable * 100 / total).toFixed(1)}% / ${socStats.Amiable} người):</strong> Nuôi dưỡng quan hệ, tập trung ở Khối Trải nghiệm khách hàng & Nhân sự.</div>
-                        <div>• <strong class="text-amber-400">Biểu Cảm (Expressive - ${(socStats.Expressive * 100 / total).toFixed(1)}% / ${socStats.Expressive} người):</strong> Tràn đầy năng lượng, hoạt ngôn, truyền cảm hứng tại các cơ sở.</div>
+                        <div>• <strong class="text-emerald-400">Dễ Chịu (Amiable - ${(socStats.Amiable * 100 / total).toFixed(1)}% / ${socStats.Amiable} người):</strong> Nuôi dưỡng quan hệ, tập trung ở Khối Trải nghiệm khách hàng & Nhân sự.</div>
+                        <div>• <strong class="text-amber-400">Thể Hiện (Expressive - ${(socStats.Expressive * 100 / total).toFixed(1)}% / ${socStats.Expressive} người):</strong> Tràn đầy năng lượng, hoạt ngôn, truyền cảm hứng tại các cơ sở.</div>
                     `;
                 }
 
