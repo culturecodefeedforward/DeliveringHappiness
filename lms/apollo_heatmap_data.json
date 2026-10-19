@@ -63,7 +63,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 36,
         "responsiveness": 24,
         "scores": {
@@ -76,7 +76,7 @@
       "tki": {
         "dominantMode": "avoiding",
         "dominantVN": "Né Tránh",
-        "dominantColor": "#64748b",
+        "dominantColor": "#911084",
         "dominantSub": "Lose - Lose (Trì hoãn xung đột)",
         "secondaryMode": "collaborating",
         "secondaryVN": "Hợp Tác",
@@ -153,7 +153,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 83,
         "responsiveness": 86,
         "scores": {
@@ -166,7 +166,7 @@
       "tki": {
         "dominantMode": "compromising",
         "dominantVN": "Thỏa Hiệp",
-        "dominantColor": "#f59e0b",
+        "dominantColor": "#C90D40",
         "dominantSub": "Mỗi bên lùi một bước (Trung tâm)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -243,7 +243,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 72,
         "responsiveness": 69,
         "scores": {
@@ -256,7 +256,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -333,7 +333,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 67,
         "responsiveness": 79,
         "scores": {
@@ -346,7 +346,7 @@
       "tki": {
         "dominantMode": "accommodating",
         "dominantVN": "Nhượng Bộ",
-        "dominantColor": "#6366f1",
+        "dominantColor": "#280980",
         "dominantSub": "Lose - Win (Ưu tiên giữ hòa khí)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -423,7 +423,7 @@
         "styleVN": "Hòa Nhã (Bồ Câu)",
         "icon": "🕊️",
         "quadrant": "Q2_TopLeft",
-        "color": "#10b981",
+        "color": "#92D050",
         "assertiveness": 42,
         "responsiveness": 70,
         "scores": {
@@ -436,7 +436,7 @@
       "tki": {
         "dominantMode": "accommodating",
         "dominantVN": "Nhượng Bộ",
-        "dominantColor": "#6366f1",
+        "dominantColor": "#280980",
         "dominantSub": "Lose - Win (Ưu tiên giữ hòa khí)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -513,7 +513,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 80,
         "responsiveness": 74,
         "scores": {
@@ -526,7 +526,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "compromising",
         "secondaryVN": "Thỏa Hiệp",
@@ -603,7 +603,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 28,
         "responsiveness": 21,
         "scores": {
@@ -616,7 +616,7 @@
       "tki": {
         "dominantMode": "compromising",
         "dominantVN": "Thỏa Hiệp",
-        "dominantColor": "#f59e0b",
+        "dominantColor": "#C90D40",
         "dominantSub": "Mỗi bên lùi một bước (Trung tâm)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -693,7 +693,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 85,
         "responsiveness": 38,
         "scores": {
@@ -706,7 +706,7 @@
       "tki": {
         "dominantMode": "competing",
         "dominantVN": "Cạnh Tranh",
-        "dominantColor": "#ef4444",
+        "dominantColor": "#DFAB45",
         "dominantSub": "Win - Lose (Áp đặt quyền lực)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -783,7 +783,7 @@
         "styleVN": "Hòa Nhã (Bồ Câu)",
         "icon": "🕊️",
         "quadrant": "Q2_TopLeft",
-        "color": "#10b981",
+        "color": "#92D050",
         "assertiveness": 45,
         "responsiveness": 61,
         "scores": {
@@ -796,7 +796,7 @@
       "tki": {
         "dominantMode": "accommodating",
         "dominantVN": "Nhượng Bộ",
-        "dominantColor": "#6366f1",
+        "dominantColor": "#280980",
         "dominantSub": "Lose - Win (Ưu tiên giữ hòa khí)",
         "secondaryMode": "compromising",
         "secondaryVN": "Thỏa Hiệp",
@@ -873,7 +873,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 38,
         "responsiveness": 25,
         "scores": {
@@ -886,7 +886,7 @@
       "tki": {
         "dominantMode": "avoiding",
         "dominantVN": "Né Tránh",
-        "dominantColor": "#64748b",
+        "dominantColor": "#911084",
         "dominantSub": "Lose - Lose (Trì hoãn xung đột)",
         "secondaryMode": "collaborating",
         "secondaryVN": "Hợp Tác",
@@ -963,7 +963,7 @@
         "styleVN": "Hòa Nhã (Bồ Câu)",
         "icon": "🕊️",
         "quadrant": "Q2_TopLeft",
-        "color": "#10b981",
+        "color": "#92D050",
         "assertiveness": 24,
         "responsiveness": 76,
         "scores": {
@@ -976,7 +976,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -1053,7 +1053,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 61,
         "responsiveness": 27,
         "scores": {
@@ -1066,7 +1066,7 @@
       "tki": {
         "dominantMode": "competing",
         "dominantVN": "Cạnh Tranh",
-        "dominantColor": "#ef4444",
+        "dominantColor": "#DFAB45",
         "dominantSub": "Win - Lose (Áp đặt quyền lực)",
         "secondaryMode": "collaborating",
         "secondaryVN": "Hợp Tác",
@@ -1143,7 +1143,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 39,
         "responsiveness": 25,
         "scores": {
@@ -1156,7 +1156,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -1233,7 +1233,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 18,
         "responsiveness": 42,
         "scores": {
@@ -1246,7 +1246,7 @@
       "tki": {
         "dominantMode": "avoiding",
         "dominantVN": "Né Tránh",
-        "dominantColor": "#64748b",
+        "dominantColor": "#911084",
         "dominantSub": "Lose - Lose (Trì hoãn xung đột)",
         "secondaryMode": "collaborating",
         "secondaryVN": "Hợp Tác",
@@ -1323,7 +1323,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 39,
         "responsiveness": 44,
         "scores": {
@@ -1336,7 +1336,7 @@
       "tki": {
         "dominantMode": "avoiding",
         "dominantVN": "Né Tránh",
-        "dominantColor": "#64748b",
+        "dominantColor": "#911084",
         "dominantSub": "Lose - Lose (Trì hoãn xung đột)",
         "secondaryMode": "accommodating",
         "secondaryVN": "Nhượng Bộ",
@@ -1413,7 +1413,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 62,
         "responsiveness": 59,
         "scores": {
@@ -1426,7 +1426,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -1503,7 +1503,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 35,
         "responsiveness": 30,
         "scores": {
@@ -1516,7 +1516,7 @@
       "tki": {
         "dominantMode": "avoiding",
         "dominantVN": "Né Tránh",
-        "dominantColor": "#64748b",
+        "dominantColor": "#911084",
         "dominantSub": "Lose - Lose (Trì hoãn xung đột)",
         "secondaryMode": "compromising",
         "secondaryVN": "Thỏa Hiệp",
@@ -1593,7 +1593,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 44,
         "responsiveness": 32,
         "scores": {
@@ -1606,7 +1606,7 @@
       "tki": {
         "dominantMode": "avoiding",
         "dominantVN": "Né Tránh",
-        "dominantColor": "#64748b",
+        "dominantColor": "#911084",
         "dominantSub": "Lose - Lose (Trì hoãn xung đột)",
         "secondaryMode": "collaborating",
         "secondaryVN": "Hợp Tác",
@@ -1683,7 +1683,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 80,
         "responsiveness": 78,
         "scores": {
@@ -1696,7 +1696,7 @@
       "tki": {
         "dominantMode": "compromising",
         "dominantVN": "Thỏa Hiệp",
-        "dominantColor": "#f59e0b",
+        "dominantColor": "#C90D40",
         "dominantSub": "Mỗi bên lùi một bước (Trung tâm)",
         "secondaryMode": "collaborating",
         "secondaryVN": "Hợp Tác",
@@ -1773,7 +1773,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 33,
         "responsiveness": 38,
         "scores": {
@@ -1786,7 +1786,7 @@
       "tki": {
         "dominantMode": "compromising",
         "dominantVN": "Thỏa Hiệp",
-        "dominantColor": "#f59e0b",
+        "dominantColor": "#C90D40",
         "dominantSub": "Mỗi bên lùi một bước (Trung tâm)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -1863,7 +1863,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 59,
         "responsiveness": 57,
         "scores": {
@@ -1876,7 +1876,7 @@
       "tki": {
         "dominantMode": "compromising",
         "dominantVN": "Thỏa Hiệp",
-        "dominantColor": "#f59e0b",
+        "dominantColor": "#C90D40",
         "dominantSub": "Mỗi bên lùi một bước (Trung tâm)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -1953,7 +1953,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 82,
         "responsiveness": 63,
         "scores": {
@@ -1966,7 +1966,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -2043,7 +2043,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 42,
         "responsiveness": 41,
         "scores": {
@@ -2056,7 +2056,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -2133,7 +2133,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 33,
         "responsiveness": 37,
         "scores": {
@@ -2146,7 +2146,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -2223,7 +2223,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 79,
         "responsiveness": 78,
         "scores": {
@@ -2236,7 +2236,7 @@
       "tki": {
         "dominantMode": "compromising",
         "dominantVN": "Thỏa Hiệp",
-        "dominantColor": "#f59e0b",
+        "dominantColor": "#C90D40",
         "dominantSub": "Mỗi bên lùi một bước (Trung tâm)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -2313,7 +2313,7 @@
         "styleVN": "Hòa Nhã (Bồ Câu)",
         "icon": "🕊️",
         "quadrant": "Q2_TopLeft",
-        "color": "#10b981",
+        "color": "#92D050",
         "assertiveness": 24,
         "responsiveness": 72,
         "scores": {
@@ -2326,7 +2326,7 @@
       "tki": {
         "dominantMode": "accommodating",
         "dominantVN": "Nhượng Bộ",
-        "dominantColor": "#6366f1",
+        "dominantColor": "#280980",
         "dominantSub": "Lose - Win (Ưu tiên giữ hòa khí)",
         "secondaryMode": "compromising",
         "secondaryVN": "Thỏa Hiệp",
@@ -2403,7 +2403,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 81,
         "responsiveness": 87,
         "scores": {
@@ -2416,7 +2416,7 @@
       "tki": {
         "dominantMode": "competing",
         "dominantVN": "Cạnh Tranh",
-        "dominantColor": "#ef4444",
+        "dominantColor": "#DFAB45",
         "dominantSub": "Win - Lose (Áp đặt quyền lực)",
         "secondaryMode": "collaborating",
         "secondaryVN": "Hợp Tác",
@@ -2493,7 +2493,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 59,
         "responsiveness": 25,
         "scores": {
@@ -2506,7 +2506,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -2583,7 +2583,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 84,
         "responsiveness": 67,
         "scores": {
@@ -2596,7 +2596,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "accommodating",
         "secondaryVN": "Nhượng Bộ",
@@ -2673,7 +2673,7 @@
         "styleVN": "Hòa Nhã (Bồ Câu)",
         "icon": "🕊️",
         "quadrant": "Q2_TopLeft",
-        "color": "#10b981",
+        "color": "#92D050",
         "assertiveness": 36,
         "responsiveness": 60,
         "scores": {
@@ -2686,7 +2686,7 @@
       "tki": {
         "dominantMode": "compromising",
         "dominantVN": "Thỏa Hiệp",
-        "dominantColor": "#f59e0b",
+        "dominantColor": "#C90D40",
         "dominantSub": "Mỗi bên lùi một bước (Trung tâm)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -2763,7 +2763,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 88,
         "responsiveness": 38,
         "scores": {
@@ -2776,7 +2776,7 @@
       "tki": {
         "dominantMode": "compromising",
         "dominantVN": "Thỏa Hiệp",
-        "dominantColor": "#f59e0b",
+        "dominantColor": "#C90D40",
         "dominantSub": "Mỗi bên lùi một bước (Trung tâm)",
         "secondaryMode": "collaborating",
         "secondaryVN": "Hợp Tác",
@@ -2853,7 +2853,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 22,
         "responsiveness": 18,
         "scores": {
@@ -2866,7 +2866,7 @@
       "tki": {
         "dominantMode": "accommodating",
         "dominantVN": "Nhượng Bộ",
-        "dominantColor": "#6366f1",
+        "dominantColor": "#280980",
         "dominantSub": "Lose - Win (Ưu tiên giữ hòa khí)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -2943,7 +2943,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 85,
         "responsiveness": 20,
         "scores": {
@@ -2956,7 +2956,7 @@
       "tki": {
         "dominantMode": "competing",
         "dominantVN": "Cạnh Tranh",
-        "dominantColor": "#ef4444",
+        "dominantColor": "#DFAB45",
         "dominantSub": "Win - Lose (Áp đặt quyền lực)",
         "secondaryMode": "compromising",
         "secondaryVN": "Thỏa Hiệp",
@@ -3033,7 +3033,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 67,
         "responsiveness": 86,
         "scores": {
@@ -3046,7 +3046,7 @@
       "tki": {
         "dominantMode": "accommodating",
         "dominantVN": "Nhượng Bộ",
-        "dominantColor": "#6366f1",
+        "dominantColor": "#280980",
         "dominantSub": "Lose - Win (Ưu tiên giữ hòa khí)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -3123,7 +3123,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 26,
         "responsiveness": 36,
         "scores": {
@@ -3136,7 +3136,7 @@
       "tki": {
         "dominantMode": "avoiding",
         "dominantVN": "Né Tránh",
-        "dominantColor": "#64748b",
+        "dominantColor": "#911084",
         "dominantSub": "Lose - Lose (Trì hoãn xung đột)",
         "secondaryMode": "accommodating",
         "secondaryVN": "Nhượng Bộ",
@@ -3213,7 +3213,7 @@
         "styleVN": "Hòa Nhã (Bồ Câu)",
         "icon": "🕊️",
         "quadrant": "Q2_TopLeft",
-        "color": "#10b981",
+        "color": "#92D050",
         "assertiveness": 22,
         "responsiveness": 79,
         "scores": {
@@ -3226,7 +3226,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -3303,7 +3303,7 @@
         "styleVN": "Hòa Nhã (Bồ Câu)",
         "icon": "🕊️",
         "quadrant": "Q2_TopLeft",
-        "color": "#10b981",
+        "color": "#92D050",
         "assertiveness": 23,
         "responsiveness": 76,
         "scores": {
@@ -3316,7 +3316,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "compromising",
         "secondaryVN": "Thỏa Hiệp",
@@ -3393,7 +3393,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 58,
         "responsiveness": 26,
         "scores": {
@@ -3406,7 +3406,7 @@
       "tki": {
         "dominantMode": "compromising",
         "dominantVN": "Thỏa Hiệp",
-        "dominantColor": "#f59e0b",
+        "dominantColor": "#C90D40",
         "dominantSub": "Mỗi bên lùi một bước (Trung tâm)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -3483,7 +3483,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 21,
         "responsiveness": 31,
         "scores": {
@@ -3496,7 +3496,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "accommodating",
         "secondaryVN": "Nhượng Bộ",
@@ -3573,7 +3573,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 39,
         "responsiveness": 38,
         "scores": {
@@ -3586,7 +3586,7 @@
       "tki": {
         "dominantMode": "avoiding",
         "dominantVN": "Né Tránh",
-        "dominantColor": "#64748b",
+        "dominantColor": "#911084",
         "dominantSub": "Lose - Lose (Trì hoãn xung đột)",
         "secondaryMode": "accommodating",
         "secondaryVN": "Nhượng Bộ",
@@ -3663,7 +3663,7 @@
         "styleVN": "Hòa Nhã (Bồ Câu)",
         "icon": "🕊️",
         "quadrant": "Q2_TopLeft",
-        "color": "#10b981",
+        "color": "#92D050",
         "assertiveness": 42,
         "responsiveness": 72,
         "scores": {
@@ -3676,7 +3676,7 @@
       "tki": {
         "dominantMode": "accommodating",
         "dominantVN": "Nhượng Bộ",
-        "dominantColor": "#6366f1",
+        "dominantColor": "#280980",
         "dominantSub": "Lose - Win (Ưu tiên giữ hòa khí)",
         "secondaryMode": "collaborating",
         "secondaryVN": "Hợp Tác",
@@ -3753,7 +3753,7 @@
         "styleVN": "Hòa Nhã (Bồ Câu)",
         "icon": "🕊️",
         "quadrant": "Q2_TopLeft",
-        "color": "#10b981",
+        "color": "#92D050",
         "assertiveness": 34,
         "responsiveness": 59,
         "scores": {
@@ -3766,7 +3766,7 @@
       "tki": {
         "dominantMode": "accommodating",
         "dominantVN": "Nhượng Bộ",
-        "dominantColor": "#6366f1",
+        "dominantColor": "#280980",
         "dominantSub": "Lose - Win (Ưu tiên giữ hòa khí)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -3843,7 +3843,7 @@
         "styleVN": "Hòa Nhã (Bồ Câu)",
         "icon": "🕊️",
         "quadrant": "Q2_TopLeft",
-        "color": "#10b981",
+        "color": "#92D050",
         "assertiveness": 39,
         "responsiveness": 64,
         "scores": {
@@ -3856,7 +3856,7 @@
       "tki": {
         "dominantMode": "compromising",
         "dominantVN": "Thỏa Hiệp",
-        "dominantColor": "#f59e0b",
+        "dominantColor": "#C90D40",
         "dominantSub": "Mỗi bên lùi một bước (Trung tâm)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -3933,7 +3933,7 @@
         "styleVN": "Hòa Nhã (Bồ Câu)",
         "icon": "🕊️",
         "quadrant": "Q2_TopLeft",
-        "color": "#10b981",
+        "color": "#92D050",
         "assertiveness": 20,
         "responsiveness": 64,
         "scores": {
@@ -3946,7 +3946,7 @@
       "tki": {
         "dominantMode": "compromising",
         "dominantVN": "Thỏa Hiệp",
-        "dominantColor": "#f59e0b",
+        "dominantColor": "#C90D40",
         "dominantSub": "Mỗi bên lùi một bước (Trung tâm)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -4023,7 +4023,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 72,
         "responsiveness": 34,
         "scores": {
@@ -4036,7 +4036,7 @@
       "tki": {
         "dominantMode": "competing",
         "dominantVN": "Cạnh Tranh",
-        "dominantColor": "#ef4444",
+        "dominantColor": "#DFAB45",
         "dominantSub": "Win - Lose (Áp đặt quyền lực)",
         "secondaryMode": "collaborating",
         "secondaryVN": "Hợp Tác",
@@ -4113,7 +4113,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 66,
         "responsiveness": 74,
         "scores": {
@@ -4126,7 +4126,7 @@
       "tki": {
         "dominantMode": "accommodating",
         "dominantVN": "Nhượng Bộ",
-        "dominantColor": "#6366f1",
+        "dominantColor": "#280980",
         "dominantSub": "Lose - Win (Ưu tiên giữ hòa khí)",
         "secondaryMode": "compromising",
         "secondaryVN": "Thỏa Hiệp",
@@ -4203,7 +4203,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 20,
         "responsiveness": 31,
         "scores": {
@@ -4216,7 +4216,7 @@
       "tki": {
         "dominantMode": "compromising",
         "dominantVN": "Thỏa Hiệp",
-        "dominantColor": "#f59e0b",
+        "dominantColor": "#C90D40",
         "dominantSub": "Mỗi bên lùi một bước (Trung tâm)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -4293,7 +4293,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 57,
         "responsiveness": 24,
         "scores": {
@@ -4306,7 +4306,7 @@
       "tki": {
         "dominantMode": "competing",
         "dominantVN": "Cạnh Tranh",
-        "dominantColor": "#ef4444",
+        "dominantColor": "#DFAB45",
         "dominantSub": "Win - Lose (Áp đặt quyền lực)",
         "secondaryMode": "collaborating",
         "secondaryVN": "Hợp Tác",
@@ -4383,7 +4383,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 46,
         "responsiveness": 26,
         "scores": {
@@ -4396,7 +4396,7 @@
       "tki": {
         "dominantMode": "accommodating",
         "dominantVN": "Nhượng Bộ",
-        "dominantColor": "#6366f1",
+        "dominantColor": "#280980",
         "dominantSub": "Lose - Win (Ưu tiên giữ hòa khí)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -4473,7 +4473,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 34,
         "responsiveness": 29,
         "scores": {
@@ -4486,7 +4486,7 @@
       "tki": {
         "dominantMode": "avoiding",
         "dominantVN": "Né Tránh",
-        "dominantColor": "#64748b",
+        "dominantColor": "#911084",
         "dominantSub": "Lose - Lose (Trì hoãn xung đột)",
         "secondaryMode": "accommodating",
         "secondaryVN": "Nhượng Bộ",
@@ -4563,7 +4563,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 84,
         "responsiveness": 33,
         "scores": {
@@ -4576,7 +4576,7 @@
       "tki": {
         "dominantMode": "competing",
         "dominantVN": "Cạnh Tranh",
-        "dominantColor": "#ef4444",
+        "dominantColor": "#DFAB45",
         "dominantSub": "Win - Lose (Áp đặt quyền lực)",
         "secondaryMode": "collaborating",
         "secondaryVN": "Hợp Tác",
@@ -4653,7 +4653,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 23,
         "responsiveness": 29,
         "scores": {
@@ -4666,7 +4666,7 @@
       "tki": {
         "dominantMode": "avoiding",
         "dominantVN": "Né Tránh",
-        "dominantColor": "#64748b",
+        "dominantColor": "#911084",
         "dominantSub": "Lose - Lose (Trì hoãn xung đột)",
         "secondaryMode": "collaborating",
         "secondaryVN": "Hợp Tác",
@@ -4743,7 +4743,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 34,
         "responsiveness": 25,
         "scores": {
@@ -4756,7 +4756,7 @@
       "tki": {
         "dominantMode": "avoiding",
         "dominantVN": "Né Tránh",
-        "dominantColor": "#64748b",
+        "dominantColor": "#911084",
         "dominantSub": "Lose - Lose (Trì hoãn xung đột)",
         "secondaryMode": "compromising",
         "secondaryVN": "Thỏa Hiệp",
@@ -4833,7 +4833,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 23,
         "responsiveness": 20,
         "scores": {
@@ -4846,7 +4846,7 @@
       "tki": {
         "dominantMode": "avoiding",
         "dominantVN": "Né Tránh",
-        "dominantColor": "#64748b",
+        "dominantColor": "#911084",
         "dominantSub": "Lose - Lose (Trì hoãn xung đột)",
         "secondaryMode": "accommodating",
         "secondaryVN": "Nhượng Bộ",
@@ -4923,7 +4923,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 55,
         "responsiveness": 63,
         "scores": {
@@ -4936,7 +4936,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -5013,7 +5013,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 86,
         "responsiveness": 33,
         "scores": {
@@ -5026,7 +5026,7 @@
       "tki": {
         "dominantMode": "compromising",
         "dominantVN": "Thỏa Hiệp",
-        "dominantColor": "#f59e0b",
+        "dominantColor": "#C90D40",
         "dominantSub": "Mỗi bên lùi một bước (Trung tâm)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -5103,7 +5103,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 58,
         "responsiveness": 61,
         "scores": {
@@ -5116,7 +5116,7 @@
       "tki": {
         "dominantMode": "compromising",
         "dominantVN": "Thỏa Hiệp",
-        "dominantColor": "#f59e0b",
+        "dominantColor": "#C90D40",
         "dominantSub": "Mỗi bên lùi một bước (Trung tâm)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -5193,7 +5193,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 78,
         "responsiveness": 29,
         "scores": {
@@ -5206,7 +5206,7 @@
       "tki": {
         "dominantMode": "competing",
         "dominantVN": "Cạnh Tranh",
-        "dominantColor": "#ef4444",
+        "dominantColor": "#DFAB45",
         "dominantSub": "Win - Lose (Áp đặt quyền lực)",
         "secondaryMode": "collaborating",
         "secondaryVN": "Hợp Tác",
@@ -5283,7 +5283,7 @@
         "styleVN": "Hòa Nhã (Bồ Câu)",
         "icon": "🕊️",
         "quadrant": "Q2_TopLeft",
-        "color": "#10b981",
+        "color": "#92D050",
         "assertiveness": 33,
         "responsiveness": 82,
         "scores": {
@@ -5296,7 +5296,7 @@
       "tki": {
         "dominantMode": "accommodating",
         "dominantVN": "Nhượng Bộ",
-        "dominantColor": "#6366f1",
+        "dominantColor": "#280980",
         "dominantSub": "Lose - Win (Ưu tiên giữ hòa khí)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -5373,7 +5373,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 76,
         "responsiveness": 56,
         "scores": {
@@ -5386,7 +5386,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -5463,7 +5463,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 74,
         "responsiveness": 42,
         "scores": {
@@ -5476,7 +5476,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -5553,7 +5553,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 59,
         "responsiveness": 42,
         "scores": {
@@ -5566,7 +5566,7 @@
       "tki": {
         "dominantMode": "compromising",
         "dominantVN": "Thỏa Hiệp",
-        "dominantColor": "#f59e0b",
+        "dominantColor": "#C90D40",
         "dominantSub": "Mỗi bên lùi một bước (Trung tâm)",
         "secondaryMode": "collaborating",
         "secondaryVN": "Hợp Tác",
@@ -5643,7 +5643,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 41,
         "responsiveness": 22,
         "scores": {
@@ -5656,7 +5656,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "accommodating",
         "secondaryVN": "Nhượng Bộ",
@@ -5733,7 +5733,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 88,
         "responsiveness": 37,
         "scores": {
@@ -5746,7 +5746,7 @@
       "tki": {
         "dominantMode": "compromising",
         "dominantVN": "Thỏa Hiệp",
-        "dominantColor": "#f59e0b",
+        "dominantColor": "#C90D40",
         "dominantSub": "Mỗi bên lùi một bước (Trung tâm)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -5823,7 +5823,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 32,
         "responsiveness": 19,
         "scores": {
@@ -5836,7 +5836,7 @@
       "tki": {
         "dominantMode": "accommodating",
         "dominantVN": "Nhượng Bộ",
-        "dominantColor": "#6366f1",
+        "dominantColor": "#280980",
         "dominantSub": "Lose - Win (Ưu tiên giữ hòa khí)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -5913,7 +5913,7 @@
         "styleVN": "Hòa Nhã (Bồ Câu)",
         "icon": "🕊️",
         "quadrant": "Q2_TopLeft",
-        "color": "#10b981",
+        "color": "#92D050",
         "assertiveness": 36,
         "responsiveness": 75,
         "scores": {
@@ -5926,7 +5926,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -6003,7 +6003,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 76,
         "responsiveness": 59,
         "scores": {
@@ -6016,7 +6016,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -6093,7 +6093,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 82,
         "responsiveness": 79,
         "scores": {
@@ -6106,7 +6106,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -6183,7 +6183,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 69,
         "responsiveness": 70,
         "scores": {
@@ -6196,7 +6196,7 @@
       "tki": {
         "dominantMode": "compromising",
         "dominantVN": "Thỏa Hiệp",
-        "dominantColor": "#f59e0b",
+        "dominantColor": "#C90D40",
         "dominantSub": "Mỗi bên lùi một bước (Trung tâm)",
         "secondaryMode": "accommodating",
         "secondaryVN": "Nhượng Bộ",
@@ -6273,7 +6273,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 75,
         "responsiveness": 20,
         "scores": {
@@ -6286,7 +6286,7 @@
       "tki": {
         "dominantMode": "competing",
         "dominantVN": "Cạnh Tranh",
-        "dominantColor": "#ef4444",
+        "dominantColor": "#DFAB45",
         "dominantSub": "Win - Lose (Áp đặt quyền lực)",
         "secondaryMode": "accommodating",
         "secondaryVN": "Nhượng Bộ",
@@ -6363,7 +6363,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 75,
         "responsiveness": 22,
         "scores": {
@@ -6376,7 +6376,7 @@
       "tki": {
         "dominantMode": "competing",
         "dominantVN": "Cạnh Tranh",
-        "dominantColor": "#ef4444",
+        "dominantColor": "#DFAB45",
         "dominantSub": "Win - Lose (Áp đặt quyền lực)",
         "secondaryMode": "collaborating",
         "secondaryVN": "Hợp Tác",
@@ -6453,7 +6453,7 @@
         "styleVN": "Hòa Nhã (Bồ Câu)",
         "icon": "🕊️",
         "quadrant": "Q2_TopLeft",
-        "color": "#10b981",
+        "color": "#92D050",
         "assertiveness": 26,
         "responsiveness": 79,
         "scores": {
@@ -6466,7 +6466,7 @@
       "tki": {
         "dominantMode": "accommodating",
         "dominantVN": "Nhượng Bộ",
-        "dominantColor": "#6366f1",
+        "dominantColor": "#280980",
         "dominantSub": "Lose - Win (Ưu tiên giữ hòa khí)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -6543,7 +6543,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 70,
         "responsiveness": 62,
         "scores": {
@@ -6556,7 +6556,7 @@
       "tki": {
         "dominantMode": "competing",
         "dominantVN": "Cạnh Tranh",
-        "dominantColor": "#ef4444",
+        "dominantColor": "#DFAB45",
         "dominantSub": "Win - Lose (Áp đặt quyền lực)",
         "secondaryMode": "compromising",
         "secondaryVN": "Thỏa Hiệp",
@@ -6633,7 +6633,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 20,
         "responsiveness": 26,
         "scores": {
@@ -6646,7 +6646,7 @@
       "tki": {
         "dominantMode": "avoiding",
         "dominantVN": "Né Tránh",
-        "dominantColor": "#64748b",
+        "dominantColor": "#911084",
         "dominantSub": "Lose - Lose (Trì hoãn xung đột)",
         "secondaryMode": "accommodating",
         "secondaryVN": "Nhượng Bộ",
@@ -6723,7 +6723,7 @@
         "styleVN": "Hòa Nhã (Bồ Câu)",
         "icon": "🕊️",
         "quadrant": "Q2_TopLeft",
-        "color": "#10b981",
+        "color": "#92D050",
         "assertiveness": 46,
         "responsiveness": 60,
         "scores": {
@@ -6736,7 +6736,7 @@
       "tki": {
         "dominantMode": "accommodating",
         "dominantVN": "Nhượng Bộ",
-        "dominantColor": "#6366f1",
+        "dominantColor": "#280980",
         "dominantSub": "Lose - Win (Ưu tiên giữ hòa khí)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -6813,7 +6813,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 64,
         "responsiveness": 80,
         "scores": {
@@ -6826,7 +6826,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "compromising",
         "secondaryVN": "Thỏa Hiệp",
@@ -6903,7 +6903,7 @@
         "styleVN": "Hòa Nhã (Bồ Câu)",
         "icon": "🕊️",
         "quadrant": "Q2_TopLeft",
-        "color": "#10b981",
+        "color": "#92D050",
         "assertiveness": 41,
         "responsiveness": 56,
         "scores": {
@@ -6916,7 +6916,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -6993,7 +6993,7 @@
         "styleVN": "Hòa Nhã (Bồ Câu)",
         "icon": "🕊️",
         "quadrant": "Q2_TopLeft",
-        "color": "#10b981",
+        "color": "#92D050",
         "assertiveness": 32,
         "responsiveness": 85,
         "scores": {
@@ -7006,7 +7006,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "accommodating",
         "secondaryVN": "Nhượng Bộ",
@@ -7083,7 +7083,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 88,
         "responsiveness": 30,
         "scores": {
@@ -7096,7 +7096,7 @@
       "tki": {
         "dominantMode": "competing",
         "dominantVN": "Cạnh Tranh",
-        "dominantColor": "#ef4444",
+        "dominantColor": "#DFAB45",
         "dominantSub": "Win - Lose (Áp đặt quyền lực)",
         "secondaryMode": "compromising",
         "secondaryVN": "Thỏa Hiệp",
@@ -7173,7 +7173,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 66,
         "responsiveness": 43,
         "scores": {
@@ -7186,7 +7186,7 @@
       "tki": {
         "dominantMode": "competing",
         "dominantVN": "Cạnh Tranh",
-        "dominantColor": "#ef4444",
+        "dominantColor": "#DFAB45",
         "dominantSub": "Win - Lose (Áp đặt quyền lực)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -7263,7 +7263,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 72,
         "responsiveness": 78,
         "scores": {
@@ -7276,7 +7276,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -7353,7 +7353,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 78,
         "responsiveness": 28,
         "scores": {
@@ -7366,7 +7366,7 @@
       "tki": {
         "dominantMode": "competing",
         "dominantVN": "Cạnh Tranh",
-        "dominantColor": "#ef4444",
+        "dominantColor": "#DFAB45",
         "dominantSub": "Win - Lose (Áp đặt quyền lực)",
         "secondaryMode": "accommodating",
         "secondaryVN": "Nhượng Bộ",
@@ -7443,7 +7443,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 45,
         "responsiveness": 41,
         "scores": {
@@ -7456,7 +7456,7 @@
       "tki": {
         "dominantMode": "compromising",
         "dominantVN": "Thỏa Hiệp",
-        "dominantColor": "#f59e0b",
+        "dominantColor": "#C90D40",
         "dominantSub": "Mỗi bên lùi một bước (Trung tâm)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -7533,7 +7533,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 56,
         "responsiveness": 67,
         "scores": {
@@ -7546,7 +7546,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -7623,7 +7623,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 20,
         "responsiveness": 30,
         "scores": {
@@ -7636,7 +7636,7 @@
       "tki": {
         "dominantMode": "accommodating",
         "dominantVN": "Nhượng Bộ",
-        "dominantColor": "#6366f1",
+        "dominantColor": "#280980",
         "dominantSub": "Lose - Win (Ưu tiên giữ hòa khí)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -7713,7 +7713,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 64,
         "responsiveness": 75,
         "scores": {
@@ -7726,7 +7726,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -7803,7 +7803,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 80,
         "responsiveness": 41,
         "scores": {
@@ -7816,7 +7816,7 @@
       "tki": {
         "dominantMode": "competing",
         "dominantVN": "Cạnh Tranh",
-        "dominantColor": "#ef4444",
+        "dominantColor": "#DFAB45",
         "dominantSub": "Win - Lose (Áp đặt quyền lực)",
         "secondaryMode": "compromising",
         "secondaryVN": "Thỏa Hiệp",
@@ -7893,7 +7893,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 85,
         "responsiveness": 65,
         "scores": {
@@ -7906,7 +7906,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -7983,7 +7983,7 @@
         "styleVN": "Biểu Cảm (Chim Công)",
         "icon": "🦚",
         "quadrant": "Q1_TopRight",
-        "color": "#f59e0b",
+        "color": "#FFC000",
         "assertiveness": 79,
         "responsiveness": 72,
         "scores": {
@@ -7996,7 +7996,7 @@
       "tki": {
         "dominantMode": "compromising",
         "dominantVN": "Thỏa Hiệp",
-        "dominantColor": "#f59e0b",
+        "dominantColor": "#C90D40",
         "dominantSub": "Mỗi bên lùi một bước (Trung tâm)",
         "secondaryMode": "accommodating",
         "secondaryVN": "Nhượng Bộ",
@@ -8073,7 +8073,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 60,
         "responsiveness": 30,
         "scores": {
@@ -8086,7 +8086,7 @@
       "tki": {
         "dominantMode": "collaborating",
         "dominantVN": "Hợp Tác",
-        "dominantColor": "#10b981",
+        "dominantColor": "#D15E32",
         "dominantSub": "Win - Win (Giải pháp cùng thắng)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -8163,7 +8163,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 76,
         "responsiveness": 34,
         "scores": {
@@ -8176,7 +8176,7 @@
       "tki": {
         "dominantMode": "compromising",
         "dominantVN": "Thỏa Hiệp",
-        "dominantColor": "#f59e0b",
+        "dominantColor": "#C90D40",
         "dominantSub": "Mỗi bên lùi một bước (Trung tâm)",
         "secondaryMode": "accommodating",
         "secondaryVN": "Nhượng Bộ",
@@ -8253,7 +8253,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 30,
         "responsiveness": 22,
         "scores": {
@@ -8266,7 +8266,7 @@
       "tki": {
         "dominantMode": "avoiding",
         "dominantVN": "Né Tránh",
-        "dominantColor": "#64748b",
+        "dominantColor": "#911084",
         "dominantSub": "Lose - Lose (Trì hoãn xung đột)",
         "secondaryMode": "accommodating",
         "secondaryVN": "Nhượng Bộ",
@@ -8343,7 +8343,7 @@
         "styleVN": "Hòa Nhã (Bồ Câu)",
         "icon": "🕊️",
         "quadrant": "Q2_TopLeft",
-        "color": "#10b981",
+        "color": "#92D050",
         "assertiveness": 25,
         "responsiveness": 69,
         "scores": {
@@ -8356,7 +8356,7 @@
       "tki": {
         "dominantMode": "accommodating",
         "dominantVN": "Nhượng Bộ",
-        "dominantColor": "#6366f1",
+        "dominantColor": "#280980",
         "dominantSub": "Lose - Win (Ưu tiên giữ hòa khí)",
         "secondaryMode": "competing",
         "secondaryVN": "Cạnh Tranh",
@@ -8433,7 +8433,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 43,
         "responsiveness": 38,
         "scores": {
@@ -8446,7 +8446,7 @@
       "tki": {
         "dominantMode": "avoiding",
         "dominantVN": "Né Tránh",
-        "dominantColor": "#64748b",
+        "dominantColor": "#911084",
         "dominantSub": "Lose - Lose (Trì hoãn xung đột)",
         "secondaryMode": "compromising",
         "secondaryVN": "Thỏa Hiệp",
@@ -8523,7 +8523,7 @@
         "styleVN": "Tiên Phong (Đại Bàng)",
         "icon": "🦅",
         "quadrant": "Q4_BottomRight",
-        "color": "#ef4444",
+        "color": "#C00000",
         "assertiveness": 65,
         "responsiveness": 28,
         "scores": {
@@ -8536,7 +8536,7 @@
       "tki": {
         "dominantMode": "competing",
         "dominantVN": "Cạnh Tranh",
-        "dominantColor": "#ef4444",
+        "dominantColor": "#DFAB45",
         "dominantSub": "Win - Lose (Áp đặt quyền lực)",
         "secondaryMode": "avoiding",
         "secondaryVN": "Né Tránh",
@@ -8613,7 +8613,7 @@
         "styleVN": "Phân Tích (Cú Mèo)",
         "icon": "🦉",
         "quadrant": "Q3_BottomLeft",
-        "color": "#06b6d4",
+        "color": "#2563EB",
         "assertiveness": 20,
         "responsiveness": 19,
         "scores": {
@@ -8626,7 +8626,7 @@
       "tki": {
         "dominantMode": "avoiding",
         "dominantVN": "Né Tránh",
-        "dominantColor": "#64748b",
+        "dominantColor": "#911084",
         "dominantSub": "Lose - Lose (Trì hoãn xung đột)",
         "secondaryMode": "collaborating",
         "secondaryVN": "Hợp Tác",
@@ -8703,7 +8703,7 @@
         "styleVN": "Hòa Nhã (Bồ Câu)",
         "icon": "🕊️",
         "quadrant": "Q2_TopLeft",
-        "color": "#10b981",
+        "color": "#92D050",
         "assertiveness": 37,
         "responsiveness": 59,
         "scores": {
@@ -8716,7 +8716,7 @@
       "tki": {
         "dominantMode": "accommodating",
         "dominantVN": "Nhượng Bộ",
-        "dominantColor": "#6366f1",
+        "dominantColor": "#280980",
         "dominantSub": "Lose - Win (Ưu tiên giữ hòa khí)",
         "secondaryMode": "collaborating",
         "secondaryVN": "Hợp Tác",
