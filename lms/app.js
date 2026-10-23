@@ -20,9 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 videoTitle: "Video Explainer: Delivering Happiness Movement (Hệ Điều Hành Hạnh Phúc)",
                 videoType: "mp4",
                 subSections: [
-                    { id: "sub-1-1", title: "Bài 1.1: Khoa Học Hạnh Phúc & 3 Cấp Độ (Pleasure • Passion • Higher Purpose)", target: "stage1-mod-1-1", tab: "tab-practice" },
-                    { id: "sub-1-2", title: "Bài 1.2: Định Vị La Bàn Giá Trị Cá Nhân (ME Values)", target: "stage1-mod-1-2", tab: "tab-practice" },
-                    { id: "sub-1-cp1", title: "Check point 1: Đúc Kết I • A • M 1.1", target: "stage1-mod-cp1", tab: "tab-practice" },
+                    { id: "sub-1-1", title: "Khoa Học Hạnh Phúc & 3 Cấp Độ (Pleasure • Passion • Higher Purpose)", target: "stage1-mod-1-1", tab: "tab-practice" },
+                    { id: "sub-1-2", title: "Định Vị La Bàn Giá Trị Cá Nhân (ME Values)", target: "stage1-mod-1-2", tab: "tab-practice" },
+                    { id: "sub-1-cp1", title: "Check point 1: Đúc Kết I • A • M", target: "stage1-mod-cp1", tab: "tab-practice" },
                     { id: "sub-1-quiz", title: "Cổng Sát Hạch Vượt Chặng (10 Câu • Đạt ≥ 80%)", target: "stage1-mod-quiz", tab: "tab-practice" }
                 ],
                 audios: [
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 modules: [
                     {
                         id: "mod-1-1",
-                        title: "Bài 1.1: 3 Cấp Độ Hạnh Phúc (Pleasure • Passion • Higher Purpose)",
+                        title: "3 Cấp Độ Hạnh Phúc (Pleasure • Passion • Higher Purpose)",
                         quizzes: [
                             {
                                                         "id": "dhm-quiz-1",
@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     },
                     {
                         id: "mod-1-2",
-                        title: "Bài 1.2: La Bàn Giá Trị Cá Nhân (Me Values)",
+                        title: "La Bàn Giá Trị Cá Nhân (Me Values)",
                         iam: {
                             id: "iam_1_2",
                             title: "Đúc kết I • A • M 1.2 — La Bàn Giá Trị Sống",
@@ -2993,7 +2993,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     updateStage1Milestones();
 
                     const oldText = btnFillIam.innerHTML;
-                    btnFillIam.innerHTML = `<span>✓ Đã điền gợi ý vào Đúc Kết I • A • M 1.1!</span>`;
+                    btnFillIam.innerHTML = `<span>✓ Đã điền gợi ý vào Đúc Kết I • A • M!</span>`;
                     setTimeout(() => { btnFillIam.innerHTML = oldText; }, 2500);
 
                     // Mở Đúc Kết I • A • M 1.1 accordion nếu đang đóng
@@ -3455,7 +3455,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <span class="text-brand-amber group-hover:text-amber-300">${val}</span>
                     <span class="text-[10px] text-slate-400 group-hover:text-white ml-0.5 opacity-60 group-hover:opacity-100">↵ Chọn</span>
                 `;
-                badge.title = `Nhấp để điền giá trị "${val}" vào ô I (Interested) của Đúc Kết I • A • M 1.1`;
+                badge.title = `Nhấp để điền giá trị "${val}" vào ô I (Interested) của Đúc Kết I • A • M`;
                 badge.onclick = () => handleBadgeClick(val);
                 return badge;
             }
@@ -3492,7 +3492,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (cp1BridgeBadges) {
                     cp1BridgeBadges.innerHTML = `
                         <p class="text-[11px] text-slate-400 italic leading-relaxed">
-                            Chưa có kết quả La Bàn Giá Trị. Bạn có thể tự nhập giá trị tâm đắc vào ô I bên dưới hoặc làm bài test 1vs1 ở Bài 1.2.
+                            Chưa có kết quả La Bàn Giá Trị. Bạn có thể tự nhập giá trị tâm đắc vào ô I bên dưới hoặc làm bài test 1vs1 ở phần La Bàn Giá Trị Cá Nhân (Me Values).
                         </p>
                     `;
                 }

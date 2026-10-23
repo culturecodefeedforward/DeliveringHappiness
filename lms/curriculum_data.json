@@ -19,19 +19,19 @@
       "subSections": [
         {
           "id": "sub-1-1",
-          "title": "Bài 1.1: 3 Cấp Độ Hạnh Phúc (Pleasure • Passion • Higher Purpose)",
+          "title": "3 Cấp Độ Hạnh Phúc (Pleasure • Passion • Higher Purpose)",
           "target": "stage1-mod-1-1",
           "tab": "tab-practice"
         },
         {
           "id": "sub-1-2",
-          "title": "Bài 1.2: La Bàn Giá Trị Cá Nhân (Me Values)",
+          "title": "La Bàn Giá Trị Cá Nhân (Me Values)",
           "target": "stage1-mod-1-2",
           "tab": "tab-practice"
         },
         {
           "id": "sub-1-cp1",
-          "title": "Đúc Kết I • A • M 1.1",
+          "title": "Đúc Kết I • A • M",
           "target": "stage1-mod-cp1",
           "tab": "tab-practice"
         },
@@ -60,7 +60,7 @@
       "modules": [
         {
           "id": "mod-1-1",
-          "title": "Bài 1.1: 3 Cấp Độ Hạnh Phúc (Pleasure • Passion • Higher Purpose)",
+          "title": "3 Cấp Độ Hạnh Phúc (Pleasure • Passion • Higher Purpose)",
           "quizzes": [
             {
               "id": "dhm-quiz-1",
@@ -203,7 +203,7 @@
         },
         {
           "id": "mod-1-2",
-          "title": "Bài 1.2: La Bàn Giá Trị Cá Nhân (Me Values)",
+          "title": "La Bàn Giá Trị Cá Nhân (Me Values)",
           "description": "Khám phá các giá trị cốt lõi điển hình và xếp hạng qua các tình huống điển hình.",
           "valueOptions": [
             "Tiến bộ (luôn tiến lên phía trước, phát triển không ngừng)",
