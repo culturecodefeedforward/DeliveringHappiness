@@ -6875,7 +6875,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
                 const cp1Sets = s1Data.iam_cp1_sets || [];
                 const cp2Sets = s1Data.iam_cp2_sets || [];
-                let allText = `=== KHO LƯU TRỮ I•A•M (DELIVERING HAPPINESS) ===\nHọc viên: ${(currentUser && (currentUser.full_name || currentUser.name)) || "Học viên"}\nNgày xuất: ${new Date().toLocaleDateString()}\n\n`;
+                let allText = `=== KHO LƯU TRỮ CỦA TÔI (DELIVERING HAPPINESS) ===\nHọc viên: ${(currentUser && (currentUser.full_name || currentUser.name)) || "Học viên"}\nNgày xuất: ${new Date().toLocaleDateString()}\n\n`;
 
                 allText += `--- TRẠM 1: NHẬN THỨC & LA BÀN GIÁ TRỊ (CP1) ---\n`;
                 if (cp1Sets.length === 0) allText += `(Chưa có bộ lưu)\n`;
