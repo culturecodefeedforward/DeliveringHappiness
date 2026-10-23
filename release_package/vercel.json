@@ -1,0 +1,13 @@
+{
+  "cleanUrls": true,
+  "redirects": [
+    { "source": "/login", "destination": "/lms", "permanent": true },
+    { "source": "/login.html", "destination": "/lms", "permanent": true },
+    { "source": "/interest_dh10", "destination": "/next_dhm", "permanent": true },
+    { "source": "/interest_dh10.html", "destination": "/next_dhm", "permanent": true },
+    { "source": "/h", "destination": "/", "permanent": false }
+  ],
+  "rewrites": [
+    { "source": "/lms/data/:path*", "destination": "/data/:path*" }
+  ]
+}

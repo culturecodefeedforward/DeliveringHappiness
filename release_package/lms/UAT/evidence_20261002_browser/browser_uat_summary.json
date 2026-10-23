@@ -1,0 +1,18 @@
+{
+  "timestamp": "2026-10-02T14:55:24.125Z",
+  "url": "https://delivering-happiness.vercel.app/lms/",
+  "viewport": "1280x850",
+  "headerSegmentedBars": true,
+  "headerLabels": true,
+  "milestonePillsBar": true,
+  "accordionAutoOpenMod1": true,
+  "accordionManualToggleMod2": true,
+  "sidebarSyncScroll": true,
+  "screenshots": [
+    "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\lms\\UAT\\evidence_20261002_browser\\01_header_segmented_progress.png",
+    "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\lms\\UAT\\evidence_20261002_browser\\02_practice_tab_milestones_and_accordion_initial.png",
+    "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\lms\\UAT\\evidence_20261002_browser\\03_accordion_mod12_expanded.png",
+    "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\lms\\UAT\\evidence_20261002_browser\\04_sidebar_sync_scroll_into_view.png"
+  ],
+  "consoleErrors": []
+}

@@ -3,8 +3,8 @@
   "redirects": [
     { "source": "/login", "destination": "/lms", "permanent": true },
     { "source": "/login.html", "destination": "/lms", "permanent": true },
-    { "source": "/register_dhm10", "destination": "/interest_dh10", "permanent": false },
-    { "source": "/register_dhm10.html", "destination": "/interest_dh10.html", "permanent": false },
+    { "source": "/interest_dh10", "destination": "/next_dhm", "permanent": true },
+    { "source": "/interest_dh10.html", "destination": "/next_dhm", "permanent": true },
     { "source": "/h", "destination": "/", "permanent": false }
   ],
   "rewrites": [

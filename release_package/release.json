@@ -1,0 +1,10 @@
+{
+  "releaseId": "356fac0-ec3cfe307e6b",
+  "commit": "356fac0",
+  "fullCommitSha": "356fac0b9c243fd21c5439fa00421bd6fa5300f0",
+  "manifestSha256": "ec3cfe307e6b16125534ee073bf9c2dff9763dcec7a83fdab630d471076fea19",
+  "sourceRef": "HEAD",
+  "builtAt": "2026-08-25T02:39:50.705Z",
+  "fileCount": 95,
+  "provenance": "git-archive-snapshot"
+}

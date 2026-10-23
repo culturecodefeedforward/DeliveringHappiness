@@ -1,0 +1,3 @@
+# Ignore files relative to rootDir (Scripts)
+active_code_gs_rollback.js
+dhm8_gate2_uat_runner.js

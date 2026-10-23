@@ -1,0 +1,63 @@
+# NỘI DUNG ĐÚC KẾT Ý NGHĨA LA BÀN GIÁ TRỊ CỐT LÕI (PERSONAL VALUE COMPASS)
+Ngày cập nhật: 2026-07-17
+
+Tài liệu này chứa nội dung đúc kết ý nghĩa bài test Giá trị cốt lõi cá nhân (Personal Value) từ tài liệu Delivering Happiness, đã lược bỏ nội dung "đô la".
+
+---
+
+## 1. ĐOẠN MÃ HTML ĐỂ CHÈN VÀO GIAO DIỆN WEB (personal-value.html)
+
+Chèn khối HTML dưới đây vào ngay phía dưới biểu đồ Radar (radar-wrapper) và phía trên Ma trận đối đầu (matrix-container):
+
+```html
+<!-- Khối lý giải ý nghĩa La bàn Giá trị Cốt lõi -->
+<div class="pv-explanation-box" style="background: white; border: 1px solid rgba(0,0,0,0.04); border-radius: 20px; padding: 1.5rem 1.8rem; margin-bottom: 2rem; text-align: left; box-shadow: 0 4px 16px rgba(0,0,0,0.01);">
+  <h3 style="color: var(--warm-orange, #ea580c); margin-top: 0; margin-bottom: 1rem; font-weight: 800; font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+    💡 Ý Nghĩa La Bàn Giá Trị Của Bạn
+  </h3>
+  <p style="color: var(--mid, #44403c); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.2rem;">
+    Chúc mừng bạn đã hoàn thành cuộc đối thoại nội tâm sâu sắc. La bàn trên không chỉ là những từ ngữ hoa mỹ, mà là tấm bản đồ định hình cuộc sống của bạn dựa trên các nguyên lý cốt lõi của <strong>Delivering Happiness</strong>:
+  </p>
+  <ul style="padding-left: 1.2rem; margin: 0; color: var(--dark, #1c1917); font-size: 0.95rem; line-height: 1.65; display: flex; flex-direction: column; gap: 0.8rem;">
+    <li>
+      <strong>Con người thật vs. Giá trị tuyên bố:</strong> Bài test đối kháng bắt buộc bạn phải đưa ra lựa chọn thực tế thay vì những "giá trị tuyên bố" lý thuyết. Hãy nhớ công thức: <em>La bàn (Định hướng) + Đồng hồ (Thời gian) = Giá trị thực tế của bạn</em>. Thừa nhận giá trị thật giúp bạn cởi bỏ áp lực phải gồng mình diễn vai hoàn hảo trước kỳ vọng xã hội.
+    </li>
+    <li>
+      <strong>Thời khắc quyết định (Critical Decision Moments):</strong> 21 trận đối kháng bạn vừa vượt qua chính là mô phỏng những tình huống giằng xé trong cuộc sống. Bản chất thực sự của chúng ta không bộc lộ qua lời nói lúc bình yên, mà phát lộ rõ ràng nhất khi ta buộc phải hy sinh điều này để giữ lại điều quan trọng hơn.
+    </li>
+    <li>
+      <strong>Sự đồng bộ (Alignment) & Cảm giác thuộc về chân thật:</strong> Thấu hiểu giá trị bản thân giúp bạn dễ dàng tìm kiếm điểm giao thoa (alignment) với giá trị của gia đình, tổ chức hay cộng đồng. Bạn không cần phải giống hệt môi trường xung quanh, mà chỉ cần tìm thấy sự đồng điệu để làm việc an vui và đạt được cảm giác thuộc về chân thật (True Belonging).
+    </li>
+  </ul>
+</div>
+```
+
+---
+
+## 2. NỘI DUNG VĂN BẢN ĐỂ ĐƯA VÀO EMAIL BÁO CÁO (Scripts/active_code_gs_final.js)
+
+Khi dựng htmlBody gửi email báo cáo kết quả cho học viên, hãy chèn thêm phần văn bản này (có thể đặt ở cuối email hoặc ngay dưới danh sách xếp hạng giá trị):
+
+```html
+<div style="background-color: #ffffff; border: 1px solid #f3f3f3; border-radius: 12px; padding: 20px; margin-top: 25px; text-align: left; font-family: sans-serif; font-size: 14px; line-height: 1.6; color: #333333;">
+  <h3 style="color: #ea580c; margin-top: 0; margin-bottom: 15px; font-size: 16px; font-weight: bold;">💡 Ý Nghĩa La Bàn Giá Trị Của Bạn</h3>
+  <p style="margin-bottom: 15px;">Chúc mừng bạn đã hoàn thành cuộc đối thoại nội tâm sâu sắc. La bàn giá trị này định hình cuộc sống của bạn dựa trên các nguyên lý cốt lõi của Delivering Happiness:</p>
+  <ul style="padding-left: 20px; margin: 0;">
+    <li style="margin-bottom: 10px;"><strong>Con người thật vs. Giá trị tuyên bố:</strong> Bài test đối kháng bắt buộc bạn phải đưa ra lựa chọn thực tế thay vì những "giá trị tuyên bố" lý thuyết. Hãy nhớ công thức: <em>La bàn (Định hướng) + Đồng hồ (Thời gian) = Giá trị thực tế của bạn</em>. Thừa nhận giá trị thật giúp bạn cởi bỏ áp lực phải gồng mình diễn vai hoàn hảo.</li>
+    <li style="margin-bottom: 10px;"><strong>Thời khắc quyết định (Critical Decision Moments):</strong> 21 trận đối kháng bạn vừa vượt qua chính là mô phỏng những tình huống giằng xé trong cuộc sống. Bản chất thực sự của chúng ta không bộc lộ qua lời nói lúc bình yên, mà phát lộ rõ ràng nhất khi ta buộc phải hy sinh điều này để giữ lại điều quan trọng hơn.</li>
+    <li style="margin-bottom: 10px;"><strong>Sự đồng bộ (Alignment) & Cảm giác thuộc về chân thật:</strong> Thấu hiểu giá trị bản thân giúp bạn dễ dàng tìm kiếm điểm giao thoa (alignment) với giá trị của gia đình, tổ chức hay cộng đồng để làm việc an vui và đạt được cảm giác thuộc về chân thật (True Belonging).</li>
+  </ul>
+</div>
+```
+
+---
+
+## 3. NỘI DUNG VĂN BẢN TRÊN FILE PDF KẾT QUẢ (personal-value.js)
+
+Khi sử dụng jsPDF/html2canvas vẽ PDF kết quả, khối HTML ở mục 1 sẽ tự động được html2canvas chụp lại và đưa vào PDF. 
+Nếu vẽ PDF thủ công bằng dòng lệnh vẽ text của jsPDF, hãy sử dụng các đoạn text sau:
+
+- Tiêu đề: Ý nghĩa La bàn Giá trị của Bạn
+- Ý 1: Con người thật vs. Giá trị tuyên bố: Thực hành lựa chọn thực tế thay vì lý thuyết. Công thức: La bàn (Định hướng) + Đồng hồ (Thời gian) = Giá trị thực. Thừa nhận giá trị thật giúp cởi bỏ áp lực gồng mình diễn vai hoàn hảo.
+- Ý 2: Thời khắc quyết định (Critical Decision Moments): 21 trận đấu trực giác mô phỏng những giằng xé cuộc sống. Bản chất thực sự phát lộ khi ta buộc phải hy sinh một giá trị để giữ lại giá trị quan trọng hơn.
+- Ý 3: Sự đồng bộ (Alignment) & Cảm giác thuộc về chân thật: Hiểu giá trị bản thân để tìm điểm giao thoa (alignment) với gia đình, tổ chức, giúp làm việc an vui và có cảm giác thuộc về chân thật (True Belonging).

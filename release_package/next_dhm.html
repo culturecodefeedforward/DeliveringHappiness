@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đăng ký quan tâm Next Delivering Happiness Masterclass — CultureCode Community</title>
+  <meta name="description"
+    content="Để lại thông tin quan tâm các khóa tiếp theo của Delivering Happiness Masterclass (Next DHM) tại Hà Nội & TP.HCM từ CultureCode Community." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #0f172a 100%);
+      color: #ffffff;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .top-nav {
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      background: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .nav-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .nav-logo-img {
+      height: 42px;
+      width: auto;
+      border-radius: 6px;
+    }
+
+    .interest-shell {
+      width: min(780px, calc(100% - 32px));
+      margin: 40px auto 60px;
+      padding: 36px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.06);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(12px);
+    }
+
+    .badge-hybrid {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(245, 158, 11, 0.18);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fcd34d;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+    }
+
+    .interest-shell h1 {
+      margin: 0 0 12px;
+      color: var(--warm-yellow, #f59e0b);
+      font-size: 2.1rem;
+      line-height: 1.25;
+      font-weight: 800;
+    }
+
+    .intro-desc {
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.65;
+      font-size: 1rem;
+      margin-bottom: 24px;
+    }
+
+    .info-card-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 28px;
+    }
+
+    .info-card-box ul {
+      margin: 8px 0 0;
+      padding-left: 20px;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.65;
+      font-size: 0.95rem;
+    }
+
+    .info-card-box li {
+      margin-bottom: 6px;
+    }
+
+    .interest-form {
+      display: grid;
+      gap: 20px;
+    }
+
+    .interest-form label {
+      display: grid;
+      gap: 8px;
+      color: rgba(255, 255, 255, 0.92);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .interest-form label span.req {
+      color: #f87171;
+    }
+
+    .interest-form input[type="text"],
+    .interest-form input[type="email"],
+    .interest-form input[type="tel"],
+    .interest-form textarea {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      font: inherit;
+      padding: 12px 16px;
+      outline: none;
+      box-sizing: border-box;
+      transition: all 0.2s ease;
+    }
+
+    .interest-form textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .interest-form input:focus,
+    .interest-form textarea:focus {
+      border-color: var(--warm-yellow, #f59e0b);
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+    }
+
+    .referrer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .referrer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Location Choice Cards */
+    .location-group-title {
+      color: rgba(255, 255, 255, 0.92);
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+
+    .location-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .location-options {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .location-card {
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      position: relative;
+    }
+
+    .location-card:hover {
+      border-color: rgba(245, 158, 11, 0.5);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .location-card.selected {
+      border-color: var(--warm-yellow, #f59e0b);
+      background: rgba(245, 158, 11, 0.12);
+    }
+
+    .location-card input[type="radio"] {
+      margin-top: 4px;
+      cursor: pointer;
+      accent-color: #f59e0b;
+    }
+
+    .location-card-content {
+      flex: 1;
+    }
+
+    .location-card-title {
+      font-weight: 700;
+      color: #ffffff;
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .location-card-venue {
+      font-size: 0.85rem;
+      color: var(--warm-yellow, #fcd34d);
+      line-height: 1.4;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .location-status-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    .badge-open {
+      background: rgba(16, 185, 129, 0.25);
+      border: 1px solid rgba(16, 185, 129, 0.6);
+      color: #6ee7b7;
+    }
+
+    .badge-pending {
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      color: #fcd34d;
+    }
+
+    .interest-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .interest-submit {
+      padding: 14px 28px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      border: 0;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #111827;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .interest-submit:hover:not(:disabled) {
+      background: linear-gradient(135deg, #fbbf24 0%, #b45309 100%);
+      box-shadow: 0 4px 18px rgba(245, 158, 11, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .interest-submit:disabled {
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .back-link {
+      color: rgba(255, 255, 255, 0.72);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .back-link:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    .interest-status {
+      display: none;
+      margin-top: 24px;
+      padding: 16px 20px;
+      border-radius: 10px;
+      background: rgba(16, 185, 129, 0.16);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #d1fae5;
+      line-height: 1.6;
+    }
+
+    .interest-status.error {
+      background: rgba(239, 68, 68, 0.16);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #fee2e2;
+    }
+
+    /* Modal Popup Styles */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      animation: modalFadeIn 0.25s ease-out;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-card {
+      background: linear-gradient(145deg, #1f2937, #111827);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      border-radius: 16px;
+      width: min(560px, 100%);
+      padding: 28px 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+      color: #ffffff;
+      position: relative;
+      text-align: center;
+      animation: modalSlideUp 0.25s ease-out;
+    }
+
+    @keyframes modalSlideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-close-x {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #aaa;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: all 0.2s;
+    }
+
+    .modal-close-x:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+    }
+
+    .modal-icon {
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+    }
+
+    .modal-title {
+      color: var(--warm-yellow, #f59e0b);
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .modal-desc {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .modal-details {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 14px 16px;
+      text-align: left;
+      margin-bottom: 18px;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .modal-details div {
+      margin-bottom: 6px;
+    }
+
+    .modal-details div:last-child {
+      margin-bottom: 0;
+    }
+
+    .modal-note {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.75);
+      margin-bottom: 16px;
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn-modal-primary {
+      display: block;
+      width: 100%;
+      padding: 13px 20px;
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #111827;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      border-radius: 8px;
+      box-sizing: border-box;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .btn-modal-primary:hover {
+      background: linear-gradient(135deg, #fbbf24 0%, #b45309 100%);
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.4);
+    }
+
+    .btn-modal-secondary {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: rgba(255, 255, 255, 0.85);
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .btn-modal-secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    @media (max-width: 640px) {
+      .interest-shell {
+        margin-top: 24px;
+        padding: 24px 18px;
+      }
+
+      .interest-shell h1 {
+        font-size: 1.65rem;
+      }
+
+      .interest-actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .interest-submit {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- TOP NAV -->
+  <nav class="top-nav">
+    <a href="https://www.linkedin.com/company/culturecodecommunity/" target="_blank" class="nav-brand">
+      <img src="assets/culturecode-logo-dark.jpg" alt="CultureCode Logo" class="nav-logo-img" />
+    </a>
+  </nav>
+
+  <!-- MAIN CONTAINER -->
+  <main class="interest-shell">
+    <div class="badge-hybrid">
+      <span>✨ KẾ HOẠCH TỔ CHỨC CÁC KHÓA TIẾP THEO (NEXT DHM)</span>
+    </div>
+
+    <h1>Đăng ký nhận thông tin các khóa Delivering Happiness Masterclass tiếp theo</h1>
+
+    <p class="intro-desc">
+      Chào mừng bạn đến với chuỗi chương trình <strong>Delivering Happiness Masterclass (DHM)</strong> — Hành trình kiến tạo văn hóa hạnh phúc bền vững và chuyển hóa đội ngũ từ CultureCode Community. Các khóa học được tổ chức luân phiên tại <strong>Hà Nội</strong> và <strong>TP.HCM</strong>.
+    </p>
+
+    <div class="info-card-box">
+      <strong style="color: var(--warm-yellow, #f59e0b); font-size: 1rem;">📌 Quy trình tiếp nhận & Quyền lợi ưu tiên:</strong>
+      <ul>
+        <li><strong>Không gian đào tạo chuẩn mực:</strong> Học viên tham gia trực tiếp tại cơ sở đối tác chuẩn mực (Hà Nội: <strong>Apollo English - Phố Huế</strong>; TP.HCM: <strong>Cơ sở Apollo English</strong>).</li>
+        <li><strong>Quyền lợi ưu tiên:</strong> Khi để lại thông tin quan tâm, CultureCode Team sẽ lưu bạn vào danh sách ưu tiên. Ngay khi khóa học tại khu vực bạn đăng ký mở cổng tuyển sinh, bạn sẽ nhận được thông báo sớm nhất để giữ chỗ chính thức.</li>
+      </ul>
+    </div>
+
+    <form id="interestForm" class="interest-form">
+      <label>
+        Họ và tên <span class="req">*</span>
+        <input type="text" name="fullName" autocomplete="name" required placeholder="Ví dụ: Nguyễn Văn A" />
+      </label>
+
+      <label>
+        Email nhận thông báo <span class="req">*</span>
+        <input type="email" name="email" autocomplete="email" required placeholder="name@company.com" />
+      </label>
+
+      <label>
+        Số điện thoại / Zalo <span class="req">*</span>
+        <input type="tel" name="phone" autocomplete="tel" required placeholder="Để CultureCode Team liên hệ và gửi thông báo lịch học..." />
+      </label>
+
+      <!-- Địa điểm học mong muốn -->
+      <div>
+        <div class="location-group-title">Địa điểm tham dự mong muốn <span class="req" style="color: #f87171;">*</span></div>
+        <div class="location-options">
+          <!-- Thẻ Hà Nội -->
+          <label class="location-card" id="cardHanoi" data-region="hn">
+            <input type="radio" name="preferredLocation" value="Hà Nội - Apollo English - Phố Huế" required />
+            <div class="location-card-content">
+              <span class="location-card-title">Hà Nội</span>
+              <span class="location-card-venue">Apollo English - Phố Huế (Dự kiến DHM11)</span>
+              <span class="location-status-badge badge-pending">Nhận thông tin đợt tới</span>
+            </div>
+          </label>
+
+          <!-- Thẻ TP.HCM -->
+          <label class="location-card" id="cardHcm" data-region="hcm">
+            <input type="radio" name="preferredLocation" value="TP.HCM - Cơ sở Apollo English" required />
+            <div class="location-card-content">
+              <span class="location-card-title">TP. Hồ Chí Minh</span>
+              <span class="location-card-venue">Cơ sở Apollo English (DHM10)</span>
+              <span class="location-status-badge badge-open">Đang mở đăng ký</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <label>
+        Công ty / Tổ chức
+        <input type="text" name="company" autocomplete="organization" placeholder="Tên doanh nghiệp hoặc tổ chức của bạn..." />
+      </label>
+
+      <label>
+        Chức danh / Vị trí
+        <input type="text" name="jobTitle" autocomplete="organization-title" placeholder="Ví dụ: CEO, Giám đốc Nhân sự, Trưởng bộ phận..." />
+      </label>
+
+      <!-- Thông tin Người giới thiệu -->
+      <div class="referrer-grid">
+        <label>
+          Tên người giới thiệu (nếu có)
+          <input type="text" name="referrerName" id="referrerName" placeholder="Ví dụ: Anh/Chị Nguyễn Văn B, đồng nghiệp, cựu học viên..." />
+        </label>
+
+        <label>
+          Số điện thoại người giới thiệu (nếu có)
+          <input type="tel" name="referrerPhone" id="referrerPhone" placeholder="Số điện thoại hoặc Zalo người giới thiệu..." />
+        </label>
+      </div>
+      <div style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); margin-top: -10px; line-height: 1.5;">
+        <i>* CultureCode Team cam kết bảo mật thông tin và chỉ sử dụng để ghi nhận ưu đãi / hỗ trợ xác thực.</i>
+      </div>
+
+      <label>
+        Kỳ vọng hoặc Lời nhắn dành cho CultureCode Team
+        <textarea name="userNote" placeholder="Bạn quan tâm hoặc mong muốn giải quyết thách thức văn hóa / nhân sự nào qua khóa học này?"></textarea>
+      </label>
+
+      <div class="interest-actions">
+        <button type="submit" id="interestSubmit" class="interest-submit">Gửi thông tin quan tâm</button>
+        <a href="index.html" class="back-link">← Quay về trang chủ Delivering Happiness</a>
+      </div>
+    </form>
+
+    <div id="interestStatus" class="interest-status"></div>
+  </main>
+
+  <!-- MODAL ĐIỀU HƯỚNG KHI CHỌN KHU VỰC ĐANG MỞ LỚP -->
+  <div id="cohortModal" class="modal-overlay">
+    <div class="modal-card">
+      <button type="button" class="modal-close-x" id="btnCloseModalX" aria-label="Đóng">&times;</button>
+      <div class="modal-icon">🎉</div>
+      <div class="modal-title" id="modalCohortName">Khóa học đang mở tuyển sinh chính thức!</div>
+      <p class="modal-desc">
+        Chương trình tại khu vực này đã có lịch học chính thức và đang mở cổng đăng ký giữ chỗ:
+      </p>
+      <div class="modal-details">
+        <div>🗓️ <strong>Thời gian:</strong> <span id="modalEventDate">Chủ Nhật, 01/11/2026</span></div>
+        <div>📍 <strong>Địa điểm:</strong> <span id="modalVenue">Cơ sở Apollo English, 58 Phạm Ngọc Thạch, Q.3, TP.HCM</span></div>
+        <div>⚡ <strong>Hạn mức:</strong> <span id="modalCap">Giới hạn 35 suất học viên (First-Come, First-Served)</span></div>
+        <div>💰 <strong>Chi phí hậu cần:</strong> <span id="modalFee">250.000đ</span></div>
+      </div>
+      <p class="modal-note">
+        Bạn có muốn chuyển sang trang Đăng ký & Giữ chỗ ngay bây giờ không?
+      </p>
+      <div class="modal-actions">
+        <a href="register_dhm10.html" class="btn-modal-primary" id="btnGoRegister">👉 Đến trang Đăng ký ngay</a>
+        <button type="button" class="btn-modal-secondary" id="btnCloseModal">Ở lại để nhận thông tin các khóa sau</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.CUSTOM_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
+
+    // CẤU HÌNH CÁC KHÓA ĐANG MỞ / DỰ KIẾN (Dễ dàng mở rộng cho tương lai)
+    const ACTIVE_COHORTS_CONFIG = {
+      hcm: {
+        isOpen: true,
+        cohortName: "Khóa DHM10 tại TP.HCM",
+        eventDate: "Chủ Nhật 01/11/2026 (Offline trực tiếp) • Khởi động Webinar LMS: Tối Thứ Sáu 30/10/2026",
+        venue: "Cơ sở Apollo English, 58 Phạm Ngọc Thạch, Phường Võ Thị Sáu, Quận 3, TP.HCM",
+        fee: "250.000đ (Chi phí hậu cần, tài liệu, ăn trưa & teabreak)",
+        cap: 35,
+        registerUrl: "register_dhm10.html"
+      },
+      hn: {
+        isOpen: false,
+        cohortName: "Khóa DHM11 tại Hà Nội",
+        eventDate: "Dự kiến Quý 4/2026",
+        venue: "Apollo English - Phố Huế, Hà Nội",
+        fee: "250.000đ",
+        cap: 35,
+        registerUrl: "register_dhm11.html"
+      }
+    };
+
+    const locationCards = document.querySelectorAll('.location-card');
+    const modalOverlay = document.getElementById('cohortModal');
+    const modalCohortName = document.getElementById('modalCohortName');
+    const modalEventDate = document.getElementById('modalEventDate');
+    const modalVenue = document.getElementById('modalVenue');
+    const modalCap = document.getElementById('modalCap');
+    const modalFee = document.getElementById('modalFee');
+    const btnGoRegister = document.getElementById('btnGoRegister');
+    const btnCloseModal = document.getElementById('btnCloseModal');
+    const btnCloseModalX = document.getElementById('btnCloseModalX');
+
+    function openCohortModal(region) {
+      const config = ACTIVE_COHORTS_CONFIG[region];
+      if (!config || !config.isOpen) return;
+
+      modalCohortName.textContent = config.cohortName + " đang mở đăng ký chính thức!";
+      modalEventDate.textContent = config.eventDate;
+      modalVenue.textContent = config.venue;
+      modalCap.textContent = "Giới hạn " + config.cap + " suất học viên (First-Come, First-Served)";
+      modalFee.textContent = config.fee;
+      btnGoRegister.href = config.registerUrl;
+
+      modalOverlay.classList.add('active');
+    }
+
+    function closeCohortModal() {
+      modalOverlay.classList.remove('active');
+    }
+
+    locationCards.forEach(card => {
+      const radio = card.querySelector('input[type="radio"]');
+      card.addEventListener('click', (e) => {
+        locationCards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        radio.checked = true;
+
+        const region = card.getAttribute('data-region');
+        if (region && ACTIVE_COHORTS_CONFIG[region] && ACTIVE_COHORTS_CONFIG[region].isOpen) {
+          openCohortModal(region);
+        }
+      });
+    });
+
+    if (btnCloseModal) btnCloseModal.addEventListener('click', closeCohortModal);
+    if (btnCloseModalX) btnCloseModalX.addEventListener('click', closeCohortModal);
+    if (modalOverlay) {
+      modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) closeCohortModal();
+      });
+    }
+
+    function createInterestUuid() {
+      if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+        return crypto.randomUUID();
+      }
+      var arr = new Uint8Array(16);
+      if (typeof crypto !== 'undefined' && typeof crypto.getRandomValues === 'function') {
+        crypto.getRandomValues(arr);
+      } else {
+        for (var i = 0; i < 16; i++) arr[i] = Math.floor(Math.random() * 256);
+      }
+      return Array.from(arr).map(function(byte) {
+        return byte.toString(16).padStart(2, '0');
+      }).join('');
+    }
+
+    function showInterestStatus(message, isError) {
+      var status = document.getElementById('interestStatus');
+      status.innerHTML = message;
+      status.className = 'interest-status' + (isError ? ' error' : '');
+      status.style.display = 'block';
+      status.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    document.getElementById('interestForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      var submit = document.getElementById('interestSubmit');
+      submit.disabled = true;
+      submit.textContent = 'Đang gửi thông tin...';
+
+      var formData = new FormData(event.target);
+      var formValues = Object.fromEntries(formData.entries());
+
+      var locationChosen = formValues.preferredLocation || 'Chưa xác định';
+      var noteParts = ['[Địa điểm mong muốn: ' + locationChosen + ']'];
+
+      var refName = formValues.referrerName ? formValues.referrerName.trim() : '';
+      var refPhone = formValues.referrerPhone ? formValues.referrerPhone.trim() : '';
+      if (refName || refPhone) {
+        var refStr = '[Người giới thiệu: ' + (refName || 'Không có tên');
+        if (refPhone) {
+          refStr += ' - SĐT: ' + refPhone;
+        }
+        refStr += ']';
+        noteParts.push(refStr);
+      }
+
+      if (formValues.userNote && formValues.userNote.trim()) {
+        noteParts.push('[Kỳ vọng / Lời nhắn]: ' + formValues.userNote.trim());
+      }
+      var noteCombined = noteParts.join('\n');
+
+      var payload = {
+        fullName: formValues.fullName ? formValues.fullName.trim() : '',
+        email: formValues.email ? formValues.email.trim() : '',
+        phone: formValues.phone ? formValues.phone.trim() : '',
+        company: formValues.company ? formValues.company.trim() : '',
+        jobTitle: formValues.jobTitle ? formValues.jobTitle.trim() : '',
+        referrerName: refName,
+        referrerPhone: refPhone,
+        location: locationChosen,
+        note: noteCombined,
+        type: 'NEXT_DHM_INTEREST',
+        lane: 'next_dhm',
+        event_id: 'NEXT_DHM_INTEREST',
+        source: 'Web_Next_DHM_Interest',
+        interestUuid: createInterestUuid()
+      };
+
+      try {
+        await fetch(window.CUSTOM_WEBAPP_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        event.target.reset();
+        locationCards.forEach(c => c.classList.remove('selected'));
+        showInterestStatus('✨ <strong>Gửi thông tin thành công!</strong><br/>CultureCode Team đã tiếp nhận thông tin quan tâm của bạn cho các khóa <strong>Delivering Happiness Masterclass tiếp theo</strong>. Chúng tôi sẽ ưu tiên liên hệ và gửi email thông báo kèm đường link đăng ký chính thức ngay khi khóa học tại khu vực bạn đăng ký mở cổng tuyển sinh.', false);
+      } catch (err) {
+        showInterestStatus('⚠️ Chưa gửi được thông tin do lỗi kết nối mạng. Vui lòng kiểm tra lại đường truyền hoặc liên hệ CultureCode Team.', true);
+      } finally {
+        submit.disabled = false;
+        submit.textContent = 'Gửi thông tin quan tâm';
+      }
+    });
+  </script>
+</body>
+
+</html>

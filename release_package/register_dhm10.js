@@ -15,8 +15,8 @@ const PAYMENT_STATUS_BACKGROUND_DELAY_MS = Number(window.DHM10_PAYMENT_STATUS_BA
 const CALLBACK_PREFIX = 'dh10Jsonp_';
 const CALLBACK_REGEX = /^dh10Jsonp_[A-Za-z0-9]{16,40}$/;
 const DH_FORM_LANE = window.DH_FORM_LANE || 'dh10';
-const DH_INTEREST_URL = window.DH_INTEREST_URL || 'interest_dh10.html';
-const DHM10_ZALO_GROUP_URL = window.DHM10_ZALO_GROUP_URL || 'https://zalo.me/g/3wrsaoygrfcjubr0ie44';
+const DH_INTEREST_URL = window.DH_INTEREST_URL || 'next_dhm.html';
+const DHM10_ZALO_GROUP_URL = window.DHM10_ZALO_GROUP_URL || 'https://zalo.me/g/ukkgeekvhfxkzfdq7v0y';
 const LAST_REGISTRATION_UUID_KEY = 'DHM10_lastRegistrationUuid';
 const LAST_PAYMENT_STATUS_KEY = 'DHM10_lastPaymentStatus';
 const REGISTRATION_UUID_KEY = 'DHM10_registrationUuid';
@@ -154,7 +154,13 @@ function primeResumeStateFromUrl() {
     clearPaymentReference();
     sessionStorage.setItem(LAST_PAYMENT_STATUS_KEY, 'PENDING');
     if (resumeParams.uuid) sessionStorage.setItem(LAST_REGISTRATION_UUID_KEY, resumeParams.uuid);
-    if (resumeParams.paymentCode) sessionStorage.setItem(PAYMENT_CODE_KEY, resumeParams.paymentCode);
+    if (resumeParams.paymentCode) {
+        sessionStorage.setItem(PAYMENT_CODE_KEY, resumeParams.paymentCode);
+        if (resumeParams.paymentCode.startsWith('DHM10')) {
+            const derivedPhone = '0' + resumeParams.paymentCode.slice(5);
+            sessionStorage.setItem(PAYMENT_PHONE_KEY, derivedPhone);
+        }
+    }
 
     return resumeParams;
 }
@@ -373,8 +379,8 @@ function ensurePaidModal() {
         <div style="width:min(520px, 100%); background:#ffffff; color:#111827; border-radius:16px; padding:28px; box-shadow:0 24px 70px rgba(0,0,0,0.28); text-align:center;">
             <div style="font-size:3rem; line-height:1; margin-bottom:14px;">✅</div>
             <h2 id="paymentCompleteTitle" style="margin:0 0 12px; color:#047857; font-size:1.45rem;">Đã hoàn tất chi phí hậu cần</h2>
-            <p style="margin:0 0 18px; color:#374151; line-height:1.55;">Chúc mừng bạn! Hệ thống đã ghi nhận thanh toán thành công. Bạn có thể tham gia nhóm Zalo DHM10 Hà Nội để nhận thông báo, lịch trình và kết nối với CultureCode Team.</p>
-            <a id="paymentCompleteZaloLink" href="${DHM10_ZALO_GROUP_URL}" target="_blank" rel="noopener" style="display:block; background:#0068ff; color:#ffffff; text-decoration:none; font-weight:700; border-radius:10px; padding:13px 18px; margin-bottom:10px;">Vào nhóm Zalo DHM10 Hà Nội</a>
+            <p style="margin:0 0 18px; color:#374151; line-height:1.55;">Chúc mừng bạn! Hệ thống đã ghi nhận thanh toán thành công. Bạn có thể tham gia nhóm Zalo DHM10 TP.HCM để nhận thông báo, lịch trình và kết nối với CultureCode Team.</p>
+            <a id="paymentCompleteZaloLink" href="${DHM10_ZALO_GROUP_URL}" target="_blank" rel="noopener" style="display:block; background:#0068ff; color:#ffffff; text-decoration:none; font-weight:700; border-radius:10px; padding:13px 18px; margin-bottom:10px;">Vào nhóm Zalo DHM10 TP.HCM</a>
             <button id="paymentCompleteNewRegistration" type="button" style="display:block; width:100%; border:1px solid #047857; background:#ecfdf5; color:#047857; font-weight:700; border-radius:10px; padding:12px 18px; margin-bottom:10px; cursor:pointer;">Đăng ký người khác</button>
             <a id="paymentCompleteClose" href="https://delivering-happiness.vercel.app/" style="display:block; width:100%; border:1px solid #d1d5db; background:#ffffff; color:#374151; font-weight:700; border-radius:10px; padding:12px 18px; text-decoration:none; cursor:pointer;">Quay về landing page</a>
         </div>`;
@@ -764,6 +770,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const resumePaymentCode = (resumeParams && resumeParams.paymentCode) || getStoredPaymentCode();
     if (resumeUuid || resumePaymentCode) {
         const lastKnownStatus = sessionStorage.getItem(LAST_PAYMENT_STATUS_KEY) || 'PENDING';
+
+        // INSTANT RESUME: Mở thẳng Step 2 (Xác nhận chuyển khoản & VietQR) ngay lập tức
+        if (resumeParams && (resumeParams.paymentCode || resumeParams.uuid)) {
+            showSuccess(resumeUuid, 'PENDING', { persist: true });
+        }
+
         pollRegistrationStatus(resumeUuid, 'resume', resumePaymentCode).then((result) => {
             const resolvedUuid = result.registrationUuid || resumeUuid;
             const resolvedStatus = String(result.paymentStatus || result.state || lastKnownStatus || '').toUpperCase();
@@ -785,7 +797,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearPaymentReference();
                 return;
             }
-            clearLastRegistration();
+            // Nếu là resume từ email, giữ nguyên Step 2 để học viên chuyển khoản, không xóa về Step 1
+            if (!resumeParams || (!resumeParams.paymentCode && !resumeParams.uuid)) {
+                clearLastRegistration();
+            }
         }).catch(() => {
             if (String(lastKnownStatus).toUpperCase() === 'PAID') {
                 showSuccess(resumeUuid, 'PAID', { persist: false });
@@ -869,7 +884,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Gắn UUID và metadata
         data.registrationUuid = registrationUuid;
         data.type = 'EVENT_LEAD_DHM10';
-        data.source = 'Web_DHM10_Hanoi_Official';
+        data.source = 'Web_DHM10_HCM_Official';
         data.event = 'REGISTER_SUBMIT';
         const paymentCode = rememberPaymentReference(data);
         if (!paymentCode) {

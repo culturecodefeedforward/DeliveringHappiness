@@ -1,0 +1,10 @@
+node_modules/
+/Artifacts/
+/UAT/
+.git/
+.agents/
+.vscode/
+antigravity_export/
+backup_13042026/
+/Implementation Plan/
+*.pdf

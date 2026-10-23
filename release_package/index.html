@@ -63,7 +63,7 @@
     <!-- DHM10 HYBRID BANNER & EVENT CARDS -->
     <div style="display: flex; justify-content: center; margin-top: 1.8rem; margin-bottom: 0.5rem;">
       <span style="display: inline-flex; align-items: center; gap: 8px; background: rgba(245, 158, 11, 0.18); border: 1px solid rgba(245, 158, 11, 0.45); color: #fcd34d; padding: 6px 18px; border-radius: 999px; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.5px;">
-        🚀 CỘT MỐC QUÝ 4/2026 — ĐỘT PHÁ MÔ HÌNH ĐÀO TẠO HYBRID ĐA ĐIỂM CẦU
+        🚀 CỘT MỐC SỐ 10 — ĐỘT PHÁ MÔ HÌNH ĐÀO TẠO KẾT HỢP BLENDED LMS
       </span>
     </div>
 
@@ -99,9 +99,76 @@
       .hybrid-hub-item.hcm-col {
         border-left: 1px solid rgba(255, 255, 255, 0.12);
       }
+      .hero-tools-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        max-width: 820px;
+        margin: 2.5rem auto 0 auto;
+        padding: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .tool-card-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: var(--warm-cream);
+        color: var(--warm-dark);
+        font-weight: 700;
+        font-size: 0.98rem;
+        padding: 0.95rem 1.2rem;
+        border-radius: 999px;
+        text-decoration: none;
+        box-shadow: 0 4px 15px rgba(250, 240, 230, 0.2);
+        transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+        border: none;
+        cursor: pointer;
+        white-space: normal;
+        line-height: 1.35;
+        text-align: center;
+        box-sizing: border-box;
+        min-height: 54px;
+        width: 100%;
+      }
+      .tool-card-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(250, 240, 230, 0.35);
+        background: #ffffff;
+      }
+      .tool-subtext {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #78716c;
+        margin-top: 3px;
+        line-height: 1.2;
+      }
+      .tool-card-btn.lms-card-btn,
+      .tool-card-btn.interest-card-btn {
+        grid-column: 1 / -1;
+      }
       @media (max-width: 640px) {
+        .hero {
+          padding: 2rem 1rem !important;
+        }
+        .btn-primary {
+          white-space: normal !important;
+          max-width: 100% !important;
+          box-sizing: border-box !important;
+          padding: 0.85rem 1.2rem !important;
+          font-size: 0.95rem !important;
+          line-height: 1.4 !important;
+        }
         .hero-hybrid-card {
           padding: 1.4rem 1rem;
+          width: 100%;
+          box-sizing: border-box;
+        }
+        .hero-hybrid-card .btn-primary {
+          width: 100% !important;
+          border-radius: 14px !important;
         }
         .hybrid-hubs-grid {
           grid-template-columns: 1fr;
@@ -112,52 +179,102 @@
           border-top: 1px solid rgba(255, 255, 255, 0.12);
           padding-top: 1rem;
         }
+        .hero-tools-grid {
+          grid-template-columns: 1fr;
+          gap: 10px;
+          margin-top: 1.8rem;
+          width: 100%;
+          padding: 0;
+        }
+        .tool-card-btn {
+          border-radius: 14px;
+          padding: 0.85rem 1rem;
+          font-size: 0.92rem;
+          min-height: 48px;
+        }
+        .tool-card-btn.lms-card-btn,
+        .tool-card-btn.interest-card-btn {
+          grid-column: auto;
+        }
       }
     </style>
 
     <div class="hero-hybrid-card">
       <div>
-        <strong style="color: var(--warm-yellow); font-size: 1.28rem; display: block; margin-bottom: 0.4rem; letter-spacing: 0.5px;">DHM10 — Mô hình Hybrid Song Song 2 Điểm Cầu</strong>
-        <strong style="color: #ffffff; font-size: 1.05rem;">📅 Dự kiến Quý 4/2026</strong>
-        <div style="font-size: 0.88rem; color: rgba(255,255,255,0.7); margin-top: 0.2rem; font-style: italic;">(Sẽ công bố ngày chính thức sau khi chốt lịch)</div>
+        <strong style="color: var(--warm-yellow); font-size: 1.35rem; display: block; margin-bottom: 0.4rem; letter-spacing: 0.5px;">DHM10 — Mô Hình Đào Tạo Kết Hợp Blended LMS</strong>
+        <strong style="color: #ffffff; font-size: 1.05rem; display: block;">🗓️ Chủ Nhật, 01/11/2026 (08:30 – 17:30)</strong>
+        <div style="font-size: 0.88rem; color: rgba(255,255,255,0.85); margin-top: 0.3rem;">
+          💻 Khởi động Webinar LMS Chặng 1: Tối Thứ Sáu, 30/10/2026 (19:30 – 21:00)
+        </div>
+        <div style="margin-top: 0.6rem;">
+          <span style="display: inline-block; padding: 4px 14px; background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.5); border-radius: 20px; font-weight: 700; color: #fcd34d; font-size: 0.88rem;">
+            ⚡ Giới hạn 35 suất học viên theo nguyên tắc First-Come, First-Served
+          </span>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 0.75rem; font-size: 0.92rem; color: rgba(255, 255, 255, 0.9); line-height: 1.4;">
+          <span style="display: inline-flex; align-items: center; gap: 5px;">🏛️ Cơ sở Apollo English Q.3</span>
+          <span style="opacity: 0.35;">•</span>
+          <span style="display: inline-flex; align-items: center; gap: 5px;">📱 Nền tảng Micro-LMS và công cụ đồng hành để tiếp nối hành trình hạnh phúc</span>
+        </div>
       </div>
 
       <div class="hybrid-hubs-grid">
-        <!-- Điểm cầu HN -->
-        <div class="hybrid-hub-item">
+        <!-- Khu vực HCM -->
+        <div class="hybrid-hub-item hcm-col" style="border-color: rgba(245, 158, 11, 0.6); background: rgba(245, 158, 11, 0.1);">
           <div style="display: inline-flex; align-items: center; gap: 6px; color: var(--warm-yellow); font-weight: 700; font-size: 1.05rem;">
-            <span>📍</span> Điểm cầu Hà Nội
+            <span>📍</span> TP. Hồ Chí Minh (DHM10)
           </div>
-          <div style="color: #ffffff; font-weight: 600; font-size: 0.95rem;">Cơ sở SBB</div>
-          <div style="font-size: 0.85rem; color: rgba(255,255,255,0.75);">Không gian đào tạo chuẩn quốc tế</div>
-          <div style="font-size: 0.82rem; color: var(--warm-yellow); margin-top: 2px;">Giảng viên cơ hữu đồng hành tại chỗ</div>
+          <div style="color: #ffffff; font-weight: 600; font-size: 0.95rem; margin-top: 2px;">Cơ sở Apollo English, Q.3</div>
+          <div style="font-size: 0.8rem; color: #6ee7b7; font-weight: 700; margin-top: 4px;">🟢 Đang mở đăng ký (35 suất)</div>
         </div>
 
-        <!-- Điểm cầu HCM -->
-        <div class="hybrid-hub-item hcm-col">
-          <div style="display: inline-flex; align-items: center; gap: 6px; color: var(--warm-yellow); font-weight: 700; font-size: 1.05rem;">
-            <span>📍</span> Điểm cầu TP.HCM
+        <!-- Khu vực HN -->
+        <div class="hybrid-hub-item">
+          <div style="display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.9); font-weight: 700; font-size: 1.05rem;">
+            <span>📍</span> Hà Nội (Next DHM)
           </div>
-          <div style="color: #ffffff; font-weight: 600; font-size: 0.95rem;">Cơ sở Apollo English</div>
-          <div style="font-size: 0.85rem; color: rgba(255,255,255,0.75);">Không gian đào tạo chuẩn quốc tế</div>
-          <div style="font-size: 0.82rem; color: var(--warm-yellow); margin-top: 2px;">Giảng viên cơ hữu đồng hành tại chỗ</div>
+          <div style="color: #ffffff; font-weight: 600; font-size: 0.95rem; margin-top: 2px;">Apollo English - Phố Huế (Dự kiến DHM11)</div>
+          <div style="font-size: 0.8rem; color: #fcd34d; font-weight: 700; margin-top: 4px;">🟡 Đăng ký nhận thông tin đợt tới</div>
         </div>
       </div>
 
-      <div style="text-align: center;">
-        <a href="interest_dh10.html" class="btn-primary" style="display: inline-block; font-size: 1.05rem; padding: 0.95rem 2.5rem; box-shadow: 0 6px 25px rgba(245, 158, 11, 0.45);">
-          ✨ Đăng ký quan tâm và nhận thông tin về DHM10
+      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 15px;">
+        <a href="register_dhm10.html" class="btn-primary" style="display: inline-block; font-size: 1.05rem; box-shadow: 0 6px 25px rgba(245, 158, 11, 0.45);">
+          👉 Đăng ký DHM10 TP.HCM (Giới hạn 35 suất)
+        </a>
+        <a href="next_dhm.html" class="btn-primary" style="display: inline-block; font-size: 1.05rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #ffffff; box-shadow: none;">
+          ✨ Quan tâm Next DHM (Hà Nội & Đợt tới)
         </a>
       </div>
     </div>
     
-    <div style="text-align: center; margin-top: 2.5rem;">
-      <a href="personal-value.html" class="btn-primary" style="background: var(--warm-cream); color: var(--warm-dark); font-weight: 700; box-shadow: 0 4px 15px rgba(250, 240, 230, 0.2); font-size: 1.1rem; padding: 1rem 2rem;">
-        🔍 Khám phá La bàn Giá trị Cá nhân
+    <div class="hero-tools-grid">
+      <a href="personal-value.html" class="tool-card-btn">
+        <span>🔍 Khám phá La bàn Giá trị Cá nhân</span>
       </a>
-      <button id="btn-abcde-chat" class="btn-primary" style="background: var(--warm-cream); color: var(--warm-dark); font-weight: 700; box-shadow: 0 4px 15px rgba(250, 240, 230, 0.2); font-size: 1.1rem; padding: 1rem 2rem; margin-left: 10px; border: none; cursor: pointer;">
-        🧠 Thực hành Lạc quan ABCDE
+      <button id="btn-abcde-chat" class="tool-card-btn">
+        <span>🧠 Thực hành Lạc quan ABCDE</span>
       </button>
+      <a href="https://khao-sat-xung-dot-tki.vercel.app/" target="_blank" rel="noopener noreferrer" class="tool-card-btn">
+        <span>⚔️ Khảo sát Xung đột TKI</span>
+      </a>
+      <a href="https://khao-sat-tinh-cach.vercel.app/" target="_blank" rel="noopener noreferrer" class="tool-card-btn">
+        <span>🎭 Khảo sát Phong cách Xã hội</span>
+      </a>
+      <a href="https://team-happiness-iam-v2.vercel.app/" target="_blank" rel="noopener noreferrer" class="tool-card-btn">
+        <span>💡 Trạm thu hoạch I . A . M</span>
+        <span class="tool-subtext">(Dành cho khóa Team Happiness)</span>
+      </a>
+      <a href="assessment.html" class="tool-card-btn">
+        <span>📊 Trắc nghiệm Hệ điều hành Hạnh phúc</span>
+      </a>
+      <a href="program-interest.html" class="tool-card-btn interest-card-btn">
+        <span>🌱 Đăng ký quan tâm các khóa học khác</span>
+        <span class="tool-subtext">(NVC, Culture101, AI, An toàn tâm lý...)</span>
+      </a>
+      <a href="/lms" class="tool-card-btn lms-card-btn">
+        <span>📚 Đăng nhập Hệ thống LMS (Học viện)</span>
+      </a>
     </div>
   </header>
 
@@ -253,10 +370,6 @@
         </div>
 
       </div>
-      <div class="levers-note">
-        <strong>Ba đòn bẩy → 5 thói quen:</strong> Tiến bộ + Tự chủ + Kết nối được thể hiện cụ thể qua 5 thói quen hạnh
-        phúc.
-      </div>
     </div>
   </section>
 
@@ -285,7 +398,7 @@
           <div class="habit-num">3</div>
           <div class="habit-body">
             <h3>Lạc quan</h3>
-            <p>Optimism — Nhìn nhận cơ hội trong thách thức thông qua tư duy phản biện.</p>
+            <p>Optimism — Nhìn nhận cơ hội trong thách thức thông qua công cụ tái tư duy ABCDE.</p>
           </div>
         </div>
         <div class="habit-item" style="--color: #8b5cf6">
@@ -299,14 +412,7 @@
           <div class="habit-num">5</div>
           <div class="habit-body">
             <h3>Vị nhân</h3>
-            <p>Altruism — Cho đi thông minh (Giver) để tạo ra giá trị bền vững cho cộng đồng.</p>
-            <div
-              style="margin-top: 10px; font-size: 0.85rem; color: var(--mid); background: rgba(0,0,0,0.05); padding: 10px; border-radius: 4px;">
-              Phân biệt 3 nhóm: <strong>Takers</strong> (chỉ nhận), <strong>Matchers</strong> (có qua có lại) và
-              <strong>Givers</strong> (người cho đi). Đỉnh cao của Giver là thực hành <strong>Feed-forward</strong>:
-              trao đi giá trị liên tục mà không mưu cầu đáp đền trực tiếp. (Sáng kiến phi lợi nhuận vì cộng đồng -
-              Feed-forward).
-            </div>
+            <p>Altruism — Cho đi thông minh (Giver) để tạo ra giá trị chung lớn nhất.</p>
           </div>
         </div>
       </div>
@@ -320,15 +426,15 @@
     <div class="container">
       <h2 class="section-title" style="margin-bottom: 1rem;">Sẵn sàng kiến tạo văn hóa hạnh phúc cùng DHM10?</h2>
       <p class="section-sub" style="color: var(--dark); font-size: 1.1rem; margin-bottom: 2rem; max-width: 820px; margin-left: auto; margin-right: auto; line-height: 1.6;">
-        Khóa học Delivering Happiness Masterclass 10 (DHM10) lần đầu tiên triển khai theo mô hình <strong>Hybrid đa điểm cầu</strong> kết nối song song tại Hà Nội (Cơ sở SBB) & TP.HCM (Cơ sở Apollo English). Hãy để lại thông tin quan tâm để nhận thông báo ngày học và giữ quyền ưu tiên tham dự!
+        Khóa học <strong>Delivering Happiness Masterclass 10 (DHM10)</strong> tiên phong triển khai theo mô hình <strong>Blended Learning kết hợp nền tảng LMS chuyên sâu</strong>, học tập trung Offline tại <strong>TP.HCM</strong> vào <strong>Chủ Nhật 01/11/2026</strong> (Cơ sở Apollo English, 58 Phạm Ngọc Thạch, Q.3 • giới hạn 35 suất First-Come, First-Served). Học viên tại Hà Nội vui lòng để lại thông tin tại <strong>Next DHM</strong> để nhận thông báo sớm nhất cho các khóa tiếp theo!
       </p>
       <div style="display: flex; flex-direction: row; gap: 15px; flex-wrap: wrap; justify-content: center;">
-        <a href="interest_dh10.html" class="btn-primary"
-          style="background: var(--dark); color: var(--warm-yellow); box-shadow: 0 8px 24px rgba(0,0,0,0.15); font-weight: 700;">✨ Đăng ký quan tâm và nhận thông tin về DHM10</a>
-        <a href="personal-value.html" class="btn-primary"
-          style="background: transparent; color: var(--dark); border: 2px solid var(--dark); box-shadow: none;">🔍 La bàn Giá trị Cá nhân</a>
-        <a href="assessment.html" class="btn-primary"
-          style="background: transparent; color: var(--dark); border: 2px solid var(--dark); box-shadow: none;">🧠 Trắc nghiệm Hệ điều hành Hạnh phúc</a>
+        <a href="register_dhm10.html" class="btn-primary"
+          style="background: var(--dark); color: var(--warm-yellow); box-shadow: 0 8px 24px rgba(0,0,0,0.15); font-weight: 700;">👉 Đăng ký DHM10 TP.HCM (01/11/2026)</a>
+        <a href="next_dhm.html" class="btn-primary"
+          style="background: rgba(0,0,0,0.12); color: var(--dark); border: 2px solid var(--dark); box-shadow: none; font-weight: 700;">✨ Quan tâm Next DHM (Hà Nội & Đợt tới)</a>
+        <a href="program-interest.html" class="btn-primary"
+          style="background: transparent; color: var(--dark); border: 2px solid var(--dark); box-shadow: none; font-weight: 700;">🌱 Quan tâm các khóa khác (NVC, Culture101...)</a>
       </div>
     </div>
   </section>

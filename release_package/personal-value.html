@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La bàn giá trị cốt lõi cá nhân - Personal Core Value Compass</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  
+  <style>
+    /* Premium App Shell - Light Theme */
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--warm-cream, #fffbeb);
+      color: var(--dark, #1c1917);
+      font-family: 'Be Vietnam Pro', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .app-header {
+      padding: 1.5rem;
+      text-align: center;
+      position: relative;
+    }
+    
+    .back-btn {
+      position: absolute;
+      left: 1rem;
+      top: 1.5rem;
+      color: var(--mid, #44403c);
+      text-decoration: none;
+      font-size: 1.5rem;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .back-btn:hover { color: var(--warm-yellow); }
+
+    .app-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin: 0;
+      background: linear-gradient(90deg, var(--warm-yellow), var(--warm-orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Steps & Progress */
+    .step-container {
+      display: none;
+      min-height: calc(100vh - 80px);
+      flex-direction: column;
+    }
+    .step-container.active {
+      display: flex;
+    }
+    
+    .progress-bar-container {
+      width: 100%;
+      height: 4px;
+      background: rgba(0,0,0,0.1);
+      position: relative;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--warm-yellow), var(--warm-orange));
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .progress-text {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--light-text, #78716c);
+      margin-top: 0.8rem;
+    }
+
+    /* Flashcard Grid UI */
+    .grid-wrapper {
+      flex: 1;
+      padding: 1.5rem;
+      padding-bottom: 100px;
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .flip-card {
+      background: transparent;
+      perspective: 1000px;
+      height: 160px;
+      cursor: pointer;
+    }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    }
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    /* Mặt trước và mặt sau */
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 16px;
+      padding: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .flip-card-front {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(8px);
+    }
+    .flip-card-front:hover {
+      background: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+    }
+    
+    .flip-card-back {
+      background: var(--dark, #1c1917);
+      color: white;
+      transform: rotateY(180deg);
+    }
+
+    .fc-title {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--dark, #1c1917);
+      margin-bottom: 0.2rem;
+      line-height: 1.25;
+      word-break: break-word;
+      hyphens: auto;
+      padding: 0 14px;
+    }
+    
+    .fc-desc {
+      font-size: 0.78rem;
+      color: var(--mid, #44403c);
+      line-height: 1.35;
+      margin: 0;
+    }
+
+    .fc-details {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.35;
+    }
+
+    /* Hiệu ứng trạng thái */
+    .flip-card.status-1 .flip-card-front {
+      background: rgba(245, 158, 11, 0.1); /* Quan trọng - Vàng nhạt */
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+    .flip-card.status-2 .flip-card-front {
+      background: rgba(234, 88, 12, 0.15); /* Rất quan trọng - Cam nhạt */
+      border-color: rgba(234, 88, 12, 0.5);
+    }
+
+    /* Icon Tick (Rất quan trọng) */
+    .tick-mark {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: all 0.2s;
+    }
+    .tick-mark svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: var(--light-text);
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .tick-mark:hover {
+      background: rgba(245, 158, 11, 0.2);
+    }
+    .tick-mark:hover svg {
+      stroke: var(--warm-yellow);
+    }
+    
+    /* Trạng thái đã tick */
+    .flip-card.status-2 .tick-mark {
+      background: var(--warm-orange);
+    }
+    .flip-card.status-2 .tick-mark svg {
+      stroke: white;
+    }
+
+    @keyframes blink-glow {
+      0% { box-shadow: 0 0 0px rgba(234, 88, 12, 0.5); }
+      50% { box-shadow: 0 0 20px rgba(234, 88, 12, 0.8); }
+      100% { box-shadow: 0 0 0px rgba(234, 88, 12, 0.5); }
+    }
+    .flip-card.blinking .flip-card-inner {
+      animation: blink-glow 1.5s infinite;
+      border-radius: 16px;
+    }
+
+    /* Removed Action Buttons */
+
+    /* Step 2 & 3 List/Grid */
+    .selection-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.8rem;
+      padding: 1.5rem;
+      padding-bottom: 100px;
+    }
+    
+    .selectable-card {
+      background: rgba(255,255,255,0.9);
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 12px;
+      padding: 1.2rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 600;
+      color: var(--dark, #1c1917);
+      user-select: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .selectable-card:hover {
+      background: #fff;
+      border-color: rgba(245, 158, 11, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .selectable-card.selected {
+      background: rgba(245, 158, 11, 0.12);
+      border-color: var(--warm-orange);
+      color: var(--warm-orange);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+    }
+    
+    .floating-action {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem;
+      background: linear-gradient(transparent, #1c1917 40%);
+      text-align: center;
+      z-index: 100;
+    }
+
+    .btn-glow {
+      background: linear-gradient(90deg, var(--warm-yellow), var(--warm-orange));
+      color: var(--dark);
+      font-weight: 800;
+      font-size: 1.1rem;
+      padding: 1rem 3rem;
+      border-radius: 999px;
+      border: none;
+      box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .btn-glow:disabled {
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.3);
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+    .btn-glow:not(:disabled):active {
+      transform: scale(0.95);
+    }
+
+    /* Duel UI */
+    .duel-arena {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.2rem;
+      padding: 1.5rem;
+      padding-bottom: 50px;
+    }
+    .duel-scenario {
+      text-align: center; 
+      max-width: 600px; 
+      margin: 0 auto; 
+      background: rgba(0,0,0,0.03); 
+      padding: 1.5rem; 
+      border-radius: 16px; 
+      border: 1px solid rgba(0,0,0,0.06);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    @media (min-width: 768px) {
+      .duel-arena {
+        flex-direction: row;
+        align-items: center;
+      }
+      .duel-scenario {
+        margin: 0;
+        flex: 1.5;
+      }
+    }
+    .duel-card {
+      flex: 0 1 auto;
+      width: fit-content;
+      min-width: 130px;
+      max-width: 240px;
+      min-height: 80px;
+      max-height: 180px;
+      background: #ffffff;
+      border: 2.5px solid rgba(234, 88, 12, 0.18);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--dark, #1c1917);
+      cursor: pointer;
+      transition: all 0.22s cubic-bezier(0.4,0,0.2,1);
+      text-align: center;
+      padding: 0.8rem 1.2rem;
+      box-shadow: 0 4px 18px rgba(234, 88, 12, 0.10), 0 1px 4px rgba(0,0,0,0.06);
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+    }
+    .duel-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(245,158,11,0.07) 0%, rgba(234,88,12,0.05) 100%);
+      opacity: 0;
+      transition: opacity 0.2s;
+      border-radius: 24px;
+    }
+    .duel-card:hover {
+      border-color: var(--warm-orange, #ea580c);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 32px rgba(234, 88, 12, 0.20), 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .duel-card:hover::before { opacity: 1; }
+    .duel-card:active {
+      transform: scale(0.96);
+      box-shadow: 0 2px 8px rgba(234, 88, 12, 0.12);
+    }
+    .duel-vs {
+      text-align: center;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--warm-yellow);
+      font-style: italic;
+    }
+
+    /* Results */
+    .result-container {
+      padding: 1.5rem;
+      padding-bottom: 100px;
+      text-align: center;
+    }
+    .radar-wrapper {
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 24px;
+      padding: 1.2rem;
+      margin: 0 auto 2rem auto;
+      max-width: 520px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    }
+    .rank-item {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      padding: 1rem 1.5rem;
+      border-radius: 16px;
+      margin-bottom: 0.8rem;
+      text-align: left;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.01);
+    }
+    .rank-num {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--warm-orange);
+      width: 40px;
+    }
+    .rank-name {
+      flex: 1;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--dark);
+    }
+    .rank-score {
+      color: var(--light-text);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    /* Comparison Matrix */
+    .matrix-container {
+      margin-top: 3rem;
+      margin-bottom: 2rem;
+      text-align: left;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .matrix-title {
+      font-size: 1.3rem;
+      color: var(--dark, #1c1917);
+      margin-bottom: 0.5rem;
+      font-weight: 800;
+    }
+    .matrix-desc {
+      color: var(--mid, #44403c);
+      font-size: 0.95rem;
+      margin-bottom: 1.2rem;
+    }
+    .matrix-table-wrapper {
+      overflow-x: auto;
+      border-radius: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    }
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      text-align: center;
+      min-width: 520px;
+    }
+    .matrix-table th, .matrix-table td {
+      padding: 0.6rem 0.35rem;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    .matrix-table th {
+      background: rgba(245, 158, 11, 0.06);
+      color: var(--dark, #1c1917);
+      font-weight: 700;
+      font-size: 0.78rem;
+    }
+    .matrix-table td.matrix-header-cell {
+      background: rgba(245, 158, 11, 0.06);
+      color: var(--dark, #1c1917);
+      font-weight: 700;
+      text-align: left;
+      padding-left: 0.6rem;
+      width: 110px;
+      font-size: 0.78rem;
+    }
+    .matrix-table td.matrix-diagonal {
+      background: rgba(0, 0, 0, 0.04);
+      color: rgba(0,0,0,0.15);
+      font-weight: bold;
+    }
+    .matrix-table td.matrix-win {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--warm-orange, #ea580c);
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+    .matrix-table td.matrix-loss {
+      color: rgba(0, 0, 0, 0.2);
+    }
+
+    /* Custom Modal Overlay */
+    .custom-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(28, 25, 23, 0.4);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .custom-modal.active {
+      display: flex;
+    }
+
+
+    /* Reduced Motion Guard — hỗ trợ người dùng cài prefers-reduced-motion */
+    @media (prefers-reduced-motion: reduce) {
+      .flip-card-inner { transition: none; }
+      .flip-card.blinking .flip-card-inner { animation: none; }
+      .custom-modal > div { animation: none !important; }
+    }
+    /* PDF Export Optimization */
+    .pdf-export {
+      padding: 1rem !important;
+      background: white !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+    .pdf-export h2 { font-size: 1.6rem !important; margin-bottom: 0 !important; }
+    .pdf-export > p { font-size: 0.85rem !important; margin-bottom: 0.5rem !important; }
+    .pdf-export .radar-wrapper { margin-bottom: 0.5rem !important; padding: 0 !important; border: none !important; box-shadow: none !important; }
+    .pdf-export canvas { max-height: 280px !important; }
+    
+    .pdf-export #schwartzDimensionsCard { padding: 0.8rem !important; margin-bottom: 0.5rem !important; border: none !important; box-shadow: none !important; background: rgba(0,0,0,0.02) !important; }
+    .pdf-export #schwartzDimensionsCard h3 { font-size: 1.1rem !important; margin-bottom: 0.3rem !important; }
+    .pdf-export #schwartzDimensionsCard p { font-size: 0.85rem !important; margin-bottom: 0.2rem !important; line-height: 1.3 !important; }
+    
+    .pdf-export .matrix-container { margin-top: 0 !important; padding: 0 !important; border: none !important; box-shadow: none !important; background: transparent !important; }
+    .pdf-export .matrix-title { font-size: 1.1rem !important; margin-bottom: 0.2rem !important; }
+    .pdf-export .matrix-desc { font-size: 0.75rem !important; margin-bottom: 0.5rem !important; }
+    .pdf-export .matrix-table th, .pdf-export .matrix-table td { padding: 0.3rem !important; font-size: 0.7rem !important; }
+    
+    .pdf-export .cta-box { padding: 0.8rem !important; margin-bottom: 0 !important; border: none !important; }
+    .pdf-export .cta-box h3 { font-size: 1.1rem !important; margin-bottom: 0.3rem !important; }
+    .pdf-export .cta-box p { font-size: 0.85rem !important; margin-bottom: 0.5rem !important; line-height: 1.3 !important; }
+    .pdf-export .cta-box a { padding: 0.5rem 1rem !important; font-size: 0.85rem !important; }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <a href="index.html" class="back-btn">&larr;</a>
+    <h1 class="app-title">La bàn giá trị cốt lõi cá nhân - Personal Core Value Compass</h1>
+  </header>
+
+  <!-- STEP 1: GRID RATING -->
+  <div id="step1" class="step-container active">
+    <div class="progress-bar-container">
+      <div id="pb1" class="progress-fill" style="width: 25%;"></div>
+    </div>
+    <div class="progress-text" style="font-weight: bold; color: var(--dark);">Bước 1: Khám phá Giá trị Cốt lõi</div>
+    <div style="text-align: center; margin: 1rem auto; margin-bottom: 0;">
+      <button id="btnToggleVideo" class="btn-glow" style="padding: 0.5rem 1.2rem; font-size: 0.85rem; background: white; border: 1px solid var(--warm-orange); color: var(--warm-orange); border-radius: 999px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05); font-weight: 700; display: inline-flex; align-items: center; gap: 0.5rem;">
+        ▶ Xem video hướng dẫn
+      </button>
+    </div>
+    <div id="videoContainer" style="display: none; text-align: center; margin: 1rem auto; max-width: 400px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: all 0.3s ease;">
+      <video id="tutorialVideo" width="100%" controls loop muted playsinline style="display: block;">
+        <source src="demo_video.mp4" type="video/mp4">
+        Trình duyệt của bạn không hỗ trợ thẻ video.
+      </video>
+    </div>
+    <p style="text-align: center; padding: 0 1.5rem; color: var(--mid); font-size: 0.95rem; margin-top: 1rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+      Nhấp vào thẻ bất kỳ để lật xem ý nghĩa và tự động chọn là <strong>"Quan&nbsp;trọng"</strong>.<br/>
+      Nếu thẻ đó thực sự định hình con người bạn, hãy bấm vào <strong>dấu&nbsp;Tick</strong> ở góc để đánh dấu <strong style="white-space: nowrap">"Rất&nbsp;quan&nbsp;trọng"</strong>.<br/>
+      <span style="color: var(--warm-orange); font-weight: bold; font-size: 0.85rem;">(Lưu ý: Bạn cần chọn tối thiểu 7 giá trị để tiếp tục)</span>
+    </p>
+    
+    <div style="text-align: center; margin-bottom: 1.5rem; margin-top: 1rem;">
+      <button id="btnAddCustom" class="btn-glow" style="padding: 0.6rem 1.5rem; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15); font-weight: 700;">+ Bổ sung giá trị cốt lõi khác</button>
+    </div>
+    
+    <div class="grid-wrapper">
+      <div id="gridArea" class="values-grid">
+        <!-- Cards will be injected here via JS -->
+      </div>
+    </div>
+
+    <div class="floating-action" style="background: linear-gradient(transparent, #fffbeb 40%);">
+      <div style="margin-bottom: 0.8rem; font-weight: bold; color: var(--dark);">Đã chọn: <span id="s1-count" style="color: var(--warm-orange);">0</span>/41</div>
+      <button id="btnNext1" class="btn-glow">Tiếp tục bước 2</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: SELECT TOP 7 -->
+  <div id="step2" class="step-container">
+    <div class="progress-bar-container">
+      <div class="progress-fill" style="width: 33%;"></div>
+    </div>
+    <div class="progress-text" style="font-weight: bold; color: var(--dark);">Bước 2: Lọc Top 7 giá trị cốt lõi</div>
+    <p style="text-align: center; padding: 0 1.5rem; color: var(--mid); font-size: 0.95rem; margin-top: 1rem;">
+      Từ những giá trị bạn vừa chọn ở bước trước, hãy chọn lọc lại đúng <strong style="color:var(--warm-orange)">7 giá trị</strong> cốt lõi và đại diện nhất cho bạn.
+    </p>
+
+    <!-- [YC-3] Hình định nghĩa Giá trị Cốt lõi + text nhấn mạnh -->
+    <div style="padding: 0 1.5rem; max-width: 800px; margin: 0 auto 1.5rem auto; text-align: center;">
+      <img
+        src="assets/core_values_definition.png"
+        alt="Định nghĩa Giá trị Cốt lõi — Động cơ, Đạo đức, Chỉ dẫn, Tầm quan trọng, Hành động"
+        style="width: 100%; max-width: 680px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); display: block; margin: 0 auto 1rem auto;"
+      />
+      <p style="font-size: 0.95rem; color: var(--warm-orange, #ea580c); font-weight: 700; line-height: 1.6; background: rgba(245,158,11,0.06); border-left: 3px solid var(--warm-orange, #ea580c); padding: 0.8rem 1.2rem; border-radius: 0 12px 12px 0; text-align: left; margin: 0 auto; max-width: 680px;">
+        💡 Hãy xem lại những tiêu chí này khi chọn lựa giá trị cá nhân mà bạn tin rằng <strong>Rất quan trọng</strong> với bản thân mình
+      </p>
+    </div>
+
+    <div id="topValuesList" class="selection-grid"></div>
+    
+    <div class="floating-action" style="background: linear-gradient(transparent, #fffbeb 40%);">
+      <div style="margin-bottom: 0.8rem; font-weight: bold; color: var(--dark);">
+        Đã chọn: <span id="selectionCount" style="color: var(--warm-orange);">0</span>/7
+        <span id="selectionWarning" style="color: var(--warm-orange); font-size: 0.85rem; margin-left: 0.5rem; display: none; font-weight: 800;">(Chỉ chọn đúng 7 giá trị!)</span>
+      </div>
+      <button id="btnNext2" class="btn-glow" disabled>Bắt đầu So sánh chéo</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: PAIRWISE DUEL -->
+  <div id="step3" class="step-container">
+    <div class="progress-bar-container">
+      <div class="progress-fill" style="width: 66%;"></div>
+    </div>
+    <div class="progress-text" style="font-weight: bold; color: var(--dark);">Bước 3: Đây là lúc xác định những giá trị nào thật sự là quan trọng nhất của bạn (<span id="duelCurrent">1</span>/21)</div>
+    <p style="text-align: center; padding: 0 1.5rem; color: var(--mid); font-size: 0.95rem; margin-top: 1rem;">
+      Bạn sẽ GIỮ LẠI giá trị nào? Hãy chọn theo trực giác — không cần suy nghĩ quá lâu.
+    </p>
+    
+    <div class="duel-arena">
+      <div id="duelA" class="duel-card">A</div>
+      
+      <div class="duel-scenario">
+        <div class="duel-vs" style="margin-bottom: 0.5rem; color: var(--warm-orange);">GIỮ GIÁ TRỊ NÀO?</div>
+        <div id="conflictScenario" style="font-size: 1.05rem; color: var(--dark); line-height: 1.6; font-style: italic;">
+          Giữa việc [A] và việc [B], bạn sẽ GIỮ LẠI điều nào?
+        </div>
+      </div>
+
+      <div id="duelB" class="duel-card">B</div>
+    </div>
+  </div>
+
+  <!-- STEP INFO: NHẬP THÔNG TIN -->
+  <div id="stepInfo" class="step-container">
+    <div class="progress-bar-container">
+      <div class="progress-fill" style="width: 85%;"></div>
+    </div>
+    <div class="progress-text" style="font-weight: bold; color: var(--dark);">Bước 4: Xác nhận thông tin</div>
+    
+    <div id="emailFormCard" style="max-width: 650px; margin: 3rem auto; background: var(--warm-cream, #fffbeb); border: 1px solid rgba(0, 0, 0, 0.08); padding: 2.5rem 2rem; border-radius: 24px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03); text-align: left;">
+      <h3 style="color: var(--dark, #1c1917); margin-top: 0; margin-bottom: 0.5rem; font-weight: 800; font-size: 1.5rem; text-align: center;">Hoàn thành đối đấu trực giác!</h3>
+      <p style="color: var(--mid, #44403c); font-size: 1rem; margin-bottom: 2rem; line-height: 1.5; text-align: center;">
+        Dữ liệu phân tích đã sẵn sàng. Vui lòng nhập thông tin của bạn để lưu trữ và xem ngay kết quả La bàn giá trị cốt lõi cá nhân.
+      </p>
+      
+      <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div>
+            <label style="display: block; margin-bottom: 0.4rem; font-weight: 700; color: var(--dark, #1c1917); font-size: 0.9rem;">Họ và tên của bạn:</label>
+            <input type="text" id="reportName" placeholder="Ví dụ: Nguyễn Văn A" style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); font-family: inherit; font-size: 0.95rem; background: white; color: var(--dark);" />
+          </div>
+          <div>
+            <label style="display: block; margin-bottom: 0.4rem; font-weight: 700; color: var(--dark, #1c1917); font-size: 0.9rem;">Địa chỉ Email:</label>
+            <input type="email" id="reportEmail" placeholder="email@vi-du.com" style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); font-family: inherit; font-size: 0.95rem; background: white; color: var(--dark);" />
+          </div>
+        </div>
+        
+        <!-- CAPTCHA Block -->
+        <div id="captchaContainer" style="display: grid; grid-template-columns: 1fr; gap: 0.5rem; margin-top: 1rem; padding: 1rem; background: rgba(0,0,0,0.02); border-radius: 16px; border: 1px solid rgba(0,0,0,0.05);">
+          <label style="display: block; font-weight: 700; color: var(--dark, #1c1917); font-size: 0.9rem;">
+            Xác minh bảo mật: <span id="captchaQuestion" style="color: var(--warm-orange); font-weight: 800;">...</span>
+          </label>
+          <input type="number" id="reportCaptcha" placeholder="Nhập kết quả phép tính" style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); font-family: inherit; font-size: 0.95rem; background: white; color: var(--dark);" />
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 2rem;">
+        <button id="btnSendReportEmail" class="btn-glow" style="width: 100%; padding: 1rem 1.5rem; font-size: 1.1rem; font-weight: 800; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);">
+          Hiện kết quả La bàn giá trị cốt lõi cá nhân của bạn
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4: RESULTS -->
+  <div id="step4" class="step-container">
+    <div class="progress-bar-container">
+      <div class="progress-fill" style="width: 100%;"></div>
+    </div>
+    
+    <div class="result-container">
+      <!-- Vùng in PDF -->
+      <div id="resultReportCard" style="background: var(--warm-cream, #fffbeb); padding: 1.5rem; border-radius: 24px; border: 1px solid rgba(0,0,0,0.03); margin-bottom: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.01);">
+        <h2 style="font-size: 2.2rem; margin-bottom: 0.5rem; color: var(--warm-orange); font-weight: 800; text-align: center;">La Bàn Của Bạn</h2>
+        <p style="color: var(--mid); margin-bottom: 2rem; font-size: 1.05rem; text-align: center;">Đây là DNA giá trị cốt lõi của riêng bạn.</p>
+        
+        <div class="radar-wrapper" style="background: white; border: 1px solid rgba(0,0,0,0.04); border-radius: 20px; padding: 0.8rem; margin-bottom: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.01);">
+          <canvas id="resultChart" style="max-height: 380px; max-width: 100%;"></canvas>
+        </div>
+        
+        <!-- 7x7 Comparison Matrix Container -->
+        <div class="matrix-container" style="background: white; border: 1px solid rgba(0,0,0,0.04); border-radius: 20px; padding: 1.2rem; margin-bottom: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.01);">
+          <div class="matrix-title" style="margin-bottom: 0.5rem;">Ma Trận Đối Đầu Chi Tiết</div>
+          <div class="matrix-desc" style="font-size: 0.85rem; color: var(--mid); margin-bottom: 1rem; text-align: center;">
+            Bảng tổng hợp chi tiết kết quả 21 trận đối kháng. Các giá trị ở <strong>Hàng ngang</strong> thắng giá trị ở <strong>Cột dọc</strong> tương ứng sẽ được đánh dấu tích cam (<span style="color: var(--warm-orange); font-weight: bold;">✔</span>).
+          </div>
+          <div class="matrix-table-wrapper">
+            <table id="matrixTable" class="matrix-table">
+              <!-- Dynamic matrix rendered here -->
+            </table>
+          </div>
+        </div>
+        
+        <!-- [YC-1] Ý Nghĩa La Bàn Giá Trị Cốt Lõi — thay thế Schwartz 2026-07-17 -->
+        <div class="pv-explanation-box" style="background: white; border: 1px solid rgba(0,0,0,0.04); border-radius: 20px; padding: 1.5rem 1.8rem; margin-bottom: 2rem; text-align: left; box-shadow: 0 4px 16px rgba(0,0,0,0.01);">
+          <h3 style="color: var(--warm-orange, #ea580c); margin-top: 0; margin-bottom: 1rem; font-weight: 800; font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+            💡 Ý Nghĩa La Bàn Giá Trị Của Bạn
+          </h3>
+          <p style="color: var(--mid, #44403c); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.2rem;">
+            Chúc mừng bạn đã hoàn thành cuộc đối thoại nội tâm sâu sắc. La bàn trên không chỉ là những từ ngữ hoa mỹ, mà là tấm bản đồ định hình cuộc sống của bạn dựa trên các nguyên lý cốt lõi của <strong>Delivering Happiness</strong>:
+          </p>
+          <ul style="padding-left: 1.2rem; margin: 0; color: var(--dark, #1c1917); font-size: 0.95rem; line-height: 1.65; display: flex; flex-direction: column; gap: 0.8rem;">
+            <li><strong>Con người thật vs. Giá trị tuyên bố:</strong> Bài test đối kháng bắt buộc bạn phải đưa ra lựa chọn thực tế thay vì những &ldquo;giá trị tuyên bố&rdquo; lý thuyết. Hãy nhớ công thức: <em>La bàn (Định hướng) + Đồng hồ (Thời gian) = Giá trị thực tế của bạn</em>. Thừa nhận giá trị thật giúp bạn cởi bỏ áp lực phải gồng mình diễn vai hoàn hảo trước kỳ vọng xã hội.</li>
+            <li><strong>Thời khắc quyết định (Critical Decision Moments):</strong> 21 trận đối kháng bạn vừa vượt qua chính là mô phỏng những tình huống giằng xé trong cuộc sống. Bản chất thực sự của chúng ta không bộc lộ qua lời nói lúc bình yên, mà phát lộ rõ ràng nhất khi ta buộc phải hy sinh điều này để giữ lại điều quan trọng hơn.</li>
+            <li><strong>Sự đồng bộ (Alignment) &amp; Cảm giác thuộc về chân thật:</strong> Thấu hiểu giá trị bản thân giúp bạn dễ dàng tìm kiếm điểm giao thoa (alignment) với giá trị của gia đình, tổ chức hay cộng đồng. Bạn không cần phải giống hệt môi trường xung quanh, mà chỉ cần tìm thấy sự đồng điệu để làm việc an vui và đạt được cảm giác thuộc về chân thật (True Belonging).</li>
+          </ul>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="cta-box" style="background: linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(234,88,12,0.05) 100%); border: 1px solid rgba(234,88,12,0.2); border-radius: 20px; padding: 2rem 1.5rem; margin-bottom: 2rem; text-align: center;">
+          <h3 style="color: var(--warm-orange); margin-top: 0; margin-bottom: 1rem; font-weight: 800; font-size: 1.4rem;">🎯 Kêu Gọi Hành Động</h3>
+          <p style="color: var(--dark); font-size: 1.05rem; margin-bottom: 1.5rem; line-height: 1.6; max-width: 600px; margin-left: auto; margin-right: auto;">
+            Hãy cùng tham gia Sáng kiến CultureCode và cộng đồng Delivering Happiness Việt Nam để thường xuyên nhận được những kiến thức, thông tin bổ ích và cùng nhau thực hành để đồng điệu hóa (alignment) và phát triển các giá trị cốt lõi này trong cuộc sống hướng đến hạnh phúc đích thực cho Bản thân, gia đình, tổ chức và cộng đồng.
+          </p>
+          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="https://zalo.me/g/xdqgta913" target="_blank" style="background: #0068FF; color: white; text-decoration: none; padding: 0.8rem 1.5rem; border-radius: 999px; font-weight: 700; font-size: 1rem; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">Tham gia Group Zalo</a>
+            <a href="https://www.linkedin.com/company/culturecodecommunity/" target="_blank" style="background: #0A66C2; color: white; text-decoration: none; padding: 0.8rem 1.5rem; border-radius: 999px; font-weight: 700; font-size: 1rem; box-shadow: 0 4px 12px rgba(10,102,194,0.3); transition: transform 0.2s;">Theo dõi LinkedIn</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <button id="btnDownloadReportPDF" class="btn-glow" style="background: white; border: 2px solid var(--warm-orange); padding: 1rem 2.5rem; border-radius: 999px; cursor: pointer; font-weight: 800; color: var(--warm-orange); font-family: inherit; font-size: 1.1rem; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);">
+          📥 Tải bản PDF báo cáo chi tiết
+        </button>
+      </div>
+      
+      <div style="margin-top: 3rem; margin-bottom: 2rem; text-align: center;">
+        <a href="index.html" class="btn-glow" style="text-decoration: none; padding: 1rem 2rem;">Quay về Trang chủ</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Value Input Modal -->
+  <div id="customValueModal" class="custom-modal">
+    <div style="background: var(--warm-cream, #fffbeb); padding: 2rem; border-radius: 24px; border: 1px solid rgba(0,0,0,0.08); width: 90%; max-width: 420px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); animation: zoomIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+      <h3 id="customValueModalTitle" style="color: var(--dark, #1c1917); margin-top: 0; margin-bottom: 1rem; font-weight: 800; font-size: 1.3rem;">Bổ sung giá trị của bạn</h3>
+      <p style="color: var(--mid, #44403c); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.4;">
+        Nếu bạn không tìm thấy giá trị cốt lõi của mình trong danh sách 41 thẻ, hãy tự định nghĩa nó dưới đây.
+      </p>
+      
+      <label for="customValueName" style="display: block; margin-bottom: 0.5rem; font-weight: 700; color: var(--dark, #1c1917); font-size: 0.95rem;">Tên giá trị cốt lõi:</label>
+      <input type="text" id="customValueName" placeholder="Ví dụ: Sự tử tế, Trí tuệ cảm xúc..." style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); margin-bottom: 1.2rem; font-family: inherit; font-size: 0.95rem; background: white; color: var(--dark);" />
+      
+      <label for="customValueDesc" style="display: block; margin-bottom: 0.5rem; font-weight: 700; color: var(--dark, #1c1917); font-size: 0.95rem;">Mô tả ngắn gọn:</label>
+      <input type="text" id="customValueDesc" placeholder="Ví dụ: Giúp đỡ người khác không màng lợi ích..." style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); margin-bottom: 1.8rem; font-family: inherit; font-size: 0.95rem; background: white; color: var(--dark);" />
+      
+      <div style="display: flex; gap: 0.8rem; justify-content: flex-end;">
+        <button id="btnCancelCustom" style="background: transparent; border: 1px solid rgba(0,0,0,0.1); padding: 0.75rem 1.5rem; border-radius: 999px; cursor: pointer; font-weight: 700; color: var(--mid, #44403c); font-family: inherit;">Hủy</button>
+        <button id="btnSaveCustom" style="background: linear-gradient(90deg, var(--warm-yellow), var(--warm-orange)); border: none; padding: 0.75rem 1.5rem; border-radius: 999px; cursor: pointer; font-weight: 800; color: var(--dark, #1c1917); font-family: inherit; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);">Thêm giá trị</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes zoomIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  </style>
+
+  <script src="personal-value.js"></script>
+</body>
+</html>
