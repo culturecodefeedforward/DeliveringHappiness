@@ -17,7 +17,7 @@ graph TD
         UI["Giao Diện Học Tập Tập Trung (Focused Mode)"]
         AuthModal["Cổng Đăng Nhập Không Mật Khẩu (Passwordless Gate)"]
         StateEngine["Bộ Quản Trị Trạng Thái (LocalStorage Engine)"]
-        S1["Chặng 1: Khởi Động Với HP & Cổng Sát Hạch Đầu Vào (≥80%)"]
+        S1["Chặng 1: Khởi Động Với HP & Cổng Sát Hạch Vượt Chặng (≥80%)"]
         S2["Chặng 2: Gieo Thói Quen HP (Trạm 0: 3 Đòn Bẩy Deci & Ryan + 5 Thói Quen + Đúc Kết & Chuyển Hóa)"]
         S3["Chặng 3: Tiếp Nối Hành Trình HP (Habit Tracker & Weekly IAM Check-in)"]
         SlideViewer["Hộp Thoại Phóng To Slide & Tải File HD"]
@@ -72,7 +72,7 @@ sequenceDiagram
         LMS->>Learner: Báo lỗi & hướng dẫn liên hệ BTC
     end
 
-    Note over Learner,LMS: CHẶNG 1: Khởi Động Với Hạnh Phúc & Cổng Sát Hạch Đầu Vào
+    Note over Learner,LMS: CHẶNG 1: Khởi Động Với Hạnh Phúc & Cổng Sát Hạch Vượt Chặng
     Learner->>LMS: Xem slide/video bài giảng & định vị La Bàn Me Values
     Learner->>LMS: Làm bài trắc nghiệm 10 câu bám Slide 12-24 (20 giây/câu)
     alt Đạt >= 80% (Tối đa 3 lượt thử)
@@ -327,7 +327,7 @@ Cập nhật và hoàn thiện ngày 12/10/2026 sau khi vá triệt để 6 lỗ
 
 - Cổng Quản Trị trung tâm (5.024 dòng mã) là đầu não vận hành LMS của Ban Giảng Huấn và Ban Đào Tạo:
   + Quản lý danh bạ học viên đa khóa học (DHM3 đến DHM10, Team Happiness Apollo).
-  + Giám sát bài test sát hạch đầu vào Chặng 1 (tiêu chuẩn 80%, 3 lượt thử, cơ chế khóa cổng).
+  + Giám sát bài test sát hạch vượt chặng Chặng 1 (tiêu chuẩn 80%, 3 lượt thử, cơ chế khóa cổng).
   + Chấm điểm & ghi chú phản hồi bài tập chuyển hóa niềm tin giới hạn ABCDE Chặng 3.
   + Ma trận Heatmap mức độ hoàn thành bài test và Xu hướng xử lý xung đột TKI (Tab 5).
   + Xuất báo cáo tổng hợp 3 Chặng ra CSV và liên kết trực tiếp Google Sheet thu hoạch (Tab 4).

@@ -15,7 +15,7 @@ Nhằm giúp học viên tiếp thu lý thuyết nhẹ nhàng, tập trung và c
 3. **Trạm Dừng Phản Tư Tích Hợp (Check point 1: I • A • M 1.1):** Đúc kết Hạnh phúc tự thân & La Bàn giá trị dẫn đường ngay sau Bài 1.1 & Bài 1.2.
 4. **Chuyển 3 Đòn Bẩy Sang Chặng 2:** Nội dung Thuyết Tự Quyết (SDT - Deci & Ryan, 2000) và 3 Đòn Bẩy Nơi Làm Việc (Tự chủ, Tiến bộ, Kết nối) đã được chuyển toàn bộ sang làm trọng tâm thảo luận và tháo gỡ tại **Trạm 0 Chặng 2** cùng Ban Giảng Huấn.
 5. **Cầu Nối Top 7 DNA Giá Trị Cốt Lõi:** Tích hợp trực tiếp kết quả làm bài test La Bàn Me Values. Học viên chỉ cần chạm vào huy hiệu giá trị là hệ thống tự động điền vào ô phản tư trạm dừng.
-6. **Cổng Sát Hạch Đầu Vào Độc Lập (Qualifying Gate Quiz ≥80%):** Tách biệt bài trắc nghiệm sát hạch 10 câu bám sát 100% Slide 12–24 (đạt tối thiểu 8/10 câu - 80%) thành cổng kiểm tra riêng biệt để chính thức nhận vé tham dự Chặng 2.
+6. **Cổng Sát Hạch Vượt Chặng Độc Lập (Qualifying Gate Quiz ≥80%):** Tách biệt bài trắc nghiệm sát hạch 10 câu bám sát 100% Slide 12–24 (đạt tối thiểu 8/10 câu - 80%) thành cổng kiểm tra riêng biệt để chính thức nhận vé tham dự Chặng 2.
 
 ---
 
@@ -53,7 +53,7 @@ Ban Tổ Chức đã chuẩn bị sẵn các tài khoản để Quý Thầy Cô 
 ### 📍 Bước 2: Quan sát Thanh Mốc Tiến Độ (Milestone Bar 4 Mốc Chuẩn Hóa)
 1. Tại giao diện Chặng 1, chuyển sang tab **"Trạm Thực Hành"** (hoặc tab *Bài Học & Thực Hành*).
 2. **Quan sát:** Phía trên cùng có thanh tiến độ với các viên huy hiệu tương ứng các mục học tập chuẩn hóa:
-   - `[1. 3 Cấp Độ Hạnh Phúc]` • `[2. La Bàn Me Values]` • `[📍 Đúc Kết I • A • M 1.1]` • `[🎯 Cổng Sát Hạch (≥80%)]`
+   - `[3 Cấp Độ Hạnh Phúc]` • `[La Bàn Me Values]` • `[📍 Đúc Kết I • A • M 1.1]` • `[🎯 Cổng Sát Hạch (≥80%)]`
    - Bộ đếm tiến độ hiển thị trực quan theo thời gian thực.
 
 ---
@@ -86,8 +86,8 @@ Ban Tổ Chức đã chuẩn bị sẵn các tài khoản để Quý Thầy Cô 
 
 ---
 
-### 📍 Bước 6: Trải Nghiệm "Cổng Sát Hạch Đầu Vào — Bài Kiểm Tra 10 Câu (Qualifying Gate)"
-1. Nhấp mở mục **🎯 Cổng Sát Hạch Đầu Vào — Bài Kiểm Tra 10 Câu (Qualifying Gate)**.
+### 📍 Bước 6: Trải Nghiệm "Cổng Sát Hạch Vượt Chặng — Bài Kiểm Tra 10 Câu (Qualifying Gate)"
+1. Nhấp mở mục **🎯 Cổng Sát Hạch Vượt Chặng — Bài Kiểm Tra 10 Câu (Qualifying Gate)**.
 2. Nhấn nút **[BẮT ĐẦU LÀM BÀI TEST (10 CÂU)]**.
 3. **Trải nghiệm bài test:**
    - Mỗi câu hỏi có đồng hồ đếm ngược 20 giây sinh động.

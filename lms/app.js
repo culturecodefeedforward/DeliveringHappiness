@@ -11,8 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 id: "stage-1",
                 stageNumber: 1,
                 badge: "Mini Step 1 • Online",
-                title: "Mini step 1 • ONLINE – Gieo Thông điệp",
-                subtitle: "Khoa học Hạnh phúc • 3 Cấp độ • Định vị La Bàn (Me Values) • 3 Đòn Bẩy Hạnh Phúc",
+                title: "Chặng 1 • ONLINE – Khởi động với hạnh phúc",
+                subtitle: "Khoa học Hạnh phúc • 3 Cấp độ • Định vị La Bàn (Me Values)",
                 instructor: "",
                 estimatedMinutes: 30,
                 videoDuration: "7:27",
@@ -20,12 +20,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 videoTitle: "Video Explainer: Delivering Happiness Movement (Hệ Điều Hành Hạnh Phúc)",
                 videoType: "mp4",
                 subSections: [
-                    { id: "sub-1-1", title: "Bài 1.1: 3 Cấp Độ Hạnh Phúc (Mihály Csíkszentmihályi & Martin Seligman)", target: "stage1-mod-1-1", tab: "tab-practice" },
-                    { id: "sub-1-2", title: "Bài 1.2: Giá Trị Cốt Lõi Cá Nhân (ME Values) & La Bàn Hành Động", target: "stage1-mod-1-2", tab: "tab-practice" },
-                    { id: "sub-1-cp1", title: "Check point 1: I . A . M", target: "stage1-mod-cp1", tab: "tab-practice" },
-                    { id: "sub-1-3", title: "Bài 1.3: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc Ở Nơi Làm Việc", target: "stage1-mod-1-3", tab: "tab-practice" },
-                    { id: "sub-1-cp2", title: "Check point 2: I . A . M", target: "stage1-mod-cp2", tab: "tab-practice" },
-                    { id: "sub-1-quiz", title: "Cổng Vượt Chặng — Bài Kiểm Tra", target: "stage1-mod-quiz", tab: "tab-practice" }
+                    { id: "sub-1-1", title: "Bài 1.1: Khoa Học Hạnh Phúc & 3 Cấp Độ (Pleasure • Passion • Higher Purpose)", target: "stage1-mod-1-1", tab: "tab-practice" },
+                    { id: "sub-1-2", title: "Bài 1.2: Định Vị La Bàn Giá Trị Cá Nhân (ME Values)", target: "stage1-mod-1-2", tab: "tab-practice" },
+                    { id: "sub-1-cp1", title: "Check point 1: Đúc Kết I • A • M 1.1", target: "stage1-mod-cp1", tab: "tab-practice" },
+                    { id: "sub-1-quiz", title: "Cổng Sát Hạch Vượt Chặng (10 Câu • Đạt ≥ 80%)", target: "stage1-mod-quiz", tab: "tab-practice" }
                 ],
                 audios: [
                     { id: "a1-0", title: "0. Lời dẫn & Giới thiệu tổng quan", file: "data/artifacts/dh4_overview.mp3", duration: "2:45" },
@@ -43,210 +41,156 @@ document.addEventListener("DOMContentLoaded", () => {
                 modules: [
                     {
                         id: "mod-1-1",
-                        title: "Bài 1.1: 3 Cấp Độ Hạnh Phúc (Mihály Csíkszentmihályi & Martin Seligman)",
+                        title: "Bài 1.1: 3 Cấp Độ Hạnh Phúc (Pleasure • Passion • Higher Purpose)",
                         quizzes: [
                             {
-                                id: "dhm-quiz-1",
-                                question: "Trong Cảm giác 'Tiến bộ'; yếu tố nào quan trọng nhất để duy trì động lực?",
-                                options: [
-                                    "Sự ghi nhận các bước tiến nhỏ (Small wins)",
-                                    "Sự phê bình nghiêm khắc",
-                                    "Phần thưởng lớn cuối năm",
-                                    "Việc không bao giờ thất bại"
-                                ],
-                                correctIndex: 0,
-                                timeLimit: 20,
-                                explanation: "Đáp án đúng là lựa chọn 1: Sự ghi nhận các bước tiến nhỏ (Small wins)"
+                                                        "id": "dhm-quiz-1",
+                                                        "question": "Trong bài giảng, khi đào sâu chuỗi câu hỏi 'Tại sao điều đó lại quan trọng?' đối với các mục tiêu đời sống (mua nhà, kiếm tiền, thăng tiến, sức khỏe), lớp động lực sâu xa nhất mà con người chạm tới là gì (theo Aristotle & Delivering Happiness)?",
+                                                        "options": [
+                                                                                    "Trải nghiệm hạnh phúc và sự mãn nguyện tự thân (Happiness / Eudaimonia).",
+                                                                                    "Sự công nhận về vị thế và danh tiếng cá nhân (Recognition / Prestige).",
+                                                                                    "Sự an toàn tài chính và tích lũy của cải vật chất (Security / Affluence).",
+                                                                                    "Sự hoàn thành các cột mốc và mục tiêu chiến lược (Milestones / Achievement)."
+                                                        ],
+                                                        "correctIndex": 0,
+                                                        "timeLimit": 20,
+                                                        "explanation": "Theo Slide 14 & 18 và lời giảng, khi hỏi 'tại sao' đủ sâu, con người chạm tới mong muốn sâu nhất: tôi sẽ mãn nguyện hơn, hạnh phúc hơn (Eudaimonia - một đời sống có ý nghĩa, có sự phát triển và mãn nguyện)."
                             },
                             {
-                                id: "dhm-quiz-2",
-                                question: "Trong xây dựng văn hóa giao tiếp cởi mở và thấu hiểu không phán xét, An toàn tâm lý (Psychological Safety) đóng vai trò nền tảng cho đòn bẩy nào?",
-                                options: [
-                                    "Cảm giác Tự chủ (Autonomy)",
-                                    "Kết nối (Connectedness)",
-                                    "Đam mê (Passion)",
-                                    "Tiến bộ (Progress)"
-                                ],
-                                correctIndex: 1,
-                                timeLimit: 20,
-                                explanation: "An toàn tâm lý giúp mọi người dám cởi mở, lắng nghe không phán xét và gắn kết chân thực, là nền tảng cốt lõi của Cảm giác Kết nối (Connectedness). Đồng thời ở cấp độ tổ chức, nó cũng là tiền đề để nhân viên dám nói lên tiếng nói cá nhân (Tự chủ)."
+                                                        "id": "dhm-quiz-2",
+                                                        "question": "Theo kịch bản bài giảng Delivering Happiness, ba dạng trải nghiệm hạnh phúc theo thứ tự chất lượng và độ bền tăng dần là:",
+                                                        "options": [
+                                                                                    "Thú vui (Pleasure) ➔ Đam mê / Dòng chảy (Flow) ➔ Mục đích cao cả (Higher Purpose).",
+                                                                                    "Đam mê (Passion) ➔ Thú vui (Pleasure) ➔ Mục đích cao cả (Higher Purpose).",
+                                                                                    "Thú vui (Pleasure) ➔ Mục đích cao cả (Higher Purpose) ➔ Đam mê (Passion).",
+                                                                                    "Tự chủ (Autonomy) ➔ Tiến bộ (Progress) ➔ Kết nối đội ngũ (Connectedness)."
+                                                        ],
+                                                        "correctIndex": 0,
+                                                        "timeLimit": 20,
+                                                        "explanation": "Theo Slide 16, Delivering Happiness phân loại ba dạng trải nghiệm: Thú vui (Pleasure - ngắn) ➔ Đam mê / Flow (bền hơn, gắn kết sâu) ➔ Higher Purpose / Meaning (bền vững nhất, kết nối điều lớn hơn bản thân)."
                             },
                             {
-                                id: "dhm-quiz-3",
-                                question: "Trong công việc, cảm giác 'Tự chủ' (Autonomy) được hiểu đúng nhất là:",
-                                options: [
-                                    "Có quyền lựa chọn và kiểm soát cách thực hiện công việc",
-                                    "Được quyền ra lệnh cho người khác",
-                                    "Không cần làm việc theo quy trình",
-                                    "Làm việc một mình không cần ai giúp"
-                                ],
-                                correctIndex: 0,
-                                timeLimit: 20,
-                                explanation: "Đáp án đúng là lựa chọn 1: Có quyền lựa chọn và kiểm soát cách thực hiện công việc"
+                                                        "id": "dhm-quiz-3",
+                                                        "question": "Kịch bản bài giảng chỉ ra điểm lưu ý cốt lõi nào đối với các thành tựu vật chất hoặc niềm vui bên ngoài (Cấp độ Thú vui - Pleasure)?",
+                                                        "options": [
+                                                                                    "Cảm giác thỏa mãn không ở lại mãi, não bộ nhanh chóng thích nghi và ta lại có cột mốc mới.",
+                                                                                    "Cảm giác thỏa mãn tạo ra áp lực tâm lý tiêu cực, khiến cá nhân kiệt quệ và mất phương hướng.",
+                                                                                    "Cảm giác thỏa mãn làm suy giảm động lực nội tại, khiến cá nhân ngừng nỗ lực phát triển thêm.",
+                                                                                    "Cảm giác thỏa mãn chỉ phụ thuộc hoàn cảnh bên ngoài, khiến cá nhân không thể tự quyết định."
+                                                        ],
+                                                        "correctIndex": 0,
+                                                        "timeLimit": 20,
+                                                        "explanation": "Theo Slide 15, cảm giác hạnh phúc sau một thành tựu bên ngoài thường không ở lại mãi; rất nhanh ta lại có một cột mốc mới. Nếu luôn gửi hạnh phúc vào tương lai thì ta sẽ dành cả đời để... chờ được hạnh phúc."
                             },
                             {
-                                id: "dhm-quiz-4",
-                                question: "Tại sao cảm giác 'Tiến bộ' (Progress) lại quan trọng hơn việc Đạt mục tiêu cuối cùng theo khoa học hạnh phúc?",
-                                options: [
-                                    "Vì các Small wins (chiến thắng nhỏ) tạo ra nguồn năng lượng liên tục giúp duy trì động lực",
-                                    "Vì cảm giác tiến bộ giúp chúng ta không bị tác động bởi những thất bại tạm thời",
-                                    "Vì việc đạt mục tiêu cuối cùng thường đi kèm với sự lo âu về việc phải đặt ra những mục tiêu cao hơn",
-                                    "Vì tiến bộ là yếu tố duy nhất có thể đo lường được bằng các chỉ số định lượng trong quản trị nhân sự"
-                                ],
-                                correctIndex: 0,
-                                timeLimit: 20,
-                                explanation: "Đáp án đúng là lựa chọn 1: Vì các Small wins (chiến thắng nhỏ) tạo ra nguồn năng lượng liên tục giúp duy trì động lực"
+                                                        "id": "dhm-quiz-4",
+                                                        "question": "Trong bài giảng, trải nghiệm Đam mê / Dòng chảy (Flow) được mô tả chính xác nhất qua trạng thái nào?",
+                                                        "options": [
+                                                                                    "Khi kỹ năng gặp thử thách đủ hấp dẫn, tập trung rất sâu và cảm giác thời gian thay đổi.",
+                                                                                    "Khi công việc diễn ra dễ dàng, không gặp bất kỳ trở ngại nào và hoàn thành trước thời hạn.",
+                                                                                    "Khi nhận được sự tán thưởng liên tục từ đồng đội, cảm thấy tự hào về vị trí của bản thân.",
+                                                                                    "Khi xử lý cùng lúc nhiều nhiệm vụ phức tạp, duy trì nhịp độ làm việc khẩn trương liên tục."
+                                                        ],
+                                                        "correctIndex": 0,
+                                                        "timeLimit": 20,
+                                                        "explanation": "Theo Slide 16, trải nghiệm Flow xuất hiện khi kỹ năng gặp thử thách đủ hấp dẫn, tập trung rất sâu, nhìn lại đồng hồ thấy mấy tiếng trôi qua lúc nào không hay vì đang thật sự gắn kết với điều mình làm."
                             },
                             {
-                                id: "dhm-quiz-5",
-                                question: "Khái niệm 'Psychological Safety' (An toàn tâm lý) đóng vai trò gì trong Cảm giác ‘Kết nối?",
-                                options: [
-                                    "Thiết lập một hệ thống kiểm soát nội bộ chặt chẽ để ngăn ngừa các hành vi gây mất đoàn kết trong nhóm",
-                                    "Đảm bảo rằng mọi thành viên trong nhóm luôn có sự đồng thuận tuyệt đối và không bao giờ có tranh luận",
-                                    "Cung cấp một chế độ bảo hiểm và phúc lợi đầy đủ để nhân viên cảm thấy an tâm về mặt tài chính cá nhân",
-                                    "Tạo ra môi trường nơi mọi người dám chia sẻ sai lầm và thử nghiệm cái mới mà không sợ bị phán xét"
-                                ],
-                                correctIndex: 3,
-                                timeLimit: 20,
-                                explanation: "Đáp án đúng là lựa chọn 4: Tạo ra môi trường nơi mọi người dám chia sẻ sai lầm và thử nghiệm cái mới mà không sợ bị phán xét"
+                                                        "id": "dhm-quiz-5",
+                                                        "question": "Theo lời giảng, trải nghiệm 'Mục đích cao cả' (Higher Purpose / Meaning) mang lại chất lượng thỏa mãn sâu sắc vì:",
+                                                        "options": [
+                                                                                    "Thấy việc mình làm có ý nghĩa với người khác, công sức có giá trị vượt ra ngoài task trước mắt.",
+                                                                                    "Đạt được vị thế lãnh đạo cao hơn trong tổ chức, có toàn quyền quyết định định hướng công việc.",
+                                                                                    "Hoàn thành xuất sắc toàn bộ chỉ tiêu đánh giá định kỳ, mang lại nguồn thu nhập tài chính vượt trội.",
+                                                                                    "Loại bỏ hoàn toàn mọi xung đột và áp lực công việc, duy trì trạng thái thoải mái ổn định lâu dài."
+                                                        ],
+                                                        "correctIndex": 0,
+                                                        "timeLimit": 20,
+                                                        "explanation": "Theo Slide 16 & 21, Higher Purpose là khoảnh khắc thấy việc mình làm có ý nghĩa với người khác, đóng góp vào sự trưởng thành của ai đó, công sức có giá trị vượt ra ngoài task trước mắt và vượt lên trên việc chỉ hoàn thành KPI."
                             },
                             {
-                                id: "dhm-quiz-6",
-                                question: "Theo Delivering Happiness, đâu là 3 cấp độ hạnh phúc?",
-                                options: [
-                                    "Thú vui (Pleasure) - Đam mê (Passion) - Mục đích cao cả (Higher Purpose)",
-                                    "Tiến bộ - Tự chủ - Kết nối",
-                                    "Biết ơn - Flow - Lạc quan",
-                                    "Giá trị - Hành vi - Văn hóa"
-                                ],
-                                correctIndex: 0,
-                                timeLimit: 20,
-                                explanation: "Đáp án đúng là lựa chọn 1: Thú vui (Pleasure) - Đam mê (Passion) - Mục đích cao cả (Higher Purpose)"
+                                                        "id": "dhm-quiz-6",
+                                                        "question": "Trong ẩn dụ 'Ba Tầng Lầu' của học giả Phong Tử Khải được trích dẫn ở bài giảng, ba tầng bậc của đời sống con người là:",
+                                                        "options": [
+                                                                                    "Tầng 1: Đời sống vật chất ➔ Tầng 2: Đời sống tinh thần ➔ Tầng 3: Đời sống tâm hồn.",
+                                                                                    "Tầng 1: Nhu cầu sinh lý ➔ Tầng 2: Nhu cầu an toàn ➔ Tầng 3: Nhu cầu tự thể hiện.",
+                                                                                    "Tầng 1: Kỹ năng chuyên môn ➔ Tầng 2: Năng lực quản trị ➔ Tầng 3: Tầm nhìn lãnh đạo.",
+                                                                                    "Tầng 1: Trách nhiệm cá nhân ➔ Tầng 2: Hợp tác đội ngũ ➔ Tầng 3: Cống hiến xã hội."
+                                                        ],
+                                                        "correctIndex": 0,
+                                                        "timeLimit": 20,
+                                                        "explanation": "Theo Slide 17, ba tầng lầu của Phong Tử Khải là vật chất, tinh thần và tâm hồn. Ngoài việc 'tôi có gì' và 'tôi đạt gì', ta còn sống vì điều gì, đóng góp cho điều gì để đời sống có chiều sâu."
                             },
                             {
-                                id: "dhm-quiz-7",
-                                question: "Ai là người phát biểu câu nói:\n\"Xây dựng một văn hóa tuyệt vời và mọi thứ khác sẽ đi đúng hướng\"?",
-                                options: [
-                                    "Martin Seligman",
-                                    "Aristotle",
-                                    "Tony Hsieh",
-                                    "Mihály Csíkszentmihályi"
-                                ],
-                                correctIndex: 2,
-                                timeLimit: 20,
-                                explanation: "Đáp án đúng là lựa chọn 3: Tony Hsieh"
+                                                        "id": "dhm-quiz-7",
+                                                        "question": "Ai là tác giả của triết lý quản trị nền tảng: 'Get the right culture, and everything else will fall into place' (Xây dựng văn hóa đúng đắn, rồi mọi thứ khác sẽ tự đi vào đúng vị trí)?",
+                                                        "options": [
+                                                                                    "Tony Hsieh (Cố CEO Zappos & Đồng sáng lập Delivering Happiness).",
+                                                                                    "Martin Seligman (Giáo sư tâm lý học, cha đẻ Tâm lý học Tích cực).",
+                                                                                    "Mihály Csíkszentmihályi (Giáo sư tiên phong nghiên cứu Dòng chảy).",
+                                                                                    "Peter Drucker (Học giả tiên phong về Quản trị học hiện đại thế giới)."
+                                                        ],
+                                                        "correctIndex": 0,
+                                                        "timeLimit": 20,
+                                                        "explanation": "Theo Slide 09 & 19, triết lý cốt lõi của Tony Hsieh là xây dựng văn hóa đúng đắn thì mọi thứ khác sẽ tự đi đúng hướng."
                             },
                             {
-                                id: "dhm-quiz-8",
-                                question: "Đòn bẩy Kết nối được thể hiện qua hòa ái với:",
-                                options: [
-                                    "Với bản thân, với người khác và với thiên nhiên",
-                                    "Với mục tiêu, với thành tích và với lợi nhuận",
-                                    "Với tự chủ, với tiến bộ và với thành tựu",
-                                    "Với tổ chức, với khách hàng và với quy trình"
-                                ],
-                                correctIndex: 0,
-                                timeLimit: 20,
-                                explanation: "Đáp án đúng là lựa chọn 1: Với bản thân, với người khác và với thiên nhiên"
+                                                        "id": "dhm-quiz-8",
+                                                        "question": "Theo mô hình lan tỏa văn hóa trong Delivering Happiness (ME ➔ WE ➔ COMMUNITY), điểm khởi phát bắt đầu từ đâu?",
+                                                        "options": [
+                                                                                    "Bắt đầu từ ME (từng cá nhân tự hiểu mình, lựa chọn thái độ và chịu trách nhiệm với trải nghiệm).",
+                                                                                    "Bắt đầu từ WE (tập thể ban hành chính sách phúc lợi, quy chuẩn hành vi và thỏa thuận văn hóa).",
+                                                                                    "Bắt đầu từ LEADERSHIP (ban lãnh đạo truyền cảm hứng, định hình tầm nhìn và làm gương mẫu mực).",
+                                                                                    "Bắt đầu từ COMMUNITY (khách hàng, học viên và đối tác phản hồi tích cực về dịch vụ tổ chức)."
+                                                        ],
+                                                        "correctIndex": 0,
+                                                        "timeLimit": 20,
+                                                        "explanation": "Theo Slide 20 & 21, một tổ chức không thể 'làm cho' nhân viên hạnh phúc. Happiness bắt đầu từ từng cá nhân (ME) - cách tôi hiểu mình, lựa chọn và chịu trách nhiệm với trải nghiệm; rồi mới lan sang WE và COMMUNITY."
                             },
                             {
-                                id: "dhm-quiz-9",
-                                question: "Đâu là biểu hiện của Ownership Advantage™ (Tinh thần làm chủ)?",
-                                options: [
-                                    "Cảm giác được chú ý và lắng nghe ý kiến",
-                                    "Cảm giác được kết nối, tương tác và quan tâm đến người khác",
-                                    "Được là chính mình trong môi trường làm việc",
-                                    "Lựa chọn cá nhân trong việc chịu trách nhiệm về kết quả"
-                                ],
-                                correctIndex: 3,
-                                timeLimit: 20,
-                                explanation: "Đáp án đúng là lựa chọn 4: Lựa chọn cá nhân trong việc chịu trách nhiệm về kết quả"
+                                                        "id": "dhm-quiz-9",
+                                                        "question": "Trong kịch bản bài giảng, Giá trị Cốt lõi Cá nhân (ME Values) được định nghĩa chuẩn xác nhất là gì?",
+                                                        "options": [
+                                                                                    "Những điều thật sự quan trọng đến mức chi phối cách mình ra quyết định, phản ứng và ưu tiên.",
+                                                                                    "Danh sách các phẩm chất đạo đức chuẩn mực mà xã hội hoặc cấp trên kỳ vọng một người nên có.",
+                                                                                    "Những khẩu hiệu hành động lý tưởng được đúc kết từ sổ tay văn hóa của các tập đoàn lớn.",
+                                                                                    "Bộ quy tắc ứng xử bắt buộc mà cá nhân cần tuân thủ nghiêm ngặt trong môi trường làm việc."
+                                                        ],
+                                                        "correctIndex": 0,
+                                                        "timeLimit": 20,
+                                                        "explanation": "Theo Slide 22, giá trị cốt lõi không phải phẩm chất 'nên có' hay từ nghe cho hay, mà là những điều thật sự quan trọng đến mức có khả năng ảnh hưởng tới cách mình ra quyết định, phản ứng và ưu tiên."
                             },
                             {
-                                id: "dhm-quiz-10",
-                                question: "Theo tài liệu, tại sao nhiều mục tiêu như mua nhà, thăng chức hoặc kiếm nhiều tiền không đảm bảo hạnh phúc bền vững?",
-                                options: [
-                                    "Vì chúng làm giảm động lực nội tại.",
-                                    "Vì chúng thường mang lại hạnh phúc trong ngắn hạn và khi đạt được ta nhanh chóng đặt mục tiêu mới.",
-                                    "Vì chúng làm giảm cảm giác kết nối.",
-                                    "Vì chúng làm suy yếu giá trị cốt lõi cá nhân."
-                                ],
-                                correctIndex: 1,
-                                timeLimit: 20,
-                                explanation: "Đáp án đúng là lựa chọn 2: Vì chúng thường mang lại hạnh phúc trong ngắn hạn và khi đạt được ta nhanh chóng đặt mục tiêu mới."
+                                                        "id": "dhm-quiz-10",
+                                                        "question": "Theo lời dẫn bài giảng, khi đứng trước tình huống phải đánh đổi (Trade-off) giữa hai lựa chọn đều tốt đẹp, câu hỏi giúp La bàn Giá trị phát huy tác dụng là:",
+                                                        "options": [
+                                                                                    "'Khi phải đánh đổi, điều nào thường có trọng lượng lớn hơn trong quyết định của tôi?'",
+                                                                                    "'Lựa chọn nào sẽ mang lại cho tôi sự an toàn và được nhiều người xung quanh ủng hộ nhất?'",
+                                                                                    "'Phương án nào giúp tôi tối ưu hóa lợi ích tài chính và thăng tiến nghề nghiệp nhanh nhất?'",
+                                                                                    "'Quyết định nào sẽ giúp tôi hạn chế tối đa sai sót và làm vừa lòng tất cả các bên liên quan?'"
+                                                        ],
+                                                        "correctIndex": 0,
+                                                        "timeLimit": 20,
+                                                        "explanation": "Theo Slide 23, lời giảng nhấn mạnh: 'nếu hai từ đều rất đẹp nhưng buộc phải chọn, hãy hỏi: khi phải đánh đổi, điều nào thường có trọng lượng lớn hơn trong quyết định của tôi?'"
                             }
-                        ],
+],
                         iam: {
                             id: "iam_1_1",
                             title: "Đúc kết I • A • M 1.1 — 3 Cấp Độ Hạnh Phúc",
-                            I: "Bạn tâm đắc nhất với điều gì từ nội dung 3 Cấp độ Hạnh phúc & Ẩn dụ 3 Tầng Lầu?",
-                            A: "Bạn sẽ áp dụng điều này như thế nào để chuyển dịch dần sang Đam mê và Mục đích cao cả?",
+                            I: "Bạn tâm đắc nhất với điều gì từ nội dung 3 Cấp độ Hạnh phúc & Ẩn dụ 3 Tầng Lầu của Phong Tử Khải?",
+                            A: "Bạn sẽ áp dụng điều này như thế nào để chuyển dịch dần từ Thú vui ngắn hạn (Pleasure) sang Đam mê (Passion) và Mục đích cao cả (Higher Purpose)?",
                             M: "Tại sao nhận thức này lại có ý nghĩa sâu sắc đối với bạn ở thời điểm hiện tại?"
                         }
                     },
                     {
                         id: "mod-1-2",
-                        title: "Bài 1.2: Giá Trị Cốt Lõi Cá Nhân (ME Values) & La Bàn Hành Động",
-                        valueOptions: [
-                            "Tiến bộ (luôn tiến lên phía trước, phát triển không ngừng)",
-                            "Thành công (đạt kết quả, hoàn thành nhiệm vụ)",
-                            "Sáng tạo (nhạy cảm, nhiều sáng kiến, kinh nghiệm)",
-                            "Sự chính trực (trung thực, chân thành, sống theo giá trị của mình)",
-                            "Hợp tác (làm việc theo tập thể, làm việc tốt với mọi người)",
-                            "Trách nhiệm (có trách nhiệm, luôn đáng tin và chín chắn)",
-                            "Giúp đỡ (hỗ trợ những người xung quanh và cải thiện xã hội)",
-                            "Sự tĩnh tâm (luôn bình thản thư giãn trong lòng)",
-                            "Hạnh phúc gia đình (chung sống hòa thuận và coi trọng mọi thành viên)",
-                            "Tình bạn (mật thiết, quan tâm và những mối quan hệ thân thuộc)",
-                            "Học vấn (cam kết luôn lắng nghe, học hỏi)",
-                            "Đóng góp (tạo sự khác biệt, luôn cống hiến)",
-                            "Độc lập (tự quản, không chịu sự quản lý của ai)",
-                            "Công bằng (đưa ra cơ hội đối với tất cả mọi người)",
-                            "Sức khỏe (cơ thể khỏe mạnh, đầy sinh lực và không có bệnh)",
-                            "Tha thứ (luôn sẵn sàng và rộng lượng)",
-                            "Trung thành (trách nhiệm, trung thành, tôn trọng)",
-                            "Tính cân bằng (quan tâm sâu sắc đến từng lĩnh vực cuộc sống)",
-                            "Phát triển cá nhân (tăng trưởng, sử dụng mọi tiềm lực bản thân)",
-                            "Chất lượng làm việc (xuất sắc, toàn diện, mắc rất ít lỗi)",
-                            "Tôn trọng bản thân (tự hào về bản thân mình)",
-                            "Lòng khoan dung (coi trọng quan điểm và giá trị của người xung quanh)",
-                            "Tâm linh (có niềm tin mạnh mẽ, sức mạnh đạo đức đề cao)",
-                            "Yêu thiên nhiên (thoải mái hơn khi bước ra thiên nhiên)",
-                            "Thoải mái (hài lòng, thích thú, nhiều niềm vui và hạnh phúc)",
-                            "Kiềm chế (chịu trách nhiệm, tự chủ cảm xúc)",
-                            "An toàn (cảm thấy an tâm về mọi chuyện)",
-                            "Sự công nhận (về vị thế, sự tôn trọng và thừa nhận của người khác)",
-                            "Ảnh hưởng (ý tưởng độc đáo, lan tỏa quy trình tích cực)",
-                            "Tính đa dạng (đa dạng trong hành động và kinh nghiệm sống)",
-                            "Tính phong phú (hiểu cuộc sống xung quanh, ứng xử công minh)",
-                            "Trật tự (sự tuân thủ, kiên quyết với những sai trái)",
-                            "Bảo đảm kinh tế (độc lập về những vấn đề tài chính)",
-                            "Mạo hiểm (những mạo hiểm mới, đầy thách thức, hồi hộp)",
-                            "Cạnh tranh (giành chiến thắng, luôn muốn vươn lên)",
-                            "Cảm nhận về nghệ thuật (ca kịch, vẽ, văn học)",
-                            "Nổi tiếng (được nhiều người biết đến)",
-                            "Thanh thế (thể hiện qua sự thành công, địa vị, vị thế)",
-                            "Sức mạnh (sự điều khiển, quyền lực, sức ảnh hưởng)",
-                            "Chính thống (coi trọng quá khứ, phong tục tập quán)",
-                            "Tài sản (giàu có, sung túc và đầy đủ)"
-                        ],
+                        title: "Bài 1.2: La Bàn Giá Trị Cá Nhân (Me Values)",
                         iam: {
                             id: "iam_1_2",
                             title: "Đúc kết I • A • M 1.2 — La Bàn Giá Trị Sống",
                             I: "Bạn tâm đắc nhất với giá trị La Bàn nào bạn vừa lựa chọn?",
-                            A: "Giá trị này sẽ định hướng cho một quyết định khó khăn sắp tới của bạn ra sao?",
+                            A: "Giá trị này sẽ định hướng cho một quyết định khó khăn hoặc hành vi sắp tới của bạn như thế nào?",
                             M: "Nếu kiên định sống đúng với La Bàn này, bạn sẽ kiến tạo phiên bản tốt đẹp hơn của chính mình ra sao?"
-                        }
-                    },
-                    {
-                        id: "mod-1-3",
-                        title: "Bài 1.3: SDT & 3 Đòn Bẩy Hạnh Phúc Ở Nơi Làm Việc (Edward Deci & Richard Ryan)",
-                        iam: {
-                            id: "iam_1_3",
-                            title: "Đúc kết I • A • M 1.3 — 3 Đòn Bẩy (Kết Nối • Tự Chủ • Tiến Bộ)",
-                            I: "Trong 3 Đòn bẩy (Kết nối, Tự chủ, Tiến bộ), đòn bẩy nào bạn đang cần kích hoạt nhất?",
-                            A: "Bạn sẽ thiết lập Chiến thắng Nhỏ (Small Wins) nào trong tuần này để nuôi dưỡng cảm giác tiến bộ?",
-                            M: "Đòn bẩy bạn vừa chọn có ý nghĩa như thế nào đối với sự phát triển cá nhân và gắn kết đội ngũ?"
                         }
                     }
                 ],
@@ -255,10 +199,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     { title: "Slide Bài Giảng: Lời Dạy Aristotle 200BC — Hạnh Phúc Là Mục Đích Tồn Tại (Slide 18)", type: "image", url: "data/artifacts/slides/slide_18.png", icon: "📊" },
                     { title: "Slide Bài Giảng: Điều Gì Khiến Hạnh Phúc Bền Lâu? (Slide 19)", type: "image", url: "data/artifacts/slides/slide_19.png", icon: "📊" },
                     { title: "Slide Bài Giảng: Ai Khiến Hạnh Phúc Bền Lâu? (Cá Nhân • Tập Thể • Cộng Đồng) (Slide 20)", type: "image", url: "data/artifacts/slides/slide_20.png", icon: "📊" },
-                    { title: "Slide Bài Giảng: Lợi Ích Của Đòn Bẩy Tiến Bộ (Dopamine & Small Wins) (Slide 38)", type: "image", url: "data/artifacts/slides/slide_38.png", icon: "📊" },
                     { title: "Slide Bài Giảng: Lộ Trình 3 Mini Step DHM (Slide 04)", type: "image", url: "data/artifacts/slides/slide_04.png", icon: "🗺️" },
                     { title: "Slide Bài Giảng: Triết Lý Văn Hóa Zappos — Tony Hsieh (Slide 09)", type: "image", url: "data/artifacts/slides/slide_09.png", icon: "💡" },
-                    { id: "res-roadmap", title: "Cẩm Nang: Lộ Trình Học Tập & Hướng Dẫn Sử Dụng LMS", type: "markdown", url: "data/artifacts/huong_dan_va_lo_trinh_hoc_dhm.md", icon: "📘", readOnline: true, desc: "Hướng dẫn chi tiết toàn bộ lộ trình 3 Mini-steps, quy chế Cổng Vượt Chặng 1 (≥80%) và thao tác sử dụng hệ thống học tập LMS." },
+                    { id: "res-roadmap", title: "Cẩm Nang: Lộ Trình Học Tập & Hướng Dẫn Sử Dụng LMS", type: "markdown", url: "data/artifacts/huong_dan_va_lo_trinh_hoc_dhm.md", icon: "📘", readOnline: true, desc: "Hướng dẫn chi tiết toàn bộ lộ trình 3 Mini-steps, quy chế Cổng Sát Hạch Vượt Chặng (≥80%) và thao tác sử dụng hệ thống học tập LMS." },
                     { title: "Báo cáo Nghiên cứu: Khoa Học Hạnh Phúc & Dòng Chảy Tổ Chức", type: "markdown", url: "data/artifacts/report_dong_chay.md", icon: "📄", readOnline: true },
                     { title: "Bộ 25 Flashcards Văn Hóa Ghi Nhớ", type: "html", url: "data/artifacts/flashcards.html", icon: "🃏" }
                 ]
@@ -267,18 +210,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 id: "stage-2",
                 stageNumber: 2,
                 badge: "Mini Step 2 • Offline",
-                title: "Mini step 2 • OFFLINE – Gieo Thói quen",
-                subtitle: "Workshop Live tại lớp • Trạm thực hành 5 Thói quen Hạnh phúc & I•A•M",
+                title: "Chặng 2 • OFFLINE – Gieo thói quen hạnh phúc",
+                subtitle: "Workshop Live tại lớp • 3 Đòn Bẩy Nơi Làm Việc • Trạm thực hành 5 Thói quen & I•A•M",
                 instructor: "",
                 estimatedMinutes: 120,
                 videoUrl: null,
                 subSections: [
-                    { id: "sub-2-1", title: "Mục 2.1: Thói Quen 1 — Tỉnh Thức (SBA & Body Scan + IAM)", target: "habit-panel-mindfulness", habit: "mindfulness", tab: "tab-practice" },
-                    { id: "sub-2-2", title: "Mục 2.2: Thói Quen 2 — Biết Ơn (Gratitude Card + IAM)", target: "habit-panel-gratitude", habit: "gratitude", tab: "tab-practice" },
-                    { id: "sub-2-3", title: "Mục 2.3: Thói Quen 3 — Lạc Quan Học Được (ABCDE + IAM)", target: "habit-panel-optimism", habit: "optimism", tab: "tab-practice" },
-                    { id: "sub-2-4", title: "Mục 2.4: Thói Quen 4 — Phiêu / Flow (Thách thức vs Kỹ năng + IAM)", target: "habit-panel-flow", habit: "flow", tab: "tab-practice" },
-                    { id: "sub-2-5", title: "Mục 2.5: Thói Quen 5 — Vị Nhân (Adam Grant Style + IAM)", target: "habit-panel-altruism", habit: "altruism", tab: "tab-practice" },
-                    { id: "sub-2-6", title: "Mục 2.6: Thu Hoạch Tổng Lực Ngày Học (Capstone IAM)", target: "stage2-capstone-card", tab: "tab-practice" }
+                    { id: "sub-2-0", title: "🚀 Trạm 0: 3 Đòn Bẩy Nơi Làm Việc (Deci & Ryan)", target: "habit-panel-drivers", habit: "drivers", tab: "tab-practice" },
+                    { id: "sub-2-1", title: "🌿 Tỉnh Thức", target: "habit-panel-mindfulness", habit: "mindfulness", tab: "tab-practice" },
+                    { id: "sub-2-2", title: "🙏 Biết Ơn", target: "habit-panel-gratitude", habit: "gratitude", tab: "tab-practice" },
+                    { id: "sub-2-3", title: "☀️ Lạc Quan", target: "habit-panel-optimism", habit: "optimism", tab: "tab-practice" },
+                    { id: "sub-2-4", title: "🌀 Phiêu (Flow)", target: "habit-panel-flow", habit: "flow", tab: "tab-practice" },
+                    { id: "sub-2-5", title: "🤝 Vị Nhân", target: "habit-panel-altruism", habit: "altruism", tab: "tab-practice" },
+                    { id: "sub-2-6", title: "🏆 Đúc Kết & Chuyển Hóa", target: "stage2-capstone-card", tab: "tab-practice" }
                 ],
                 audios: [
                     { id: "a2-1", title: "Đòn bẩy Tự chủ: 70.000 giờ làm việc", file: "data/artifacts/70000_gio_lam_viec.mp3", duration: "39:50" },
@@ -294,13 +238,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     { id: "a2-11", title: "Thói quen 5 (Vị nhân): Người vị nhân & Nghịch lý tử tế", file: "data/artifacts/nguoi_vi_nhan.mp3", duration: "41:30" }
                 ],
                 habits: [
-                    { id: "habit-mindfulness", name: "Tỉnh Thức" },
-                    { id: "habit-gratitude", name: "Biết Ơn" },
-                    { id: "habit-optimism", name: "Lạc Quan" },
-                    { id: "habit-flow", name: "Phiêu (Flow)" },
-                    { id: "habit-altruism", name: "Vị Nhân" }
+                    { id: "habit-drivers", number: 0, name: "3 Đòn Bẩy (SDT Drivers)", title: "3 Đòn Bẩy Hạnh Phúc Ở Nơi Làm Việc (Thuyết Tự Quyết SDT)", icon: "🚀" },
+                    { id: "habit-mindfulness", number: 1, name: "Tỉnh Thức" },
+                    { id: "habit-gratitude", number: 2, name: "Biết Ơn" },
+                    { id: "habit-optimism", number: 3, name: "Lạc Quan" },
+                    { id: "habit-flow", number: 4, name: "Phiêu (Flow)" },
+                    { id: "habit-altruism", number: 5, name: "Vị Nhân" }
                 ],
                 resources: [
+                    { title: "Slide Bài Giảng: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy", type: "image", url: "data/artifacts/slides/slide_25.png", icon: "📊" },
+                    { title: "Slide Bài Giảng: Đòn Bẩy Tự Chủ & Tinh Thần Làm Chủ (Ownership Advantage)", type: "image", url: "data/artifacts/slides/slide_29.png", icon: "📊" },
+                    { title: "Slide Bài Giảng: An Toàn Tâm Lý (Psychological Safety) — Nền Tảng Tự Chủ", type: "image", url: "data/artifacts/slides/slide_31.png", icon: "📊" },
+                    { title: "Slide Bài Giảng: Lợi Ích Của Đòn Bẩy Tiến Bộ (Dopamine & Small Wins)", type: "image", url: "data/artifacts/slides/slide_38.png", icon: "📊" },
                     { title: "Báo cáo: Quản Trị Con Người Trong Dòng Chảy", type: "markdown", url: "data/artifacts/report_quan_tri_con_nguoi.md", icon: "📄" },
                     { title: "Bản Thiết Kế Văn Hóa Tổ Chức (Culture Blueprint)", type: "pdf", url: "data/artifacts/culture_blueprint.pdf", icon: "📑" }
                 ]
@@ -309,14 +258,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 id: "stage-3",
                 stageNumber: 3,
                 badge: "Mini Step 3 • Online",
-                title: "Mini step 3 • ONLINE – Focus on I • A • M",
-                subtitle: "Nuôi dưỡng Thói quen Chuyển hóa • Kế thừa Toàn bộ Chất liệu • Đồng hành 21 ngày",
+                title: "Chặng 3 • ONLINE – Tiếp nối hành trình hạnh phúc",
+                subtitle: "Nuôi dưỡng Thói quen Chuyển hóa • Focus on I•A•M • Đồng hành Chuyển Hóa",
                 instructor: "",
                 estimatedMinutes: 21,
                 videoUrl: null,
                 subSections: [
                     { id: "sub-3-1", title: "Mục 3.1: Bảng Vinh Danh Chất Liệu Đã Gieo (Recap Dashboard)", target: "stage3-recap-section", tab: "tab-practice" },
-                    { id: "sub-3-2", title: "Mục 3.2: Bảng Điểm Danh 5 Thói Quen 21 Ngày (Habit Tracker)", target: "stage3-tracker-section", tab: "tab-practice" },
+                    { id: "sub-3-2", title: "Mục 3.2: Bảng Điểm Danh 5 Thói Quen (Habit Tracker)", target: "stage3-tracker-section", tab: "tab-practice" },
                     { id: "sub-3-3", title: "Mục 3.3: Đúc Kết Tuần (Weekly Check-in I • A • M)", target: "stage3-weekly-section", tab: "tab-practice" },
                     { id: "sub-3-4", title: "Mục 3.4: Kho Tài Liệu Đính Kèm (Delivering Happiness Artifacts)", target: "tab-resources", tab: "tab-resources" }
                 ],
@@ -359,7 +308,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     scenarios: {}
                 },
                 "stage-2": {
+                    iam: { I: "", A: "", M: "" },
                     habits: {
+                        drivers: { iam: { I: "", A: "", M: "" } },
                         gratitude: { items: ["", "", "", ""], card: { to: "", msg: "" }, iam: { I: "", A: "", M: "" } },
                         mindfulness: { sbaChecks: { s: false, b: false, a: false }, situation: "", iam: { I: "", A: "", M: "" } },
                         optimism: { abcde: { A: "", B: "", C: "", D: "", E: "" }, iam: { I: "", A: "", M: "" } },
@@ -592,15 +543,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 4. LOAD DYNAMIC CURRICULUM FROM JSON (Fallback to embedded)
     async function loadCurriculumData() {
-        try {
-            const resp = await fetch("/lms/curriculum_data.json?v=" + Date.now());
-            if (resp.ok) {
-                curriculum = await resp.json();
-                console.log("Loaded dynamic curriculum_data.json successfully");
+        const candidatePaths = [
+            "/lms/curriculum_data.json?v=" + Date.now(),
+            "curriculum_data.json?v=" + Date.now()
+        ];
+        for (const p of candidatePaths) {
+            try {
+                const resp = await fetch(p);
+                if (resp.ok) {
+                    curriculum = await resp.json();
+                    console.log("Loaded dynamic curriculum_data.json successfully from " + p);
+                    return;
+                }
+            } catch (e) {
+                // Try next candidate
             }
-        } catch (e) {
-            console.warn("Using embedded fallback curriculum:", e);
         }
+        console.warn("Using embedded fallback curriculum");
     }
 
     // 5. HELPER FUNCTIONS
@@ -1355,12 +1314,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function hasStage2HabitContent(habits) {
         if (!habits || typeof habits !== "object") return false;
+        const d = habits.drivers || {};
         const g = habits.gratitude || {};
         const m = habits.mindfulness || {};
         const o = habits.optimism || {};
         const f = habits.flow || {};
         const a = habits.altruism || {};
 
+        const hasDrivers = hasNonEmptyIamObj(d.iam);
         const hasGratitude = (Array.isArray(g.items) && g.items.some(x => String(x || "").trim()))
             || Boolean(g.card && (String(g.card.to || "").trim() || String(g.card.msg || "").trim()))
             || hasNonEmptyIamObj(g.iam);
@@ -1374,7 +1335,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const hasAltruism = Boolean(String(a.style || "").trim() || String(a.act || "").trim())
             || hasNonEmptyIamObj(a.iam);
 
-        return hasGratitude || hasMindfulness || hasOptimism || hasFlow || hasAltruism;
+        return hasDrivers || hasGratitude || hasMindfulness || hasOptimism || hasFlow || hasAltruism;
     }
 
     function extractIamAndNotesTelemetry(prog, identity) {
@@ -2042,7 +2003,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const isQuizPassed = Boolean(s1Data.passed || (s1Data.percentage >= 80));
 
         if (!isQuizPassed) {
-            alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 80% ở Bài 1.4 Cổng Vượt Chặng (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
+            alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 80% ở Cổng Sát Hạch Vượt Chặng (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
             jumpToStage1Quiz();
             return;
         }
@@ -2100,7 +2061,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         ${isCompleted ? '<span class="text-[10px] text-brand-green font-semibold">Đã xong</span>' : ''}
                     </div>
                     <div class="text-xs font-bold truncate ${!isUnlocked ? 'text-slate-400' : 'text-slate-100'}">${stage.title}</div>
-                    <div class="text-[11px] ${!isUnlocked ? 'text-slate-500' : 'text-slate-400'} truncate mt-0.5">${!isUnlocked ? 'Cần đạt ≥80% Cổng Vượt Chặng & Học viên chính thức' : stage.subtitle}</div>
+                    <div class="text-[11px] ${!isUnlocked ? 'text-slate-500' : 'text-slate-400'} truncate mt-0.5">${!isUnlocked ? 'Cần đạt ≥80% Cổng Sát Hạch & Học viên chính thức' : stage.subtitle}</div>
                 </div>
                 ${stage.subSections && stage.subSections.length > 0 ? `<span class="stage-toggle-chevron text-xs text-slate-400 shrink-0 transform transition-transform ${isActive ? 'rotate-90' : ''}">▸</span>` : ''}
             `;
@@ -2145,18 +2106,30 @@ document.addEventListener("DOMContentLoaded", () => {
                     // Check subsection completion status for visual badges (✓)
                     let isSubDone = false;
                     const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
+                    const s2Data = (learnerProgress.stageData && learnerProgress.stageData["stage-2"]) || {};
+                    const s2Habits = s2Data.habits || {};
                     if (sub.id === "sub-1-1") {
                         isSubDone = Boolean((s1Data.viewed && s1Data.viewed["1-1"]) || (s1Data.iam_cp1 && s1Data.iam_cp1.I) || (s1Data.iam_1_1 && s1Data.iam_1_1.I));
                     } else if (sub.id === "sub-1-2") {
                         isSubDone = Boolean((s1Data.selectedValues && s1Data.selectedValues.length > 0) || (s1Data.iam_cp1 && s1Data.iam_cp1.I) || (s1Data.iam_1_2 && s1Data.iam_1_2.I));
                     } else if (sub.id === "sub-1-cp1") {
                         isSubDone = Boolean((s1Data.iam_cp1_sets && s1Data.iam_cp1_sets.length > 0) || (s1Data.iam_cp1 && ((s1Data.iam_cp1.I && s1Data.iam_cp1.I.trim()) || (s1Data.iam_cp1.A && s1Data.iam_cp1.A.trim()) || (s1Data.iam_cp1.M && s1Data.iam_cp1.M.trim()))) || (s1Data.iam_1_2 && s1Data.iam_1_2.I) || (s1Data.iam_1_1 && s1Data.iam_1_1.I));
-                    } else if (sub.id === "sub-1-3") {
-                        isSubDone = Boolean((s1Data.viewed && s1Data.viewed["1-3"]) || (s1Data.iam_cp2_sets && s1Data.iam_cp2_sets.length > 0) || (s1Data.iam_cp2 && s1Data.iam_cp2.I) || (s1Data.iam_1_3 && s1Data.iam_1_3.I));
-                    } else if (sub.id === "sub-1-cp2") {
-                        isSubDone = Boolean((s1Data.iam_cp2_sets && s1Data.iam_cp2_sets.length > 0) || (s1Data.iam_cp2 && ((s1Data.iam_cp2.I && s1Data.iam_cp2.I.trim()) || (s1Data.iam_cp2.A && s1Data.iam_cp2.A.trim()) || (s1Data.iam_cp2.M && s1Data.iam_cp2.M.trim()))) || (s1Data.iam_1_3 && s1Data.iam_1_3.I));
-                    } else if (sub.id === "sub-1-4" || sub.id === "sub-1-quiz") {
+                    } else if (sub.id === "sub-1-quiz" || sub.id === "sub-1-4") {
                         isSubDone = Boolean(s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80);
+                    } else if (sub.id === "sub-2-0") {
+                        isSubDone = Boolean((s2Habits.drivers && s2Habits.drivers.iam && (s2Habits.drivers.iam.I || s2Habits.drivers.iam.A || s2Habits.drivers.iam.M)) || (s2Data.iam && (s2Data.iam.I || s2Data.iam.A || s2Data.iam.M)) || (s1Data.iam_cp2 && (s1Data.iam_cp2.I || s1Data.iam_cp2.A || s1Data.iam_cp2.M)) || (s1Data.iam_cp2_sets && s1Data.iam_cp2_sets.length > 0) || (s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.A || s1Data.iam_1_3.M)));
+                    } else if (sub.id === "sub-2-1") {
+                        isSubDone = Boolean(s2Habits.mindfulness && ((s2Habits.mindfulness.sbaChecks && (s2Habits.mindfulness.sbaChecks.s || s2Habits.mindfulness.sbaChecks.b || s2Habits.mindfulness.sbaChecks.a)) || (s2Habits.mindfulness.situation && s2Habits.mindfulness.situation.trim()) || (s2Habits.mindfulness.iam && (s2Habits.mindfulness.iam.I || s2Habits.mindfulness.iam.A || s2Habits.mindfulness.iam.M))));
+                    } else if (sub.id === "sub-2-2") {
+                        isSubDone = Boolean(s2Habits.gratitude && ((s2Habits.gratitude.items && s2Habits.gratitude.items.some(x => x && String(x).trim())) || (s2Habits.gratitude.card && (s2Habits.gratitude.card.to || s2Habits.gratitude.card.msg)) || (s2Habits.gratitude.iam && (s2Habits.gratitude.iam.I || s2Habits.gratitude.iam.A || s2Habits.gratitude.iam.M))));
+                    } else if (sub.id === "sub-2-3") {
+                        isSubDone = Boolean(s2Habits.optimism && ((s2Habits.optimism.abcde && (s2Habits.optimism.abcde.A || s2Habits.optimism.abcde.B || s2Habits.optimism.abcde.C || s2Habits.optimism.abcde.D || s2Habits.optimism.abcde.E)) || (s2Habits.optimism.iam && (s2Habits.optimism.iam.I || s2Habits.optimism.iam.A || s2Habits.optimism.iam.M))));
+                    } else if (sub.id === "sub-2-4") {
+                        isSubDone = Boolean(s2Habits.flow && ((s2Habits.flow.boringTask && s2Habits.flow.boringTask.trim()) || (s2Habits.flow.redesign && s2Habits.flow.redesign.trim()) || (s2Habits.flow.iam && (s2Habits.flow.iam.I || s2Habits.flow.iam.A || s2Habits.flow.iam.M))));
+                    } else if (sub.id === "sub-2-5") {
+                        isSubDone = Boolean(s2Habits.altruism && ((s2Habits.altruism.style && s2Habits.altruism.style.trim()) || (s2Habits.altruism.act && s2Habits.altruism.act.trim()) || (s2Habits.altruism.iam && (s2Habits.altruism.iam.I || s2Habits.altruism.iam.A || s2Habits.altruism.iam.M))));
+                    } else if (sub.id === "sub-2-6") {
+                        isSubDone = Boolean(s2Data.capstoneIam && (s2Data.capstoneIam.I || s2Data.capstoneIam.A || s2Data.capstoneIam.M));
                     }
 
                     const marker = !isUnlocked
@@ -2337,8 +2310,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         </div>
                         <div class="min-w-0">
                             <div class="flex items-center gap-2 flex-wrap">
-                                <span class="px-2 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px] uppercase tracking-wider shrink-0">Cổng Vượt Chặng 1</span>
-                                <h3 class="text-xs sm:text-sm lg:text-base font-extrabold text-white truncate">BÀI KIỂM TRA VƯỢT CHẶNG (10 CÂU)</h3>
+                                <span class="px-2 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px] uppercase tracking-wider shrink-0">Cổng Sát Hạch Vượt Chặng</span>
+                                <h3 class="text-xs sm:text-sm lg:text-base font-extrabold text-white truncate">BÀI SÁT HẠCH VƯỢT CHẶNG (10 CÂU)</h3>
                                 <span class="text-[11px] sm:text-xs px-2 py-0.5 rounded-full bg-brand-amber/15 text-brand-amber font-mono font-bold border border-brand-amber/30 shrink-0">
                                     Đạt ≥ 80%
                                 </span>
@@ -2353,7 +2326,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <span>📘 Lộ Trình & Hướng Dẫn</span>
                         </button>
                         <button id="btn-quick-quiz" type="button" class="min-h-[44px] px-3.5 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-black font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-orange-500/25 hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-1.5 text-center">
-                            <span>🎯 Đến Cổng Vượt Chặng ➔</span>
+                            <span>🎯 Đến Cổng Sát Hạch ➔</span>
                         </button>
                     </div>
                 `;
@@ -2577,7 +2550,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const footerStageIndicator = document.getElementById("footer-stage-indicator");
         if (footerStageIndicator) {
-            const subTitle = stage.stageNumber === 1 ? 'Định Vị La Bàn' : stage.stageNumber === 2 ? '5 Thói Quen' : 'Đồng Hành 21 Ngày';
+            const subTitle = stage.stageNumber === 1 ? 'Định Vị La Bàn' : stage.stageNumber === 2 ? '5 Thói Quen' : 'Tiếp Nối Hành Trình';
             footerStageIndicator.innerHTML = `
                 <span class="w-2 h-2 rounded-full bg-brand-amber animate-pulse"></span>
                 <span class="font-bold text-slate-200">Chặng ${stage.stageNumber}</span>
@@ -3020,10 +2993,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     updateStage1Milestones();
 
                     const oldText = btnFillIam.innerHTML;
-                    btnFillIam.innerHTML = `<span>✓ Đã điền gợi ý vào Check point 1!</span>`;
+                    btnFillIam.innerHTML = `<span>✓ Đã điền gợi ý vào Đúc Kết I • A • M 1.1!</span>`;
                     setTimeout(() => { btnFillIam.innerHTML = oldText; }, 2500);
 
-                    // Mở Check point 1 accordion nếu đang đóng
+                    // Mở Đúc Kết I • A • M 1.1 accordion nếu đang đóng
                     openAccordionModule("stage1-mod-cp1");
 
                     if (elInputI) {
@@ -3225,6 +3198,16 @@ document.addEventListener("DOMContentLoaded", () => {
         quizItemsContainer.innerHTML = "";
         const mod1 = (stage.modules && stage.modules[0]) ? stage.modules[0] : null;
         const quizzes = (mod1 && mod1.quizzes) ? mod1.quizzes : [];
+
+        // Quiz version migration: if learner has unpassed quiz with legacy question keys, reset answers
+        if (sData.quiz_version !== "v2_20261023" && !sData.passed) {
+            const validQuizIds = new Set(quizzes.map(q => q.id));
+            const hasLegacyKeys = Object.keys(sData.quizAnswers || {}).some(k => !validQuizIds.has(k));
+            if (hasLegacyKeys) {
+                sData.quizAnswers = {};
+                sData.quiz_version = "v2_20261023";
+            }
+        }
         const savedAnswers = sData.quizAnswers || {};
         const maxAttempts = 3;
         const attempts = sData.quizAttempts !== undefined ? sData.quizAttempts : (Object.keys(savedAnswers).length > 0 ? 1 : 0);
@@ -3289,11 +3272,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
             });
 
+            let explanationHtml = "";
+            if (userSelected !== undefined && q.explanation) {
+                const isUserCorrect = (userSelected === q.correctIndex);
+                explanationHtml = `
+                    <div class="mt-2.5 p-3 rounded-lg ${isUserCorrect ? 'bg-brand-green/10 border border-brand-green/30 text-emerald-300' : 'bg-brand-card border border-brand-border text-slate-300'} text-xs leading-relaxed space-y-1">
+                        <div class="font-bold flex items-center gap-1.5 ${isUserCorrect ? 'text-brand-green' : 'text-brand-amber'}">
+                            <span>${isUserCorrect ? '✓ Giải thích chi tiết:' : '💡 Giải thích chi tiết:'}</span>
+                        </div>
+                        <p class="text-[11px] text-slate-300">${q.explanation}</p>
+                    </div>
+                `;
+            }
+
             qBox.innerHTML = `
                 <div class="text-xs font-bold text-slate-100 flex items-center gap-2">
                     <span class="text-brand-amber">Câu ${qIndex + 1}:</span> ${q.question}
                 </div>
                 <div class="space-y-2 mt-2">${optionsHtml}</div>
+                ${explanationHtml}
             `;
 
             if (!isLockedOut) {
@@ -3458,7 +3455,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <span class="text-brand-amber group-hover:text-amber-300">${val}</span>
                     <span class="text-[10px] text-slate-400 group-hover:text-white ml-0.5 opacity-60 group-hover:opacity-100">↵ Chọn</span>
                 `;
-                badge.title = `Nhấp để điền giá trị "${val}" vào ô I (Interested) của Check point 1`;
+                badge.title = `Nhấp để điền giá trị "${val}" vào ô I (Interested) của Đúc Kết I • A • M 1.1`;
                 badge.onclick = () => handleBadgeClick(val);
                 return badge;
             }
@@ -3569,7 +3566,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Render Multi-Set Cards List
         renderIamSetsCardList("iam-cp1-saved-sets-list", "iam-cp1-set-counter", sData.iam_cp1_sets, "cp1");
-        renderIamSetsCardList("iam-cp2-saved-sets-list", "iam-cp2-set-counter", sData.iam_cp2_sets, "cp2");
         updateDrawerIamHistory();
 
         // Setup save & clear buttons
@@ -3577,11 +3573,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (btnCp1Save) btnCp1Save.onclick = () => handleSaveIamSet("cp1");
         const btnCp1Clear = document.getElementById("btn-iam-cp1-clear");
         if (btnCp1Clear) btnCp1Clear.onclick = () => handleClearIamInputs("cp1");
-
-        const btnCp2Save = document.getElementById("btn-iam-cp2-save-set");
-        if (btnCp2Save) btnCp2Save.onclick = () => handleSaveIamSet("cp2");
-        const btnCp2Clear = document.getElementById("btn-iam-cp2-clear");
-        if (btnCp2Clear) btnCp2Clear.onclick = () => handleClearIamInputs("cp2");
 
         // Input bindings for draft typing
         bindInput("iam-cp1-i", val => { 
@@ -3620,48 +3611,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }, sData.iam_cp1_sets.length === 0 ? sData.iam_cp1?.M : "");
 
-        bindInput("iam-cp2-i", val => { 
-            sData.iam_cp2 = sData.iam_cp2 || {}; 
-            if (sData.iam_cp2_sets.length === 0) {
-                sData.iam_cp2.I = val; 
-                sData.iam_1_3 = sData.iam_1_3 || {};
-                sData.iam_1_3.I = val;
-                debouncedSave(); 
-                renderSyllabus(); 
-                updateStage1Milestones(); 
-            }
-        }, sData.iam_cp2_sets.length === 0 ? sData.iam_cp2?.I : "");
-
-        bindInput("iam-cp2-a", val => { 
-            sData.iam_cp2 = sData.iam_cp2 || {}; 
-            if (sData.iam_cp2_sets.length === 0) {
-                sData.iam_cp2.A = val; 
-                sData.iam_1_3 = sData.iam_1_3 || {};
-                sData.iam_1_3.A = val;
-                debouncedSave(); 
-                renderSyllabus(); 
-                updateStage1Milestones(); 
-            }
-        }, sData.iam_cp2_sets.length === 0 ? sData.iam_cp2?.A : "");
-
-        bindInput("iam-cp2-m", val => { 
-            sData.iam_cp2 = sData.iam_cp2 || {}; 
-            if (sData.iam_cp2_sets.length === 0) {
-                sData.iam_cp2.M = val; 
-                sData.iam_1_3 = sData.iam_1_3 || {};
-                sData.iam_1_3.M = val;
-                debouncedSave(); 
-                renderSyllabus(); 
-                updateStage1Milestones(); 
-            }
-        }, sData.iam_cp2_sets.length === 0 ? sData.iam_cp2?.M : "");
-
         evaluateLearnerStatus();
     }
 
     // 10. STAGE 2 RENDERER (Workshop Live 5 Habits)
     function renderStage2View(stage) {
         const sData = learnerProgress.stageData["stage-2"] || { habits: {} };
+        learnerProgress.stageData = learnerProgress.stageData || {};
+        learnerProgress.stageData["stage-2"] = sData;
         const habits = sData.habits || {};
 
         // 10.1 Setup Habit Pill Switching
@@ -3682,6 +3639,69 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             };
         });
+
+        // 10.1b Habit 0: 3 Drivers (Deci & Ryan)
+        const hD = habits.drivers || { iam: {} };
+        const s1DataFallback = learnerProgress.stageData && learnerProgress.stageData["stage-1"];
+        if (!hD.iam) hD.iam = {};
+        if (!sData.iam) sData.iam = {};
+        if (!hD.iam.I && s1DataFallback) {
+            const fbI = s1DataFallback.iam_cp2?.I || (s1DataFallback.iam_cp2_sets && s1DataFallback.iam_cp2_sets[0]?.I) || s1DataFallback.iam_1_3?.I || "";
+            const fbA = s1DataFallback.iam_cp2?.A || (s1DataFallback.iam_cp2_sets && s1DataFallback.iam_cp2_sets[0]?.A) || s1DataFallback.iam_1_3?.A || "";
+            const fbM = s1DataFallback.iam_cp2?.M || (s1DataFallback.iam_cp2_sets && s1DataFallback.iam_cp2_sets[0]?.M) || s1DataFallback.iam_1_3?.M || "";
+            hD.iam.I = fbI;
+            hD.iam.A = fbA;
+            hD.iam.M = fbM;
+        }
+        if (!sData.iam.I && hD.iam.I) {
+            sData.iam.I = hD.iam.I;
+            sData.iam.A = hD.iam.A;
+            sData.iam.M = hD.iam.M;
+        }
+        bindInput("iam-drivers-i", v => { 
+            hD.iam.I = v; 
+            habits.drivers = hD; 
+            sData.iam = sData.iam || {};
+            sData.iam.I = v;
+            if (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) {
+                learnerProgress.stageData["stage-1"].iam_cp2 = learnerProgress.stageData["stage-1"].iam_cp2 || {};
+                learnerProgress.stageData["stage-1"].iam_cp2.I = v;
+                learnerProgress.stageData["stage-1"].iam_1_3 = learnerProgress.stageData["stage-1"].iam_1_3 || {};
+                learnerProgress.stageData["stage-1"].iam_1_3.I = v;
+            }
+            debouncedSave(); 
+            renderSyllabus(); 
+        }, hD.iam.I);
+
+        bindInput("iam-drivers-a", v => { 
+            hD.iam.A = v; 
+            habits.drivers = hD; 
+            sData.iam = sData.iam || {};
+            sData.iam.A = v;
+            if (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) {
+                learnerProgress.stageData["stage-1"].iam_cp2 = learnerProgress.stageData["stage-1"].iam_cp2 || {};
+                learnerProgress.stageData["stage-1"].iam_cp2.A = v;
+                learnerProgress.stageData["stage-1"].iam_1_3 = learnerProgress.stageData["stage-1"].iam_1_3 || {};
+                learnerProgress.stageData["stage-1"].iam_1_3.A = v;
+            }
+            debouncedSave(); 
+            renderSyllabus(); 
+        }, hD.iam.A);
+
+        bindInput("iam-drivers-m", v => { 
+            hD.iam.M = v; 
+            habits.drivers = hD; 
+            sData.iam = sData.iam || {};
+            sData.iam.M = v;
+            if (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) {
+                learnerProgress.stageData["stage-1"].iam_cp2 = learnerProgress.stageData["stage-1"].iam_cp2 || {};
+                learnerProgress.stageData["stage-1"].iam_cp2.M = v;
+                learnerProgress.stageData["stage-1"].iam_1_3 = learnerProgress.stageData["stage-1"].iam_1_3 || {};
+                learnerProgress.stageData["stage-1"].iam_1_3.M = v;
+            }
+            debouncedSave(); 
+            renderSyllabus(); 
+        }, hD.iam.M);
 
         // 10.2 Habit 1: Gratitude Inputs
         const hG = habits.gratitude || { items: [], card: {}, iam: {} };
@@ -3802,7 +3822,7 @@ document.addEventListener("DOMContentLoaded", () => {
             name: "Đại Sứ Hạnh Phúc",
             days: 21,
             icon: "🏆",
-            desc: "Trọn vẹn 21 ngày chuyển hóa! Chúc mừng Đại Sứ Hạnh Phúc."
+            desc: "Duy trì xuất sắc chuỗi thói quen! Chúc mừng Đại Sứ Hạnh Phúc."
         }
     ];
 
@@ -3893,11 +3913,11 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         } else {
             // Đã đạt mốc 21 ngày
-            if (elNextLabel) elNextLabel.textContent = `🎉 Đỉnh cao 21 Ngày Hoàn Thành!`;
+            if (elNextLabel) elNextLabel.textContent = `🎉 Hoàn Thành Xuất Sắc Chuỗi Thói Quen!`;
             if (elProgressText) elProgressText.textContent = `21/21 ngày (100%)`;
             if (elProgressBar) elProgressBar.style.width = `100%`;
             if (elCountdownText) {
-                elCountdownText.innerHTML = `🏆 <strong class="text-emerald-400">Trọn vẹn 21 ngày chuyển hóa! Bạn là Đại Sứ Hạnh Phúc!</strong>`;
+                elCountdownText.innerHTML = `🏆 <strong class="text-emerald-400">Trọn vẹn hành trình chuyển hóa! Bạn là Đại Sứ Hạnh Phúc!</strong>`;
             }
         }
 
@@ -3991,7 +4011,7 @@ document.addEventListener("DOMContentLoaded", () => {
             {
                 id: "scenario-2",
                 category: "workplace",
-                name: "Người đồng đội kéo tụt KPI nhóm (Công sở)",
+                name: "Khi đồng đội gặp trở ngại về hiệu suất (Công sở)",
                 A: "Một thành viên chủ chốt liên tục nộp tài liệu muộn 3 ngày và sản phẩm chất lượng rất sơ sài, khiến cả nhóm bị trừ điểm đánh giá hiệu suất cuối tháng.",
                 B: "Họ vô trách nhiệm, lười biếng và cố tình phá hoại nỗ lực của cả tập thể. Làm việc với người như thế này thì nhóm không bao giờ ngóc đầu lên được.",
                 C: "Ức chế, cô lập thành viên đó trong nhóm chat, từ chối chia sẻ thông tin và định lên sếp lớn khiếu nại để đuổi việc.",
@@ -4134,7 +4154,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const weeks = [
             { week: 1, label: "🌱 Tuần 1: Gieo Mầm", desc: "Khởi tạo thói quen & nhịp điệu (Mục tiêu: 7 ngày liên tục)", startDay: 1, endDay: 7 },
             { week: 2, label: "🌿 Tuần 2: Vươn Mình", desc: "Bền bỉ vượt thử thách & củng cố kỷ luật (Mục tiêu: 14 ngày)", startDay: 8, endDay: 14 },
-            { week: 3, label: "🏆 Tuần 3: Chuyển Hóa", desc: "Khắc sâu phong cách sống & lan tỏa hạnh phúc (Mục tiêu: 21 ngày)", startDay: 15, endDay: 21 }
+            { week: 3, label: "🏆 Tuần 3: Chuyển Hóa", desc: "Khắc sâu phong cách sống & lan tỏa hạnh phúc", startDay: 15, endDay: 21 }
         ];
 
         weeks.forEach(w => {
@@ -5195,11 +5215,47 @@ document.addEventListener("DOMContentLoaded", () => {
     const overviewVideoEl = document.getElementById("global-overview-video-el");
     const btnHeaderOverviewVideo = document.getElementById("btn-header-overview-video");
     const btnGlobalOverviewVideo = document.getElementById("btn-global-overview-video");
+    const overviewVideoErrorBox = document.getElementById("overview-video-error-box");
+    const btnRetryOverviewVideo = document.getElementById("btn-retry-overview-video");
+
+    if (overviewVideoEl) {
+        overviewVideoEl.addEventListener("error", () => {
+            overviewVideoEl.classList.add("hidden");
+            if (overviewVideoErrorBox) {
+                overviewVideoErrorBox.classList.remove("hidden");
+                overviewVideoErrorBox.classList.add("flex");
+            }
+        });
+        overviewVideoEl.addEventListener("loadeddata", () => {
+            overviewVideoEl.classList.remove("hidden");
+            if (overviewVideoErrorBox) {
+                overviewVideoErrorBox.classList.add("hidden");
+                overviewVideoErrorBox.classList.remove("flex");
+            }
+        });
+    }
+
+    if (btnRetryOverviewVideo && overviewVideoEl) {
+        btnRetryOverviewVideo.addEventListener("click", () => {
+            if (overviewVideoErrorBox) {
+                overviewVideoErrorBox.classList.add("hidden");
+                overviewVideoErrorBox.classList.remove("flex");
+            }
+            overviewVideoEl.classList.remove("hidden");
+            overviewVideoEl.load();
+            overviewVideoEl.play().catch(() => {});
+        });
+    }
 
     function openOverviewVideoModal() {
         if (!modalVideoOverview) return;
         modalVideoOverview.classList.remove("hidden");
+        if (overviewVideoErrorBox) {
+            overviewVideoErrorBox.classList.add("hidden");
+            overviewVideoErrorBox.classList.remove("flex");
+        }
         if (overviewVideoEl) {
+            overviewVideoEl.classList.remove("hidden");
             overviewVideoEl.play().catch(() => {});
         }
     }
@@ -5483,13 +5539,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
         let pct = 0;
-        const cp1Done = Boolean((s1Data.iam_cp1 && (s1Data.iam_cp1.I || s1Data.iam_cp1.i)) || (s1Data.iam_1_2 && (s1Data.iam_1_2.I || s1Data.iam_1_2.i)) || (s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i)));
-        const cp2Done = Boolean((s1Data.iam_cp2 && (s1Data.iam_cp2.I || s1Data.iam_cp2.i)) || (s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i)));
+        const levelsDone = Boolean((s1Data.viewed && s1Data.viewed["1-1"]) || (s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i)));
+        const valuesDone = Boolean(s1Data.selectedValues && s1Data.selectedValues.length > 0);
+        const cp1Done = Boolean((s1Data.iam_cp1_sets && s1Data.iam_cp1_sets.length > 0) || (s1Data.iam_cp1 && (s1Data.iam_cp1.I || s1Data.iam_cp1.i)) || (s1Data.iam_1_2 && (s1Data.iam_1_2.I || s1Data.iam_1_2.i)) || (s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i)));
         const quizDone = Boolean(s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80);
 
-        if (cp1Done) pct += 33;
-        if (cp2Done) pct += 33;
-        if (quizDone) pct += 34;
+        if (levelsDone) pct += 10;
+        if (valuesDone) pct += 10;
+        if (cp1Done) pct += 40;
+        if (quizDone) pct += 40;
 
         return Math.min(100, pct);
     }
@@ -5501,6 +5559,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const s2Data = (learnerProgress.stageData && learnerProgress.stageData["stage-2"]) || {};
         const habits = s2Data.habits || {};
         let count = 0;
+
+        // 0. Drivers (Trạm 0: 3 Đòn Bẩy)
+        const hD = habits.drivers;
+        if ((hD && hD.iam && (hD.iam.I || hD.iam.A || hD.iam.M)) ||
+            (s2Data.iam && (s2Data.iam.I || s2Data.iam.A || s2Data.iam.M))) {
+            count++;
+        }
 
         // 1. Gratitude
         const hG = habits.gratitude;
@@ -5546,7 +5611,7 @@ document.addEventListener("DOMContentLoaded", () => {
             (hA.scenario && (hA.scenario.reflection || hA.scenario.action))
         )) count++;
 
-        return Math.min(100, Math.round(count * 20));
+        return Math.min(100, Math.round((count / 6) * 100));
     }
 
     function calculateStage3Progress() {
@@ -5566,14 +5631,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const mLevelsDone = isS1Done || Boolean((s1Data.viewed && s1Data.viewed["1-1"]) || (s1Data.iam_cp1 && s1Data.iam_cp1.I) || (s1Data.iam_1_1 && s1Data.iam_1_1.I));
         const mValuesDone = isS1Done || Boolean((s1Data.selectedValues && s1Data.selectedValues.length > 0) || (s1Data.iam_cp1 && s1Data.iam_cp1.I) || (s1Data.iam_1_2 && s1Data.iam_1_2.I));
         const mCp1Done = isS1Done || Boolean((s1Data.iam_cp1_sets && s1Data.iam_cp1_sets.length > 0) || (s1Data.iam_cp1 && ((s1Data.iam_cp1.I && s1Data.iam_cp1.I.trim()) || (s1Data.iam_cp1.A && s1Data.iam_cp1.A.trim()) || (s1Data.iam_cp1.M && s1Data.iam_cp1.M.trim()))) || (s1Data.iam_1_2 && s1Data.iam_1_2.I) || (s1Data.iam_1_1 && s1Data.iam_1_1.I));
-        const mDriversDone = isS1Done || Boolean((s1Data.viewed && s1Data.viewed["1-3"]) || (s1Data.iam_cp2_sets && s1Data.iam_cp2_sets.length > 0) || (s1Data.iam_cp2 && s1Data.iam_cp2.I) || (s1Data.iam_1_3 && s1Data.iam_1_3.I));
-        const mCp2Done = isS1Done || Boolean((s1Data.iam_cp2_sets && s1Data.iam_cp2_sets.length > 0) || (s1Data.iam_cp2 && ((s1Data.iam_cp2.I && s1Data.iam_cp2.I.trim()) || (s1Data.iam_cp2.A && s1Data.iam_cp2.A.trim()) || (s1Data.iam_cp2.M && s1Data.iam_cp2.M.trim()))) || (s1Data.iam_1_3 && s1Data.iam_1_3.I));
         const mQuizDone = isS1Done || Boolean(s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80);
 
-        const doneCount = [mLevelsDone, mValuesDone, mCp1Done, mDriversDone, mCp2Done, mQuizDone].filter(Boolean).length;
+        const doneCount = [mLevelsDone, mValuesDone, mCp1Done, mQuizDone].filter(Boolean).length;
         const milestoneText = document.getElementById("stage1-milestone-text");
         if (milestoneText) {
-            milestoneText.textContent = `${doneCount}/6 Hoàn thành`;
+            milestoneText.textContent = `${doneCount}/4 Hoàn thành`;
         }
 
         function setPill(id, done) {
@@ -5592,8 +5655,6 @@ document.addEventListener("DOMContentLoaded", () => {
         setPill("m-pill-levels", mLevelsDone);
         setPill("m-pill-values", mValuesDone);
         setPill("m-pill-cp1", mCp1Done);
-        setPill("m-pill-drivers", mDriversDone);
-        setPill("m-pill-cp2", mCp2Done);
         setPill("m-pill-quiz", mQuizDone);
     }
 
@@ -5617,19 +5678,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function autoOpenInProgressModule() {
         const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
-        const mod1Done = Boolean(s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i));
-        const mod2Done = Boolean(s1Data.iam_1_2 && ((s1Data.iam_1_2.I && s1Data.iam_1_2.I.trim()) || (s1Data.iam_1_2.i && s1Data.iam_1_2.i.trim())));
-        const mod3Done = Boolean(s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.i));
+        const mod1Done = Boolean((s1Data.viewed && s1Data.viewed["1-1"]) || (s1Data.iam_1_1 && (s1Data.iam_1_1.I || s1Data.iam_1_1.i)));
+        const mod2Done = Boolean(s1Data.selectedValues && s1Data.selectedValues.length > 0);
+        const cp1Done = Boolean((s1Data.iam_cp1_sets && s1Data.iam_cp1_sets.length > 0) || (s1Data.iam_cp1 && (s1Data.iam_cp1.I || s1Data.iam_cp1.A || s1Data.iam_cp1.M)));
         const quizDone = Boolean(s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80);
 
-        ["stage1-mod-1-1", "stage1-mod-1-2", "stage1-mod-1-3", "stage1-mod-quiz"].forEach(id => closeAccordionModule(id));
+        ["stage1-mod-1-1", "stage1-mod-1-2", "stage1-mod-cp1", "stage1-mod-quiz"].forEach(id => closeAccordionModule(id));
 
         if (!mod1Done) {
             openAccordionModule("stage1-mod-1-1");
         } else if (!mod2Done) {
             openAccordionModule("stage1-mod-1-2");
-        } else if (!mod3Done) {
-            openAccordionModule("stage1-mod-1-3");
+        } else if (!cp1Done) {
+            openAccordionModule("stage1-mod-cp1");
         } else if (!quizDone) {
             openAccordionModule("stage1-mod-quiz");
         } else {
@@ -6862,7 +6923,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 ? "Chặng 1 · Online Pre-Class" 
                 : currentStageIndex === 1 
                     ? "Chặng 2 · Offline Workshop" 
-                    : "Chặng 3 · Action Learning 21 Ngày";
+                    : "Chặng 3 · Tiếp Nối Hành Trình Hạnh Phúc";
             stageBadge.textContent = `📍 Đang học: ${stageName}`;
         }
 
@@ -6951,15 +7012,22 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
-                // Check if CP2 is open/active
-                const modCp2Body = document.getElementById("mod-cp2-body");
-                const isCp2Open = modCp2Body && !modCp2Body.classList.contains("hidden");
+                // Check active view/station for IAM insertion target
+                const driversPanel = document.getElementById("habit-panel-drivers");
+                const isDriversActive = driversPanel && !driversPanel.classList.contains("hidden");
+                let targetInputId = "iam-cp1-i";
+                let label = "CP1";
+                if (isDriversActive) {
+                    targetInputId = "iam-drivers-i";
+                    label = "Trạm 0";
+                } else if (!document.getElementById("stage-1")?.classList.contains("hidden")) {
+                    targetInputId = "iam-cp1-i";
+                    label = "CP1";
+                }
 
-                const targetInputId = isCp2Open ? "iam-cp2-i" : "iam-cp1-i";
                 const targetInput = document.getElementById(targetInputId);
-
                 if (targetInput) {
-                    if (!isCp2Open) {
+                    if (targetInputId === "iam-cp1-i") {
                         openAccordionModule("stage1-mod-cp1");
                     }
                     const oldVal = targetInput.value.trim();
@@ -6972,7 +7040,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     targetInput.scrollIntoView({ behavior: "smooth", block: "center" });
 
                     const oldBtnText = toIamBtn.innerHTML;
-                    toIamBtn.innerHTML = `<span>✓ Đã chèn vào ${isCp2Open ? 'CP2' : 'CP1'}!</span>`;
+                    toIamBtn.innerHTML = `<span>✓ Đã chèn vào ${label}!</span>`;
                     setTimeout(() => { toIamBtn.innerHTML = oldBtnText; }, 2000);
                 }
             };
@@ -7099,7 +7167,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     sender_email: email,
                     subject: subject,
                     message: message,
-                    stage_context: currentStageIndex === 0 ? "Chặng 1 · Online" : currentStageIndex === 1 ? "Chặng 2 · Offline" : "Chặng 3 · 21 Ngày",
+                    stage_context: currentStageIndex === 0 ? "Chặng 1 · Online" : currentStageIndex === 1 ? "Chặng 2 · Offline" : "Chặng 3 · Tiếp Nối",
                     timestamp: new Date().toISOString()
                 };
 

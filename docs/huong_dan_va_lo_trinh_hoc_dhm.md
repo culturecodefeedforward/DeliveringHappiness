@@ -53,11 +53,11 @@ Hành trình học tập Delivering Happiness được tổ chức theo chuỗi 
      - *Đòn bẩy 1: Cảm giác Kết nối (Relatedness)* — Xây dựng mối quan hệ hòa ái với bản thân, với người khác và với thiên nhiên; thiết lập môi trường an toàn tâm lý (*Psychological Safety*).
      - *Đòn bẩy 2: Cảm giác Tự chủ (Autonomy)* — Cảm giác được lựa chọn phương pháp, được lắng nghe tiếng nói và có tinh thần làm chủ kết quả (*Ownership Advantage™*).
      - *Đòn bẩy 3: Cảm giác Tiến bộ (Competence)* — Cảm nhận bản thân liên tục tiến lên phía trước thông qua việc ghi nhận các bước tiến nhỏ (*Small wins*) hàng ngày.
-- **Điều kiện hoàn thành Mini-step 1 (Cổng Sát Hạch Đầu Vào — Qualifying Gate):**
+- **Điều kiện hoàn thành Mini-step 1 (Cổng Sát Hạch Vượt Chặng — Qualifying Gate):**
   - **Bài Test Sát Hạch (10 câu trắc nghiệm phản xạ):** Học viên bắt buộc phải làm bài và đạt tối thiểu **8/10 câu đúng (≥ 80%)**.
   - **Giới hạn làm bài:** Tối đa 3 lần thử. Hệ thống có cơ chế khóa an toàn (*lockout*) sau 3 lần trượt để khuyến khích học viên kết nối trực tiếp với Coach/BTC nhằm nhận hướng dẫn ôn tập.
   - **Đúc kết phản tư I • A • M 1.1, 1.2, 1.3:** Hoàn thành các câu hỏi suy ngẫm cá nhân và bài tập tình huống thực tế.
-  - *Ý nghĩa:* Đạt kết quả sát hạch đầu vào là điều kiện bắt buộc để được cấp quyền tham dự Hội thảo tập trung Mini-step 2.
+  - *Ý nghĩa:* Đạt kết quả sát hạch vượt chặng là điều kiện bắt buộc để được cấp quyền tham dự Hội thảo tập trung Mini-step 2.
 
 ---
 
@@ -143,7 +143,7 @@ Giao diện học tập được xây dựng theo tiêu chuẩn Single Page Appl
 - Học viên mới khi đăng nhập sẽ được chào đón bằng **Quick Start Card Modal** tinh gọn 1 trang:
   1. *Bước 1: Đăng nhập* bằng Email và 4 số cuối SĐT.
   2. *Bước 2: Xem bài giảng* qua Video Explainer và kho Audio Podcast.
-  3. *Bước 3: Vượt qua bài sát hạch đầu vào* (đạt ≥ 80%, tối đa 3 lần).
+  3. *Bước 3: Vượt qua bài sát hạch vượt chặng* (đạt ≥ 80%, tối đa 3 lần).
   4. *Bước 4: Thực hành và lưu trữ* các bài tập I•A•M.
 
 #### C. Thanh Tiếp Tục Học Tập Thông Minh (Smart Resume Learning)

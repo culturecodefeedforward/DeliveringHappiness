@@ -1,54 +1,93 @@
-# 📏 Quy chuẩn Lập trình & Vận hành (Code Standards)
+# Tiêu Chuẩn Mã Nguồn & Quy Chuẩn Dự Án (Code Standards)
 
-Tài liệu này định nghĩa các quy chuẩn lập trình, tiêu chuẩn bảo mật và quy trình quản trị mã nguồn cho dự án DH4HN Website.
+Tài liệu này quy định các chuẩn mực kỹ thuật, quy tắc an toàn dữ liệu, mã hóa UTF-8 và nguyên tắc viết mã cho dự án Delivering Happiness (DHM) và hệ thống Micro-LMS.
 
-Các mục dưới đây là yêu cầu bắt buộc, không phải chứng nhận rằng mọi file hiện đã tuân thủ. Sai lệch giữa chuẩn và mã phải được ghi `UNVERIFIED` hoặc `BLOCKED` cho tới khi sửa và kiểm chứng đúng bề mặt.
+---
 
-## 1. Tiêu chuẩn Mã nguồn (Code Quality Standards)
-*   **HTML:** Sử dụng HTML5 ngữ nghĩa (semantic tags như `<section>`, `<article>`, `<header>`). Luôn đặt thẻ tiêu đề `<title>` mô tả chính xác nội dung trang và bộ mã hóa UTF-8. **Tiêu chuẩn WCAG 2.1:** Các thành phần tương tác dạng hộp hội thoại (Modal/Dialog) phải có `role="dialog"` và `aria-modal="true"`. Các thẻ nhập liệu (`<input>`) phải được gắn nhãn `<label>` tương ứng thông qua thuộc tính `for`.
-*   **CSS:** Sử dụng Vanilla CSS sạch, khai báo các biến CSS chung (CSS variables) tại khối `:root` trong `styles.css` để đồng bộ bảng màu (màu chủ đạo: `#1e3a8a`, v.v.). Tránh sử dụng CSS inline hoặc Tailwind CSS trừ khi có yêu cầu đặc biệt. **Độ tương thích & Trải nghiệm:** Kích thước vùng bấm tương tác (Touch Targets) tối thiểu là `44px` theo WCAG. Phải hỗ trợ tắt các hiệu ứng động vô hạn hoặc hiệu ứng lật khi người dùng bật cấu hình prefers-reduced-motion trên thiết bị.
-*   **JavaScript:** Viết code JavaScript theo tiêu chuẩn ES6+. Các hàm xử lý sự kiện (event handlers) và tương tác API phải được đóng gói gọn gàng, sử dụng `async/await` để xử lý các cuộc gọi mạng và có xử lý ngoại lệ (try-catch). **Bẫy tiêu điểm (Focus Trap):** Khi mở Modal, tiêu điểm phải được khóa trong Modal (sử dụng phím `Tab` / `Shift+Tab`) và phải trả lại tiêu điểm về phần tử kích hoạt trước đó khi đóng Modal. Hỗ trợ phím `Escape` để thoát nhanh modal.
+## 1. Nguyên Tắc Cốt Lõi (Core Principles)
 
-## 2. Tiêu chuẩn Bảo mật & Lập trình Backend (Apps Script Backend Standards)
-Để tránh các lỗ hổng bảo mật phổ biến, các lập trình viên Apps Script bắt buộc phải tuân theo các quy tắc sau:
-*   **HTML Escaping (Lọc mã HTML):** Mọi tham số chuỗi nhận được từ client-side (như Họ tên, Email, ý kiến đóng góp) phải đi qua hàm lọc sạch ký tự `escapeHtml_(value)` trước khi lưu vào Google Sheet hoặc dùng trong HTML Email template để ngăn ngừa lỗi tiêm mã độc `XSS` (Cross-Site Scripting).
-*   **Secure JSONP Callback Verification (Xác minh Callback JSONP):** Khi viết các API hỗ trợ JSONP (qua `doGet`), hàm callback phải được xác thực bằng biểu thức chính quy (regular expression) để ngăn ngừa lỗ hổng Reflected XSS.
-    *   Callback đăng ký dùng `CALLBACK_REGEX`; luồng đa chương trình dùng `PROGRAM_INTEREST_CALLBACK_REGEX`. Mỗi route phải kiểm tra đúng regex của hợp đồng đó.
-    *   Nếu tham số callback không khớp regex, lập tức từ chối và trả về lỗi JSON thô.
-*   **Không Hardcode Khóa Bí mật (No Hardcoded Secrets):** Tất cả token xác thực (như `SEPAY_WEBHOOK_TOKEN`), Spreadsheet ID, hoặc cấu hình môi trường phải được lưu trữ trong **Script Properties** (Cài đặt thuộc tính dự án) và truy xuất thông qua `PropertiesService.getScriptProperties()`. Tuyệt đối không hardcode trong file code.
-*   **Email Quota Protection (Bảo vệ Hạn mức Email):** Trước khi gọi `MailApp.sendEmail()`, luôn kiểm tra quota thông qua `MailApp.getRemainingDailyQuota()`. Nếu quota còn lại dưới 5 mail/ngày, phải dừng gửi mail tự động và chỉ ghi dữ liệu vào Sheet để bảo vệ luồng đăng ký chính không bị lỗi hệ thống.
+### A. Chống Khóa Cứng & Ưu Tiên Kiến Trúc Nhẹ (Zero Dependency / Vanilla First)
+- Hệ thống Frontend Micro-LMS được xây dựng hoàn toàn bằng **Vanilla JavaScript (ES6+)**, HTML5 và CSS3 nguyên bản.
+- Tuyệt đối không cài đặt các framework nặng nề (như React, Angular, Vue phức tạp) khi yêu cầu nghiệp vụ chỉ là một trang học tập và khảo sát SPA nhẹ nhàng.
+- Sử dụng **Tailwind CSS qua CDN** để tối ưu hóa thời gian tải trang, kết hợp với các biến CSS tùy biến (`CSS Custom Properties`) trong `styles.css`.
 
-### Khoảng trống đã biết trong source hiện tại
+### B. An Toàn Bộ Mã UTF-8 & Ngôn Ngữ Tiếng Việt (UTF-8 Explicit & Vietnamese Safety)
+- Mọi tệp mã nguồn (`.html`, `.js`, `.json`, `.css`, `.md`) bắt buộc phải được lưu ở định dạng **UTF-8 không BOM (UTF-8 without BOM)**.
+- Mọi thao tác đọc/ghi tệp qua script (Python, Node.js, PowerShell) phải khai báo rõ ràng tham số `encoding="utf-8"`.
+- Tuyệt đối không sử dụng các lệnh PowerShell mặc định không chỉ định mã hóa (`Out-File`, `Set-Content` mặc định) vì sẽ gây ra lỗi vỡ font tiếng Việt (mojibake).
 
-*   `api/chat-abcde.js` và `Scripts/active_code_gs_final.js` còn các giá trị fallback nhạy cảm/cấu hình vận hành trong source. Không phát tán giá trị, không coi đây là cấu hình production hợp lệ và không claim tuân thủ `No Hardcoded Secrets` cho tới khi có kế hoạch loại bỏ, xoay vòng credential và UAT hồi quy.
-*   Vercel API tạo HMAC cho payload ABCDE, nhưng Apps Script hiện chưa xác minh chữ ký/timestamp/nonce. Không claim chống giả mạo hoặc chống phát lại đầu-cuối.
+### C. Quy Tắc Chống Bịa Đặt & Nguồn Chuẩn (Anti-Fabrication & Source of Truth Rule)
+- **Cấm tuyệt đối việc tự ý thêm thắt hoặc bịa đặt danh tính nhân sự:** Giữ đúng 100% họ tên, vai trò và thông tin liên hệ được ghi nhận trong `master_learners_roster.json` và `authorized_roster.json`.
+- **Cấm kịch tính hóa hoặc phóng tác bài giảng:** Mọi case study, câu chuyện thực tế của giảng viên hay nghiên cứu khoa học phải phản ánh trung thực 100% sự kiện nguyên bản, không tự ý chèn các tình tiết gay cấn vô căn cứ.
+- Ghi rõ nguồn gốc học thuật (tên tác giả, năm công bố, trường đại học/tổ chức nghiên cứu) đối với các lý thuyết khoa học hạnh phúc.
 
-## 3. Các Quy tắc Tuân thủ Kỹ thuật (Rules of Compliance)
-*   **Rule 1 (Planning Artifacts Mirroring):** Mọi sự thay đổi về tài liệu hay file cấu trúc phải phản ánh chính xác các quy trình và được cập nhật vào thư mục `docs/`.
-*   **Rule 2 & 5 (Email Standardized & Dynamic Binding Gate):** Tất cả các email template phải được chuẩn hóa và việc gán nội dung email theo chiến dịch phải thông qua cơ chế Dynamic Binding tự động (sử dụng hàm `getPaymentConfig_`), không hardcode trực tiếp vào mã nguồn.
-*   **Rule 4 (Staged Deployment & Production Lock):** Mọi lệnh deploy phải tuân thủ qua môi trường UAT. Sử dụng lệnh `vercel --prod --skip-domain`, chạy UAT 3 Lớp, duyệt trước khi sử dụng `vercel promote`. Đối với backend, áp dụng `clasp push` có cổng kiểm duyệt.
-*   **Evidence Status (Trạng thái bằng chứng):** Claim quan trọng phải dùng `VERIFIED`, `INFERRED`, `UNVERIFIED` hoặc `STALE/ARCHIVE`; bằng chứng source không thay thế bằng chứng browser, email, Sheet hay production.
-*   **Immutable Release (Phát hành từ snapshot bất biến):** Package phải sinh từ commit đã review, kèm release manifest và release contract. Cấm deploy từ dirty root hoặc package tạm thiếu provenance.
+---
 
-## 4. Quản lý Nhánh Git (Git Branching & Deployment Strategy)
-Dự án sử dụng cơ chế chia nhánh để phân tách môi trường phát triển và môi trường công khai:
-*   **Nhánh `main`:**
-    *   **Vai trò:** Nguồn ứng viên cho Vercel Production (`https://delivering-happiness.vercel.app/`). Commit/push vào `main` không tự chứng minh production đã đổi.
-    *   **Nội dung:** Chỉ chứa bề mặt public đã được release inventory cho phép; dữ liệu/học liệu nội bộ không được lọt vào package.
-*   **Nhánh `07042026`:**
-    *   **Môi trường:** Vercel Preview (Link nội bộ của khóa DH7).
-    *   **Nội dung:** Bản LMS chứa các bài giảng audio/video phục vụ học viên cũ.
+## 2. Quy Chuẩn Đặt Tên & Cấu Trúc Mã Nguồn (Naming & Conventions)
 
-## 5. Vận hành với Git Worktree và clasp
-*   **Git Worktree:** Sử dụng `git worktree` để phân rã 2 nhánh hoạt động độc lập ở 2 thư mục local:
-    *   Mở thư mục `dh4hn-website` khi phát triển trang đăng ký mới trên `main`.
-    *   Mở thư mục `dh4hn-website-dh7` khi cập nhật kho bài giảng cho học viên cũ trên `07042026`.
-*   **Đồng bộ clasp:** Sử dụng công cụ `clasp` (Google Command Line Apps Script Projects - công cụ dòng lệnh cho Apps Script) để đồng bộ mã nguồn. Trước `clasp push`, phải kiểm tra `.clasp.json`, `.claspignore`, `clasp status`, diff allowlist, backup/rollback và phê duyệt Cấp độ 3 cho exact command. Không commit token xác thực cá nhân lên Git.
+### A. JavaScript & JSON
+- **Biến và Hàm:** Đặt tên theo quy tắc `camelCase` (ví dụ: `learnerProgress`, `renderStage1Quiz`, `openInfographicModal`).
+- **Hằng số toàn cục:** Đặt tên theo quy tắc `UPPER_SNAKE_CASE` (ví dụ: `REGISTRY_KEY`, `WEBHOOK_URL`, `CURRENT_COHORT`).
+- **Thuộc tính JSON:** Đặt tên rõ nghĩa, nhất quán giữa frontend và backend (ví dụ: `correctIndex`, `timeLimit`, `selectedValues`).
+- **Xử lý sự kiện (Event Handlers):** Luôn dùng `addEventListener` hoặc gắn hàm qua trigger tập trung (`attachMediaTriggers`), tránh viết mã JS lồng trực tiếp vào thẻ HTML (`onclick="..."` inline).
 
-## 6. Quy chuẩn Phát triển Phân hệ LMS Client State & Tương tác
-*   **Quản lý Khóa `localStorage` có Tiền tố Chuẩn:** Mọi khóa lưu trữ trạng thái người dùng trong LMS phải có tiền tố `dhm_` để tránh xung đột không gian tên:
-    *   `dhm_lms_auth_user`: Lưu trữ phiên đăng nhập và định danh học viên.
-    *   `dhm_sidebar_desktop_collapsed`: Lưu cờ boolean trạng thái thu gọn thanh điều hướng bên trái trên desktop.
-    *   `dhm_roster_overrides`: Lưu trữ số điện thoại học viên tự phục vụ onboarding tại client.
-*   **Toàn vẹn Cấu trúc Dữ liệu JSON Giáo trình (`curriculum_data.json`):** Mọi tệp dữ liệu tĩnh phục vụ LMS phải tuân thủ chuẩn mã hóa UTF-8 tuyệt đối. Khi bổ sung trường mới (`practicalScenarios`, `quiz_questions`), bắt buộc kiểm tra cú pháp và tính toàn vẹn bằng Python JSON validator trước khi commit.
-*   **Tiêu chuẩn Trợ năng cho Accordion & Drawer:** Nút mở/đóng accordion phải gắn `aria-expanded` tương ứng và hỗ trợ thao tác bàn phím (Enter / Space). Khi chuyển đổi trạng thái thu gọn Sidebar, hiệu ứng chuyển động CSS phải mượt mà và không gây giật khung hình (layout shift) cho nội dung bài giảng.
+### B. CSS & Giao Diện Người Dùng (UI/UX)
+- Tuân thủ bảng màu chuẩn của thương hiệu Delivering Happiness:
+  - Nền tối chủ đạo (Dark Canvas): `#0B0F19` (Brand Dark), `#111827` (Brand Surface), `#1F2937` (Brand Card).
+  - Màu điểm nhấn Hổ Phách & Cam (Amber & Orange Accent): `#D97706` (Amber), `#EA580C` (Orange).
+  - Màu trạng thái: `#10B981` (Thành công / Emerald), `#EF4444` (Cảnh báo / Red).
+### C. Bảo Mật Client-Side & Phòng Vệ Khóa Tiến Độ (Client-Side Security & State Patterns)
+- **Chuẩn Băm Mật Khẩu Web Crypto API:**
+  - Tuyệt đối không lưu mật khẩu dạng bản rõ (plaintext) trong `localStorage`.
+  - Mọi thao tác lưu và đối chiếu mật khẩu tự đổi phải sử dụng chuẩn băm SHA-256 nguyên bản của trình duyệt:
+    ```javascript
+    async function hashPassword(password) {
+      const msgBuffer = new TextEncoder().encode(password);
+      const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+      return Array.from(new Uint8Array(hashBuffer))
+        .map(b => b.toString(16).padStart(2, "0"))
+        .join("");
+    }
+    ```
+- **Quy Chuẩn Phòng Vệ Khóa Định Danh (Defensive Identity Fallback):**
+  - Khi lưu trữ tiến độ hoặc truy xuất dữ liệu cá nhân theo người dùng, cấm giả định trường `identity` luôn tồn tại.
+  - Bắt buộc phải triển khai cơ chế fallback đa tầng an toàn:
+    ```javascript
+    const idKey = currentUser.identity || currentUser.email || currentUser.learner_id || "guest";
+    const progressKey = `dhm_lms_progress_${idKey}`;
+    ```
+  - Mọi hàm tra cứu danh tính (`findLearner()`) phải gán tường minh trường `identity` ngay từ đầu:
+    ```javascript
+    learner.identity = match.email || match.phone || match.learner_id;
+    ```
+
+### D. Quy Chuẩn Form Xác Thực Phân Nhánh & Chống Bẫy Bế Tắc HTML5 (Branching Auth & Anti-Deadlock Standard)
+- **Cấm Gán Cứng Thuộc Tính `required` Cho Trường Phân Nhánh:**
+  - Trong các biểu mẫu xác thực lai (Hybrid Auth: vừa phục vụ thành viên đã có mật khẩu, vừa phục vụ người mới kích hoạt qua email), tuyệt đối không gán cứng thuộc tính HTML5 `required` lên ô Mật khẩu. Trình duyệt sẽ chặn sự kiện `submit` trước khi JavaScript kịp phân nhánh cho người mới.
+  - Chuyển toàn bộ logic kiểm tra mật khẩu vào hàm xử lý JavaScript trong sự kiện `submit`: chỉ yêu cầu mật khẩu khi đối tượng `findLearner(email)` tồn tại.
+- **Lối Vào Trực Diện Cho Người Mới (Explicit Newcomer Affordance):**
+  - Luôn bố trí nút chuyển đổi độc lập (như `#btn-toggle-newcomer-trial`) ngay trên bề mặt giao diện ban đầu; không bắt người mới phải submit lỗi hoặc mò mẫm mật khẩu thì hệ thống mới bung form đăng ký.
+- **Ủy Quyền Phím Enter Trong Chế Độ Con (Sub-Form Enter Delegation):**
+  - Khi form học thử hoặc form con đang mở, sự kiện `submit` của form cha phải ủy quyền trực tiếp sang nút hành động của form con (ví dụ: `btnRequestTrial.click()`), chống việc bấm Enter làm reset form.
+
+---
+
+## 3. Quy Trình Kiểm Thử An Toàn (Testing & Verification Gate)
+
+1. **Local-First Verification:**
+   - Trước khi thực hiện lệnh commit, luôn chạy kiểm tra cú pháp mã nguồn:
+     ```bash
+     node -c lms/app.js
+     python -m json.tool lms/curriculum_data.json > nul
+     ```
+2. **CDN Cache & Parity Verification:**
+   - Sau khi deploy lên Vercel Live, bắt buộc phải dùng script kiểm tra mã phản hồi HTTP `200 OK` trên chính Live URL của các tài nguyên tĩnh mới tải lên trước khi bàn giao cho người dùng.
+   - Thêm thời gian chờ 30-45 giây để CDN Vercel xóa bộ nhớ cache phiên bản cũ.
+
+3. **Cách Ly Dữ Liệu Thực Tế Khi Kiểm Thử:**
+   - Cấm sử dụng số điện thoại thật, email thật của học viên cho các script test tự động gửi webhook hoặc email. Chỉ sử dụng dữ liệu kiểm thử giả lập (`mock data`) trỏ về email của người phụ trách kỹ thuật.
+
+4. **Kiểm Thử Biên Thực Tế & Cấm Nhập Dữ Liệu Giả Che Giấu Lỗi (Realistic Form Boundary Testing):**
+   - Khi nghiệm thu các form phân nhánh (học thử, người mới, kích hoạt), cấm tester/agent nhập mật khẩu giả ("dummy password") để lách qua thuộc tính `required` của form.
+   - Bắt buộc phải kiểm thử đúng 100% hành vi người dùng thực tế: để trống hoàn toàn các trường chưa có thông tin và xác nhận hệ thống điều hướng trơn tru sang luồng kích hoạt.
+   - Mọi bản sửa đổi luồng xác thực phải vượt qua bộ kiểm thử E2E tự động (như `verify_trial_flow.js` 15 test cases) trên cả môi trường local và staging trước khi commit.

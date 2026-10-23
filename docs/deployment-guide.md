@@ -11,7 +11,8 @@ Giao diện gồm HTML/CSS/JS tĩnh và API serverless trên Vercel. Nhánh `mai
 2.  Bảo đảm checkout có **đúng bản tracked trong cùng commit** của `Scripts/build_release_package.js`, `Scripts/verify_vercel_live_gate.js`, `.github/workflows/production-release.yml` và release contract trong `release-specs/`; path tồn tại nhưng untracked/diverged vẫn phải fail-closed.
 3.  Thực hiện đúng `docs/deployment.md`: build package → staged deployment bằng `--skip-domain` → UAT toàn bộ route trong release contract → phê duyệt Cấp độ 3 → promote → production UAT.
 4.  Kiểm tra trực tiếp mọi CTA target. `interest.html` (`DH_INTEREST`) và `program-interest.html` (`PROGRAM_INTEREST`) là hai hợp đồng khác nhau.
-5.  Chỉ claim `Live done` khi production alias và release identity khớp artifact `LIVE_VERIFIED` trong `UAT/releases/<release-id>/production/`.
+5.  **Lưu ý Vercel Deployment Protection:** Các URL staged preview (delivering-happiness-*.vercel.app) được bảo vệ bởi màn hình SSO login. Kiểm tra staged có thể bypass qua header hoặc verify trực tiếp bằng HTTP read-back ngay sau lệnh ercel promote <deployment-id> lên tên miền chính thức delivering-happiness.vercel.app.
+6.  Chỉ claim Live done khi production alias và release identity khớp artifact LIVE_VERIFIED trong UAT/releases/<release-id>/ (ví dụ: dpl_DNCLqYW3MjUqj9YF2tyF6mCaUcJo/final-verdict.json).
 
 ---
 

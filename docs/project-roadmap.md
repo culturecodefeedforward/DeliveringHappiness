@@ -15,7 +15,7 @@ Tài liệu này ghi nhận các mốc phát triển đã hoàn thành, hiện t
 ### Giai Đoạn 2: Xây Dựng Hệ Thống Micro-LMS Blended Learning (ĐÃ HOÀN TẤT)
 - [x] Phát triển giao diện đơn trang SPA phong cách Focused Mode (LinkedIn Learning / MasterClass).
 - [x] Tích hợp cơ chế xác thực không mật khẩu (Passwordless Identity Gate) đối chiếu danh bạ học viên.
-- [x] Thiết kế Chặng 1: Khởi động với hạnh phúc & Cổng Sát Hạch Đầu Vào 10 câu bám sát Slide 12-24 (≥ 80% - 8/10 câu sau tối đa 3 lần thử).
+- [x] Thiết kế Chặng 1: Khởi động với hạnh phúc & Cổng Sát Hạch Vượt Chặng 10 câu bám sát Slide 12-24 (≥ 80% - 8/10 câu sau tối đa 3 lần thử).
 - [x] Thiết kế Chặng 2: Gieo thói quen hạnh phúc (Trạm 0: 3 Đòn Bẩy Deci & Ryan, Xưởng 5 Thói Quen và Đúc Kết & Chuyển Hóa).
 - [x] Thiết kế Chặng 3: Tiếp nối hành trình hạnh phúc (Habit Tracker 5 thói quen & Weekly Check-in I•A•M, gỡ bỏ nhãn số cứng 21/30 ngày).
 - [x] Tích hợp bộ đúc kết 3 thành tựu I • A • M (Interested • Actionable • Meaningful) cho từng chặng.
@@ -40,7 +40,7 @@ Tài liệu này ghi nhận các mốc phát triển đã hoàn thành, hiện t
 - [x] Chuẩn Hóa Câu Chữ Bước 3 & Bước 4 trong Modal Khởi Động Nhanh (#modal-quick-start) theo phản hồi thực tế của Sếp Dzũ, kiểm chứng trực quan trên cả 2 khung nhìn Desktop & Mobile iPhone 13 đạt 100% PASS (Commit 538b37c, Báo cáo: `uat_report_20261009_quick_start_modal_wording.md`).
 - [x] Hệ Thống Quản Lý Mật Khẩu 4 Tầng & Đổi Mật Khẩu Tự Phục Vụ: Modal đổi mật khẩu an toàn (#change-pass-modal), mã hóa băm SHA-256 Web Crypto API, nút 🔒 trên header, Webhook CRM đồng bộ `update_password`, cơ chế cưỡng chế đổi mật khẩu tài khoản Apollo và mã PIN khẩn cấp 8888.
 - [x] Cổng Khóa Học Thử & Phân Luồng Học Viên Chặng 2: Khóa cứng nội dung Chặng 2 & 3 đối với tài khoản trải nghiệm thử (`isTrial = true`), Modal nâng cấp (#trial-upgrade-modal) tích hợp gửi Magic Link xác thực tuân thủ Nghị định 13/2023/NĐ-CP (cooldown 60s).
-- [x] Tối Ưu Hóa & Tăng Độ Khó Đề Thi Sát Hạch Đầu Vào: Chuẩn hóa 10 câu hỏi theo Thuyết Tự Quyết (Deci & Ryan) và văn hóa Zappos (Tony Hsieh), cân bằng phương án gây nhiễu, ẩn hiển thị đáp án khi làm sai để chống học vẹt, ngưỡng đạt 80% (8/10), tự động khóa thi an toàn khi làm sai quá 3 lần.
+- [x] Tối Ưu Hóa & Tăng Độ Khó Đề Thi Sát Hạch Vượt Chặng: Chuẩn hóa 10 câu hỏi theo Thuyết Tự Quyết (Deci & Ryan) và văn hóa Zappos (Tony Hsieh), cân bằng phương án gây nhiễu, ẩn hiển thị đáp án khi làm sai để chống học vẹt, ngưỡng đạt 80% (8/10), tự động khóa thi an toàn khi làm sai quá 3 lần.
 - [x] Bộ 3 Tính Năng Tương Tác Mới LMS: Multi-Set I•A•M 3 cột không giới hạn số bộ thẻ cho Checkpoint 1 & 2; Header Drawer "Kho I•A•M" duyệt toàn bộ lịch sử ghi chép; Floating Quick Note FAB (📝 debounced 400ms, phím tắt `Ctrl+J`, tự động gắn ngữ cảnh chặng học, nút 1-chạm chèn vào ô I); Modal liên hệ Culturecode 4 chủ đề 1-chạm gửi kép Webhook & Mailto.
 - [x] Hoàn Thiện Bộ Kịch Bản & Lời Dẫn Apollo DHM 90 Phút: Biên soạn chi tiết lời dẫn giảng dạy trực tuyến 90 phút Apollo (`loi_dan_hien_tai_full.md`), chuẩn hóa cấu trúc đối thoại theo tiến trình sư phạm từ transcript bóc băng thực tế.
 - [x] Kiểm chứng thực tế mã phản hồi HTTP `200 OK` và giao diện live trên `delivering-happiness.vercel.app/lms/`.
@@ -84,7 +84,7 @@ Tài liệu này ghi nhận các mốc phát triển đã hoàn thành, hiện t
   - Soạn thảo sẵn bản thảo tin nhắn gửi Ban Giảng Huấn và team kiểm thử.
 - [x] Tái Cấu Trúc Bộ 10 Câu Hỏi Cổng Sát Hạch Chặng 1 Bám Sát Slide 12-24, Chuyển 3 Đòn Bẩy Sang Trạm 0 Chặng 2 & Chuẩn Hóa Ma Trận 20 Điểm Wording Sư Phạm KISS (23/10/2026):
   - **Tái Cấu Trúc Bộ 10 Câu Hỏi Sát Hạch Chặng 1**: Bám sát 100% Slide 12–24 (Q1 Aristotle Eudaimonia, Q2 Flow, Q3 Higher Purpose, Q4 3 Tầng Lầu, Q5 Lan tỏa Me-We-Community, Q6 3 Cấp độ Seligman, Q7 Tony Hsieh, Q8 Me Values, Q9 La Bàn Trade-off, Q10 Hedonic Adaptation). Chuyển giao toàn bộ 7 câu hỏi cũ về 3 Đòn Bẩy sang Trạm 0 Chặng 2.
-  - **Chuẩn Hóa Ma Trận 20 Điểm Wording Sư Phạm KISS**: Capstone Chặng 2 đổi thành 'Đúc Kết & Chuyển Hóa'; Trắc nghiệm Chặng 1 đổi thành 'Cổng Sát Hạch Đầu Vào'; Huy hiệu Chặng 1 đổi thành '⏱ Trực Tuyến Tự Điều Tốc'; Trạm Chặng 2 đổi thành '🎯 Trạm Thực Hành 5 Thói Quen Hạnh Phúc'; triệt tiêu tiếng lóng hè phố và dã chiến; chuẩn hóa tác giả Thuyết Tự Quyết (SDT) là Deci & Ryan (2000).
+  - **Chuẩn Hóa Ma Trận 20 Điểm Wording Sư Phạm KISS**: Capstone Chặng 2 đổi thành 'Đúc Kết & Chuyển Hóa'; Trắc nghiệm Chặng 1 đổi thành 'Cổng Sát Hạch Vượt Chặng'; Huy hiệu Chặng 1 đổi thành '⏱ Trực Tuyến Tự Điều Tốc'; Trạm Chặng 2 đổi thành '🎯 Trạm Thực Hành 5 Thói Quen Hạnh Phúc'; triệt tiêu tiếng lóng hè phố và dã chiến; chuẩn hóa tác giả Thuyết Tự Quyết (SDT) là Deci & Ryan (2000).
   - **Đồng Bộ Hóa Toàn Diện 14 Tệp Tài Liệu & Global Skill**: Hợp nhất toàn bộ tài liệu kiến trúc, hướng dẫn học tập, kịch bản test, prompt bàn giao và Global Skill dhm-blended-lms thành Source of Truth duy nhất.
 - [x] Khớp Chuẩn Sĩ Số 70 Học Viên Apollo, Đổi Tên 6 Trạm, Gỡ IAM Trạm 6, Tự Động Triển Khai Clasp & Ban Hành Quy Tắc Dọn Dẹp Dữ Liệu Live (21/10/2026):
   - **Khớp chuẩn sĩ số 70 học viên**: Loại bỏ tài khoản test kỹ thuật viên LMS, khớp 100% danh sách học viên Apollo thực tế (HN: 38 HV, HCM: 32 HV). Sửa lỗi đôn trạm ảo, ghi nhận chính xác 15 học viên thực tế hoàn thành đủ 6 trạm.
@@ -95,6 +95,11 @@ Tài liệu này ghi nhận các mốc phát triển đã hoàn thành, hiện t
   - **Tự động hóa triển khai & Webhook v2**: Đẩy code tự động bằng clasp CLI (`clasp push --force` & `clasp deploy`) sinh Version 2 cho Google Apps Script; triển khai Vercel Production cho `team-happiness-iam-v2` (`dpl_CFBfs1UuFZtxBujK8rjyNENT6rrH`) và `dhm-admin-full` (`dpl_GEDam2jVQc6CeqyVpdSDAStUctmG`).
   - **Đồng bộ Google Sheets & Kỷ luật Dọn dẹp Dữ liệu Live**: Cập nhật 37 tiêu đề cột chuẩn tại `Tổng Hợp Học Viên!A1:AK1`; xóa sạch toàn bộ dòng dữ liệu test và tài khoản probe; ban hành quy tắc toàn cục `Post-Deployment Live Test Data Audit & Immediate Purge Gate` vào `AGENTS.md`, `SHARED_AGENT_RULES.md`, `deploy/SKILL.md` và `dhm-blended-lms/SKILL.md`.
   - **Kiểm thử tự động 100% PASS**: `test_station_names_audit.py` (60/60 PASS), `test_progress_filter.cjs` (70 HV, 0 errors), `verify_pii_sync_local.cjs` (100% PII Masked).
+- [x] Tinh Chỉnh 3 Điểm Nội Dung Landing Page & Staged Promote Live Vercel (22/10/2026):
+  - **Loại bỏ khối levers-note**: Xóa toàn bộ dòng 'Ba đòn bẩy → 5 thói quen: Tiến bộ + Tự chủ + Kết nối...' giúp section 3 Đòn Bẩy kết thúc gọn gàng, chuyển mạch mượt mà sang 5 Thói Quen.
+  - **Cập nhật Lạc quan (Optimism)**: 'Optimism — Nhìn nhận cơ hội trong thách thức thông qua công cụ tái tư duy ABCDE.'
+  - **Tinh giản Vị nhân (Altruism)**: 'Altruism — Cho đi thông minh (Giver) để tạo ra giá trị chung lớn nhất.' và xóa bỏ triệt để khối giải thích 3 nhóm Takers/Matchers/Givers rườm rà.
+  - **Staged Deploy & Promote Vercel Live**: Triển khai `dpl_DNCLqYW3MjUqj9YF2tyF6mCaUcJo`, xác minh HTTP read-back trên `https://delivering-happiness.vercel.app/` đạt 100% PASS trên tất cả các route sống còn (Landing Page, Register DHM10, Next DHM, Personal Value).
 - [ ] Hỗ trợ Ban Giảng Huấn vận hành lớp học Apollo và giám sát thu hoạch 6 Trạm trên dashboard Live v2.
 - [ ] Khôi phục phiên bản đầy đủ IAM v1 (team-happiness-iam) sau ngày 20/10/2026 từ git tag.
 - [ ] Tích hợp Trợ lý AI Huấn luyện Hạnh phúc (AI Happiness Coach) hỗ trợ học viên giải đáp tình huống ABCDE sau khóa học.

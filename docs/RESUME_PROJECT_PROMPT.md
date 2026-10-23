@@ -4,91 +4,78 @@
 
 ```text
 gemini nói:
-Tôi đang tiếp tục dự án Delivering Happiness Masterclass (DHM Blended Learning LMS, Team Happiness 6-Station IAM v2 App, Apollo Dedicated Admin Dashboard 18-Columns, TKI & Social Styles Surveys, Core Values, ABCDE Practice, Apps Script Auth Gate & Teaching Materials).
+Tôi đang tiếp tục dự án Delivering Happiness Masterclass (DHM Blended Learning LMS, Team Happiness 6-Station IAM v2 App, Admin Portal, TKI & Social Styles Surveys, Core Values, ABCDE Practice, Apps Script Auth Gate, SePay Webhook Proxy & DHM10 TP.HCM Operations).
 Hãy nạp toàn bộ bối cảnh kỹ thuật, trạng thái đã hoàn thành và các quy tắc bất biến dưới đây để tiếp tục công việc ngay lập tức:
 
-1. ĐỊNH VỊ TÀI NGUYÊN & 5 TẦNG SOURCE OF TRUTH (VERIFIED 2026-10-21):
-- Tầng 1 - Slide & Tài Liệu Sư Phạm Gốc:
-  + File slide bài giảng gốc (Source of Truth v11): G:\My Drive\download\Team_Happiness_R11 For Apollo.pptx
-  + Tài liệu in ấn giảng dạy: C:\Users\vu.hoang\.gemini\antigravity\scratch\Teaching DH\Team_Happiness_final_R6_Toolset_GTKN_SBI_TKI_Printable.pdf
-  + Slide 96 (4 Màu Tính Cách Social Styles), Slide 94 (Bảng Đối Chiếu), Slide 82 (5 Phong Cách Xung Đột TKI), Slide 98 (Cam Kết Hành Động).
-- Tầng 2 - Bộ Tài Liệu Chuẩn Dự Án (./docs/):
-  + PDR & Tổng quan: docs/project-overview-pdr.md
-  + Tóm tắt Codebase: docs/codebase-summary.md
-  + Kiến trúc hệ thống: docs/system-architecture.md
-  + Chuẩn mực mã nguồn & Mã màu slide: docs/code-standards.md
-  + Lộ trình dự án & Milestones: docs/project-roadmap.md
-  + Hướng dẫn triển khai & Rollback: docs/deployment-guide.md
-  + Hướng dẫn thiết kế giao diện: docs/design-guidelines.md
-  + Master prompt đóng gói skill: docs/PROMPT_DONG_GOI_SKILL.md
-- Tầng 3 - Quy Tắc Hệ Thống & Kỹ Năng Toàn Cục:
-  + Quy tắc kiến trúc & an toàn: C:\Users\vu.hoang\.gemini\config\AGENTS.md (Mục 4.A.4, Mục 5.A, Mục 19).
-  + Quy tắc dùng chung: C:\Users\vu.hoang\.gemini\antigravity\scratch\SHARED_AGENT_RULES.md (Rule 18 - Post-Deployment Live Test Data Purge Gate).
-  + Global Skill cốt lõi: C:\Users\vu.hoang\.gemini\config\skills\dhm-blended-lms\SKILL.md & deploy\SKILL.md.
-- Tầng 4 - Tệp Mã Nguồn & CSDL Nòng Cốt:
-  + Full Admin Dashboard (Dedicated Apollo 70 HV): C:\Users\vu.hoang\.gemini\antigravity\scratch\dhm-admin-full (index.html, generate_app.py, apollo_heatmap_data.json).
-  + Apollo 6-Trạm IAM v2 (React Vite): C:\Users\vu.hoang\.gemini\antigravity\scratch\team-happiness-iam-v2 (src/data/stationsData.ts, src/components/StationCard.tsx, src/components/IAMFormModal.tsx, apps_script/Code.js).
-  + Website LMS chính (Micro-LMS): C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website
-  + CSDL Học viên chuẩn hóa (70 HV - HN: 38 HV, HCM: 32 HV): C:\Users\vu.hoang\.gemini\antigravity\scratch\dhm-admin-full\apollo_heatmap_data.json
-- Tầng 5 - Môi Trường Live Production & Webhook (@clasp v2):
-  + Apollo Full Dashboard (18 Cột): https://dhm-admin-full.vercel.app (HTTP 200, Deployment ID dpl_GEDam2jVQc6CeqyVpdSDAStUctmG)
-  + Apollo 6-Station IAM v2: https://team-happiness-iam-v2.vercel.app (HTTP 200, Deployment ID dpl_CFBfs1UuFZtxBujK8rjyNENT6rrH)
-  + Micro-LMS Học Viên: https://delivering-happiness.vercel.app/lms/index.html
-  + Google Apps Script Webhook Live (Version 2 deploy qua clasp):
-    URL: https://script.google.com/macros/s/AKfycbwF-KrHVdDwopgjqyvxTqwcrmSAGZWqFk8-ZT2216Sr6Y7kLzkdxf5CIQ6hVAZ7PiwAlA/exec
-  + Google Sheets Trung Tâm: 1Ju4y-KNDe7eiMvpbyq2mPfKTijH_1NIC3j8Rykl7cak (Đã đồng bộ 37 cột chuẩn trên 'Tổng Hợp Học Viên'!A1:AK1).
+1. WORKSPACE & COMPREHENSIVE SOURCE OF TRUTH (5 TẦNG NGUỒN CHUẨN ĐẦY ĐỦ - VERIFIED 2026-10-23):
+- Tầng 1: Slide & Tài Liệu Sư Phạm Gốc (Original Pedagogy & Design Truth):
+  * Slide bài giảng DHM gốc: C:\Users\vu.hoang\.gemini\antigravity\scratch\Teaching DH\
+  * Slide master v11: G:\My Drive\download\Team_Happiness_R11 For Apollo.pptx
+  * Slide 96 (4 Phong Cách Xã Hội), Slide 94 (Khung Năng Lực Cảm Xúc), Slide 81-82 (TKI 5 Phong Cách Xử Lý Xung Đột), Slide 98 (La Bàn Giá Trị & Cam Kết Hành Động).
+  * Quy tắc chép nguyên văn nhãn chữ từ slide: Strict Minimal Slide Copy & Zero Fluff Rule (chữ trên slide sao chép 100%, cấm gộp tên tiếng Anh, cấm chèn linh vật từ slide khác).
+- Tầng 2: Bộ Tài Liệu Chuẩn Dự Án (Standard Docs Suite trong ./docs/):
+  * PDR & Yêu cầu: docs/project-overview-pdr.md
+  * Sơ đồ kiến trúc toàn hệ thống: docs/system-architecture.md
+  * Tóm tắt Codebase & Directory Map: docs/codebase-summary.md
+  * Quy chuẩn mã nguồn & Bảng màu: docs/code-standards.md
+  * Lộ trình dự án & Milestones: docs/project-roadmap.md
+  * Hướng dẫn triển khai & Rollback: docs/deployment-guide.md
+  * Triết lý thiết kế phẳng & Typography: docs/design-guidelines.md
+  * Master prompt đóng gói skill: docs/PROMPT_DONG_GOI_SKILL.md
+- Tầng 3: Quy Tắc Hệ Thống & Kỹ Năng Toàn Cục (System Rules & Global Skills):
+  * AGENTS.md: C:\Users\vu.hoang\.gemini\config\AGENTS.md (Mục 0-5: Chống Vendor Lock-in, Search-First, Webhook Safety, Holistic Audit).
+  * Shared Agent Rules: C:\Users\vu.hoang\.gemini\antigravity\scratch\SHARED_AGENT_RULES.md (Rule 18: Post-Deployment Live Test Data Purge Gate, Approval Quote Completeness Gate).
+  * Project Rules: C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website\.agents\AGENTS.md (Mirror planning artifacts, chuẩn hóa format email CultureCode Team, Dual Path Format, Hard Gate Message ID thật, Khóa Production Vercel).
+  * Global Skills: dhm-blended-lms, package-project, brain-save, windows-uat.
+- Tầng 4: Tệp Mã Nguồn & CSDL Nòng Cốt (Core Codebase & Datasets):
+  * Thư mục mã nguồn Website chính: C:\Users\vu.hoang\.gemini\antigravity\scratch\dh4hn-website
+  * Thư mục dự án Teaching DH: C:\Users\vu.hoang\.gemini\antigravity\scratch\Teaching DH
+  * Thư mục TKI Khảo Sát Xung Đột (React Vite): C:\Users\vu.hoang\.gemini\antigravity\scratch\khao-sat-xung-dot-tki
+  * Thư mục Social Styles Khảo Sát Tính Cách (React Vite): C:\Users\vu.hoang\.gemini\antigravity\scratch\khao-sat-tinh-cach
+  * Thư mục Apollo 6 Trạm I•A•M v2: C:\Users\vu.hoang\.gemini\antigravity\scratch\team-happiness-iam-v2
+  * Backend Apps Script Webhook (@84): Scripts/active_code_gs_final.js (Script ID: 1qzwACGvT12j7rxoSW3w4OwpX5rt87Heh4CEA1qT85HJbTYe1yam6dwNS)
+  * Webhook Proxy Vercel: Artifacts/dhm8_sepay_proxy_vercel/ (Project: dhm8-sepay-proxy)
+  * Đăng ký DHM10 Frontend: register_dhm10.js & register_dhm10.html (kèm bản sao release_package/)
+  * Trang chủ Website: index.html (kèm bản sao release_package/index.html)
+  * Google Sheets Dữ Liệu Trung Tâm:
+    + CSDL Vận Hành DHM (Đăng ký, Payments, Outbox): 1ZToRX6J5Vo6UgHzYEE_eUxU0bVnsGxBRLt-8tduI5CA
+    + CSDL Thu Hoạch IAM Apollo 6 Trạm: 1Ju4y-KNDe7eiMvpbyq2mPfKTijH_1NIC3j8Rykl7cak
+- Tầng 5: Môi Trường Live & Phân Quyền (Production Live & Scopes):
+  * Website Landing Page & Đăng ký: https://delivering-happiness.vercel.app/ (Deployment ID: dpl_DNCLqYW3MjUqj9YF2tyF6mCaUcJo)
+  * Đăng ký DHM10 TP.HCM: https://delivering-happiness.vercel.app/register_dhm10.html
+  * Cổng Giữ Chỗ Next DHM (Hà Nội): https://delivering-happiness.vercel.app/next_dhm.html
+  * Webhook Proxy SePay: https://dhm8-sepay-proxy.vercel.app/api/sepay-dh?token=DHM8_SECURE_2026
+  * Google Apps Script Webhook Live (@84): https://script.google.com/macros/s/AKfycbw6XcQgf367Uusg4CKBV3cA6NWRWHfEi3RGLKf5NIIMmpYqkf0AQdTTNYBdO-wJmjzHvw/exec
+  * Cổng Quản Trị LMS Ban Giảng Huấn: https://delivering-happiness.vercel.app/lms/admin.html (PIN: 1234)
+  * Tài khoản gửi mail chiến dịch: culturecodeproject@gmail.com (CẤM dùng mail cá nhân).
 
 2. CÁC TÍNH NĂNG ĐÃ HOÀN THÀNH & KIỂM CHỨNG THỰC TẾ (LIVE DONE 100%):
-- Khớp Chuẩn Sĩ Số 70 Học Viên & 15 Người Hoàn Thành Đủ 6 Trạm (2026-10-21):
-  + Loại bỏ tài khoản test kỹ thuật viên (dung.levan@apollo.edu.vn - LMS) khỏi danh sách học viên, khớp 100% với danh sách chị Hoàn (HN: 38 HV, HCM: 32 HV).
-  + Sửa lỗi tự động đôn trạm ảo: Học viên đợt Hà Nội (5/5 trạm) không bị tự động đánh dấu hoàn thành Trạm 6. Chỉ đúng 15 học viên đợt TP.HCM thực sự nộp bài Trạm 6 mới có trạng thái hoàn thành 6 trạm.
-  + Áp dụng quy tắc che mờ PII thuần Việt: Giữ nguyên Tên chính ở cuối (L. V. Dũng, P. N. Lài, T. T. H. Đào), ẩn SĐT, email giữ chữ cái đầu (d***@apollo.edu.vn).
-- Chuẩn Hóa Tên 6 Trạm & Triệt Tiêu Tiền Tố "IAM" Tại Trạm 6 (2026-10-21):
-  + Trạm 1: DHM | Trạm 2: Mindset | Trạm 3: Skillset | Trạm 4: Social Styles | Trạm 5: TKI Modes | Trạm 6: CTA.
-  + Trạm 6 chuyển hoàn toàn sang STOP (Dừng lại) • START (Bắt đầu) • CONTINUE (Duy trì), gỡ bỏ 100% chữ "IAM" khỏi: nút bấm ("Ghi Nhận CTA"), form modal, PDF export, bảng và file CSV.
-  + Tinh gọn bảng dữ liệu và hàm xuất CSV trong dhm-admin-full từ 21 cột thừa xuống đúng 18 cột chuẩn (5 trạm x 3 ô IAM + Trạm 6 x 3 ô Stop/Start/Continue) kèm BOM UTF-8 hiển thị hoàn hảo trên Excel.
-  + Khắc phục lỗi runtime ReferenceError: s6Done is not defined trong dhm-admin-full.
-- Triển Khai Tự Động Qua Clasp & Dọn Sạch Dữ Liệu Live (2026-10-21):
-  + Tự động deploy Google Apps Script Version 2 qua clasp CLI (clasp push --force & clasp deploy).
-  + Deploy Vercel Production cho cả team-happiness-iam-v2 và dhm-admin-full.
-  + Cập nhật trực tiếp 37 tiêu đề cột chuẩn tại 'Tổng Hợp Học Viên'!A1:AK1 của Google Sheets thật qua Sheets API.
-  + Dọn sạch 100% dòng dữ liệu nộp thử nghiệm (Vũ Hoàng và dòng lỗi undefined tại dải A8:AK9).
-  + Ban hành quy tắc toàn cục Post-Deployment Live Test Data Audit & Immediate Purge Gate vào AGENTS.md, SHARED_AGENT_RULES.md, deploy/SKILL.md và dhm-blended-lms/SKILL.md.
-- Tái Cấu Trúc Bộ 10 Câu Hỏi Cổng Sát Hạch Chặng 1 Bám Sát Slide 12-24 & Chuyển 3 Đòn Bẩy Sang Trạm 0 Chặng 2 (2026-10-23):
-  + Tinh gọn Chặng 1 vào Khoa học Hạnh phúc & Me Values; tách biệt Cổng Sát Hạch Đầu Vào độc lập (≥80%, 10 câu bám Slide 12-24: Q1 Aristotle, Q2 Flow, Q3 Higher Purpose, Q4 3 Tầng Lầu, Q5 Lan tỏa Me-We-Community, Q6 3 Cấp độ Seligman, Q7 Tony Hsieh, Q8 Me Values, Q9 La Bàn Trade-off, Q10 Hedonic Adaptation).
-  + Chuyển giao toàn bộ 7 câu hỏi cũ về 3 Đòn Bẩy (Deci & Ryan, 2000) sang Trạm 0 Chặng 2 để giải mã trực tiếp tại lớp cùng Ban Giảng Huấn.
-- Chuẩn Hóa Toàn Diện Ma Trận 20 Điểm Wording Sư Phạm KISS (2026-10-23):
-  + Capstone Chặng 2: 'Đúc Kết & Chuyển Hóa' (thay cho 'Đúc kết tổng lực').
-  + Cổng Sát Hạch Đầu Vào (thay cho 'Cổng vượt chặng').
-  + Huy hiệu Chặng 1: '⏱ Trực Tuyến Tự Điều Tốc' (cắt bỏ '30 phút').
-  + Trạm thực hành Chặng 2: '🎯 Trạm Thực Hành 5 Thói Quen Hạnh Phúc' (cắt bỏ '(10 Tiếng Tại Lớp)').
-  + Triệt tiêu toàn bộ tiếng lóng/khẩu ngữ dã chiến ('hủy kèo', 'kéo tụt KPI', 'dội gáo nước lạnh', 'đấu trường thực chiến', 'podcast tiếp lửa').
-  + Chuẩn hóa tác giả Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy là Deci & Ryan (Edward Deci & Richard Ryan, 2000), loại bỏ nhầm lẫn với Dan Pink.
-  + Đồng bộ hóa 14 tệp tài liệu và Global Skill dhm-blended-lms thành Source of Truth duy nhất.
-- Toàn Bộ Test Suite Tự Động Vượt Qua 100%:
-  + test_station_names_audit.py: 60/60 PASSED (100%).
-  + test_progress_filter.cjs: 70 HV, 0 lỗi JavaScript console.
-  + verify_pii_sync_local.cjs: PASS 100% PII Masked.
+- Tinh Chỉnh 3 Điểm Nội Dung Landing Page & Staged Promote Live Vercel (22/10/2026):
+  + Loại bỏ hoàn toàn khối levers-note ('Ba đòn bẩy → 5 thói quen...').
+  + Cập nhật Thói quen Lạc quan (Optimism): 'Optimism — Nhìn nhận cơ hội trong thách thức thông qua công cụ tái tư duy ABCDE.'
+  + Tinh giản Thói quen Vị nhân (Altruism): 'Altruism — Cho đi thông minh (Giver) để tạo ra giá trị chung lớn nhất.' và xóa sạch khối rườm rà phân biệt 3 nhóm.
+  + Quy trình Staged Deploy (dpl_DNCLqYW3MjUqj9YF2tyF6mCaUcJo) & Promote lên delivering-happiness.vercel.app, HTTP read-back assertion trực tiếp đạt 100% PASS trên tất cả các route sống còn (/, /register_dhm10.html, /next_dhm.html, /personal-value.html).
+- Chuyển Đổi Mô Hình DHM10 Sang Blended LMS & Tách Bạch 2 Miền (21-22/10/2026):
+  + Landing Page (index.html): Cập nhật banner "🚀 CỘT MỐC SỐ 10 — ĐỘT PHÁ MÔ HÌNH ĐÀO TẠO KẾT HỢP BLENDED LMS", chuyển địa điểm Hà Nội sang "Apollo English - Phố Huế (Dự kiến DHM11)", loại bỏ hoàn toàn "Giảng viên cơ hữu đồng hành thực chiến", chuẩn hóa dòng đồng hành thành "📱 Nền tảng Micro-LMS và công cụ đồng hành để tiếp nối hành trình hạnh phúc".
+  + Form Đăng Ký (register_dhm10.html): Chi phí hậu cần cập nhật chuẩn: "Bao gồm: Session Webinar khởi động, LMS, Tài liệu chuyên sâu, Ăn trưa và 02 tiệc Teabreak cho 1 ngày offline trọn vẹn và công cụ thực hành tiếp nối.", bổ sung thẻ chọn điều hướng cho Hà Nội (Apollo English - Phố Huế) dẫn sang next_dhm.html.
+  + Popup Modal & Logic (register_dhm10.js): Sửa triệt để popup thanh toán thành công thành "nhóm Zalo DHM10 TP.HCM" và nút "Vào nhóm Zalo DHM10 TP.HCM", cờ tracking Web_DHM10_HCM_Official (xóa bỏ 100% chữ "Hà Nội" trong modal sau thanh toán).
+  + Thống kê & Báo cáo Quan tâm DHM10: Lọc và xuất file danh sách 44 học viên quan tâm Hà Nội (10 Termo + 34 ngoài Termo), gửi qua Drive & Gmail API (Message ID: 1a15ce401d11b4bc).
+  + Truyền thông: Soạn thảo 2 bản thông điệp chuẩn mực (Bản tin Zalo/Group và Bài đăng LinkedIn) định vị mô hình Blended LMS tại TP.HCM (35 suất) và hẹn lại Hà Nội tại Apollo English - Phố Huế.
+- Tái Cấu Trúc Bộ 10 Câu Hỏi Cổng Sát Hạch Chặng 1 Bám Sát Slide 12-24, Chuyển 3 Đòn Bẩy Sang Trạm 0 Chặng 2 & Chuẩn Hóa Ma Trận 20 Điểm Wording Sư Phạm KISS (23/10/2026):
+  + Bộ 10 câu bám sát Slide 12-24: Q1 Aristotle, Q2 Flow, Q3 Higher Purpose, Q4 3 Tầng Lầu, Q5 Lan tỏa Me-We-Community, Q6 3 Cấp độ Seligman, Q7 Tony Hsieh, Q8 Me Values, Q9 La Bàn Trade-off, Q10 Hedonic Adaptation.
+  + Ma trận wording KISS: Capstone Chặng 2 'Đúc Kết & Chuyển Hóa', Cổng Sát Hạch Vượt Chặng (≥80%), Huy hiệu Chặng 1 '⏱ Trực Tuyến Tự Điều Tốc', Trạm Chặng 2 '🎯 Trạm Thực Hành 5 Thói Quen Hạnh Phúc', triệt tiêu tiếng lóng hè phố.
+- Toàn Bộ Hệ Thống Đăng Ký & Webhook SePay Tự Động: Đã thông luồng 100% từ đăng ký -> SePay -> Sheet -> kích hoạt LMS & vé điện tử.
 
 3. BÀI HỌC XƯƠNG MÁU & QUY TẮC BẤT BIẾN (HARD-WON LESSONS & INVARIANTS):
-- Quy Tắc Che Mờ PII Thuần Việt (Vietnamese Name Masking Rule): Tuyệt đối không viết tắt tên chính theo kiểu phương Tây (như "Nguyễn T. T. T."). Bắt buộc viết tắt Họ và Đệm, GIỮ NGUYÊN TÊN CHÍNH Ở CUỐI ("N. T. T. Trang") để người Việt có thể nhận diện đồng nghiệp.
-- Không Tự Động Đôn Trạm Ảo (No Phantom Station Promotion): Học viên chỉ nộp 5 trạm thì giữ nguyên 5 trạm; cấm tự ý gán cam kết Trạm 5 sang Trạm 6 rồi tự động đánh dấu hoàn thành 6 trạm.
-- Tinh Gọn Cột Dữ Liệu Chuẩn 18 Cột: Trạm 6 là cam kết hành động Stop/Start/Continue thay thế hoàn toàn cho 3 ô IAM. Tuyệt đối không để dôi dư thành 21 cột (vừa có IAM vừa có Stop/Start/Continue).
-- Triển Khai Google Apps Script Bằng Clasp: Không bắt người dùng copy paste thủ công; sử dụng clasp CLI (`clasp push --force` & `clasp deploy`) từ thư mục `apps_script` để deploy trực tiếp.
-- Kỷ Luật Dọn Dẹp Dữ Liệu Test Trên Live (Post-Deployment Live Test Data Purge Gate): Bất kỳ thao tác test nào trên môi trường live phải được theo dõi và dọn dẹp sạch sẽ 100% ngay lập tức (xóa row test, xóa tài khoản BTC probe); kiểm chứng lại bằng read-back trước khi công bố Live done.
-- Cấp Độ 3 Phê Duyệt Triển Khai: Mọi thao tác deploy production, xóa dữ liệu hoặc can thiệp hạ tầng bắt buộc phải có câu quote phê duyệt Cấp độ 3 trực tiếp từ User.
-- Absolute Path & Clickable Link Rule: Mọi đường dẫn tuyệt đối khi xuất ra phải đặt trong từng khối mã text độc lập kèm link markdown clickable `file:///` ngay bên dưới.
+- Bài học #1 (Kiểm toán Template Literal / JS Injected DOM): Khi đổi thông tin sự kiện/địa điểm, không bao giờ chỉ sửa HTML tĩnh. BẮT BUỘC phải grep toàn bộ file .js để sửa text hardcode trong các hàm sinh DOM động (ensurePaidModal, alert, toast, tracking tags) tránh để lọt text cũ.
+- Bài học #2 (Ranh giới Local vs Live & Quy trình Phê duyệt 2-Cấp độ Tự Đủ): Khi sửa giao diện, luôn nêu rõ "Đã sửa Local, CHƯA phản ánh trên Live". Cấp độ 2 duyệt plan trước khi sửa file, Cấp độ 3 duyệt Staged deploy & promote; toàn bộ command, target, scope và rollback phải nằm trọn trong 1 khối mã text tự đủ để User bấm Copy 1 lần.
+- Bài học #3 (Vercel Preview Deployment Protection): Các preview URLs (*.vercel.app phụ) khi deploy với --skip-domain có thể bị Vercel Deployment Protection chuyển hướng về màn hình SSO Login. Verification phải thực hiện qua public alias đã bypass hoặc xác minh ngay sau khi promote lên tên miền chính thức delivering-happiness.vercel.app.
+- Bài học #4 (Hard Gate Message ID thật): Không claim gửi email thành công nếu chưa có chuỗi Google Message ID thật (^1a[0-9a-f]{14,}$) từ máy chủ Gmail.
+- Bài học #5 (Brand Voice): 100% "CultureCode Team", cấm "Ban tổ chức" / "BTC". Sender luôn là culturecodeproject@gmail.com.
+- Bài học #6 (Lệnh Cấm Tuyệt Đối 21 Ngày / 30 Ngày): CẤM TUYỆT ĐỐI nhắc đến hoặc đóng khung thời gian "21 ngày" hay "30 ngày" trong Chặng 3 trên tất cả tài liệu, giao diện LMS, Landing Page, bài đăng LinkedIn và kịch bản Email của dự án.
 
 4. NHIỆM VỤ TIẾP THEO CẦN LÀM NGAY (IMMEDIATE NEXT STEPS):
-- Tiếp nhận phản hồi từ Chị Hoàn / Chị Châu sau khi đối tác trải nghiệm giao diện Full Dashboard mới với 70 học viên và 15 người hoàn thành 6 trạm.
-- Giám sát các lượt nộp bài mới từ học viên trên Webhook Google Apps Script Version 2 xem hàm `ensureSummaryHeaders` hoạt động ổn định và ghi nhận đúng cột Trạm 6 (Stop • Start • Continue).
-- Hãy xác nhận đã nạp đầy đủ bối cảnh trên và sẵn sàng nhận lệnh tiếp theo từ sếp!
+- Giám sát luồng đăng ký 35 suất DHM10 TP.HCM và các đăng ký giữ chỗ Hà Nội tại next_dhm.html trên hệ thống Live.
+- Kiểm tra tính ổn định của các kịch bản email tự động khi có học viên mới thanh toán qua SePay vào tài khoản TP.HCM.
+- Hãy xác nhận đã nạp đầy đủ bối cảnh trên và sẵn sàng nhận lệnh tiếp theo từ Sếp!
 ```
-
-
-### ⚡ Cập Nhật Chuẩn Hóa Sư Phạm 3 Chặng & Lệnh Cấm 21/30 Ngày (22/10/2026):
-1. **Source of Truth Quyết Định (Sếp Dzũ & Chị Châu 22/10/2026):**
-   - **Chặng 1 — Khởi động với hạnh phúc** (Pre-Class Online & Webinar)
-   - **Chặng 2 — Gieo thói quen hạnh phúc** (Workshop Offline trực tiếp — Chuyển 3 Đòn Bẩy sang Offline cùng 5 Thói Quen)
-   - **Chặng 3 — Tiếp nối hành trình hạnh phúc** (Đồng hành chuyển hóa cùng Micro-LMS & Habit Tracker)
-2. **Lệnh Cấm Tuyệt Đối Cột Mốc 21 Ngày / 30 Ngày:** CẤM TUYỆT ĐỐI nhắc đến hoặc đóng khung thời gian "21 ngày" hay "30 ngày" trong Chặng 3 trên tất cả tài liệu, giao diện LMS, Landing Page, bài đăng LinkedIn và kịch bản Email của dự án.
