@@ -72,7 +72,7 @@ Hành trình học tập Delivering Happiness được tổ chức theo chuỗi 
      - *Thói quen 3: Lạc Quan Học Được (Learned Optimism & ABCDE)* — Lạc quan bằng lý trí theo mô hình Martin Seligman; dùng chữ D (*Dispute*) để phản biện niềm tin giới hạn 3P (*Permanent, Pervasive, Personal*).
      - *Thói quen 4: Phiêu / Trạng Thái Dòng Chảy (Flow)* — Ứng dụng Quy tắc vàng 4% (độ khó 7/10); thiết lập nguyên tắc *Flow Before Phones* và chu kỳ 4 bước (*Struggle → Release → Flow → Recovery*).
      - *Thói quen 5: Vị Nhân Thông Thái (Smart Giver)* — Giúp đỡ đồng đội dựa trên tinh thần Bi — Trí — Dũng theo triết lý Adam Grant; thực hiện các hành vi vị tha 5 phút (*5-Minute Favors*).
-  4. **Đúc Kết & Chuyển Hóa (Workshop Capstone I•A•M):** Đúc kết toàn diện nhận thức và xác lập 3 cam kết chuyển hóa mang về tổ chức/gia đình.
+  4. **Thu Hoạch Tổng Lực Cuối Ngày (Workshop Capstone I•A•M):** Đúc kết toàn diện nhận thức và xác lập 3 cam kết chuyển hóa mang về tổ chức/gia đình.
 
 ---
 
