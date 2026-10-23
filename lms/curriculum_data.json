@@ -1,6 +1,6 @@
 {
   "courseTitle": "Delivering Happiness Movement (DHM) — Blended Learning Journey",
-  "courseDescription": "Hành trình số đồng hành chuyển hóa hạnh phúc tự thân theo chuẩn Blended Learning: Gieo thông điệp Online → Gieo thói quen Offline tại lớp → Focus on I•A•M đồng hành 21 ngày.",
+  "courseDescription": "Hành trình số đồng hành chuyển hóa hạnh phúc tự thân theo chuẩn Blended Learning: Khởi động với hạnh phúc (Online) → Gieo thói quen hạnh phúc (Offline tại lớp) → Tiếp nối hành trình hạnh phúc.",
   "targetAudience": "Học viên cá nhân và doanh nghiệp quan tâm đến văn hóa hạnh phúc tự thân (DHM8, DHM9, DHM10, In-house)",
   "totalDurationMinutes": 90,
   "stages": [
@@ -8,8 +8,8 @@
       "id": "stage-1",
       "stageNumber": 1,
       "badge": "Chặng 1 · Online",
-      "title": "Chặng 1 · Gieo Thông Điệp",
-      "subtitle": "Khoa học Hạnh phúc • 3 Cấp độ • Định vị La Bàn (Me Values) • 3 Đòn Bẩy Hạnh Phúc",
+      "title": "Chặng 1 · Khởi động với hạnh phúc",
+      "subtitle": "Khoa học Hạnh phúc • 3 Cấp độ • Định vị La Bàn (Me Values)",
       "instructor": "",
       "estimatedMinutes": 30,
       "videoUrl": "data/artifacts/the_explainer.mp4",
@@ -19,37 +19,25 @@
       "subSections": [
         {
           "id": "sub-1-1",
-          "title": "Bài 1.1: 3 Cấp Độ Hạnh Phúc (Mihály Csíkszentmihályi & Martin Seligman)",
+          "title": "Bài 1.1: 3 Cấp Độ Hạnh Phúc (Pleasure • Passion • Higher Purpose)",
           "target": "stage1-mod-1-1",
           "tab": "tab-practice"
         },
         {
           "id": "sub-1-2",
-          "title": "Bài 1.2: Giá Trị Cốt Lõi Cá Nhân (ME Values) & La Bàn Hành Động",
+          "title": "Bài 1.2: La Bàn Giá Trị Cá Nhân (Me Values)",
           "target": "stage1-mod-1-2",
           "tab": "tab-practice"
         },
         {
           "id": "sub-1-cp1",
-          "title": "Check point 1: I . A . M",
+          "title": "Đúc Kết I • A • M 1.1",
           "target": "stage1-mod-cp1",
           "tab": "tab-practice"
         },
         {
-          "id": "sub-1-3",
-          "title": "Bài 1.3: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc Ở Nơi Làm Việc",
-          "target": "stage1-mod-1-3",
-          "tab": "tab-practice"
-        },
-        {
-          "id": "sub-1-cp2",
-          "title": "Check point 2: I . A . M",
-          "target": "stage1-mod-cp2",
-          "tab": "tab-practice"
-        },
-        {
           "id": "sub-1-quiz",
-          "title": "Cổng Vượt Chặng — Bài Kiểm Tra",
+          "title": "Cổng Sát Hạch Đầu Vào (Qualifying Gate)",
           "target": "stage1-mod-quiz",
           "tab": "tab-practice"
         }
@@ -72,137 +60,137 @@
       "modules": [
         {
           "id": "mod-1-1",
-          "title": "Bài 1.1: 3 Cấp Độ Hạnh Phúc (Mihály Csíkszentmihályi & Martin Seligman)",
+          "title": "Bài 1.1: 3 Cấp Độ Hạnh Phúc (Pleasure • Passion • Higher Purpose)",
           "quizzes": [
             {
               "id": "dhm-quiz-1",
-              "question": "Trong Cảm giác 'Tiến bộ' (Sense of Progress), yếu tố nào quan trọng nhất để nuôi dưỡng động lực nội tại?",
+              "question": "Khi liên tục đặt chuỗi câu hỏi 'Tại sao điều đó lại quan trọng?' đối với mọi mục tiêu theo đuổi trong đời sống (sự nghiệp, thu nhập, nhà cửa, sức khỏe), điểm hội tụ sâu xa nhất mà con người hướng tới là gì (theo Aristotle & DHM)?",
               "options": [
-                "Sự ghi nhận liên tục các bước tiến nhỏ (Small wins) để kích hoạt Dopamine tự nhiên.",
-                "Những phần thưởng tài chính đột biến vào cuối năm (Annual bonuses) dựa trên kết quả KPI.",
-                "Việc duy trì tiêu chuẩn kỷ luật nghiêm ngặt (Strict accountability) để không bao giờ xảy ra lỗi.",
-                "Cán đích hoàn thành các đại dự án chiến lược (Milestone achievements) có quy mô lớn của tổ chức."
+                "Sự mãn nguyện và hạnh phúc tự thân (Happiness / Eudaimonia).",
+                "Sự công nhận tối đa về địa vị và danh tiếng xã hội (Status & Prestige).",
+                "Sự tích lũy tài sản và của cải vật chất không giới hạn (Wealth Accumulation).",
+                "Sự hoàn thành vượt mức tất cả các chỉ số hiệu suất KPI (Goal Attainment)."
               ],
               "correctIndex": 0,
               "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 1: Sự ghi nhận liên tục các bước tiến nhỏ (Small wins) để kích hoạt Dopamine tự nhiên."
+              "explanation": "Theo Slide 14 & 18 và triết gia Aristotle (khoảng 200 TCN), mọi mục tiêu của con người (mua nhà, kiếm tiền, thăng tiến...) khi hỏi 'Tại sao' đủ sâu đều quy về một đích đến cốt lõi: Hạnh phúc (Eudaimonia - một đời sống có ý nghĩa, trọn vẹn và mãn nguyện)."
             },
             {
               "id": "dhm-quiz-2",
-              "question": "Trong mô hình 3 Đòn bẩy của Delivering Happiness, An toàn tâm lý (Psychological Safety) là điều kiện nền tảng để xây dựng đòn bẩy nào?",
+              "question": "Theo mô hình Delivering Happiness (kế thừa từ nghiên cứu của Martin Seligman), 3 cấp độ trải nghiệm hạnh phúc theo thứ tự độ sâu sắc và bền vững tăng dần là gì?",
               "options": [
-                "Cảm giác Tự chủ (Autonomy) — dám lên tiếng, thử nghiệm và chịu trách nhiệm.",
-                "Cảm giác Kết nối (Connectedness) — tạo dựng mối quan hệ hòa ái và gắn kết sâu sắc.",
-                "Cảm giác Tiến bộ (Progress) — ghi nhận các bước tiến và thành tựu cá nhân.",
-                "Cảm giác Dấn thân (Engagement) — đắm chìm vào công việc với động lực nội tại."
+                "Thú vui (Pleasure) ➔ Đam mê / Dòng chảy (Passion / Flow) ➔ Mục đích cao cả (Higher Purpose).",
+                "Đam mê (Passion) ➔ Thú vui (Pleasure) ➔ Mục đích cao cả (Higher Purpose).",
+                "Thú vui (Pleasure) ➔ Mục đích cao cả (Higher Purpose) ➔ Đam mê (Passion).",
+                "Tự chủ (Autonomy) ➔ Tiến bộ (Progress) ➔ Kết nối (Connectedness)."
               ],
               "correctIndex": 0,
               "timeLimit": 20,
-              "explanation": "Đáp án đúng là Cảm giác Tự chủ (Autonomy). Theo Slide 31 của Delivering Happiness và lời giảng của Thầy Hưng, An toàn tâm lý (Psychological Safety) là điều kiện tiên quyết thuộc Đòn bẩy Tự chủ, giúp nhân viên cảm thấy an toàn để nói lên tiếng nói cá nhân, thử nghiệm cách làm mới và dám nhận trách nhiệm về kết quả mà không sợ bị trừng phạt hay làm nhục."
+              "explanation": "Theo Slide 16, Delivering Happiness chia hạnh phúc thành 3 cấp độ tăng dần về độ bền vững: (1) Thú vui (Pleasure - cảm giác dễ chịu, nhanh nguội) ➔ (2) Đam mê / Dòng chảy (Passion / Flow - gắn kết sâu, say mê công việc) ➔ (3) Mục đích cao cả (Higher Purpose - phụng sự điều lớn lao hơn bản thân)."
             },
             {
               "id": "dhm-quiz-3",
-              "question": "Trong môi trường công việc, cảm giác 'Tự chủ' (Autonomy) được hiểu chính xác nhất là:",
+              "question": "Hiện tượng tâm lý nào giải thích lý do cảm giác thỏa mãn sau khi mua một món đồ mới, nhận tiền thưởng hay đạt thành tựu vật chất (Cấp độ Thú vui - Pleasure) thường tan biến rất nhanh?",
               "options": [
-                "Có quyền chủ động lựa chọn và kiểm soát phương pháp thực hiện công việc (Method Control).",
-                "Được quyền phân công mệnh lệnh và kiểm soát trực tiếp tiến độ của người khác (Task Authority).",
-                "Tự do làm việc độc lập hoàn toàn mà không cần phối hợp hay báo cáo quy trình (No Oversight).",
-                "Quyền miễn trừ khỏi các cam kết mục tiêu chung khi gặp trở ngại khách quan (Risk Exemption)."
+                "Cơ chế Thích nghi khoái lạc (Hedonic Adaptation) — não bộ nhanh chóng quen thuộc và đưa cảm xúc về mức bình thường.",
+                "Hội chứng Bẫy lo âu thành tích (Performance Anxiety) — luôn ám ảnh bởi sự đánh giá từ cấp trên.",
+                "Hiện tượng Quá tải nhận thức (Cognitive Overload) — không đủ dung lượng não bộ để ghi nhớ niềm vui.",
+                "Quy luật Suy giảm hiệu suất cận biên (Diminishing Returns) — năng suất làm việc giảm dần theo thời gian."
               ],
               "correctIndex": 0,
               "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 1: Có quyền chủ động lựa chọn và kiểm soát phương pháp thực hiện công việc (Method Control)."
+              "explanation": "Theo Slide 15 & 16, cơ chế Thích nghi khoái lạc (Hedonic Adaptation) khiến não bộ rất nhanh thích ứng với các kích thích dễ chịu hoặc thành tựu vật chất bên ngoài, đưa trạng thái cảm xúc trở lại mức cân bằng ban đầu và thôi thúc ta tìm kiếm cột mốc mới."
             },
             {
               "id": "dhm-quiz-4",
-              "question": "Tại sao cảm giác 'Tiến bộ' (Progress) lại quan trọng hơn việc Đạt mục tiêu cuối cùng theo khoa học hạnh phúc?",
+              "question": "Trạng thái Dòng chảy (Flow) do Giáo sư Mihály Csíkszentmihályi nghiên cứu (tương ứng với Cấp độ Đam mê - Passion) xuất hiện khi nào?",
               "options": [
-                "Vì các bước tiến nhỏ (Small wins) giải phóng Dopamine liên tục giúp duy trì năng lượng hành động.",
-                "Vì cảm giác tiến bộ giúp triệt tiêu hoàn toàn tác động tiêu cực của các thất bại tạm thời (Zero failures).",
-                "Vì đích đến cuối cùng luôn kích hoạt bẫy lo âu và áp lực phải liên tục đặt mục tiêu cao hơn (End-goal anxiety).",
-                "Vì sự tiến bộ là chỉ số duy nhất có thể định lượng chính xác bằng các khung đo lường năng lực (KPI metrics)."
-              ],
-              "correctIndex": 0,
-              "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 1: Vì các bước tiến nhỏ (Small wins) giải phóng Dopamine liên tục giúp duy trì năng lượng hành động."
-            },
-            {
-              "id": "dhm-quiz-5",
-              "question": "Khái niệm 'Psychological Safety' (An toàn tâm lý) đóng vai trò gì đối với Đòn bẩy Tự chủ trong tổ chức?",
-              "options": [
-                "Thiết lập cơ chế kiểm soát nội bộ nghiêm ngặt để ngăn ngừa rủi ro sai sót quy trình (Internal Control).",
-                "Đảm bảo sự đồng thuận tuyệt đối trong mọi cuộc họp và hạn chế các tranh luận trái chiều (Strict Consensus).",
-                "Cung cấp chính sách phúc lợi và bảo đảm tài chính toàn diện để nhân viên an tâm làm việc (Job Security).",
-                "Tạo môi trường an toàn để mọi người dám chia sẻ sai sót và thử nghiệm ý tưởng mới (Safe to Speak Up)."
-              ],
-              "correctIndex": 3,
-              "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 4: Tạo môi trường an toàn để mọi người dám chia sẻ sai sót và thử nghiệm ý tưởng mới (Safe to Speak Up)."
-            },
-            {
-              "id": "dhm-quiz-6",
-              "question": "Theo mô hình Delivering Happiness (kế thừa từ Martin Seligman), đâu là 3 cấp độ hạnh phúc theo thứ tự độ bền vững tăng dần?",
-              "options": [
-                "Thú vui (Pleasure) ➔ Đam mê / Dòng chảy (Passion / Flow) ➔ Mục đích cao cả (Higher Purpose).",
-                "Cảm giác Kết nối (Connectedness) ➔ Cảm giác Tự chủ (Autonomy) ➔ Cảm giác Tiến bộ (Progress).",
-                "Thực hành Biết ơn (Gratitude) ➔ Trạng thái Tỉnh thức (Mindfulness) ➔ Tinh thần Vị nhân (Altruism).",
-                "Nhận thức Giá trị (Core Values) ➔ Chuẩn hóa Hành vi (Key Behaviors) ➔ Văn hóa Tổ chức (Culture)."
-              ],
-              "correctIndex": 0,
-              "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 1: Thú vui (Pleasure) ➔ Đam mê / Dòng chảy (Passion / Flow) ➔ Mục đích cao cả (Higher Purpose)."
-            },
-            {
-              "id": "dhm-quiz-7",
-              "question": "Ai là tác giả của triết lý quản trị nổi tiếng: \"Xây dựng một văn hóa tuyệt vời và mọi thứ khác sẽ đi đúng hướng\" (Get the right culture, and everything else will fall into place)?",
-              "options": [
-                "Martin Seligman (Nhà tâm lý học, cha đẻ Tâm lý học Tích cực).",
-                "Mihály Csíkszentmihályi (Giáo sư tiên phong nghiên cứu về Dòng chảy).",
-                "Tony Hsieh (Cố CEO Zappos & Đồng sáng lập Delivering Happiness).",
-                "Aristotle (Triết gia Hy Lạp cổ đại với khái niệm Hạnh phúc Eudaimonia)."
-              ],
-              "correctIndex": 2,
-              "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 3: Tony Hsieh (Cố CEO Zappos & Đồng sáng lập Delivering Happiness)."
-            },
-            {
-              "id": "dhm-quiz-8",
-              "question": "Trong Đòn bẩy Kết nối (Connectedness), trạng thái 'Sống hòa ái' được thể hiện trọn vẹn qua 3 mối quan hệ nào?",
-              "options": [
-                "Hòa ái với Bản thân (Self), với Người khác (Others) và với Thiên nhiên (Nature).",
-                "Hòa hợp với Mục tiêu (Goals), với Thành tích (Results) và với Lợi nhuận (Profit).",
-                "Đồng điệu với Tự chủ (Autonomy), với Tiến bộ (Progress) và với Năng lực (Competence).",
-                "Gắn kết với Tổ chức (Company), với Khách hàng (Clients) và với Quy trình (Process)."
-              ],
-              "correctIndex": 0,
-              "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 1: Hòa ái với Bản thân (Self), với Người khác (Others) và với Thiên nhiên (Nature)."
-            },
-            {
-              "id": "dhm-quiz-9",
-              "question": "Đâu là định nghĩa chuẩn xác nhất về Ownership Advantage™ (Lợi thế của tinh thần làm chủ) trên Slide bài giảng?",
-              "options": [
-                "Cảm giác được tổ chức chú ý và tôn trọng ý kiến đóng góp cá nhân (Being Heard & Valued).",
-                "Cảm giác gắn kết, tương tác cởi mở và quan tâm chân thành đến đồng đội (Sense of Connection).",
-                "Được tự do bộc lộ bản sắc con người thật trong môi trường công sở (Authentic Self at Work).",
-                "Lựa chọn cá nhân trong việc tự giác chịu trách nhiệm về kết quả (Personal Choice to Own Results)."
-              ],
-              "correctIndex": 3,
-              "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 4: Lựa chọn cá nhân trong việc tự giác chịu trách nhiệm về kết quả (Personal Choice to Own Results)."
-            },
-            {
-              "id": "dhm-quiz-10",
-              "question": "Theo khoa học hạnh phúc, tại sao các mục tiêu bên ngoài như mua nhà, thăng chức hay tích lũy tài chính không đảm bảo hạnh phúc bền vững?",
-              "options": [
-                "Vì chúng làm triệt tiêu hoàn toàn động lực nội tại (Intrinsic Motivation) và khả năng sáng tạo tự thân.",
-                "Vì cơ chế thích nghi khoái lạc (Hedonic Adaptation) khiến cảm giác thỏa mãn tan biến nhanh và ta lại lập tức đặt cột mốc mới.",
-                "Vì các mục tiêu vật chất luôn làm suy yếu cảm giác kết nối sâu sắc (Deep Connectedness) giữa cá nhân với tổ chức.",
-                "Vì việc theo đuổi danh vọng bên ngoài sẽ trực tiếp phá vỡ la bàn giá trị cốt lõi (Core Values Compass) của mỗi người."
+                "Khi làm một công việc cực kỳ dễ dàng, không có bất kỳ áp lực hay rủi ro nào.",
+                "Khi kỹ năng của bản thân gặp một thử thách vừa đủ hấp dẫn, tạo sự tập trung cao độ và quên đi thời gian.",
+                "Khi nhận được sự khen ngợi, phần thưởng vật chất lớn và tán dương liên tục từ những người xung quanh.",
+                "Khi làm nhiều công việc cùng một lúc (multitasking) để tối đa hóa hiệu suất làm việc."
               ],
               "correctIndex": 1,
               "timeLimit": 20,
-              "explanation": "Đáp án đúng là lựa chọn 2: Vì cơ chế thích nghi khoái lạc (Hedonic Adaptation) khiến cảm giác thỏa mãn tan biến nhanh và ta lại lập tức đặt cột mốc mới."
+              "explanation": "Theo Slide 16 và nghiên cứu của Mihály Csíkszentmihályi, trạng thái Dòng chảy (Flow) xuất hiện khi độ khó của thử thách cân xứng với trình độ kỹ năng của cá nhân, khiến ta dấn thân trọn vẹn, tập trung sâu sắc đến mức cảm giác thời gian trôi qua không hay biết."
+            },
+            {
+              "id": "dhm-quiz-5",
+              "question": "Đặc điểm cốt lõi nào khiến Cấp độ 'Mục đích cao cả' (Higher Purpose / Meaning) trở thành dạng hạnh phúc bền vững nhất của con người?",
+              "options": [
+                "Cảm giác mình là một phần của điều gì đó lớn hơn chính mình, công việc tạo ra giá trị và ý nghĩa cho người khác.",
+                "Mang lại cho cá nhân quyền lực tuyệt đối và sự kiểm soát hoàn toàn đối với tổ chức.",
+                "Giúp loại bỏ 100% mọi căng thẳng, mệt mỏi và thách thức khó khăn trong đời sống hàng ngày.",
+                "Đảm bảo rằng mọi nỗ lực của cá nhân đều được đền đáp bằng thu nhập tài chính cao nhất."
+              ],
+              "correctIndex": 0,
+              "timeLimit": 20,
+              "explanation": "Theo Slide 16 & 21, Higher Purpose là cảm giác gắn kết bản thân với một mục đích lớn lao hơn chính mình, khi thấy việc mình làm có ý nghĩa với người khác, với đội ngũ, học viên và cộng đồng. Đây là nguồn nội lực bền bỉ nhất vượt qua mọi biến cố."
+            },
+            {
+              "id": "dhm-quiz-6",
+              "question": "Ẩn dụ 'Ba Tầng Lầu' của học giả Phong Tử Khải được dùng trong bài giảng để minh họa cho điều gì về sự phát triển của đời sống con người?",
+              "options": [
+                "Sự phân chia quyền lực hành chính trong bộ máy quản trị doanh nghiệp.",
+                "Ba tầng bậc nhu cầu: Tầng 1 - Vật chất (ăn mặc tiện nghi), Tầng 2 - Tinh thần (nghệ thuật, tri thức), Tầng 3 - Tâm hồn (ý nghĩa tâm linh, chiều sâu sống).",
+                "Ba lộ trình thăng tiến nghề nghiệp bắt buộc từ Nhân viên lên Quản lý rồi Giám đốc.",
+                "Ba giai đoạn phát triển thị trường của một sản phẩm từ Khởi động, Tăng trưởng đến Bão hòa."
+              ],
+              "correctIndex": 1,
+              "timeLimit": 20,
+              "explanation": "Theo Slide 17, học giả Phong Tử Khải ví đời sống con người như căn nhà 3 tầng lầu: Tầng 1 là Đời sống vật chất, Tầng 2 là Đời sống tinh thần, và Tầng 3 là Đời sống tâm hồn (chiều sâu tâm linh, ý nghĩa hiện sinh). Một cuộc sống trọn vẹn không chỉ dừng ở việc tích lũy tầng vật chất mà cần vươn lên các tầng cao hơn."
+            },
+            {
+              "id": "dhm-quiz-7",
+              "question": "Ai là tác giả của triết lý quản trị nổi tiếng: 'Get the right culture, and everything else will fall into place' (Xây dựng văn hóa đúng đắn, rồi mọi thứ khác sẽ tự đi vào đúng vị trí)?",
+              "options": [
+                "Tony Hsieh (Cố CEO Zappos & Đồng sáng lập Delivering Happiness).",
+                "Martin Seligman (Nhà tâm lý học, cha đẻ Tâm lý học Tích cực).",
+                "Mihály Csíkszentmihályi (Giáo sư tiên phong nghiên cứu về Dòng chảy - Flow).",
+                "Aristotle (Triết gia Hy Lạp cổ đại với khái niệm Hạnh phúc Eudaimonia)."
+              ],
+              "correctIndex": 0,
+              "timeLimit": 20,
+              "explanation": "Theo Slide 09 & 19, triết lý cốt lõi của Tony Hsieh (Delivering Happiness & cựu CEO Zappos) khẳng định văn hóa doanh nghiệp là nền tảng tối thượng: khi xây dựng được môi trường văn hóa đúng đắn, dịch vụ khách hàng, thương hiệu và hiệu quả kinh doanh sẽ tự khắc thăng hoa."
+            },
+            {
+              "id": "dhm-quiz-8",
+              "question": "Theo mô hình Lan tỏa Hạnh phúc trong Delivering Happiness, điểm khởi phát của văn hóa hạnh phúc bắt nguồn từ đâu?",
+              "options": [
+                "Bắt đầu từ Tổ chức (WE) thông qua việc ban hành các chính sách phúc lợi và quy chế thưởng phạt.",
+                "Bắt đầu từ Khách hàng & Cộng đồng (COMMUNITY) thông qua các khảo sát đánh giá thị trường.",
+                "Bắt đầu từ Từng Cá nhân (ME) — cách mỗi người tự hiểu mình, lựa chọn thái độ và chịu trách nhiệm với trải nghiệm sống của chính mình.",
+                "Bắt đầu từ Ban Lãnh đạo cấp cao thông qua các khẩu hiệu truyền thông nội bộ."
+              ],
+              "correctIndex": 2,
+              "timeLimit": 20,
+              "explanation": "Theo Slide 20 & 21, hành trình hạnh phúc đi từ ME ➔ WE ➔ COMMUNITY. Tổ chức không thể 'làm cho' nhân viên hạnh phúc nếu bản thân mỗi cá nhân (ME) không tự chịu trách nhiệm về năng lượng, sự hiện diện và các lựa chọn giá trị của chính mình."
+            },
+            {
+              "id": "dhm-quiz-9",
+              "question": "Trong bài giảng về Giá trị Cốt lõi Cá nhân (ME Values), 'Giá trị cốt lõi' được định nghĩa chuẩn xác nhất là gì?",
+              "options": [
+                "Danh sách những phẩm chất hào nhoáng mà xã hội hoặc cấp trên nghĩ rằng một người nên có.",
+                "Những nguyên tắc và niềm tin thực sự quan trọng, chi phối cách một người ưu tiên, phản ứng và ra quyết định trong thực tế.",
+                "Những khẩu hiệu bất biến được sao chép từ sổ tay văn hóa của các tập đoàn lớn trên thế giới.",
+                "Những quy tắc đạo đức tạm thời chỉ áp dụng trong giờ làm việc tại công sở."
+              ],
+              "correctIndex": 1,
+              "timeLimit": 20,
+              "explanation": "Theo Slide 22, ME Values không phải là những từ nghe cho hay hay khuôn mẫu 'nên có', mà là những điều thực sự quan trọng đến mức chi phối cách ta lựa chọn, ưu tiên, phản ứng và ra quyết định trong đời sống hàng ngày."
+            },
+            {
+              "id": "dhm-quiz-10",
+              "question": "Khi đối mặt với một tình huống khó khăn buộc phải đánh đổi (Trade-off) giữa các lựa chọn đều hấp dẫn, vai trò của 'Chiếc La Bàn Giá Trị' (Values Compass) là gì?",
+              "options": [
+                "Giúp trì hoãn quyết định để chờ cấp trên chỉ đạo và chịu trách nhiệm thay.",
+                "Giúp ta nhận diện đâu là giá trị có trọng lượng ưu tiên cao hơn, từ đó kiên định ra quyết định mà không bị dao động hay hối tiếc.",
+                "Giúp tìm ra giải pháp thỏa hiệp sao cho làm vừa lòng tất cả mọi người mà không phải từ bỏ bất cứ điều gì.",
+                "Giúp biện minh cho những quyết định bốc đồng dựa trên cảm xúc nhất thời."
+              ],
+              "correctIndex": 1,
+              "timeLimit": 20,
+              "explanation": "Theo Slide 22 & 23, khi hai lựa chọn đều đẹp nhưng buộc phải đánh đổi, La bàn Giá trị giúp xác định điều nào có trọng lượng lớn hơn trong tâm thức, giúp cá nhân ra quyết định kiên định, tự chủ và sống đúng với phiên bản chân thật của chính mình."
             }
           ],
           "iam": {
@@ -215,7 +203,7 @@
         },
         {
           "id": "mod-1-2",
-          "title": "Bài 1.2: Giá Trị Cốt Lõi Cá Nhân (ME Values) & La Bàn Hành Động",
+          "title": "Bài 1.2: La Bàn Giá Trị Cá Nhân (Me Values)",
           "description": "Khám phá các giá trị cốt lõi điển hình và xếp hạng qua các tình huống điển hình.",
           "valueOptions": [
             "Tiến bộ (luôn tiến lên phía trước, phát triển không ngừng)",
@@ -267,43 +255,6 @@
             "A": "Giá trị này sẽ định hướng cho một quyết định khó khăn hoặc hành vi sắp tới của bạn như thế nào?",
             "M": "Nếu kiên định sống đúng với La Bàn này, bạn sẽ kiến tạo phiên bản tốt đẹp hơn của chính mình ra sao?"
           }
-        },
-        {
-          "id": "mod-1-3",
-          "title": "Bài 1.3: 3 Đòn Bẩy Hạnh Phúc (Deci & Ryan)",
-          "quizzes": [
-            {
-              "id": "bk-q4",
-              "question": "Đòn bẩy 'Cảm giác tiến bộ' (Sense of Progress) nhấn mạnh vào yếu tố nào sau đây để duy trì hạnh phúc?",
-              "options": [
-                "Phải đạt được những thành tựu vĩ đại và có sức ảnh hưởng lớn ngay lập tức.",
-                "Ghi nhận và trân trọng những chiến thắng nhỏ (small wins) hàng ngày.",
-                "Chỉ dựa vào sự vinh danh và khen thưởng từ cấp trên hoặc người ngoài.",
-                "Loại bỏ hoàn toàn các sai lầm và thất bại trong quá trình làm việc."
-              ],
-              "correctIndex": 1,
-              "explanation": "Đáp án đúng là lựa chọn số 2 theo giáo trình Delivering Happiness."
-            },
-            {
-              "id": "bk-q5",
-              "question": "Trạng thái 'Tỉnh thức' (Mindfulness) trong 5 thói quen hạnh phúc được định nghĩa như thế nào?",
-              "options": [
-                "Là việc loại bỏ hoàn toàn mọi suy nghĩ tiêu cực ra khỏi tâm trí.",
-                "Tập trung chú ý vào khoảnh khắc hiện tại một cách có ý thức và không phán xét.",
-                "Dành ít nhất 2 giờ mỗi ngày để ngồi thiền trong không gian yên tĩnh.",
-                "Suy ngẫm về những bài học trong quá khứ để không lặp lại sai lầm."
-              ],
-              "correctIndex": 1,
-              "explanation": "Đáp án đúng là lựa chọn số 2 theo giáo trình Delivering Happiness."
-            }
-          ],
-          "iam": {
-            "id": "iam_1_3",
-            "title": "Đúc kết I • A • M 1.3 — 3 Đòn Bẩy (Kết Nối • Tự Chủ • Tiến Bộ)",
-            "I": "Trong 3 Đòn bẩy (Cảm giác Kết nối, Cảm giác Tự chủ, Cảm giác Tiến bộ), đòn bẩy nào bạn thấy tâm đắc nhất và đang cần kích hoạt nhất?",
-            "A": "Bạn sẽ thiết lập Chiến thắng Nhỏ (Small Wins) nào trong tuần này để nuôi dưỡng cảm giác tiến bộ tự thân mỗi ngày?",
-            "M": "Đòn bẩy bạn vừa chọn có ý nghĩa như thế nào đối với sự phát triển cá nhân và gắn kết đội ngũ của bạn?"
-          }
         }
       ],
       "resources": [
@@ -332,12 +283,6 @@
           "icon": "📊"
         },
         {
-          "title": "Slide Bài Giảng: Lợi Ích Của Đòn Bẩy Tiến Bộ (Dopamine & Small Wins)",
-          "type": "image",
-          "url": "data/artifacts/slides/slide_38.png",
-          "icon": "📊"
-        },
-        {
           "title": "Slide Bài Giảng: Lộ Trình 3 Mini Step DHM (Slide 04)",
           "type": "image",
           "url": "data/artifacts/slides/slide_04.png",
@@ -356,7 +301,7 @@
           "url": "data/artifacts/huong_dan_va_lo_trinh_hoc_dhm.md",
           "icon": "📘",
           "readOnline": true,
-          "desc": "Hướng dẫn chi tiết toàn bộ lộ trình 3 Mini-steps, quy chế Cổng Vượt Chặng 1 (≥80%) và thao tác sử dụng hệ thống học tập LMS."
+          "desc": "Hướng dẫn chi tiết toàn bộ lộ trình 3 Mini-steps, quy chế Cổng Sát Hạch Đầu Vào (≥80%) và thao tác sử dụng hệ thống học tập LMS."
         },
         {
           "title": "Báo cáo Nghiên cứu: Khoa Học Hạnh Phúc & Dòng Chảy Tổ Chức",
@@ -377,12 +322,19 @@
       "id": "stage-2",
       "stageNumber": 2,
       "badge": "Chặng 2 · Workshop",
-      "title": "Chặng 2 · Gieo Thói Quen",
-      "subtitle": "Workshop Live tại lớp • Trạm thực hành 5 Thói quen Hạnh phúc & I•A•M",
+      "title": "Chặng 2 · Gieo thói quen hạnh phúc",
+      "subtitle": "Workshop Live tại lớp • 3 Đòn Bẩy Nơi Làm Việc • Trạm thực hành 5 Thói quen & I•A•M",
       "instructor": "",
       "estimatedMinutes": 120,
       "videoUrl": null,
       "subSections": [
+        {
+          "id": "sub-2-0",
+          "title": "🚀 Trạm 0: 3 Đòn Bẩy Nơi Làm Việc (Deci & Ryan)",
+          "target": "habit-panel-drivers",
+          "habit": "drivers",
+          "tab": "tab-practice"
+        },
         {
           "id": "sub-2-1",
           "title": "🌿 Tỉnh Thức",
@@ -420,7 +372,7 @@
         },
         {
           "id": "sub-2-6",
-          "title": "🏆 Thu Hoạch Cuối Ngày",
+          "title": "🏆 Đúc Kết & Chuyển Hóa",
           "target": "stage2-capstone-card",
           "tab": "tab-practice"
         }
@@ -494,6 +446,61 @@
         }
       ],
       "habits": [
+        {
+          "id": "habit-drivers",
+          "number": 0,
+          "name": "3 Đòn Bẩy (SDT Drivers)",
+          "title": "3 Đòn Bẩy Hạnh Phúc Ở Nơi Làm Việc (Thuyết Tự Quyết SDT)",
+          "icon": "🚀",
+          "description": "Kích hoạt 3 nhu cầu tâm lý phổ quát theo Thuyết Tự Quyết (Edward Deci & Richard Ryan): Tự chủ (Autonomy) • Tiến bộ (Progress / Competence) • Kết nối (Relatedness) để chuyển hóa năng lượng đội ngũ.",
+          "audioTracks": [
+            {
+              "id": "a2-drivers-1",
+              "title": "Đòn bẩy Tự chủ: 70.000 giờ làm việc",
+              "file": "data/artifacts/70000_gio_lam_viec.mp3",
+              "duration": "39:50"
+            },
+            {
+              "id": "a2-drivers-2",
+              "title": "Đòn bẩy Kết nối: Thỏa thuận văn hóa",
+              "file": "data/artifacts/thoa_thuan_van_hoa.mp3",
+              "duration": "38:20"
+            }
+          ],
+          "slides": [
+            {
+              "slideNumber": 25,
+              "title": "Slide 25: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc",
+              "url": "data/artifacts/slides/slide_25.png",
+              "caption": "Tổng quan 3 Đòn Bẩy Tự Thân: Tự chủ • Tiến bộ • Kết nối"
+            },
+            {
+              "slideNumber": 29,
+              "title": "Slide 29: Đòn Bẩy Tự Chủ & Tinh Thần Làm Chủ (Ownership Advantage)",
+              "url": "data/artifacts/slides/slide_29.png",
+              "caption": "Sống Hòa Ái • Gắn kết đội ngũ & Ownership Advantage"
+            },
+            {
+              "slideNumber": 31,
+              "title": "Slide 31: An Toàn Tâm Lý (Psychological Safety) — Nền Tảng Tự Chủ",
+              "url": "data/artifacts/slides/slide_31.png",
+              "caption": "An Toàn Tâm Lý: Nền tảng dám nói, dám thử nghiệm và tự chủ"
+            },
+            {
+              "slideNumber": 38,
+              "title": "Slide 38: Đòn Bẩy Tiến Bộ — Ghi Nhận Small Wins Kích Hoạt Dopamine",
+              "url": "data/artifacts/slides/slide_38.png",
+              "caption": "Động Lực Tiến Bộ: Ghi nhận Small Wins giải phóng Dopamine"
+            }
+          ],
+          "iam": {
+            "id": "iam_drivers",
+            "title": "Đúc kết I • A • M — 3 Đòn Bẩy Nơi Làm Việc",
+            "I": "Trong 3 Đòn bẩy (Tự chủ • Tiến bộ • Kết nối), bạn tâm đắc nhất với đòn bẩy nào và nhận diện tổ chức đang cần điều chỉnh đòn bẩy nào nhất?",
+            "A": "Một hành động cụ thể bạn sẽ thực hiện ngay tuần này để kích hoạt Tự chủ, ghi nhận Tiến bộ (Small Wins) hoặc xây dựng An toàn tâm lý cho đội ngũ?",
+            "M": "Việc kích hoạt 3 đòn bẩy này có ý nghĩa chuyển hóa như thế nào đối với động lực nội tại và hạnh phúc của chính bạn cũng như các thành viên?"
+          }
+        },
         {
           "id": "habit-mindfulness",
           "number": 1,
@@ -773,7 +780,7 @@
       ],
       "capstoneIam": {
         "id": "iam_capstone",
-        "title": "Thu Hoạch Cuối Ngày (Đúc Kết Tổng Lực)",
+        "title": "Đúc Kết & Chuyển Hóa (I • A • M)",
         "I": "Điều tâm đắc và lay động lớn nhất đối với bạn sau trọn vẹn 1 ngày trải nghiệm tại lớp?",
         "A": "Ba cam kết hành động cụ thể nhất bạn sẽ mang về thực hiện tại doanh nghiệp / gia đình?",
         "M": "Khóa học này đã thay đổi định nghĩa về Hạnh phúc và Văn hóa đội ngũ của bạn như thế nào?"
@@ -830,33 +837,59 @@
           "sevenLevels": "Mô hình 7 cấp độ nhận thức tổ chức từ Sinh tồn (Survival) đến Phụng sự (Service). Phụng sự không phụ thuộc vào số tiền bạn có, mà phụ thuộc vào phần trăm của trái tim bạn trao đi.",
           "infographic": "data/artifacts/infographics/infographic_thiet_ke_van_hoa_nhom.png"
         }
-      }
+      },
+      "resources": [
+        {
+          "title": "Slide Bài Giảng: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy",
+          "type": "image",
+          "url": "data/artifacts/slides/slide_25.png",
+          "icon": "📊"
+        },
+        {
+          "title": "Slide Bài Giảng: Đòn Bẩy Tự Chủ & Tinh Thần Làm Chủ (Ownership Advantage)",
+          "type": "image",
+          "url": "data/artifacts/slides/slide_29.png",
+          "icon": "📊"
+        },
+        {
+          "title": "Slide Bài Giảng: An Toàn Tâm Lý (Psychological Safety) — Nền Tảng Tự Chủ",
+          "type": "image",
+          "url": "data/artifacts/slides/slide_31.png",
+          "icon": "📊"
+        },
+        {
+          "title": "Slide Bài Giảng: Lợi Ích Của Đòn Bẩy Tiến Bộ (Dopamine & Small Wins)",
+          "type": "image",
+          "url": "data/artifacts/slides/slide_38.png",
+          "icon": "📊"
+        }
+      ]
     },
     {
       "id": "stage-3",
       "stageNumber": 3,
       "badge": "Chặng 3 · Online",
-      "title": "Chặng 3 · Đồng Hành 21 Ngày",
-      "subtitle": "Đồng hành 21 ngày • Nuôi dưỡng Thói quen Chuyển hóa",
+      "title": "Chặng 3 · Tiếp nối hành trình hạnh phúc",
+      "subtitle": "Nuôi Dưỡng Thói Quen Hạnh Phúc • Focus on I•A•M • Đồng Hành Chuyển Hóa",
       "instructor": "",
       "estimatedMinutes": 21,
       "videoUrl": null,
       "subSections": [
         {
           "id": "sub-3-1",
-          "title": "Mục 3.1: Bảng Vinh Danh Chất Liệu & Điểm Danh 21 Ngày",
+          "title": "Mục 3.1: Bảng Vinh Danh Chất Liệu & Điểm Danh Thói Quen",
           "target": "stage3-tracker-section",
           "tab": "tab-practice"
         },
         {
           "id": "sub-3-2",
-          "title": "Mục 3.2: Đấu Trường Tình Huống Thực Chiến (Bonus +50đ)",
+          "title": "Mục 3.2: Thử Thách Tình Huống Chuyển Hóa (+50đ)",
           "target": "stage3-scenarios-section",
           "tab": "tab-practice"
         },
         {
           "id": "sub-3-3",
-          "title": "Mục 3.3: Podcast Tiếp Lửa & Tri Thức Chuyên Sâu (+30đ)",
+          "title": "Mục 3.3: Podcast Truyền Cảm Hứng & Tri Thức (+30đ)",
           "target": "stage3-podcast-section",
           "tab": "tab-practice"
         },
@@ -881,7 +914,7 @@
       ],
       "features": {
         "recapDashboard": true,
-        "habitTracker21Days": true,
+        "habitTracker": true,
         "weeklyIamCheckin": true,
         "abcdePractice": true
       },
@@ -900,7 +933,7 @@
         {
           "id": "scenario-2",
           "category": "Công sở - Doanh nghiệp",
-          "title": "Tình huống 2: Kẻ kéo tụt KPI",
+          "title": "Tình huống 2: Khi Đồng Đội Gặp Trở Ngại Về Hiệu Suất",
           "badge": "Công sở",
           "A": "Bạn làm việc trong một nhóm 4 người. Có một thành viên liên tục làm việc hời hợt, giao trễ deadline, khiến cả nhóm bị đánh giá thấp trong tháng.",
           "B": "Hắn ta cố tình vô trách nhiệm và phá đám. Tại sao mình luôn phải gánh nợ cho người khác? Nói chuyện thẳng thắn cũng chẳng ích gì đâu.",
@@ -911,7 +944,7 @@
         {
           "id": "scenario-3",
           "category": "Công sở - Doanh nghiệp",
-          "title": "Tình huống 3: Ý tưởng bị dội gáo nước lạnh",
+          "title": "Tình huống 3: Khi Sáng Kiến Bị Bác Bỏ",
           "badge": "Công sở",
           "A": "Bạn dành 3 đêm để chuẩn bị một ý tưởng tâm huyết. Trong cuộc họp toàn công ty, sếp và các phòng ban khác bác bỏ ý tưởng của bạn chỉ sau 5 phút trình bày.",
           "B": "Mình thật bất tài và kém cỏi. Công ty này toàn những người thiển cận, không biết trân trọng nhân tài. Từ nay về sau mình sẽ không bao giờ thèm đóng góp ý kiến nữa.",
@@ -944,7 +977,7 @@
         {
           "id": "scenario-6",
           "category": "Cá nhân - Gia đình",
-          "title": "Tình huống 6: Phút chót hủy kèo",
+          "title": "Tình huống 6: Kế Hoạch Bị Hủy Vào Giờ Chót",
           "badge": "Gia đình",
           "A": "Bạn đã lên kế hoạch đi du lịch Đà Lạt cùng gia đình từ 2 tháng trước (vé, phòng đã thanh toán). Sáng ngày khởi hành, đứa con nhỏ bị sốt cao, chuyến đi phải hủy toàn bộ.",
           "B": "Tại sao vận xui lúc nào cũng rơi trúng đầu mình? Mọi công sức háo hức chuẩn bị suốt 2 tháng trời tan thành mây khói. Một kỳ nghỉ tuyệt vời đã bị phá hỏng hoàn toàn.",
@@ -961,7 +994,7 @@
           "url": "data/artifacts/huong_dan_va_lo_trinh_hoc_dhm.md",
           "icon": "📘",
           "readOnline": true,
-          "desc": "Hướng dẫn chi tiết toàn bộ lộ trình 3 Mini-steps, quy chế Cổng Vượt Chặng 1 (≥80%) và thao tác sử dụng hệ thống học tập LMS."
+          "desc": "Hướng dẫn chi tiết toàn bộ lộ trình 3 Mini-steps, quy chế Cổng Sát Hạch Đầu Vào (≥80%) và thao tác sử dụng hệ thống học tập LMS."
         },
         {
           "id": "rep-1",
@@ -1127,7 +1160,7 @@
       "infographicSummary": {
         "title": "Đồ Họa Tổng Kết: Khoa Học Hạnh Phúc Toàn Diện",
         "url": "data/artifacts/infographics/infographic_tong_ket_hanh_phuc.png",
-        "desc": "Bản đồ thị giác tích hợp trọn vẹn 3 Cấp độ, 3 Đòn bẩy và 5 Thói quen Hạnh phúc để thực hành trong 21 ngày."
+        "desc": "Bản đồ thị giác tích hợp trọn vẹn 3 Cấp độ, 3 Đòn bẩy và 5 Thói quen Hạnh phúc để thực hành chuyển hóa tự thân."
       },
       "inspirationPodcasts": [
         {
@@ -1269,7 +1302,7 @@
           "id": "tier-bronze",
           "points": 300,
           "badge": "Hạt Mầm Hạnh Phúc 🌱",
-          "title": "Ebook Bản Đồ 21 Ngày Chuyển Hóa Hạnh Phúc",
+          "title": "Ebook Bản Đồ Chuyển Hóa Hạnh Phúc",
           "desc": "Cẩm nang độc quyền hướng dẫn chi tiết phương pháp nuôi dưỡng 5 thói quen chuyển hóa tự thân."
         },
         {
