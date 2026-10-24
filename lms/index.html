@@ -2611,19 +2611,20 @@
     </div>
 
     <!-- INFOGRAPHIC LIGHTBOX MODAL -->
-    <div id="infographic-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 hidden">
+    <div id="infographic-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-2 sm:p-4 hidden">
         <div class="relative max-w-5xl w-full max-h-[92vh] flex flex-col bg-brand-surface border border-brand-amber/40 rounded-2xl overflow-hidden shadow-2xl">
-            <div class="flex items-center justify-between px-6 py-3.5 border-b border-brand-border bg-brand-dark/90">
-                <div class="flex items-center gap-2">
-                    <span class="text-base">📷</span>
-                    <h3 id="infographic-modal-title" class="text-sm font-bold text-white truncate max-w-md">Slide Bài Giảng DHM</h3>
+            <div class="flex items-center justify-between px-3.5 py-3 sm:px-6 sm:py-3.5 border-b border-brand-border bg-brand-dark/90 gap-2 shrink-0">
+                <div class="flex items-center gap-2 min-w-0 flex-1">
+                    <span class="text-base shrink-0">📷</span>
+                    <h3 id="infographic-modal-title" class="text-xs sm:text-sm font-bold text-white truncate">Slide Bài Giảng DHM</h3>
                 </div>
-                <div class="flex items-center gap-3">
-                    <a id="btn-infographic-download" href="#" download class="text-xs px-3 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-slate-200 border border-brand-border transition-colors flex items-center gap-1.5">
-                        <span>⬇️ Tải ảnh gốc</span>
+                <div class="flex items-center gap-2 shrink-0">
+                    <a id="btn-infographic-download" href="#" download class="text-xs px-2.5 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-slate-200 border border-brand-border transition-colors flex items-center gap-1.5">
+                        <span>⬇️</span> <span class="hidden sm:inline">Tải ảnh gốc</span>
                     </a>
-                    <button id="btn-close-infographic" class="text-slate-400 hover:text-white p-1 text-lg font-bold transition-colors">
-                        ✕
+                    <button id="btn-close-infographic" type="button" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-brand-card hover:bg-red-500/20 text-slate-300 hover:text-red-400 border border-brand-border hover:border-red-500/40 text-xs font-bold transition-all cursor-pointer shadow-sm" title="Đóng modal" aria-label="Đóng">
+                        <span class="text-sm">✕</span>
+                        <span class="text-xs">Đóng</span>
                     </button>
                 </div>
             </div>
@@ -2634,24 +2635,34 @@
     </div>
 
     <!-- DOCUMENT READER MODAL -->
-    <div id="doc-reader-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 hidden">
-        <div class="relative max-w-4xl w-full max-h-[90vh] flex flex-col bg-brand-surface border border-brand-border rounded-2xl overflow-hidden shadow-2xl">
-            <div class="flex items-center justify-between px-6 py-4 border-b border-brand-border bg-brand-dark/95">
-                <div class="flex items-center gap-2.5">
-                    <span class="text-lg">📘</span>
-                    <div>
-                        <h3 id="doc-reader-title" class="text-sm font-bold text-white truncate max-w-lg">Báo Cáo Chuyên Sâu</h3>
-                        <span class="text-[11px] text-brand-amber font-mono">Tài liệu học thuật Delivering Happiness Movement</span>
+    <div id="doc-reader-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-2 sm:p-4 hidden">
+        <div class="relative max-w-4xl w-full h-[92vh] sm:h-auto sm:max-h-[90vh] flex flex-col bg-brand-surface border border-brand-border rounded-2xl overflow-hidden shadow-2xl">
+            <!-- Header -->
+            <div class="flex items-center justify-between px-3.5 py-3 sm:px-6 sm:py-4 border-b border-brand-border bg-brand-dark/95 gap-2 shrink-0">
+                <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                    <span class="text-base sm:text-lg shrink-0">📘</span>
+                    <div class="min-w-0 flex-1">
+                        <h3 id="doc-reader-title" class="text-xs sm:text-sm font-bold text-white truncate">Báo Cáo Chuyên Sâu</h3>
+                        <span class="text-[10px] sm:text-[11px] text-brand-amber font-mono truncate block">Tài liệu học thuật Delivering Happiness Movement</span>
                     </div>
                 </div>
-                <div class="flex items-center gap-2">
-                    <button id="btn-close-doc-reader" class="text-slate-400 hover:text-white p-1.5 text-lg font-bold transition-colors">
-                        ✕
+                <div class="flex items-center gap-2 shrink-0">
+                    <button id="btn-close-doc-reader" type="button" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-brand-card hover:bg-red-500/20 text-slate-300 hover:text-red-400 border border-brand-border hover:border-red-500/40 text-xs font-bold transition-all cursor-pointer shadow-sm" title="Đóng tài liệu (Quay lại bài học)" aria-label="Đóng tài liệu">
+                        <span class="text-sm">✕</span>
+                        <span class="text-xs">Đóng</span>
                     </button>
                 </div>
             </div>
-            <div id="doc-reader-body" class="flex-1 overflow-y-auto p-6 lg:p-8 space-y-4 text-sm text-slate-200 leading-relaxed">
+            <!-- Body -->
+            <div id="doc-reader-body" class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-4 text-xs sm:text-sm text-slate-200 leading-relaxed">
                 <!-- Injected via Markdown parser in JS -->
+            </div>
+            <!-- Footer -->
+            <div class="px-4 py-3 border-t border-brand-border bg-brand-dark/95 flex items-center justify-between gap-3 shrink-0">
+                <span class="text-[11px] text-slate-400 truncate hidden xs:inline">Thư viện học thuật DHM</span>
+                <button id="btn-bottom-close-doc-reader" type="button" class="w-full sm:w-auto ml-auto px-4 py-2 rounded-xl bg-gradient-to-r from-brand-amber to-brand-orange text-black font-extrabold text-xs flex items-center justify-center gap-2 shadow-md hover:brightness-110 active:scale-95 transition-all cursor-pointer">
+                    <span>← Quay Lại Bài Học (Đóng)</span>
+                </button>
             </div>
         </div>
     </div>
@@ -2761,11 +2772,11 @@
                         </div>
                         <div>
                             <h3 id="iam-drawer-title" class="text-sm font-extrabold text-white">Kho lưu trữ của tôi</h3>
-                            <p class="text-[11px] text-brand-amber">Tổng hợp các bộ phản tư đã lưu qua các Chặng học</p>
+                            <p class="text-[11px] text-brand-amber">Hồ sơ đúc kết học tập cá nhân qua các Chặng học</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
-                        <button id="btn-copy-all-iam" type="button" class="text-[11px] px-2.5 py-1 rounded-lg bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border/60 transition-colors flex items-center gap-1 cursor-pointer" title="Sao chép toàn bộ kho I•A•M">
+                        <button id="btn-copy-all-iam" type="button" class="text-[11px] px-2.5 py-1 rounded-lg bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border/60 transition-colors flex items-center gap-1 cursor-pointer" title="Sao chép toàn bộ kho lưu trữ Markdown">
                             <span>📋</span> Copy tất cả
                         </button>
                         <button id="btn-close-iam-drawer" type="button" class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-brand-card text-base transition-colors cursor-pointer" title="Đóng Kho lưu trữ của tôi">
@@ -2774,33 +2785,27 @@
                     </div>
                 </div>
 
-                <!-- Drawer Content -->
-                <div class="flex-1 overflow-y-auto p-5 space-y-6 text-xs">
-                    <!-- CP1 Section -->
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between pb-1 border-b border-brand-border/60">
-                            <h4 class="font-bold text-brand-amber flex items-center gap-2 text-xs">
-                                <span>🧭</span> Trạm 1: Nhận thức & La Bàn Giá Trị (CP1)
-                            </h4>
-                            <span id="drawer-cp1-counter" class="text-[11px] font-mono text-slate-400 font-semibold">0 bộ</span>
-                        </div>
-                        <div id="drawer-cp1-list" class="space-y-2.5">
-                            <!-- Injected via JS -->
-                        </div>
+                <!-- Vault Tab Bar (Responsive & Accessible) -->
+                <div class="px-4 py-2.5 border-b border-brand-border/80 bg-brand-dark/40">
+                    <div role="tablist" aria-label="Các phân mục kho lưu trữ" class="flex items-center gap-1.5 p-1 bg-brand-dark/80 rounded-xl border border-brand-border/60 overflow-x-auto whitespace-nowrap scrollbar-none">
+                        <button id="vault-tab-btn-iam" role="tab" aria-selected="true" aria-controls="vault-tab-content" type="button" class="vault-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer bg-brand-amber text-black shadow-sm" data-tab="tab-iam">
+                            <span>📜</span> I•A•M & Ghi Chú
+                        </button>
+                        <button id="vault-tab-btn-values" role="tab" aria-selected="false" aria-controls="vault-tab-content" type="button" class="vault-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer text-slate-300 hover:text-white hover:bg-brand-card" data-tab="tab-values">
+                            <span>🧭</span> Me Values & Quiz
+                        </button>
+                        <button id="vault-tab-btn-habits" role="tab" aria-selected="false" aria-controls="vault-tab-content" type="button" class="vault-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer text-slate-300 hover:text-white hover:bg-brand-card" data-tab="tab-habits">
+                            <span>🎯</span> 21 Ngày & Huy Hiệu
+                        </button>
+                        <button id="vault-tab-btn-sync" role="tab" aria-selected="false" aria-controls="vault-tab-content" type="button" class="vault-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer text-slate-300 hover:text-white hover:bg-brand-card" data-tab="tab-sync">
+                            <span>📦</span> Xuất & Đồng Bộ
+                        </button>
                     </div>
+                </div>
 
-                    <!-- CP2 Section -->
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between pb-1 border-b border-brand-border/60">
-                            <h4 class="font-bold text-sky-400 flex items-center gap-2 text-xs">
-                                <span>🚀</span> Trạm 2: Đòn Bẩy Hạnh Phúc & Small Wins (CP2)
-                            </h4>
-                            <span id="drawer-cp2-counter" class="text-[11px] font-mono text-slate-400 font-semibold">0 bộ</span>
-                        </div>
-                        <div id="drawer-cp2-list" class="space-y-2.5">
-                            <!-- Injected via JS -->
-                        </div>
-                    </div>
+                <!-- Drawer Content Container (Lazy Rendered via JS) -->
+                <div id="vault-tab-content" class="flex-1 overflow-y-auto p-5 space-y-6 text-xs">
+                    <!-- Dynamic tab content injected via JS -->
                 </div>
 
                 <!-- Drawer Footer -->
@@ -2951,9 +2956,15 @@
 
             <!-- Footer Buttons -->
             <div class="p-4 sm:p-5 border-t border-brand-border bg-brand-dark/90 flex flex-col sm:flex-row items-center justify-between gap-3">
-                <a id="btn-contact-mailto-fallback" href="mailto:culturecodeproject@gmail.com" target="_blank" rel="noopener noreferrer" class="text-[11px] text-slate-400 hover:text-slate-200 underline">
-                    Mở bằng ứng dụng Email cá nhân ↗
-                </a>
+                <div class="flex items-center gap-3">
+                    <a id="btn-contact-mailto-fallback" href="mailto:culturecodeproject@gmail.com" target="_blank" rel="noopener noreferrer" class="text-[11px] text-slate-400 hover:text-slate-200 underline">
+                        Email cá nhân ↗
+                    </a>
+                    <span class="text-slate-600 text-xs">•</span>
+                    <a id="btn-contact-feedback-hub" href="https://docs.google.com/forms/d/e/1FAIpQLSeu-kqX2v7Pmse8rNvbxqluV9oHHPXBFwjzsEqKfq9pcwrieQ/viewform" target="_blank" rel="noopener noreferrer" class="text-[11px] text-brand-amber hover:text-brand-orange underline flex items-center gap-1">
+                        <span>🐞 Báo lỗi qua Feedback Hub ↗</span>
+                    </a>
+                </div>
                 <div class="flex items-center gap-2.5 w-full sm:w-auto">
                     <button id="btn-cancel-contact" type="button" class="w-full sm:w-auto px-4 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-300 font-semibold text-xs transition-colors cursor-pointer">
                         Hủy

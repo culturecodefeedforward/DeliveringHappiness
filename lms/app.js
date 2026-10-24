@@ -406,6 +406,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const docReaderTitle = document.getElementById("doc-reader-title");
     const docReaderBody = document.getElementById("doc-reader-body");
     const btnCloseDocReader = document.getElementById("btn-close-doc-reader");
+    const btnBottomCloseDocReader = document.getElementById("btn-bottom-close-doc-reader");
 
     // Stage 3 Flashcards Deck Elements
     const flashcardContainer = document.getElementById("flashcard-container");
@@ -5320,6 +5321,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnCloseDocReader) {
         btnCloseDocReader.addEventListener("click", closeDocReader);
     }
+    if (btnBottomCloseDocReader) {
+        btnBottomCloseDocReader.addEventListener("click", closeDocReader);
+    }
     if (docReaderModal) {
         docReaderModal.addEventListener("click", (e) => {
             if (e.target === docReaderModal) closeDocReader();
@@ -6795,54 +6799,695 @@ document.addEventListener("DOMContentLoaded", () => {
         debouncedSave();
     }
 
-    function updateDrawerIamHistory() {
-        const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
+    // ==========================================
+    // KHO LƯU TRỮ CỦA TÔI (4 TABS MODULAR VAULT)
+    // ==========================================
+    let activeVaultTab = "tab-iam";
+    let lastVaultManualSync = 0;
+    let vaultSyncTimer = null;
+
+    function getVaultUserIdentity() {
+        return (currentUser && (currentUser.identity || currentUser.email || currentUser.phone || currentUser.student_id)) || "guest";
+    }
+
+    function bindVaultCopyButtons(container) {
+        if (!container) return;
+        container.querySelectorAll(".btn-vault-copy-item").forEach(b => {
+            b.onclick = (e) => {
+                const targetBtn = e.currentTarget;
+                const textToCopy = targetBtn.getAttribute("data-copy") || "";
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const original = targetBtn.textContent;
+                    targetBtn.textContent = "✓ Đã copy";
+                    setTimeout(() => { targetBtn.textContent = original; }, 1500);
+                });
+            };
+        });
+    }
+
+    function renderVaultTabIam(container, progress) {
+        const s1Data = (progress.stageData && progress.stageData["stage-1"]) || {};
         const cp1Sets = s1Data.iam_cp1_sets || [];
         const cp2Sets = s1Data.iam_cp2_sets || [];
+        const s2Data = (progress.stageData && progress.stageData["stage-2"]) || {};
+        const capstoneSets = s2Data.capstone_sets || [];
+        const userId = getVaultUserIdentity();
+        const quickNotes = localStorage.getItem(`dhm_quick_notes_${userId}`) || "";
 
-        const cp1Counter = document.getElementById("drawer-cp1-counter");
-        const cp2Counter = document.getElementById("drawer-cp2-counter");
-        const cp1List = document.getElementById("drawer-cp1-list");
-        const cp2List = document.getElementById("drawer-cp2-list");
+        let html = `
+            <!-- Tab 1 Header Overview -->
+            <div class="p-3.5 rounded-xl bg-gradient-to-r from-brand-amber/15 via-brand-dark/60 to-brand-orange/15 border border-brand-amber/30 flex items-center justify-between">
+                <div>
+                    <h4 class="font-extrabold text-white text-xs flex items-center gap-1.5">
+                        <span>📜</span> Đúc Kết I•A•M & Ghi Chú Nhanh
+                    </h4>
+                    <p class="text-[11px] text-slate-400 mt-0.5">Tổng hợp toàn bộ phản tư Chặng 1, Chặng 2 và sổ tay ghi chép.</p>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <span class="px-2 py-0.5 rounded-full bg-brand-amber/20 text-brand-amber text-[10px] font-bold border border-brand-amber/30">
+                        ${cp1Sets.length + cp2Sets.length + capstoneSets.length} bộ đã lưu
+                    </span>
+                </div>
+            </div>
 
-        if (cp1Counter) cp1Counter.textContent = `${cp1Sets.length} bộ`;
-        if (cp2Counter) cp2Counter.textContent = `${cp2Sets.length} bộ`;
+            <!-- CP1 Section -->
+            <div class="space-y-2.5">
+                <div class="flex items-center justify-between pb-1 border-b border-brand-border/60">
+                    <h5 class="font-bold text-brand-amber flex items-center gap-1.5 text-xs">
+                        <span>🧭</span> Trạm 1: Nhận Thức & La Bàn Giá Trị (CP1)
+                    </h5>
+                    <span class="text-[11px] font-mono text-slate-400 font-semibold">${cp1Sets.length} bộ</span>
+                </div>
+                <div class="space-y-2">
+        `;
 
-        function renderDrawerSets(el, sets, cpLabel) {
-            if (!el) return;
-            el.innerHTML = "";
-            if (!Array.isArray(sets) || sets.length === 0) {
-                el.innerHTML = `<div class="p-3 text-center text-[11px] text-slate-500 italic bg-brand-dark/40 rounded-xl">Chưa có bộ nào được lưu ở phần này.</div>`;
-                return;
-            }
-            sets.forEach((set, idx) => {
-                const card = document.createElement("div");
-                card.className = "p-3 rounded-xl bg-brand-dark/60 border border-brand-border/70 space-y-2 text-[11px]";
-                card.innerHTML = `
-                    <div class="flex items-center justify-between pb-1 border-b border-brand-border/40">
-                        <span class="font-bold text-brand-amber">Bộ #${idx + 1}</span>
-                        <button type="button" class="btn-drawer-item-copy text-[10px] px-2 py-0.5 rounded bg-brand-card hover:bg-brand-border text-slate-300">📋 Copy</button>
-                    </div>
-                    <div class="space-y-1">
-                        <div><strong class="text-emerald-400">I:</strong> <span class="text-slate-200 whitespace-pre-wrap">${escapeHtml(set.I || "—")}</span></div>
-                        <div><strong class="text-sky-400">A:</strong> <span class="text-slate-200 whitespace-pre-wrap">${escapeHtml(set.A || "—")}</span></div>
-                        <div><strong class="text-purple-400">M:</strong> <span class="text-slate-200 whitespace-pre-wrap">${escapeHtml(set.M || "—")}</span></div>
+        if (!cp1Sets.length) {
+            html += `<div class="p-3 text-center text-[11px] text-slate-500 italic bg-brand-dark/40 rounded-xl border border-brand-border/40">Chưa có bộ phản tư nào tại Trạm 1.</div>`;
+        } else {
+            cp1Sets.forEach((s, idx) => {
+                const copyText = `Bộ #${idx + 1} (Trạm 1 - CP1):\nI: ${s.I || ''}\nA: ${s.A || ''}\nM: ${s.M || ''}`;
+                html += `
+                    <div class="p-3 rounded-xl bg-brand-dark/60 border border-brand-border/70 space-y-2 text-[11px]">
+                        <div class="flex items-center justify-between pb-1 border-b border-brand-border/40">
+                            <span class="font-bold text-brand-amber">Bộ #${idx + 1}</span>
+                            <button type="button" class="btn-vault-copy-item text-[10px] px-2 py-0.5 rounded bg-brand-card hover:bg-brand-border text-slate-300 cursor-pointer" data-copy="${escapeHtml(copyText)}">📋 Copy</button>
+                        </div>
+                        <div class="space-y-1">
+                            <div><strong class="text-emerald-400">I (Insight):</strong> <span class="text-slate-200 whitespace-pre-wrap">${escapeHtml(s.I || "—")}</span></div>
+                            <div><strong class="text-sky-400">A (Action):</strong> <span class="text-slate-200 whitespace-pre-wrap">${escapeHtml(s.A || "—")}</span></div>
+                            <div><strong class="text-purple-400">M (Meaning):</strong> <span class="text-slate-200 whitespace-pre-wrap">${escapeHtml(s.M || "—")}</span></div>
+                        </div>
                     </div>
                 `;
-                card.querySelector(".btn-drawer-item-copy").onclick = (e) => {
-                    const btn = e.currentTarget;
-                    const txt = `Bộ #${idx + 1} (${cpLabel}):\nI: ${set.I}\nA: ${set.A}\nM: ${set.M}`;
-                    navigator.clipboard.writeText(txt).then(() => {
-                        btn.textContent = "✓ Đã copy";
-                        setTimeout(() => { btn.textContent = "📋 Copy"; }, 1500);
-                    });
-                };
-                el.appendChild(card);
+            });
+        }
+        html += `</div></div>`;
+
+        // CP2 Section
+        html += `
+            <!-- CP2 Section -->
+            <div class="space-y-2.5">
+                <div class="flex items-center justify-between pb-1 border-b border-brand-border/60">
+                    <h5 class="font-bold text-sky-400 flex items-center gap-1.5 text-xs">
+                        <span>🚀</span> Trạm 2: Đòn Bẩy Hạnh Phúc & Small Wins (CP2)
+                    </h5>
+                    <span class="text-[11px] font-mono text-slate-400 font-semibold">${cp2Sets.length} bộ</span>
+                </div>
+                <div class="space-y-2">
+        `;
+        if (!cp2Sets.length) {
+            html += `<div class="p-3 text-center text-[11px] text-slate-500 italic bg-brand-dark/40 rounded-xl border border-brand-border/40">Chưa có bộ phản tư nào tại Trạm 2.</div>`;
+        } else {
+            cp2Sets.forEach((s, idx) => {
+                const copyText = `Bộ #${idx + 1} (Trạm 2 - CP2):\nI: ${s.I || ''}\nA: ${s.A || ''}\nM: ${s.M || ''}`;
+                html += `
+                    <div class="p-3 rounded-xl bg-brand-dark/60 border border-brand-border/70 space-y-2 text-[11px]">
+                        <div class="flex items-center justify-between pb-1 border-b border-brand-border/40">
+                            <span class="font-bold text-sky-400">Bộ #${idx + 1}</span>
+                            <button type="button" class="btn-vault-copy-item text-[10px] px-2 py-0.5 rounded bg-brand-card hover:bg-brand-border text-slate-300 cursor-pointer" data-copy="${escapeHtml(copyText)}">📋 Copy</button>
+                        </div>
+                        <div class="space-y-1">
+                            <div><strong class="text-emerald-400">I (Insight):</strong> <span class="text-slate-200 whitespace-pre-wrap">${escapeHtml(s.I || "—")}</span></div>
+                            <div><strong class="text-sky-400">A (Action):</strong> <span class="text-slate-200 whitespace-pre-wrap">${escapeHtml(s.A || "—")}</span></div>
+                            <div><strong class="text-purple-400">M (Meaning):</strong> <span class="text-slate-200 whitespace-pre-wrap">${escapeHtml(s.M || "—")}</span></div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        html += `</div></div>`;
+
+        // Chặng 2 Capstone Section if any
+        if (capstoneSets.length > 0) {
+            html += `
+                <div class="space-y-2.5">
+                    <div class="flex items-center justify-between pb-1 border-b border-brand-border/60">
+                        <h5 class="font-bold text-amber-300 flex items-center gap-1.5 text-xs">
+                            <span>🎓</span> Chặng 2: Capstone Hành Động Văn Hóa
+                        </h5>
+                        <span class="text-[11px] font-mono text-slate-400 font-semibold">${capstoneSets.length} bộ</span>
+                    </div>
+                    <div class="space-y-2">
+            `;
+            capstoneSets.forEach((s, idx) => {
+                const copyText = `Bộ #${idx + 1} (Capstone):\nI: ${s.I || ''}\nA: ${s.A || ''}\nM: ${s.M || ''}`;
+                html += `
+                    <div class="p-3 rounded-xl bg-brand-dark/60 border border-brand-border/70 space-y-2 text-[11px]">
+                        <div class="flex items-center justify-between pb-1 border-b border-brand-border/40">
+                            <span class="font-bold text-amber-300">Bộ #${idx + 1}</span>
+                            <button type="button" class="btn-vault-copy-item text-[10px] px-2 py-0.5 rounded bg-brand-card hover:bg-brand-border text-slate-300 cursor-pointer" data-copy="${escapeHtml(copyText)}">📋 Copy</button>
+                        </div>
+                        <div class="space-y-1">
+                            <div><strong class="text-emerald-400">I (Insight):</strong> <span class="text-slate-200 whitespace-pre-wrap">${escapeHtml(s.I || "—")}</span></div>
+                            <div><strong class="text-sky-400">A (Action):</strong> <span class="text-slate-200 whitespace-pre-wrap">${escapeHtml(s.A || "—")}</span></div>
+                            <div><strong class="text-purple-400">M (Meaning):</strong> <span class="text-slate-200 whitespace-pre-wrap">${escapeHtml(s.M || "—")}</span></div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div></div>`;
+        }
+
+        // Quick Notes Snapshot
+        html += `
+            <div class="space-y-2.5">
+                <div class="flex items-center justify-between pb-1 border-b border-brand-border/60">
+                    <h5 class="font-bold text-emerald-400 flex items-center gap-1.5 text-xs">
+                        <span>📝</span> Sổ Ghi Chú Nhanh (Quick Notes)
+                    </h5>
+                    ${quickNotes ? `<button type="button" class="btn-vault-copy-item text-[10px] px-2 py-0.5 rounded bg-brand-card hover:bg-brand-border text-slate-300 cursor-pointer" data-copy="${escapeHtml(quickNotes)}">📋 Copy ghi chú</button>` : ''}
+                </div>
+                <div class="p-3 rounded-xl bg-brand-dark/60 border border-brand-border/70 text-[11px] leading-relaxed">
+                    ${quickNotes ? `<div class="text-slate-200 whitespace-pre-wrap">${escapeHtml(quickNotes)}</div>` : `<div class="text-center text-slate-500 italic">Chưa có ghi chú nào được lưu trong Sổ Ghi Chú Nhanh. Bạn có thể nhấn nút 📝 tròn ở góc phải dưới màn hình (hoặc phím tắt Ctrl+J) để mở sổ ghi chép bất cứ lúc nào.</div>`}
+                </div>
+            </div>
+        `;
+
+        container.innerHTML = html;
+        bindVaultCopyButtons(container);
+    }
+
+    function renderVaultTabValues(container, progress) {
+        const s1Data = (progress.stageData && progress.stageData["stage-1"]) || {};
+        const selectedValues = s1Data.selectedValues || [];
+        const score = (s1Data.score !== undefined && s1Data.score !== null) ? s1Data.score : null;
+        const passed = !!s1Data.passed;
+        const quizAttempts = s1Data.quizAttempts || 0;
+        const totalQ = (typeof quizQuestions !== "undefined" && Array.isArray(quizQuestions)) ? quizQuestions.length : 10;
+
+        let html = `
+            <!-- Tab 2 Header Overview -->
+            <div class="p-3.5 rounded-xl bg-gradient-to-r from-sky-500/15 via-brand-dark/60 to-brand-amber/15 border border-sky-500/30 flex items-center justify-between">
+                <div>
+                    <h4 class="font-extrabold text-white text-xs flex items-center gap-1.5">
+                        <span>🧭</span> La Bàn Giá Trị & Cổng Sát Hạch
+                    </h4>
+                    <p class="text-[11px] text-slate-400 mt-0.5">Top 7 Me Values bản sắc và chứng chỉ sát hạch Chặng 1.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded-full ${passed ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : 'bg-slate-700/50 text-slate-400 border-slate-600/40'} text-[10px] font-bold border">
+                    ${passed ? '✓ Đã Vượt Cổng' : 'Chưa Vượt Cổng'}
+                </span>
+            </div>
+
+            <!-- Top 7 Me Values -->
+            <div class="space-y-2.5">
+                <div class="flex items-center justify-between pb-1 border-b border-brand-border/60">
+                    <h5 class="font-bold text-brand-amber flex items-center gap-1.5 text-xs">
+                        <span>💎</span> Top 7 Giá Trị Bản Thân (Me Values DNA)
+                    </h5>
+                    <span class="text-[11px] font-mono text-slate-400 font-semibold">${selectedValues.length}/7 giá trị</span>
+                </div>
+        `;
+
+        if (!selectedValues.length) {
+            html += `<div class="p-3 text-center text-[11px] text-slate-500 italic bg-brand-dark/40 rounded-xl border border-brand-border/40">Chưa hoàn tất chọn 7 Giá Trị Bản Thân tại Trạm 1.</div>`;
+        } else {
+            html += `<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">`;
+            selectedValues.forEach((val, idx) => {
+                html += `
+                    <div class="p-2.5 rounded-xl bg-brand-dark/60 border border-brand-border/70 flex items-center gap-2.5">
+                        <span class="w-6 h-6 rounded-lg bg-gradient-to-tr from-brand-orange to-brand-amber text-black font-extrabold flex items-center justify-center text-[11px] shrink-0">
+                            ${idx + 1}
+                        </span>
+                        <span class="font-semibold text-slate-200 text-xs">${escapeHtml(val)}</span>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+        }
+        html += `</div>`;
+
+        // Quiz Qualifying Gate
+        html += `
+            <div class="space-y-2.5">
+                <div class="flex items-center justify-between pb-1 border-b border-brand-border/60">
+                    <h5 class="font-bold text-sky-400 flex items-center gap-1.5 text-xs">
+                        <span>🎓</span> Kết Quả Cổng Sát Hạch Chặng 1 (Qualifying Gate)
+                    </h5>
+                    <span class="text-[11px] font-mono text-slate-400 font-semibold">${quizAttempts} lần thi</span>
+                </div>
+
+                <div class="p-4 rounded-xl ${passed ? 'bg-emerald-950/40 border-emerald-500/40' : 'bg-brand-dark/60 border-brand-border/70'} border space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2.5">
+                            <span class="text-2xl">${passed ? '🏅' : '⏳'}</span>
+                            <div>
+                                <div class="font-bold text-white text-xs">${passed ? 'ĐÃ VƯỢT QUA CỔNG SÁT HẠCH' : 'CHƯA ĐẠT CHUẨN ĐẦU RA'}</div>
+                                <div class="text-[11px] text-slate-400">Yêu cầu tối thiểu: 80% (8/${totalQ} câu đúng)</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-black font-mono ${passed ? 'text-emerald-400' : (score !== null ? 'text-rose-400' : 'text-slate-500')}">
+                                ${score !== null ? `${score}%` : 'Chưa thi'}
+                            </div>
+                            <div class="text-[10px] text-slate-400">${score !== null ? `${Math.round(score * totalQ / 100)}/${totalQ} câu đúng` : '—'}</div>
+                        </div>
+                    </div>
+
+                    ${passed ? `
+                        <div class="p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-[11px] text-emerald-300 flex items-center gap-2">
+                            <span>✓</span> Bạn đã đủ điều kiện tốt nghiệp Pre-class và được mở khóa tham gia Workshop Offline Chặng 2.
+                        </div>
+                    ` : `
+                        <div class="p-2.5 rounded-lg bg-brand-dark/80 border border-brand-border/60 text-[11px] text-slate-400 flex items-center gap-2">
+                            <span>ℹ️</span> Hoàn thành bài trắc nghiệm ở cuối Chặng 1 đạt từ 80% trở lên để mở khóa quyền tham gia Chặng 2.
+                        </div>
+                    `}
+                </div>
+            </div>
+        `;
+
+        container.innerHTML = html;
+        bindVaultCopyButtons(container);
+    }
+
+    function renderVaultTabHabits(container, progress) {
+        const s3Data = (progress.stageData && progress.stageData["stage-3"]) || {};
+        const habitTracker = s3Data.habitTracker || {};
+        const streakInfo = (typeof calculateStage3Streak === "function") 
+            ? calculateStage3Streak(habitTracker) 
+            : { currentStreak: 0, longestStreak: 0, totalCompletedDays: 0, completedDaysSet: new Set() };
+        const completedStages = progress.completedStages || [];
+        const habitKeys = ["mindfulness", "gratitude", "optimism", "flow", "altruism"];
+
+        let html = `
+            <!-- Tab 3 Header Overview -->
+            <div class="p-3.5 rounded-xl bg-gradient-to-r from-emerald-500/15 via-brand-dark/60 to-brand-amber/15 border border-emerald-500/30 flex items-center justify-between">
+                <div>
+                    <h4 class="font-extrabold text-white text-xs flex items-center gap-1.5">
+                        <span>🎯</span> Thói Quen 21 Ngày & Bộ Huy Hiệu
+                    </h4>
+                    <p class="text-[11px] text-slate-400 mt-0.5">Theo dõi chuỗi kiên trì luyện tập và các cột mốc danh dự.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">
+                    🔥 Chuỗi: ${streakInfo.currentStreak} ngày
+                </span>
+            </div>
+
+            <!-- Streak Metrics -->
+            <div class="grid grid-cols-3 gap-2 text-center">
+                <div class="p-2.5 rounded-xl bg-brand-dark/60 border border-brand-border/70">
+                    <div class="text-[10px] text-slate-400">Chuỗi hiện tại</div>
+                    <div class="text-base font-black text-brand-amber font-mono mt-0.5">🔥 ${streakInfo.currentStreak}</div>
+                </div>
+                <div class="p-2.5 rounded-xl bg-brand-dark/60 border border-brand-border/70">
+                    <div class="text-[10px] text-slate-400">Kỷ lục dài nhất</div>
+                    <div class="text-base font-black text-sky-400 font-mono mt-0.5">⭐ ${streakInfo.longestStreak}</div>
+                </div>
+                <div class="p-2.5 rounded-xl bg-brand-dark/60 border border-brand-border/70">
+                    <div class="text-[10px] text-slate-400">Tổng ngày đạt</div>
+                    <div class="text-base font-black text-emerald-400 font-mono mt-0.5">✓ ${streakInfo.totalCompletedDays}/21</div>
+                </div>
+            </div>
+
+            <!-- Mini Heatmap 21 Days (7x3 grid) -->
+            <div class="space-y-2.5">
+                <div class="flex items-center justify-between pb-1 border-b border-brand-border/60">
+                    <h5 class="font-bold text-emerald-400 flex items-center gap-1.5 text-xs">
+                        <span>📅</span> Bản Đồ Nhiệt 21 Ngày (Mini-Heatmap)
+                    </h5>
+                    <div class="flex items-center gap-1 text-[9px] text-slate-400">
+                        <span>Ít</span>
+                        <span class="w-2.5 h-2.5 rounded bg-slate-800 border border-slate-700"></span>
+                        <span class="w-2.5 h-2.5 rounded bg-emerald-950 border border-emerald-800"></span>
+                        <span class="w-2.5 h-2.5 rounded bg-emerald-700 border border-emerald-500"></span>
+                        <span class="w-2.5 h-2.5 rounded bg-emerald-500 border border-emerald-300"></span>
+                        <span>Nhiều</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-7 gap-1.5 p-3 rounded-xl bg-brand-dark/60 border border-brand-border/70">
+        `;
+
+        for (let d = 1; d <= 21; d++) {
+            const dayData = (habitTracker && habitTracker[`day_${d}`]) || {};
+            const doneCount = habitKeys.filter(k => !!dayData[k]).length;
+            let cellClass = "bg-slate-800/80 text-slate-500 border-slate-700/50";
+            if (doneCount === 5) {
+                cellClass = "bg-emerald-500 text-black font-extrabold border-emerald-300 shadow-sm";
+            } else if (doneCount >= 3) {
+                cellClass = "bg-emerald-700 text-emerald-100 font-bold border-emerald-500";
+            } else if (doneCount >= 1) {
+                cellClass = "bg-emerald-950/80 text-emerald-300 border-emerald-800/60";
+            }
+
+            html += `
+                <div class="aspect-square rounded-lg border flex flex-col items-center justify-center p-1 transition-all ${cellClass}" title="Ngày ${d}: ${doneCount}/5 thói quen">
+                    <span class="text-[10px] font-mono">${d}</span>
+                    <span class="text-[8px] opacity-80">${doneCount}/5</span>
+                </div>
+            `;
+        }
+
+        html += `
+                </div>
+            </div>
+
+            <!-- Badges Gallery -->
+            <div class="space-y-2.5">
+                <div class="flex items-center justify-between pb-1 border-b border-brand-border/60">
+                    <h5 class="font-bold text-amber-300 flex items-center gap-1.5 text-xs">
+                        <span>🏆</span> Bộ Huy Hiệu Hành Trình Hạnh Phúc
+                    </h5>
+                    <span class="text-[11px] font-mono text-slate-400 font-semibold">
+                        ${[completedStages.includes("stage-1"), completedStages.includes("stage-2"), completedStages.includes("stage-3"), (streakInfo.longestStreak >= 7 || streakInfo.totalCompletedDays >= 14)].filter(Boolean).length}/4 mở khóa
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <!-- Badge 1 -->
+                    <div class="p-3 rounded-xl ${completedStages.includes('stage-1') ? 'bg-amber-500/15 border-amber-500/40 text-amber-300' : 'bg-brand-dark/40 border-brand-border/50 text-slate-500 opacity-60'} border flex items-center gap-2.5">
+                        <span class="text-2xl">${completedStages.includes('stage-1') ? '🧭' : '🔒'}</span>
+                        <div>
+                            <div class="font-bold text-xs text-white">Người Định Hướng</div>
+                            <div class="text-[10px] text-slate-400">Hoàn thành Chặng 1</div>
+                        </div>
+                    </div>
+                    <!-- Badge 2 -->
+                    <div class="p-3 rounded-xl ${completedStages.includes('stage-2') ? 'bg-orange-500/15 border-orange-500/40 text-orange-300' : 'bg-brand-dark/40 border-brand-border/50 text-slate-500 opacity-60'} border flex items-center gap-2.5">
+                        <span class="text-2xl">${completedStages.includes('stage-2') ? '🔥' : '🔒'}</span>
+                        <div>
+                            <div class="font-bold text-xs text-white">Người Thắp Lửa</div>
+                            <div class="text-[10px] text-slate-400">Hoàn thành Chặng 2</div>
+                        </div>
+                    </div>
+                    <!-- Badge 3 -->
+                    <div class="p-3 rounded-xl ${completedStages.includes('stage-3') ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300' : 'bg-brand-dark/40 border-brand-border/50 text-slate-500 opacity-60'} border flex items-center gap-2.5">
+                        <span class="text-2xl">${completedStages.includes('stage-3') ? '🌟' : '🔒'}</span>
+                        <div>
+                            <div class="font-bold text-xs text-white">Đại Sứ Hạnh Phúc</div>
+                            <div class="text-[10px] text-slate-400">Hoàn thành Chặng 3</div>
+                        </div>
+                    </div>
+                    <!-- Badge 4 -->
+                    <div class="p-3 rounded-xl ${(streakInfo.longestStreak >= 7 || streakInfo.totalCompletedDays >= 14) ? 'bg-purple-500/15 border-purple-500/40 text-purple-300' : 'bg-brand-dark/40 border-brand-border/50 text-slate-500 opacity-60'} border flex items-center gap-2.5">
+                        <span class="text-2xl">${(streakInfo.longestStreak >= 7 || streakInfo.totalCompletedDays >= 14) ? '🛡️' : '🔒'}</span>
+                        <div>
+                            <div class="font-bold text-xs text-white">Chiến Binh Kiên Trì</div>
+                            <div class="text-[10px] text-slate-400">Chuỗi >= 7 ngày</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        container.innerHTML = html;
+        bindVaultCopyButtons(container);
+    }
+
+    function renderVaultTabSync(container, progress) {
+        const userId = getVaultUserIdentity();
+        const lastSyncRaw = localStorage.getItem(`dhm_telemetry_last_sync_time_${userId}`);
+        let lastSyncFormatted = "Chưa có thông tin đồng bộ";
+        if (lastSyncRaw) {
+            const dateObj = new Date(parseInt(lastSyncRaw, 10));
+            if (!isNaN(dateObj.getTime())) {
+                lastSyncFormatted = dateObj.toLocaleString("vi-VN", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                });
+            }
+        }
+
+        let html = `
+            <!-- Tab 4 Header Overview -->
+            <div class="p-3.5 rounded-xl bg-gradient-to-r from-purple-500/15 via-brand-dark/60 to-brand-amber/15 border border-purple-500/30 flex items-center justify-between">
+                <div>
+                    <h4 class="font-extrabold text-white text-xs flex items-center gap-1.5">
+                        <span>📦</span> Xuất Báo Cáo & Đồng Bộ Đám Mây
+                    </h4>
+                    <p class="text-[11px] text-slate-400 mt-0.5">Sao chép kho lưu trữ Markdown và kích hoạt đồng bộ dữ liệu.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 text-[10px] font-bold border border-purple-500/30">
+                    Markdown Ready
+                </span>
+            </div>
+
+            <!-- Export Full Markdown Card -->
+            <div class="p-4 rounded-xl bg-brand-dark/60 border border-brand-border/70 space-y-3">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl">📋</span>
+                    <div>
+                        <div class="font-bold text-white text-xs">Xuất Toàn Bộ Kho Dữ Liệu Học Tập (Markdown)</div>
+                        <div class="text-[11px] text-slate-400">Gom trọn vẹn cả 4 Tabs (I•A•M, Me Values, Quiz, Thói quen 21 ngày & Huy hiệu) để dán vào Obsidian/Notion.</div>
+                    </div>
+                </div>
+                <button id="btn-vault-copy-all-tab" type="button" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-brand-amber to-brand-orange text-black font-extrabold text-xs shadow hover:brightness-110 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <span>📋</span> Sao Chép Toàn Bộ (Markdown)
+                </button>
+            </div>
+
+            <!-- Sync Telemetry Card with Throttle 60s -->
+            <div class="p-4 rounded-xl bg-brand-dark/60 border border-brand-border/70 space-y-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">☁️</span>
+                        <div>
+                            <div class="font-bold text-white text-xs">Đồng Bộ Đám Mây (Google Sheets)</div>
+                            <div class="text-[11px] text-slate-400">Lần cuối: <span class="font-mono text-emerald-400 font-semibold" id="vault-last-sync-time">${escapeHtml(lastSyncFormatted)}</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <button id="btn-vault-manual-sync" type="button" class="w-full py-2.5 px-4 rounded-xl bg-brand-card hover:bg-brand-border text-slate-200 border border-brand-border/80 font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        <span>🔄</span> Đồng Bộ Ngay
+                    </button>
+                    <div id="vault-sync-status-msg" class="text-[10px] text-center text-slate-400 italic min-h-[16px]"></div>
+                </div>
+            </div>
+
+            <!-- Storage Persistence Notice -->
+            <div class="p-3 rounded-xl bg-brand-dark/40 border border-brand-border/50 text-[11px] text-slate-400 space-y-1.5 leading-relaxed">
+                <div class="font-bold text-slate-300 flex items-center gap-1.5">
+                    <span>🛡️</span> Cơ chế bảo vệ & lưu trữ dữ liệu
+                </div>
+                <div>
+                    • Tiến độ của bạn được lưu tự động trên thiết bị này theo tài khoản học viên.<br>
+                    • Khi có kết nối mạng, hệ thống tự động đồng bộ ngầm định kỳ về CSDL trung tâm.<br>
+                    • Nút "Đồng Bộ Ngay" có cơ chế đệm an toàn 60 giây để tránh làm nghẽn hạ tầng.
+                </div>
+            </div>
+        `;
+
+        container.innerHTML = html;
+        bindVaultCopyButtons(container);
+
+        // Bind Tab 4 specific buttons
+        const copyAllBtn = container.querySelector("#btn-vault-copy-all-tab");
+        if (copyAllBtn) {
+            copyAllBtn.onclick = () => {
+                copyAllVaultMarkdown(copyAllBtn);
+            };
+        }
+
+        const syncBtn = container.querySelector("#btn-vault-manual-sync");
+        const statusMsg = container.querySelector("#vault-sync-status-msg");
+        if (syncBtn) {
+            updateVaultSyncButtonState(syncBtn, statusMsg);
+            syncBtn.onclick = () => {
+                handleVaultManualSync(syncBtn, statusMsg);
+            };
+        }
+    }
+
+    function generateFullVaultMarkdown(progress) {
+        const s1Data = (progress.stageData && progress.stageData["stage-1"]) || {};
+        const cp1Sets = s1Data.iam_cp1_sets || [];
+        const cp2Sets = s1Data.iam_cp2_sets || [];
+        const s2Data = (progress.stageData && progress.stageData["stage-2"]) || {};
+        const capstoneSets = s2Data.capstone_sets || [];
+        const selectedValues = s1Data.selectedValues || [];
+        const score = (s1Data.score !== undefined && s1Data.score !== null) ? s1Data.score : null;
+        const passed = !!s1Data.passed;
+        const quizAttempts = s1Data.quizAttempts || 0;
+        const s3Data = (progress.stageData && progress.stageData["stage-3"]) || {};
+        const habitTracker = s3Data.habitTracker || {};
+        const streakInfo = (typeof calculateStage3Streak === "function")
+            ? calculateStage3Streak(habitTracker)
+            : { currentStreak: 0, longestStreak: 0, totalCompletedDays: 0 };
+        const completedStages = progress.completedStages || [];
+        const userId = getVaultUserIdentity();
+        const quickNotes = localStorage.getItem(`dhm_quick_notes_${userId}`) || "";
+        const learnerName = (currentUser && (currentUser.full_name || currentUser.name)) || "Học viên";
+        const todayStr = new Date().toLocaleDateString("vi-VN");
+
+        let md = `# KHO LƯU TRỮ CỦA TÔI — DELIVERING HAPPINESS MODEL\n`;
+        md += `> **Học viên:** ${learnerName} | **Mã định danh:** ${userId} | **Ngày xuất:** ${todayStr}\n\n`;
+
+        md += `## 1. 📜 ĐÚC KẾT I•A•M & GHI CHÚ NHANH\n\n`;
+        md += `### Trạm 1: Nhận Thức & La Bàn Giá Trị (CP1)\n`;
+        if (!cp1Sets.length) {
+            md += `*(Chưa có bộ lưu)*\n\n`;
+        } else {
+            cp1Sets.forEach((s, i) => {
+                md += `#### Bộ #${i + 1}:\n- **I (Insight):** ${s.I || '—'}\n- **A (Action):** ${s.A || '—'}\n- **M (Meaning):** ${s.M || '—'}\n\n`;
             });
         }
 
-        renderDrawerSets(cp1List, cp1Sets, "Trạm 1: Nhận Thức & La Bàn Giá Trị");
-        renderDrawerSets(cp2List, cp2Sets, "Trạm 2: Đòn Bẩy & Small Wins");
+        md += `### Trạm 2: Đòn Bẩy Hạnh Phúc & Small Wins (CP2)\n`;
+        if (!cp2Sets.length) {
+            md += `*(Chưa có bộ lưu)*\n\n`;
+        } else {
+            cp2Sets.forEach((s, i) => {
+                md += `#### Bộ #${i + 1}:\n- **I (Insight):** ${s.I || '—'}\n- **A (Action):** ${s.A || '—'}\n- **M (Meaning):** ${s.M || '—'}\n\n`;
+            });
+        }
+
+        if (capstoneSets.length > 0) {
+            md += `### Chặng 2: Capstone Hành Động Văn Hóa\n`;
+            capstoneSets.forEach((s, i) => {
+                md += `#### Bộ #${i + 1}:\n- **I (Insight):** ${s.I || '—'}\n- **A (Action):** ${s.A || '—'}\n- **M (Meaning):** ${s.M || '—'}\n\n`;
+            });
+        }
+
+        md += `### Sổ Ghi Chú Nhanh\n`;
+        md += quickNotes ? `${quickNotes}\n\n` : `*(Trống)*\n\n`;
+
+        md += `---\n\n`;
+        md += `## 2. 🧭 LA BÀN GIÁ TRỊ & CỔNG SÁT HẠCH\n\n`;
+        md += `### Top 7 Me Values (DNA Cá Nhân)\n`;
+        if (!selectedValues.length) {
+            md += `*(Chưa chọn)*\n\n`;
+        } else {
+            selectedValues.forEach((val, i) => {
+                md += `${i + 1}. **${val}**\n`;
+            });
+            md += `\n`;
+        }
+
+        md += `### Cổng Sát Hạch Chặng 1\n`;
+        md += `- **Điểm số:** ${score !== null ? `${score}%` : 'Chưa thi'}\n`;
+        md += `- **Trạng thái:** ${passed ? '✓ ĐÃ VƯỢT QUA' : 'CHƯA ĐẠT CHUẨN'}\n`;
+        md += `- **Số lần thi:** ${quizAttempts}\n\n`;
+
+        md += `---\n\n`;
+        md += `## 3. 🎯 THÓI QUEN 21 NGÀY & HUY HIỆU\n\n`;
+        md += `### Chuỗi Thói Quen (21 Days Habit Streak)\n`;
+        md += `- **Chuỗi ngày hiện tại:** ${streakInfo.currentStreak} ngày 🔥\n`;
+        md += `- **Kỷ lục chuỗi dài nhất:** ${streakInfo.longestStreak} ngày ⭐\n`;
+        md += `- **Tổng số ngày hoàn thành:** ${streakInfo.totalCompletedDays}/21 ngày\n\n`;
+
+        md += `### Bộ Huy Hiệu Hành Trình\n`;
+        md += `- [${completedStages.includes('stage-1') ? 'x' : ' '}] 🧭 Người Định Hướng (Hoàn thành Chặng 1)\n`;
+        md += `- [${completedStages.includes('stage-2') ? 'x' : ' '}] 🔥 Người Thắp Lửa (Hoàn thành Chặng 2)\n`;
+        md += `- [${completedStages.includes('stage-3') ? 'x' : ' '}] 🌟 Đại Sứ Hạnh Phúc (Hoàn thành Chặng 3)\n`;
+        md += `- [${(streakInfo.longestStreak >= 7 || streakInfo.totalCompletedDays >= 14) ? 'x' : ' '}] 🛡️ Chiến Binh Kiên Trì (Chuỗi >= 7 ngày)\n\n`;
+
+        return md;
+    }
+
+    function copyAllVaultMarkdown(btn) {
+        const md = generateFullVaultMarkdown(learnerProgress);
+        navigator.clipboard.writeText(md).then(() => {
+            if (btn) {
+                const old = btn.innerHTML;
+                btn.innerHTML = `<span>✓</span> Đã sao chép toàn bộ!`;
+                setTimeout(() => { btn.innerHTML = old; }, 2000);
+            }
+        });
+    }
+
+    function updateVaultSyncButtonState(btn, statusMsg) {
+        const now = Date.now();
+        const remainMs = 60000 - (now - lastVaultManualSync);
+        if (remainMs > 0) {
+            const remainSec = Math.ceil(remainMs / 1000);
+            btn.disabled = true;
+            btn.classList.add("opacity-50", "cursor-not-allowed");
+            btn.innerHTML = `<span>⏳</span> Đồng bộ lại sau (${remainSec}s)`;
+            if (statusMsg) statusMsg.textContent = `Vui lòng chờ ${remainSec}s trước khi kích hoạt đồng bộ tiếp theo.`;
+
+            if (!vaultSyncTimer) {
+                vaultSyncTimer = setInterval(() => {
+                    const curRemain = Math.ceil((60000 - (Date.now() - lastVaultManualSync)) / 1000);
+                    if (curRemain <= 0) {
+                        clearInterval(vaultSyncTimer);
+                        vaultSyncTimer = null;
+                        btn.disabled = false;
+                        btn.classList.remove("opacity-50", "cursor-not-allowed");
+                        btn.innerHTML = `<span>🔄</span> Đồng Bộ Ngay`;
+                        if (statusMsg) statusMsg.textContent = "";
+                    } else {
+                        btn.innerHTML = `<span>⏳</span> Đồng bộ lại sau (${curRemain}s)`;
+                        if (statusMsg) statusMsg.textContent = `Vui lòng chờ ${curRemain}s trước khi kích hoạt đồng bộ tiếp theo.`;
+                    }
+                }, 1000);
+            }
+        } else {
+            btn.disabled = false;
+            btn.classList.remove("opacity-50", "cursor-not-allowed");
+            btn.innerHTML = `<span>🔄</span> Đồng Bộ Ngay`;
+            if (statusMsg) statusMsg.textContent = "";
+        }
+    }
+
+    function handleVaultManualSync(btn, statusMsg) {
+        const now = Date.now();
+        if (now - lastVaultManualSync < 60000) {
+            updateVaultSyncButtonState(btn, statusMsg);
+            return;
+        }
+        lastVaultManualSync = now;
+        btn.disabled = true;
+        btn.innerHTML = `<span>🔄</span> Đang đồng bộ...`;
+        if (statusMsg) statusMsg.textContent = "Đang gửi tín hiệu telemetry đồng bộ lên máy chủ...";
+
+        if (typeof triggerAutoTelemetryOnBoot === "function") {
+            triggerAutoTelemetryOnBoot();
+        }
+
+        setTimeout(() => {
+            const userId = getVaultUserIdentity();
+            localStorage.setItem(`dhm_telemetry_last_sync_time_${userId}`, String(Date.now()));
+            const timeEl = document.getElementById("vault-last-sync-time");
+            if (timeEl) {
+                timeEl.textContent = new Date().toLocaleString("vi-VN", {
+                    hour: "2-digit", minute: "2-digit", second: "2-digit", day: "2-digit", month: "2-digit", year: "numeric"
+                });
+            }
+            if (statusMsg) statusMsg.textContent = "✓ Đã gửi yêu cầu đồng bộ thành công!";
+            updateVaultSyncButtonState(btn, statusMsg);
+        }, 1200);
+    }
+
+    const vaultTabRenderers = {
+        "tab-iam": renderVaultTabIam,
+        "tab-values": renderVaultTabValues,
+        "tab-habits": renderVaultTabHabits,
+        "tab-sync": renderVaultTabSync
+    };
+
+    function updateVaultTabHeaders() {
+        document.querySelectorAll(".vault-tab-btn").forEach(btn => {
+            const tabId = btn.getAttribute("data-tab");
+            const isSelected = (tabId === activeVaultTab);
+            btn.setAttribute("aria-selected", isSelected ? "true" : "false");
+            if (isSelected) {
+                btn.className = "vault-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer bg-brand-amber text-black shadow-sm";
+            } else {
+                btn.className = "vault-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer text-slate-300 hover:text-white hover:bg-brand-card";
+            }
+        });
+    }
+
+    function switchVaultTab(tabId) {
+        if (!vaultTabRenderers[tabId]) tabId = "tab-iam";
+        activeVaultTab = tabId;
+        updateVaultTabHeaders();
+        const contentEl = document.getElementById("vault-tab-content");
+        if (contentEl) {
+            contentEl.innerHTML = ""; // Lazy Tab Rendering: chống DOM bloat
+            vaultTabRenderers[tabId](contentEl, learnerProgress);
+        }
+    }
+
+    function updateDrawerIamHistory() {
+        switchVaultTab(activeVaultTab);
     }
 
     function initIamDrawer() {
@@ -6870,30 +7515,17 @@ document.addEventListener("DOMContentLoaded", () => {
         if (btnDismiss) btnDismiss.onclick = closeDrawer;
         if (backdrop) backdrop.onclick = closeDrawer;
 
+        // Bind 4 Tabs buttons in Tab Bar
+        document.querySelectorAll(".vault-tab-btn").forEach(btn => {
+            btn.onclick = () => {
+                const tabId = btn.getAttribute("data-tab");
+                if (tabId) switchVaultTab(tabId);
+            };
+        });
+
         if (btnCopyAll) {
             btnCopyAll.onclick = () => {
-                const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
-                const cp1Sets = s1Data.iam_cp1_sets || [];
-                const cp2Sets = s1Data.iam_cp2_sets || [];
-                let allText = `=== KHO LƯU TRỮ CỦA TÔI (DELIVERING HAPPINESS) ===\nHọc viên: ${(currentUser && (currentUser.full_name || currentUser.name)) || "Học viên"}\nNgày xuất: ${new Date().toLocaleDateString()}\n\n`;
-
-                allText += `--- TRẠM 1: NHẬN THỨC & LA BÀN GIÁ TRỊ (CP1) ---\n`;
-                if (cp1Sets.length === 0) allText += `(Chưa có bộ lưu)\n`;
-                cp1Sets.forEach((s, i) => {
-                    allText += `\nBộ #${i + 1}:\n- I (Insight): ${s.I}\n- A (Actionable): ${s.A}\n- M (Meaningful): ${s.M}\n`;
-                });
-
-                allText += `\n--- TRẠM 2: ĐÒN BẨY HẠNH PHÚC & SMALL WINS (CP2) ---\n`;
-                if (cp2Sets.length === 0) allText += `(Chưa có bộ lưu)\n`;
-                cp2Sets.forEach((s, i) => {
-                    allText += `\nBộ #${i + 1}:\n- I (Insight): ${s.I}\n- A (Actionable): ${s.A}\n- M (Meaningful): ${s.M}\n`;
-                });
-
-                navigator.clipboard.writeText(allText).then(() => {
-                    const old = btnCopyAll.innerHTML;
-                    btnCopyAll.innerHTML = "<span>✓</span> Đã copy tất cả!";
-                    setTimeout(() => { btnCopyAll.innerHTML = old; }, 2000);
-                });
+                copyAllVaultMarkdown(btnCopyAll);
             };
         }
     }
