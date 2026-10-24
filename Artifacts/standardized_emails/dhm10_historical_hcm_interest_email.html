@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333333; margin: 0; padding: 0; background-color: #eae6df; }
+    .container { max-width: 600px; margin: 30px auto; background: #ffffff; border-radius: 12px; border: 1px solid #d1c9bd; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .header { background-color: #1a1a1a; padding: 32px 25px; text-align: center; color: #ffffff; }
+    .header img { width: 120px; height: auto; display: block; margin: 0 auto; border-radius: 8px; }
+    .header h1 { margin: 15px 0 0 0; font-size: 21px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #ffffff; }
+    .header p { margin: 8px 0 0 0; opacity: 0.85; font-size: 13px; font-weight: 500; line-height: 1.4; color: #aaaaaa; }
+    .content { padding: 30px 25px; background-color: #ffffff; }
+    .greeting { font-size: 16px; font-weight: bold; margin-bottom: 12px; color: #1a1a1a; }
+    .paragraph { margin-bottom: 14px; text-align: justify; font-size: 14px; color: #444444; }
+    
+    /* Box Sự Kiện / Lộ Trình 3 Chặng */
+    .event-box { background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 18px 20px; margin: 18px 0; }
+    .event-badge { display: inline-block; font-size: 11px; font-weight: bold; text-transform: uppercase; background-color: #e2e8f0; color: #0f172a; padding: 3px 8px; border-radius: 4px; margin-bottom: 8px; }
+    .stage-item { margin: 8px 0; font-size: 13.5px; color: #334155; }
+    .stage-item strong { color: #0f172a; }
+    
+    /* Box Thông Tin Khóa Học */
+    .info-box { background-color: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 16px 20px; margin: 18px 0; }
+    .info-item { margin: 6px 0; font-size: 13.5px; color: #1e3a8a; }
+    .info-item strong { color: #172554; }
+
+    /* Box Quà Tặng Tri Ân */
+    .gift-box { background-color: #f0fdf4; border-left: 4px solid #16a34a; padding: 14px 18px; margin: 18px 0; border-radius: 4px; }
+    .gift-box h4 { margin: 0 0 6px 0; color: #15803d; font-size: 14px; }
+    .gift-box p { margin: 0; font-size: 13px; color: #166534; line-height: 1.5; }
+
+    .cta-container { text-align: center; margin: 24px 0 18px 0; }
+    .cta-btn { display: inline-block; background-color: #0f766e; color: #ffffff !important; text-decoration: none; padding: 13px 28px; border-radius: 8px; font-size: 14.5px; font-weight: bold; box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25); }
+    
+    .footer { background-color: #ffffff; padding: 22px 25px; border-top: 1px solid #f1f5f9; }
+    .footer-table { width: 100%; border-collapse: collapse; }
+    .footer-left { text-align: left; vertical-align: top; }
+    .footer-right { text-align: right; vertical-align: top; width: 100px; }
+    .footer-logo { width: 90px; height: auto; display: block; margin-left: auto; border-radius: 4px; }
+    .closing { font-size: 14px; font-weight: bold; color: #1a1a1a; margin: 0; }
+    .team-name { font-size: 14px; font-weight: bold; color: #1a1a1a; margin: 3px 0 6px 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="https://delivering-happiness.vercel.app/assets/culturecode-logo-dark.jpg" alt="CultureCode Logo" width="120" style="width: 120px !important; max-width: 120px !important; height: auto !important; display: block; margin: 0 auto; border-radius: 8px;" />
+      <h1>Delivering Happiness Masterclass 10</h1>
+      <p>Cột mốc đào tạo kết hợp Blended LMS tại TP.HCM (Chủ Nhật, 01/11/2026)</p>
+    </div>
+    
+    <div class="content">
+      <div class="greeting">Thân gửi Anh/Chị {{FullName}},</div>
+      
+      <p class="paragraph">
+        Trước đây, Anh/Chị đã từng để lại thông tin quan tâm đến chương trình <strong>Delivering Happiness Masterclass</strong> tại TP.HCM. CultureCode Team xin trân trọng thông báo khóa <strong>DHM10</strong> đã chính thức ấn định lịch trình và mở cổng xác nhận giữ chỗ tại cơ sở chuẩn quốc tế của Apollo English.
+      </p>
+
+      <!-- Khối Thông Tin Lịch Học -->
+      <div class="info-box">
+        <div class="info-item">🗓️ <strong>Lịch trình đào tạo:</strong></div>
+        <div class="info-item" style="padding-left: 15px;">• <strong>Webinar LMS Chặng 1:</strong> 19:30 – 21:00, tối Thứ Sáu (30/10/2026) qua Zoom</div>
+        <div class="info-item" style="padding-left: 15px;">• <strong>Ngày học Offline trực tiếp:</strong> 08:00 – 17:00, Chủ Nhật (01/11/2026)</div>
+        <div class="info-item" style="margin-top: 8px;">🏢 <strong>Địa điểm:</strong> Cơ sở Apollo English — 58 Phạm Ngọc Thạch, P. Võ Thị Sáu, Q.3, TP.HCM</div>
+        <div class="info-item">🍱 <strong>Quyền lợi:</strong> Trọn gói học liệu, quyền truy cập LMS Chặng 1, 02 tiệc Teabreak sáng/chiều & bữa trưa tại lớp</div>
+      </div>
+
+      <!-- Khối Lộ Trình 3 Chặng -->
+      <div class="event-box">
+        <span class="event-badge">🌱 LỘ TRÌNH BLENDED LMS 3 CHẶNG CHUYỂN HÓA</span>
+        <div class="stage-item">• <strong>Chặng 1 — Khởi động với hạnh phúc:</strong> Khởi tạo La bàn giá trị sống (Me Values) trên Micro-LMS và tham gia Webinar 90 phút mở đầu.</div>
+        <div class="stage-item">• <strong>Chặng 2 — Gieo thói quen hạnh phúc:</strong> Ngày học trực tiếp giải mã 3 Đòn bẩy hạnh phúc <em>(Tự chủ - Tiến bộ - Kết nối)</em> và 5 thói quen cốt lõi cùng Ban Giảng Huấn.</div>
+        <div class="stage-item">• <strong>Chặng 3 — Tiếp nối hành trình hạnh phúc:</strong> Đồng hành đưa Hệ điều hành Hạnh phúc vào công việc thực tế cùng bộ công cụ Habit Tracker.</div>
+      </div>
+
+      <!-- Khối Quà Tặng Tri Ân -->
+      <div class="gift-box">
+        <h4>🎁 Đặc quyền giới thiệu đồng nghiệp:</h4>
+        <p>Khi Anh/Chị đề cử bạn bè, đồng nghiệp cùng tham gia, Ban Giảng Huấn trân trọng dành tặng Anh/Chị <strong>01 Suất mời tham dự khóa đào tạo chuyên sâu: Team Happiness & Leadership</strong> (8 tiếng dành riêng cho cấp quản lý văn hóa đội ngũ).</p>
+      </div>
+
+      <p class="paragraph" style="margin-top: 15px;">
+        Số lượng học viên trực tiếp tại Apollo English giới hạn để đảm bảo chất lượng đối thoại sâu cùng Ban Giảng Huấn. Kính mời Anh/Chị bấm nút bên dưới để xác nhận thông tin và hoàn tất thủ tục giữ chỗ:
+      </p>
+
+      <!-- Nút CTA -->
+      <div class="cta-container">
+        <a href="https://delivering-happiness.vercel.app/register_dhm10.html" target="_blank" class="cta-btn">
+          👉 Xác nhận tham gia DHM10 & Hoàn tất thanh toán phí hậu cần
+        </a>
+      </div>
+
+      <p class="paragraph" style="margin-top: 20px;">
+        Cảm ơn Anh/Chị đã luôn đồng hành cùng giá trị Hạnh phúc thực chất. Hẹn gặp lại Anh/Chị tại hành trình DHM10!
+      </p>
+    </div>
+    
+    <div class="footer">
+      <table class="footer-table">
+        <tr>
+          <td class="footer-left">
+            <p class="closing">Trân trọng,</p>
+            <p class="team-name">CultureCode Team</p>
+            <p style="margin: 0; font-size: 12.5px; line-height: 1.5; color: #64748b;">
+              🌐 Website: <a href="https://delivering-happiness.vercel.app" target="_blank" style="color: #0f766e; text-decoration: none; font-weight: 500;">delivering-happiness.vercel.app</a><br>
+              🔗 LinkedIn: <a href="https://www.linkedin.com/company/culturecodecommunity" target="_blank" style="color: #0f766e; text-decoration: none; font-weight: 500;">CultureCode Community</a>
+            </p>
+          </td>
+          <td class="footer-right">
+            <img src="https://delivering-happiness.vercel.app/assets/culturecode-logo-light.jpg" alt="CultureCode Logo" width="90" style="width: 90px !important; max-width: 90px !important; height: auto !important; display: block; margin-left: auto; border-radius: 4px;" class="footer-logo" />
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

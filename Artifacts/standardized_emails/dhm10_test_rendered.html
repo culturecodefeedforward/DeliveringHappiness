@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333333; margin: 0; padding: 0; background-color: #eae6df; }
+    .container { max-width: 600px; margin: 30px auto; background: #ffffff; border-radius: 12px; border: 1px solid #d1c9bd; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .header { background-color: #1a1a1a; padding: 35px 25px; text-align: center; color: #ffffff; }
+    .header img { width: 120px; height: auto; display: block; margin: 0 auto; border-radius: 8px; }
+    .header h1 { margin: 15px 0 0 0; font-size: 22px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+    .header p { margin: 8px 0 0 0; opacity: 0.8; font-size: 13px; font-weight: 500; line-height: 1.5; color: #aaaaaa; }
+    .content { padding: 35px 30px; background-color: #ffffff; }
+    .greeting { font-size: 16px; font-weight: bold; margin-bottom: 15px; color: #1a1a1a; }
+    .paragraph { margin-bottom: 15px; text-align: justify; font-size: 14.5px; color: #444444; }
+    
+    /* Box Sự Kiện / Chương Trình */
+    .event-box { background-color: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 20px; margin: 20px 0; position: relative; }
+    .event-badge { display: inline-block; font-size: 11px; font-weight: bold; text-transform: uppercase; background-color: #dbeafe; color: #1e40af; padding: 4px 10px; border-radius: 4px; margin-bottom: 10px; }
+    .event-title { font-size: 16px; font-weight: bold; color: #1d4ed8; margin: 0 0 10px 0; }
+    .event-detail { font-size: 14px; margin: 6px 0; color: #374151; }
+    .event-detail strong { color: #111827; }
+    .event-link { display: inline-block; margin-top: 10px; color: #1d4ed8; font-weight: bold; text-decoration: underline; font-size: 13.5px; }
+
+    /* Box Cảnh báo Pending */
+    .warning-box { background-color: #fffbeb; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 20px 0; border-radius: 4px; }
+    .warning-box h3 { margin: 0 0 8px 0; color: #b45309; font-size: 15px; }
+    .warning-box p { margin: 0; font-size: 14px; color: #7c2d12; line-height: 1.5; }
+    
+    /* Box Thông tin chuyển khoản */
+    .payment-box { background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 22px; margin: 25px 0; }
+    .payment-title { font-size: 15px; font-weight: bold; color: #1e3a8a; margin: 0 0 15px 0; border-bottom: 1px solid #e5e7eb; padding-bottom: 8px; }
+    .payment-list { list-style: none; padding: 0; margin: 0; }
+    .payment-item { margin-bottom: 10px; font-size: 14px; color: #374151; }
+    .payment-item strong { color: #111827; }
+    .code-syntax { font-family: 'Courier New', Courier, monospace; background: #e5e7eb; padding: 3px 8px; border-radius: 4px; font-weight: bold; color: #b91c1c; font-size: 14px; border: 1px solid #d1d5db; }
+    
+    .footer { background-color: #ffffff; padding: 25px 30px; border-top: 1px solid #f3f4f6; }
+    .footer-table { width: 100%; border-collapse: collapse; }
+    .footer-left { text-align: left; vertical-align: top; }
+    .footer-right { text-align: right; vertical-align: top; width: 100px; }
+    .footer-logo { width: 90px; height: auto; display: block; margin-left: auto; border-radius: 4px; }
+    .closing { font-size: 14.5px; font-weight: bold; color: #1a1a1a; margin: 0; }
+    .team-name { font-size: 14.5px; font-weight: bold; color: #1a1a1a; margin: 4px 0 8px 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="https://delivering-happiness.vercel.app/assets/culturecode-logo-dark.jpg" alt="CultureCode Logo" width="120" style="width: 120px !important; max-width: 120px !important; height: auto !important; display: block; margin: 0 auto; border-radius: 8px;" />
+      <h1>Delivering Happiness Masterclass 10</h1>
+      <p>Chương trình đào tạo chuyển hóa: Webinar LMS (30/10) + Ngày học trực tiếp Offline tại TP.HCM (01/11)</p>
+    </div>
+    
+    <div class="content">
+      <div class="greeting">Thân gửi Anh/Chị Vũ Hoàng,</div>
+      
+      <p class="paragraph">
+        Trước đó, Anh/Chị đã để lại thông tin quan tâm đến chương trình <strong>Delivering Happiness Masterclass</strong> tại TP.HCM. CultureCode Team xin trân trọng thông báo khóa <strong>DHM10</strong> đã chính thức ấn định lịch trình và mở cổng giữ chỗ tại cơ sở Apollo English.
+      </p>
+
+      <!-- Khối Thông tin Chương trình -->
+      <div class="event-box">
+        <span class="event-badge">📍 THÔNG TIN CHƯƠNG TRÌNH DHM10</span>
+        <div class="event-detail">🗓️ <strong>Lịch trình chi tiết:</strong><br>
+          &nbsp;&nbsp;• <strong>Webinar LMS Chặng 1:</strong> 19:30 – 21:00, tối Thứ Sáu, ngày <strong>30/10/2026</strong> (Trực tuyến qua Zoom)<br>
+          &nbsp;&nbsp;• <strong>Ngày học trực tiếp Offline:</strong> 08:00 – 17:00, Chủ Nhật, ngày <strong>01/11/2026</strong>
+        </div>
+        <div class="event-detail">🏢 <strong>Địa điểm học trực tiếp:</strong> Cơ sở Apollo English — 58 Phạm Ngọc Thạch, Phường Võ Thị Sáu, Quận 3, TP. Hồ Chí Minh</div>
+        <div class="event-detail">📚 <strong>Hình thức đào tạo:</strong> Offline thực chiến trọn vẹn tại TP.HCM kết hợp bước đệm Webinar trực tuyến 90 phút tối 30/10 kích hoạt tri thức Chặng 1 trước ngày rèn luyện thực tế.</div>
+        <div class="event-detail">📱 <strong>Công cụ đồng hành:</strong> Nền tảng Micro-LMS và công cụ đồng hành để tiếp nối hành trình hạnh phúc.</div>
+        <div class="event-detail">🍱 <strong>Quyền lợi học viên:</strong> Trọn gói buổi Webinar 90 phút, quyền truy cập LMS Chặng 1, tài liệu chuyên sâu, 02 tiệc Teabreak sáng/chiều & bữa trưa tại cơ sở Apollo English.</div>
+      </div>
+      
+      <p class="paragraph">
+        Để đảm bảo quyền lợi và hoàn tất thủ tục <strong>giữ chỗ chính thức</strong>, Anh/Chị vui lòng hoàn thành chuyển khoản chi phí hậu cần theo hướng dẫn bên dưới.
+      </p>
+      
+      <div class="warning-box">
+        <h3>⚠️ Lưu ý quan trọng:</h3>
+        <p>Số lượng học viên tham gia tại cơ sở Apollo English TP.HCM giới hạn để đảm bảo chất lượng tương tác cao nhất. Anh/Chị vui lòng hoàn thành chuyển khoản sớm để hệ thống ghi nhận vị trí chính thức của mình. Trạng thái đăng ký hiện tại: <strong>CHƯA THANH TOÁN (Pending)</strong>.</p>
+      </div>
+
+      <div class="payment-box">
+        <div class="payment-title">Thông tin chuyển khoản chi phí hậu cần (250.000 VNĐ):</div>
+        <ul class="payment-list">
+          <li class="payment-item">🏦 <strong>Ngân hàng:</strong> BIDV (Ngân hàng TMCP Đầu tư và Phát triển Việt Nam)</li>
+          <li class="payment-item">💳 <strong>Số tài khoản:</strong> <strong>8815369431</strong></li>
+          <li class="payment-item">👤 <strong>Chủ tài khoản:</strong> <strong>Hà Ngọc Hoàn</strong></li>
+          <li class="payment-item" style="margin-top: 15px;">✍️ <strong>Nội dung chuyển khoản</strong> (Bắt buộc nhập chính xác): <span class="code-syntax">DHM10999888777</span></li>
+        </ul>
+      </div>
+
+      <!-- Khối Mã QR Thanh Toán SePay Tự Động -->
+      <div style="text-align: center; margin: 25px 0 15px 0;">
+        <p style="font-size: 14px; font-weight: bold; color: #1e3a8a; margin-bottom: 10px;">📲 Quét mã QR bên dưới để chuyển khoản nhanh qua ngân hàng:</p>
+        <img width="260" src="https://qr.sepay.vn/img?acc=8815369431&bank=BIDV&amount=250000&des=DHM10999888777&template=compact&showinfo=false" alt="QR thanh toán DHM10" style="display:block; width:100%; max-width: 260px !important; margin:0 auto; background:#ffffff; border:1px solid #e5e7eb; border-radius:12px; padding:10px;">
+      </div>
+
+      <!-- Khối Nút Bấm Khôi Phục & Xác Nhận Trực Tiếp Trên Web -->
+      <div style="text-align: center; margin: 20px 0 25px 0;">
+        <a href="https://delivering-happiness.vercel.app/register_dhm10.html?resume=1&uuid=test-uat-dhm10-lead-20261022&paymentCode=DHM10999888777" target="_blank" style="display: inline-block; background-color: #0068ff; color: #ffffff !important; text-decoration: none; padding: 13px 26px; border-radius: 8px; font-size: 14.5px; font-weight: bold; box-shadow: 0 4px 12px rgba(0, 104, 255, 0.25);">
+          👉 Mở trang xác nhận thanh toán & kiểm tra trạng thái
+        </a>
+        <p style="font-size: 12.5px; color: #6b7280; margin-top: 8px; font-style: italic;">
+          (Dành cho học viên mở email trên điện thoại để sao chép nhanh số tài khoản & theo dõi xác nhận)
+        </p>
+      </div>
+
+      <p class="paragraph" style="font-size: 13.5px; color: #4b5563; font-style: italic;">
+        * Sau khi Anh/Chị chuyển khoản thành công, hệ thống tự động của CultureCode Team sẽ ghi nhận giao dịch và gửi email xác nhận giữ chỗ chính thức kèm link tham gia nhóm Zalo lớp học.
+      </p>
+      
+      <p class="paragraph" style="margin-top: 25px;">
+        Hẹn gặp lại Anh/Chị tại hành trình Delivering Happiness Masterclass 10!
+      </p>
+    </div>
+    
+    <div class="footer">
+      <table class="footer-table">
+        <tr>
+          <td class="footer-left">
+            <p class="closing">Trân trọng,</p>
+            <p class="team-name">CultureCode Team</p>
+            <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #6b7280;">
+              🌐 Website: <a href="https://delivering-happiness.vercel.app" target="_blank" style="color: #0f766e; text-decoration: none; font-weight: 500;">delivering-happiness.vercel.app</a><br>
+              🔗 LinkedIn: <a href="https://www.linkedin.com/company/culturecodecommunity" target="_blank" style="color: #0f766e; text-decoration: none; font-weight: 500;">CultureCode Community</a>
+            </p>
+          </td>
+          <td class="footer-right">
+            <img src="https://delivering-happiness.vercel.app/assets/culturecode-logo-light.jpg" alt="CultureCode Logo" width="90" style="width: 90px !important; max-width: 90px !important; height: auto !important; display: block; margin-left: auto; border-radius: 4px;" class="footer-logo" />
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

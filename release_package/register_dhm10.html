@@ -20,7 +20,7 @@
         }
         .location-options {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 12px;
             margin-top: 8px;
         }
@@ -29,26 +29,33 @@
                 grid-template-columns: 1fr;
             }
         }
+
         .location-card {
-            border: 2px solid rgba(255, 255, 255, 0.15);
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 10px;
-            padding: 12px;
+            border: 2px solid rgba(255, 209, 102, 0.6);
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 16px 20px;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
             align-items: flex-start;
-            gap: 10px;
-        }
-        .location-card:hover {
-            border-color: rgba(255, 209, 102, 0.5);
-            background: rgba(255, 255, 255, 0.06);
+            gap: 14px;
+            width: 100%;
+            box-sizing: border-box;
         }
         .location-card input[type="radio"] {
-            margin-top: 3px;
+            width: 20px !important;
+            min-width: 20px !important;
+            max-width: 20px !important;
+            height: 20px !important;
+            margin: 3px 0 0 0 !important;
+            padding: 0 !important;
+            flex-shrink: 0 !important;
             cursor: pointer;
+            accent-color: #f59e0b !important;
         }
         .location-label {
+            flex: 1;
             cursor: pointer;
         }
         .location-name {
@@ -114,7 +121,7 @@
 
             <div class="form-grid">
                 <!-- 1. Họ và tên -->
-                <div class="input-group">
+                <div class="input-group full-width">
                     <label>Họ và tên *</label>
                     <input type="text" name="fullName" required placeholder="Nhập họ và tên đầy đủ...">
                 </div>
@@ -142,22 +149,13 @@
                                     <span class="location-name">TP. Hồ Chí Minh — Trực tiếp Offline</span>
                                     <span class="location-venue">Cơ sở Apollo English, 58 Phạm Ngọc Thạch, Phường Võ Thị Sáu, Quận 3, TP.HCM</span>
                                     <span style="font-size:0.8rem; color:rgba(255,255,255,0.7); display:block; margin-top:4px;">
-                                        ⏰ Lịch học: Webinar LMS tối Thứ Sáu 30/10/2026 (19:30 - 21:00) + Ngày học tập trung Chủ Nhật 01/11/2026 (08:30 - 17:30)
+                                        ⏰ Lịch học: Webinar LMS tối Thứ Sáu 30/10/2026 (19:30 - 21:00) + Ngày học tập trung Chủ Nhật 01/11/2026 (08:00 - 17:00)
                                     </span>
                                 </div>
                             </label>
-                            <a href="next_dhm.html" class="location-card" style="text-decoration: none; border: 1px dashed rgba(245, 158, 11, 0.5); background: rgba(245, 158, 11, 0.05); cursor: pointer; display: flex; align-items: center;">
-                                <div class="location-label">
-                                    <span class="location-name" style="color: #fcd34d;">Hà Nội (Dự kiến DHM11)</span>
-                                    <span class="location-venue">Apollo English - Phố Huế</span>
-                                    <span style="font-size:0.8rem; color:#6ee7b7; display:block; margin-top:4px;">
-                                        👉 Nhấp vào đây để để lại thông tin giữ chỗ ưu tiên tại Hà Nội
-                                    </span>
-                                </div>
-                            </a>
-                        </div>
+                            </div>
                         <div class="location-note" style="margin-top: 10px;">
-                            * <strong>Lưu ý:</strong> Khóa DHM10 tổ chức Offline trọn vẹn tại TP.HCM. Học viên tại Hà Nội (Dự kiến DHM11 tại <strong>Apollo English - Phố Huế</strong>) vui lòng nhấp vào thẻ Hà Nội ở trên hoặc <a href="next_dhm.html" style="color: var(--warm-yellow); text-decoration: underline;">Form quan tâm Next DHM</a> để nhận thông báo sớm nhất.
+                            * <strong>Lưu ý:</strong> Khóa DHM10 tổ chức Offline trọn vẹn tại TP.HCM. Học viên tại Hà Nội (Dự kiến DHM11 tại <strong>Apollo English - Phố Huế</strong>) vui lòng để lại thông tin tại <a href="next_dhm.html" style="color: var(--warm-yellow); text-decoration: underline;">Form quan tâm Next DHM</a> để nhận thông báo sớm nhất.
                         </div>
                     </div>
                 </div>
@@ -239,7 +237,7 @@
                     <!-- Nguồn biết đến chương trình -->
                     <div class="input-group full-width">
                         <label>Lần đầu bạn nghe thông tin chương trình từ đâu?</label>
-                        <div class="radio-group" style="grid-template-columns: 1fr 1fr;">
+                        <div class="radio-group" style="grid-template-columns: 1fr;">
                             <div class="radio-item">
                                 <input type="radio" id="src1" name="sourceHearing" value="CultureCode linkedin page">
                                 <label for="src1">CultureCode linkedin page</label>
@@ -275,7 +273,7 @@
                     <!-- Chương trình đã tham gia -->
                     <div class="input-group full-width">
                         <label>Bạn đã tham gia chương trình nào của CultureCode?</label>
-                        <div class="radio-group" style="grid-template-columns: 1fr 1fr;">
+                        <div class="radio-group" style="grid-template-columns: 1fr;">
                             <div class="radio-item">
                                 <input type="checkbox" id="prog1" name="attendedPrograms" value="CultureCode CC101">
                                 <label for="prog1">CultureCode CC101</label>
@@ -299,7 +297,7 @@
                     <!-- Mục đích tham gia -->
                     <div class="input-group full-width">
                         <label>Mục đích khi bạn đăng ký tham gia DH Masterclass?</label>
-                        <div class="radio-group" style="grid-template-columns: 1fr 1fr;">
+                        <div class="radio-group" style="grid-template-columns: 1fr;">
                             <div class="radio-item">
                                 <input type="checkbox" id="purp1" name="purpose" value="Học và áp dụng cho bản thân">
                                 <label for="purp1">Học và áp dụng cho bản thân</label>

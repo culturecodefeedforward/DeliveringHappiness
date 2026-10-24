@@ -5,10 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng ký DH Masterclass (DHM10) - CultureCode</title>
-    <script>
-        // Chưa chốt ngày học chính thức theo chỉ đạo BTC - Tự động chuyển hướng sang form quan tâm DHM10
-        window.location.replace("interest_dh10.html");
-    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700;800&display=swap"
         rel="stylesheet">
@@ -24,7 +20,7 @@
         }
         .location-options {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 12px;
             margin-top: 8px;
         }
@@ -33,26 +29,33 @@
                 grid-template-columns: 1fr;
             }
         }
+
         .location-card {
-            border: 2px solid rgba(255, 255, 255, 0.15);
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 10px;
-            padding: 12px;
+            border: 2px solid rgba(255, 209, 102, 0.6);
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 16px 20px;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
             align-items: flex-start;
-            gap: 10px;
-        }
-        .location-card:hover {
-            border-color: rgba(255, 209, 102, 0.5);
-            background: rgba(255, 255, 255, 0.06);
+            gap: 14px;
+            width: 100%;
+            box-sizing: border-box;
         }
         .location-card input[type="radio"] {
-            margin-top: 3px;
+            width: 20px !important;
+            min-width: 20px !important;
+            max-width: 20px !important;
+            height: 20px !important;
+            margin: 3px 0 0 0 !important;
+            padding: 0 !important;
+            flex-shrink: 0 !important;
             cursor: pointer;
+            accent-color: #f59e0b !important;
         }
         .location-label {
+            flex: 1;
             cursor: pointer;
         }
         .location-name {
@@ -86,8 +89,9 @@
         <div class="header">
             <h1>Đăng ký DH Masterclass (DHM10)</h1>
             <p class="subtitle">
-                🗓️ Thứ Bảy, 10/10/2026 | Hà Nội & TP.HCM<br>
-                Mô hình đào tạo Hybrid: Pre-course Webinar + Ngày học trực tiếp tập trung tại Apollo English cùng Giảng viên cơ hữu CultureCode Team
+                🗓️ Chủ Nhật, 01/11/2026 (Offline tại TP.HCM) &bull; Khởi động Webinar LMS: Tối Thứ Sáu, 30/10/2026<br>
+                Địa điểm trực tiếp: Cơ sở Apollo English, 58 Phạm Ngọc Thạch, Phường Võ Thị Sáu, Quận 3, TP.HCM<br>
+                <span style="display:inline-block; margin-top: 8px; padding: 4px 14px; background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.5); border-radius: 20px; font-weight: 700; color: #fcd34d; font-size: 0.9rem;">⚡ Giới hạn 35 suất học viên theo nguyên tắc First-Come, First-Served</span>
             </p>
         </div>
 
@@ -96,16 +100,16 @@
             <p style="color: rgba(255,255,255,0.75); line-height: 1.6; margin-bottom: 1.5rem;">
                 Cảm ơn bạn đã quan tâm. Chương trình hiện đã đủ số lượng học viên cho đợt này, bạn có thể để lại thông tin để nhận thông báo cho chương trình tiếp theo.
             </p>
-            <a id="registrationClosedInterestLink" href="interest_dh10.html" class="btn-submit" style="display:block; text-decoration:none; text-align:center;">Để lại quan tâm</a>
+            <a id="registrationClosedInterestLink" href="next_dhm.html" class="btn-submit" style="display:block; text-decoration:none; text-align:center;">Để lại quan tâm Next DHM</a>
             <a href="/" class="back-home" style="text-align: center;">← Quay về trang chủ</a>
         </div>
 
         <form id="crmForm">
             <!-- Thông tin Thanh toán -->
             <div class="payment-info">
-                <h3>💰 Chi phí hậu cần: 250.000đ (Đồng nhất mọi địa điểm)</h3>
+                <h3>💰 Chi phí hậu cần: 250.000đ (Giới hạn 35 suất • First-Come, First-Served)</h3>
                 <div class="payment-details">
-                    <p>Bao gồm: Chuỗi Pre-course Webinar trực tuyến, Tài liệu chuyên sâu, Ăn trưa và Teabreak tại cơ sở Apollo English.</p>
+                    <p>Bao gồm: Session Webinar khởi động, LMS, Tài liệu chuyên sâu, Ăn trưa và 02 tiệc Teabreak cho 1 ngày offline trọn vẹn và công cụ thực hành tiếp nối.</p>
                     <p style="margin-top: 10px; margin-bottom: 15px;">Sau khi gửi form, hệ thống sẽ tạo <strong>mã thanh toán SePay riêng (DHM10...)</strong> và hiển thị đúng QR tương ứng để bạn chuyển khoản theo luồng tự động.</p>
                     <p style="font-size: 0.85rem; color: rgba(255,255,255,0.7); line-height: 1.5; border-top: 1px dashed rgba(255,255,255,0.2); padding-top: 10px; margin-top: 10px;">
                         <strong>Lưu ý:</strong><br>
@@ -117,7 +121,7 @@
 
             <div class="form-grid">
                 <!-- 1. Họ và tên -->
-                <div class="input-group">
+                <div class="input-group full-width">
                     <label>Họ và tên *</label>
                     <input type="text" name="fullName" required placeholder="Nhập họ và tên đầy đủ...">
                 </div>
@@ -134,30 +138,24 @@
                     <input type="tel" name="phone" required placeholder="Để CultureCode Team liên hệ và mời vào nhóm...">
                 </div>
 
-                <!-- 4. Địa điểm học tập trung mong muốn (BẮT BUỘC theo chỉ đạo DHM10) -->
+                <!-- 4. Địa điểm học tập trung -->
                 <div class="input-group full-width">
-                    <label>Địa điểm học tập trung mong muốn *</label>
+                    <label>Địa điểm học tập trung *</label>
                     <div class="location-select-box">
                         <div class="location-options">
-                            <label class="location-card" for="locHN">
-                                <input type="radio" id="locHN" name="learningLocation" value="Hà Nội - Cơ sở Apollo English" required>
+                            <label class="location-card selected" for="locHCM" style="border-color: rgba(255, 209, 102, 0.6); background: rgba(255, 255, 255, 0.08);">
+                                <input type="radio" id="locHCM" name="learningLocation" value="TP.HCM - Cơ sở Apollo English" checked required>
                                 <div class="location-label">
-                                    <span class="location-name">Hà Nội</span>
-                                    <span class="location-venue">Cơ sở Apollo English</span>
-                                    <span style="font-size:0.78rem; color:rgba(255,255,255,0.5); display:block; margin-top:3px;">Apollo English, 181-183-185 Phố Huế, Q. Hai Bà Trưng</span>
+                                    <span class="location-name">TP. Hồ Chí Minh — Trực tiếp Offline</span>
+                                    <span class="location-venue">Cơ sở Apollo English, 58 Phạm Ngọc Thạch, Phường Võ Thị Sáu, Quận 3, TP.HCM</span>
+                                    <span style="font-size:0.8rem; color:rgba(255,255,255,0.7); display:block; margin-top:4px;">
+                                        ⏰ Lịch học: Webinar LMS tối Thứ Sáu 30/10/2026 (19:30 - 21:00) + Ngày học tập trung Chủ Nhật 01/11/2026 (08:00 - 17:00)
+                                    </span>
                                 </div>
                             </label>
-                            <label class="location-card" for="locHCM">
-                                <input type="radio" id="locHCM" name="learningLocation" value="TP.HCM - Cơ sở Apollo English" required>
-                                <div class="location-label">
-                                    <span class="location-name">TP. Hồ Chí Minh</span>
-                                    <span class="location-venue">Cơ sở Apollo English</span>
-                                    <span style="font-size:0.78rem; color:rgba(255,255,255,0.5); display:block; margin-top:3px;">Apollo English, 58 Phạm Ngọc Thạch, Q. 3</span>
-                                </div>
-                            </label>
-                        </div>
-                        <div class="location-note">
-                            * Mô hình Hybrid tiên phong: Đội ngũ giảng viên kết nối trực tuyến & trực tiếp, luôn có Giảng viên cơ hữu của CultureCode Team túc trực đồng hành suốt khóa học tại cả hai đầu cầu.
+                            </div>
+                        <div class="location-note" style="margin-top: 10px;">
+                            * <strong>Lưu ý:</strong> Khóa DHM10 tổ chức Offline trọn vẹn tại TP.HCM. Học viên tại Hà Nội (Dự kiến DHM11 tại <strong>Apollo English - Phố Huế</strong>) vui lòng để lại thông tin tại <a href="next_dhm.html" style="color: var(--warm-yellow); text-decoration: underline;">Form quan tâm Next DHM</a> để nhận thông báo sớm nhất.
                         </div>
                     </div>
                 </div>
@@ -239,7 +237,7 @@
                     <!-- Nguồn biết đến chương trình -->
                     <div class="input-group full-width">
                         <label>Lần đầu bạn nghe thông tin chương trình từ đâu?</label>
-                        <div class="radio-group" style="grid-template-columns: 1fr 1fr;">
+                        <div class="radio-group" style="grid-template-columns: 1fr;">
                             <div class="radio-item">
                                 <input type="radio" id="src1" name="sourceHearing" value="CultureCode linkedin page">
                                 <label for="src1">CultureCode linkedin page</label>
@@ -275,7 +273,7 @@
                     <!-- Chương trình đã tham gia -->
                     <div class="input-group full-width">
                         <label>Bạn đã tham gia chương trình nào của CultureCode?</label>
-                        <div class="radio-group" style="grid-template-columns: 1fr 1fr;">
+                        <div class="radio-group" style="grid-template-columns: 1fr;">
                             <div class="radio-item">
                                 <input type="checkbox" id="prog1" name="attendedPrograms" value="CultureCode CC101">
                                 <label for="prog1">CultureCode CC101</label>
@@ -299,7 +297,7 @@
                     <!-- Mục đích tham gia -->
                     <div class="input-group full-width">
                         <label>Mục đích khi bạn đăng ký tham gia DH Masterclass?</label>
-                        <div class="radio-group" style="grid-template-columns: 1fr 1fr;">
+                        <div class="radio-group" style="grid-template-columns: 1fr;">
                             <div class="radio-item">
                                 <input type="checkbox" id="purp1" name="purpose" value="Học và áp dụng cho bản thân">
                                 <label for="purp1">Học và áp dụng cho bản thân</label>
@@ -343,7 +341,7 @@
                 </div>
 
                 <!-- Event ID & Default Status -->
-                <input type="hidden" name="event_id" value="DHM10_REG_2026_HYBRID">
+                <input type="hidden" name="event_id" value="DHM10_REG_2026_OFFLINE_HCM">
                 <input type="hidden" name="lane" value="dh10">
                 <input type="hidden" name="paymentStatus" value="Pending">
             </div>
@@ -380,10 +378,10 @@
                         <li><strong>Số tiền:</strong> <code id="successPaymentAmount" style="font-size: 1rem; font-weight: bold; color: #fff;">250.000đ</code></li>
                         <li><strong>Trạng thái thanh toán:</strong> <code id="successPaymentStatus" style="color: var(--warm-yellow);">Chờ thanh toán</code></li>
                     </ul>
-                    <a id="successZaloGroupLink" href="https://zalo.me/g/3wrsaoygrfcjubr0ie44" target="_blank"
+                    <a id="successZaloGroupLink" href="https://zalo.me/g/ukkgeekvhfxkzfdq7v0y" target="_blank"
                         rel="noopener"
                         style="display:none; margin-top: 0.75rem; padding: 0.8rem 1rem; border-radius: 10px; background:#0068ff; color:#fff; font-weight:700; text-decoration:none; text-align:center;">
-                        Vào nhóm Zalo DHM10
+                        Vào nhóm Zalo DHM10 TP.HCM
                     </a>
                 </div>
                 <div id="successPaymentQrWrapper" style="display:none; margin-top: 1rem; text-align:center;">
@@ -411,7 +409,7 @@
         window.DHM10_QR_TEMPLATE = "compact";
         window.DHM10_QR_SHOW_INFO = false;
         window.DH_FORM_LANE = "dh10";
-        window.DH_INTEREST_URL = "interest_dh10.html";
+        window.DH_INTEREST_URL = "next_dhm.html";
         window.DHM10_ZALO_GROUP_URL = "https://zalo.me/g/ukkgeekvhfxkzfdq7v0y";
     </script>
     <script src="tracking.js?v=3.1-live"></script>
