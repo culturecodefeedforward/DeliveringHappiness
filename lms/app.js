@@ -5835,6 +5835,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnHeaderRoadmap = document.getElementById("btn-header-roadmap");
     if (btnHeaderRoadmap) btnHeaderRoadmap.addEventListener("click", openRoadmapDoc);
 
+    const btnSidebarRoadmap = document.getElementById("btn-sidebar-roadmap");
+    if (btnSidebarRoadmap) btnSidebarRoadmap.addEventListener("click", openRoadmapDoc);
+
     const btnBottomRoadmap = document.getElementById("btn-bottom-roadmap");
     if (btnBottomRoadmap) btnBottomRoadmap.addEventListener("click", openRoadmapDoc);
 

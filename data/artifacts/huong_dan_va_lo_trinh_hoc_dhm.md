@@ -63,6 +63,8 @@ Hành trình học tập Delivering Happiness được tổ chức theo chuỗi 
 
 ### 2. MINI-STEP 2 • OFFLINE: GIEO THÓI QUEN HẠNH PHÚC (HỘI THẢO TRỰC TIẾP TẠI LỚP)
 
+> **Khung giờ đào tạo trực tiếp chuẩn (Standard Schedule):** **08:00 – 17:00** (Đón tiếp & làm thủ tục check-in từ 07:30, chương trình bắt đầu chính xác lúc 08:00).
+
 - **Mục tiêu chặng:** Bước vào không gian trải nghiệm thực chiến cùng Ban Giảng Huấn và đồng đội; chuyển hóa nhận thức lý thuyết thành các hành vi cụ thể và thói quen tự thân mỗi ngày.
 - **Nội dung thực hành trọng tâm:**
   1. **Trạm 0: 3 Đòn Bẩy Nơi Làm Việc (Thuyết Tự Quyết SDT — Edward Deci & Richard Ryan, 2000):**
@@ -102,25 +104,26 @@ Giao diện học tập được xây dựng theo tiêu chuẩn Single Page Appl
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
 │                     GIAO DIỆN HỌC TẬP LMS (CHẾ ĐỘ TẬP TRUNG)                           │
 ├────────────────────────────────────────────────────────────────────────────────────────┤
-│ [Logo DHM]  [◀ Thu Gọn Mục Lục]     [▶ Tiếp Tục Bài Đang Dở]       [Tên Học Viên ▼]   │
+│ [Logo DHM]  [◀ Thu Gọn Mục Lục]     [▶ Tiếp Tục Học]   [📘 Cẩm Nang]   [Tên Học Viên ▼]│
 ├────────────────────────────────────────────────────────────────────────────────────────┤
 │ (Banner Sát Hạch: Tự động co gọn thành huy hiệu sau khi đạt điểm ≥80%)                │
 ├───────────────────────────────┬────────────────────────────────────────────────────────┤
 │ SIDEBAR GIÁO TRÌNH (Trái)     │ NỘI DUNG BÀI HỌC CHÍNH (Phải)                          │
 │                               │                                                        │
-│ • Mục 1.1: Khoa Học Hạnh Phúc │ 📺 Video Explainer & Khung Bài Giảng                   │
-│ • Mục 1.2: La Bàn Me Values   │                                                        │
-│ • Mục 1.3: 🎯 Cổng Sát Hạch   │ ────────────────────────────────────────────────────── │
-│ • Mục 2.0: Trạm 0: 3 Đòn Bẩy  │ [Tab 1: 📖 Tóm Tắt]  [Tab 2: ⚡ THỰC HÀNH] [Tab 3: Slide]│
-│ • Mục 2.1: Biết Ơn (Gratitude)│                                                        │
-│ • Mục 2.2: Tỉnh Thức (SCBA)   │ PHẦN 1: Khái Niệm & Công Cụ Thực Hành Cốt Lõi          │
-│ • Mục 2.3: Lạc Quan (ABCDE)   │ PHẦN 2: Tình Huống Thực Tế & Bài Tập Mẫu Gợi Ý (Duy)   │
-│ • Mục 2.4: Phiêu (Flow)       │         [💡 Xem Phân Tích & Bài Giải Mẫu ▼]            │
-│ • Mục 2.5: Vị Nhân (Altruism) │ PHẦN 3: Đúc Kết I • A • M & Cam Kết Hành Động          │
-│ • Mục 2.6: Đúc Kết Chuyển Hóa │                                                        │
-│ [✓] Tích xanh tiến độ bài học │ [⬅ Bài Trước]       [💾 Lưu Tiến Độ]    [Bài Tiếp Theo ➔]│
+│ • 🌟 3 Cấp Độ Hạnh Phúc       │ 📺 Video Explainer & Khung Bài Giảng                   │
+│ • 🧭 La Bàn Me Values         │                                                        │
+│ • 📍 Đúc Kết I • A • M         │ ────────────────────────────────────────────────────── │
+│ • 🎯 Cổng Sát Hạch Vượt Chặng │ [Tab 1: 📖 Tóm Tắt]  [Tab 2: ⚡ THỰC HÀNH] [Tab 3: Slide]│
+│ • 🚀 Trạm 0: 3 Đòn Bẩy (SDT)  │                                                        │
+│ • 🌿 Tỉnh Thức (SCBA)         │ PHẦN 1: Khái Niệm & Công Cụ Thực Hành Cốt Lõi          │
+│ • ☀️ Biết Ơn (Gratitude)      │ PHẦN 2: Tình Huống Thực Tế & Bài Tập Mẫu Gợi Ý (Duy)   │
+│ • 🌈 Lạc Quan (ABCDE)         │         [💡 Xem Phân Tích & Bài Giải Mẫu ▼]            │
+│ • 🔥 Phiêu (Flow)             │ PHẦN 3: Đúc Kết I • A • M & Cam Kết Hành Động          │
+│ • 🤝 Vị Nhân (Smart Giver)    │                                                        │
+│ • 🏆 Đúc Kết Chuyển Hóa       │                                                        │
+│ [✓] Tích xanh tiến độ bài học │ [⬅ Chặng Trước]  [📘 Cẩm Nang] [Hoàn Thành & Tiếp Tục ➔]│
 └───────────────────────────────┴────────────────────────────────────────────────────────┘
-```
+`
 
 ### 1. ĐĂNG NHẬP & NHẬN DIỆN HỌC VIÊN
 1. **Truy cập hệ thống:** Mở trình duyệt web và truy cập đường dẫn chính thức:  
@@ -130,31 +133,56 @@ Giao diện học tập được xây dựng theo tiêu chuẩn Single Page Appl
    - *Tính năng Tự Phục Vụ (Self-Service Onboarding):* Nếu hệ thống thông báo hồ sơ của bạn chưa có số điện thoại, một ô nhập bổ sung sẽ xuất hiện ngay trên cửa sổ đăng nhập. Bạn chỉ cần nhập số điện thoại chính thức của mình một lần để hệ thống tự động ghi nhận và cấp quyền truy cập ngay lập tức.
    - *Quyền Ban Giảng Huấn (Coach Bypass):* Tài khoản của các Giảng viên và Coach được hệ thống tự động nhận diện danh tính và mở khóa toàn bộ các chặng học mà không cần thi sát hạch.
 
+![Đăng nhập & Xác thực nhận diện học viên](/data/artifacts/images/guide_step1_login_modal.png)
+
 ---
 
 ### 2. CÁC TÍNH NĂNG ĐỘT PHÁ TỐI ƯU TRẢI NGHIỆM HỌC VIÊN
 
 #### A. Chế Độ Học Tập Tập Trung (LinkedIn Learning Desktop Focused Mode)
-- **Nút Thu Gọn Sidebar Máy Tính (`#btn-collapse-sidebar-desktop`):** Nằm ngay trên đầu thanh mục lục bên trái. Bấm vào nút này để ẩn thanh mục lục, mở rộng không gian bài giảng ra 100% bề ngang màn hình, giúp bạn xem video, đọc slide và làm bài tập cực kỳ thoáng đãng, không bị phân tâm.
-- **Nút Mở Rộng Mục Lục (`#btn-sidebar-desktop-expand`):** Khi sidebar đang đóng, một nút bấm biểu tượng mục lục nhỏ gọn sẽ xuất hiện ở góc trên thanh tiêu đề để bạn mở lại danh mục bất cứ lúc nào chỉ với 1 nhấp chuột.
+- **Nút Thu Gọn Sidebar Máy Tính (#btn-collapse-sidebar-desktop):** Nằm ngay trên đầu thanh mục lục bên trái. Bấm vào nút này để ẩn thanh mục lục, mở rộng không gian bài giảng ra 100% bề ngang màn hình, giúp bạn xem video, đọc slide và làm bài tập cực kỳ thoáng đãng, không bị phân tâm.
+- **Nút Mở Rộng Mục Lục (#btn-sidebar-desktop-expand):** Khi sidebar đang đóng, một nút bấm biểu tượng mục lục nhỏ gọn sẽ xuất hiện ở góc trên thanh tiêu đề để bạn mở lại danh mục bất cứ lúc nào chỉ với 1 nhấp chuột.
 - **Ghi nhớ trạng thái:** Hệ thống tự động lưu lựa chọn thu gọn vào bộ nhớ trình duyệt (*localStorage*), giúp duy trì trạng thái xem yêu thích của bạn cho các lần học sau.
+
+![Giao diện tổng quan Chế độ học tập tập trung LinkedIn Learning](/data/artifacts/images/guide_step2_dashboard_overview.png)
 
 #### B. Thẻ Khởi Động Nhanh (Quick Start Card 1 Trang A4)
 - Học viên mới khi đăng nhập sẽ được chào đón bằng **Quick Start Card Modal** tinh gọn 1 trang:
   1. *Bước 1: Đăng nhập* bằng Email và 4 số cuối SĐT.
-  2. *Bước 2: Xem bài giảng* qua Video Explainer và kho Audio Podcast.
-  3. *Bước 3: Vượt qua bài sát hạch vượt chặng* (đạt ≥ 80%, tối đa 3 lần).
+  2. *Bước 2: Xem bài giảng* qua Video Explainer và Slide chính thức.
+  3. *Bước 3: Vượt qua Cổng Sát Hạch Vượt Chặng* (đạt ≥ 80%, tối đa 3 lần).
   4. *Bước 4: Thực hành và lưu trữ* các bài tập I•A•M.
 
-#### C. Thanh Tiếp Tục Học Tập Thông Minh (Smart Resume Learning)
-- Khi học viên quay lại hệ thống sau giờ nghỉ, nút **`[▶ Tiếp Tục Bài Tập Đang Dở]`** trên thanh điều hướng chính sẽ tự động xác định bài học, tab và vị trí bạn đang làm dở để đưa bạn quay lại ngay lập tức mà không phải tìm kiếm thủ công.
+![Thẻ Khởi Động Nhanh Quick Start Modal 1 trang](/data/artifacts/images/guide_feature_quick_start_modal.png)
 
-#### D. Tự Động Thu Gọn Banner Sát Hạch (Hero Gate Auto-Collapse)
+#### C. Lộ Trình Cân Bằng & Biểu Tượng Thương Hiệu Sạch Sẽ (🌟 🧭 📍 🎯)
+- **Lưới đối xứng 2x2 cân bằng:** Thay thế hoàn toàn bố cục lệch dòng bằng lưới cố định 2x2 trên thiết bị di động và 1x4 trên màn hình máy tính (grid-cols-2 sm:grid-cols-4).
+- **Triệt tiêu số bài vụn vặt:** Toàn bộ các tiền tố cũ (1.1, 1.2) được thay thế bằng hệ thống biểu tượng cao cấp:
+  - 🌟 **3 Cấp Độ Hạnh Phúc** (Pleasure • Passion • Higher Purpose).
+  - 🧭 **La Bàn Giá Trị Cá Nhân — Me Values** (Định vị 3–5 giá trị cốt lõi).
+  - 📍 **Đúc Kết I • A • M** (Khung phản tư Interested - Actionable - Meaningful).
+  - 🎯 **Cổng Sát Hạch Vượt Chặng** (10 câu trắc nghiệm phản xạ, đạt ≥ 80%).
+
+![Lộ trình đối xứng 2x2 và hệ thống biểu tượng sạch sẽ](/data/artifacts/images/guide_feature_symmetric_roadmap.png)
+
+#### D. Thanh Tiếp Tục Học Tập Thông Minh (Smart Resume Learning)
+- Khi học viên quay lại hệ thống sau giờ nghỉ, nút **[▶ Tiếp Tục Học]** trên thanh điều hướng chính sẽ tự động xác định bài học, tab và vị trí bạn đang làm dở để đưa bạn quay lại ngay lập tức mà không phải tìm kiếm thủ công.
+
+#### E. Tự Động Thu Gọn Banner Sát Hạch (Hero Gate Auto-Collapse)
 - Trước khi thi sát hạch, banner bài test hiển thị nổi bật để nhắc nhở nhiệm vụ bắt buộc.
-- **Ngay khi bạn làm bài thi đạt kết quả từ 80% trở lên**, toàn bộ banner nhắc nhở lớn sẽ tự động co gọn lại thành một huy hiệu thông báo nhỏ gọn `[✓ Đã Đạt Chuẩn Đầu Vào]`, nhường toàn bộ màn hình cho không gian học tập chuyên sâu.
+- **Ngay khi bạn làm bài thi đạt kết quả từ 80% trở lên**, toàn bộ banner nhắc nhở lớn sẽ tự động co gọn lại thành một huy hiệu thông báo nhỏ gọn [✓ Đã Đạt Chuẩn Đầu Vào], nhường toàn bộ màn hình cho không gian học tập chuyên sâu.
 
-#### E. Tích Xanh Tiến Độ Tiểu Mục (Visual Completion Checkmarks)
-- Mỗi khi bạn hoàn thành bài kiểm tra hoặc lưu đúc kết bài tập của một tiểu mục, trên Sidebar giáo trình sẽ tự động xuất hiện dấu tích xanh **`✓`** cạnh tiêu đề mục đó, giúp bạn luôn nhìn thấy rõ cảm giác tiến bộ (*Sense of Progress*) của bản thân.
+#### F. Tích Xanh Tiến Độ Tiểu Mục (Visual Completion Checkmarks)
+- Mỗi khi bạn hoàn thành bài kiểm tra hoặc lưu đúc kết bài tập của một tiểu mục, trên Sidebar giáo trình sẽ tự động xuất hiện dấu tích xanh **✓** cạnh tiêu đề mục đó, giúp bạn luôn nhìn thấy rõ cảm giác tiến bộ (*Sense of Progress*) của bản thân.
+
+#### G. Kho Lưu Trữ Của Tôi (IAM Personal Vault)
+- Nút bấm **[📜 Kho lưu trữ của tôi]** trên thanh tiêu đề cho phép bạn tra cứu lại toàn bộ hành trình học tập cá nhân bất kỳ lúc nào qua 4 Tab chuyên biệt:
+  1. *Tab 1: Phản Tư I•A•M* — Toàn bộ bài tập đúc kết I•A•M đã lưu qua các chặng.
+  2. *Tab 2: La Bàn Giá Trị* — Danh mục các giá trị sống cốt lõi đã chọn.
+  3. *Tab 3: Thói Quen Hạnh Phúc* — Lịch sử điểm danh 5 thói quen và chuỗi Streak Hero.
+  4. *Tab 4: Trạng Thái Đồng Bộ* — Xác nhận kết nối thời gian thực về máy chủ Ban Giảng Huấn.
+
+![Kho Lưu Trữ Của Tôi - IAM Personal Vault 4 Tab](/data/artifacts/images/guide_feature_iam_vault.png)
 
 ---
 
@@ -162,13 +190,19 @@ Giao diện học tập được xây dựng theo tiêu chuẩn Single Page Appl
 
 Mỗi bài học được chia thành 3 Tab chức năng rõ ràng:
 
-1. **Tab 1: 📖 Tóm Tắt & Đúc Kết Cốt Lõi (`tab-summary`):**
+1. **Tab 1: 📖 Tóm Tắt & Đúc Kết Cốt Lõi (tab-summary):**
    - Đọc bản tóm lược lý thuyết tinh hoa của bài học.
-   - **Trình phát Audio Podcast:** Bấm nút ▶️ để nghe bài giảng qua giọng đọc truyền cảm của Ban Giảng Huấn trong lúc di chuyển hoặc nghỉ ngơi.
-   - **Bản chụp Slide chính thức:** Xem 44 bản chụp slide bài giảng chuẩn từ tài liệu gốc của cô Cúc Châu.
-2. **Tab 2: ⚡ BÀI TEST & THỰC HÀNH (`tab-practice`):**
-   - Không gian rèn luyện theo chuẩn Mô hình 3 Khối Nội Dung (Duy's 3-Sections Model).
-3. **Tab 3: 📂 Tài Liệu & Slide Đính Kèm (`tab-resources`):**
+   - **Video Explainer & Lightbox:** Bấm mở video bài giảng chất lượng cao với khung phát tối ưu.
+   - **Bản chụp Slide chính thức:** Xem 44 bản chụp slide bài giảng chuẩn từ tài liệu gốc của Ban Giảng Huấn.
+
+![Trình xem Slide bài giảng chất lượng cao](/data/artifacts/images/guide_feature_slide_viewer.png)
+
+2. **Tab 2: ⚡ BÀI TEST & THỰC HÀNH (tab-practice):**
+   - Không gian rèn luyện theo chuẩn Mô hình 3 Khối Nội Dung Sư Phạm (Duy's 3-Sections Model).
+
+![Không gian Trạm Thực Hành và Bài Tập Tình Huống](/data/artifacts/images/guide_feature_practice_tab.png)
+
+3. **Tab 3: 📂 Tài Liệu & Slide Đính Kèm (tab-resources):**
    - Chứa Cẩm nang hướng dẫn lộ trình, các bài báo cáo chuyên sâu và bộ Flashcards ôn tập tương tác.
    - Hỗ trợ xem trực tiếp qua trình đọc tài liệu (*In-App Document Reader*) hoặc tải về máy.
 
@@ -201,6 +235,8 @@ Tiếp thu sâu sắc ý kiến đóng góp từ Duy (Lamsep) về trải nghi�
 │    • Câu hỏi phản tư M (Meaningful — Ý nghĩa chuyển hóa dài hạn).                      │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
+
+![Mô hình 3 Khối Nội Dung Sư Phạm với Accordion phân tích mẫu](/data/artifacts/images/guide_feature_duy_model_accordion.png)
 
 ---
 
