@@ -5278,9 +5278,30 @@ document.addEventListener("DOMContentLoaded", () => {
         let inList = false;
         let inTable = false;
         let tableHeaderDone = false;
+        let inCodeBlock = false;
+        let codeBlockContent = [];
 
         for (let i = 0; i < lines.length; i++) {
             let line = lines[i].trim();
+
+            // Code block delimiter (``` ... ```)
+            if (line.startsWith("```")) {
+                if (inCodeBlock) {
+                    html.push('<pre class="p-4 rounded-xl bg-slate-900 border border-brand-border text-[11px] font-mono text-slate-300 overflow-x-auto my-3 leading-relaxed"><code>' + codeBlockContent.join("\n") + '</code></pre>');
+                    codeBlockContent = [];
+                    inCodeBlock = false;
+                } else {
+                    if (inList) { html.push("</ul>"); inList = false; }
+                    if (inTable) { html.push("</tbody></table></div>"); inTable = false; tableHeaderDone = false; }
+                    inCodeBlock = true;
+                    codeBlockContent = [];
+                }
+                continue;
+            }
+            if (inCodeBlock) {
+                codeBlockContent.push(escapeHtml(lines[i]));
+                continue;
+            }
 
             if (!line) {
                 if (inList) { html.push("</ul>"); inList = false; }
@@ -5365,7 +5386,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Horizontal rule
             if (line === "---" || line === "***") {
-                html.push('<hr class="border-brand-border my-6">');
+                if (inList) { html.push("</ul>"); inList = false; }
+                if (inTable) { html.push("</tbody></table></div>"); inTable = false; tableHeaderDone = false; }
+                html.push('<div class="w-full h-px bg-gradient-to-r from-transparent via-brand-amber/30 to-transparent my-6"></div>');
                 continue;
             }
 
