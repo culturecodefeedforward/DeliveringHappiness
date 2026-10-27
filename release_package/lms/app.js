@@ -5227,7 +5227,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 12.5 DOCUMENT READER MODAL
     async function openDocReader(docUrl, title) {
         if (!docReaderModal) return;
-        if (docReaderTitle) docReaderTitle.textContent = title || "Báo Cáo Chuyên Sâu";
+        if (docReaderTitle) docReaderTitle.textContent = title || "Cẩm Nang Học Viên DHM";
         if (docReaderBody) docReaderBody.innerHTML = `<div class="p-8 text-center text-slate-400">⏳ Đang tải tài liệu...</div>`;
         docReaderModal.classList.remove("hidden");
 
@@ -5280,6 +5280,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let tableHeaderDone = false;
         let inCodeBlock = false;
         let codeBlockContent = [];
+        let inBlockquote = false;
 
         for (let i = 0; i < lines.length; i++) {
             let line = lines[i].trim();
@@ -5293,6 +5294,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else {
                     if (inList) { html.push("</ul>"); inList = false; }
                     if (inTable) { html.push("</tbody></table></div>"); inTable = false; tableHeaderDone = false; }
+                    if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
                     inCodeBlock = true;
                     codeBlockContent = [];
                 }
@@ -5306,6 +5308,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!line) {
                 if (inList) { html.push("</ul>"); inList = false; }
                 if (inTable) { html.push("</tbody></table></div>"); inTable = false; tableHeaderDone = false; }
+                if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
                 continue;
             }
 
@@ -5319,6 +5322,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 if (!inTable) {
                     if (inList) { html.push("</ul>"); inList = false; }
+                    if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
                     html.push('<div class="overflow-x-auto my-4 rounded-xl border border-brand-border"><table class="w-full text-xs text-left">');
                     html.push('<thead class="bg-brand-card/80 text-brand-amber uppercase text-[11px] font-bold border-b border-brand-border"><tr>');
                     cells.forEach(c => html.push(`<th class="p-3 border-r border-brand-border/40 last:border-r-0">${formatInline(c)}</th>`));
@@ -5342,37 +5346,65 @@ document.addEventListener("DOMContentLoaded", () => {
                 const imgMatch = line.match(/^!\[(.*?)\]\((.*?)\)$/);
                 if (imgMatch) {
                     if (inList) { html.push("</ul>"); inList = false; }
+                    if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
                     html.push(`<div class="my-5 text-center"><img src="${imgMatch[2]}" alt="${imgMatch[1]}" class="rounded-2xl border border-brand-border/80 max-w-full mx-auto shadow-2xl hover:border-brand-amber/60 transition-all" loading="lazy" /><p class="text-[11px] text-slate-400 mt-2 italic font-medium">📸 ${formatInline(imgMatch[1])}</p></div>`);
                     continue;
                 }
             }
 
             // Headings
+            if (line.startsWith("##### ")) {
+                if (inList) { html.push("</ul>"); inList = false; }
+                if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
+                html.push(`<h5 class="text-xs font-semibold text-slate-300 mt-3 mb-1.5 flex items-center gap-1.5"><span>🔹</span> <span>${formatInline(line.slice(6))}</span></h5>`);
+                continue;
+            }
+            if (line.startsWith("#### ")) {
+                if (inList) { html.push("</ul>"); inList = false; }
+                if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
+                html.push(`<h4 class="text-sm font-bold text-brand-amber mt-4 mb-2 flex items-center gap-2"><span>🔸</span> <span>${formatInline(line.slice(5))}</span></h4>`);
+                continue;
+            }
             if (line.startsWith("### ")) {
                 if (inList) { html.push("</ul>"); inList = false; }
+                if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
                 html.push(`<h3 class="text-base font-bold text-brand-orange mt-6 mb-2 flex items-center gap-2"><span>📌</span> <span>${formatInline(line.slice(4))}</span></h3>`);
                 continue;
             }
             if (line.startsWith("## ")) {
                 if (inList) { html.push("</ul>"); inList = false; }
+                if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
                 html.push(`<h2 class="text-lg font-extrabold text-white mt-8 mb-3 pb-1 border-b border-brand-border/60 flex items-center gap-2"><span>🎯</span> <span>${formatInline(line.slice(3))}</span></h2>`);
                 continue;
             }
             if (line.startsWith("# ")) {
                 if (inList) { html.push("</ul>"); inList = false; }
+                if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
                 html.push(`<h1 class="text-xl font-black text-brand-amber mt-4 mb-4 pb-2 border-b-2 border-brand-amber/40">${formatInline(line.slice(2))}</h1>`);
                 continue;
             }
 
             // Blockquote
-            if (line.startsWith("> ")) {
-                if (inList) { html.push("</ul>"); inList = false; }
-                html.push(`<blockquote class="border-l-4 border-brand-amber pl-4 py-2 italic bg-brand-card/50 rounded-r-xl my-3 text-slate-300 text-xs leading-relaxed">${formatInline(line.slice(2))}</blockquote>`);
+            if (line.startsWith("> ") || line === ">") {
+                let content = line.startsWith("> ") ? line.slice(2) : line.slice(1);
+                if (!inBlockquote) {
+                    if (inList) { html.push("</ul>"); inList = false; }
+                    if (inTable) { html.push("</tbody></table></div>"); inTable = false; tableHeaderDone = false; }
+                    html.push('<blockquote class="bg-gradient-to-r from-brand-card/90 to-brand-surface border-l-4 border-brand-amber rounded-r-xl p-4 my-3 text-xs leading-relaxed text-slate-300 shadow-md space-y-1.5">');
+                    inBlockquote = true;
+                }
+                if (content.trim()) {
+                    html.push(`<div>${formatInline(content.trim())}</div>`);
+                }
                 continue;
+            } else if (inBlockquote) {
+                html.push("</blockquote>");
+                inBlockquote = false;
             }
 
             // Unordered list
             if (line.startsWith("- ") || line.startsWith("* ")) {
+                if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
                 if (!inList) {
                     html.push('<ul class="space-y-1.5 my-3 pl-2">');
                     inList = true;
@@ -5388,6 +5420,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (line === "---" || line === "***") {
                 if (inList) { html.push("</ul>"); inList = false; }
                 if (inTable) { html.push("</tbody></table></div>"); inTable = false; tableHeaderDone = false; }
+                if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
                 html.push('<div class="w-full h-px bg-gradient-to-r from-transparent via-brand-amber/30 to-transparent my-6"></div>');
                 continue;
             }
@@ -5398,6 +5431,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (inList) html.push("</ul>");
         if (inTable) html.push("</tbody></table></div>");
+        if (inBlockquote) html.push("</blockquote>");
 
         return html.join("\n");
 
