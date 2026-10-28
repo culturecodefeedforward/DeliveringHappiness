@@ -10,7 +10,7 @@ Chuẩn bị đầy đủ, chính xác và đồng bộ hóa tài liệu slide g
 - **Cô / Chị Hà Minh Châu (Lead Facilitator):** Phụ trách Phá băng (cùng Hưng), Thỏa thuận văn hóa (cùng Hân), Định nghĩa La bàn & Đồng hồ, Thói quen Vị nhân (Altruism).
 - **Cô Hà Ngọc Hoàn (Facilitator / BTC):** Phụ trách Điều phối vận hành, hợp nhất giáo trình và kế hoạch bài giảng (Sequencing & Lesson Plan).
 - **Thầy Vũ Hoàng (Facilitator):** Phụ trách Khoa học Hạnh phúc (3 cấp độ HP), Giá trị La bàn Me Values (Thực hành), Cảm giác Tiến bộ, Thói quen Lạc quan (ABCDE), Thói quen Phiêu (Flow/Microflow & WBS).
-- **Thầy / Anh Hưng (Facilitator):** Phụ trách Phá băng (cùng Châu), Cảm giác Kết nối, Cảm giác Tự chủ, Tổng kết 3 đòn bẩy, Thói quen Tỉnh thức & Quét cơ thể (SCBA).
+- **Thầy / Anh Hưng (Facilitator):** Phụ trách Phá băng (cùng Châu), Cảm giác Kết nối, Cảm giác Tự chủ, Tổng kết 3 đòn bẩy, Thói quen Tỉnh thức & Khoảng dừng SBA.
 - **Cô Vũ Khánh Linh (Facilitator / Điều phối):** L&OD Lead M Village, phụ trách Điều phối bài giảng, hỗ trợ học viên và quản trị hệ thống Blended LMS.
 - **Cô / Chị Hân (Facilitator):** Phụ trách Thỏa thuận văn hóa (cùng Châu), Thói quen Biết ơn (4 Điều biết ơn & Gratitude Cards).
 

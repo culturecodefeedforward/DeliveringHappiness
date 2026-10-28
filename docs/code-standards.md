@@ -21,6 +21,25 @@ Tài liệu này quy định các chuẩn mực kỹ thuật, quy tắc an toàn
 - **Cấm kịch tính hóa hoặc phóng tác bài giảng:** Mọi case study, câu chuyện thực tế của giảng viên hay nghiên cứu khoa học phải phản ánh trung thực 100% sự kiện nguyên bản, không tự ý chèn các tình tiết gay cấn vô căn cứ.
 - Ghi rõ nguồn gốc học thuật (tên tác giả, năm công bố, trường đại học/tổ chức nghiên cứu) đối với các lý thuyết khoa học hạnh phúc.
 
+### D. Quy Chuẩn Phân Định Rạch Ròi Tên Thói Quen vs Tên Công Cụ (Strict Habit vs Tool Parity Gate)
+- **Bảng Chuẩn Hóa 5 Thói Quen Hạnh Phúc:**
+  | STT | Tên Thói Quen Chuẩn (Habit Name) | Tên Tiếng Anh | Công Cụ / Kỹ Thuật Đi Kèm (Tools & Frameworks) |
+  | :---: | :--- | :--- | :--- |
+  | 1 | **Tỉnh thức** | Mindfulness | Khoảng dừng **SBA** (*Stop - Breathe - Ask*), Body Scan |
+  | 2 | **Biết ơn** | Gratitude | Thẻ Biết Ơn (*Gratitude Cards*), Nhật ký 4 điều biết ơn |
+  | 3 | **Vị nhân** | Altruism | Tinh thần **Smart Giver** (*Adam Grant: Bi - Trí - Dũng*), *5-Minute Favors* |
+  | 4 | **Phiêu** | Flow | Thử thách **Microflow**, Cân bằng Thách thức vs Kỹ năng (*Quy tắc 4%*) |
+  | 5 | **Lạc quan** | Learned Optimism | Khung 5 bước **ABCDE** (*Martin Seligman*) khử bẫy tư duy 3P |
+- **Cấm Tuyệt Đối Đánh Đồng Hoặc Liệt Kê Lẫn Lộn Tên Thói Quen và Tên Công Cụ:**
+  - Tuyệt đối không được viết: *"5 thói quen (SCBA, ABCDE, Smart Giver)"*. Đây là lỗi sai nghiêm trọng về bản chất sư phạm vì vừa hạ cấp/đánh tráo công cụ thành thói quen, vừa bỏ sót 2 thói quen lớn (Biết ơn và Phiêu).
+  - Phân định rõ vai trò: SBA chỉ là công cụ của thói quen Tỉnh thức; ABCDE chỉ là khung phản biện của Lạc quan; Smart Giver chỉ là mô hình của Vị nhân.
+- **Quy Chuẩn Duy Nhất SBA (Khai Tử SCBA Làm Tên Công Cụ/Thói Quen):**
+  - Kỹ thuật khoảng dừng chuẩn mực trong bài giảng, slide và toàn bộ hệ thống LMS là **SBA** (*Stop – Breathe – Ask*: Dừng lại 3 giây – Thở sâu bụng – Tự hỏi: *Điều gì thực sự quan trọng và có ý nghĩa nhất lúc này?*).
+  - Chữ "SCBA" chỉ là câu chuyện cá nhân riêng của ca phẫu thuật mổ mở 2018 của Chị An/Cô Châu (thêm chữ C: Connection/Làm bạn với cơn đau), tuyệt đối **KHÔNG PHẢI** tên công cụ chuẩn hóa đại trà, và **CÀNG KHÔNG PHẢI** tên thói quen. Mọi vị trí gọi tên công cụ đều bắt buộc dùng **SBA**.
+- **Wording Chuẩn Cho Modal Quyền Lợi / Khóa Học:**
+  - Khi hiển thị tại Modal Nâng Cấp Học Viên Chính Thức (`#trial-upgrade-modal`), bắt buộc ghi chuẩn xác:
+    `• Tham gia Hành trình rèn luyện 5 thói quen hạnh phúc (Tỉnh thức, Biết ơn, Vị nhân, Phiêu, Lạc quan).`
+
 ---
 
 ## 2. Quy Chuẩn Đặt Tên & Cấu Trúc Mã Nguồn (Naming & Conventions)

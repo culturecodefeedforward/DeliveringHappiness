@@ -35,7 +35,7 @@
 2. **La Bàn Giá Trị:** Case Xung đột cuối quý giữa 'Chính trực' và 'Áp lực thưởng' (Tony Hsieh Zappos & Đối thoại dũng cảm).
 3. **Thuyết Tự Quyết (SDT):** Case Nhân viên Gen Z làm việc đối phó (Kích hoạt Tự chủ Autonomy, Kết nối Relatedness, và Small Wins).
 4. **Thói Quen 1 (Biết Ơn):** Case Bồn tắm đá 900kg suýt sập nhà & Storytelling chiếc máy lạnh dưới 60s (Robert Emmons, Biết ơn nghịch cảnh).
-5. **Thói Quen 2 (Tỉnh Thức):** Case Cô Châu đại phẫu mổ mở 2018 'làm bạn với cơn đau' & Kỹ thuật SCBA (MBSR Jon Kabat-Zinn, Khoảng dừng thiêng liêng).
+5. **Thói Quen 2 (Tỉnh Thức):** Case Cô Châu đại phẫu mổ mở 2018 'làm bạn với cơn đau' & Kỹ thuật SBA (MBSR Jon Kabat-Zinn, Khoảng dừng SBA; câu chuyện cá nhân SCBA).
 6. **Thói Quen 3 (Lạc Quan):** Case Account Manager Linh đối mặt khách hàng khó tính 15 năm & Báo cáo Intel WFH thứ Sáu (Seligman ABCDE, Khử độc tố 3P).
 7. **Thói Quen 4 (Phiêu):** Case Cân bằng Thử thách 4% & Chu kỳ 4 bước Struggle-Release-Flow-Recovery (Mihaly Csikszentmihalyi, Flow Before Phones).
 8. **Thói Quen 5 (Vị Nhân):** Case Thầy Vũ bị lừa tại quán ăn (Smart Giver Bi-Trí-Dũng) & Bảo hiểm Nice Company cho con công nhân yếm thế (Adam Grant, 5-Minute Favors).

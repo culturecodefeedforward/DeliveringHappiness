@@ -142,7 +142,7 @@ sequenceDiagram
 
 ## 5. Kiến Trúc Đồng Bộ Thói Quen 21 Ngày Về CRM Webhook (21-Day Habit Tracker Sync CRM)
 
-Phân hệ theo dõi và đồng bộ thói quen 21 ngày đảm bảo học viên duy trì 5 thói quen cốt lõi (SCBA, Biết ơn, ABCDE, Flow/Microflow, Smart Giver) và gửi tiến độ về Ban Giảng Huấn:
+Phân hệ theo dõi và đồng bộ thói quen đảm bảo học viên duy trì 5 thói quen hạnh phúc cốt lõi (Tỉnh thức, Biết ơn, Vị nhân, Phiêu, Lạc quan) và gửi tiến độ về Ban Giảng Huấn:
 
 ```mermaid
 graph LR

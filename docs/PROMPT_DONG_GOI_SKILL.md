@@ -171,9 +171,9 @@ window.toggleModelAnswer = function(scenarioId) {
     {
       "habit": "habit-mindfulness",
       "scenario_id": "scenario-habit-mindfulness",
-      "title": "Ca Phẫu Thuật Mổ Mở 2018 — 'Làm Bạn Với Cơn Đau' & Kỹ Thuật SCBA",
-      "faculty_analysis": "MBSR Jon Kabat-Zinn: Đau đớn là vật lý (Pain is inevitable), đau khổ là tâm lý (Suffering is optional). SCBA tạo khoảng dừng thiêng liêng về Vỏ não trước trán.",
-      "model_solution": "1. Tách biệt vật lý và suy diễn.\n2. SCBA 4 bước: Stop → Calibrate/Breathe 3 nhịp → Be Aware cơ thể & vai trò → Act thấu cảm."
+      "title": "Ca Phẫu Thuật Mổ Mở 2018 — 'Làm Bạn Với Cơn Đau' & Kỹ Thuật SBA",
+      "faculty_analysis": "MBSR Jon Kabat-Zinn: Đau đớn là vật lý (Pain is inevitable), đau khổ là tâm lý (Suffering is optional). SBA tạo khoảng dừng thiêng liêng về Vỏ não trước trán (câu chuyện cá nhân mở rộng SCBA).",
+      "model_solution": "1. Tách biệt vật lý và suy diễn.\n2. Quy trình SBA 3 bước chuẩn hóa: Stop → Breathe 3 nhịp bụng → Ask điều gì thực sự quan trọng lúc này."
     },
     {
       "habit": "habit-optimism",

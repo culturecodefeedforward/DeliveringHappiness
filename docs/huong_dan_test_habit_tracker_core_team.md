@@ -1,16 +1,16 @@
-# HƯỚNG DẪN TRẢI NGHIỆM VÀ KIỂM THỬ: BẢNG ĐIỂM DANH 5 THÓI QUEN 21 NGÀY (LMS DHM)
+# HƯỚNG DẪN TRẢI NGHIỆM VÀ KIỂM THỬ: BẢNG THEO DÕI 5 THÓI QUEN HẠNH PHÚC (LMS DHM)
 
-Tài liệu này dành cho các anh chị trong Core Team trải nghiệm tính năng mới trên nền tảng học tập trực tuyến Delivering Happiness: **Bảng Điểm Danh 5 Thói Quen 21 Ngày** và tính năng **Đồng Bộ Dữ Liệu Về Ban Tổ Chức**.
+Tài liệu này dành cho các anh chị trong Core Team trải nghiệm tính năng mới trên nền tảng học tập trực tuyến Delivering Happiness: **Bảng Theo Dõi 5 Thói Quen Hạnh Phúc** và tính năng **Đồng Bộ Dữ Liệu Về Ban Tổ Chức**.
 
 ---
 
 ## 🎯 1. Mục Đích Của Tính Năng
-- **Duy trì thói quen hạnh phúc:** Giúp học viên sau 2 ngày workshop trực tiếp tiếp tục thực hành 5 thói quen mỗi ngày:
-  - **M** - *Mindfulness:* Tỉnh thức / Quét cơ thể SCBA
+- **Duy trì thói quen hạnh phúc:** Giúp học viên sau workshop trực tiếp tiếp tục thực hành 5 thói quen mỗi ngày:
+  - **M** - *Mindfulness:* Tỉnh thức / Khoảng dừng SBA
   - **G** - *Gratitude:* Biết ơn / Ghi 4 điều biết ơn
   - **O** - *Optimism:* Lạc quan / Phản tư đa góc nhìn ABCDE
   - **F** - *Flow:* Phiêu / Đắm chìm sâu trong công việc
-  - **A** - *Altruism:* Vị nhân / Lan tỏa một hành động tử tế
+  - **A** - *Altruism:* Vị nhân / Lan tỏa một hành động tử tế (Smart Giver)
 - **Tiện lợi & Tự động:** Học viên chỉ cần chạm/nhấp vào ô thói quen trong ngày trên điện thoại hoặc máy tính, rồi bấm **"Đồng Bộ Tiến Độ Về BTC"** là kết quả tự động chuyển về bảng theo dõi tổng của Ban Tổ Chức (không cần gửi ảnh màn hình hay điền biểu mẫu rườm rà).
 
 ---
