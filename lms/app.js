@@ -1,3 +1,15 @@
+    // Auto-check URL parameter for Stage 2B unlock (?unlock=2b&token=...)
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const unlockParam = urlParams.get("unlock");
+        if (unlockParam === "2b" || unlockParam === "stage-2b") {
+            localStorage.setItem("dhm_unlocked_stage_2b", "true");
+            console.log("[DHM LMS] Stage 2B unlocked via URL parameter.");
+        }
+    } catch (e) {
+        console.warn("Could not parse URL search parameters for unlock flag", e);
+    }
+
 // Delivering Happiness Movement (DHM) — Blended LMS Engine v3
 // Standardized Architecture: Pre-Class Online -> Workshop Live 5 Habits -> Post-Class 21-Day Dashboard
 
@@ -222,7 +234,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     { id: "sub-2-3", title: "☀️ Lạc Quan", target: "habit-panel-optimism", habit: "optimism", tab: "tab-practice" },
                     { id: "sub-2-4", title: "🌀 Phiêu (Flow)", target: "habit-panel-flow", habit: "flow", tab: "tab-practice" },
                     { id: "sub-2-5", title: "🤝 Vị Nhân", target: "habit-panel-altruism", habit: "altruism", tab: "tab-practice" },
-                    { id: "sub-2-6", title: "🏆 Đúc Kết & Chuyển Hóa", target: "stage2-capstone-card", tab: "tab-practice" }
+                    { id: "sub-2-6", title: "🏆 Đúc Kết & Chuyển Hóa", target: "habit-panel-capstone", habit: "capstone", tab: "tab-practice" }
                 ],
                 audios: [
                     { id: "a2-1", title: "Đòn bẩy Tự chủ: 70.000 giờ làm việc", file: "data/artifacts/70000_gio_lam_viec.mp3", duration: "39:50" },
@@ -306,6 +318,31 @@ document.addEventListener("DOMContentLoaded", () => {
                     iam_1_2: { I: "", A: "", M: "" },
                     iam_1_3: { I: "", A: "", M: "" },
                     scenarios: {}
+                },
+                "stage-2a": {
+                    iam: { I: "", A: "", M: "" },
+                    habits: {
+                        drivers: { iam: { I: "", A: "", M: "" } },
+                        gratitude: { items: ["", "", "", ""], card: { to: "", msg: "" }, iam: { I: "", A: "", M: "" } },
+                        mindfulness: { sbaChecks: { s: false, b: false, a: false }, situation: "", iam: { I: "", A: "", M: "" } },
+                        altruism: { style: "", act: "", iam: { I: "", A: "", M: "" } }
+                    },
+                    capstoneIam: { I: "", A: "", M: "" }
+                },
+                "stage-2b": {
+                    habits: {
+                        flow: { boringTask: "", redesign: "", iam: { I: "", A: "", M: "" } },
+                        optimism: { abcde: { A: "", B: "", C: "", D: "", E: "" }, iam: { I: "", A: "", M: "" } }
+                    },
+                    capstoneIam: { I: "", A: "", M: "" }
+                },
+                "stage-3a": {
+                    habitTracker: {},
+                    weeklyCheckins: { w1: "", w2: "", w3: "" }
+                },
+                "stage-3b": {
+                    habitTracker: {},
+                    weeklyCheckins: { w1: "", w2: "" }
                 },
                 "stage-2": {
                     iam: { I: "", A: "", M: "" },
@@ -421,7 +458,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // Stage Containers
     const stage1PracticeContainer = document.getElementById("stage1-practice-container");
     const stage2PracticeContainer = document.getElementById("stage2-practice-container");
+    const stage2aPracticeContainer = document.getElementById("stage2a-practice-container") || stage2PracticeContainer;
+    const stage2bPracticeContainer = document.getElementById("stage2b-practice-container");
     const stage3PracticeContainer = document.getElementById("stage3-practice-container");
+    const stage3aPracticeContainer = document.getElementById("stage3a-practice-container") || stage3PracticeContainer;
+    const stage3bPracticeContainer = document.getElementById("stage3b-practice-container");
 
     // Stage 1 Practice Elements
     const quizItemsContainer = document.getElementById("quiz-items-container");
@@ -686,28 +727,40 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!id) return null;
 
         const overrides = getRosterOverrides();
-        let match = authorizedRoster.find(l => {
-            const lEmail = l.email ? normalizeIdentity(l.email) : "";
-            const lPhone = l.phone_full || l.phone_raw || l.phone || "";
+        
+        // Tìm tất cả các ứng viên khớp danh tính (hỗ trợ trường hợp 1 email có nhiều khóa học)
+        const candidates = authorizedRoster.filter(l => {
+            const lKey = (l.Compound_Key || l.compound_key || "").toLowerCase();
+            const lEmail = (l.Email || l.email) ? normalizeIdentity(l.Email || l.email) : "";
+            const lPhone = l.Phone || l.phone_full || l.phone_raw || l.phone || "";
+            const keyMatch = lKey && lKey === id;
             const emailMatch = lEmail && (lEmail === id || lEmail.split('@')[0] === id);
             const phoneMatch = lPhone && normalizePhone(lPhone) === normalizePhone(id);
-            return emailMatch || phoneMatch;
+            return keyMatch || emailMatch || phoneMatch;
         });
+
+        // Ưu tiên chọn bản ghi ACTIVE nếu có nhiều bản ghi của cùng email
+        let match = candidates.find(c => (c.Enrollment_Status || c.enrollment_status || "ACTIVE") === "ACTIVE") || candidates[0];
 
         if (match) {
             let learner = {
-                learner_id: match.learner_id || "DHM-LEARNER",
-                identity: match.email || match.phone || match.learner_id || "DHM-LEARNER",
-                name: match.full_name || match.name || match.email,
-                email: match.email || "",
-                phone: match.phone_full || match.phone_raw || match.phone || "",
-                phone_last4: match.phone_last4 || (match.phone_full ? match.phone_full.slice(-4) : (match.phone ? match.phone.slice(-4) : "")),
-                cohort: match.cohort || "Học viên",
-                role: match.role || "Learner",
-                missing_phone: match.phone_status === "legacy_partial" || !(match.phone_full || match.phone),
-                force_pwd_change: match.force_pwd_change === true,
-                default_pwd: match.default_pwd || "1234",
-                password_hash: match.password_hash || null
+                learner_id: match.Compound_Key || match.compound_key || match.learner_id || "DHM-LEARNER",
+                compound_key: match.Compound_Key || match.compound_key || "",
+                identity: match.Email || match.email || match.Phone || match.phone || match.learner_id || "DHM-LEARNER",
+                name: match.Full_Name || match.full_name || match.name || match.Email || match.email,
+                email: match.Email || match.email || "",
+                phone: match.Phone || match.phone_full || match.phone_raw || match.phone || "",
+                phone_last4: (match.Phone || match.phone_full || match.phone || "").slice(-4),
+                cohort: match.Cohort_ID || match.cohort || "Học viên",
+                enrollment_status: match.Enrollment_Status || match.enrollment_status || "ACTIVE",
+                activation_status: match.Activation_Status || match.activation_status || "ACTIVATED",
+                role: match.Role || match.role || "Learner",
+                is_paid: Boolean(match.Is_Paid === true || match.is_paid === true || match.isPaid === true || match.Is_Paid === "TRUE"),
+                payment_status: match.Payment_Status || match.payment_status || match.paymentStatus || null,
+                missing_phone: match.phone_status === "legacy_partial" || !(match.Phone || match.phone_full || match.phone),
+                force_pwd_change: (match.Force_Pwd_Change === true || match.force_pwd_change === true || match.Force_Pwd_Change === "TRUE"),
+                default_pwd: match.Default_Password || match.default_pwd || "1234",
+                password_hash: match.Password_Hash || match.password_hash || null
             };
             const ov = overrides[learner.email] || overrides[learner.learner_id];
             if (ov) {
@@ -721,6 +774,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 if (ov.force_pwd_change !== undefined) {
                     learner.force_pwd_change = ov.force_pwd_change;
+                }
+                if (ov.is_paid !== undefined) {
+                    learner.is_paid = Boolean(ov.is_paid);
+                }
+                if (ov.payment_status !== undefined) {
+                    learner.payment_status = ov.payment_status;
                 }
             }
             return learner;
@@ -1091,6 +1150,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (saved) {
             try {
                 learnerProgress = JSON.parse(saved);
+                migrateOldStageData(learnerProgress);
             } catch (e) {
                 console.error("Error restoring progress", e);
                 learnerProgress = getInitialLearnerProgress();
@@ -1162,6 +1222,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!currentUser.identity) {
             currentUser.identity = currentUser.email || currentUser.learner_id || "guest";
         }
+        syncLegacyStageData(learnerProgress);
         const progressKey = `dhm_lms_progress_${currentUser.identity}`;
         localStorage.setItem(progressKey, JSON.stringify(learnerProgress));
 
@@ -1939,6 +2000,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!user) return false;
         if (user.isTrial === true || user.role === "trial") return false;
 
+        // ƯU TIÊN 1: NẾU BỊ VÔ HIỆU HÓA HOẶC THU HỒI THANH TOÁN -> CHẶN NGAY LẬP TỨC
+        if (user.enrollment_status === "DISABLED") return false;
+        if (user.is_paid === false || String(user.payment_status || "").toUpperCase() === "UNPAID") {
+            return false;
+        }
+
         const isCoach = (
             user.cohort === "COACH" || 
             user.cohort === "BTC / Coach" || 
@@ -1947,49 +2014,269 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         if (isCoach) return true;
 
-        if (user.cohort === "DHM_Registration" || user.cohort === "REG") return false;
-
         const cohortStr = String(user.cohort || "").trim().toUpperCase();
 
-        // Các khóa lịch sử đã kết thúc (DHM3 -> DHM8): Học viên đã hoàn tất học phí và tốt nghiệp từ trước
+        // 1. Kiểm tra trực tiếp cờ thanh toán trên user (từ roster, CRM, hoặc override)
+        if (user.is_paid === true || user.isPaid === true || String(user.payment_status || user.paymentStatus || "").toUpperCase() === "PAID") {
+            return true;
+        }
+
+        // 2. Kiểm tra session thanh toán SePay / VietQR trên trình duyệt (localStorage / sessionStorage)
+        try {
+            const sessionPayment = (typeof localStorage !== "undefined" && (
+                localStorage.getItem("DHM10_lastPaymentStatus") ||
+                localStorage.getItem("dhm_payment_status") ||
+                (user.identity && localStorage.getItem(`dhm_paid_${user.identity}`)) ||
+                (user.email && localStorage.getItem(`dhm_paid_${user.email}`))
+            )) || (typeof sessionStorage !== "undefined" && (
+                sessionStorage.getItem("DHM10_lastPaymentStatus") ||
+                sessionStorage.getItem("dhm_payment_status")
+            ));
+            if (sessionPayment && String(sessionPayment).toUpperCase() === "PAID") {
+                return true;
+            }
+        } catch (e) {}
+
+        // 3. Khách đăng ký quan tâm / leads chưa hoàn tất học phí
+        if (user.cohort === "DHM_Registration" || user.cohort === "REG") return false;
+
+        // 4. Các khóa lịch sử đã kết thúc (DHM3 -> DHM8): Học viên đã hoàn tất học phí và tốt nghiệp từ trước
         const isHistoricalPaid = DHM_PAID_GATE_CONFIG.HISTORICAL_PAID_COHORTS.some(c => cohortStr.includes(c));
         if (isHistoricalPaid) return true;
 
-        // Khóa gần nhất (DHM9, DHM10): BẮT BUỘC PHẢI CHECK PAYMENT (Theo chỉ đạo trực tiếp từ Sếp Dzũ)
+        // 5. Doanh nghiệp Apollo (khóa đào tạo doanh nghiệp đã ký hợp đồng)
+        if (cohortStr.includes("APOLLO")) return true;
+
+        // 6. Khóa gần nhất (DHM9, DHM10) nếu chưa có cờ thanh toán -> chưa thanh toán
         const isLatestCohort = DHM_PAID_GATE_CONFIG.LATEST_COHORTS.some(c => cohortStr.includes(c));
         if (isLatestCohort) {
-            if (user.is_paid === true || String(user.payment_status || "").toUpperCase() === "PAID") {
-                return true;
-            }
             return false;
         }
 
-        return Boolean(user.is_paid === true || String(user.payment_status || "").toUpperCase() === "PAID");
+        return false;
     }
     window.isPaidDHMLearner = isPaidDHMLearner;
 
-    function isStageUnlocked(stageIdx) {
-        if (stageIdx === 0) return true; // Chặng 1 luôn luôn mở
-
-        const isCoach = currentUser && (
-            currentUser.cohort === "COACH" || 
-            currentUser.cohort === "BTC / Coach" || 
-            currentUser.role === "admin" || 
-            currentUser.role === "Coach"
+    function isCoachOrAdmin(user) {
+        if (!user) return false;
+        return (
+            user.cohort === "COACH" || 
+            user.cohort === "BTC / Coach" || 
+            user.role === "admin" || 
+            user.role === "Coach"
         );
+    }
+    window.isCoachOrAdmin = isCoachOrAdmin;
+
+    function hasCompletedStage2AIam() {
+        const s2a = (learnerProgress && learnerProgress.stageData && (learnerProgress.stageData["stage-2a"] || learnerProgress.stageData["stage-2"])) || {};
+        const habits = s2a.habits || {};
+        
+        function hasNonEmpty(obj) {
+            if (!obj) return false;
+            return Boolean(String(obj.I || "").trim() || String(obj.A || "").trim() || String(obj.M || "").trim());
+        }
+
+        const hasM = hasNonEmpty(habits.mindfulness && habits.mindfulness.iam);
+        const hasG = hasNonEmpty(habits.gratitude && habits.gratitude.iam);
+        const hasA = hasNonEmpty(habits.altruism && habits.altruism.iam);
+
+        return Boolean(hasM && hasG && hasA);
+    }
+    window.hasCompletedStage2AIam = hasCompletedStage2AIam;
+
+    function getStage2AIamStatus() {
+        const s2a = (learnerProgress && learnerProgress.stageData && (learnerProgress.stageData["stage-2a"] || learnerProgress.stageData["stage-2"])) || {};
+        const habits = s2a.habits || {};
+        
+        function hasNonEmpty(obj) {
+            if (!obj) return false;
+            return Boolean(String(obj.I || "").trim() || String(obj.A || "").trim() || String(obj.M || "").trim());
+        }
+
+        const checks = [
+            { name: "Tỉnh thức (SBA)", done: hasNonEmpty(habits.mindfulness && habits.mindfulness.iam) },
+            { name: "Biết ơn", done: hasNonEmpty(habits.gratitude && habits.gratitude.iam) },
+            { name: "Vị nhân (Smart Giver)", done: hasNonEmpty(habits.altruism && habits.altruism.iam) }
+        ];
+
+        const completedCount = checks.filter(c => c.done).length;
+        const missingNames = checks.filter(c => !c.done).map(c => c.name);
+
+        return {
+            completedCount,
+            total: 3,
+            missingNames,
+            isComplete: completedCount === 3
+        };
+    }
+    window.getStage2AIamStatus = getStage2AIamStatus;
+
+    function hasCompletedStage2BIam() {
+        const s2b = (learnerProgress && learnerProgress.stageData && (learnerProgress.stageData["stage-2b"] || learnerProgress.stageData["stage-2"])) || {};
+        const habits = s2b.habits || {};
+        
+        function hasNonEmpty(obj) {
+            if (!obj) return false;
+            return Boolean(String(obj.I || "").trim() || String(obj.A || "").trim() || String(obj.M || "").trim());
+        }
+
+        const hasF = hasNonEmpty(habits.flow && habits.flow.iam);
+        const hasO = hasNonEmpty(habits.optimism && habits.optimism.iam);
+
+        return Boolean(hasF && hasO);
+    }
+    window.hasCompletedStage2BIam = hasCompletedStage2BIam;
+
+    function migrateOldStageData(prog) {
+        if (!prog || !prog.stageData) return;
+        const sd = prog.stageData;
+
+        // 1. Migrate Stage 2 -> Stage 2A & Stage 2B
+        if (sd["stage-2"]) {
+            const s2 = sd["stage-2"];
+            const s2Habits = s2.habits || {};
+
+            if (!sd["stage-2a"]) {
+                sd["stage-2a"] = {
+                    iam: s2.iam || { I: "", A: "", M: "" },
+                    habits: {
+                        drivers: s2Habits.drivers || { iam: { I: "", A: "", M: "" } },
+                        mindfulness: s2Habits.mindfulness || { sbaChecks: { s: false, b: false, a: false }, situation: "", iam: { I: "", A: "", M: "" } },
+                        gratitude: s2Habits.gratitude || { items: ["", "", "", ""], card: { to: "", msg: "" }, iam: { I: "", A: "", M: "" } },
+                        altruism: s2Habits.altruism || { style: "", act: "", iam: { I: "", A: "", M: "" } }
+                    },
+                    capstoneIam: s2.capstoneIam || { I: "", A: "", M: "" }
+                };
+            } else {
+                sd["stage-2a"].habits = sd["stage-2a"].habits || {};
+                if (!sd["stage-2a"].habits.drivers && s2Habits.drivers) sd["stage-2a"].habits.drivers = s2Habits.drivers;
+                if (!sd["stage-2a"].habits.mindfulness && s2Habits.mindfulness) sd["stage-2a"].habits.mindfulness = s2Habits.mindfulness;
+                if (!sd["stage-2a"].habits.gratitude && s2Habits.gratitude) sd["stage-2a"].habits.gratitude = s2Habits.gratitude;
+                if (!sd["stage-2a"].habits.altruism && s2Habits.altruism) sd["stage-2a"].habits.altruism = s2Habits.altruism;
+                if (!sd["stage-2a"].capstoneIam && s2.capstoneIam) sd["stage-2a"].capstoneIam = s2.capstoneIam;
+            }
+
+            if (!sd["stage-2b"]) {
+                sd["stage-2b"] = {
+                    habits: {
+                        flow: s2Habits.flow || { boringTask: "", redesign: "", iam: { I: "", A: "", M: "" } },
+                        optimism: s2Habits.optimism || { abcde: { A: "", B: "", C: "", D: "", E: "" }, iam: { I: "", A: "", M: "" } }
+                    },
+                    capstoneIam: { I: "", A: "", M: "" }
+                };
+            } else {
+                sd["stage-2b"].habits = sd["stage-2b"].habits || {};
+                if (!sd["stage-2b"].habits.flow && s2Habits.flow) sd["stage-2b"].habits.flow = s2Habits.flow;
+                if (!sd["stage-2b"].habits.optimism && s2Habits.optimism) sd["stage-2b"].habits.optimism = s2Habits.optimism;
+            }
+        }
+
+        // 2. Migrate Stage 3 -> Stage 3A & Stage 3B
+        if (sd["stage-3"]) {
+            const s3 = sd["stage-3"];
+            if (!sd["stage-3a"]) {
+                sd["stage-3a"] = {
+                    habitTracker: s3.habitTracker || {},
+                    weeklyCheckins: s3.weeklyCheckins || { w1: "", w2: "", w3: "" }
+                };
+            }
+            if (!sd["stage-3b"]) {
+                sd["stage-3b"] = {
+                    habitTracker: s3.habitTracker || {},
+                    weeklyCheckins: { w1: "", w2: "" }
+                };
+            }
+        }
+    }
+    window.migrateOldStageData = migrateOldStageData;
+
+    function syncLegacyStageData(prog) {
+        if (!prog || !prog.stageData) return;
+        const sd = prog.stageData;
+
+        // Sync 2a & 2b -> legacy stage-2
+        sd["stage-2"] = sd["stage-2"] || { habits: {}, capstoneIam: {} };
+        sd["stage-2"].habits = sd["stage-2"].habits || {};
+
+        const s2a = sd["stage-2a"] || {};
+        const s2b = sd["stage-2b"] || {};
+        const h2a = s2a.habits || {};
+        const h2b = s2b.habits || {};
+
+        if (h2a.drivers) sd["stage-2"].habits.drivers = h2a.drivers;
+        if (h2a.mindfulness) sd["stage-2"].habits.mindfulness = h2a.mindfulness;
+        if (h2a.gratitude) sd["stage-2"].habits.gratitude = h2a.gratitude;
+        if (h2a.altruism) sd["stage-2"].habits.altruism = h2a.altruism;
+        if (s2a.capstoneIam) sd["stage-2"].capstoneIam = s2a.capstoneIam;
+
+        if (h2b.flow) sd["stage-2"].habits.flow = h2b.flow;
+        if (h2b.optimism) sd["stage-2"].habits.optimism = h2b.optimism;
+
+        // Sync 3a & 3b -> legacy stage-3
+        sd["stage-3"] = sd["stage-3"] || { habitTracker: {}, weeklyCheckins: {} };
+        const s3a = sd["stage-3a"] || {};
+        const s3b = sd["stage-3b"] || {};
+
+        sd["stage-3"].habitTracker = { ...(s3a.habitTracker || {}), ...(s3b.habitTracker || {}) };
+        sd["stage-3"].weeklyCheckins = { ...(s3a.weeklyCheckins || {}), ...(s3b.weeklyCheckins || {}) };
+    }
+    window.syncLegacyStageData = syncLegacyStageData;
+    function isStageUnlocked(stageIdOrIdx) {
+        let stageId = "";
+        let stageIdx = -1;
+
+        if (typeof stageIdOrIdx === "number") {
+            stageIdx = stageIdOrIdx;
+            const stg = curriculum && curriculum.stages && curriculum.stages[stageIdx];
+            if (stg) stageId = stg.id;
+        } else if (typeof stageIdOrIdx === "string") {
+            stageId = stageIdOrIdx;
+            if (curriculum && curriculum.stages) {
+                stageIdx = curriculum.stages.findIndex(s => s.id === stageId);
+            }
+        }
+
+        // Chặng 1 luôn luôn mở
+        if (stageIdx === 0 || stageId === "stage-1") return true;
+
+        const isCoach = isCoachOrAdmin(currentUser);
         if (isCoach) return true;
 
-        // Điều kiện 1: Đã pass bài sát hạch Cổng Vượt Chặng Chặng 1 (>= 80%)
-        const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
-        const isQuizPassed = Boolean(s1Data.passed || (s1Data.percentage >= 80));
+        // Chặng 2A (hoặc index 1, hoặc legacy stage-2): Mở khi vượt Cổng Sát Hạch Chặng 1 (>= 80%) và là học viên chính thức
+        if (stageIdx === 1 || stageId === "stage-2a" || stageId === "stage-2") {
+            const s1Data = (learnerProgress && learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
+            const isQuizPassed = Boolean(s1Data.passed || (s1Data.percentage >= 80) || (s1Data.score >= 8));
+            const isPaid = isPaidDHMLearner(currentUser);
+            return Boolean(isQuizPassed && isPaid);
+        }
 
-        // Điều kiện 2: Đã nằm trong danh sách thanh toán thành công của các khóa DH
-        const isPaid = isPaidDHMLearner(currentUser);
+        // Chặng 2B (hoặc index 2): Luồng mở riêng (cờ danh bạ hoặc token tham số URL)
+        if (stageIdx === 2 || stageId === "stage-2b") {
+            const hasCohortFlag = Boolean(currentUser && (currentUser.hasStage2B || currentUser.canAccessStage2B || currentUser.cohort === "DHM-ADVANCED"));
+            const hasTokenUnlocked = Boolean(localStorage.getItem("dhm_unlocked_stage_2b") === "true");
+            return Boolean(hasCohortFlag || hasTokenUnlocked);
+        }
 
-        return Boolean(isQuizPassed && isPaid);
+        // Chặng 3A (hoặc index 3, hoặc legacy stage-3): Tự động mở khi hoàn thành đủ 100% bài thu hoạch I•A•M của 3 thói quen 2A
+        if (stageIdx === 3 || stageId === "stage-3a" || stageId === "stage-3") {
+            const is2AOpen = isStageUnlocked("stage-2a");
+            const is2AIamDone = hasCompletedStage2AIam();
+            return Boolean(is2AOpen && is2AIamDone);
+        }
+
+        // Chặng 3B (hoặc index 4): Mở khi Chặng 2B mở và hoàn thành IAM của 2B
+        if (stageIdx === 4 || stageId === "stage-3b") {
+            const is2BOpen = isStageUnlocked("stage-2b");
+            const is2BIamDone = hasCompletedStage2BIam();
+            return Boolean(is2BOpen && is2BIamDone);
+        }
+
+        return false;
     }
+    window.isStageUnlocked = isStageUnlocked;
 
-    function notifyLockedStage(stageIdx) {
+    function notifyLockedStage(stageIdOrIdx) {
         if (!currentUser) {
             showAuthModal();
             return;
@@ -2000,21 +2287,67 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
-        const isQuizPassed = Boolean(s1Data.passed || (s1Data.percentage >= 80));
+        let stageId = "";
+        let stageIdx = -1;
+        if (typeof stageIdOrIdx === "number") {
+            stageIdx = stageIdOrIdx;
+            const stg = curriculum && curriculum.stages && curriculum.stages[stageIdx];
+            if (stg) stageId = stg.id;
+        } else if (typeof stageIdOrIdx === "string") {
+            stageId = stageIdOrIdx;
+            if (curriculum && curriculum.stages) {
+                stageIdx = curriculum.stages.findIndex(s => s.id === stageId);
+            }
+        }
 
-        if (!isQuizPassed) {
-            alert("🔒 Chặng này đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 80% ở Cổng Sát Hạch Vượt Chặng (Chặng 1) để mở khóa Chặng 2 và Chặng 3.");
-            jumpToStage1Quiz();
+        // 1. Chặng 2A
+        if (stageIdx === 1 || stageId === "stage-2a" || stageId === "stage-2") {
+            const s1Data = (learnerProgress && learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
+            const isQuizPassed = Boolean(s1Data.passed || (s1Data.percentage >= 80) || (s1Data.score >= 8));
+
+            if (!isQuizPassed) {
+                alert("🔒 Chặng 2A đang bị khóa!\n\nBạn cần hoàn thành và đạt tối thiểu 80% ở Cổng Sát Hạch Vượt Chặng (Chặng 1) để mở khóa Chặng 2A.");
+                jumpToStage1Quiz();
+                return;
+            }
+
+            const msg = "Chặng 2A chỉ dành cho học viên DHM offline chính thức, vui lòng theo dõi các thông báo từ CultureCode để đăng ký tham gia các chương trình tiếp theo.";
+            if (window.confirm(`${msg}\n\n👉 Bạn có muốn mở trang LinkedIn của CultureCode để theo dõi thông báo mới nhất không?`)) {
+                window.open(DHM_PAID_GATE_CONFIG.LINKEDIN_URL, "_blank", "noopener,noreferrer");
+            }
             return;
         }
 
-        // Đã đạt bài test Chặng 1 nhưng chưa nằm trong danh sách thanh toán của các khóa DH
-        const msg = "Chặng 2 và 3 chỉ dành cho học viên DHM offline, vui lòng theo dõi các thông báo từ CultureCode để đăng ký tham gia các chương trình tiếp theo";
-        if (window.confirm(`${msg}\n\n👉 Bạn có muốn mở trang LinkedIn của CultureCode để theo dõi thông báo mới nhất không?`)) {
-            window.open(DHM_PAID_GATE_CONFIG.LINKEDIN_URL, "_blank", "noopener,noreferrer");
+        // 2. Chặng 2B
+        if (stageIdx === 2 || stageId === "stage-2b") {
+            alert("🔒 Chặng 2B dành cho lớp chuyên sâu bứt phá (Flow & Lạc Quan ABCDE).\n\nVui lòng quét mã QR tại lớp hoặc liên hệ Coach/Ban Tổ Chức để nhận quyền truy cập.");
+            return;
         }
+
+        // 3. Chặng 3A
+        if (stageIdx === 3 || stageId === "stage-3a" || stageId === "stage-3") {
+            if (!isStageUnlocked("stage-2a")) {
+                alert("🔒 Chặng 3A đang tạm khóa.\n\nBạn cần mở khóa và hoàn thành Chặng 2A trước khi truy cập Chặng 3A.");
+                return;
+            }
+            const status = getStage2AIamStatus();
+            alert(`🔒 Chặng 3A đang tạm khóa.\n\nBạn cần hoàn thành đủ bài thu hoạch I•A•M của cả 3 thói quen ở Chặng 2A (Tỉnh thức, Biết ơn, Vị nhân) để mở khóa hành trình đồng hành chuyển hóa.\n\nTiến độ hiện tại: ${status.completedCount}/3 trạm.\n${status.missingNames.length > 0 ? '👉 Còn thiếu bài I•A•M: ' + status.missingNames.join(', ') : ''}`);
+            return;
+        }
+
+        // 4. Chặng 3B
+        if (stageIdx === 4 || stageId === "stage-3b") {
+            if (!isStageUnlocked("stage-2b")) {
+                alert("🔒 Chặng 3B đang tạm khóa.\n\nBạn cần mở khóa và tham gia Chặng 2B (Workshop Bứt Phá) trước khi truy cập Chặng 3B.");
+                return;
+            }
+            alert("🔒 Chặng 3B đang tạm khóa.\n\nBạn cần hoàn thành bài thu hoạch I•A•M của 2 thói quen ở Chặng 2B (Phiêu và Lạc quan) để mở khóa Chặng 3B.");
+            return;
+        }
+
+        alert("🔒 Chặng này đang tạm khóa.");
     }
+    window.notifyLockedStage = notifyLockedStage;
 
     // 6. SYLLABUS RENDERER (Supports Sub-items Navigation & Locked Stages)
     function renderSyllabus() {
@@ -2062,7 +2395,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         ${isCompleted ? '<span class="text-[10px] text-brand-green font-semibold">Đã xong</span>' : ''}
                     </div>
                     <div class="text-xs font-bold truncate ${!isUnlocked ? 'text-slate-400' : 'text-slate-100'}">${stage.title}</div>
-                    <div class="text-[11px] ${!isUnlocked ? 'text-slate-500' : 'text-slate-400'} truncate mt-0.5">${!isUnlocked ? 'Cần đạt ≥80% Cổng Sát Hạch & Học viên chính thức' : stage.subtitle}</div>
+                    <div class="text-[11px] ${!isUnlocked ? 'text-slate-500' : 'text-slate-400'} truncate mt-0.5">${!isUnlocked ? (stage.id === 'stage-2b' ? 'Dành cho lớp chuyên sâu bứt phá' : (stage.id === 'stage-3a' ? 'Cần hoàn thành đủ 3 bài I•A•M ở Chặng 2A' : (stage.id === 'stage-3b' ? 'Cần hoàn thành Chặng 2B' : 'Cần đạt ≥80% Cổng Sát Hạch & Học viên chính thức'))) : stage.subtitle}</div>
                 </div>
                 ${stage.subSections && stage.subSections.length > 0 ? `<span class="stage-toggle-chevron text-xs text-slate-400 shrink-0 transform transition-transform ${isActive ? 'rotate-90' : ''}">▸</span>` : ''}
             `;
@@ -2107,8 +2440,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     // Check subsection completion status for visual badges (✓)
                     let isSubDone = false;
                     const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
-                    const s2Data = (learnerProgress.stageData && learnerProgress.stageData["stage-2"]) || {};
-                    const s2Habits = s2Data.habits || {};
+                    const s2aData = (learnerProgress.stageData && (learnerProgress.stageData["stage-2a"] || learnerProgress.stageData["stage-2"])) || {};
+                    const s2bData = (learnerProgress.stageData && (learnerProgress.stageData["stage-2b"] || learnerProgress.stageData["stage-2"])) || {};
+                    const s3aData = (learnerProgress.stageData && (learnerProgress.stageData["stage-3a"] || learnerProgress.stageData["stage-3"])) || {};
+                    const s3bData = (learnerProgress.stageData && (learnerProgress.stageData["stage-3b"] || learnerProgress.stageData["stage-3"])) || {};
+                    const s2aHabits = s2aData.habits || {};
+                    const s2bHabits = s2bData.habits || {};
+
                     if (sub.id === "sub-1-1") {
                         isSubDone = Boolean((s1Data.viewed && s1Data.viewed["1-1"]) || (s1Data.iam_cp1 && s1Data.iam_cp1.I) || (s1Data.iam_1_1 && s1Data.iam_1_1.I));
                     } else if (sub.id === "sub-1-2") {
@@ -2117,20 +2455,26 @@ document.addEventListener("DOMContentLoaded", () => {
                         isSubDone = Boolean((s1Data.iam_cp1_sets && s1Data.iam_cp1_sets.length > 0) || (s1Data.iam_cp1 && ((s1Data.iam_cp1.I && s1Data.iam_cp1.I.trim()) || (s1Data.iam_cp1.A && s1Data.iam_cp1.A.trim()) || (s1Data.iam_cp1.M && s1Data.iam_cp1.M.trim()))) || (s1Data.iam_1_2 && s1Data.iam_1_2.I) || (s1Data.iam_1_1 && s1Data.iam_1_1.I));
                     } else if (sub.id === "sub-1-quiz" || sub.id === "sub-1-4") {
                         isSubDone = Boolean(s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80);
-                    } else if (sub.id === "sub-2-0") {
-                        isSubDone = Boolean((s2Habits.drivers && s2Habits.drivers.iam && (s2Habits.drivers.iam.I || s2Habits.drivers.iam.A || s2Habits.drivers.iam.M)) || (s2Data.iam && (s2Data.iam.I || s2Data.iam.A || s2Data.iam.M)) || (s1Data.iam_cp2 && (s1Data.iam_cp2.I || s1Data.iam_cp2.A || s1Data.iam_cp2.M)) || (s1Data.iam_cp2_sets && s1Data.iam_cp2_sets.length > 0) || (s1Data.iam_1_3 && (s1Data.iam_1_3.I || s1Data.iam_1_3.A || s1Data.iam_1_3.M)));
-                    } else if (sub.id === "sub-2-1") {
-                        isSubDone = Boolean(s2Habits.mindfulness && ((s2Habits.mindfulness.sbaChecks && (s2Habits.mindfulness.sbaChecks.s || s2Habits.mindfulness.sbaChecks.b || s2Habits.mindfulness.sbaChecks.a)) || (s2Habits.mindfulness.situation && s2Habits.mindfulness.situation.trim()) || (s2Habits.mindfulness.iam && (s2Habits.mindfulness.iam.I || s2Habits.mindfulness.iam.A || s2Habits.mindfulness.iam.M))));
-                    } else if (sub.id === "sub-2-2") {
-                        isSubDone = Boolean(s2Habits.gratitude && ((s2Habits.gratitude.items && s2Habits.gratitude.items.some(x => x && String(x).trim())) || (s2Habits.gratitude.card && (s2Habits.gratitude.card.to || s2Habits.gratitude.card.msg)) || (s2Habits.gratitude.iam && (s2Habits.gratitude.iam.I || s2Habits.gratitude.iam.A || s2Habits.gratitude.iam.M))));
-                    } else if (sub.id === "sub-2-3") {
-                        isSubDone = Boolean(s2Habits.optimism && ((s2Habits.optimism.abcde && (s2Habits.optimism.abcde.A || s2Habits.optimism.abcde.B || s2Habits.optimism.abcde.C || s2Habits.optimism.abcde.D || s2Habits.optimism.abcde.E)) || (s2Habits.optimism.iam && (s2Habits.optimism.iam.I || s2Habits.optimism.iam.A || s2Habits.optimism.iam.M))));
-                    } else if (sub.id === "sub-2-4") {
-                        isSubDone = Boolean(s2Habits.flow && ((s2Habits.flow.boringTask && s2Habits.flow.boringTask.trim()) || (s2Habits.flow.redesign && s2Habits.flow.redesign.trim()) || (s2Habits.flow.iam && (s2Habits.flow.iam.I || s2Habits.flow.iam.A || s2Habits.flow.iam.M))));
-                    } else if (sub.id === "sub-2-5") {
-                        isSubDone = Boolean(s2Habits.altruism && ((s2Habits.altruism.style && s2Habits.altruism.style.trim()) || (s2Habits.altruism.act && s2Habits.altruism.act.trim()) || (s2Habits.altruism.iam && (s2Habits.altruism.iam.I || s2Habits.altruism.iam.A || s2Habits.altruism.iam.M))));
-                    } else if (sub.id === "sub-2-6") {
-                        isSubDone = Boolean(s2Data.capstoneIam && (s2Data.capstoneIam.I || s2Data.capstoneIam.A || s2Data.capstoneIam.M));
+                    } else if (sub.id === "sub-2a-0" || sub.id === "sub-2-0") {
+                        isSubDone = Boolean((s2aHabits.drivers && s2aHabits.drivers.iam && (s2aHabits.drivers.iam.I || s2aHabits.drivers.iam.A || s2aHabits.drivers.iam.M)) || (s2aData.iam && (s2aData.iam.I || s2aData.iam.A || s2aData.iam.M)));
+                    } else if (sub.id === "sub-2a-1" || sub.id === "sub-2-1") {
+                        isSubDone = Boolean(s2aHabits.mindfulness && ((s2aHabits.mindfulness.sbaChecks && (s2aHabits.mindfulness.sbaChecks.s || s2aHabits.mindfulness.sbaChecks.b || s2aHabits.mindfulness.sbaChecks.a)) || (s2aHabits.mindfulness.situation && s2aHabits.mindfulness.situation.trim()) || (s2aHabits.mindfulness.iam && (s2aHabits.mindfulness.iam.I || s2aHabits.mindfulness.iam.A || s2aHabits.mindfulness.iam.M))));
+                    } else if (sub.id === "sub-2a-2" || sub.id === "sub-2-2") {
+                        isSubDone = Boolean(s2aHabits.gratitude && ((s2aHabits.gratitude.items && s2aHabits.gratitude.items.some(x => x && String(x).trim())) || (s2aHabits.gratitude.card && (s2aHabits.gratitude.card.to || s2aHabits.gratitude.card.msg)) || (s2aHabits.gratitude.iam && (s2aHabits.gratitude.iam.I || s2aHabits.gratitude.iam.A || s2aHabits.gratitude.iam.M))));
+                    } else if (sub.id === "sub-2a-3" || sub.id === "sub-2-5") {
+                        isSubDone = Boolean(s2aHabits.altruism && ((s2aHabits.altruism.style && s2aHabits.altruism.style.trim()) || (s2aHabits.altruism.act && s2aHabits.altruism.act.trim()) || (s2aHabits.altruism.iam && (s2aHabits.altruism.iam.I || s2aHabits.altruism.iam.A || s2aHabits.altruism.iam.M))));
+                    } else if (sub.id === "sub-2a-capstone" || sub.id === "sub-2-6") {
+                        isSubDone = Boolean(s2aData.capstoneIam && (s2aData.capstoneIam.I || s2aData.capstoneIam.A || s2aData.capstoneIam.M));
+                    } else if (sub.id === "sub-2b-1" || sub.id === "sub-2-4") {
+                        isSubDone = Boolean(s2bHabits.flow && ((s2bHabits.flow.boringTask && s2bHabits.flow.boringTask.trim()) || (s2bHabits.flow.redesign && s2bHabits.flow.redesign.trim()) || (s2bHabits.flow.iam && (s2bHabits.flow.iam.I || s2bHabits.flow.iam.A || s2bHabits.flow.iam.M))));
+                    } else if (sub.id === "sub-2b-2" || sub.id === "sub-2-3") {
+                        isSubDone = Boolean(s2bHabits.optimism && ((s2bHabits.optimism.abcde && (s2bHabits.optimism.abcde.A || s2bHabits.optimism.abcde.B || s2bHabits.optimism.abcde.C || s2bHabits.optimism.abcde.D || s2bHabits.optimism.abcde.E)) || (s2bHabits.optimism.iam && (s2bHabits.optimism.iam.I || s2bHabits.optimism.iam.A || s2bHabits.optimism.iam.M))));
+                    } else if (sub.id === "sub-2b-capstone") {
+                        isSubDone = Boolean(s2bData.capstoneIam && (s2bData.capstoneIam.I || s2bData.capstoneIam.A || s2bData.capstoneIam.M));
+                    } else if (sub.id.startsWith("sub-3a-") || sub.id.startsWith("sub-3-")) {
+                        isSubDone = Boolean(s3aData.habitTracker && Object.keys(s3aData.habitTracker).length > 0);
+                    } else if (sub.id.startsWith("sub-3b-")) {
+                        isSubDone = Boolean((s3bData.dailyAbcde && s3bData.dailyAbcde.A) || (s3bData.weeklyCheckins && (s3bData.weeklyCheckins.w1 || s3bData.weeklyCheckins.w2)));
                     }
 
                     const marker = !isUnlocked
@@ -2520,22 +2864,30 @@ document.addEventListener("DOMContentLoaded", () => {
         renderSummaryDeepContent(stage);
 
         // Tab 2: Switch Stage Practice View
+        if (stage1PracticeContainer) stage1PracticeContainer.classList.add("hidden");
+        if (stage2PracticeContainer) stage2PracticeContainer.classList.add("hidden");
+        if (stage2aPracticeContainer) stage2aPracticeContainer.classList.add("hidden");
+        if (stage2bPracticeContainer) stage2bPracticeContainer.classList.add("hidden");
+        if (stage3PracticeContainer) stage3PracticeContainer.classList.add("hidden");
+        if (stage3aPracticeContainer) stage3aPracticeContainer.classList.add("hidden");
+        if (stage3bPracticeContainer) stage3bPracticeContainer.classList.add("hidden");
+
         if (stage.id === "stage-1") {
-            stage1PracticeContainer.classList.remove("hidden");
-            stage2PracticeContainer.classList.add("hidden");
-            stage3PracticeContainer.classList.add("hidden");
+            if (stage1PracticeContainer) stage1PracticeContainer.classList.remove("hidden");
             renderStage1View(stage);
             initAccordions();
-        } else if (stage.id === "stage-2") {
-            stage1PracticeContainer.classList.add("hidden");
-            stage2PracticeContainer.classList.remove("hidden");
-            stage3PracticeContainer.classList.add("hidden");
-            renderStage2View(stage);
-        } else if (stage.id === "stage-3") {
-            stage1PracticeContainer.classList.add("hidden");
-            stage2PracticeContainer.classList.add("hidden");
-            stage3PracticeContainer.classList.remove("hidden");
-            renderStage3View(stage);
+        } else if (stage.id === "stage-2a" || stage.id === "stage-2") {
+            if (stage2aPracticeContainer) stage2aPracticeContainer.classList.remove("hidden");
+            renderStage2AView(stage);
+        } else if (stage.id === "stage-2b") {
+            if (stage2bPracticeContainer) stage2bPracticeContainer.classList.remove("hidden");
+            renderStage2BView(stage);
+        } else if (stage.id === "stage-3a" || stage.id === "stage-3") {
+            if (stage3aPracticeContainer) stage3aPracticeContainer.classList.remove("hidden");
+            renderStage3AView(stage);
+        } else if (stage.id === "stage-3b") {
+            if (stage3bPracticeContainer) stage3bPracticeContainer.classList.remove("hidden");
+            renderStage3BView(stage);
         }
 
         // Tab 3: Resources
@@ -3346,7 +3698,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <span class="text-2xl">🎉</span>
                             <div>
                                 <h4 class="text-sm font-extrabold text-brand-green">CHÚC MỪNG BẠN ĐÃ VƯỢT CHẶNG 1 THÀNH CÔNG!</h4>
-                                <p class="text-xs text-slate-300 mt-0.5">Kết quả bài kiểm tra vượt chặng: <strong class="text-white">${correct}/${quizzes.length} câu đúng (${percent}%)</strong> — Đạt chuẩn ≥80% sau lần thử ${attempts}/${maxAttempts}, đã mở khóa Chặng 2 & Chặng 3.</p>
+                                <p class="text-xs text-slate-300 mt-0.5">Kết quả bài kiểm tra vượt chặng: <strong class="text-white">${correct}/${quizzes.length} câu đúng (${percent}%)</strong> — Đạt chuẩn ≥80% sau lần thử ${attempts}/${maxAttempts}, ${isStageUnlocked("stage-2a") ? ", đã mở khóa Chặng 2A (hoàn thành các bài IAM sẽ mở tiếp Chặng 3A)." : ", bạn cần là học viên chính thức để mở Chặng 2A."}</p>
                             </div>
                         </div>
                     `;
@@ -3615,15 +3967,16 @@ document.addEventListener("DOMContentLoaded", () => {
         evaluateLearnerStatus();
     }
 
-    // 10. STAGE 2 RENDERER (Workshop Live 5 Habits)
-    function renderStage2View(stage) {
-        const sData = learnerProgress.stageData["stage-2"] || { habits: {} };
+    // 10. STAGE 2A & 2B RENDERERS
+    function renderStage2AView(stage) {
+        const sData = (learnerProgress && learnerProgress.stageData && (learnerProgress.stageData["stage-2a"] || learnerProgress.stageData["stage-2"])) || { habits: {} };
         learnerProgress.stageData = learnerProgress.stageData || {};
-        learnerProgress.stageData["stage-2"] = sData;
+        learnerProgress.stageData["stage-2a"] = sData;
         const habits = sData.habits || {};
 
-        // 10.1 Setup Habit Pill Switching
-        const habitTabs = document.querySelectorAll(".habit-tab");
+        // 10.1 Setup Habit Pill Switching for 2A
+        const habitTabs = document.querySelectorAll("#stage2a-practice-container .habit-tab, #habit-nav-tabs-2a .habit-tab");
+        const habitPanels2A = document.querySelectorAll("#stage2a-practice-container .habit-panel");
         habitTabs.forEach(tab => {
             tab.onclick = () => {
                 habitTabs.forEach(t => {
@@ -3634,7 +3987,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 tab.classList.remove("text-slate-400");
 
                 const targetHabit = tab.getAttribute("data-habit");
-                habitPanels.forEach(p => {
+                habitPanels2A.forEach(p => {
                     if (p.id === `habit-panel-${targetHabit}`) p.classList.remove("hidden");
                     else p.classList.add("hidden");
                 });
@@ -3670,6 +4023,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 learnerProgress.stageData["stage-1"].iam_1_3 = learnerProgress.stageData["stage-1"].iam_1_3 || {};
                 learnerProgress.stageData["stage-1"].iam_1_3.I = v;
             }
+            syncLegacyStageData(learnerProgress);
             debouncedSave(); 
             renderSyllabus(); 
         }, hD.iam.I);
@@ -3685,6 +4039,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 learnerProgress.stageData["stage-1"].iam_1_3 = learnerProgress.stageData["stage-1"].iam_1_3 || {};
                 learnerProgress.stageData["stage-1"].iam_1_3.A = v;
             }
+            syncLegacyStageData(learnerProgress);
             debouncedSave(); 
             renderSyllabus(); 
         }, hD.iam.A);
@@ -3700,105 +4055,164 @@ document.addEventListener("DOMContentLoaded", () => {
                 learnerProgress.stageData["stage-1"].iam_1_3 = learnerProgress.stageData["stage-1"].iam_1_3 || {};
                 learnerProgress.stageData["stage-1"].iam_1_3.M = v;
             }
+            syncLegacyStageData(learnerProgress);
             debouncedSave(); 
             renderSyllabus(); 
         }, hD.iam.M);
 
         // 10.2 Habit 1: Gratitude Inputs
         const hG = habits.gratitude || { items: [], card: {}, iam: {} };
-        bindInput("gratitude-1", v => { hG.items[0] = v; habits.gratitude = hG; debouncedSave(); }, hG.items[0]);
-        bindInput("gratitude-2", v => { hG.items[1] = v; habits.gratitude = hG; debouncedSave(); }, hG.items[1]);
-        bindInput("gratitude-3", v => { hG.items[2] = v; habits.gratitude = hG; debouncedSave(); }, hG.items[2]);
-        bindInput("gratitude-4", v => { hG.items[3] = v; habits.gratitude = hG; debouncedSave(); }, hG.items[3]);
-        bindInput("gratitude-card-to", v => { hG.card.to = v; habits.gratitude = hG; debouncedSave(); }, hG.card.to);
-        bindInput("gratitude-card-msg", v => { hG.card.msg = v; habits.gratitude = hG; debouncedSave(); }, hG.card.msg);
+        hG.iam = hG.iam || {};
+        bindInput("gratitude-1", v => { hG.items[0] = v; habits.gratitude = hG; syncLegacyStageData(learnerProgress); debouncedSave(); }, hG.items[0]);
+        bindInput("gratitude-2", v => { hG.items[1] = v; habits.gratitude = hG; syncLegacyStageData(learnerProgress); debouncedSave(); }, hG.items[1]);
+        bindInput("gratitude-3", v => { hG.items[2] = v; habits.gratitude = hG; syncLegacyStageData(learnerProgress); debouncedSave(); }, hG.items[2]);
+        bindInput("gratitude-4", v => { hG.items[3] = v; habits.gratitude = hG; syncLegacyStageData(learnerProgress); debouncedSave(); }, hG.items[3]);
+        bindInput("gratitude-card-to", v => { hG.card.to = v; habits.gratitude = hG; syncLegacyStageData(learnerProgress); debouncedSave(); }, hG.card.to);
+        bindInput("gratitude-card-msg", v => { hG.card.msg = v; habits.gratitude = hG; syncLegacyStageData(learnerProgress); debouncedSave(); }, hG.card.msg);
         hG.scenario = hG.scenario || {};
-        bindInput("scenario-habit-gratitude-reflection", v => { hG.scenario.reflection = v; habits.gratitude = hG; debouncedSave(); }, hG.scenario.reflection);
-        bindInput("scenario-habit-gratitude-action", v => { hG.scenario.action = v; habits.gratitude = hG; debouncedSave(); }, hG.scenario.action);
-        bindInput("iam-gratitude-i", v => { hG.iam.I = v; habits.gratitude = hG; debouncedSave(); }, hG.iam.I);
-        bindInput("iam-gratitude-a", v => { hG.iam.A = v; habits.gratitude = hG; debouncedSave(); }, hG.iam.A);
-        bindInput("iam-gratitude-m", v => { hG.iam.M = v; habits.gratitude = hG; debouncedSave(); }, hG.iam.M);
+        bindInput("scenario-habit-gratitude-reflection", v => { hG.scenario.reflection = v; habits.gratitude = hG; syncLegacyStageData(learnerProgress); debouncedSave(); }, hG.scenario.reflection);
+        bindInput("scenario-habit-gratitude-action", v => { hG.scenario.action = v; habits.gratitude = hG; syncLegacyStageData(learnerProgress); debouncedSave(); }, hG.scenario.action);
+        bindInput("iam-gratitude-i", v => { hG.iam.I = v; habits.gratitude = hG; syncLegacyStageData(learnerProgress); debouncedSave(); renderSyllabus(); }, hG.iam.I);
+        bindInput("iam-gratitude-a", v => { hG.iam.A = v; habits.gratitude = hG; syncLegacyStageData(learnerProgress); debouncedSave(); renderSyllabus(); }, hG.iam.A);
+        bindInput("iam-gratitude-m", v => { hG.iam.M = v; habits.gratitude = hG; syncLegacyStageData(learnerProgress); debouncedSave(); renderSyllabus(); }, hG.iam.M);
 
         // 10.3 Habit 2: Mindfulness Inputs
         const hM = habits.mindfulness || { sbaChecks: {}, iam: {} };
+        hM.iam = hM.iam || {};
         const chkS = document.getElementById("sba-check-s");
         const chkB = document.getElementById("sba-check-b");
         const chkA = document.getElementById("sba-check-a");
         if (chkS) {
             chkS.checked = !!hM.sbaChecks.s;
-            chkS.onchange = () => { hM.sbaChecks.s = chkS.checked; habits.mindfulness = hM; debouncedSave(); };
+            chkS.onchange = () => { hM.sbaChecks.s = chkS.checked; habits.mindfulness = hM; syncLegacyStageData(learnerProgress); debouncedSave(); };
         }
         if (chkB) {
             chkB.checked = !!hM.sbaChecks.b;
-            chkB.onchange = () => { hM.sbaChecks.b = chkB.checked; habits.mindfulness = hM; debouncedSave(); };
+            chkB.onchange = () => { hM.sbaChecks.b = chkB.checked; habits.mindfulness = hM; syncLegacyStageData(learnerProgress); debouncedSave(); };
         }
         if (chkA) {
             chkA.checked = !!hM.sbaChecks.a;
-            chkA.onchange = () => { hM.sbaChecks.a = chkA.checked; habits.mindfulness = hM; debouncedSave(); };
+            chkA.onchange = () => { hM.sbaChecks.a = chkA.checked; habits.mindfulness = hM; syncLegacyStageData(learnerProgress); debouncedSave(); };
         }
-        bindInput("sba-situation", v => { hM.situation = v; habits.mindfulness = hM; debouncedSave(); }, hM.situation);
+        bindInput("sba-situation", v => { hM.situation = v; habits.mindfulness = hM; syncLegacyStageData(learnerProgress); debouncedSave(); }, hM.situation);
         hM.scenario = hM.scenario || {};
-        bindInput("scenario-habit-mindfulness-reflection", v => { hM.scenario.reflection = v; habits.mindfulness = hM; debouncedSave(); }, hM.scenario.reflection);
-        bindInput("scenario-habit-mindfulness-action", v => { hM.scenario.action = v; habits.mindfulness = hM; debouncedSave(); }, hM.scenario.action);
-        bindInput("iam-mindfulness-i", v => { hM.iam.I = v; habits.mindfulness = hM; debouncedSave(); }, hM.iam.I);
-        bindInput("iam-mindfulness-a", v => { hM.iam.A = v; habits.mindfulness = hM; debouncedSave(); }, hM.iam.A);
-        bindInput("iam-mindfulness-m", v => { hM.iam.M = v; habits.mindfulness = hM; debouncedSave(); }, hM.iam.M);
+        bindInput("scenario-habit-mindfulness-reflection", v => { hM.scenario.reflection = v; habits.mindfulness = hM; syncLegacyStageData(learnerProgress); debouncedSave(); }, hM.scenario.reflection);
+        bindInput("scenario-habit-mindfulness-action", v => { hM.scenario.action = v; habits.mindfulness = hM; syncLegacyStageData(learnerProgress); debouncedSave(); }, hM.scenario.action);
+        bindInput("iam-mindfulness-i", v => { hM.iam.I = v; habits.mindfulness = hM; syncLegacyStageData(learnerProgress); debouncedSave(); renderSyllabus(); }, hM.iam.I);
+        bindInput("iam-mindfulness-a", v => { hM.iam.A = v; habits.mindfulness = hM; syncLegacyStageData(learnerProgress); debouncedSave(); renderSyllabus(); }, hM.iam.A);
+        bindInput("iam-mindfulness-m", v => { hM.iam.M = v; habits.mindfulness = hM; syncLegacyStageData(learnerProgress); debouncedSave(); renderSyllabus(); }, hM.iam.M);
 
-        // 10.4 Habit 3: Optimism ABCDE
-        const hO = habits.optimism || { abcde: {}, iam: {} };
-        bindInput("abcde-a", v => { hO.abcde.A = v; habits.optimism = hO; debouncedSave(); }, hO.abcde.A);
-        bindInput("abcde-b", v => { hO.abcde.B = v; habits.optimism = hO; debouncedSave(); }, hO.abcde.B);
-        bindInput("abcde-c", v => { hO.abcde.C = v; habits.optimism = hO; debouncedSave(); }, hO.abcde.C);
-        bindInput("abcde-d", v => { hO.abcde.D = v; habits.optimism = hO; debouncedSave(); syncAbcdeBackToLocalStorage(hO.abcde); }, hO.abcde.D);
-        bindInput("abcde-e", v => { hO.abcde.E = v; habits.optimism = hO; debouncedSave(); syncAbcdeBackToLocalStorage(hO.abcde); }, hO.abcde.E);
-        hO.scenario = hO.scenario || {};
-        bindInput("scenario-habit-optimism-reflection", v => { hO.scenario.reflection = v; habits.optimism = hO; debouncedSave(); }, hO.scenario.reflection);
-        bindInput("scenario-habit-optimism-action", v => { hO.scenario.action = v; habits.optimism = hO; debouncedSave(); }, hO.scenario.action);
-        bindInput("iam-optimism-i", v => { hO.iam.I = v; habits.optimism = hO; debouncedSave(); }, hO.iam.I);
-        bindInput("iam-optimism-a", v => { hO.iam.A = v; habits.optimism = hO; debouncedSave(); }, hO.iam.A);
-        bindInput("iam-optimism-m", v => { hO.iam.M = v; habits.optimism = hO; debouncedSave(); }, hO.iam.M);
-
-        // 10.4.1 Load Landing Page sync if available
-        loadAbcdeLandingSync();
-
-        // 10.5 Habit 4: Flow
-        const hF = habits.flow || { iam: {} };
-        bindInput("flow-boring-task", v => { hF.boringTask = v; habits.flow = hF; debouncedSave(); }, hF.boringTask);
-        bindInput("flow-redesign", v => { hF.redesign = v; habits.flow = hF; debouncedSave(); }, hF.redesign);
-        hF.scenario = hF.scenario || {};
-        bindInput("scenario-habit-flow-reflection", v => { hF.scenario.reflection = v; habits.flow = hF; debouncedSave(); }, hF.scenario.reflection);
-        bindInput("scenario-habit-flow-action", v => { hF.scenario.action = v; habits.flow = hF; debouncedSave(); }, hF.scenario.action);
-        bindInput("iam-flow-i", v => { hF.iam.I = v; habits.flow = hF; debouncedSave(); }, hF.iam.I);
-        bindInput("iam-flow-a", v => { hF.iam.A = v; habits.flow = hF; debouncedSave(); }, hF.iam.A);
-        bindInput("iam-flow-m", v => { hF.iam.M = v; habits.flow = hF; debouncedSave(); }, hF.iam.M);
-
-        // 10.6 Habit 5: Altruism
+        // 10.4 Habit 3: Altruism
         const hA = habits.altruism || { iam: {} };
+        hA.iam = hA.iam || {};
         document.querySelectorAll('input[name="altruism-style"]').forEach(r => {
             if (r.value === hA.style) r.checked = true;
-            r.onchange = () => { hA.style = r.value; habits.altruism = hA; debouncedSave(); };
+            r.onchange = () => { hA.style = r.value; habits.altruism = hA; syncLegacyStageData(learnerProgress); debouncedSave(); };
         });
-        bindInput("altruism-act", v => { hA.act = v; habits.altruism = hA; debouncedSave(); }, hA.act);
+        bindInput("altruism-act", v => { hA.act = v; habits.altruism = hA; syncLegacyStageData(learnerProgress); debouncedSave(); }, hA.act);
         hA.scenario = hA.scenario || {};
-        bindInput("scenario-habit-altruism-reflection", v => { hA.scenario.reflection = v; habits.altruism = hA; debouncedSave(); }, hA.scenario.reflection);
-        bindInput("scenario-habit-altruism-action", v => { hA.scenario.action = v; habits.altruism = hA; debouncedSave(); }, hA.scenario.action);
-        bindInput("iam-altruism-i", v => { hA.iam.I = v; habits.altruism = hA; debouncedSave(); }, hA.iam.I);
-        bindInput("iam-altruism-a", v => { hA.iam.A = v; habits.altruism = hA; debouncedSave(); }, hA.iam.A);
-        bindInput("iam-altruism-m", v => { hA.iam.M = v; habits.altruism = hA; debouncedSave(); }, hA.iam.M);
+        bindInput("scenario-habit-altruism-reflection", v => { hA.scenario.reflection = v; habits.altruism = hA; syncLegacyStageData(learnerProgress); debouncedSave(); }, hA.scenario.reflection);
+        bindInput("scenario-habit-altruism-action", v => { hA.scenario.action = v; habits.altruism = hA; syncLegacyStageData(learnerProgress); debouncedSave(); }, hA.scenario.action);
+        bindInput("iam-altruism-i", v => { hA.iam.I = v; habits.altruism = hA; syncLegacyStageData(learnerProgress); debouncedSave(); renderSyllabus(); }, hA.iam.I);
+        bindInput("iam-altruism-a", v => { hA.iam.A = v; habits.altruism = hA; syncLegacyStageData(learnerProgress); debouncedSave(); renderSyllabus(); }, hA.iam.A);
+        bindInput("iam-altruism-m", v => { hA.iam.M = v; habits.altruism = hA; syncLegacyStageData(learnerProgress); debouncedSave(); renderSyllabus(); }, hA.iam.M);
 
-        // 10.7 Capstone IAM
+        // 10.5 Capstone 2A IAM
         const cap = sData.capstoneIam || {};
-        bindInput("iam-capstone-i", v => { cap.I = v; sData.capstoneIam = cap; debouncedSave(); }, cap.I);
-        bindInput("iam-capstone-a", v => { cap.A = v; sData.capstoneIam = cap; debouncedSave(); }, cap.A);
-        bindInput("iam-capstone-m", v => { cap.M = v; sData.capstoneIam = cap; debouncedSave(); }, cap.M);
+        sData.capstoneIam = cap;
+        bindInput("iam-capstone-i", v => { cap.I = v; sData.capstoneIam = cap; syncLegacyStageData(learnerProgress); debouncedSave(); renderSyllabus(); }, cap.I);
+        bindInput("iam-capstone-a", v => { cap.A = v; sData.capstoneIam = cap; syncLegacyStageData(learnerProgress); debouncedSave(); renderSyllabus(); }, cap.A);
+        bindInput("iam-capstone-m", v => { cap.M = v; sData.capstoneIam = cap; syncLegacyStageData(learnerProgress); debouncedSave(); renderSyllabus(); }, cap.M);
 
+        const btnSyncWorkshop = document.getElementById("btn-sync-workshop");
         if (btnSyncWorkshop) {
             btnSyncWorkshop.onclick = () => {
+                syncLegacyStageData(learnerProgress);
                 saveLearnerProgress();
-                alert("✓ Toàn bộ bài tập 5 Thói quen & Capstone IAM đã được lưu an toàn tại trình duyệt và đồng bộ lên hệ thống Google Sheets của BTC!");
+                alert("✓ Toàn bộ bài tập 3 Thói quen Nền Tảng & Capstone 2A đã được lưu an toàn tại trình duyệt và đồng bộ lên Google Sheets!");
             };
         }
     }
+    window.renderStage2AView = renderStage2AView;
+
+    function renderStage2BView(stage) {
+        const s2bData = (learnerProgress && learnerProgress.stageData && (learnerProgress.stageData["stage-2b"] || learnerProgress.stageData["stage-2"])) || { habits: {} };
+        learnerProgress.stageData = learnerProgress.stageData || {};
+        learnerProgress.stageData["stage-2b"] = s2bData;
+        const habits = s2bData.habits || {};
+
+        // 10.1 Setup Habit Pill Switching for 2B
+        const habitTabs = document.querySelectorAll("#stage2b-practice-container .habit-tab, #habit-nav-tabs-2b .habit-tab");
+        const habitPanels2B = document.querySelectorAll("#stage2b-practice-container .habit-panel");
+        habitTabs.forEach(tab => {
+            tab.onclick = () => {
+                habitTabs.forEach(t => {
+                    t.classList.remove("active", "text-black", "font-bold");
+                    t.classList.add("text-slate-400");
+                });
+                tab.classList.add("active", "text-black", "font-bold");
+                tab.classList.remove("text-slate-400");
+
+                const targetHabit = tab.getAttribute("data-habit");
+                habitPanels2B.forEach(p => {
+                    if (p.id === `habit-panel-${targetHabit}`) p.classList.remove("hidden");
+                    else p.classList.add("hidden");
+                });
+            };
+        });
+
+        // Habit 1 (2B): Flow
+        const hF = habits.flow || { iam: {} };
+        bindInput("flow-boring-task", v => { hF.boringTask = v; habits.flow = hF; syncLegacyStageData(learnerProgress); debouncedSave(); }, hF.boringTask);
+        bindInput("flow-redesign", v => { hF.redesign = v; habits.flow = hF; syncLegacyStageData(learnerProgress); debouncedSave(); }, hF.redesign);
+        hF.scenario = hF.scenario || {};
+        bindInput("scenario-habit-flow-reflection", v => { hF.scenario.reflection = v; habits.flow = hF; syncLegacyStageData(learnerProgress); debouncedSave(); }, hF.scenario.reflection);
+        bindInput("scenario-habit-flow-action", v => { hF.scenario.action = v; habits.flow = hF; syncLegacyStageData(learnerProgress); debouncedSave(); }, hF.scenario.action);
+        bindInput("iam-flow-i", v => { hF.iam.I = v; habits.flow = hF; syncLegacyStageData(learnerProgress); debouncedSave(); renderSyllabus(); }, hF.iam.I);
+        bindInput("iam-flow-a", v => { hF.iam.A = v; habits.flow = hF; syncLegacyStageData(learnerProgress); debouncedSave(); renderSyllabus(); }, hF.iam.A);
+        bindInput("iam-flow-m", v => { hF.iam.M = v; habits.flow = hF; syncLegacyStageData(learnerProgress); debouncedSave(); renderSyllabus(); }, hF.iam.M);
+
+        // Habit 2 (2B): Optimism ABCDE
+        const hO = habits.optimism || { abcde: {}, iam: {} };
+        bindInput("abcde-a", v => { hO.abcde.A = v; habits.optimism = hO; syncLegacyStageData(learnerProgress); debouncedSave(); }, hO.abcde.A);
+        bindInput("abcde-b", v => { hO.abcde.B = v; habits.optimism = hO; syncLegacyStageData(learnerProgress); debouncedSave(); }, hO.abcde.B);
+        bindInput("abcde-c", v => { hO.abcde.C = v; habits.optimism = hO; syncLegacyStageData(learnerProgress); debouncedSave(); }, hO.abcde.C);
+        bindInput("abcde-d", v => { hO.abcde.D = v; habits.optimism = hO; syncLegacyStageData(learnerProgress); debouncedSave(); syncAbcdeBackToLocalStorage(hO.abcde); }, hO.abcde.D);
+        bindInput("abcde-e", v => { hO.abcde.E = v; habits.optimism = hO; syncLegacyStageData(learnerProgress); debouncedSave(); syncAbcdeBackToLocalStorage(hO.abcde); }, hO.abcde.E);
+        hO.scenario = hO.scenario || {};
+        bindInput("scenario-habit-optimism-reflection", v => { hO.scenario.reflection = v; habits.optimism = hO; syncLegacyStageData(learnerProgress); debouncedSave(); }, hO.scenario.reflection);
+        bindInput("scenario-habit-optimism-action", v => { hO.scenario.action = v; habits.optimism = hO; syncLegacyStageData(learnerProgress); debouncedSave(); }, hO.scenario.action);
+        bindInput("iam-optimism-i", v => { hO.iam.I = v; habits.optimism = hO; syncLegacyStageData(learnerProgress); debouncedSave(); renderSyllabus(); }, hO.iam.I);
+        bindInput("iam-optimism-a", v => { hO.iam.A = v; habits.optimism = hO; syncLegacyStageData(learnerProgress); debouncedSave(); renderSyllabus(); }, hO.iam.A);
+        bindInput("iam-optimism-m", v => { hO.iam.M = v; habits.optimism = hO; syncLegacyStageData(learnerProgress); debouncedSave(); renderSyllabus(); }, hO.iam.M);
+
+        loadAbcdeLandingSync();
+
+        // Capstone 2B IAM
+        const cap2b = s2bData.capstoneIam || {};
+        bindInput("iam-capstone-2b-i", v => { cap2b.I = v; s2bData.capstoneIam = cap2b; syncLegacyStageData(learnerProgress); debouncedSave(); }, cap2b.I);
+        bindInput("iam-capstone-2b-a", v => { cap2b.A = v; s2bData.capstoneIam = cap2b; syncLegacyStageData(learnerProgress); debouncedSave(); }, cap2b.A);
+        bindInput("iam-capstone-2b-m", v => { cap2b.M = v; s2bData.capstoneIam = cap2b; syncLegacyStageData(learnerProgress); debouncedSave(); }, cap2b.M);
+
+        const btnSync2B = document.getElementById("btn-sync-workshop-2b");
+        if (btnSync2B) {
+            btnSync2B.onclick = () => {
+                syncLegacyStageData(learnerProgress);
+                saveLearnerProgress();
+                alert("✓ Toàn bộ bài tập 2 Thói quen Bứt Phá & Capstone 2B đã được lưu an toàn tại trình duyệt và đồng bộ lên Google Sheets!");
+            };
+        }
+    }
+    window.renderStage2BView = renderStage2BView;
+
+    function renderStage2View(stage) {
+        if (stage && stage.id === "stage-2b") {
+            renderStage2BView(stage);
+        } else {
+            renderStage2AView(stage);
+        }
+    }
+    window.renderStage2View = renderStage2View;
 
     // =========================================================================
     // STAGE 3 GAMIFICATION: STREAK ENGINE & BADGES (Tham chiếu READ10 Engine)
@@ -3945,8 +4359,88 @@ document.addEventListener("DOMContentLoaded", () => {
         }).join("");
     }
 
-    // 11. STAGE 3 RENDERER (Post-Class 21-Day Dashboard)
-    function renderStage3View(stage) {
+    function renderStage3BView(stage) {
+        const s3b = (learnerProgress && learnerProgress.stageData && (learnerProgress.stageData["stage-3b"] || learnerProgress.stageData["stage-3"])) || { weeklyCheckins: {} };
+
+        // 1. ABCDE Workout
+        s3b.dailyAbcde = s3b.dailyAbcde || { scenarioId: "", A: "", B: "", C: "", D: "", E: "" };
+        const dAbcde = s3b.dailyAbcde;
+
+        const s3Select = document.getElementById("stage3-abcde-scenario-select");
+        const s3ElA = document.getElementById("stage3-abcde-a");
+        const s3ElB = document.getElementById("stage3-abcde-b");
+        const s3ElC = document.getElementById("stage3-abcde-c");
+        const s3ElD = document.getElementById("stage3-abcde-d");
+        const s3ElE = document.getElementById("stage3-abcde-e");
+        const s3SaveStatus = document.getElementById("stage3-abcde-save-status");
+        const s3BtnSave = document.getElementById("btn-save-stage3-abcde");
+
+        const allScenarios = stage.abcdeScenarios || [];
+        if (s3Select && allScenarios.length > 0) {
+            s3Select.innerHTML = `<option value="">-- Chọn một tình huống để phân tích mẫu --</option>`;
+            allScenarios.forEach(sc => {
+                const opt = document.createElement("option");
+                opt.value = sc.id;
+                opt.textContent = sc.name || sc.title;
+                if (sc.id === dAbcde.scenarioId) opt.selected = true;
+                s3Select.appendChild(opt);
+            });
+            s3Select.onchange = () => {
+                const selId = s3Select.value;
+                dAbcde.scenarioId = selId;
+                const found = allScenarios.find(x => x.id === selId);
+                if (found) {
+                    dAbcde.A = found.A || "";
+                    dAbcde.B = found.B || "";
+                    dAbcde.C = found.C || "";
+                    dAbcde.D = found.hintD || "";
+                    dAbcde.E = found.hintE || "";
+                    if (s3ElA) s3ElA.value = dAbcde.A;
+                    if (s3ElB) s3ElB.value = dAbcde.B;
+                    if (s3ElC) s3ElC.value = dAbcde.C;
+                    if (s3ElD) s3ElD.value = dAbcde.D;
+                    if (s3ElE) s3ElE.value = dAbcde.E;
+                }
+                syncLegacyStageData(learnerProgress);
+                saveLearnerProgress();
+            };
+        }
+
+        bindInput("stage3-abcde-a", v => { dAbcde.A = v; syncLegacyStageData(learnerProgress); debouncedSave(); }, dAbcde.A);
+        bindInput("stage3-abcde-b", v => { dAbcde.B = v; syncLegacyStageData(learnerProgress); debouncedSave(); }, dAbcde.B);
+        bindInput("stage3-abcde-c", v => { dAbcde.C = v; syncLegacyStageData(learnerProgress); debouncedSave(); }, dAbcde.C);
+        bindInput("stage3-abcde-d", v => { dAbcde.D = v; syncLegacyStageData(learnerProgress); debouncedSave(); }, dAbcde.D);
+        bindInput("stage3-abcde-e", v => { dAbcde.E = v; syncLegacyStageData(learnerProgress); debouncedSave(); }, dAbcde.E);
+
+        if (s3BtnSave) {
+            s3BtnSave.onclick = () => {
+                syncLegacyStageData(learnerProgress);
+                saveLearnerProgress();
+                if (s3SaveStatus) {
+                    s3SaveStatus.classList.remove("hidden");
+                    setTimeout(() => s3SaveStatus.classList.add("hidden"), 3000);
+                }
+                alert("✓ Bài tập ABCDE Chuyên Sâu Chặng 3B đã được lưu an toàn!");
+            };
+        }
+
+        // 2. Weekly Checkin 3B
+        s3b.weeklyCheckins = s3b.weeklyCheckins || { w1: "", w2: "" };
+        bindInput("weekly-checkin-3b-1", v => { s3b.weeklyCheckins.w1 = v; syncLegacyStageData(learnerProgress); debouncedSave(); }, s3b.weeklyCheckins.w1);
+        bindInput("weekly-checkin-3b-2", v => { s3b.weeklyCheckins.w2 = v; syncLegacyStageData(learnerProgress); debouncedSave(); }, s3b.weeklyCheckins.w2);
+
+        const btnSaveWeekly3B = document.getElementById("btn-save-weekly-3b");
+        if (btnSaveWeekly3B) {
+            btnSaveWeekly3B.onclick = () => {
+                syncLegacyStageData(learnerProgress);
+                saveLearnerProgress();
+                alert("✓ Đúc kết tuần Chặng 3B đã được lưu an toàn!");
+            };
+        }
+    }
+    window.renderStage3BView = renderStage3BView;
+
+    function renderStage3AView(stage) {
         const s1 = learnerProgress.stageData["stage-1"] || {};
         const s2 = learnerProgress.stageData["stage-2"] || { habits: {} };
         const s3 = learnerProgress.stageData["stage-3"] || { habitTracker: {}, weeklyCheckins: {} };
@@ -4713,6 +5207,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+
+    window.renderStage3AView = renderStage3AView;
+
+    function renderStage3View(stage) {
+        if (stage && stage.id === "stage-3b") {
+            renderStage3BView(stage);
+        } else {
+            renderStage3AView(stage);
+        }
+    }
+    window.renderStage3View = renderStage3View;
     // 12. TAB 3: RESOURCES RENDERER (Enhanced with in-app reader & lightbox)
     function renderResourcesTab(stage) {
         resourcesGridContainer.innerHTML = "";
@@ -5284,7 +5789,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 12.5 DOCUMENT READER MODAL
     async function openDocReader(docUrl, title) {
         if (!docReaderModal) return;
-        if (docReaderTitle) docReaderTitle.textContent = title || "Cẩm Nang Học Viên DHM";
+        if (docReaderTitle) docReaderTitle.textContent = title || "Báo Cáo Chuyên Sâu";
         if (docReaderBody) docReaderBody.innerHTML = `<div class="p-8 text-center text-slate-400">⏳ Đang tải tài liệu...</div>`;
         docReaderModal.classList.remove("hidden");
 
@@ -5338,37 +5843,13 @@ document.addEventListener("DOMContentLoaded", () => {
         let inList = false;
         let inTable = false;
         let tableHeaderDone = false;
-        let inCodeBlock = false;
-        let codeBlockContent = [];
-        let inBlockquote = false;
 
         for (let i = 0; i < lines.length; i++) {
             let line = lines[i].trim();
 
-            // Code block delimiter (``` ... ```)
-            if (line.startsWith("```")) {
-                if (inCodeBlock) {
-                    html.push('<pre class="p-4 rounded-xl bg-slate-900 border border-brand-border text-[11px] font-mono text-slate-300 overflow-x-auto my-3 leading-relaxed"><code>' + codeBlockContent.join("\n") + '</code></pre>');
-                    codeBlockContent = [];
-                    inCodeBlock = false;
-                } else {
-                    if (inList) { html.push("</ul>"); inList = false; }
-                    if (inTable) { html.push("</tbody></table></div>"); inTable = false; tableHeaderDone = false; }
-                    if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
-                    inCodeBlock = true;
-                    codeBlockContent = [];
-                }
-                continue;
-            }
-            if (inCodeBlock) {
-                codeBlockContent.push(escapeHtml(lines[i]));
-                continue;
-            }
-
             if (!line) {
                 if (inList) { html.push("</ul>"); inList = false; }
                 if (inTable) { html.push("</tbody></table></div>"); inTable = false; tableHeaderDone = false; }
-                if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
                 continue;
             }
 
@@ -5382,7 +5863,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 if (!inTable) {
                     if (inList) { html.push("</ul>"); inList = false; }
-                    if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
                     html.push('<div class="overflow-x-auto my-4 rounded-xl border border-brand-border"><table class="w-full text-xs text-left">');
                     html.push('<thead class="bg-brand-card/80 text-brand-amber uppercase text-[11px] font-bold border-b border-brand-border"><tr>');
                     cells.forEach(c => html.push(`<th class="p-3 border-r border-brand-border/40 last:border-r-0">${formatInline(c)}</th>`));
@@ -5406,65 +5886,37 @@ document.addEventListener("DOMContentLoaded", () => {
                 const imgMatch = line.match(/^!\[(.*?)\]\((.*?)\)$/);
                 if (imgMatch) {
                     if (inList) { html.push("</ul>"); inList = false; }
-                    if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
                     html.push(`<div class="my-5 text-center"><img src="${imgMatch[2]}" alt="${imgMatch[1]}" class="rounded-2xl border border-brand-border/80 max-w-full mx-auto shadow-2xl hover:border-brand-amber/60 transition-all" loading="lazy" /><p class="text-[11px] text-slate-400 mt-2 italic font-medium">📸 ${formatInline(imgMatch[1])}</p></div>`);
                     continue;
                 }
             }
 
             // Headings
-            if (line.startsWith("##### ")) {
-                if (inList) { html.push("</ul>"); inList = false; }
-                if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
-                html.push(`<h5 class="text-xs font-semibold text-slate-300 mt-3 mb-1.5 flex items-center gap-1.5"><span>🔹</span> <span>${formatInline(line.slice(6))}</span></h5>`);
-                continue;
-            }
-            if (line.startsWith("#### ")) {
-                if (inList) { html.push("</ul>"); inList = false; }
-                if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
-                html.push(`<h4 class="text-sm font-bold text-brand-amber mt-4 mb-2 flex items-center gap-2"><span>🔸</span> <span>${formatInline(line.slice(5))}</span></h4>`);
-                continue;
-            }
             if (line.startsWith("### ")) {
                 if (inList) { html.push("</ul>"); inList = false; }
-                if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
                 html.push(`<h3 class="text-base font-bold text-brand-orange mt-6 mb-2 flex items-center gap-2"><span>📌</span> <span>${formatInline(line.slice(4))}</span></h3>`);
                 continue;
             }
             if (line.startsWith("## ")) {
                 if (inList) { html.push("</ul>"); inList = false; }
-                if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
                 html.push(`<h2 class="text-lg font-extrabold text-white mt-8 mb-3 pb-1 border-b border-brand-border/60 flex items-center gap-2"><span>🎯</span> <span>${formatInline(line.slice(3))}</span></h2>`);
                 continue;
             }
             if (line.startsWith("# ")) {
                 if (inList) { html.push("</ul>"); inList = false; }
-                if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
                 html.push(`<h1 class="text-xl font-black text-brand-amber mt-4 mb-4 pb-2 border-b-2 border-brand-amber/40">${formatInline(line.slice(2))}</h1>`);
                 continue;
             }
 
             // Blockquote
-            if (line.startsWith("> ") || line === ">") {
-                let content = line.startsWith("> ") ? line.slice(2) : line.slice(1);
-                if (!inBlockquote) {
-                    if (inList) { html.push("</ul>"); inList = false; }
-                    if (inTable) { html.push("</tbody></table></div>"); inTable = false; tableHeaderDone = false; }
-                    html.push('<blockquote class="bg-gradient-to-r from-brand-card/90 to-brand-surface border-l-4 border-brand-amber rounded-r-xl p-4 my-3 text-xs leading-relaxed text-slate-300 shadow-md space-y-1.5">');
-                    inBlockquote = true;
-                }
-                if (content.trim()) {
-                    html.push(`<div>${formatInline(content.trim())}</div>`);
-                }
+            if (line.startsWith("> ")) {
+                if (inList) { html.push("</ul>"); inList = false; }
+                html.push(`<blockquote class="border-l-4 border-brand-amber pl-4 py-2 italic bg-brand-card/50 rounded-r-xl my-3 text-slate-300 text-xs leading-relaxed">${formatInline(line.slice(2))}</blockquote>`);
                 continue;
-            } else if (inBlockquote) {
-                html.push("</blockquote>");
-                inBlockquote = false;
             }
 
             // Unordered list
             if (line.startsWith("- ") || line.startsWith("* ")) {
-                if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
                 if (!inList) {
                     html.push('<ul class="space-y-1.5 my-3 pl-2">');
                     inList = true;
@@ -5478,10 +5930,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Horizontal rule
             if (line === "---" || line === "***") {
-                if (inList) { html.push("</ul>"); inList = false; }
-                if (inTable) { html.push("</tbody></table></div>"); inTable = false; tableHeaderDone = false; }
-                if (inBlockquote) { html.push("</blockquote>"); inBlockquote = false; }
-                html.push('<div class="w-full h-px bg-gradient-to-r from-transparent via-brand-amber/30 to-transparent my-6"></div>');
+                html.push('<hr class="border-brand-border my-6">');
                 continue;
             }
 
@@ -5491,7 +5940,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (inList) html.push("</ul>");
         if (inTable) html.push("</tbody></table></div>");
-        if (inBlockquote) html.push("</blockquote>");
 
         return html.join("\n");
 
@@ -5582,7 +6030,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 renderSyllabus();
                 return;
             }
-            loadStage(currentStageIndex + 1);
+            let nextIdx = currentStageIndex + 1;
+            // Nếu đang ở Chặng 2A và Chặng 2B đang khóa, ưu tiên chuyển tiếp sang Chặng 3A nếu đã mở khóa
+            if (currentStageIndex === 1 && !isStageUnlocked(nextIdx)) {
+                if (isStageUnlocked("stage-3a")) {
+                    const idx3A = curriculum.stages.findIndex(s => s.id === "stage-3a");
+                    if (idx3A !== -1) nextIdx = idx3A;
+                }
+            }
+            if (!isStageUnlocked(nextIdx)) {
+                notifyLockedStage(nextIdx);
+                renderSyllabus();
+                return;
+            }
+            loadStage(nextIdx);
             renderSyllabus();
         } else {
             renderSyllabus();
@@ -5612,78 +6073,106 @@ document.addEventListener("DOMContentLoaded", () => {
 
         return Math.min(100, pct);
     }
+    window.calculateStage1Progress = calculateStage1Progress;
 
-    function calculateStage2Progress() {
-        if (learnerProgress.completedStages && learnerProgress.completedStages.includes("stage-2")) {
+    function calculateStage2AProgress() {
+        if (learnerProgress.completedStages && (learnerProgress.completedStages.includes("stage-2a") || learnerProgress.completedStages.includes("stage-2"))) {
             return 100;
         }
-        const s2Data = (learnerProgress.stageData && learnerProgress.stageData["stage-2"]) || {};
-        const habits = s2Data.habits || {};
+        const s2aData = (learnerProgress.stageData && (learnerProgress.stageData["stage-2a"] || learnerProgress.stageData["stage-2"])) || {};
+        const habits = s2aData.habits || {};
         let count = 0;
 
-        // 0. Drivers (Trạm 0: 3 Đòn Bẩy)
+        // 0. Drivers
         const hD = habits.drivers;
-        if ((hD && hD.iam && (hD.iam.I || hD.iam.A || hD.iam.M)) ||
-            (s2Data.iam && (s2Data.iam.I || s2Data.iam.A || s2Data.iam.M))) {
+        if ((hD && hD.iam && (hD.iam.I || hD.iam.A || hD.iam.M)) || (s2aData.iam && (s2aData.iam.I || s2aData.iam.A || s2aData.iam.M))) {
+            count++;
+        }
+        // 1. Mindfulness
+        const hM = habits.mindfulness;
+        if (hM && ((hM.sbaChecks && (hM.sbaChecks.s || hM.sbaChecks.b || hM.sbaChecks.a)) || (hM.situation && String(hM.situation).trim()) || (hM.iam && (hM.iam.I || hM.iam.A || hM.iam.M)) || (hM.scenario && (hM.scenario.reflection || hM.scenario.action)))) {
+            count++;
+        }
+        // 2. Gratitude
+        const hG = habits.gratitude;
+        if (hG && ((hG.items && hG.items.some(x => x && String(x).trim())) || (hG.card && (hG.card.to || hG.card.msg)) || (hG.iam && (hG.iam.I || hG.iam.A || hG.iam.M)) || (hG.scenario && (hG.scenario.reflection || hG.scenario.action)))) {
+            count++;
+        }
+        // 3. Altruism
+        const hA = habits.altruism;
+        if (hA && ((hA.style && String(hA.style).trim()) || (hA.act && String(hA.act).trim()) || (hA.iam && (hA.iam.I || hA.iam.A || hA.iam.M)) || (hA.scenario && (hA.scenario.reflection || hA.scenario.action)))) {
+            count++;
+        }
+        // Capstone 2A
+        if (s2aData.capstoneIam && (s2aData.capstoneIam.I || s2aData.capstoneIam.A || s2aData.capstoneIam.M)) {
             count++;
         }
 
-        // 1. Gratitude
-        const hG = habits.gratitude;
-        if (hG && (
-            (hG.items && hG.items.some(x => x && String(x).trim())) ||
-            (hG.card && (hG.card.to || hG.card.msg)) ||
-            (hG.iam && (hG.iam.I || hG.iam.A || hG.iam.M)) ||
-            (hG.scenario && (hG.scenario.reflection || hG.scenario.action))
-        )) count++;
-
-        // 2. Mindfulness
-        const hM = habits.mindfulness;
-        if (hM && (
-            (hM.sbaChecks && (hM.sbaChecks.s || hM.sbaChecks.b || hM.sbaChecks.a)) ||
-            (hM.situation && String(hM.situation).trim()) ||
-            (hM.iam && (hM.iam.I || hM.iam.A || hM.iam.M)) ||
-            (hM.scenario && (hM.scenario.reflection || hM.scenario.action))
-        )) count++;
-
-        // 3. Optimism
-        const hO = habits.optimism;
-        if (hO && (
-            (hO.abcde && (hO.abcde.A || hO.abcde.B || hO.abcde.C || hO.abcde.D || hO.abcde.E)) ||
-            (hO.iam && (hO.iam.I || hO.iam.A || hO.iam.M)) ||
-            (hO.scenario && (hO.scenario.reflection || hO.scenario.action))
-        )) count++;
-
-        // 4. Flow
-        const hF = habits.flow;
-        if (hF && (
-            (hF.boringTask && String(hF.boringTask).trim()) ||
-            (hF.redesign && String(hF.redesign).trim()) ||
-            (hF.iam && (hF.iam.I || hF.iam.A || hF.iam.M)) ||
-            (hF.scenario && (hF.scenario.reflection || hF.scenario.action))
-        )) count++;
-
-        // 5. Altruism
-        const hA = habits.altruism;
-        if (hA && (
-            (hA.style && String(hA.style).trim()) ||
-            (hA.act && String(hA.act).trim()) ||
-            (hA.iam && (hA.iam.I || hA.iam.A || hA.iam.M)) ||
-            (hA.scenario && (hA.scenario.reflection || hA.scenario.action))
-        )) count++;
-
-        return Math.min(100, Math.round((count / 6) * 100));
+        return Math.min(100, Math.round((count / 5) * 100));
     }
+    window.calculateStage2AProgress = calculateStage2AProgress;
 
-    function calculateStage3Progress() {
-        if (learnerProgress.completedStages && learnerProgress.completedStages.includes("stage-3")) {
+    function calculateStage2BProgress() {
+        if (learnerProgress.completedStages && learnerProgress.completedStages.includes("stage-2b")) {
             return 100;
         }
-        const s3Data = (learnerProgress.stageData && learnerProgress.stageData["stage-3"]) || {};
-        const streakStats = calculateStage3Streak(s3Data.habitTracker || {});
+        const s2bData = (learnerProgress.stageData && (learnerProgress.stageData["stage-2b"] || learnerProgress.stageData["stage-2"])) || {};
+        const habits = s2bData.habits || {};
+        let count = 0;
+
+        // Flow
+        const hF = habits.flow;
+        if (hF && ((hF.boringTask && String(hF.boringTask).trim()) || (hF.redesign && String(hF.redesign).trim()) || (hF.iam && (hF.iam.I || hF.iam.A || hF.iam.M)) || (hF.scenario && (hF.scenario.reflection || hF.scenario.action)))) {
+            count++;
+        }
+        // Optimism
+        const hO = habits.optimism;
+        if (hO && ((hO.abcde && (hO.abcde.A || hO.abcde.B || hO.abcde.C || hO.abcde.D || hO.abcde.E)) || (hO.iam && (hO.iam.I || hO.iam.A || hO.iam.M)) || (hO.scenario && (hO.scenario.reflection || hO.scenario.action)))) {
+            count++;
+        }
+        // Capstone 2B
+        if (s2bData.capstoneIam && (s2bData.capstoneIam.I || s2bData.capstoneIam.A || s2bData.capstoneIam.M)) {
+            count++;
+        }
+
+        return Math.min(100, Math.round((count / 3) * 100));
+    }
+    window.calculateStage2BProgress = calculateStage2BProgress;
+
+    function calculateStage3AProgress() {
+        if (learnerProgress.completedStages && (learnerProgress.completedStages.includes("stage-3a") || learnerProgress.completedStages.includes("stage-3"))) {
+            return 100;
+        }
+        const s3aData = (learnerProgress.stageData && (learnerProgress.stageData["stage-3a"] || learnerProgress.stageData["stage-3"])) || {};
+        const streakStats = calculateStage3Streak(s3aData.habitTracker || {});
         const days = (streakStats && streakStats.totalCompletedDays) || 0;
         return Math.min(100, Math.round((days / 21) * 100));
     }
+    window.calculateStage3AProgress = calculateStage3AProgress;
+
+    function calculateStage3BProgress() {
+        if (learnerProgress.completedStages && learnerProgress.completedStages.includes("stage-3b")) {
+            return 100;
+        }
+        const s3bData = (learnerProgress.stageData && (learnerProgress.stageData["stage-3b"] || learnerProgress.stageData["stage-3"])) || {};
+        const weekly = s3bData.weeklyCheckins || {};
+        let count = 0;
+        if (weekly.w1 || s3bData.weekly_3b_1) count++;
+        if (weekly.w2 || s3bData.weekly_3b_2) count++;
+        if (s3bData.dailyAbcde && s3bData.dailyAbcde.A) count++;
+        return Math.min(100, Math.round((count / 3) * 100));
+    }
+    window.calculateStage3BProgress = calculateStage3BProgress;
+
+    function calculateStage2Progress() {
+        return Math.round((calculateStage2AProgress() + calculateStage2BProgress()) / 2);
+    }
+    window.calculateStage2Progress = calculateStage2Progress;
+
+    function calculateStage3Progress() {
+        return Math.round((calculateStage3AProgress() + calculateStage3BProgress()) / 2);
+    }
+    window.calculateStage3Progress = calculateStage3Progress;
 
     function updateStage1Milestones() {
         const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
@@ -5785,8 +6274,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function updateGlobalProgress() {
         const pct1 = calculateStage1Progress();
-        const pct2 = calculateStage2Progress();
-        const pct3 = calculateStage3Progress();
+        const pct2a = calculateStage2AProgress();
+        const pct2b = calculateStage2BProgress();
+        const pct3a = calculateStage3AProgress();
+        const pct3b = calculateStage3BProgress();
+
+        const pct2 = Math.round((pct2a + pct2b) / 2);
+        const pct3 = Math.round((pct3a + pct3b) / 2);
 
         if (segmentBar1) segmentBar1.style.width = `${pct1}%`;
         if (segmentBar2) segmentBar2.style.width = `${pct2}%`;
@@ -5796,9 +6290,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (segmentLabel2) segmentLabel2.textContent = `C2: ${pct2}%`;
         if (segmentLabel3) segmentLabel3.textContent = `C3: ${pct3}%`;
 
-        const totalPct = Math.round((pct1 + pct2 + pct3) / 3);
+        const totalPct = Math.round((pct1 + pct2a + pct2b + pct3a + pct3b) / 5);
         const completed = (learnerProgress.completedStages || []).length;
-        const total = (curriculum.stages || []).length || 3;
+        const total = (curriculum.stages || []).length || 5;
 
         if (globalProgressBar) {
             globalProgressBar.style.width = `${totalPct}%`;
@@ -5892,9 +6386,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnHeaderRoadmap = document.getElementById("btn-header-roadmap");
     if (btnHeaderRoadmap) btnHeaderRoadmap.addEventListener("click", openRoadmapDoc);
 
-    const btnSidebarRoadmap = document.getElementById("btn-sidebar-roadmap");
-    if (btnSidebarRoadmap) btnSidebarRoadmap.addEventListener("click", openRoadmapDoc);
-
     const btnBottomRoadmap = document.getElementById("btn-bottom-roadmap");
     if (btnBottomRoadmap) btnBottomRoadmap.addEventListener("click", openRoadmapDoc);
 
@@ -5920,7 +6411,36 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        const learner = findLearner(rawIdentity);
+        let learner = findLearner(rawIdentity);
+
+        // NẾU CHƯA THẤY TRONG BỘ NHỚ TĨNH -> GỌI WEBHOOK PHÂN GIẢI DANH TÍNH TỪ MASTER ROSTER GOOGLE SHEETS
+        if (!learner) {
+            try {
+                const webhookUrl = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
+                const probeRes = await fetch(webhookUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify({ action: "resolve_login_identity", identity: rawIdentity })
+                });
+                if (probeRes.ok) {
+                    const probeData = await probeRes.json();
+                    if (probeData.error === "ACCOUNT_DISABLED") {
+                        authErrorTitle.textContent = "Tài khoản tạm ngưng hoạt động";
+                        authErrorDesc.textContent = "Tài khoản học viên của bạn đang tạm ngưng hoạt động. Vui lòng liên hệ Ban Giảng Huấn để được kích hoạt lại.";
+                        authErrorBanner.classList.remove("hidden");
+                        return;
+                    }
+                    if (probeData.success && probeData.learner) {
+                        learner = probeData.learner;
+                        if (Array.isArray(authorizedRoster)) {
+                            authorizedRoster.push(learner);
+                        }
+                    }
+                }
+            } catch (probeErr) {
+                console.warn("[DHM LMS] Không phân giải được danh tính từ Webhook, fallback local:", probeErr);
+            }
+        }
 
         // NHẬN DIỆN HỌC VIÊN TRẢI NGHIỆM ĐÃ ĐƯỢC PHÊ DUYỆT / ĐĂNG KÝ
         if (!learner && isTrialAccount(rawIdentity)) {
@@ -5938,6 +6458,14 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
             hideAuthModal();
             applyUserSession();
+            return;
+        }
+
+        // TRƯỜNG HỢP 0: HỌC VIÊN BỊ VÔ HIỆU HÓA TRẠNG THÁI (DISABLED)
+        if (learner && learner.enrollment_status === "DISABLED") {
+            authErrorTitle.textContent = "Tài khoản tạm ngưng hoạt động";
+            authErrorDesc.textContent = "Tài khoản học viên của bạn đang tạm ngưng hoạt động. Vui lòng liên hệ Ban Giảng Huấn để được kích hoạt lại.";
+            authErrorBanner.classList.remove("hidden");
             return;
         }
 
@@ -6812,6 +7340,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const setsKey = cpType === 'cp1' ? 'iam_cp1_sets' : 'iam_cp2_sets';
         s1Data[setsKey] = s1Data[setsKey] || [];
 
+        // Chống lưu trùng lặp cùng một bộ I•A•M (Deduplication Guard)
+        const isDuplicate = s1Data[setsKey].some(s => (s.I || "").trim() === valI && (s.A || "").trim() === valA && (s.M || "").trim() === valM);
+        if (isDuplicate) {
+            if (saveBtn) {
+                const oldContent = saveBtn.innerHTML;
+                saveBtn.innerHTML = `<span>⚠️ Bộ này đã tồn tại!</span>`;
+                setTimeout(() => { saveBtn.innerHTML = oldContent; }, 1500);
+            }
+            return;
+        }
+
         const newSet = {
             id: `set_${cpType}_` + Date.now(),
             I: valI,
@@ -6891,6 +7430,28 @@ document.addEventListener("DOMContentLoaded", () => {
         const cp2Sets = s1Data.iam_cp2_sets || [];
         const s2Data = (progress.stageData && progress.stageData["stage-2"]) || {};
         const capstoneSets = s2Data.capstone_sets || [];
+        const s2aData = (progress.stageData && (progress.stageData["stage-2a"] || progress.stageData["stage-2"])) || {};
+        const habits2a = s2aData.habits || {};
+        const s2bData = (progress.stageData && progress.stageData["stage-2b"]) || {};
+        const habits2b = s2bData.habits || {};
+
+        const habitEntries = [];
+        const habitConfigs = [
+            { key: "mindfulness", stage: "Chặng 2A", title: "Thói quen 1: Tỉnh Thức (Mindfulness & SBA)", icon: "🧘" },
+            { key: "gratitude", stage: "Chặng 2A", title: "Thói quen 2: Biết Ơn (Gratitude)", icon: "🙏" },
+            { key: "altruism", stage: "Chặng 2A", title: "Thói quen 3: Vị Nhân (Smart Giver)", icon: "🤝" },
+            { key: "flow", stage: "Chặng 2B", title: "Thói quen 4: Phiêu (Flow)", icon: "🌊" },
+            { key: "optimism", stage: "Chặng 2B", title: "Thói quen 5: Lạc Quan Thông Thái (Optimism)", icon: "☀️" }
+        ];
+
+        habitConfigs.forEach(cfg => {
+            const hData = habits2a[cfg.key] || habits2b[cfg.key];
+            if (hData && hData.iam && (hData.iam.I || hData.iam.A || hData.iam.M)) {
+                habitEntries.push({ ...cfg, iam: hData.iam });
+            }
+        });
+
+        const totalSavedSets = cp1Sets.length + cp2Sets.length + capstoneSets.length + habitEntries.length;
         const userId = getVaultUserIdentity();
         const quickNotes = localStorage.getItem(`dhm_quick_notes_${userId}`) || "";
 
@@ -6905,7 +7466,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
                 <div class="flex items-center gap-1.5">
                     <span class="px-2 py-0.5 rounded-full bg-brand-amber/20 text-brand-amber text-[10px] font-bold border border-brand-amber/30">
-                        ${cp1Sets.length + cp2Sets.length + capstoneSets.length} bộ đã lưu
+                        ${totalSavedSets} bộ đã lưu
                     </span>
                 </div>
             </div>
@@ -6943,21 +7504,52 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         html += `</div></div>`;
 
-        // CP2 Section
-        html += `
-            <!-- CP2 Section -->
-            <div class="space-y-2.5">
-                <div class="flex items-center justify-between pb-1 border-b border-brand-border/60">
-                    <h5 class="font-bold text-sky-400 flex items-center gap-1.5 text-xs">
-                        <span>🚀</span> Trạm 2: Đòn Bẩy Hạnh Phúc & Small Wins (CP2)
-                    </h5>
-                    <span class="text-[11px] font-mono text-slate-400 font-semibold">${cp2Sets.length} bộ</span>
-                </div>
-                <div class="space-y-2">
-        `;
-        if (!cp2Sets.length) {
-            html += `<div class="p-3 text-center text-[11px] text-slate-500 italic bg-brand-dark/40 rounded-xl border border-brand-border/40">Chưa có bộ phản tư nào tại Trạm 2.</div>`;
-        } else {
+        // 5 Thói quen Hạnh Phúc (Chặng 2) Section
+        if (habitEntries.length > 0) {
+            html += `
+                <div class="space-y-2.5">
+                    <div class="flex items-center justify-between pb-1 border-b border-brand-border/60">
+                        <h5 class="font-bold text-emerald-400 flex items-center gap-1.5 text-xs">
+                            <span>🌿</span> Phản Tư 5 Thói Quen Hạnh Phúc (Chặng 2)
+                        </h5>
+                        <span class="text-[11px] font-mono text-slate-400 font-semibold">${habitEntries.length} thói quen</span>
+                    </div>
+                    <div class="space-y-2">
+            `;
+            habitEntries.forEach(h => {
+                const copyText = `${h.title} (${h.stage}):\nI: ${h.iam.I || ''}\nA: ${h.iam.A || ''}\nM: ${h.iam.M || ''}`;
+                html += `
+                    <div class="p-3 rounded-xl bg-brand-dark/60 border border-brand-border/70 space-y-2 text-[11px]">
+                        <div class="flex items-center justify-between pb-1 border-b border-brand-border/40">
+                            <span class="font-bold text-emerald-300 flex items-center gap-1">
+                                <span>${h.icon}</span> <span>${escapeHtml(h.title)}</span>
+                                <span class="text-[10px] px-1.5 py-0.2 rounded bg-brand-card text-slate-400 font-normal">(${h.stage})</span>
+                            </span>
+                            <button type="button" class="btn-vault-copy-item text-[10px] px-2 py-0.5 rounded bg-brand-card hover:bg-brand-border text-slate-300 cursor-pointer" data-copy="${escapeHtml(copyText)}">📋 Copy</button>
+                        </div>
+                        <div class="space-y-1">
+                            <div><strong class="text-emerald-400">I (Insight):</strong> <span class="text-slate-200 whitespace-pre-wrap">${escapeHtml(h.iam.I || "—")}</span></div>
+                            <div><strong class="text-sky-400">A (Action):</strong> <span class="text-slate-200 whitespace-pre-wrap">${escapeHtml(h.iam.A || "—")}</span></div>
+                            <div><strong class="text-purple-400">M (Meaning):</strong> <span class="text-slate-200 whitespace-pre-wrap">${escapeHtml(h.iam.M || "—")}</span></div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div></div>`;
+        }
+
+        // CP2 Section (Chỉ hiển thị nếu học viên có dữ liệu lưu trữ lịch sử)
+        if (cp2Sets.length > 0) {
+            html += `
+                <div class="space-y-2.5">
+                    <div class="flex items-center justify-between pb-1 border-b border-brand-border/60">
+                        <h5 class="font-bold text-sky-400 flex items-center gap-1.5 text-xs">
+                            <span>🚀</span> Trạm 2: Đòn Bẩy Hạnh Phúc & Small Wins (Lưu trữ)
+                        </h5>
+                        <span class="text-[11px] font-mono text-slate-400 font-semibold">${cp2Sets.length} bộ</span>
+                    </div>
+                    <div class="space-y-2">
+            `;
             cp2Sets.forEach((s, idx) => {
                 const copyText = `Bộ #${idx + 1} (Trạm 2 - CP2):\nI: ${s.I || ''}\nA: ${s.A || ''}\nM: ${s.M || ''}`;
                 html += `
@@ -6974,8 +7566,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 `;
             });
+            html += `</div></div>`;
         }
-        html += `</div></div>`;
 
         // Chặng 2 Capstone Section if any
         if (capstoneSets.length > 0) {
@@ -7361,6 +7953,27 @@ document.addEventListener("DOMContentLoaded", () => {
         const cp2Sets = s1Data.iam_cp2_sets || [];
         const s2Data = (progress.stageData && progress.stageData["stage-2"]) || {};
         const capstoneSets = s2Data.capstone_sets || [];
+        const s2aData = (progress.stageData && (progress.stageData["stage-2a"] || progress.stageData["stage-2"])) || {};
+        const habits2a = s2aData.habits || {};
+        const s2bData = (progress.stageData && progress.stageData["stage-2b"]) || {};
+        const habits2b = s2bData.habits || {};
+
+        const habitEntries = [];
+        const habitConfigs = [
+            { key: "mindfulness", stage: "Chặng 2A", title: "Thói quen 1: Tỉnh Thức (Mindfulness & SBA)" },
+            { key: "gratitude", stage: "Chặng 2A", title: "Thói quen 2: Biết Ơn (Gratitude)" },
+            { key: "altruism", stage: "Chặng 2A", title: "Thói quen 3: Vị Nhân (Smart Giver)" },
+            { key: "flow", stage: "Chặng 2B", title: "Thói quen 4: Phiêu (Flow)" },
+            { key: "optimism", stage: "Chặng 2B", title: "Thói quen 5: Lạc Quan Thông Thái (Optimism)" }
+        ];
+
+        habitConfigs.forEach(cfg => {
+            const hData = habits2a[cfg.key] || habits2b[cfg.key];
+            if (hData && hData.iam && (hData.iam.I || hData.iam.A || hData.iam.M)) {
+                habitEntries.push({ ...cfg, iam: hData.iam });
+            }
+        });
+
         const selectedValues = s1Data.selectedValues || [];
         const score = (s1Data.score !== undefined && s1Data.score !== null) ? s1Data.score : null;
         const passed = !!s1Data.passed;
@@ -7389,10 +8002,15 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        md += `### Trạm 2: Đòn Bẩy Hạnh Phúc & Small Wins (CP2)\n`;
-        if (!cp2Sets.length) {
-            md += `*(Chưa có bộ lưu)*\n\n`;
-        } else {
+        if (habitEntries.length > 0) {
+            md += `### Phản Tư 5 Thói Quen Hạnh Phúc (Chặng 2)\n`;
+            habitEntries.forEach((h, i) => {
+                md += `#### ${h.title} (${h.stage}):\n- **I (Insight):** ${h.iam.I || '—'}\n- **A (Action):** ${h.iam.A || '—'}\n- **M (Meaning):** ${h.iam.M || '—'}\n\n`;
+            });
+        }
+
+        if (cp2Sets.length > 0) {
+            md += `### Trạm 2: Đòn Bẩy Hạnh Phúc & Small Wins (Lưu trữ)\n`;
             cp2Sets.forEach((s, i) => {
                 md += `#### Bộ #${i + 1}:\n- **I (Insight):** ${s.I || '—'}\n- **A (Action):** ${s.A || '—'}\n- **M (Meaning):** ${s.M || '—'}\n\n`;
             });
