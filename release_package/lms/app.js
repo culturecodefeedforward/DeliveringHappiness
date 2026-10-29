@@ -216,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     { title: "Slide Bài Giảng: Triết Lý Văn Hóa Zappos — Tony Hsieh (Slide 09)", type: "image", url: "data/artifacts/slides/slide_09.png", icon: "💡" },
                     { id: "res-roadmap", title: "Cẩm Nang: Lộ Trình Học Tập & Hướng Dẫn Sử Dụng LMS", type: "markdown", url: "data/artifacts/huong_dan_va_lo_trinh_hoc_dhm.md", icon: "📘", readOnline: true, desc: "Hướng dẫn chi tiết toàn bộ lộ trình 3 Mini-steps, quy chế Cổng Sát Hạch Vượt Chặng (≥80%) và thao tác sử dụng hệ thống học tập LMS." },
                     { title: "Báo cáo Nghiên cứu: Khoa Học Hạnh Phúc & Dòng Chảy Tổ Chức", type: "markdown", url: "data/artifacts/report_dong_chay.md", icon: "📄", readOnline: true },
-                    { title: "Bộ 25 Flashcards Văn Hóa Ghi Nhớ", type: "html", url: "data/artifacts/flashcards.html", icon: "🃏" }
+                    { title: "Tài liệu Ôn tập: 25 Câu Hỏi Khắc Sâu Văn Hóa", type: "html", url: "data/artifacts/flashcards.html", icon: "📖" }
                 ]
             },
             {
@@ -668,7 +668,18 @@ document.addEventListener("DOMContentLoaded", () => {
         const clean = String(email).trim().toLowerCase();
         if (!clean) return false;
         const list = getApprovedTrialEmails();
-        return list.includes(clean);
+        if (list.includes(clean)) return true;
+        if (typeof authorizedRoster !== "undefined" && Array.isArray(authorizedRoster)) {
+            return authorizedRoster.some(l => {
+                const lEmail = String(l.Email || l.email || "").toLowerCase().trim();
+                if (lEmail !== clean) return false;
+                const r = String(l.Role || l.role || "").toLowerCase();
+                const ps = String(l.Payment_Status || l.payment_status || "").toUpperCase();
+                const c = String(l.Cohort_ID || l.cohort || "").toLowerCase();
+                return l.isTrial === true || l.is_trial === true || r === "trial" || ps === "TRIAL" || c.includes("trải nghiệm") || c.includes("interest");
+            });
+        }
+        return false;
     }
 
     function normalizePhone(str) {
@@ -759,6 +770,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 role: match.Role || match.role || "Learner",
                 is_paid: Boolean(match.Is_Paid === true || match.is_paid === true || match.isPaid === true || match.Is_Paid === "TRUE"),
                 payment_status: match.Payment_Status || match.payment_status || match.paymentStatus || null,
+                isTrial: Boolean(match.isTrial === true || match.is_trial === true || match.Role === "trial" || match.role === "trial" || match.Payment_Status === "TRIAL" || match.payment_status === "TRIAL" || String(match.Cohort_ID || match.cohort || "").toLowerCase().includes("trải nghiệm") || String(match.Cohort_ID || match.cohort || "").toLowerCase().includes("interest")),
                 missing_phone: match.phone_status === "legacy_partial" || !(match.Phone || match.phone_full || match.phone),
                 force_pwd_change: (match.Force_Pwd_Change === true || match.force_pwd_change === true || match.Force_Pwd_Change === "TRUE"),
                 default_pwd: match.Default_Password || match.default_pwd || "1234",
@@ -902,6 +914,19 @@ document.addEventListener("DOMContentLoaded", () => {
             authUserDetected.classList.remove("hidden");
             if (detectedUserName) detectedUserName.textContent = learner.name || learner.email;
             if (detectedUserCohort) detectedUserCohort.textContent = learner.cohort || "Học viên";
+        }
+
+        const isTrialUser = learner.isTrial || learner.role === "trial";
+        if (isTrialUser) {
+            if (passwordGroup) passwordGroup.classList.remove("hidden");
+            if (loginPasswordInput) {
+                loginPasswordInput.removeAttribute("required");
+                loginPasswordInput.placeholder = "4 số cuối SĐT hoặc mật khẩu (hoặc để trống)";
+            }
+            if (phoneOnboardingGroup) phoneOnboardingGroup.classList.add("hidden");
+            if (onboardingPhoneInput) onboardingPhoneInput.removeAttribute("required");
+            if (btnSubmitText) btnSubmitText.textContent = "Vào Học Chặng 1 Ngay";
+            return;
         }
 
         const isApolloOrPwdAuth = learner.force_pwd_change || learner.password_hash || learner.default_pwd || (learner.cohort && learner.cohort.toLowerCase().includes("apollo"));
@@ -6568,6 +6593,12 @@ document.addEventListener("DOMContentLoaded", () => {
         // TRƯỜNG HỢP 3: HỌC VIÊN CHÍNH THỨC -> XÁC THỰC MẬT KHẨU
         const inputPassword = (loginPasswordInput.value || "").trim();
         if (!inputPassword) {
+            if (learner.isTrial || learner.role === "trial") {
+                currentUser = learner;
+                localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
+                applyUserSession();
+                return;
+            }
             authErrorTitle.textContent = "Vui lòng nhập mật khẩu";
             if (learner.force_pwd_change) {
                 authErrorDesc.textContent = "Mật khẩu khởi tạo không đúng hoặc chưa nhập. Vui lòng kiểm tra lại.";
@@ -6583,6 +6614,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const authResult = await verifyPassword(learner, inputPassword);
         if (!authResult.valid) {
+            if (learner.isTrial || learner.role === "trial") {
+                console.warn("[DHM LMS] Trial user password mismatch, granting Stage 1 trial access anyway.");
+                currentUser = learner;
+                localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
+                applyUserSession();
+                return;
+            }
             authErrorTitle.textContent = "Mật khẩu không chính xác";
             if (learner.force_pwd_change) {
                 authErrorDesc.textContent = "Mật khẩu khởi tạo không đúng. Vui lòng kiểm tra lại.";

@@ -7,8 +7,7 @@ node_modules/
 antigravity_export/
 backup_13042026/
 /Implementation Plan/
-*.pdf
 scratch/
 *.tar
 *.m4a
-*.mp4
+release_package/

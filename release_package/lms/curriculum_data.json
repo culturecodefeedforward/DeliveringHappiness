@@ -299,7 +299,7 @@
           "readOnline": true
         },
         {
-          "title": "Bộ 25 Flashcards Văn Hóa Ghi Nhớ",
+          "title": "Tài liệu Ôn tập: 25 Câu Hỏi Khắc Sâu Văn Hóa",
           "type": "html",
           "url": "data/artifacts/flashcards.html",
           "icon": "🃏"
@@ -1101,7 +1101,7 @@
         }
       ],
       "flashcardsDeck": {
-        "title": "Bộ 25 Flashcards Văn Hóa Ghi Nhớ (Delivering Happiness)",
+        "title": "25 Câu Hỏi Tương Tác Khắc Sâu Văn Hóa (Delivering Happiness)",
         "description": "Lật thẻ phản xạ nhanh để khắc sâu các khái niệm cốt lõi: 3 Cấp độ Hạnh phúc, La bàn & Đồng hồ, 3 Đòn bẩy SDT, 5 Thói quen và DNA Văn hóa.",
         "cards": [
           {
@@ -1358,8 +1358,8 @@
           "id": "tier-silver",
           "points": 700,
           "badge": "Cây Kỷ Luật Vươn Mình 🌿",
-          "title": "Bộ Thẻ Số & Cẩm Nang 5 Thói Quen Hạnh Phúc (Digital Flashcards)",
-          "desc": "Tài liệu số đúc kết chi tiết phương pháp nuôi dưỡng 5 thói quen kèm câu hỏi phản tư định dạng PDF/trực tuyến."
+          "title": "Cẩm Nang 5 Thói Quen Hạnh Phúc & Câu Hỏi Phản Tư",
+          "desc": "Tài liệu số đúc kết chi tiết phương pháp nuôi dưỡng 5 thói quen kèm câu hỏi phản tư định dạng PDF chuyên sâu."
         },
         {
           "id": "tier-gold",
@@ -1560,8 +1560,8 @@
           "id": "tier-silver",
           "points": 700,
           "badge": "Cây Kỷ Luật Vươn Mình 🌿",
-          "title": "Bộ Thẻ Số & Cẩm Nang 5 Thói Quen Hạnh Phúc (Digital Flashcards)",
-          "desc": "Tài liệu số đúc kết chi tiết phương pháp nuôi dưỡng 5 thói quen kèm câu hỏi phản tư định dạng PDF/trực tuyến."
+          "title": "Cẩm Nang 5 Thói Quen Hạnh Phúc & Câu Hỏi Phản Tư",
+          "desc": "Tài liệu số đúc kết chi tiết phương pháp nuôi dưỡng 5 thói quen kèm câu hỏi phản tư định dạng PDF chuyên sâu."
         },
         {
           "id": "tier-gold",

@@ -27,3 +27,10 @@ scratch/send_test_email.py
 **/mcp_config*.json
 
 .env*
+
+# LMS sensitive roster and scratch data
+lms/master_roster_sheets_data.*
+lms/live_submissions.json
+lms/_backup*/
+lms/Implementation Plan/
+lms/UAT/
