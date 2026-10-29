@@ -223,12 +223,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 stageNumber: 2,
                 badge: "Mini Step 2 • Offline",
                 title: "Chặng 2 • OFFLINE – Gieo thói quen hạnh phúc",
-                subtitle: "Workshop Live tại lớp • 3 Đòn Bẩy Nơi Làm Việc • Trạm thực hành 5 Thói quen & I•A•M",
+                subtitle: "Workshop Live tại lớp • Thỏa thuận văn hóa • 3 Đòn Bẩy Nơi Làm Việc • Thực hành 5 Thói quen & I•A•M",
                 instructor: "",
                 estimatedMinutes: 120,
                 videoUrl: null,
                 subSections: [
-                    { id: "sub-2-0", title: "🚀 Trạm 0: 3 Đòn Bẩy Nơi Làm Việc (Deci & Ryan)", target: "habit-panel-drivers", habit: "drivers", tab: "tab-practice" },
+                    { id: "sub-2-cp", title: "📜 Thỏa Thuận Văn Hóa (Culture Pact)", target: "habit-panel-culture-pact", habit: "culture-pact", tab: "tab-practice" },
+                    { id: "sub-2-0", title: "🚀 3 Đòn Bẩy Nơi Làm Việc (Deci & Ryan)", target: "habit-panel-drivers", habit: "drivers", tab: "tab-practice" },
                     { id: "sub-2-1", title: "🌿 Tỉnh Thức", target: "habit-panel-mindfulness", habit: "mindfulness", tab: "tab-practice" },
                     { id: "sub-2-2", title: "🙏 Biết Ơn", target: "habit-panel-gratitude", habit: "gratitude", tab: "tab-practice" },
                     { id: "sub-2-3", title: "☀️ Lạc Quan", target: "habit-panel-optimism", habit: "optimism", tab: "tab-practice" },
@@ -1382,7 +1383,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const o = habits.optimism || {};
         const f = habits.flow || {};
         const a = habits.altruism || {};
+        const cp = habits.culturePact || habits.culture_pact || {};
 
+        const hasCulturePact = hasNonEmptyIamObj(cp.iam);
         const hasDrivers = hasNonEmptyIamObj(d.iam);
         const hasGratitude = (Array.isArray(g.items) && g.items.some(x => String(x || "").trim()))
             || Boolean(g.card && (String(g.card.to || "").trim() || String(g.card.msg || "").trim()))
@@ -1397,7 +1400,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const hasAltruism = Boolean(String(a.style || "").trim() || String(a.act || "").trim())
             || hasNonEmptyIamObj(a.iam);
 
-        return hasDrivers || hasGratitude || hasMindfulness || hasOptimism || hasFlow || hasAltruism;
+        return hasCulturePact || hasDrivers || hasGratitude || hasMindfulness || hasOptimism || hasFlow || hasAltruism;
     }
 
     function extractIamAndNotesTelemetry(prog, identity) {
@@ -2204,6 +2207,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const h2a = s2a.habits || {};
         const h2b = s2b.habits || {};
 
+        if (h2a.culturePact) sd["stage-2"].habits.culturePact = h2a.culturePact;
         if (h2a.drivers) sd["stage-2"].habits.drivers = h2a.drivers;
         if (h2a.mindfulness) sd["stage-2"].habits.mindfulness = h2a.mindfulness;
         if (h2a.gratitude) sd["stage-2"].habits.gratitude = h2a.gratitude;
@@ -2331,7 +2335,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
             const status = getStage2AIamStatus();
-            alert(`🔒 Chặng 3A đang tạm khóa.\n\nBạn cần hoàn thành đủ bài thu hoạch I•A•M của cả 3 thói quen ở Chặng 2A (Tỉnh thức, Biết ơn, Vị nhân) để mở khóa hành trình đồng hành chuyển hóa.\n\nTiến độ hiện tại: ${status.completedCount}/3 trạm.\n${status.missingNames.length > 0 ? '👉 Còn thiếu bài I•A•M: ' + status.missingNames.join(', ') : ''}`);
+            alert(`🔒 Chặng 3A đang tạm khóa.\n\nBạn cần hoàn thành đủ bài thu hoạch I•A•M của cả 3 thói quen ở Chặng 2A (Tỉnh thức, Biết ơn, Vị nhân) để mở khóa hành trình đồng hành chuyển hóa.\n\nTiến độ hiện tại: ${status.completedCount}/3 thói quen.\n${status.missingNames.length > 0 ? '👉 Còn thiếu bài I•A•M: ' + status.missingNames.join(', ') : ''}`);
             return;
         }
 
@@ -2394,7 +2398,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         ${badgeHtml}
                         ${isCompleted ? '<span class="text-[10px] text-brand-green font-semibold">Đã xong</span>' : ''}
                     </div>
-                    <div class="text-xs font-bold truncate ${!isUnlocked ? 'text-slate-400' : 'text-slate-100'}">${stage.title}</div>
+                    <div class="text-xs font-bold leading-snug break-words ${!isUnlocked ? 'text-slate-400' : 'text-slate-100'}">${stage.title}</div>
                     <div class="text-[11px] ${!isUnlocked ? 'text-slate-500' : 'text-slate-400'} truncate mt-0.5">${!isUnlocked ? (stage.id === 'stage-2b' ? 'Dành cho lớp chuyên sâu bứt phá' : (stage.id === 'stage-3a' ? 'Cần hoàn thành đủ 3 bài I•A•M ở Chặng 2A' : (stage.id === 'stage-3b' ? 'Cần hoàn thành Chặng 2B' : 'Cần đạt ≥80% Cổng Sát Hạch & Học viên chính thức'))) : stage.subtitle}</div>
                 </div>
                 ${stage.subSections && stage.subSections.length > 0 ? `<span class="stage-toggle-chevron text-xs text-slate-400 shrink-0 transform transition-transform ${isActive ? 'rotate-90' : ''}">▸</span>` : ''}
@@ -2455,6 +2459,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         isSubDone = Boolean((s1Data.iam_cp1_sets && s1Data.iam_cp1_sets.length > 0) || (s1Data.iam_cp1 && ((s1Data.iam_cp1.I && s1Data.iam_cp1.I.trim()) || (s1Data.iam_cp1.A && s1Data.iam_cp1.A.trim()) || (s1Data.iam_cp1.M && s1Data.iam_cp1.M.trim()))) || (s1Data.iam_1_2 && s1Data.iam_1_2.I) || (s1Data.iam_1_1 && s1Data.iam_1_1.I));
                     } else if (sub.id === "sub-1-quiz" || sub.id === "sub-1-4") {
                         isSubDone = Boolean(s1Data.passed || s1Data.score >= 8 || s1Data.percentage >= 80);
+                    } else if (sub.id === "sub-2a-cp" || sub.id === "sub-2-cp") {
+                        const hCP = s2aHabits.culturePact || s2aHabits.culture_pact;
+                        isSubDone = Boolean(hCP && hCP.iam && (hCP.iam.I || hCP.iam.A || hCP.iam.M));
                     } else if (sub.id === "sub-2a-0" || sub.id === "sub-2-0") {
                         isSubDone = Boolean((s2aHabits.drivers && s2aHabits.drivers.iam && (s2aHabits.drivers.iam.I || s2aHabits.drivers.iam.A || s2aHabits.drivers.iam.M)) || (s2aData.iam && (s2aData.iam.I || s2aData.iam.A || s2aData.iam.M)));
                     } else if (sub.id === "sub-2a-1" || sub.id === "sub-2-1") {
@@ -2979,6 +2986,10 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.addEventListener("click", () => {
             const audioPath = btn.getAttribute("data-audio");
             if (audioPath) {
+                // Switch to Resources tab so user sees the audio player!
+                const resTabBtn = document.querySelector('[data-tab="tab-resources"]');
+                if (resTabBtn) resTabBtn.click();
+
                 // Ensure audio details is open if collapsed
                 const audioDetails = document.getElementById("audio-player-details");
                 if (audioDetails) audioDetails.open = true;
@@ -3994,7 +4005,33 @@ document.addEventListener("DOMContentLoaded", () => {
             };
         });
 
-        // 10.1b Habit 0: 3 Drivers (Deci & Ryan)
+        // 10.1a Culture Pact (Thỏa thuận văn hóa - B2V2B)
+        const hCP = habits.culturePact || habits.culture_pact || { iam: {} };
+        hCP.iam = hCP.iam || {};
+        habits.culturePact = hCP;
+        bindInput("iam-culture-pact-i", v => {
+            hCP.iam.I = v;
+            habits.culturePact = hCP;
+            syncLegacyStageData(learnerProgress);
+            debouncedSave();
+            renderSyllabus();
+        }, hCP.iam.I);
+        bindInput("iam-culture-pact-a", v => {
+            hCP.iam.A = v;
+            habits.culturePact = hCP;
+            syncLegacyStageData(learnerProgress);
+            debouncedSave();
+            renderSyllabus();
+        }, hCP.iam.A);
+        bindInput("iam-culture-pact-m", v => {
+            hCP.iam.M = v;
+            habits.culturePact = hCP;
+            syncLegacyStageData(learnerProgress);
+            debouncedSave();
+            renderSyllabus();
+        }, hCP.iam.M);
+
+        // 10.1b 3 Drivers (Deci & Ryan)
         const hD = habits.drivers || { iam: {} };
         const s1DataFallback = learnerProgress.stageData && learnerProgress.stageData["stage-1"];
         if (!hD.iam) hD.iam = {};
@@ -7437,6 +7474,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const habitEntries = [];
         const habitConfigs = [
+            { key: "culturePact", stage: "Chặng 2A", title: "Thỏa Thuận Văn Hóa (Culture Pact)", icon: "📜" },
+            { key: "drivers", stage: "Chặng 2A", title: "3 Đòn Bẩy Hạnh Phúc (SDT)", icon: "🚀" },
             { key: "mindfulness", stage: "Chặng 2A", title: "Thói quen 1: Tỉnh Thức (Mindfulness & SBA)", icon: "🧘" },
             { key: "gratitude", stage: "Chặng 2A", title: "Thói quen 2: Biết Ơn (Gratitude)", icon: "🙏" },
             { key: "altruism", stage: "Chặng 2A", title: "Thói quen 3: Vị Nhân (Smart Giver)", icon: "🤝" },
@@ -7622,10 +7661,34 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderVaultTabValues(container, progress) {
         const s1Data = (progress.stageData && progress.stageData["stage-1"]) || {};
         const selectedValues = s1Data.selectedValues || [];
-        const score = (s1Data.score !== undefined && s1Data.score !== null) ? s1Data.score : null;
+        const rawScore = (s1Data.score !== undefined && s1Data.score !== null) ? Number(s1Data.score) : null;
+        const rawPct = (s1Data.percentage !== undefined && s1Data.percentage !== null) ? Number(s1Data.percentage) : null;
         const passed = !!s1Data.passed;
         const quizAttempts = s1Data.quizAttempts || 0;
         const totalQ = (typeof quizQuestions !== "undefined" && Array.isArray(quizQuestions)) ? quizQuestions.length : 10;
+
+        let displayPct = null;
+        let correctCount = null;
+        if (rawPct !== null && rawScore !== null) {
+            if (rawScore <= totalQ && rawPct <= 100) {
+                correctCount = rawScore;
+                displayPct = rawPct;
+            } else if (rawScore > totalQ) {
+                displayPct = rawScore;
+                correctCount = Math.round((rawScore * totalQ) / 100);
+            }
+        } else if (rawPct !== null) {
+            displayPct = rawPct;
+            correctCount = Math.round((rawPct * totalQ) / 100);
+        } else if (rawScore !== null) {
+            if (rawScore <= totalQ) {
+                correctCount = rawScore;
+                displayPct = Math.round((rawScore / totalQ) * 100);
+            } else {
+                displayPct = rawScore;
+                correctCount = Math.round((rawScore * totalQ) / 100);
+            }
+        }
 
         let html = `
             <!-- Tab 2 Header Overview -->
@@ -7689,10 +7752,10 @@ document.addEventListener("DOMContentLoaded", () => {
                             </div>
                         </div>
                         <div class="text-right">
-                            <div class="text-lg font-black font-mono ${passed ? 'text-emerald-400' : (score !== null ? 'text-rose-400' : 'text-slate-500')}">
-                                ${score !== null ? `${score}%` : 'Chưa thi'}
+                            <div class="text-lg font-black font-mono ${passed ? 'text-emerald-400' : (displayPct !== null ? 'text-rose-400' : 'text-slate-500')}">
+                                ${displayPct !== null ? `${displayPct}%` : 'Chưa thi'}
                             </div>
-                            <div class="text-[10px] text-slate-400">${score !== null ? `${Math.round(score * totalQ / 100)}/${totalQ} câu đúng` : '—'}</div>
+                            <div class="text-[10px] text-slate-400">${correctCount !== null ? `${correctCount}/${totalQ} câu đúng` : '—'}</div>
                         </div>
                     </div>
 
@@ -7727,7 +7790,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="p-3.5 rounded-xl bg-gradient-to-r from-emerald-500/15 via-brand-dark/60 to-brand-amber/15 border border-emerald-500/30 flex items-center justify-between">
                 <div>
                     <h4 class="font-extrabold text-white text-xs flex items-center gap-1.5">
-                        <span>🎯</span> Thói Quen 21 Ngày & Bộ Huy Hiệu
+                        <span>🎯</span> Rèn Luyện Thói Quen & Bộ Huy Hiệu
                     </h4>
                     <p class="text-[11px] text-slate-400 mt-0.5">Theo dõi chuỗi kiên trì luyện tập và các cột mốc danh dự.</p>
                 </div>
@@ -7756,7 +7819,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="space-y-2.5">
                 <div class="flex items-center justify-between pb-1 border-b border-brand-border/60">
                     <h5 class="font-bold text-emerald-400 flex items-center gap-1.5 text-xs">
-                        <span>📅</span> Bản Đồ Nhiệt 21 Ngày (Mini-Heatmap)
+                        <span>📅</span> Bản Đồ Rèn Luyện Thói Quen
                     </h5>
                     <div class="flex items-center gap-1 text-[9px] text-slate-400">
                         <span>Ít</span>
@@ -7870,7 +7933,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="p-3.5 rounded-xl bg-gradient-to-r from-purple-500/15 via-brand-dark/60 to-brand-amber/15 border border-purple-500/30 flex items-center justify-between">
                 <div>
                     <h4 class="font-extrabold text-white text-xs flex items-center gap-1.5">
-                        <span>📦</span> Xuất Báo Cáo & Đồng Bộ Đám Mây
+                        <span>📦</span> Xuất Báo Cáo & Đồng Bộ Dữ Liệu
                     </h4>
                     <p class="text-[11px] text-slate-400 mt-0.5">Sao chép kho lưu trữ Markdown và kích hoạt đồng bộ dữ liệu.</p>
                 </div>
@@ -7885,7 +7948,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <span class="text-2xl">📋</span>
                     <div>
                         <div class="font-bold text-white text-xs">Xuất Toàn Bộ Kho Dữ Liệu Học Tập (Markdown)</div>
-                        <div class="text-[11px] text-slate-400">Gom trọn vẹn cả 4 Tabs (I•A•M, Me Values, Quiz, Thói quen 21 ngày & Huy hiệu) để dán vào Obsidian/Notion.</div>
+                        <div class="text-[11px] text-slate-400">Gom trọn vẹn cả 4 phần đúc kết học tập (I•A•M, La bàn giá trị, Sát hạch, Thói quen & Huy hiệu) để lưu trữ cá nhân.</div>
                     </div>
                 </div>
                 <button id="btn-vault-copy-all-tab" type="button" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-brand-amber to-brand-orange text-black font-extrabold text-xs shadow hover:brightness-110 transition-all flex items-center justify-center gap-2 cursor-pointer">
@@ -7893,13 +7956,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 </button>
             </div>
 
-            <!-- Sync Telemetry Card with Throttle 60s -->
+            <!-- Sync Card -->
             <div class="p-4 rounded-xl bg-brand-dark/60 border border-brand-border/70 space-y-3">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <span class="text-2xl">☁️</span>
                         <div>
-                            <div class="font-bold text-white text-xs">Đồng Bộ Đám Mây (Google Sheets)</div>
+                            <div class="font-bold text-white text-xs">Đồng Bộ Học Tập Cá Nhân</div>
                             <div class="text-[11px] text-slate-400">Lần cuối: <span class="font-mono text-emerald-400 font-semibold" id="vault-last-sync-time">${escapeHtml(lastSyncFormatted)}</span></div>
                         </div>
                     </div>
@@ -7916,12 +7979,11 @@ document.addEventListener("DOMContentLoaded", () => {
             <!-- Storage Persistence Notice -->
             <div class="p-3 rounded-xl bg-brand-dark/40 border border-brand-border/50 text-[11px] text-slate-400 space-y-1.5 leading-relaxed">
                 <div class="font-bold text-slate-300 flex items-center gap-1.5">
-                    <span>🛡️</span> Cơ chế bảo vệ & lưu trữ dữ liệu
+                    <span>🛡️</span> Lưu trữ & Bảo vệ dữ liệu
                 </div>
                 <div>
-                    • Tiến độ của bạn được lưu tự động trên thiết bị này theo tài khoản học viên.<br>
-                    • Khi có kết nối mạng, hệ thống tự động đồng bộ ngầm định kỳ về CSDL trung tâm.<br>
-                    • Nút "Đồng Bộ Ngay" có cơ chế đệm an toàn 60 giây để tránh làm nghẽn hạ tầng.
+                    • Tiến độ học tập được tự động lưu trên trình duyệt của bạn.<br>
+                    • Dữ liệu được đồng bộ an toàn lên hệ thống khi có kết nối mạng.
                 </div>
             </div>
         `;
@@ -7975,9 +8037,33 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         const selectedValues = s1Data.selectedValues || [];
-        const score = (s1Data.score !== undefined && s1Data.score !== null) ? s1Data.score : null;
+        const rawScore = (s1Data.score !== undefined && s1Data.score !== null) ? Number(s1Data.score) : null;
+        const rawPct = (s1Data.percentage !== undefined && s1Data.percentage !== null) ? Number(s1Data.percentage) : null;
         const passed = !!s1Data.passed;
         const quizAttempts = s1Data.quizAttempts || 0;
+        const totalQ = (typeof quizQuestions !== "undefined" && Array.isArray(quizQuestions)) ? quizQuestions.length : 10;
+        let displayPct = null;
+        let correctCount = null;
+        if (rawPct !== null && rawScore !== null) {
+            if (rawScore <= totalQ && rawPct <= 100) {
+                correctCount = rawScore;
+                displayPct = rawPct;
+            } else if (rawScore > totalQ) {
+                displayPct = rawScore;
+                correctCount = Math.round((rawScore * totalQ) / 100);
+            }
+        } else if (rawPct !== null) {
+            displayPct = rawPct;
+            correctCount = Math.round((rawPct * totalQ) / 100);
+        } else if (rawScore !== null) {
+            if (rawScore <= totalQ) {
+                correctCount = rawScore;
+                displayPct = Math.round((rawScore / totalQ) * 100);
+            } else {
+                displayPct = rawScore;
+                correctCount = Math.round((rawScore * totalQ) / 100);
+            }
+        }
         const s3Data = (progress.stageData && progress.stageData["stage-3"]) || {};
         const habitTracker = s3Data.habitTracker || {};
         const streakInfo = (typeof calculateStage3Streak === "function")
@@ -8039,16 +8125,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         md += `### Cổng Sát Hạch Chặng 1\n`;
-        md += `- **Điểm số:** ${score !== null ? `${score}%` : 'Chưa thi'}\n`;
+        md += `- **Điểm số:** ${displayPct !== null ? `${displayPct}% (${correctCount}/${totalQ} câu đúng)` : 'Chưa thi'}\n`;
         md += `- **Trạng thái:** ${passed ? '✓ ĐÃ VƯỢT QUA' : 'CHƯA ĐẠT CHUẨN'}\n`;
         md += `- **Số lần thi:** ${quizAttempts}\n\n`;
 
         md += `---\n\n`;
-        md += `## 3. 🎯 THÓI QUEN 21 NGÀY & HUY HIỆU\n\n`;
-        md += `### Chuỗi Thói Quen (21 Days Habit Streak)\n`;
+        md += `## 3. 🎯 RÈN LUYỆN THÓI QUEN & HUY HIỆU\n\n`;
+        md += `### Chuỗi Rèn Luyện Thói Quen (Habit Streak)\n`;
         md += `- **Chuỗi ngày hiện tại:** ${streakInfo.currentStreak} ngày 🔥\n`;
         md += `- **Kỷ lục chuỗi dài nhất:** ${streakInfo.longestStreak} ngày ⭐\n`;
-        md += `- **Tổng số ngày hoàn thành:** ${streakInfo.totalCompletedDays}/21 ngày\n\n`;
+        md += `- **Tổng số ngày hoàn thành:** ${streakInfo.totalCompletedDays} ngày\n\n`;
 
         md += `### Bộ Huy Hiệu Hành Trình\n`;
         md += `- [${completedStages.includes('stage-1') ? 'x' : ' '}] 🧭 Người Định Hướng (Hoàn thành Chặng 1)\n`;
@@ -8323,13 +8409,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 // Check active view/station for IAM insertion target
+                const cpPanel = document.getElementById("habit-panel-culture-pact");
+                const isCpActive = cpPanel && !cpPanel.classList.contains("hidden");
                 const driversPanel = document.getElementById("habit-panel-drivers");
                 const isDriversActive = driversPanel && !driversPanel.classList.contains("hidden");
                 let targetInputId = "iam-cp1-i";
                 let label = "CP1";
-                if (isDriversActive) {
+                if (isCpActive) {
+                    targetInputId = "iam-culture-pact-i";
+                    label = "Thỏa Thuận VH";
+                } else if (isDriversActive) {
                     targetInputId = "iam-drivers-i";
-                    label = "Trạm 0";
+                    label = "3 Đòn Bẩy";
                 } else if (!document.getElementById("stage-1")?.classList.contains("hidden")) {
                     targetInputId = "iam-cp1-i";
                     label = "CP1";

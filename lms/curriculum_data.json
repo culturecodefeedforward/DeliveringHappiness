@@ -46,7 +46,7 @@
       "insights": [
         {
           "title": "Cấp độ 1: Thú vui (Pleasure)",
-          "desc": "Sao nhạc rock theo đuổi đỉnh cao mới. Nhanh nguội lạnh do cơ chế thích nghi khoái lạc."
+          "desc": "Thú vui ngắn hạn (Pleasure), nhanh nguội lạnh do cơ chế thích nghi khoái lạc (Hedonic Adaptation)."
         },
         {
           "title": "Cấp độ 2: Đam mê (Passion / Engagement)",
@@ -196,9 +196,9 @@
           "iam": {
             "id": "iam_1_1",
             "title": "Đúc kết I • A • M 1.1 — 3 Cấp Độ Hạnh Phúc",
-            "I": "Bạn tâm đắc nhất với điều gì từ nội dung 3 Cấp độ Hạnh phúc & Ẩn dụ 3 Tầng Lầu của Phong Tử Khải?",
-            "A": "Bạn sẽ áp dụng điều này như thế nào để chuyển dịch dần từ Thú vui ngắn hạn (Pleasure) sang Đam mê (Passion) và Mục đích cao cả (Higher Purpose)?",
-            "M": "Tại sao nhận thức này lại có ý nghĩa sâu sắc đối với bạn ở thời điểm hiện tại?"
+            "I": "Bạn tâm đắc nhất với điều gì từ nội dung đã học?",
+            "A": "Bạn sẽ áp dụng điều này như thế nào?",
+            "M": "Tại sao bạn lại tâm đắc với điều đó?"
           }
         },
         {
@@ -251,25 +251,13 @@
           "iam": {
             "id": "iam_1_2",
             "title": "Đúc kết I • A • M 1.2 — La Bàn Giá Trị Sống",
-            "I": "Bạn tâm đắc nhất với giá trị La Bàn nào bạn vừa lựa chọn?",
-            "A": "Giá trị này sẽ định hướng cho một quyết định khó khăn hoặc hành vi sắp tới của bạn như thế nào?",
-            "M": "Nếu kiên định sống đúng với La Bàn này, bạn sẽ kiến tạo phiên bản tốt đẹp hơn của chính mình ra sao?"
+            "I": "Bạn tâm đắc nhất với điều gì từ nội dung đã học?",
+            "A": "Bạn sẽ áp dụng điều này như thế nào?",
+            "M": "Tại sao bạn lại tâm đắc với điều đó?"
           }
         }
       ],
       "resources": [
-        {
-          "title": "Slide Bài Giảng: Mọi Mục Tiêu Đều Quy Về Hạnh Phúc (Chuỗi Câu Hỏi Tại Sao?)",
-          "type": "image",
-          "url": "data/artifacts/slides/slide_14.png",
-          "icon": "📊"
-        },
-        {
-          "title": "Slide Bài Giảng: Lời Dạy Aristotle 200BC — Hạnh Phúc Là Mục Đích Tồn Tại",
-          "type": "image",
-          "url": "data/artifacts/slides/slide_18.png",
-          "icon": "📊"
-        },
         {
           "title": "Slide Bài Giảng: Điều Gì Khiến Hạnh Phúc Bền Lâu?",
           "type": "image",
@@ -319,61 +307,54 @@
       ]
     },
     {
-      "id": "stage-2",
-      "stageNumber": 2,
-      "badge": "Chặng 2 · Workshop",
-      "title": "Chặng 2 · Gieo thói quen hạnh phúc",
-      "subtitle": "Workshop Live tại lớp • 3 Đòn Bẩy Nơi Làm Việc • Trạm thực hành 5 Thói quen & I•A•M",
+      "id": "stage-2a",
+      "stageNumber": "2A",
+      "badge": "Chặng 2A · Workshop Nền Tảng",
+      "title": "Chặng 2A · Gieo thói quen hạnh phúc",
+      "subtitle": "Thỏa thuận văn hóa • 3 Đòn bẩy (SDT) & 3 Thói quen Nền tảng: Tỉnh thức • Biết ơn • Vị nhân",
       "instructor": "",
       "estimatedMinutes": 120,
       "videoUrl": null,
       "subSections": [
         {
-          "id": "sub-2-0",
-          "title": "🚀 Trạm 0: 3 Đòn Bẩy Nơi Làm Việc (Deci & Ryan)",
+          "id": "sub-2a-cp",
+          "title": "📜 Thỏa Thuận Văn Hóa (Culture Pact)",
+          "target": "habit-panel-culture-pact",
+          "habit": "culture-pact",
+          "tab": "tab-practice"
+        },
+        {
+          "id": "sub-2a-0",
+          "title": "🚀 3 Đòn Bẩy Nơi Làm Việc (Deci & Ryan)",
           "target": "habit-panel-drivers",
           "habit": "drivers",
           "tab": "tab-practice"
         },
         {
-          "id": "sub-2-1",
+          "id": "sub-2a-1",
           "title": "🌿 Tỉnh Thức",
           "target": "habit-panel-mindfulness",
           "habit": "mindfulness",
           "tab": "tab-practice"
         },
         {
-          "id": "sub-2-2",
+          "id": "sub-2a-2",
           "title": "🙏 Biết Ơn",
           "target": "habit-panel-gratitude",
           "habit": "gratitude",
           "tab": "tab-practice"
         },
         {
-          "id": "sub-2-3",
-          "title": "☀️ Lạc Quan",
-          "target": "habit-panel-optimism",
-          "habit": "optimism",
-          "tab": "tab-practice"
-        },
-        {
-          "id": "sub-2-4",
-          "title": "🌀 Phiêu (Flow)",
-          "target": "habit-panel-flow",
-          "habit": "flow",
-          "tab": "tab-practice"
-        },
-        {
-          "id": "sub-2-5",
+          "id": "sub-2a-3",
           "title": "🤝 Vị Nhân",
           "target": "habit-panel-altruism",
           "habit": "altruism",
           "tab": "tab-practice"
         },
         {
-          "id": "sub-2-6",
+          "id": "sub-2a-capstone",
           "title": "🏆 Đúc Kết & Chuyển Hóa",
-          "target": "stage2-capstone-card",
+          "target": "stage2a-capstone-card",
           "tab": "tab-practice"
         }
       ],
@@ -409,30 +390,6 @@
           "duration": "35:10"
         },
         {
-          "id": "a2-6",
-          "title": "Thói quen 3 (Lạc quan): Tư duy lạc quan",
-          "file": "data/artifacts/audio_lac_quan.mp3",
-          "duration": "24:25"
-        },
-        {
-          "id": "a2-7",
-          "title": "Thói quen 3 (Lạc quan): Bài giảng ABCDE",
-          "file": "data/artifacts/lac_quan_abcde.mp3",
-          "duration": "41:35"
-        },
-        {
-          "id": "a2-8",
-          "title": "Thói quen 4 (Flow): Trạng thái phiêu",
-          "file": "data/artifacts/audio_flow.mp3",
-          "duration": "31:45"
-        },
-        {
-          "id": "a2-9",
-          "title": "Thói quen 4 (Flow): Làm việc 'phiêu'",
-          "file": "data/artifacts/lam_viec_phieu.mp3",
-          "duration": "41:30"
-        },
-        {
           "id": "a2-10",
           "title": "Thói quen 5 (Vị nhân): Trái tim vị nhân",
           "file": "data/artifacts/audio_vi_nhan.mp3",
@@ -446,6 +403,43 @@
         }
       ],
       "habits": [
+        {
+          "id": "habit-culture-pact",
+          "number": 0,
+          "name": "Thỏa Thuận Văn Hóa (Culture Pact)",
+          "title": "Thỏa Thuận Văn Hóa (Culture Pact — B2V2B)",
+          "icon": "📜",
+          "description": "Niềm tin → Giá trị → Hành vi (From Manager to Culture Builder). Thiết lập sự đồng thuận và nhất quán trước khi áp lực xuất hiện.",
+          "audioTracks": [
+            {
+              "id": "a2-cp-1",
+              "title": "Đòn bẩy Kết nối: Thỏa thuận văn hóa",
+              "file": "data/artifacts/thoa_thuan_van_hoa.mp3",
+              "duration": "38:20"
+            }
+          ],
+          "slides": [
+            {
+              "slideNumber": 11,
+              "title": "Slide 11: Thoả Thuận Văn Hóa (Culture Pact — B2V2B)",
+              "url": "data/artifacts/slides/slide_11.png",
+              "caption": "Thoả Thuận Văn Hóa (Culture Pact) — Delivering Happiness • B2V2B"
+            },
+            {
+              "slideNumber": 12,
+              "title": "Slide 12: Tổng Quan: Niềm tin → Giá trị → Hành vi (From Manager to Culture Builder)",
+              "url": "data/artifacts/slides/slide_12.png",
+              "caption": "Xác định rõ những hành vi mong đợi trước khi áp lực xuất hiện"
+            }
+          ],
+          "iam": {
+            "id": "iam_culture_pact",
+            "title": "Đúc kết I • A • M — Thỏa Thuận Văn Hóa",
+            "I": "Bạn tâm đắc nhất với điều gì từ nội dung đã học?",
+            "A": "Bạn sẽ áp dụng điều này như thế nào?",
+            "M": "Tại sao bạn lại tâm đắc với điều đó?"
+          }
+        },
         {
           "id": "habit-drivers",
           "number": 0,
@@ -469,36 +463,24 @@
           ],
           "slides": [
             {
-              "slideNumber": 25,
-              "title": "Slide 25: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc",
-              "url": "data/artifacts/slides/slide_25.png",
-              "caption": "Tổng quan 3 Đòn Bẩy Tự Thân: Tự chủ • Tiến bộ • Kết nối"
+              "slideNumber": 17,
+              "title": "Slide 17: Thuyết Tự Quyết (SDT) — Ba Đòn Bẩy Hạnh Phúc Ở Nơi Làm Việc",
+              "url": "data/artifacts/slides/slide_17.png",
+              "caption": "Ba Đòn Bẩy Hạnh Phúc Ở Nơi Làm Việc: Năng lực • Tự chủ • Kết nối"
             },
             {
-              "slideNumber": 29,
-              "title": "Slide 29: Đòn Bẩy Tự Chủ & Tinh Thần Làm Chủ (Ownership Advantage)",
-              "url": "data/artifacts/slides/slide_29.png",
-              "caption": "Sống Hòa Ái • Gắn kết đội ngũ & Ownership Advantage"
-            },
-            {
-              "slideNumber": 31,
-              "title": "Slide 31: An Toàn Tâm Lý (Psychological Safety) — Nền Tảng Tự Chủ",
-              "url": "data/artifacts/slides/slide_31.png",
-              "caption": "An Toàn Tâm Lý: Nền tảng dám nói, dám thử nghiệm và tự chủ"
-            },
-            {
-              "slideNumber": 38,
-              "title": "Slide 38: Đòn Bẩy Tiến Bộ — Ghi Nhận Small Wins Kích Hoạt Dopamine",
-              "url": "data/artifacts/slides/slide_38.png",
-              "caption": "Động Lực Tiến Bộ: Ghi nhận Small Wins giải phóng Dopamine"
+              "slideNumber": 18,
+              "title": "Slide 18: Đòn Bẩy Hạnh Phúc #1: Cảm Giác Kết Nối (Sống Hòa Ái)",
+              "url": "data/artifacts/slides/slide_18.png",
+              "caption": "Cảm giác Kết nối — Sống Hòa Ái & Gắn kết đội ngũ"
             }
           ],
           "iam": {
             "id": "iam_drivers",
             "title": "Đúc kết I • A • M — 3 Đòn Bẩy Nơi Làm Việc",
-            "I": "Trong 3 Đòn bẩy (Tự chủ • Tiến bộ • Kết nối), bạn tâm đắc nhất với đòn bẩy nào và nhận diện tổ chức đang cần điều chỉnh đòn bẩy nào nhất?",
-            "A": "Một hành động cụ thể bạn sẽ thực hiện ngay tuần này để kích hoạt Tự chủ, ghi nhận Tiến bộ (Small Wins) hoặc xây dựng An toàn tâm lý cho đội ngũ?",
-            "M": "Việc kích hoạt 3 đòn bẩy này có ý nghĩa chuyển hóa như thế nào đối với động lực nội tại và hạnh phúc của chính bạn cũng như các thành viên?"
+            "I": "Bạn tâm đắc nhất với điều gì từ nội dung đã học?",
+            "A": "Bạn sẽ áp dụng điều này như thế nào?",
+            "M": "Tại sao bạn lại tâm đắc với điều đó?"
           }
         },
         {
@@ -544,9 +526,9 @@
           "iam": {
             "id": "iam_mindfulness",
             "title": "Đúc kết I • A • M — Thói Quen Tỉnh Thức",
-            "I": "Bạn nhận ra điều gì về phản xạ vô thức của mình khi gặp căng thẳng trước đây?",
-            "A": "Tình huống cụ thể nào trong ngày bạn cam kết sẽ kích hoạt kỹ thuật Stop – Breathe – Ask?",
-            "M": "Năng lực tỉnh thức giúp bạn làm chủ cảm xúc và bảo vệ an toàn tâm lý cho đội ngũ ra sao?"
+            "I": "Bạn tâm đắc nhất với điều gì từ nội dung đã học?",
+            "A": "Bạn sẽ áp dụng điều này như thế nào?",
+            "M": "Tại sao bạn lại tâm đắc với điều đó?"
           },
           "practicalScenario": {
             "id": "scenario-habit-mindfulness",
@@ -556,7 +538,21 @@
             "modelAnswer": "1. Tách biệt Thực tế và Phóng đại: Nhận diện cơn đau/sự giận dữ chỉ là trạng thái sinh lý tạm thời, không đồng nhất bản thân với cảm xúc đó ('Tôi đang quan sát cơn giận', chứ không phải 'Tôi là cơn giận').\n2. Thực hành SBA 3 bước trong công việc:\n  - S (Stop): Dừng ngay hành động gõ bàn phím hoặc phát ngôn khi nhận thấy nhịp tim tăng nhanh.\n  - B (Breathe): Hít thở sâu 3 nhịp bụng (4 giây hít vào, 6 giây thở ra) để kích hoạt hệ thần kinh phó giao cảm.\n  - A (Attend / Ask): Chú ý cảm thọ cơ thể, quan sát phản ứng và tự hỏi: 'Mục tiêu tối ưu và chiếc mũ vai trò của tôi lúc này là gì?' để phản hồi thấu cảm thay vì phản xạ ăn miếng trả miếng.",
             "reflectionPrompt": "Khi đối mặt với áp lực gay gắt từ cấp trên hoặc khách hàng, phản xạ tự động đầu tiên của bạn là gì (Chiến - Biến - hay Đóng băng)? Bạn nhận ra điều gì nếu áp dụng khoảng dừng SBA?",
             "actionPrompt": "Một tình huống căng thẳng cụ thể tuần tới bạn cam kết sẽ dừng lại 3 nhịp thở trước khi phản hồi:"
-          }
+          },
+          "slides": [
+            {
+              "slideNumber": 40,
+              "title": "Slide 40: Tỉnh Thức — Tập Trung Chú Ý Vào Khoảnh Khắc Hiện Tại",
+              "url": "data/artifacts/slides/slide_40.png",
+              "caption": "Tập trung chú ý vào khoảnh khắc hiện tại mà không phán xét"
+            },
+            {
+              "slideNumber": 41,
+              "title": "Slide 41: Khoảnh Khắc Hiện Tại Tròn Đầy Niềm Vui & Hạnh Phúc (~ Thích Nhất Hạnh)",
+              "url": "data/artifacts/slides/slide_41.png",
+              "caption": "Khoảnh khắc hiện tại tròn đầy niềm vui và hạnh phúc (~ Thích Nhất Hạnh)"
+            }
+          ]
         },
         {
           "id": "habit-gratitude",
@@ -593,9 +589,9 @@
           "iam": {
             "id": "iam_gratitude",
             "title": "Đúc kết I • A • M — Thói Quen Biết Ơn",
-            "I": "Điểm chạm sâu sắc nhất của bạn về sức mạnh chuyển hóa của Lòng biết ơn là gì?",
-            "A": "Bạn sẽ thiết lập thói quen ghi nhận và gửi lời cảm ơn ai ngay sau khóa học?",
-            "M": "Lòng biết ơn nuôi dưỡng sự bình an và các mối quan hệ của bạn như thế nào?"
+            "I": "Bạn tâm đắc nhất với điều gì từ nội dung đã học?",
+            "A": "Bạn sẽ áp dụng điều này như thế nào?",
+            "M": "Tại sao bạn lại tâm đắc với điều đó?"
           },
           "practicalScenario": {
             "id": "scenario-habit-gratitude",
@@ -605,8 +601,210 @@
             "modelAnswer": "1. Đón nhận điều bất như ý (Biết ơn nghịch cảnh): Khi gặp sự cố ngoài ý muốn (như việc chiếc bồn tắm không vừa cửa hay trục trặc dự án), thay vì đổ lỗi, hãy dừng lại tự hỏi 'Thế thì sao? Giờ giải quyết thế nào?' và nhìn nhận bài học/cơ hội mới mà tình huống mang lại.\n2. Thực hành Storytelling biết ơn: Dành thời gian ghi nhận những nỗ lực thầm lặng của đồng đội qua thông điệp chân thành dưới 60 giây gắn liền với hành vi cụ thể và giá trị phụng sự.",
             "reflectionPrompt": "Bạn đã từng trải qua nghịch cảnh nào trong công việc hoặc cuộc sống mà sau này nhìn lại bạn thầm cảm ơn vì nó đã mở ra cơ hội hoặc rèn luyện bản lĩnh cho mình? Nếu kể lại lời cảm ơn 60s cho một người đồng đội hôm nay, bạn sẽ kể điều gì?",
             "actionPrompt": "Viết 1 thông điệp Storytelling biết ơn dưới 60 giây theo khung 5 bước để gửi ngay cho một người đồng đội:"
-          }
+          },
+          "slides": [
+            {
+              "slideNumber": 56,
+              "title": "Slide 56: Lòng Biết Ơn (Gratitude) — Nhận Thức & Trân Trọng Điều Tích Cực",
+              "url": "data/artifacts/slides/slide_56.png",
+              "caption": "Nhận thức và trân trọng những điều tích cực trong cuộc sống"
+            },
+            {
+              "slideNumber": 57,
+              "title": "Slide 57: Lòng Biết Ơn (Gratitude) — Nhìn Thấy Những Điều Mọi Người Làm Đúng",
+              "url": "data/artifacts/slides/slide_57.png",
+              "caption": "Nhìn thấy những điều mọi người làm đúng — Ghi nhận đúng lúc đúng người"
+            }
+          ]
         },
+        {
+          "id": "habit-altruism",
+          "number": 5,
+          "name": "Vị Nhân (Altruism)",
+          "title": "Vị Nhân & Trao Giá Trị",
+          "icon": "🤝",
+          "description": "Sống và hành động vì mục tiêu chung lớn nhất theo triết lý Smart Giver của Adam Grant.",
+          "audioTrack": "data/artifacts/audio_vi_nhan.mp3",
+          "tool": {
+            "type": "altruism_tool",
+            "giverStyles": [
+              {
+                "value": "Giver",
+                "label": "Giver (Người cho đi): Sẵn lòng giúp đỡ không toan tính"
+              },
+              {
+                "value": "Matcher",
+                "label": "Matcher (Người sòng phẳng): Giúp đỡ khi có đi có lại"
+              },
+              {
+                "value": "Taker",
+                "label": "Taker (Người nhận): Tìm kiếm lợi ích cá nhân trước"
+              }
+            ],
+            "actOfKindness": "Hành động vị nhân cụ thể (giúp đỡ đồng nghiệp/khách hàng) bạn sẽ làm trong 48h tới:"
+          },
+          "quizzes": [
+            {
+              "id": "bk-q15",
+              "question": "Trong thói quen 'Tỉnh thức', khái niệm 'Chụp mũ' (Presence) được hiểu như thế nào?",
+              "options": [
+                "Là việc áp đặt ý kiến của mình lên người khác một cách nhanh chóng.",
+                "Sự hiện diện trọn vẹn, không bị chi phối bởi quá khứ hay lo sợ về tương lai.",
+                "Việc luôn luôn phải có mặt ở mọi sự kiện của công ty.",
+                "Cố gắng đoán trước những gì sắp xảy ra để chuẩn bị."
+              ],
+              "correctIndex": 1,
+              "explanation": "Đáp án đúng là lựa chọn số 2 theo giáo trình Delivering Happiness."
+            }
+          ],
+          "iam": {
+            "id": "iam_altruism",
+            "title": "Đúc kết I • A • M — Thói Quen Vị Nhân",
+            "I": "Bạn tâm đắc nhất với điều gì từ nội dung đã học?",
+            "A": "Bạn sẽ áp dụng điều này như thế nào?",
+            "M": "Tại sao bạn lại tâm đắc với điều đó?"
+          },
+          "practicalScenario": {
+            "id": "scenario-habit-altruism",
+            "title": "Tình Huống Thực Tế 2.5: Anh Nam Bị Lừa Tiền Xe Tại Bến Xe Miền Tây (Bài Học Smart Giver) & Gói Bảo Hiểm Cho Con Công Nhân Yếm Thế",
+            "context": "Khi đưa con đi ăn, Anh Nam gặp một cô gái trẻ 18-20 tuổi khóc lóc cầu xin giúp đỡ, nói lên thành phố khám bệnh bị móc sạch ví và điện thoại, nhờ chuyển khoản tiền xe cho tài xế Grab đang chờ. Anh Nam chuyển khoản giúp đỡ nhưng sau đó nhận ra mình đã bị lừa. Anh đúc kết bài học đắt giá về 'Smart Giver': Lòng tốt cần đi kèm trí tuệ và sự sắc sảo, nếu cho đi mù quáng (Unsmart Giver) thì chỉ là thỏa mãn cái tôi vị kỷ (egoism) và tiếp tay cho sự dối trá. Ngược lại, tại mô hình Nice Company (Doanh nghiệp tử tế), ban lãnh đạo lắng nghe công nhân yếm thế trong nhà máy và chủ động thương lượng mua bảo hiểm y tế toàn diện cho con em họ mà không thu thêm tiền, tạo nên sự gắn kết 98% và lòng trung thành bền vững.",
+            "facultyAnalysis": "Adam Grant (tác giả 'Give and Take') phân loại: Taker (Trục lợi), Matcher (Sòng phẳng), và Giver (Cho đi). Trong nhóm Giver, có Unsmart Giver (cho đi mù quáng, không giữ ranh giới, dễ bị Taker vắt kiệt) và Smart Giver (Vị nhân thông thái: cho đi với Bi - Trí - Dũng). Smart Giver luôn giữ ranh giới lành mạnh (Boundaries), biết từ chối sự lợi dụng, ưu tiên nâng đỡ những người có tinh thần học hỏi, và trao tặng giá trị có tính đòn bẩy cao (như chia sẻ tri thức TPOV - Teachable Point of View, kết nối cơ hội) thay vì cho tiền bạc hay làm hộ việc.",
+            "modelAnswer": "1. Thiết lập Bộ lọc Vị nhân Thông thái (3 câu hỏi tự vấn):\n  - Câu 1: Sự giúp đỡ này có giúp đối phương tự lập và phát triển năng lực (Empowerment), hay tạo ra sự ỷ lại (Dependency)?\n  - Câu 2: Tôi có đang hy sinh những giá trị cốt lõi hoặc nguồn lực thiết yếu của bản thân/gia đình một cách vô lý không?\n  - Câu 3: Đối phương có thái độ trân trọng và cầu thị hay đang lợi dụng lòng tốt?\n2. Hành vi vị tha công sở hiệu quả cao (5-Minute Favors):\n  - Dành 15 phút làm 'Buddy' hướng dẫn tư duy cho nhân viên mới thay vì làm hộ việc.\n  - Kết nối cơ hội hợp tác cho đồng nghiệp.\n  - Chia sẻ kinh nghiệm đúc kết (TPOV) giúp đội ngũ tránh đi vào vết xe đổ.",
+            "reflectionPrompt": "Bạn đã bao giờ rơi vào trạng thái 'Unsmart Giver' (cho đi kiệt sức vì không dám từ chối hoặc bị người khác lợi dụng) chưa? Làm thế nào để bạn nâng cấp lên 'Smart Giver'?",
+            "actionPrompt": "Một hành vi vị nhân thông thái cụ thể (5-Minute Favor) bạn sẽ làm để giúp đỡ một đồng nghiệp trong 48 giờ tới:"
+          },
+          "slides": [
+            {
+              "slideNumber": 76,
+              "title": "Slide 76: Tinh Thần Vị Nhân — Bạn Đã Nâng Đỡ Ai (~ Denzel Washington)",
+              "url": "data/artifacts/slides/slide_76.png",
+              "caption": "Rốt cuộc là bạn đã nâng đỡ ai, ai đã trở nên tốt đẹp hơn (~ Denzel Washington)"
+            },
+            {
+              "slideNumber": 77,
+              "title": "Slide 77: Định Nghĩa Vị Nhân (Auguste Comte 1851) — Vị Nhân # Hy Sinh vs Vị Kỷ",
+              "url": "data/artifacts/slides/slide_77.png",
+              "caption": "Sống vì người khác, tăng lợi lạc cho người khác • Vị nhân # Hy sinh vs Vị Kỷ"
+            }
+          ]
+        }
+      ],
+      "capstoneIam": {
+        "id": "iam_capstone_2a",
+        "title": "Đúc Kết & Chuyển Hóa 2A (I • A • M)",
+        "I": "Bạn tâm đắc nhất với điều gì từ nội dung đã học?",
+        "A": "Bạn sẽ áp dụng điều này như thế nào?",
+        "M": "Tại sao bạn lại tâm đắc với điều đó?"
+      },
+      "habitsScience": {
+        "gratitude": {
+          "science": "Nghiên cứu của GS. Robert Emmons (UC Davis) chứng minh: Nhóm thực hành biết ơn thường xuyên có mức độ hạnh phúc cao hơn 25%, lạc quan hơn về tương lai và dành nhiều hơn 1.5 giờ/tuần để rèn luyện thể chất.",
+          "dimensions": [
+            "1. Biết ơn kết quả tốt đẹp đã diễn ra.",
+            "2. Biết ơn nghịch cảnh & điều bất như ý (vì mang lại bài học và sức bật tâm lý).",
+            "3. Biết ơn những điều tốt đẹp SẼ xảy ra (kiến tạo tương lai).",
+            "4. Biết ơn chính bản thân mình (vì đã kiên trì vượt khó và hòa ái nội tâm)."
+          ],
+          "formula": "Công thức trân trọng 4 thành tố: [Tên đồng nghiệp] + [Giá trị cốt lõi họ thể hiện] + [Câu chuyện/Hành vi cụ thể] + [Tác động tích cực đến tôi/đội ngũ].",
+          "quote": "Cảm thấy biết ơn mà không thể hiện ra cũng giống như gói một món quà thật đẹp mà không bao giờ đem tặng. — William A. Ward",
+          "infographic": "data/artifacts/infographics/infographic_thoi_quen_biet_on.png"
+        },
+        "mindfulness": {
+          "science": "Chương trình MBSR của GS. Y khoa Jon Kabat-Zinn chỉ ra: Giảm 39% stress, tăng 35% tự nhận thức và tăng 200% chất lượng giấc ngủ. Khoa học chứng minh 98% dân số không thể đa nhiệm hiệu quả; chuyển đổi ngữ cảnh (Context Switching) bào mòn năng lượng não bộ.",
+          "technique": "Kỹ thuật SBA (Stop - Breathe - Ask): Stop (Dừng lại nhận diện cảm xúc không phán xét) → Breathe (Hít thở sâu 3 hơi để đưa máu về vỏ não trước trán) → Ask (Tự hỏi: Tôi đang đội chiếc mũ vai trò gì và điều gì là quan trọng nhất lúc này?).",
+          "bodyScan": "Quét cơ thể từ đỉnh đầu đến ngón chân để giải tỏa các vùng cơ căng cứng, kích hoạt hệ thần kinh phó giao cảm.",
+          "infographic": "data/artifacts/infographics/infographic_song_tinh_thuc.png"
+        },
+        "altruism": {
+          "science": "GS. Adam Grant (Wharton, tác giả Give and Take): Phân loại Takers (Chỉ nhận), Matchers (Sòng phẳng), và Givers (Cho đi). Nghịch lý: Givers ngây thơ đứng cuối bảng hiệu suất (kiệt sức, bị lợi dụng); nhưng Người đứng đầu bảng thành công nhất CŨNG LÀ GIVERS — các 'Smart Givers' (Người cho đi sắc sảo).",
+          "trio": "Bộ ba Bi - Trí - Dũng: Bi (Từ bi muốn giúp đỡ) → Trí (Dùng SBA cân nhắc xem có tạo ra sự ỷ lại không) → Dũng (Dũng cảm hướng dẫn họ tự làm thay vì làm hộ để giúp họ đạt sự tự chủ, hoặc dũng cảm nói Không với đòi hỏi độc hại).",
+          "workplaceActs": [
+            "Xung phong làm Buddy kèm cặp nhân viên mới.",
+            "Thực hiện Allyship (Âm thầm ủng hộ sáng kiến của đồng nghiệp trong cuộc họp).",
+            "Làm Giảng viên nội bộ chia sẻ chuyên môn.",
+            "Quy tắc 5 phút: Giúp đỡ nhanh chóng nếu việc đó chỉ tốn dưới 5 phút của bạn."
+          ],
+          "infographic": "data/artifacts/infographics/infographic_vi_nhan_thong_thai.png"
+        },
+        "capstone": {
+          "culturePact": "Văn hóa là Thỏa thuận hành vi (Culture Pact) được đồng thuận từ dưới lên, tuyệt đối cấm sao chép (copy-paste) sổ tay văn hóa vô hồn. Hành vi là đơn vị đo lường duy nhất của văn hóa.",
+          "sevenLevels": "Mô hình 7 cấp độ nhận thức tổ chức từ Sinh tồn (Survival) đến Phụng sự (Service). Phụng sự không phụ thuộc vào số tiền bạn có, mà phụ thuộc vào phần trăm của trái tim bạn trao đi.",
+          "infographic": "data/artifacts/infographics/infographic_thiet_ke_van_hoa_nhom.png"
+        }
+      },
+      "resources": [
+        {
+          "title": "Slide Bài Giảng: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy",
+          "type": "image",
+          "url": "data/artifacts/slides/slide_25.png",
+          "icon": "📊"
+        },
+        {
+          "title": "Slide Bài Giảng: Đòn Bẩy Tự Chủ & Tinh Thần Làm Chủ (Ownership Advantage)",
+          "type": "image",
+          "url": "data/artifacts/slides/slide_29.png",
+          "icon": "📊"
+        }
+      ]
+    },
+    {
+      "id": "stage-2b",
+      "stageNumber": "2B",
+      "badge": "Chặng 2B · Workshop Bứt Phá",
+      "title": "Chặng 2B · Gieo thói quen hạnh phúc (Chuyên Sâu)",
+      "subtitle": "2 Thói quen Bứt phá: Phiêu (Flow) • Lạc quan (ABCDE)",
+      "instructor": "",
+      "estimatedMinutes": 90,
+      "videoUrl": null,
+      "subSections": [
+        {
+          "id": "sub-2b-1",
+          "title": "🌀 Phiêu (Flow)",
+          "target": "habit-panel-flow",
+          "habit": "flow",
+          "tab": "tab-practice"
+        },
+        {
+          "id": "sub-2b-2",
+          "title": "☀️ Lạc Quan (ABCDE)",
+          "target": "habit-panel-optimism",
+          "habit": "optimism",
+          "tab": "tab-practice"
+        },
+        {
+          "id": "sub-2b-capstone",
+          "title": "🏆 Đúc Kết & Bứt Phá",
+          "target": "stage2b-capstone-card",
+          "tab": "tab-practice"
+        }
+      ],
+      "audios": [
+        {
+          "id": "a2-6",
+          "title": "Thói quen 3 (Lạc quan): Tư duy lạc quan",
+          "file": "data/artifacts/audio_lac_quan.mp3",
+          "duration": "24:25"
+        },
+        {
+          "id": "a2-7",
+          "title": "Thói quen 3 (Lạc quan): Bài giảng ABCDE",
+          "file": "data/artifacts/lac_quan_abcde.mp3",
+          "duration": "41:35"
+        },
+        {
+          "id": "a2-8",
+          "title": "Thói quen 4 (Flow): Trạng thái phiêu",
+          "file": "data/artifacts/audio_flow.mp3",
+          "duration": "31:45"
+        },
+        {
+          "id": "a2-9",
+          "title": "Thói quen 4 (Flow): Làm việc 'phiêu'",
+          "file": "data/artifacts/lam_viec_phieu.mp3",
+          "duration": "41:30"
+        }
+      ],
+      "habits": [
         {
           "id": "habit-optimism",
           "number": 3,
@@ -662,9 +860,9 @@
           "iam": {
             "id": "iam_optimism",
             "title": "Đúc kết I • A • M — Thói Quen Lạc Quan ABCDE",
-            "I": "Bài học lớn nhất khi bạn nhìn rõ cơ chế tự động A-B-C so với sức mạnh phản biện ở chữ D?",
-            "A": "Hành động mới (E) bạn cam kết thực hiện đầu tiên vào tuần tới là gì?",
-            "M": "Khả năng bẻ gãy niềm tin giới hạn mang lại ý nghĩa gì cho sự kiên cường của bạn?"
+            "I": "Bạn tâm đắc nhất với điều gì từ nội dung đã học?",
+            "A": "Bạn sẽ áp dụng điều này như thế nào?",
+            "M": "Tại sao bạn lại tâm đắc với điều đó?"
           },
           "practicalScenario": {
             "id": "scenario-habit-optimism",
@@ -706,9 +904,9 @@
           "iam": {
             "id": "iam_flow",
             "title": "Đúc kết I • A • M — Thói Quen Phiêu (Flow)",
-            "I": "Điều kiện tiên quyết nào giúp bạn bước vào trạng thái Dòng chảy (Flow)?",
-            "A": "Bạn sẽ loại bỏ sự xao lãng nào hoặc tái thiết kế công việc nào để đạt Flow trong tuần tới?",
-            "M": "Trạng thái Flow mang lại giá trị gì cho hiệu suất và niềm hứng khởi trong công việc của bạn?"
+            "I": "Bạn tâm đắc nhất với điều gì từ nội dung đã học?",
+            "A": "Bạn sẽ áp dụng điều này như thế nào?",
+            "M": "Tại sao bạn lại tâm đắc với điều đó?"
           },
           "practicalScenario": {
             "id": "scenario-habit-flow",
@@ -719,91 +917,16 @@
             "reflectionPrompt": "Đâu là yếu tố phân tâm lớn nhất đang phá vỡ trạng thái Dòng chảy của bạn hàng ngày? Bạn có thể ứng dụng Microflow hoặc công cụ AI để biến một việc nhàm chán thành trải nghiệm Flow ra sao?",
             "actionPrompt": "Một khung giờ vàng cố định trong ngày bạn cam kết tắt điện thoại để bước vào trạng thái Flow:"
           }
-        },
-        {
-          "id": "habit-altruism",
-          "number": 5,
-          "name": "Vị Nhân (Altruism)",
-          "title": "Vị Nhân & Trao Giá Trị",
-          "icon": "🤝",
-          "description": "Sống và hành động vì mục tiêu chung lớn nhất theo triết lý Smart Giver của Adam Grant.",
-          "audioTrack": "data/artifacts/audio_vi_nhan.mp3",
-          "tool": {
-            "type": "altruism_tool",
-            "giverStyles": [
-              {
-                "value": "Giver",
-                "label": "Giver (Người cho đi): Sẵn lòng giúp đỡ không toan tính"
-              },
-              {
-                "value": "Matcher",
-                "label": "Matcher (Người sòng phẳng): Giúp đỡ khi có đi có lại"
-              },
-              {
-                "value": "Taker",
-                "label": "Taker (Người nhận): Tìm kiếm lợi ích cá nhân trước"
-              }
-            ],
-            "actOfKindness": "Hành động vị nhân cụ thể (giúp đỡ đồng nghiệp/khách hàng) bạn sẽ làm trong 48h tới:"
-          },
-          "quizzes": [
-            {
-              "id": "bk-q15",
-              "question": "Trong thói quen 'Tỉnh thức', khái niệm 'Chụp mũ' (Presence) được hiểu như thế nào?",
-              "options": [
-                "Là việc áp đặt ý kiến của mình lên người khác một cách nhanh chóng.",
-                "Sự hiện diện trọn vẹn, không bị chi phối bởi quá khứ hay lo sợ về tương lai.",
-                "Việc luôn luôn phải có mặt ở mọi sự kiện của công ty.",
-                "Cố gắng đoán trước những gì sắp xảy ra để chuẩn bị."
-              ],
-              "correctIndex": 1,
-              "explanation": "Đáp án đúng là lựa chọn số 2 theo giáo trình Delivering Happiness."
-            }
-          ],
-          "iam": {
-            "id": "iam_altruism",
-            "title": "Đúc kết I • A • M — Thói Quen Vị Nhân",
-            "I": "Nhận thức sâu sắc nhất của bạn về tinh thần Vị nhân thông thái (Smart Giver)?",
-            "A": "Hành động cụ thể nào bạn sẽ làm để giúp đỡ một đồng nghiệp mà không cần họ đền đáp?",
-            "M": "Tinh thần Vị nhân kiến tạo niềm tin và văn hóa hạnh phúc trong tổ chức của bạn thế nào?"
-          },
-          "practicalScenario": {
-            "id": "scenario-habit-altruism",
-            "title": "Tình Huống Thực Tế 2.5: Anh Nam Bị Lừa Tiền Xe Tại Bến Xe Miền Tây (Bài Học Smart Giver) & Gói Bảo Hiểm Cho Con Công Nhân Yếm Thế",
-            "context": "Khi đưa con đi ăn, Anh Nam gặp một cô gái trẻ 18-20 tuổi khóc lóc cầu xin giúp đỡ, nói lên thành phố khám bệnh bị móc sạch ví và điện thoại, nhờ chuyển khoản tiền xe cho tài xế Grab đang chờ. Anh Nam chuyển khoản giúp đỡ nhưng sau đó nhận ra mình đã bị lừa. Anh đúc kết bài học đắt giá về 'Smart Giver': Lòng tốt cần đi kèm trí tuệ và sự sắc sảo, nếu cho đi mù quáng (Unsmart Giver) thì chỉ là thỏa mãn cái tôi vị kỷ (egoism) và tiếp tay cho sự dối trá. Ngược lại, tại mô hình Nice Company (Doanh nghiệp tử tế), ban lãnh đạo lắng nghe công nhân yếm thế trong nhà máy và chủ động thương lượng mua bảo hiểm y tế toàn diện cho con em họ mà không thu thêm tiền, tạo nên sự gắn kết 98% và lòng trung thành bền vững.",
-            "facultyAnalysis": "Adam Grant (tác giả 'Give and Take') phân loại: Taker (Trục lợi), Matcher (Sòng phẳng), và Giver (Cho đi). Trong nhóm Giver, có Unsmart Giver (cho đi mù quáng, không giữ ranh giới, dễ bị Taker vắt kiệt) và Smart Giver (Vị nhân thông thái: cho đi với Bi - Trí - Dũng). Smart Giver luôn giữ ranh giới lành mạnh (Boundaries), biết từ chối sự lợi dụng, ưu tiên nâng đỡ những người có tinh thần học hỏi, và trao tặng giá trị có tính đòn bẩy cao (như chia sẻ tri thức TPOV - Teachable Point of View, kết nối cơ hội) thay vì cho tiền bạc hay làm hộ việc.",
-            "modelAnswer": "1. Thiết lập Bộ lọc Vị nhân Thông thái (3 câu hỏi tự vấn):\n  - Câu 1: Sự giúp đỡ này có giúp đối phương tự lập và phát triển năng lực (Empowerment), hay tạo ra sự ỷ lại (Dependency)?\n  - Câu 2: Tôi có đang hy sinh những giá trị cốt lõi hoặc nguồn lực thiết yếu của bản thân/gia đình một cách vô lý không?\n  - Câu 3: Đối phương có thái độ trân trọng và cầu thị hay đang lợi dụng lòng tốt?\n2. Hành vi vị tha công sở hiệu quả cao (5-Minute Favors):\n  - Dành 15 phút làm 'Buddy' hướng dẫn tư duy cho nhân viên mới thay vì làm hộ việc.\n  - Kết nối cơ hội hợp tác cho đồng nghiệp.\n  - Chia sẻ kinh nghiệm đúc kết (TPOV) giúp đội ngũ tránh đi vào vết xe đổ.",
-            "reflectionPrompt": "Bạn đã bao giờ rơi vào trạng thái 'Unsmart Giver' (cho đi kiệt sức vì không dám từ chối hoặc bị người khác lợi dụng) chưa? Làm thế nào để bạn nâng cấp lên 'Smart Giver'?",
-            "actionPrompt": "Một hành vi vị nhân thông thái cụ thể (5-Minute Favor) bạn sẽ làm để giúp đỡ một đồng nghiệp trong 48 giờ tới:"
-          }
         }
       ],
       "capstoneIam": {
-        "id": "iam_capstone",
-        "title": "Đúc Kết & Chuyển Hóa (I • A • M)",
-        "I": "Điều tâm đắc và lay động lớn nhất đối với bạn sau trọn vẹn 1 ngày trải nghiệm tại lớp?",
-        "A": "Ba cam kết hành động cụ thể nhất bạn sẽ mang về thực hiện tại doanh nghiệp / gia đình?",
-        "M": "Khóa học này đã thay đổi định nghĩa về Hạnh phúc và Văn hóa đội ngũ của bạn như thế nào?"
+        "id": "iam_capstone_2b",
+        "title": "Đúc Kết & Bứt Phá 2B (I • A • M)",
+        "I": "Bạn tâm đắc nhất với điều gì từ nội dung đã học?",
+        "A": "Bạn sẽ áp dụng điều này như thế nào?",
+        "M": "Tại sao bạn lại tâm đắc với điều đó?"
       },
       "habitsScience": {
-        "gratitude": {
-          "science": "Nghiên cứu của GS. Robert Emmons (UC Davis) chứng minh: Nhóm thực hành biết ơn thường xuyên có mức độ hạnh phúc cao hơn 25%, lạc quan hơn về tương lai và dành nhiều hơn 1.5 giờ/tuần để rèn luyện thể chất.",
-          "dimensions": [
-            "1. Biết ơn kết quả tốt đẹp đã diễn ra.",
-            "2. Biết ơn nghịch cảnh & điều bất như ý (vì mang lại bài học và sức bật tâm lý).",
-            "3. Biết ơn những điều tốt đẹp SẼ xảy ra (kiến tạo tương lai).",
-            "4. Biết ơn chính bản thân mình (vì đã kiên trì vượt khó và hòa ái nội tâm)."
-          ],
-          "formula": "Công thức trân trọng 4 thành tố: [Tên đồng nghiệp] + [Giá trị cốt lõi họ thể hiện] + [Câu chuyện/Hành vi cụ thể] + [Tác động tích cực đến tôi/đội ngũ].",
-          "quote": "Cảm thấy biết ơn mà không thể hiện ra cũng giống như gói một món quà thật đẹp mà không bao giờ đem tặng. — William A. Ward",
-          "infographic": "data/artifacts/infographics/infographic_thoi_quen_biet_on.png"
-        },
-        "mindfulness": {
-          "science": "Chương trình MBSR của GS. Y khoa Jon Kabat-Zinn chỉ ra: Giảm 39% stress, tăng 35% tự nhận thức và tăng 200% chất lượng giấc ngủ. Khoa học chứng minh 98% dân số không thể đa nhiệm hiệu quả; chuyển đổi ngữ cảnh (Context Switching) bào mòn năng lượng não bộ.",
-          "technique": "Kỹ thuật SBA (Stop - Breathe - Ask): Stop (Dừng lại nhận diện cảm xúc không phán xét) → Breathe (Hít thở sâu 3 hơi để đưa máu về vỏ não trước trán) → Ask (Tự hỏi: Tôi đang đội chiếc mũ vai trò gì và điều gì là quan trọng nhất lúc này?).",
-          "bodyScan": "Quét cơ thể từ đỉnh đầu đến ngón chân để giải tỏa các vùng cơ căng cứng, kích hoạt hệ thần kinh phó giao cảm.",
-          "infographic": "data/artifacts/infographics/infographic_song_tinh_thuc.png"
-        },
         "optimism": {
           "science": "Lạc quan lý trí (Rational Optimism) theo Melinda Gates: Niềm tin rằng ta có năng lực hành động để biến chuyển tình thế. Não bộ tự động sa vào hố đen suy diễn tiêu cực (Hạch Hạnh Nhân - Amygdala); ABCDE giúp chuyển giao quyền kiểm soát sang Vỏ Não Trước Trán (Prefrontal Cortex).",
           "abcdeTool": "A (Adversity - Nghịch cảnh khách quan) → B (Belief - Niềm tin/Suy diễn tiêu cực nảy sinh) → C (Consequence - Cảm xúc tê liệt & Hậu quả) → D (Dispute - Phản biện với câu hỏi vàng: 'Niềm tin này có đúng 100% không?' và 'So what? - Thế thì sao?') → E (Energization & Action - Tái tạo năng lượng & Hành động cụ thể ngay).",
@@ -820,17 +943,6 @@
           ],
           "microflow": "Kỹ thuật Microflow: Biến mọi công việc nhàm chán nhất thành một trò chơi có luật chơi, bấm giờ Pomodoro 25-30 phút để bứt phá kỷ lục năng suất của chính mình.",
           "infographic": "data/artifacts/infographics/infographic_trang_thai_flow.png"
-        },
-        "altruism": {
-          "science": "GS. Adam Grant (Wharton, tác giả Give and Take): Phân loại Takers (Chỉ nhận), Matchers (Sòng phẳng), và Givers (Cho đi). Nghịch lý: Givers ngây thơ đứng cuối bảng hiệu suất (kiệt sức, bị lợi dụng); nhưng Người đứng đầu bảng thành công nhất CŨNG LÀ GIVERS — các 'Smart Givers' (Người cho đi sắc sảo).",
-          "trio": "Bộ ba Bi - Trí - Dũng: Bi (Từ bi muốn giúp đỡ) → Trí (Dùng SBA cân nhắc xem có tạo ra sự ỷ lại không) → Dũng (Dũng cảm hướng dẫn họ tự làm thay vì làm hộ để giúp họ đạt sự tự chủ, hoặc dũng cảm nói Không với đòi hỏi độc hại).",
-          "workplaceActs": [
-            "Xung phong làm Buddy kèm cặp nhân viên mới.",
-            "Thực hiện Allyship (Âm thầm ủng hộ sáng kiến của đồng nghiệp trong cuộc họp).",
-            "Làm Giảng viên nội bộ chia sẻ chuyên môn.",
-            "Quy tắc 5 phút: Giúp đỡ nhanh chóng nếu việc đó chỉ tốn dưới 5 phút của bạn."
-          ],
-          "infographic": "data/artifacts/infographics/infographic_vi_nhan_thong_thai.png"
         },
         "capstone": {
           "culturePact": "Văn hóa là Thỏa thuận hành vi (Culture Pact) được đồng thuận từ dưới lên, tuyệt đối cấm sao chép (copy-paste) sổ tay văn hóa vô hồn. Hành vi là đơn vị đo lường duy nhất của văn hóa.",
@@ -850,64 +962,57 @@
           "type": "image",
           "url": "data/artifacts/slides/slide_29.png",
           "icon": "📊"
-        },
-        {
-          "title": "Slide Bài Giảng: An Toàn Tâm Lý (Psychological Safety) — Nền Tảng Tự Chủ",
-          "type": "image",
-          "url": "data/artifacts/slides/slide_31.png",
-          "icon": "📊"
-        },
-        {
-          "title": "Slide Bài Giảng: Lợi Ích Của Đòn Bẩy Tiến Bộ (Dopamine & Small Wins)",
-          "type": "image",
-          "url": "data/artifacts/slides/slide_38.png",
-          "icon": "📊"
         }
       ]
     },
     {
-      "id": "stage-3",
-      "stageNumber": 3,
-      "badge": "Chặng 3 · Online",
-      "title": "Chặng 3 · Tiếp nối hành trình hạnh phúc",
-      "subtitle": "Nuôi Dưỡng Thói Quen Hạnh Phúc • Focus on I•A•M • Đồng Hành Chuyển Hóa",
+      "id": "stage-3a",
+      "stageNumber": "3A",
+      "badge": "Chặng 3A · Đồng Hành",
+      "title": "Chặng 3A · Tiếp nối hành trình: Đồng hành 2A",
+      "subtitle": "Nuôi Dưỡng 3 Thói Quen Nền Tảng: Tỉnh thức • Biết ơn • Vị nhân • Focus on I•A•M",
       "instructor": "",
       "estimatedMinutes": 21,
       "videoUrl": null,
+      "trackedHabits": [
+        "mindfulness",
+        "gratitude",
+        "altruism"
+      ],
       "subSections": [
         {
-          "id": "sub-3-1",
-          "title": "Mục 3.1: Bảng Vinh Danh Chất Liệu & Điểm Danh Thói Quen",
-          "target": "stage3-tracker-section",
+          "id": "sub-3a-1",
+          "title": "Mục 3A.1: Bảng Vinh Danh & Điểm Danh 3 Thói Quen (Tỉnh thức, Biết ơn, Vị nhân)",
+          "target": "stage3a-tracker-section",
           "tab": "tab-practice"
         },
         {
-          "id": "sub-3-2",
-          "title": "Mục 3.2: Thử Thách Tình Huống Chuyển Hóa (+50đ)",
-          "target": "stage3-scenarios-section",
+          "id": "sub-3a-2",
+          "title": "Mục 3A.2: Thử Thách Tình Huống Chuyển Hóa 3A (+50đ)",
+          "target": "stage3a-scenarios-section",
           "tab": "tab-practice"
         },
         {
-          "id": "sub-3-3",
-          "title": "Mục 3.3: Podcast Truyền Cảm Hứng & Tri Thức (+30đ)",
-          "target": "stage3-podcast-section",
+          "id": "sub-3a-3",
+          "title": "Mục 3A.3: Podcast Truyền Cảm Hứng & Tri Thức (+30đ)",
+          "target": "stage3a-podcast-section",
           "tab": "tab-practice"
         },
         {
-          "id": "sub-3-4",
-          "title": "Mục 3.4: Đúc Kết Tuần & Cam Kết Hành Động (+100đ)",
-          "target": "stage3-weekly-section",
+          "id": "sub-3a-4",
+          "title": "Mục 3A.4: Đúc Kết Tuần & Cam Kết Hành Động (+100đ)",
+          "target": "stage3a-weekly-section",
           "tab": "tab-practice"
         },
         {
-          "id": "sub-3-5",
-          "title": "Mục 3.5: Cổng Qualifier & Đổi Quà Tri Ân (Reward Vault)",
-          "target": "stage3-reward-section",
+          "id": "sub-3a-5",
+          "title": "Mục 3A.5: Cổng Qualifier & Đổi Quà Tri Ân (Reward Vault)",
+          "target": "stage3a-reward-section",
           "tab": "tab-practice"
         },
         {
-          "id": "sub-3-6",
-          "title": "Mục 3.6: Kho Tài Liệu & Cẩm Nang Nghiên Cứu",
+          "id": "sub-3a-6",
+          "title": "Mục 3A.6: Kho Tài Liệu & Cẩm Nang Nghiên Cứu",
           "target": "tab-resources",
           "tab": "tab-resources"
         }
@@ -918,74 +1023,6 @@
         "weeklyIamCheckin": true,
         "abcdePractice": true
       },
-      "abcdeScenarios": [
-        {
-          "id": "scenario-1",
-          "category": "Công sở - Doanh nghiệp",
-          "title": "Tình huống 1: Deadline chiều thứ Sáu",
-          "badge": "Công sở",
-          "A": "Sếp đột ngột giao một báo cáo khẩn cấp và yêu cầu hoàn thành trước 5h chiều ngày thứ Sáu. Bạn đã lên kế hoạch đi xem phim cùng người yêu từ trước.",
-          "B": "Sếp đang cố tình ép mình, mình luôn là nạn nhân bị bóc lột và không ai tôn trọng thời gian cá nhân của mình.",
-          "C": "Bực bội, ấm ức, làm báo cáo với tâm lý chống đối hoặc cáu gắt, phá hỏng tâm trạng cả buổi tối.",
-          "hintD": "Dừng lại 3 nhịp thở (SBA). Phản biện 3P: Sếp giao việc vì ban điều hành cần số liệu gấp, không phải nhắm vào cá nhân mình (Personal). Đây là cơ hội chứng minh năng lực phản ứng nhanh thay vì vội vã đóng vai nạn nhân.",
-          "hintE": "Ước lượng thời gian làm báo cáo (1.5 tiếng), tập trung cao độ làm xong trước 4h30, gửi báo cáo cho sếp và nhắn tin cho người yêu dời suất chiếu phim sang 7h30 tối."
-        },
-        {
-          "id": "scenario-2",
-          "category": "Công sở - Doanh nghiệp",
-          "title": "Tình huống 2: Khi Đồng Đội Gặp Trở Ngại Về Hiệu Suất",
-          "badge": "Công sở",
-          "A": "Bạn làm việc trong một nhóm 4 người. Có một thành viên liên tục làm việc hời hợt, giao trễ deadline, khiến cả nhóm bị đánh giá thấp trong tháng.",
-          "B": "Hắn ta cố tình vô trách nhiệm và phá đám. Tại sao mình luôn phải gánh nợ cho người khác? Nói chuyện thẳng thắn cũng chẳng ích gì đâu.",
-          "C": "Căm tức, muốn công kích cá nhân trong cuộc họp, chia rẽ nội bộ nhóm, không khí làm việc căng thẳng và độc hại.",
-          "hintD": "Dừng lại quan sát (SBA). Bác bỏ suy diễn: Bạn ấy có thể đang gặp trở ngại cá nhân hoặc thiếu công cụ hỗ trợ chứ không cố tình phá hoại. Cơn giận dữ chỉ làm tình hình tồi tệ hơn chứ không cứu được KPI nhóm.",
-          "hintE": "Chủ động hẹn bạn ấy một buổi trò chuyện 1-1 cởi mở, lắng nghe khó khăn bạn đang gặp phải và cùng phân chia lại đầu việc theo đúng thế mạnh."
-        },
-        {
-          "id": "scenario-3",
-          "category": "Công sở - Doanh nghiệp",
-          "title": "Tình huống 3: Khi Sáng Kiến Bị Bác Bỏ",
-          "badge": "Công sở",
-          "A": "Bạn dành 3 đêm để chuẩn bị một ý tưởng tâm huyết. Trong cuộc họp toàn công ty, sếp và các phòng ban khác bác bỏ ý tưởng của bạn chỉ sau 5 phút trình bày.",
-          "B": "Mình thật bất tài và kém cỏi. Công ty này toàn những người thiển cận, không biết trân trọng nhân tài. Từ nay về sau mình sẽ không bao giờ thèm đóng góp ý kiến nữa.",
-          "C": "Tự ái, nhụt chí, thu mình né tránh trong các cuộc họp tiếp theo, làm việc cầm chừng và mất hết động lực cống hiến.",
-          "hintD": "Bác bỏ bẫy Toàn diện & Cá nhân hóa: Họ từ chối đề xuất này vì thời điểm và nguồn lực chưa phù hợp, không phải phủ nhận năng lực con người mình. Bản đề xuất vẫn có 2 điểm sáng đáng ghi nhận.",
-          "hintE": "Gặp riêng sếp hỏi rõ 2 lý do phản biện lớn nhất từ hội đồng, tinh chỉnh lại mô hình và hẹn trình bày lại vào quý tới với dữ liệu thuyết phục hơn."
-        },
-        {
-          "id": "scenario-4",
-          "category": "Công sở - Doanh nghiệp",
-          "title": "Tình huống 4: Chuyển đổi cơ cấu",
-          "badge": "Công sở",
-          "A": "Công ty thực hiện tái cấu trúc, bạn bị chuyển sang một team mới với công việc không hoàn toàn đúng chuyên môn, và phải làm việc dưới quyền một người trẻ hơn bạn 5 tuổi.",
-          "B": "Mình đang bị giáng chức ngầm và bị cho ra rìa. Một người trẻ tuổi như thế biết cái gì mà quản lý mình? Sự nghiệp coi như chấm dứt.",
-          "C": "Bất mãn, lo âu, làm việc đối phó, chống đối ngầm với quản lý mới và lan truyền năng lượng tiêu cực cho đồng nghiệp xung quanh.",
-          "hintD": "Bác bỏ bẫy Vĩnh viễn: Tái cấu trúc là quy luật sống còn của doanh nghiệp. Quản lý trẻ có thế mạnh công nghệ và tốc độ, còn mình có kinh nghiệm thực chiến và tư duy bao quát để làm người đồng hành (Ally) nâng đỡ team.",
-          "hintE": "Chủ động hẹn gặp người quản lý mới, chia sẻ rõ thế mạnh kinh nghiệm của mình và thỏa thuận cơ chế phối hợp nhịp nhàng để cùng đưa team phát triển."
-        },
-        {
-          "id": "scenario-5",
-          "category": "Cá nhân - Gia đình",
-          "title": "Tình huống 5: Con điểm kém liên tục",
-          "badge": "Gia đình",
-          "A": "Bạn đã thuê gia sư, tốn nhiều tiền bạc và thời gian nhắc nhở, nhưng bài kiểm tra toán của con bạn tháng này lại tiếp tục dưới điểm trung bình.",
-          "B": "Con lười biếng vô phương cứu chữa và không có tương lai. Mọi công sức tiền bạc đổ sông đổ biển. Mình là phụ huynh thất bại hoàn toàn.",
-          "C": "Bùng nổ cơn thịnh nộ, quát mắng đay nghiến con, không khí gia đình ngột ngạt căng thẳng, đứa trẻ sợ hãi, khép kín và càng ghét học toán hơn.",
-          "hintD": "Áp dụng SBA (Stop – Breathe – Attend/Ask). Bác bỏ Cá nhân hóa & Toàn diện: Điểm kém ở môn toán không định nghĩa nhân cách hay tương lai của con. Con vẫn rất giàu lòng trắc ẩn và có khiếu nghệ thuật. Sự sa sút có thể do phương pháp dạy chưa khớp với cách tiếp thu của con.",
-          "hintE": "Ôm con và lắng nghe con chia sẻ về những phần bài học con đang gặp vướng mắc; cùng trao đổi lại với gia sư để đổi phương pháp trực quan hơn thay vì chỉ giải bài tập máy móc."
-        },
-        {
-          "id": "scenario-6",
-          "category": "Cá nhân - Gia đình",
-          "title": "Tình huống 6: Kế Hoạch Bị Hủy Vào Giờ Chót",
-          "badge": "Gia đình",
-          "A": "Bạn đã lên kế hoạch đi du lịch Đà Lạt cùng gia đình từ 2 tháng trước (vé, phòng đã thanh toán). Sáng ngày khởi hành, đứa con nhỏ bị sốt cao, chuyến đi phải hủy toàn bộ.",
-          "B": "Tại sao vận xui lúc nào cũng rơi trúng đầu mình? Mọi công sức háo hức chuẩn bị suốt 2 tháng trời tan thành mây khói. Một kỳ nghỉ tuyệt vời đã bị phá hỏng hoàn toàn.",
-          "C": "Tiếc nuối tột cùng, bực bội, cau có, cằn nhằn than vãn khiến cả nhà căng thẳng mệt mỏi thay vì dồn năng lượng chăm sóc con.",
-          "hintD": "Tự vấn bằng câu hỏi vàng: 'Điều gì là quan trọng nhất lúc này?'. Sức khỏe và sự an toàn của con là ưu tiên số 1. Đà Lạt vẫn ở đó, chuyến đi hoàn toàn có thể dời lại. Nếu cố đi trong lúc con sốt thì kỳ nghỉ sẽ trở thành cơn ác mộng lo âu. Hủy chuyến là quyết định đúng đắn.",
-          "hintE": "Gọi điện cho khách sạn xin bảo lưu đặt phòng; biến cuối tuần ở nhà thành 'khách sạn gia đình' ấm cúng, nấu súp cho con và cùng con đọc sách để con mau khỏe."
-        }
-      ],
       "resources": [
         {
           "id": "rep-0",
@@ -1203,7 +1240,7 @@
         "seligmanLevels": [
           {
             "level": "Cấp độ 1: Thú vui (Pleasure)",
-            "nature": "Sao nhạc rock theo đuổi đỉnh cao mới. Nhanh nguội lạnh do cơ chế thích nghi khoái lạc (Hedonic Adaptation).",
+            "nature": "Thú vui ngắn hạn (Pleasure), nhanh nguội lạnh do cơ chế thích nghi khoái lạc (Hedonic Adaptation).",
             "duration": "Ngắn hạn (Vài giờ đến vài ngày)",
             "impact": "Tạo động lực tức thời nhưng dễ dẫn đến trống rỗng nếu thiếu cấp độ cao hơn."
           },
@@ -1309,8 +1346,210 @@
           "id": "tier-silver",
           "points": 700,
           "badge": "Cây Kỷ Luật Vươn Mình 🌿",
-          "title": "Bộ Thẻ Bỏ Túi 5 Thói Quen (In Màu Ép Kim)",
-          "desc": "Phần quà hiện vật cao cấp do Ban Tổ Chức gửi tặng tận tay để mang theo rèn luyện mỗi ngày."
+          "title": "Bộ Thẻ Số & Cẩm Nang 5 Thói Quen Hạnh Phúc (Digital Flashcards)",
+          "desc": "Tài liệu số đúc kết chi tiết phương pháp nuôi dưỡng 5 thói quen kèm câu hỏi phản tư định dạng PDF/trực tuyến."
+        },
+        {
+          "id": "tier-gold",
+          "points": 1200,
+          "badge": "Đại Sứ Hạnh Phúc 🏆",
+          "title": "Vé Tham Gia Chương Trình Đào Tạo Chuyên Sâu Từ Ban Giảng Huấn",
+          "desc": "Chứng nhận Đại Sứ Hạnh Phúc + Suất học bổng chuyên sâu: Lựa chọn 1 (Team Happiness Coaching tiếng Việt) hoặc Lựa chọn 2 (Search Inside Yourself - SIY Jessica tiếng Anh 2027)."
+        }
+      ]
+    },
+    {
+      "id": "stage-3b",
+      "stageNumber": "3B",
+      "badge": "Chặng 3B · Bứt Phá",
+      "title": "Chặng 3B · Tiếp nối hành trình: Đồng hành 2B",
+      "subtitle": "Nuôi Dưỡng 2 Thói Quen Bứt Phá: Phiêu (Flow) • Lạc quan (ABCDE)",
+      "instructor": "",
+      "estimatedMinutes": 21,
+      "videoUrl": null,
+      "trackedHabits": [
+        "flow",
+        "optimism"
+      ],
+      "subSections": [
+        {
+          "id": "sub-3b-1",
+          "title": "Mục 3B.1: Bảng Vinh Danh & Điểm Danh 2 Thói Quen (Phiêu, Lạc quan)",
+          "target": "stage3b-tracker-section",
+          "tab": "tab-practice"
+        },
+        {
+          "id": "sub-3b-2",
+          "title": "Mục 3B.2: Thử Thách & Luyện Tập ABCDE Chuyên Sâu",
+          "target": "stage3b-abcde-workout",
+          "tab": "tab-practice"
+        },
+        {
+          "id": "sub-3b-3",
+          "title": "Mục 3B.3: Thử Thách Duy Trì Trạng Thái Flow (+50đ)",
+          "target": "stage3b-scenarios-section",
+          "tab": "tab-practice"
+        },
+        {
+          "id": "sub-3b-4",
+          "title": "Mục 3B.4: Đúc Kết Tuần Bứt Phá (+100đ)",
+          "target": "stage3b-weekly-section",
+          "tab": "tab-practice"
+        }
+      ],
+      "features": {
+        "recapDashboard": true,
+        "habitTracker": true,
+        "weeklyIamCheckin": true,
+        "abcdePractice": true
+      },
+      "abcdeScenarios": [
+        {
+          "id": "scenario-1",
+          "category": "Công sở - Doanh nghiệp",
+          "title": "Tình huống 1: Deadline chiều thứ Sáu",
+          "badge": "Công sở",
+          "A": "Sếp đột ngột giao một báo cáo khẩn cấp và yêu cầu hoàn thành trước 5h chiều ngày thứ Sáu. Bạn đã lên kế hoạch đi xem phim cùng người yêu từ trước.",
+          "B": "Sếp đang cố tình ép mình, mình luôn là nạn nhân bị bóc lột và không ai tôn trọng thời gian cá nhân của mình.",
+          "C": "Bực bội, ấm ức, làm báo cáo với tâm lý chống đối hoặc cáu gắt, phá hỏng tâm trạng cả buổi tối.",
+          "hintD": "Dừng lại 3 nhịp thở (SBA). Phản biện 3P: Sếp giao việc vì ban điều hành cần số liệu gấp, không phải nhắm vào cá nhân mình (Personal). Đây là cơ hội chứng minh năng lực phản ứng nhanh thay vì vội vã đóng vai nạn nhân.",
+          "hintE": "Ước lượng thời gian làm báo cáo (1.5 tiếng), tập trung cao độ làm xong trước 4h30, gửi báo cáo cho sếp và nhắn tin cho người yêu dời suất chiếu phim sang 7h30 tối."
+        },
+        {
+          "id": "scenario-2",
+          "category": "Công sở - Doanh nghiệp",
+          "title": "Tình huống 2: Khi Đồng Đội Gặp Trở Ngại Về Hiệu Suất",
+          "badge": "Công sở",
+          "A": "Bạn làm việc trong một nhóm 4 người. Có một thành viên liên tục làm việc hời hợt, giao trễ deadline, khiến cả nhóm bị đánh giá thấp trong tháng.",
+          "B": "Hắn ta cố tình vô trách nhiệm và phá đám. Tại sao mình luôn phải gánh nợ cho người khác? Nói chuyện thẳng thắn cũng chẳng ích gì đâu.",
+          "C": "Căm tức, muốn công kích cá nhân trong cuộc họp, chia rẽ nội bộ nhóm, không khí làm việc căng thẳng và độc hại.",
+          "hintD": "Dừng lại quan sát (SBA). Bác bỏ suy diễn: Bạn ấy có thể đang gặp trở ngại cá nhân hoặc thiếu công cụ hỗ trợ chứ không cố tình phá hoại. Cơn giận dữ chỉ làm tình hình tồi tệ hơn chứ không cứu được KPI nhóm.",
+          "hintE": "Chủ động hẹn bạn ấy một buổi trò chuyện 1-1 cởi mở, lắng nghe khó khăn bạn đang gặp phải và cùng phân chia lại đầu việc theo đúng thế mạnh."
+        },
+        {
+          "id": "scenario-3",
+          "category": "Công sở - Doanh nghiệp",
+          "title": "Tình huống 3: Khi Sáng Kiến Bị Bác Bỏ",
+          "badge": "Công sở",
+          "A": "Bạn dành 3 đêm để chuẩn bị một ý tưởng tâm huyết. Trong cuộc họp toàn công ty, sếp và các phòng ban khác bác bỏ ý tưởng của bạn chỉ sau 5 phút trình bày.",
+          "B": "Mình thật bất tài và kém cỏi. Công ty này toàn những người thiển cận, không biết trân trọng nhân tài. Từ nay về sau mình sẽ không bao giờ thèm đóng góp ý kiến nữa.",
+          "C": "Tự ái, nhụt chí, thu mình né tránh trong các cuộc họp tiếp theo, làm việc cầm chừng và mất hết động lực cống hiến.",
+          "hintD": "Bác bỏ bẫy Toàn diện & Cá nhân hóa: Họ từ chối đề xuất này vì thời điểm và nguồn lực chưa phù hợp, không phải phủ nhận năng lực con người mình. Bản đề xuất vẫn có 2 điểm sáng đáng ghi nhận.",
+          "hintE": "Gặp riêng sếp hỏi rõ 2 lý do phản biện lớn nhất từ hội đồng, tinh chỉnh lại mô hình và hẹn trình bày lại vào quý tới với dữ liệu thuyết phục hơn."
+        },
+        {
+          "id": "scenario-4",
+          "category": "Công sở - Doanh nghiệp",
+          "title": "Tình huống 4: Chuyển đổi cơ cấu",
+          "badge": "Công sở",
+          "A": "Công ty thực hiện tái cấu trúc, bạn bị chuyển sang một team mới với công việc không hoàn toàn đúng chuyên môn, và phải làm việc dưới quyền một người trẻ hơn bạn 5 tuổi.",
+          "B": "Mình đang bị giáng chức ngầm và bị cho ra rìa. Một người trẻ tuổi như thế biết cái gì mà quản lý mình? Sự nghiệp coi như chấm dứt.",
+          "C": "Bất mãn, lo âu, làm việc đối phó, chống đối ngầm với quản lý mới và lan truyền năng lượng tiêu cực cho đồng nghiệp xung quanh.",
+          "hintD": "Bác bỏ bẫy Vĩnh viễn: Tái cấu trúc là quy luật sống còn của doanh nghiệp. Quản lý trẻ có thế mạnh công nghệ và tốc độ, còn mình có kinh nghiệm thực chiến và tư duy bao quát để làm người đồng hành (Ally) nâng đỡ team.",
+          "hintE": "Chủ động hẹn gặp người quản lý mới, chia sẻ rõ thế mạnh kinh nghiệm của mình và thỏa thuận cơ chế phối hợp nhịp nhàng để cùng đưa team phát triển."
+        },
+        {
+          "id": "scenario-5",
+          "category": "Cá nhân - Gia đình",
+          "title": "Tình huống 5: Con điểm kém liên tục",
+          "badge": "Gia đình",
+          "A": "Bạn đã thuê gia sư, tốn nhiều tiền bạc và thời gian nhắc nhở, nhưng bài kiểm tra toán của con bạn tháng này lại tiếp tục dưới điểm trung bình.",
+          "B": "Con lười biếng vô phương cứu chữa và không có tương lai. Mọi công sức tiền bạc đổ sông đổ biển. Mình là phụ huynh thất bại hoàn toàn.",
+          "C": "Bùng nổ cơn thịnh nộ, quát mắng đay nghiến con, không khí gia đình ngột ngạt căng thẳng, đứa trẻ sợ hãi, khép kín và càng ghét học toán hơn.",
+          "hintD": "Áp dụng SBA (Stop – Breathe – Attend/Ask). Bác bỏ Cá nhân hóa & Toàn diện: Điểm kém ở môn toán không định nghĩa nhân cách hay tương lai của con. Con vẫn rất giàu lòng trắc ẩn và có khiếu nghệ thuật. Sự sa sút có thể do phương pháp dạy chưa khớp với cách tiếp thu của con.",
+          "hintE": "Ôm con và lắng nghe con chia sẻ về những phần bài học con đang gặp vướng mắc; cùng trao đổi lại với gia sư để đổi phương pháp trực quan hơn thay vì chỉ giải bài tập máy móc."
+        },
+        {
+          "id": "scenario-6",
+          "category": "Cá nhân - Gia đình",
+          "title": "Tình huống 6: Kế Hoạch Bị Hủy Vào Giờ Chót",
+          "badge": "Gia đình",
+          "A": "Bạn đã lên kế hoạch đi du lịch Đà Lạt cùng gia đình từ 2 tháng trước (vé, phòng đã thanh toán). Sáng ngày khởi hành, đứa con nhỏ bị sốt cao, chuyến đi phải hủy toàn bộ.",
+          "B": "Tại sao vận xui lúc nào cũng rơi trúng đầu mình? Mọi công sức háo hức chuẩn bị suốt 2 tháng trời tan thành mây khói. Một kỳ nghỉ tuyệt vời đã bị phá hỏng hoàn toàn.",
+          "C": "Tiếc nuối tột cùng, bực bội, cau có, cằn nhằn than vãn khiến cả nhà căng thẳng mệt mỏi thay vì dồn năng lượng chăm sóc con.",
+          "hintD": "Tự vấn bằng câu hỏi vàng: 'Điều gì là quan trọng nhất lúc này?'. Sức khỏe và sự an toàn của con là ưu tiên số 1. Đà Lạt vẫn ở đó, chuyến đi hoàn toàn có thể dời lại. Nếu cố đi trong lúc con sốt thì kỳ nghỉ sẽ trở thành cơn ác mộng lo âu. Hủy chuyến là quyết định đúng đắn.",
+          "hintE": "Gọi điện cho khách sạn xin bảo lưu đặt phòng; biến cuối tuần ở nhà thành 'khách sạn gia đình' ấm cúng, nấu súp cho con và cùng con đọc sách để con mau khỏe."
+        }
+      ],
+      "resources": [
+        {
+          "id": "rep-0",
+          "title": "Cẩm Nang: Lộ Trình Học Tập & Hướng Dẫn Sử Dụng LMS",
+          "type": "markdown",
+          "url": "data/artifacts/huong_dan_va_lo_trinh_hoc_dhm.md",
+          "icon": "📘",
+          "readOnline": true,
+          "desc": "Hướng dẫn chi tiết toàn bộ lộ trình 3 Mini-steps, quy chế Cổng Sát Hạch Vượt Chặng (≥80%) và thao tác sử dụng hệ thống học tập LMS."
+        },
+        {
+          "id": "rep-1",
+          "title": "Báo Cáo Chuyên Sâu: Khoa Học Hạnh Phúc & Mô Hình 3 Cấp Độ",
+          "type": "markdown",
+          "url": "data/artifacts/report_khoa_hoc_hanh_phuc_3_cap_do.md",
+          "icon": "📘",
+          "readOnline": true,
+          "desc": "Nghiên cứu toàn diện về văn hóa Zappos, Amazon, mô hình Martin Seligman, thuyết SDT và 8 chữ C của Tỉnh thức."
+        },
+        {
+          "id": "rep-2",
+          "title": "Báo Cáo Chiến Lược: Văn Hóa Dòng Chảy & Quản Trị Con Người",
+          "type": "markdown",
+          "url": "data/artifacts/report_van_hoa_dong_chay.md",
+          "icon": "📑",
+          "readOnline": true,
+          "desc": "Chiến lược chuyển hóa từ Niềm tin sang Hành vi, xây dựng Culture Pact và giải quyết xung đột La Bàn - Đồng Hồ."
+        },
+        {
+          "id": "rep-3",
+          "title": "Cẩm Nang Hướng Dẫn Ôn Tập & Đúc Kết Chuyển Hóa DHM",
+          "type": "markdown",
+          "url": "data/artifacts/huong_dan_on_tap_dhm.md",
+          "icon": "📝",
+          "readOnline": true,
+          "desc": "Bộ câu hỏi tự vấn và khung đúc kết I•A•M giúp biến lý thuyết thành lối sống hạnh phúc tự thân."
+        },
+        {
+          "id": "rep-4",
+          "title": "Sơ Đồ Tư Duy: Hệ Sinh Thái Giá Trị & Khoa Học Hạnh Phúc",
+          "type": "json",
+          "url": "data/artifacts/mindmap_he_sinh_thai_dhm.json",
+          "icon": "🧠",
+          "readOnline": false,
+          "desc": "Cây cấu trúc tư duy dạng Mindmap kết nối toàn bộ các thành tố của hệ điều hành hạnh phúc."
+        },
+        {
+          "id": "rep-5",
+          "title": "Kho 12 Đồ Họa Thông Tin Infographics HD (Bộ Đầy Đủ)",
+          "type": "image",
+          "url": "data/artifacts/infographics/",
+          "icon": "🖼️",
+          "readOnline": true,
+          "desc": "Toàn bộ 12 infographic chất lượng cao trích xuất từ Google NotebookLM phục vụ trực quan hóa bài giảng."
+        },
+        {
+          "id": "rep-abcde",
+          "title": "Công Cụ & Ngân Hàng 50+ Tình Huống Thực Chiến ABCDE",
+          "type": "tool",
+          "url": "../practice-abcde.html",
+          "icon": "☀️",
+          "readOnline": false,
+          "desc": "Công cụ luyện tập phản biện niềm tin tiêu cực (Disputation) tương tác trực tiếp với kho 50+ tình huống thực tế đời sống và doanh nghiệp."
+        }
+      ],
+      "rewards": [
+        {
+          "id": "tier-bronze",
+          "points": 300,
+          "badge": "Hạt Mầm Hạnh Phúc 🌱",
+          "title": "Ebook Bản Đồ Chuyển Hóa Hạnh Phúc",
+          "desc": "Cẩm nang độc quyền hướng dẫn chi tiết phương pháp nuôi dưỡng 5 thói quen chuyển hóa tự thân."
+        },
+        {
+          "id": "tier-silver",
+          "points": 700,
+          "badge": "Cây Kỷ Luật Vươn Mình 🌿",
+          "title": "Bộ Thẻ Số & Cẩm Nang 5 Thói Quen Hạnh Phúc (Digital Flashcards)",
+          "desc": "Tài liệu số đúc kết chi tiết phương pháp nuôi dưỡng 5 thói quen kèm câu hỏi phản tư định dạng PDF/trực tuyến."
         },
         {
           "id": "tier-gold",

@@ -243,7 +243,7 @@
     <div class="flex-1 flex overflow-hidden relative">
 
         <!-- SIDEBAR: CURRICULUM SYLLABUS (Left Column) -->
-        <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-30 w-80 lg:w-88 bg-brand-surface border-r border-brand-border flex flex-col transition-all duration-300 transform -translate-x-full lg:translate-x-0 h-[calc(100vh-61px)]">
+        <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-30 w-84 lg:w-96 bg-brand-surface border-r border-brand-border flex flex-col transition-all duration-300 transform -translate-x-full lg:translate-x-0 h-[calc(100vh-61px)]">
             <div class="p-4 border-b border-brand-border flex items-center justify-between">
                 <div>
                     <h2 class="text-xs uppercase tracking-wider font-bold text-slate-400">Giáo Trình Khóa Học</h2>
@@ -285,8 +285,7 @@
                     </span>
                     <span class="text-[10px] text-brand-amber/80 font-mono">Góp ý ➔</span>
                 </button>
-                <div class="text-[10.5px] text-slate-500 flex items-center justify-between px-1">
-                    <span>DHM • Standard Architecture</span>
+                <div class="text-[10.5px] text-slate-500 flex items-center justify-center px-1">
                     <span class="text-brand-amber/70 font-semibold">3 Chặng Chuyển Hóa</span>
                 </div>
             </div>
@@ -361,30 +360,6 @@
                     </div>
                 </div>
 
-                <!-- AUDIO PLAYER SECTION (Collapsible Progressive Disclosure) -->
-                <details class="explore-more hidden" id="audio-player-details">
-                    <summary>🎧 Khám phá thêm: Kho Audio Bài Giảng</summary>
-                    <div id="audio-player-card" class="rounded-2xl bg-brand-surface/90 border border-brand-border p-4 lg:p-5 shadow-xl space-y-3 mt-3">
-                        <div class="flex items-center justify-between flex-wrap gap-2">
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-8 h-8 rounded-lg bg-brand-amber/20 text-brand-amber flex items-center justify-center text-sm font-bold">🎧</span>
-                                <div>
-                                    <h3 class="text-xs font-bold text-white uppercase tracking-wider">Kho Audio Bài Giảng</h3>
-                                    <p id="audio-track-subtitle" class="text-[11px] text-slate-400">Chọn bài giảng để nghe</p>
-                                </div>
-                            </div>
-                            <select id="audio-track-select" class="bg-brand-dark border border-brand-border rounded-xl px-3 py-1.5 text-xs text-brand-amber font-semibold focus:outline-none focus:border-brand-amber max-w-xs truncate cursor-pointer">
-                                <!-- Dynamic tracks injected via JS -->
-                            </select>
-                        </div>
-                        <div class="p-3 rounded-xl bg-brand-dark/80 border border-brand-border flex items-center gap-3">
-                            <audio id="main-audio-player" class="w-full h-8" controls preload="none">
-                                <source id="main-audio-source" src="" type="audio/mpeg">
-                                Trình duyệt của bạn không hỗ trợ phát âm thanh.
-                            </audio>
-                        </div>
-                    </div>
-                </details>
 
                 <!-- TABS SYSTEM -->
                 <div class="bg-brand-surface border border-brand-border rounded-2xl overflow-hidden shadow-lg">
@@ -833,8 +808,8 @@
                                                         <label class="block text-[11px] font-bold text-emerald-400" for="iam-cp1-i">
                                                             I (Interested / Insight)
                                                         </label>
-                                                        <p class="text-[10px] text-slate-400 leading-tight">Điểm tâm đắc từ 3 Cấp độ & La Bàn Giá Trị...</p>
-                                                        <textarea id="iam-cp1-i" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Ghi nhận điểm tâm đắc nhất từ 3 cấp độ hoặc giá trị La Bàn của bạn..."></textarea>
+                                                        <p class="text-[10px] text-slate-400 leading-tight">Bạn tâm đắc nhất với điều gì từ nội dung đã học?</p>
+                                                        <textarea id="iam-cp1-i" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Bạn tâm đắc nhất với điều gì từ nội dung đã học..."></textarea>
                                                     </div>
 
                                                     <!-- Cột 2: A (Actionable) -->
@@ -842,8 +817,8 @@
                                                         <label class="block text-[11px] font-bold text-sky-400" for="iam-cp1-a">
                                                             A (Actionable / Action)
                                                         </label>
-                                                        <p class="text-[10px] text-slate-400 leading-tight">Hành động chuyển dịch hoặc quyết định thực tế...</p>
-                                                        <textarea id="iam-cp1-a" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Hành động cụ thể theo La Bàn và chuyển dịch hạnh phúc..."></textarea>
+                                                        <p class="text-[10px] text-slate-400 leading-tight">Bạn sẽ áp dụng điều này như thế nào?</p>
+                                                        <textarea id="iam-cp1-a" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Bạn sẽ áp dụng điều này như thế nào..."></textarea>
                                                     </div>
 
                                                     <!-- Cột 3: M (Meaningful / Measure) -->
@@ -851,8 +826,8 @@
                                                         <label class="block text-[11px] font-bold text-purple-400" for="iam-cp1-m">
                                                             M (Meaningful / Measure)
                                                         </label>
-                                                        <p class="text-[10px] text-slate-400 leading-tight">Ý nghĩa đối với cuộc sống & phiên bản của bạn...</p>
-                                                        <textarea id="iam-cp1-m" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Ý nghĩa sâu sắc đối với cuộc sống và công việc của bạn..."></textarea>
+                                                        <p class="text-[10px] text-slate-400 leading-tight">Tại sao bạn lại tâm đắc với điều đó?</p>
+                                                        <textarea id="iam-cp1-m" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Tại sao bạn lại tâm đắc với điều đó..."></textarea>
                                                     </div>
                                                 </div>
 
@@ -944,14 +919,17 @@
                                     <span>🎯 Chặng 2A · Gieo Thói Quen Hạnh Phúc (3 Thói Quen Nền Tảng)</span>
                                 </h3>
                                 <p class="text-xs text-slate-300 mt-1 leading-relaxed">
-                                    Thao tác trực tiếp trên điện thoại/laptop theo từng chuyên đề: Trạm 0: 3 Đòn Bẩy (SDT) • 1. Tỉnh Thức (SBA) • 2. Biết Ơn • 3. Vị Nhân (Smart Giver) và Capstone 2A Đúc Kết & Chuyển Hóa.
+                                    Thao tác trực tiếp trên điện thoại/laptop theo từng chuyên đề: Thỏa Thuận Văn Hóa (Culture Pact) • 3 Đòn Bẩy (SDT) • 1. Tỉnh Thức (SBA) • 2. Biết Ơn • 3. Vị Nhân (Smart Giver) và Capstone 2A Đúc Kết & Chuyển Hóa.
                                 </p>
                             </div>
 
-                            <!-- 4 HABIT PILL NAVIGATION (2A) -->
+                            <!-- 5 HABIT PILL NAVIGATION (2A) -->
                             <div class="flex gap-2 overflow-x-auto pb-2" id="habit-nav-tabs-2a">
-                                <button class="habit-tab active px-3.5 py-2 rounded-xl text-xs font-semibold border border-brand-border bg-brand-card whitespace-nowrap flex items-center gap-1.5 transition-all" data-habit="drivers">
-                                    <span>🚀 Trạm 0: 3 Đòn Bẩy (SDT)</span>
+                                <button class="habit-tab active px-3.5 py-2 rounded-xl text-xs font-semibold border border-brand-border bg-brand-card whitespace-nowrap flex items-center gap-1.5 transition-all text-black font-bold" data-habit="culture-pact">
+                                    <span>📜 Thỏa Thuận Văn Hóa</span>
+                                </button>
+                                <button class="habit-tab px-3.5 py-2 rounded-xl text-xs font-semibold border border-brand-border bg-brand-card text-slate-400 whitespace-nowrap flex items-center gap-1.5 transition-all" data-habit="drivers">
+                                    <span>🚀 3 Đòn Bẩy (SDT)</span>
                                 </button>
                                 <button class="habit-tab px-3.5 py-2 rounded-xl text-xs font-semibold border border-brand-border bg-brand-card text-slate-400 whitespace-nowrap flex items-center gap-1.5 transition-all" data-habit="mindfulness">
                                     <span>🌿 1. Tỉnh Thức</span>
@@ -967,11 +945,114 @@
                                 </button>
                             </div>
 
-                            <div id="habit-panel-drivers" class="habit-panel p-5 rounded-2xl bg-brand-card/40 border border-brand-border space-y-6">
+                            <!-- HABIT PANEL: THỎA THUẬN VĂN HÓA (CULTURE PACT - B2V2B) -->
+                            <div id="habit-panel-culture-pact" class="habit-panel p-5 rounded-2xl bg-brand-card/40 border border-brand-border space-y-6">
                                 <div class="flex items-center justify-between flex-wrap gap-2 border-b border-brand-border/60 pb-4">
                                     <div>
                                         <div class="flex items-center gap-2">
-                                            <span class="px-2.5 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px] uppercase tracking-wider">TRẠM 0 · MỞ ĐẦU WORKSHOP</span>
+                                            <span class="px-2.5 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px] uppercase tracking-wider">THỎA THUẬN VĂN HÓA</span>
+                                            <span class="text-xs text-slate-400">Culture Pact — B2V2Bs (Delivering Happiness)</span>
+                                        </div>
+                                        <h4 class="text-sm sm:text-base font-bold text-white flex items-center gap-2 mt-1">
+                                            <span>📜 Thỏa Thuận Văn Hóa (Culture Pact — B2V2B)</span>
+                                        </h4>
+                                    </div>
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <button class="btn-play-habit-audio text-xs text-brand-amber hover:underline flex items-center gap-1 cursor-pointer" data-audio="data/artifacts/thoa_thuan_van_hoa.mp3">
+                                            <span>▶ Audio Thỏa Thuận Văn Hóa</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- PHẦN 1: TÀI LIỆU SLIDE BÀI GIẢNG & 2 SLIDE NỀN TẢNG -->
+                                <div class="space-y-3">
+                                    <div class="flex items-center justify-between flex-wrap gap-2">
+                                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-surface border border-brand-border text-[11px] font-bold text-slate-300">
+                                            <span>📚 PHẦN 1: TÀI LIỆU BÀI GIẢNG & SLIDE NỀN TẢNG</span>
+                                        </div>
+                                        <span class="text-[10px] text-slate-400 bg-brand-dark px-2.5 py-0.5 rounded-full border border-brand-border">Click ảnh để phóng to HD</span>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        <!-- Slide 11 -->
+                                        <div class="rounded-xl overflow-hidden bg-brand-dark/80 border border-brand-border p-2.5 space-y-2 group hover:border-brand-amber/50 transition-all">
+                                            <div class="flex items-center justify-between text-xs">
+                                                <span class="font-bold text-white text-[11px] truncate flex items-center gap-1.5">
+                                                    <span class="w-4 h-4 rounded bg-brand-amber/20 text-brand-amber flex items-center justify-center text-[10px] font-bold">11</span>
+                                                    <span class="truncate">Thoả Thuận Văn Hóa (Culture Pact)</span>
+                                                </span>
+                                                <button type="button" onclick="window.openInfographicModal('data/artifacts/slides/slide_11.png', 'Slide Bài Giảng: Thoả Thuận Văn Hóa (Culture Pact — B2V2B)')" class="text-[10px] text-brand-amber hover:underline shrink-0">🔍 HD</button>
+                                            </div>
+                                            <div class="relative cursor-pointer overflow-hidden rounded-lg border border-brand-border/60 bg-black" onclick="window.openInfographicModal('data/artifacts/slides/slide_11.png', 'Slide Bài Giảng: Thoả Thuận Văn Hóa (Culture Pact — B2V2B)')">
+                                                <img src="/data/artifacts/slides/slide_11.png" alt="Slide 11: Thoả Thuận Văn Hóa" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                                            </div>
+                                            <p class="text-[10.5px] text-slate-400 leading-snug">Culture Pact — B2V2B (Delivering Happiness)</p>
+                                        </div>
+
+                                        <!-- Slide 12 -->
+                                        <div class="rounded-xl overflow-hidden bg-brand-dark/80 border border-brand-border p-2.5 space-y-2 group hover:border-brand-amber/50 transition-all">
+                                            <div class="flex items-center justify-between text-xs">
+                                                <span class="font-bold text-white text-[11px] truncate flex items-center gap-1.5">
+                                                    <span class="w-4 h-4 rounded bg-brand-amber/20 text-brand-amber flex items-center justify-center text-[10px] font-bold">12</span>
+                                                    <span class="truncate">Tổng Quan: Niềm tin → Giá trị → Hành vi</span>
+                                                </span>
+                                                <button type="button" onclick="window.openInfographicModal('data/artifacts/slides/slide_12.png', 'Slide Bài Giảng: Tổng Quan: Niềm tin → Giá trị → Hành vi (From Manager to Culture Builder)')" class="text-[10px] text-brand-amber hover:underline shrink-0">🔍 HD</button>
+                                            </div>
+                                            <div class="relative cursor-pointer overflow-hidden rounded-lg border border-brand-border/60 bg-black" onclick="window.openInfographicModal('data/artifacts/slides/slide_12.png', 'Slide Bài Giảng: Tổng Quan: Niềm tin → Giá trị → Hành vi (From Manager to Culture Builder)')">
+                                                <img src="/data/artifacts/slides/slide_12.png" alt="Slide 12: Niềm tin Giá trị Hành vi" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                                            </div>
+                                            <p class="text-[10.5px] text-slate-400 leading-snug">From Manager to Culture Builder: Xác định hành vi mong đợi trước khi áp lực xuất hiện</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- PHẦN 2: FORM ĐÚC KẾT I • A • M THỎA THUẬN VĂN HÓA (SLIDE 16) -->
+                                <div class="space-y-3 pt-2">
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-amber/20 border border-brand-amber/40 text-[11px] font-bold text-brand-amber">
+                                        <span>✍️ PHẦN 2: ĐÚC KẾT I • A • M — THỎA THUẬN VĂN HÓA (SLIDE 16)</span>
+                                    </div>
+                                    <p class="text-xs text-slate-300">
+                                        3 Thành tựu: Interested • Actionable • Meaningful — Hạnh phúc bắt đầu từ TÔI.
+                                    </p>
+
+                                    <div class="p-4 rounded-2xl bg-brand-card/70 border border-brand-amber/30 space-y-4">
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+                                            <!-- Cột I -->
+                                            <div class="space-y-1.5">
+                                                <label class="block text-xs font-bold text-emerald-400" for="iam-culture-pact-i">
+                                                    I (Interested / Insight)
+                                                </label>
+                                                <p class="text-[10.5px] text-slate-400 leading-snug">Bạn tâm đắc nhất với điều gì từ nội dung đã học?</p>
+                                                <textarea id="iam-culture-pact-i" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Bạn tâm đắc nhất với điều gì từ nội dung đã học..."></textarea>
+                                            </div>
+
+                                            <!-- Cột A -->
+                                            <div class="space-y-1.5">
+                                                <label class="block text-xs font-bold text-sky-400" for="iam-culture-pact-a">
+                                                    A (Actionable / Action)
+                                                </label>
+                                                <p class="text-[10.5px] text-slate-400 leading-snug">Bạn sẽ áp dụng điều này như thế nào?</p>
+                                                <textarea id="iam-culture-pact-a" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Bạn sẽ áp dụng điều này như thế nào..."></textarea>
+                                            </div>
+
+                                            <!-- Cột M -->
+                                            <div class="space-y-1.5">
+                                                <label class="block text-xs font-bold text-purple-400" for="iam-culture-pact-m">
+                                                    M (Meaningful / Measure)
+                                                </label>
+                                                <p class="text-[10.5px] text-slate-400 leading-snug">Tại sao bạn lại tâm đắc với điều đó?</p>
+                                                <textarea id="iam-culture-pact-m" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Tại sao bạn lại tâm đắc với điều đó..."></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="habit-panel-drivers" class="habit-panel hidden p-5 rounded-2xl bg-brand-card/40 border border-brand-border space-y-6">
+                                <div class="flex items-center justify-between flex-wrap gap-2 border-b border-brand-border/60 pb-4">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="px-2.5 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px] uppercase tracking-wider">THUYẾT TỰ QUYẾT · SDT</span>
                                             <span class="text-xs text-slate-400">Thuyết Tự Quyết (SDT) — Edward Deci & Richard Ryan</span>
                                         </div>
                                         <h4 class="text-sm sm:text-base font-bold text-white flex items-center gap-2 mt-1">
@@ -999,34 +1080,34 @@
                                     </div>
 
                                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                                        <!-- Slide 25 -->
+                                        <!-- Slide 17 -->
                                         <div class="rounded-xl overflow-hidden bg-brand-dark/80 border border-brand-border p-2.5 space-y-2 group hover:border-brand-amber/50 transition-all">
                                             <div class="flex items-center justify-between text-xs">
                                                 <span class="font-bold text-white text-[11px] truncate flex items-center gap-1.5">
-                                                    <span class="w-4 h-4 rounded bg-brand-amber/20 text-brand-amber flex items-center justify-center text-[10px] font-bold">25</span>
-                                                    <span class="truncate">3 Đòn Bẩy Hạnh Phúc</span>
+                                                    <span class="w-4 h-4 rounded bg-brand-amber/20 text-brand-amber flex items-center justify-center text-[10px] font-bold">17</span>
+                                                    <span class="truncate">3 Đòn Bẩy Hạnh Phúc (SDT)</span>
                                                 </span>
-                                                <button type="button" onclick="window.openInfographicModal('data/artifacts/slides/slide_25.png', 'Slide Bài Giảng: 3 Đòn Bẩy Hạnh Phúc (Deci & Ryan)')" class="text-[10px] text-brand-amber hover:underline shrink-0">🔍 HD</button>
+                                                <button type="button" onclick="window.openInfographicModal('data/artifacts/slides/slide_17.png', 'Slide Bài Giảng: Thuyết Tự Quyết (SDT) — Ba Đòn Bẩy Hạnh Phúc (Năng lực • Tự chủ • Kết nối)')" class="text-[10px] text-brand-amber hover:underline shrink-0">🔍 HD</button>
                                             </div>
-                                            <div class="relative cursor-pointer overflow-hidden rounded-lg border border-brand-border/60 bg-black" onclick="window.openInfographicModal('data/artifacts/slides/slide_25.png', 'Slide Bài Giảng: 3 Đòn Bẩy Hạnh Phúc (Deci & Ryan)')">
-                                                <img src="/data/artifacts/slides/slide_25.png" alt="Slide 25: 3 Đòn Bẩy Hạnh Phúc" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                                            <div class="relative cursor-pointer overflow-hidden rounded-lg border border-brand-border/60 bg-black" onclick="window.openInfographicModal('data/artifacts/slides/slide_17.png', 'Slide Bài Giảng: Thuyết Tự Quyết (SDT) — Ba Đòn Bẩy Hạnh Phúc (Năng lực • Tự chủ • Kết nối)')">
+                                                <img src="/data/artifacts/slides/slide_17.png" alt="Slide 17: Thuyết Tự Quyết SDT" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
                                             </div>
-                                            <p class="text-[10.5px] text-slate-400 leading-snug">Tổng quan 3 Đòn Bẩy Tự Thân (SDT)</p>
+                                            <p class="text-[10.5px] text-slate-400 leading-snug">Năng lực • Tự chủ • Kết nối (Deci & Ryan)</p>
                                         </div>
 
-                                        <!-- Slide 29 -->
+                                        <!-- Slide 18 -->
                                         <div class="rounded-xl overflow-hidden bg-brand-dark/80 border border-brand-border p-2.5 space-y-2 group hover:border-brand-amber/50 transition-all">
                                             <div class="flex items-center justify-between text-xs">
                                                 <span class="font-bold text-white text-[11px] truncate flex items-center gap-1.5">
-                                                    <span class="w-4 h-4 rounded bg-brand-amber/20 text-brand-amber flex items-center justify-center text-[10px] font-bold">29</span>
-                                                    <span class="truncate">Đòn Bẩy 1: Kết Nối</span>
+                                                    <span class="w-4 h-4 rounded bg-brand-amber/20 text-brand-amber flex items-center justify-center text-[10px] font-bold">18</span>
+                                                    <span class="truncate">Đòn Bẩy 1: Kết Nối (Hòa Ái)</span>
                                                 </span>
-                                                <button type="button" onclick="window.openInfographicModal('data/artifacts/slides/slide_29.png', 'Slide Bài Giảng: Đòn Bẩy 1: Sống Hòa Ái (Kết Nối)')" class="text-[10px] text-brand-amber hover:underline shrink-0">🔍 HD</button>
+                                                <button type="button" onclick="window.openInfographicModal('data/artifacts/slides/slide_18.png', 'Slide Bài Giảng: Cảm Giác Kết Nối (Đòn Bẩy Hạnh Phúc #1 — Sống Hòa Ái)')" class="text-[10px] text-brand-amber hover:underline shrink-0">🔍 HD</button>
                                             </div>
-                                            <div class="relative cursor-pointer overflow-hidden rounded-lg border border-brand-border/60 bg-black" onclick="window.openInfographicModal('data/artifacts/slides/slide_29.png', 'Slide Bài Giảng: Đòn Bẩy 1: Sống Hòa Ái (Kết Nối)')">
-                                                <img src="/data/artifacts/slides/slide_29.png" alt="Slide 29: Đòn Bẩy 1 Kết Nối" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                                            <div class="relative cursor-pointer overflow-hidden rounded-lg border border-brand-border/60 bg-black" onclick="window.openInfographicModal('data/artifacts/slides/slide_18.png', 'Slide Bài Giảng: Cảm Giác Kết Nối (Đòn Bẩy Hạnh Phúc #1 — Sống Hòa Ái)')">
+                                                <img src="/data/artifacts/slides/slide_18.png" alt="Slide 18: Cảm Giác Kết Nối" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
                                             </div>
-                                            <p class="text-[10.5px] text-slate-400 leading-snug">Sống Hòa Ái & Tinh thần Làm chủ</p>
+                                            <p class="text-[10.5px] text-slate-400 leading-snug">Cảm Giác Kết Nối — Đòn Bẩy Hạnh Phúc #1</p>
                                         </div>
 
                                         <!-- Slide 31 -->
@@ -1077,8 +1158,8 @@
                                                 <label class="block text-xs font-bold text-emerald-400" for="iam-drivers-i">
                                                     I (Interested / Insight)
                                                 </label>
-                                                <p class="text-[10.5px] text-slate-400 leading-snug">Đòn bẩy (Tự chủ • Tiến bộ • Kết nối) nào bạn tâm đắc nhất?</p>
-                                                <textarea id="iam-drivers-i" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Đòn bẩy tâm đắc nhất bạn muốn kích hoạt..."></textarea>
+                                                <p class="text-[10.5px] text-slate-400 leading-snug">Bạn tâm đắc nhất với điều gì từ nội dung đã học?</p>
+                                                <textarea id="iam-drivers-i" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Bạn tâm đắc nhất với điều gì từ nội dung đã học..."></textarea>
                                             </div>
 
                                             <!-- Cột A -->
@@ -1086,8 +1167,8 @@
                                                 <label class="block text-xs font-bold text-sky-400" for="iam-drivers-a">
                                                     A (Actionable / Action)
                                                 </label>
-                                                <p class="text-[10.5px] text-slate-400 leading-snug">Chiến thắng Nhỏ (Small Win) bạn sẽ thiết lập tuần này?</p>
-                                                <textarea id="iam-drivers-a" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Chiến thắng nhỏ cụ thể tuần này..."></textarea>
+                                                <p class="text-[10.5px] text-slate-400 leading-snug">Bạn sẽ áp dụng điều này như thế nào?</p>
+                                                <textarea id="iam-drivers-a" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Bạn sẽ áp dụng điều này như thế nào..."></textarea>
                                             </div>
 
                                             <!-- Cột M -->
@@ -1095,8 +1176,8 @@
                                                 <label class="block text-xs font-bold text-purple-400" for="iam-drivers-m">
                                                     M (Meaningful / Measure)
                                                 </label>
-                                                <p class="text-[10.5px] text-slate-400 leading-snug">Ý nghĩa chuyển hóa đối với bạn và đội ngũ?</p>
-                                                <textarea id="iam-drivers-m" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Ý nghĩa đối với sự phát triển và hạnh phúc của đội ngũ..."></textarea>
+                                                <p class="text-[10.5px] text-slate-400 leading-snug">Tại sao bạn lại tâm đắc với điều đó?</p>
+                                                <textarea id="iam-drivers-m" rows="3" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Tại sao bạn lại tâm đắc với điều đó..."></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -1112,7 +1193,49 @@
                                     </button>
                                 </div>
 
-                                <!-- PHẦN 1: KHÁI NIỆM & CÔNG CỤ THỰC HÀNH CỐT LÕI -->
+                                <!-- PHẦN 1: TÀI LIỆU SLIDE BÀI GIẢNG & SLIDE NỀN TẢNG -->
+                                <div class="space-y-3">
+                                    <div class="flex items-center justify-between flex-wrap gap-2">
+                                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-surface border border-brand-border text-[11px] font-bold text-slate-300">
+                                            <span>📚 TÀI LIỆU BÀI GIẢNG & SLIDE NỀN TẢNG</span>
+                                        </div>
+                                        <span class="text-[10px] text-slate-400 bg-brand-dark px-2.5 py-0.5 rounded-full border border-brand-border">Click ảnh để phóng to HD</span>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        <!-- Slide 40 -->
+                                        <div class="rounded-xl overflow-hidden bg-brand-dark/80 border border-brand-border p-2.5 space-y-2 group hover:border-brand-amber/50 transition-all">
+                                            <div class="flex items-center justify-between text-xs">
+                                                <span class="font-bold text-white text-[11px] truncate flex items-center gap-1.5">
+                                                    <span class="w-4 h-4 rounded bg-brand-amber/20 text-brand-amber flex items-center justify-center text-[10px] font-bold">40</span>
+                                                    <span class="truncate">Tỉnh Thức — Khoảnh Khắc Hiện Tại</span>
+                                                </span>
+                                                <button type="button" onclick="window.openInfographicModal('data/artifacts/slides/slide_40.png', 'Slide Bài Giảng: Tỉnh Thức — Tập Trung Chú Ý Vào Khoảnh Khắc Hiện Tại')" class="text-[10px] text-brand-amber hover:underline shrink-0">🔍 HD</button>
+                                            </div>
+                                            <div class="relative cursor-pointer overflow-hidden rounded-lg border border-brand-border/60 bg-black" onclick="window.openInfographicModal('data/artifacts/slides/slide_40.png', 'Slide Bài Giảng: Tỉnh Thức — Tập Trung Chú Ý Vào Khoảnh Khắc Hiện Tại')">
+                                                <img src="/data/artifacts/slides/slide_40.png" alt="Slide 40: Tỉnh Thức" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                                            </div>
+                                            <p class="text-[10.5px] text-slate-400 leading-snug">Tập trung chú ý vào khoảnh khắc hiện tại mà không phán xét</p>
+                                        </div>
+
+                                        <!-- Slide 41 -->
+                                        <div class="rounded-xl overflow-hidden bg-brand-dark/80 border border-brand-border p-2.5 space-y-2 group hover:border-brand-amber/50 transition-all">
+                                            <div class="flex items-center justify-between text-xs">
+                                                <span class="font-bold text-white text-[11px] truncate flex items-center gap-1.5">
+                                                    <span class="w-4 h-4 rounded bg-brand-amber/20 text-brand-amber flex items-center justify-center text-[10px] font-bold">41</span>
+                                                    <span class="truncate">Khoảnh Khắc Hiện Tại Tròn Đầy Niềm Vui</span>
+                                                </span>
+                                                <button type="button" onclick="window.openInfographicModal('data/artifacts/slides/slide_41.png', 'Slide Bài Giảng: Khoảnh Khắc Hiện Tại Tròn Đầy Niềm Vui & Hạnh Phúc (~ Thích Nhất Hạnh)')" class="text-[10px] text-brand-amber hover:underline shrink-0">🔍 HD</button>
+                                            </div>
+                                            <div class="relative cursor-pointer overflow-hidden rounded-lg border border-brand-border/60 bg-black" onclick="window.openInfographicModal('data/artifacts/slides/slide_41.png', 'Slide Bài Giảng: Khoảnh Khắc Hiện Tại Tròn Đầy Niềm Vui & Hạnh Phúc (~ Thích Nhất Hạnh)')">
+                                                <img src="/data/artifacts/slides/slide_41.png" alt="Slide 41: Khoảnh Khắc Hiện Tại Tròn Đầy Niềm Vui" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                                            </div>
+                                            <p class="text-[10.5px] text-slate-400 leading-snug">Khoảnh khắc hiện tại tròn đầy niềm vui và hạnh phúc (~ Thích Nhất Hạnh • Csikszentmihalyi 1999)</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- PHẦN 2: KHÁI NIỆM & CÔNG CỤ THỰC HÀNH CỐT LÕI -->
                                 <div class="space-y-3">
                                     <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-surface border border-brand-border text-[11px] font-bold text-slate-300">
                                         <span>📌 PHẦN 1: KHÁI NIỆM & CÔNG CỤ THỰC HÀNH CỐT LÕI</span>
@@ -1185,9 +1308,23 @@
                                     </div>
                                     <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
                                         <div class="text-xs font-bold text-brand-amber">I • A • M — Thói Quen Tỉnh Thức</div>
-                                        <input type="text" id="iam-mindfulness-i" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="I: Bạn nhận ra điều gì về phản xạ vô thức khi gặp căng thẳng..." />
-                                        <input type="text" id="iam-mindfulness-a" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="A: Tình huống cụ thể bạn cam kết kích hoạt SBA..." />
-                                        <input type="text" id="iam-mindfulness-m" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="M: Tỉnh thức bảo vệ an toàn tâm lý cho đội ngũ ra sao..." />
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+                                            <div class="space-y-1.5">
+                                                <label class="block text-xs font-bold text-emerald-400" for="iam-mindfulness-i">I (Interested / Insight)</label>
+                                                <p class="text-[10.5px] text-slate-400 leading-snug">Bạn tâm đắc nhất với điều gì từ nội dung đã học?</p>
+                                                <textarea id="iam-mindfulness-i" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Bạn tâm đắc nhất với điều gì từ nội dung đã học..."></textarea>
+                                            </div>
+                                            <div class="space-y-1.5">
+                                                <label class="block text-xs font-bold text-sky-400" for="iam-mindfulness-a">A (Actionable / Action)</label>
+                                                <p class="text-[10.5px] text-slate-400 leading-snug">Bạn sẽ áp dụng điều này như thế nào?</p>
+                                                <textarea id="iam-mindfulness-a" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Bạn sẽ áp dụng điều này như thế nào..."></textarea>
+                                            </div>
+                                            <div class="space-y-1.5">
+                                                <label class="block text-xs font-bold text-purple-400" for="iam-mindfulness-m">M (Meaningful / Measure)</label>
+                                                <p class="text-[10.5px] text-slate-400 leading-snug">Tại sao bạn lại tâm đắc với điều đó?</p>
+                                                <textarea id="iam-mindfulness-m" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Tại sao bạn lại tâm đắc với điều đó..."></textarea>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1201,7 +1338,49 @@
                                     </button>
                                 </div>
 
-                                <!-- PHẦN 1: KHÁI NIỆM & CÔNG CỤ THỰC HÀNH CỐT LÕI -->
+                                <!-- PHẦN 1: TÀI LIỆU SLIDE BÀI GIẢNG & SLIDE NỀN TẢNG -->
+                                <div class="space-y-3">
+                                    <div class="flex items-center justify-between flex-wrap gap-2">
+                                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-surface border border-brand-border text-[11px] font-bold text-slate-300">
+                                            <span>📚 TÀI LIỆU BÀI GIẢNG & SLIDE NỀN TẢNG</span>
+                                        </div>
+                                        <span class="text-[10px] text-slate-400 bg-brand-dark px-2.5 py-0.5 rounded-full border border-brand-border">Click ảnh để phóng to HD</span>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        <!-- Slide 56 -->
+                                        <div class="rounded-xl overflow-hidden bg-brand-dark/80 border border-brand-border p-2.5 space-y-2 group hover:border-brand-amber/50 transition-all">
+                                            <div class="flex items-center justify-between text-xs">
+                                                <span class="font-bold text-white text-[11px] truncate flex items-center gap-1.5">
+                                                    <span class="w-4 h-4 rounded bg-brand-amber/20 text-brand-amber flex items-center justify-center text-[10px] font-bold">56</span>
+                                                    <span class="truncate">Lòng Biết Ơn (Gratitude)</span>
+                                                </span>
+                                                <button type="button" onclick="window.openInfographicModal('data/artifacts/slides/slide_56.png', 'Slide Bài Giảng: Lòng Biết Ơn (Gratitude) — Nhận Thức & Trân Trọng Điều Tích Cực')" class="text-[10px] text-brand-amber hover:underline shrink-0">🔍 HD</button>
+                                            </div>
+                                            <div class="relative cursor-pointer overflow-hidden rounded-lg border border-brand-border/60 bg-black" onclick="window.openInfographicModal('data/artifacts/slides/slide_56.png', 'Slide Bài Giảng: Lòng Biết Ơn (Gratitude) — Nhận Thức & Trân Trọng Điều Tích Cực')">
+                                                <img src="/data/artifacts/slides/slide_56.png" alt="Slide 56: Lòng Biết Ơn" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                                            </div>
+                                            <p class="text-[10.5px] text-slate-400 leading-snug">Nhận thức và trân trọng những điều tích cực trong cuộc sống</p>
+                                        </div>
+
+                                        <!-- Slide 57 -->
+                                        <div class="rounded-xl overflow-hidden bg-brand-dark/80 border border-brand-border p-2.5 space-y-2 group hover:border-brand-amber/50 transition-all">
+                                            <div class="flex items-center justify-between text-xs">
+                                                <span class="font-bold text-white text-[11px] truncate flex items-center gap-1.5">
+                                                    <span class="w-4 h-4 rounded bg-brand-amber/20 text-brand-amber flex items-center justify-center text-[10px] font-bold">57</span>
+                                                    <span class="truncate">Nhìn Thấy Điều Mọi Người Làm Đúng</span>
+                                                </span>
+                                                <button type="button" onclick="window.openInfographicModal('data/artifacts/slides/slide_57.png', 'Slide Bài Giảng: Lòng Biết Ơn (Gratitude) — Nhìn Thấy Những Điều Mọi Người Làm Đúng')" class="text-[10px] text-brand-amber hover:underline shrink-0">🔍 HD</button>
+                                            </div>
+                                            <div class="relative cursor-pointer overflow-hidden rounded-lg border border-brand-border/60 bg-black" onclick="window.openInfographicModal('data/artifacts/slides/slide_57.png', 'Slide Bài Giảng: Lòng Biết Ơn (Gratitude) — Nhìn Thấy Những Điều Mọi Người Làm Đúng')">
+                                                <img src="/data/artifacts/slides/slide_57.png" alt="Slide 57: Nhìn Thấy Điều Mọi Người Làm Đúng" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                                            </div>
+                                            <p class="text-[10.5px] text-slate-400 leading-snug">Nhìn thấy những điều mọi người làm đúng — Ghi nhận đúng lúc đúng người</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- PHẦN 2: KHÁI NIỆM & CÔNG CỤ THỰC HÀNH CỐT LÕI -->
                                 <div class="space-y-3">
                                     <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-surface border border-brand-border text-[11px] font-bold text-slate-300">
                                         <span>📌 PHẦN 1: KHÁI NIỆM & CÔNG CỤ THỰC HÀNH CỐT LÕI</span>
@@ -1265,23 +1444,79 @@
                                     </div>
                                     <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
                                         <div class="text-xs font-bold text-brand-amber">I • A • M — Thói Quen Biết Ơn</div>
-                                        <input type="text" id="iam-gratitude-i" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="I: Điểm chạm sâu sắc nhất về lòng biết ơn..." />
-                                        <input type="text" id="iam-gratitude-a" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="A: Bạn sẽ thiết lập thói quen cảm ơn ai ngay sau lớp..." />
-                                        <input type="text" id="iam-gratitude-m" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="M: Lòng biết ơn nuôi dưỡng bình an ra sao..." />
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+                                            <div class="space-y-1.5">
+                                                <label class="block text-xs font-bold text-emerald-400" for="iam-gratitude-i">I (Interested / Insight)</label>
+                                                <p class="text-[10.5px] text-slate-400 leading-snug">Bạn tâm đắc nhất với điều gì từ nội dung đã học?</p>
+                                                <textarea id="iam-gratitude-i" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Bạn tâm đắc nhất với điều gì từ nội dung đã học..."></textarea>
+                                            </div>
+                                            <div class="space-y-1.5">
+                                                <label class="block text-xs font-bold text-sky-400" for="iam-gratitude-a">A (Actionable / Action)</label>
+                                                <p class="text-[10.5px] text-slate-400 leading-snug">Bạn sẽ áp dụng điều này như thế nào?</p>
+                                                <textarea id="iam-gratitude-a" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Bạn sẽ áp dụng điều này như thế nào..."></textarea>
+                                            </div>
+                                            <div class="space-y-1.5">
+                                                <label class="block text-xs font-bold text-purple-400" for="iam-gratitude-m">M (Meaningful / Measure)</label>
+                                                <p class="text-[10.5px] text-slate-400 leading-snug">Tại sao bạn lại tâm đắc với điều đó?</p>
+                                                <textarea id="iam-gratitude-m" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Tại sao bạn lại tâm đắc với điều đó..."></textarea>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div id="habit-panel-altruism" class="habit-panel hidden p-5 rounded-2xl bg-brand-card/40 border border-brand-border space-y-5">
                                 <div class="flex items-center justify-between">
                                     <h4 class="text-sm font-bold text-white flex items-center gap-2">
-                                        <span>🤝 Thói Quen 5: Vị Nhân & Trao Giá Trị Không Vụ Lợi</span>
+                                        <span>🤝 Thói Quen 3: Vị Nhân & Trao Giá Trị (Smart Giver)</span>
                                     </h4>
                                     <button class="btn-play-habit-audio text-xs text-brand-amber hover:underline flex items-center gap-1" data-audio="data/artifacts/audio_vi_nhan.mp3">
                                         <span>▶ Nghe Audio Vị Nhân</span>
                                     </button>
                                 </div>
 
-                                <!-- PHẦN 1: KHÁI NIỆM & CÔNG CỤ THỰC HÀNH CỐT LÕI -->
+                                <!-- PHẦN 1: TÀI LIỆU SLIDE BÀI GIẢNG & SLIDE NỀN TẢNG -->
+                                <div class="space-y-3">
+                                    <div class="flex items-center justify-between flex-wrap gap-2">
+                                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-surface border border-brand-border text-[11px] font-bold text-slate-300">
+                                            <span>📚 TÀI LIỆU BÀI GIẢNG & SLIDE NỀN TẢNG</span>
+                                        </div>
+                                        <span class="text-[10px] text-slate-400 bg-brand-dark px-2.5 py-0.5 rounded-full border border-brand-border">Click ảnh để phóng to HD</span>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        <!-- Slide 76 -->
+                                        <div class="rounded-xl overflow-hidden bg-brand-dark/80 border border-brand-border p-2.5 space-y-2 group hover:border-brand-amber/50 transition-all">
+                                            <div class="flex items-center justify-between text-xs">
+                                                <span class="font-bold text-white text-[11px] truncate flex items-center gap-1.5">
+                                                    <span class="w-4 h-4 rounded bg-brand-amber/20 text-brand-amber flex items-center justify-center text-[10px] font-bold">76</span>
+                                                    <span class="truncate">Tinh Thần Vị Nhân (~ Denzel Washington)</span>
+                                                </span>
+                                                <button type="button" onclick="window.openInfographicModal('data/artifacts/slides/slide_76.png', 'Slide Bài Giảng: Tinh Thần Vị Nhân — Bạn Đã Nâng Đỡ Ai (~ Denzel Washington)')" class="text-[10px] text-brand-amber hover:underline shrink-0">🔍 HD</button>
+                                            </div>
+                                            <div class="relative cursor-pointer overflow-hidden rounded-lg border border-brand-border/60 bg-black" onclick="window.openInfographicModal('data/artifacts/slides/slide_76.png', 'Slide Bài Giảng: Tinh Thần Vị Nhân — Bạn Đã Nâng Đỡ Ai (~ Denzel Washington)')">
+                                                <img src="/data/artifacts/slides/slide_76.png" alt="Slide 76: Tinh Thần Vị Nhân" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                                            </div>
+                                            <p class="text-[10.5px] text-slate-400 leading-snug">Rốt cuộc là bạn đã nâng đỡ ai, ai đã trở nên tốt đẹp hơn (~ Denzel Washington)</p>
+                                        </div>
+
+                                        <!-- Slide 77 -->
+                                        <div class="rounded-xl overflow-hidden bg-brand-dark/80 border border-brand-border p-2.5 space-y-2 group hover:border-brand-amber/50 transition-all">
+                                            <div class="flex items-center justify-between text-xs">
+                                                <span class="font-bold text-white text-[11px] truncate flex items-center gap-1.5">
+                                                    <span class="w-4 h-4 rounded bg-brand-amber/20 text-brand-amber flex items-center justify-center text-[10px] font-bold">77</span>
+                                                    <span class="truncate">Định Nghĩa Vị Nhân (Auguste Comte 1851)</span>
+                                                </span>
+                                                <button type="button" onclick="window.openInfographicModal('data/artifacts/slides/slide_77.png', 'Slide Bài Giảng: Định Nghĩa Vị Nhân (Auguste Comte 1851) — Vị Nhân # Hy Sinh vs Vị Kỷ')" class="text-[10px] text-brand-amber hover:underline shrink-0">🔍 HD</button>
+                                            </div>
+                                            <div class="relative cursor-pointer overflow-hidden rounded-lg border border-brand-border/60 bg-black" onclick="window.openInfographicModal('data/artifacts/slides/slide_77.png', 'Slide Bài Giảng: Định Nghĩa Vị Nhân (Auguste Comte 1851) — Vị Nhân # Hy Sinh vs Vị Kỷ')">
+                                                <img src="/data/artifacts/slides/slide_77.png" alt="Slide 77: Định Nghĩa Vị Nhân" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                                            </div>
+                                            <p class="text-[10.5px] text-slate-400 leading-snug">Sống vì người khác, tăng lợi lạc cho người khác • Vị nhân # Hy sinh vs Vị Kỷ</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- PHẦN 2: KHÁI NIỆM & CÔNG CỤ THỰC HÀNH CỐT LÕI -->
                                 <div class="space-y-3">
                                     <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-surface border border-brand-border text-[11px] font-bold text-slate-300">
                                         <span>📌 PHẦN 1: KHÁI NIỆM & CÔNG CỤ THỰC HÀNH CỐT LÕI</span>
@@ -1354,9 +1589,23 @@
                                     </div>
                                     <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
                                         <div class="text-xs font-bold text-brand-amber">I • A • M — Thói Quen Vị Nhân</div>
-                                        <input type="text" id="iam-altruism-i" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="I: Nhận thức sâu sắc nhất về Smart Giver (Vị nhân thông thái)..." />
-                                        <input type="text" id="iam-altruism-a" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="A: Hành động cụ thể giúp đồng nghiệp không cần đền đáp..." />
-                                        <input type="text" id="iam-altruism-m" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="M: Tinh thần vị nhân kiến tạo niềm tin đội ngũ ra sao..." />
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+                                            <div class="space-y-1.5">
+                                                <label class="block text-xs font-bold text-emerald-400" for="iam-altruism-i">I (Interested / Insight)</label>
+                                                <p class="text-[10.5px] text-slate-400 leading-snug">Bạn tâm đắc nhất với điều gì từ nội dung đã học?</p>
+                                                <textarea id="iam-altruism-i" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Bạn tâm đắc nhất với điều gì từ nội dung đã học..."></textarea>
+                                            </div>
+                                            <div class="space-y-1.5">
+                                                <label class="block text-xs font-bold text-sky-400" for="iam-altruism-a">A (Actionable / Action)</label>
+                                                <p class="text-[10.5px] text-slate-400 leading-snug">Bạn sẽ áp dụng điều này như thế nào?</p>
+                                                <textarea id="iam-altruism-a" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Bạn sẽ áp dụng điều này như thế nào..."></textarea>
+                                            </div>
+                                            <div class="space-y-1.5">
+                                                <label class="block text-xs font-bold text-purple-400" for="iam-altruism-m">M (Meaningful / Measure)</label>
+                                                <p class="text-[10.5px] text-slate-400 leading-snug">Tại sao bạn lại tâm đắc với điều đó?</p>
+                                                <textarea id="iam-altruism-m" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Tại sao bạn lại tâm đắc với điều đó..."></textarea>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1369,16 +1618,16 @@
                                 </div>
                                 <div class="grid grid-cols-1 gap-3">
                                     <div>
-                                        <label class="block text-[11px] font-semibold text-brand-amber mb-1">I (Interested) — Điều tâm đắc và lay động lớn nhất sau 1 ngày học?</label>
-                                        <textarea id="iam-capstone-i" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200" placeholder="Điều lay động lớn nhất..."></textarea>
+                                        <label class="block text-[11px] font-semibold text-brand-amber mb-1">I (Interested / Insight) — Bạn tâm đắc nhất với điều gì từ nội dung đã học?</label>
+                                        <textarea id="iam-capstone-i" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200" placeholder="Bạn tâm đắc nhất với điều gì từ nội dung đã học..."></textarea>
                                     </div>
                                     <div>
-                                        <label class="block text-[11px] font-semibold text-brand-orange mb-1">A (Actionable) — 3 cam kết hành động mang về thực hiện tại doanh nghiệp / gia đình?</label>
-                                        <textarea id="iam-capstone-a" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200" placeholder="3 cam kết hành động cụ thể..."></textarea>
+                                        <label class="block text-[11px] font-semibold text-brand-orange mb-1">A (Actionable) — Bạn sẽ áp dụng điều này như thế nào?</label>
+                                        <textarea id="iam-capstone-a" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200" placeholder="Bạn sẽ áp dụng điều này như thế nào..."></textarea>
                                     </div>
                                     <div>
-                                        <label class="block text-[11px] font-semibold text-emerald-400 mb-1">M (Meaningful) — Khóa học thay đổi định nghĩa hạnh phúc của bạn thế nào?</label>
-                                        <textarea id="iam-capstone-m" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200" placeholder="Ý nghĩa sâu sắc nhất..."></textarea>
+                                        <label class="block text-[11px] font-semibold text-emerald-400 mb-1">M (Meaningful) — Tại sao bạn lại tâm đắc với điều đó?</label>
+                                        <textarea id="iam-capstone-m" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200" placeholder="Tại sao bạn lại tâm đắc với điều đó..."></textarea>
                                     </div>
                                 </div>
                                 <div class="pt-2 flex items-center justify-between">
@@ -1487,9 +1736,23 @@
                                     </div>
                                     <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
                                         <div class="text-xs font-bold text-brand-amber">I • A • M — Thói Quen Phiêu (Flow)</div>
-                                        <input type="text" id="iam-flow-i" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="I: Điều kiện tiên quyết nào giúp bạn bước vào Flow..." />
-                                        <input type="text" id="iam-flow-a" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="A: Bạn sẽ loại bỏ xao lãng nào để đạt Flow tuần tới..." />
-                                        <input type="text" id="iam-flow-m" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="M: Flow mang lại giá trị gì cho hiệu suất và niềm hứng khởi..." />
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+                                            <div class="space-y-1.5">
+                                                <label class="block text-xs font-bold text-emerald-400" for="iam-flow-i">I (Interested / Insight)</label>
+                                                <p class="text-[10.5px] text-slate-400 leading-snug">Bạn tâm đắc nhất với điều gì từ nội dung đã học?</p>
+                                                <textarea id="iam-flow-i" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Bạn tâm đắc nhất với điều gì từ nội dung đã học..."></textarea>
+                                            </div>
+                                            <div class="space-y-1.5">
+                                                <label class="block text-xs font-bold text-sky-400" for="iam-flow-a">A (Actionable / Action)</label>
+                                                <p class="text-[10.5px] text-slate-400 leading-snug">Bạn sẽ áp dụng điều này như thế nào?</p>
+                                                <textarea id="iam-flow-a" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Bạn sẽ áp dụng điều này như thế nào..."></textarea>
+                                            </div>
+                                            <div class="space-y-1.5">
+                                                <label class="block text-xs font-bold text-purple-400" for="iam-flow-m">M (Meaningful / Measure)</label>
+                                                <p class="text-[10.5px] text-slate-400 leading-snug">Tại sao bạn lại tâm đắc với điều đó?</p>
+                                                <textarea id="iam-flow-m" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Tại sao bạn lại tâm đắc với điều đó..."></textarea>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1631,9 +1894,23 @@
                                     </div>
                                     <div class="p-4 rounded-xl bg-brand-dark/70 border border-brand-border space-y-3">
                                         <div class="text-xs font-bold text-brand-amber">I • A • M — Thói Quen Lạc Quan ABCDE</div>
-                                        <input type="text" id="iam-optimism-i" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="I: Bài học lớn nhất khi nhìn rõ cơ chế ABC vs sức mạnh chữ D..." />
-                                        <input type="text" id="iam-optimism-a" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="A: Hành động mới (E) bạn cam kết thực hiện đầu tiên..." />
-                                        <input type="text" id="iam-optimism-m" class="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-slate-200" placeholder="M: Bẻ gãy niềm tin giới hạn mang lại ý nghĩa gì cho sự kiên cường..." />
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+                                            <div class="space-y-1.5">
+                                                <label class="block text-xs font-bold text-emerald-400" for="iam-optimism-i">I (Interested / Insight)</label>
+                                                <p class="text-[10.5px] text-slate-400 leading-snug">Bạn tâm đắc nhất với điều gì từ nội dung đã học?</p>
+                                                <textarea id="iam-optimism-i" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Bạn tâm đắc nhất với điều gì từ nội dung đã học..."></textarea>
+                                            </div>
+                                            <div class="space-y-1.5">
+                                                <label class="block text-xs font-bold text-sky-400" for="iam-optimism-a">A (Actionable / Action)</label>
+                                                <p class="text-[10.5px] text-slate-400 leading-snug">Bạn sẽ áp dụng điều này như thế nào?</p>
+                                                <textarea id="iam-optimism-a" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Bạn sẽ áp dụng điều này như thế nào..."></textarea>
+                                            </div>
+                                            <div class="space-y-1.5">
+                                                <label class="block text-xs font-bold text-purple-400" for="iam-optimism-m">M (Meaningful / Measure)</label>
+                                                <p class="text-[10.5px] text-slate-400 leading-snug">Tại sao bạn lại tâm đắc với điều đó?</p>
+                                                <textarea id="iam-optimism-m" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-amber focus:ring-1 focus:ring-brand-amber resize-none transition-colors" placeholder="Tại sao bạn lại tâm đắc với điều đó..."></textarea>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1652,22 +1929,22 @@
                                 </p>
                                 <div class="space-y-3">
                                     <div>
-                                        <label class="block text-xs font-semibold text-brand-amber mb-1">I — INTERESTED: Nhận thức sâu sắc nhất của bạn về việc duy trì trạng thái Flow và tháo gỡ nghịch cảnh bằng ABCDE?</label>
-                                        <textarea id="iam-capstone-2b-i" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-3 text-xs text-white focus:border-brand-amber focus:outline-none" placeholder="Nhận thức sâu sắc nhất của bạn..."></textarea>
+                                        <label class="block text-xs font-semibold text-brand-amber mb-1">I (Interested / Insight) — Bạn tâm đắc nhất với điều gì từ nội dung đã học?</label>
+                                        <textarea id="iam-capstone-2b-i" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-3 text-xs text-white focus:border-brand-amber focus:outline-none" placeholder="Bạn tâm đắc nhất với điều gì từ nội dung đã học..."></textarea>
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-semibold text-brand-amber mb-1">A — ACTIONABLE: Hai hành động cụ thể bạn sẽ thực hiện ngay tuần này để thiết lập môi trường Microflow và phản biện niềm tin tiêu cực?</label>
-                                        <textarea id="iam-capstone-2b-a" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-3 text-xs text-white focus:border-brand-amber focus:outline-none" placeholder="1. ...&#10;2. ..."></textarea>
+                                        <label class="block text-xs font-semibold text-brand-amber mb-1">A (Actionable) — Bạn sẽ áp dụng điều này như thế nào?</label>
+                                        <textarea id="iam-capstone-2b-a" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-3 text-xs text-white focus:border-brand-amber focus:outline-none" placeholder="Bạn sẽ áp dụng điều này như thế nào..."></textarea>
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-semibold text-brand-amber mb-1">M — MEANINGFUL: Sự kết hợp giữa Flow và Lạc quan giúp bạn bứt phá hiệu suất và tái tạo năng lượng cho đội ngũ như thế nào?</label>
-                                        <textarea id="iam-capstone-2b-m" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-3 text-xs text-white focus:border-brand-amber focus:outline-none" placeholder="Ý nghĩa đối với hiệu suất và văn hóa bứt phá..."></textarea>
+                                        <label class="block text-xs font-semibold text-brand-amber mb-1">M (Meaningful) — Tại sao bạn lại tâm đắc với điều đó?</label>
+                                        <textarea id="iam-capstone-2b-m" rows="2" class="w-full bg-brand-dark border border-brand-border rounded-xl p-3 text-xs text-white focus:border-brand-amber focus:outline-none" placeholder="Tại sao bạn lại tâm đắc với điều đó..."></textarea>
                                     </div>
                                 </div>
                                 <div class="pt-2 flex items-center justify-between">
-                                    <span class="text-xs text-slate-400 italic">Dữ liệu được gửi trực tiếp về Google Sheets cho Giảng viên & Coach</span>
+                                    <span class="text-xs text-slate-400 italic">Dữ liệu được lưu an toàn và gửi tới Ban Giảng Huấn & Coach</span>
                                     <button id="btn-sync-workshop-2b" type="button" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber hover:from-orange-600 hover:to-amber-600 text-black font-extrabold text-xs shadow-lg shadow-orange-500/20 active:scale-95 transition-all">
-                                        ⚡ Lưu & Đồng Bộ 2B Lên Google Sheets
+                                        ⚡ Lưu & Đồng Bộ Dữ Liệu 2B
                                     </button>
                                 </div>
                             </div>
@@ -1840,7 +2117,7 @@
                                                 <span class="w-5 h-5 rounded-md bg-brand-green/20 text-brand-green font-bold text-[11px] flex items-center justify-center shrink-0">2</span>
                                                 <div>
                                                     <div class="text-[11px] font-bold text-white">Bấm Đồng Bộ Về BTC</div>
-                                                    <p class="text-[10px] text-slate-400 mt-0.5 leading-relaxed">Nhấp nút xanh <strong>[💾 Đồng Bộ Tiến Độ Về BTC]</strong> để gửi toàn bộ dữ liệu 21 ngày về bảng theo dõi chung của Ban Giảng Huấn.</p>
+                                                    <p class="text-[10px] text-slate-400 mt-0.5 leading-relaxed">Nhấp nút xanh <strong>[💾 Đồng Bộ Tiến Độ Về BTC]</strong> để gửi toàn bộ dữ liệu thói quen về bảng theo dõi chung của Ban Giảng Huấn.</p>
                                                 </div>
                                             </div>
                                             <div class="p-3 rounded-xl bg-brand-card/80 border border-brand-border/50 flex items-start gap-2.5">
@@ -1853,7 +2130,7 @@
                                         </div>
 
                                         <div class="flex items-center justify-between flex-wrap gap-2 pt-2 border-t border-brand-border/40">
-                                            <span class="text-[11px] text-slate-400 italic">💡 Mục tiêu: Đạt 7 ngày, 14 ngày và 21 ngày liên tiếp để mở khóa 3 huy hiệu danh dự và phần thưởng tri ân.</span>
+                                            <span class="text-[11px] text-slate-400 italic">💡 Mục tiêu: Rèn luyện kiên trì mỗi ngày để tích lũy chuỗi thói quen và mở khóa các huy hiệu danh dự.</span>
                                             <button type="button" id="btn-open-habit-full-doc" class="text-[11px] text-brand-amber hover:underline font-bold flex items-center gap-1 cursor-pointer">
                                                 <span>📖 Mở Cẩm Nang Hướng Dẫn & Lộ Trình Chi Tiết ➔</span>
                                             </button>
@@ -1988,7 +2265,7 @@
                                     </div>
                                     <div class="p-3.5 rounded-xl bg-brand-dark/70 border border-brand-border space-y-2">
                                         <div class="text-xs font-bold text-emerald-400">Tuần 3 (Ngày 21)</div>
-                                        <textarea id="weekly-checkin-3" rows="3" class="w-full bg-brand-surface border border-brand-border rounded-lg p-2 text-xs text-slate-200" placeholder="Tổng kết chuyển hóa sau 21 ngày rèn luyện..."></textarea>
+                                        <textarea id="weekly-checkin-3" rows="3" class="w-full bg-brand-surface border border-brand-border rounded-lg p-2 text-xs text-slate-200" placeholder="Tổng kết chuyển hóa sau hành trình rèn luyện..."></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -2235,6 +2512,33 @@
                     <!-- TAB 3: DOWNLOADABLE RESOURCES (Artifacts) -->
                     <div id="tab-resources" class="tab-content hidden p-6 lg:p-8 space-y-4">
                         <h3 class="text-base font-bold text-white">📚 Tài Liệu Mở Rộng & Tri Thức Bổ Trợ (Xem thêm)</h3>
+
+                        <!-- AUDIO PLAYER SECTION (Kho Audio Bài Giảng) -->
+                        <!-- AUDIO PLAYER SECTION (Collapsible Progressive Disclosure) -->
+                <details class="explore-more hidden" id="audio-player-details">
+                    <summary>🎧 Khám phá thêm: Kho Audio Bài Giảng</summary>
+                    <div id="audio-player-card" class="rounded-2xl bg-brand-surface/90 border border-brand-border p-4 lg:p-5 shadow-xl space-y-3 mt-3">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <div class="flex items-center gap-2.5">
+                                <span class="w-8 h-8 rounded-lg bg-brand-amber/20 text-brand-amber flex items-center justify-center text-sm font-bold">🎧</span>
+                                <div>
+                                    <h3 class="text-xs font-bold text-white uppercase tracking-wider">Kho Audio Bài Giảng</h3>
+                                    <p id="audio-track-subtitle" class="text-[11px] text-slate-400">Chọn bài giảng để nghe</p>
+                                </div>
+                            </div>
+                            <select id="audio-track-select" class="bg-brand-dark border border-brand-border rounded-xl px-3 py-1.5 text-xs text-brand-amber font-semibold focus:outline-none focus:border-brand-amber max-w-xs truncate cursor-pointer">
+                                <!-- Dynamic tracks injected via JS -->
+                            </select>
+                        </div>
+                        <div class="p-3 rounded-xl bg-brand-dark/80 border border-brand-border flex items-center gap-3">
+                            <audio id="main-audio-player" class="w-full h-8" controls preload="none">
+                                <source id="main-audio-source" src="" type="audio/mpeg">
+                                Trình duyệt của bạn không hỗ trợ phát âm thanh.
+                            </audio>
+                        </div>
+                    </div>
+                </details>
+
                         <div id="resources-grid-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <!-- Injected dynamically via JS from stage.resources -->
                         </div>
@@ -2844,7 +3148,7 @@
                             <span>🧭</span> Me Values & Quiz
                         </button>
                         <button id="vault-tab-btn-habits" role="tab" aria-selected="false" aria-controls="vault-tab-content" type="button" class="vault-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer text-slate-300 hover:text-white hover:bg-brand-card" data-tab="tab-habits">
-                            <span>🎯</span> 21 Ngày & Huy Hiệu
+                            <span>🎯</span> Thói Quen & Huy Hiệu
                         </button>
                         <button id="vault-tab-btn-sync" role="tab" aria-selected="false" aria-controls="vault-tab-content" type="button" class="vault-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer text-slate-300 hover:text-white hover:bg-brand-card" data-tab="tab-sync">
                             <span>📦</span> Xuất & Đồng Bộ
