@@ -473,6 +473,18 @@
               "title": "Slide 18: Đòn Bẩy Hạnh Phúc #1: Cảm Giác Kết Nối (Sống Hòa Ái)",
               "url": "data/artifacts/slides/slide_18.png",
               "caption": "Cảm giác Kết nối — Sống Hòa Ái & Gắn kết đội ngũ"
+            },
+            {
+              "slideNumber": 21,
+              "title": "Slide 21: Đòn Bẩy Hạnh Phúc #2: Cảm Giác Tự Chủ (Khả Năng Là Gì Nếu Không Sợ?)",
+              "url": "data/artifacts/slides/slide_21.png",
+              "caption": "Cảm giác Tự chủ — Khả năng là gì nếu không sợ?"
+            },
+            {
+              "slideNumber": 30,
+              "title": "Slide 30: Đòn Bẩy Hạnh Phúc #3: Cảm Giác Tiến Bộ (Đối Với Cá Nhân & Tổ Chức)",
+              "url": "data/artifacts/slides/slide_30.png",
+              "caption": "Cảm giác Tiến bộ — Tiến bộ đối với Cá nhân & Tổ chức"
             }
           ],
           "iam": {
@@ -736,13 +748,13 @@
         {
           "title": "Slide Bài Giảng: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy",
           "type": "image",
-          "url": "data/artifacts/slides/slide_25.png",
+          "url": "data/artifacts/slides/slide_17.png",
           "icon": "📊"
         },
         {
           "title": "Slide Bài Giảng: Đòn Bẩy Tự Chủ & Tinh Thần Làm Chủ (Ownership Advantage)",
           "type": "image",
-          "url": "data/artifacts/slides/slide_29.png",
+          "url": "data/artifacts/slides/slide_21.png",
           "icon": "📊"
         }
       ]
@@ -954,13 +966,13 @@
         {
           "title": "Slide Bài Giảng: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy",
           "type": "image",
-          "url": "data/artifacts/slides/slide_25.png",
+          "url": "data/artifacts/slides/slide_17.png",
           "icon": "📊"
         },
         {
           "title": "Slide Bài Giảng: Đòn Bẩy Tự Chủ & Tinh Thần Làm Chủ (Ownership Advantage)",
           "type": "image",
-          "url": "data/artifacts/slides/slide_29.png",
+          "url": "data/artifacts/slides/slide_21.png",
           "icon": "📊"
         }
       ]
@@ -1285,12 +1297,12 @@
         "infographics": [
           {
             "title": "Slide Bài Giảng: 3 Cấp Độ Hạnh Phúc (Martin Seligman)",
-            "url": "data/artifacts/slides/slide_16.png",
+            "url": "data/artifacts/slides/slide_15.png",
             "desc": "Trích từ slide bài giảng chính thức DHM: 3 Cấp độ Hạnh phúc — Thú vui, Đam mê (Dấn thân gắn kết) và Mục đích cao cả."
           },
           {
             "title": "Slide Bài Giảng: Ẩn Dụ Ba Tầng Lầu (Phong Tử Khải)",
-            "url": "data/artifacts/slides/slide_17.png",
+            "url": "data/artifacts/slides/slide_16.png",
             "desc": "Trích từ slide bài giảng chính thức DHM: Tầng 1 Vật chất, Tầng 2 Tinh thần, Tầng 3 Tâm hồn."
           },
           {
@@ -1300,7 +1312,7 @@
           },
           {
             "title": "Slide Bài Giảng: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy",
-            "url": "data/artifacts/slides/slide_25.png",
+            "url": "data/artifacts/slides/slide_17.png",
             "desc": "Trích từ slide bài giảng chính thức DHM: Ba đòn bẩy Kết nối, Tự chủ, Tiến bộ."
           }
         ]

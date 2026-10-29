@@ -189,9 +189,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         iam: {
                             id: "iam_1_1",
                             title: "Đúc kết I • A • M 1.1 — 3 Cấp Độ Hạnh Phúc",
-                            I: "Bạn tâm đắc nhất với điều gì từ nội dung 3 Cấp độ Hạnh phúc & Ẩn dụ 3 Tầng Lầu của Phong Tử Khải?",
-                            A: "Bạn sẽ áp dụng điều này như thế nào để chuyển dịch dần từ Thú vui ngắn hạn (Pleasure) sang Đam mê (Passion) và Mục đích cao cả (Higher Purpose)?",
-                            M: "Tại sao nhận thức này lại có ý nghĩa sâu sắc đối với bạn ở thời điểm hiện tại?"
+                            I: "Bạn tâm đắc nhất với điều gì từ nội dung đã học?",
+                            A: "Bạn sẽ áp dụng điều này như thế nào?",
+                            M: "Tại sao bạn lại tâm đắc với điều đó?"
                         }
                     },
                     {
@@ -200,15 +200,16 @@ document.addEventListener("DOMContentLoaded", () => {
                         iam: {
                             id: "iam_1_2",
                             title: "Đúc kết I • A • M 1.2 — La Bàn Giá Trị Sống",
-                            I: "Bạn tâm đắc nhất với giá trị La Bàn nào bạn vừa lựa chọn?",
-                            A: "Giá trị này sẽ định hướng cho một quyết định khó khăn hoặc hành vi sắp tới của bạn như thế nào?",
-                            M: "Nếu kiên định sống đúng với La Bàn này, bạn sẽ kiến tạo phiên bản tốt đẹp hơn của chính mình ra sao?"
+                            I: "Bạn tâm đắc nhất với điều gì từ nội dung đã học?",
+                            A: "Bạn sẽ áp dụng điều này như thế nào?",
+                            M: "Tại sao bạn lại tâm đắc với điều đó?"
                         }
                     }
                 ],
                 resources: [
                     { title: "Slide Bài Giảng: Đích Đến Hạnh Phúc (Slide 14)", type: "image", url: "data/artifacts/slides/slide_14.png", icon: "📊" },
-                    { title: "Slide Bài Giảng: Lời Dạy Aristotle 200BC — Hạnh Phúc Là Mục Đích Tồn Tại (Slide 18)", type: "image", url: "data/artifacts/slides/slide_18.png", icon: "📊" },
+                    { title: "Slide Bài Giảng: 3 Cấp Độ Hạnh Phúc (Slide 15)", type: "image", url: "data/artifacts/slides/slide_15.png", icon: "📊" },
+                    { title: "Slide Bài Giảng: Ẩn Dụ Ba Tầng Lầu (Slide 16)", type: "image", url: "data/artifacts/slides/slide_16.png", icon: "📊" },
                     { title: "Slide Bài Giảng: Điều Gì Khiến Hạnh Phúc Bền Lâu? (Slide 19)", type: "image", url: "data/artifacts/slides/slide_19.png", icon: "📊" },
                     { title: "Slide Bài Giảng: Ai Khiến Hạnh Phúc Bền Lâu? (Cá Nhân • Tập Thể • Cộng Đồng) (Slide 20)", type: "image", url: "data/artifacts/slides/slide_20.png", icon: "📊" },
                     { title: "Slide Bài Giảng: Lộ Trình 3 Mini Step DHM (Slide 04)", type: "image", url: "data/artifacts/slides/slide_04.png", icon: "🗺️" },
@@ -259,10 +260,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     { id: "habit-altruism", number: 5, name: "Vị Nhân" }
                 ],
                 resources: [
-                    { title: "Slide Bài Giảng: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy", type: "image", url: "data/artifacts/slides/slide_25.png", icon: "📊" },
-                    { title: "Slide Bài Giảng: Đòn Bẩy Tự Chủ & Tinh Thần Làm Chủ (Ownership Advantage)", type: "image", url: "data/artifacts/slides/slide_29.png", icon: "📊" },
-                    { title: "Slide Bài Giảng: An Toàn Tâm Lý (Psychological Safety) — Nền Tảng Tự Chủ", type: "image", url: "data/artifacts/slides/slide_31.png", icon: "📊" },
-                    { title: "Slide Bài Giảng: Lợi Ích Của Đòn Bẩy Tiến Bộ (Dopamine & Small Wins)", type: "image", url: "data/artifacts/slides/slide_38.png", icon: "📊" },
+                    { title: "Slide Bài Giảng: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy", type: "image", url: "data/artifacts/slides/slide_17.png", icon: "📊" },
+                    { title: "Slide Bài Giảng: Đòn Bẩy 1: Kết Nối (Hòa Ái)", type: "image", url: "data/artifacts/slides/slide_18.png", icon: "📊" },
+                    { title: "Slide Bài Giảng: Đòn Bẩy 2: Tự Chủ (Khả Năng Là Gì Nếu Không Sợ?)", type: "image", url: "data/artifacts/slides/slide_21.png", icon: "📊" },
+                    { title: "Slide Bài Giảng: Đòn Bẩy 3: Tiến Bộ (Cá Nhân & Tổ Chức)", type: "image", url: "data/artifacts/slides/slide_30.png", icon: "📊" },
                     { title: "Báo cáo: Quản Trị Con Người Trong Dòng Chảy", type: "markdown", url: "data/artifacts/report_quan_tri_con_nguoi.md", icon: "📄" },
                     { title: "Bản Thiết Kế Văn Hóa Tổ Chức (Culture Blueprint)", type: "pdf", url: "data/artifacts/culture_blueprint.pdf", icon: "📑" }
                 ]
@@ -2144,6 +2145,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 sd["stage-2a"] = {
                     iam: s2.iam || { I: "", A: "", M: "" },
                     habits: {
+                        culturePact: s2Habits.culturePact || s2Habits.culture_pact || { iam: { I: "", A: "", M: "" } },
                         drivers: s2Habits.drivers || { iam: { I: "", A: "", M: "" } },
                         mindfulness: s2Habits.mindfulness || { sbaChecks: { s: false, b: false, a: false }, situation: "", iam: { I: "", A: "", M: "" } },
                         gratitude: s2Habits.gratitude || { items: ["", "", "", ""], card: { to: "", msg: "" }, iam: { I: "", A: "", M: "" } },
@@ -2153,6 +2155,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 };
             } else {
                 sd["stage-2a"].habits = sd["stage-2a"].habits || {};
+                if (!sd["stage-2a"].habits.culturePact && (s2Habits.culturePact || s2Habits.culture_pact)) sd["stage-2a"].habits.culturePact = s2Habits.culturePact || s2Habits.culture_pact;
                 if (!sd["stage-2a"].habits.drivers && s2Habits.drivers) sd["stage-2a"].habits.drivers = s2Habits.drivers;
                 if (!sd["stage-2a"].habits.mindfulness && s2Habits.mindfulness) sd["stage-2a"].habits.mindfulness = s2Habits.mindfulness;
                 if (!sd["stage-2a"].habits.gratitude && s2Habits.gratitude) sd["stage-2a"].habits.gratitude = s2Habits.gratitude;
@@ -2992,7 +2995,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Ensure audio details is open if collapsed
                 const audioDetails = document.getElementById("audio-player-details");
-                if (audioDetails) audioDetails.open = true;
+                if (audioDetails) {
+                    audioDetails.classList.remove("hidden");
+                    audioDetails.open = true;
+                }
 
                 // Find in dropdown
                 for (let i = 0; i < audioTrackSelect.options.length; i++) {
@@ -4808,7 +4814,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (s3BannerBtn) {
             s3BannerBtn.onclick = (e) => {
                 e.preventDefault();
-                openInfographicModal("data/artifacts/slides/slide_25.png", "Slide Bài Giảng: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc");
+                openInfographicModal("data/artifacts/slides/slide_17.png", "Slide Bài Giảng: Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy Hạnh Phúc");
             };
         }
 
@@ -5362,7 +5368,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <span class="px-2.5 py-1 rounded-full bg-brand-amber/20 text-brand-amber border border-brand-amber/30 text-[10px] font-extrabold uppercase tracking-wider flex items-center gap-1.5">
                             <span>💼</span> Case Study Kinh Điển (1,2 Tỷ USD)
                         </span>
-                        <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/slides/slide_16.png" data-title="Slide Bài Giảng: 3 Cấp Độ Hạnh Phúc (DHM)">
+                        <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/slides/slide_15.png" data-title="Slide Bài Giảng: 3 Cấp Độ Hạnh Phúc (DHM)">
                             <span>📷 Xem Slide Bài Giảng DHM</span>
                         </button>
                     </div>
@@ -5403,7 +5409,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <span class="text-lg">⚖️</span>
                             <h3 class="text-sm font-bold text-white">So Sánh 3 Cấp Độ Hạnh Phúc (Martin Seligman)</h3>
                         </div>
-                        <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/slides/slide_16.png" data-title="Slide Bài Giảng: 3 Cấp Độ Hạnh Phúc (Martin Seligman)">
+                        <button type="button" class="btn-view-infographic text-xs px-3 py-1 rounded-lg bg-brand-dark/70 hover:bg-brand-card text-brand-amber border border-brand-amber/30 transition-all flex items-center gap-1.5" data-img="data/artifacts/slides/slide_15.png" data-title="Slide Bài Giảng: 3 Cấp Độ Hạnh Phúc (Martin Seligman)">
                             <span>📷 Xem Slide 3 Cấp Độ</span>
                         </button>
                     </div>
@@ -5481,13 +5487,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     name: "Thói Quen 1: Biết Ơn Bền Vững",
                     author: "Robert Emmons & Martin Seligman",
                     evidence: "Khoa học chứng minh: Thực hành thư biết ơn giúp giảm 23% cortisol (hormone gây căng thẳng), tăng nồng độ DHEA và cải thiện 25% chất lượng giấc ngủ. Thói quen biết ơn nâng cao hiệu suất làm việc 50% khi người quản lý bày tỏ sự công nhận.",
-                    img: "data/artifacts/slides/slide_27.png"
+                    img: "data/artifacts/slides/slide_56.png"
                 },
                 {
                     name: "Thói Quen 2: Tỉnh Thức & Phản Xạ S-B-A",
                     author: "Jon Kabat-Zinn (MBSR) & Chade-Meng Tan",
                     evidence: "Mô hình Stop - Breathe - Ask giúp ngắt dòng kích hoạt quá mức của hạch hạnh nhân (Amygdala), chuyển quyền kiểm soát sang vỏ não trước trán (Prefrontal Cortex). Nuôi dưỡng 8 phẩm chất C của năng lực tỉnh thức.",
-                    img: "data/artifacts/slides/slide_27.png"
+                    img: "data/artifacts/slides/slide_40.png"
                 },
                 {
                     name: "Thói Quen 3: Lạc Quan Lý Trí & Kỹ Thuật A-B-C-D-E",
@@ -5505,7 +5511,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     name: "Thói Quen 5: Vị Nhân & Bộ Ba Bi - Trí - Dũng",
                     author: "Adam Grant (Give and Take)",
                     evidence: "Người cho đi thông thái (Smart Giver) khác với người hy sinh mù quáng (Selfless Giver). Họ ứng dụng 'Ưu tiên 5 phút' (5-minute favor), cho đi có ranh giới và hỗ trợ đúng người, tạo nên mạng lưới cộng tác bền vững nhất.",
-                    img: "data/artifacts/slides/slide_27.png"
+                    img: "data/artifacts/slides/slide_76.png"
                 }
             ];
 
@@ -5550,14 +5556,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 { title: "Đội Ngũ Đồng Hành (Your Guides)", file: "slide_05.png" },
                 { title: "Triết Lý Văn Hóa Tony Hsieh (Zappos)", file: "slide_09.png" },
                 { title: "Mọi Mục Tiêu Đều Quy Về Hạnh Phúc (Chuỗi Câu Hỏi Tại Sao?)", file: "slide_14.png" },
-                { title: "3 Cấp Độ Hạnh Phúc (Martin Seligman)", file: "slide_16.png" },
-                { title: "Ẩn Dụ Ba Tầng Lầu (Phong Tử Khải)", file: "slide_17.png" },
+                { title: "3 Cấp Độ Hạnh Phúc (Martin Seligman)", file: "slide_15.png" },
+                { title: "Ẩn Dụ Ba Tầng Lầu (Phong Tử Khải)", file: "slide_16.png" },
                 { title: "La Bàn Me Values (Giá Trị Cốt Lõi)", file: "slide_23.png" },
-                { title: "Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy", file: "slide_25.png" },
+                { title: "Thuyết Tự Quyết (SDT) & 3 Đòn Bẩy", file: "slide_17.png" },
                 { title: "5 Thói Quen Hạnh Phúc Tự Thân", file: "slide_27.png" },
-                { title: "Đòn Bẩy 1: Sống Hòa Ái (Kết Nối)", file: "slide_29.png" },
-                { title: "Đòn Bẩy 2: Tự Chủ & An Toàn Tâm Lý", file: "slide_31.png" },
-                { title: "Đòn Bẩy 3: Động Lực Tiến Bộ & Small Wins", file: "slide_38.png" }
+                { title: "Đòn Bẩy 1: Sống Hòa Ái (Kết Nối)", file: "slide_18.png" },
+                { title: "Đòn Bẩy 2: Tự Chủ & An Toàn Tâm Lý", file: "slide_21.png" },
+                { title: "Đòn Bẩy 3: Động Lực Tiến Bộ & Small Wins", file: "slide_30.png" }
             ];
 
             let galleryHtml = galleryList.map((item, idx) => `
@@ -6120,7 +6126,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const habits = s2aData.habits || {};
         let count = 0;
 
-        // 0. Drivers
+        // 0a. Culture Pact
+        const hCP = habits.culturePact || habits.culture_pact;
+        if (hCP && hCP.iam && (hCP.iam.I || hCP.iam.A || hCP.iam.M)) {
+            count++;
+        }
+        // 0b. Drivers
         const hD = habits.drivers;
         if ((hD && hD.iam && (hD.iam.I || hD.iam.A || hD.iam.M)) || (s2aData.iam && (s2aData.iam.I || s2aData.iam.A || s2aData.iam.M))) {
             count++;
@@ -6145,7 +6156,7 @@ document.addEventListener("DOMContentLoaded", () => {
             count++;
         }
 
-        return Math.min(100, Math.round((count / 5) * 100));
+        return Math.min(100, Math.round((count / 6) * 100));
     }
     window.calculateStage2AProgress = calculateStage2AProgress;
 
@@ -7549,9 +7560,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="space-y-2.5">
                     <div class="flex items-center justify-between pb-1 border-b border-brand-border/60">
                         <h5 class="font-bold text-emerald-400 flex items-center gap-1.5 text-xs">
-                            <span>🌿</span> Phản Tư 5 Thói Quen Hạnh Phúc (Chặng 2)
+                            <span>🌿</span> Phản Tư Chặng 2 (Thỏa Thuận Văn Hóa, 3 Đòn Bẩy & Các Thói Quen)
                         </h5>
-                        <span class="text-[11px] font-mono text-slate-400 font-semibold">${habitEntries.length} thói quen</span>
+                        <span class="text-[11px] font-mono text-slate-400 font-semibold">${habitEntries.length} mục đã đúc kết</span>
                     </div>
                     <div class="space-y-2">
             `;
@@ -7790,7 +7801,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="p-3.5 rounded-xl bg-gradient-to-r from-emerald-500/15 via-brand-dark/60 to-brand-amber/15 border border-emerald-500/30 flex items-center justify-between">
                 <div>
                     <h4 class="font-extrabold text-white text-xs flex items-center gap-1.5">
-                        <span>🎯</span> Rèn Luyện Thói Quen & Bộ Huy Hiệu
+                        <span>🎯</span> Thói Quen 21 Ngày & Bộ Huy Hiệu
                     </h4>
                     <p class="text-[11px] text-slate-400 mt-0.5">Theo dõi chuỗi kiên trì luyện tập và các cột mốc danh dự.</p>
                 </div>
@@ -7819,7 +7830,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="space-y-2.5">
                 <div class="flex items-center justify-between pb-1 border-b border-brand-border/60">
                     <h5 class="font-bold text-emerald-400 flex items-center gap-1.5 text-xs">
-                        <span>📅</span> Bản Đồ Rèn Luyện Thói Quen
+                        <span>📅</span> Bản Đồ Nhiệt 21 Ngày (Mini-Heatmap)
                     </h5>
                     <div class="flex items-center gap-1 text-[9px] text-slate-400">
                         <span>Ít</span>
@@ -8022,6 +8033,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const habitEntries = [];
         const habitConfigs = [
+            { key: "culturePact", stage: "Chặng 2A", title: "Thỏa Thuận Văn Hóa (Culture Pact — B2V2B)" },
+            { key: "drivers", stage: "Chặng 2A", title: "3 Đòn Bẩy Hạnh Phúc (SDT)" },
             { key: "mindfulness", stage: "Chặng 2A", title: "Thói quen 1: Tỉnh Thức (Mindfulness & SBA)" },
             { key: "gratitude", stage: "Chặng 2A", title: "Thói quen 2: Biết Ơn (Gratitude)" },
             { key: "altruism", stage: "Chặng 2A", title: "Thói quen 3: Vị Nhân (Smart Giver)" },
@@ -8089,7 +8102,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (habitEntries.length > 0) {
-            md += `### Phản Tư 5 Thói Quen Hạnh Phúc (Chặng 2)\n`;
+            md += `### Phản Tư Chặng 2 (Thỏa Thuận Văn Hóa, 3 Đòn Bẩy & Các Thói Quen)\n`;
             habitEntries.forEach((h, i) => {
                 md += `#### ${h.title} (${h.stage}):\n- **I (Insight):** ${h.iam.I || '—'}\n- **A (Action):** ${h.iam.A || '—'}\n- **M (Meaning):** ${h.iam.M || '—'}\n\n`;
             });
@@ -8413,6 +8426,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 const isCpActive = cpPanel && !cpPanel.classList.contains("hidden");
                 const driversPanel = document.getElementById("habit-panel-drivers");
                 const isDriversActive = driversPanel && !driversPanel.classList.contains("hidden");
+                const mindfulnessPanel = document.getElementById("habit-panel-mindfulness");
+                const isMindfulnessActive = mindfulnessPanel && !mindfulnessPanel.classList.contains("hidden");
+                const gratitudePanel = document.getElementById("habit-panel-gratitude");
+                const isGratitudeActive = gratitudePanel && !gratitudePanel.classList.contains("hidden");
+                const altruismPanel = document.getElementById("habit-panel-altruism");
+                const isAltruismActive = altruismPanel && !altruismPanel.classList.contains("hidden");
+                const flowPanel = document.getElementById("habit-panel-flow");
+                const isFlowActive = flowPanel && !flowPanel.classList.contains("hidden");
+                const optimismPanel = document.getElementById("habit-panel-optimism");
+                const isOptimismActive = optimismPanel && !optimismPanel.classList.contains("hidden");
+                const capstone2aPanel = document.getElementById("stage2a-capstone-card");
+                const isCapstone2aActive = capstone2aPanel && !capstone2aPanel.classList.contains("hidden");
+                const capstone2bPanel = document.getElementById("stage2b-capstone-card");
+                const isCapstone2bActive = capstone2bPanel && !capstone2bPanel.classList.contains("hidden");
+
                 let targetInputId = "iam-cp1-i";
                 let label = "CP1";
                 if (isCpActive) {
@@ -8421,6 +8449,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else if (isDriversActive) {
                     targetInputId = "iam-drivers-i";
                     label = "3 Đòn Bẩy";
+                } else if (isMindfulnessActive) {
+                    targetInputId = "iam-mindfulness-i";
+                    label = "Tỉnh Thức";
+                } else if (isGratitudeActive) {
+                    targetInputId = "iam-gratitude-i";
+                    label = "Biết Ơn";
+                } else if (isAltruismActive) {
+                    targetInputId = "iam-altruism-i";
+                    label = "Vị Nhân";
+                } else if (isFlowActive) {
+                    targetInputId = "iam-flow-i";
+                    label = "Phiêu";
+                } else if (isOptimismActive) {
+                    targetInputId = "iam-optimism-i";
+                    label = "Lạc Quan";
+                } else if (isCapstone2aActive) {
+                    targetInputId = "iam-capstone-i";
+                    label = "Capstone 2A";
+                } else if (isCapstone2bActive) {
+                    targetInputId = "iam-capstone-2b-i";
+                    label = "Capstone 2B";
                 } else if (!document.getElementById("stage-1")?.classList.contains("hidden")) {
                     targetInputId = "iam-cp1-i";
                     label = "CP1";
