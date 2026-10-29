@@ -22,6 +22,13 @@ Tài liệu này ghi nhận các mốc phát triển đã hoàn thành, hiện t
 - [x] Đồng bộ dữ liệu tiến độ thời gian thực về Google Sheets qua Google Apps Script Webhook.
 
 ### Giai Đoạn 3: Tái Cấu Trúc 3 Chặng Chuẩn Xác & Ẩn Danh Hóa Case Study (ĐÃ HOÀN TẤT)
+- [x] Tinh Gọn Lộ Trình Chặng 1 & Khớp Chuẩn 10 Câu Hỏi Slide 12-24 (Commit `a71e66c` & `c856558`, 23/10/2026):
+  + Tinh gọn Chặng 1 thành 2 nội dung lý thuyết chính (3 Cấp Độ Hạnh Phúc, La Bàn Me Values), Checkpoint 1 (Đúc Kết I • A • M) và Cổng Sát Hạch Vượt Chặng (Qualifying Gate, 10 câu bám sát Slide 12-24, ngưỡng đạt ≥ 80%).
+  + Chuyển giao toàn bộ 3 Đòn Bẩy (SDT - Deci & Ryan, 2000) sang Trạm 0 Chặng 2 để giải mã tại lớp cùng Ban Giảng Huấn.
+  + Chuẩn hóa bố cục Lộ trình Chặng 1 thành lưới đối xứng cố định 2x2 trên mobile (`grid grid-cols-2 sm:grid-cols-4 gap-2 w-full`), triệt tiêu hiện tượng vỡ hàng bất đối xứng (1 hàng có 2 mục).
+  + Gỡ bỏ hoàn toàn tiền tố "Bài 1.1: " và "Bài 1.2: " trong tiêu đề accordion, menu phụ và curriculum_data.json; thay huy hiệu số bài bằng icon thương hiệu cao cấp 🌟 và 🧭.
+  + Gỡ bỏ chữ "Vietnam" bị thêm tùy tiện ở thương hiệu "Culturecode · Kênh Đồng Hành".
+  + Đẩy commit `c856558` lên `main` của `dh4hn-website`, Vercel deploy Live Done 100%.
 - [x] Làm sạch 100% dữ liệu phóng tác, khôi phục nguyên bản bài giảng thực tế của giảng viên.
 - [x] Đưa 44 bản chụp slide bài giảng chính thức vào Git tracking và triển khai lên Vercel Live (Commit a4a61c4, HTTP 200 OK).
 - [x] Đồng bộ công cụ La Bàn Me Values và Thực hành Lạc quan ABCDE giữa Landing Page và Micro-LMS (Commit 82989f2).
@@ -100,6 +107,13 @@ Tài liệu này ghi nhận các mốc phát triển đã hoàn thành, hiện t
   - **Cập nhật Lạc quan (Optimism)**: 'Optimism — Nhìn nhận cơ hội trong thách thức thông qua công cụ tái tư duy ABCDE.'
   - **Tinh giản Vị nhân (Altruism)**: 'Altruism — Cho đi thông minh (Giver) để tạo ra giá trị chung lớn nhất.' và xóa bỏ triệt để khối giải thích 3 nhóm Takers/Matchers/Givers rườm rà.
   - **Staged Deploy & Promote Vercel Live**: Triển khai `dpl_DNCLqYW3MjUqj9YF2tyF6mCaUcJo`, xác minh HTTP read-back trên `https://delivering-happiness.vercel.app/` đạt 100% PASS trên tất cả các route sống còn (Landing Page, Register DHM10, Next DHM, Personal Value).
+- [x] Đại Tu Trải Nghiệm Học Viên & Vá Lỗi Hệ Thống Micro-LMS (Commit `cbe335e` — 29/10/2026):
+  - **Vá lỗi Logic Điểm Sát Hạch**: Phân định rạch ròi biến `rawScore` và `rawPct`, khắc phục dứt điểm lỗi hiển thị 9% • 1/10 câu đúng dù học viên làm đúng 9/10 câu và đỗ Cổng Sát Hạch Chặng 1.
+  - **Tái cấu trúc Kho Audio Bài Giảng**: Đưa trình phát audio từ ngoài vào bên trong tab "Xem thêm" (`#tab-resources`), tự động chuyển tab và cuộn tới audio khi bấm nút nghe từ bài giảng.
+  - **Khử trùng lặp Slide tài liệu mở rộng**: Loại bỏ Slide 14 & 18 (Chặng 1) và Slide 31 & 38 (Chặng 2A/2B) khỏi tab "Xem thêm" do đã được nhúng trong bài giảng chính.
+  - **Xóa bỏ quà hiện vật bịa đặt**: Thay thế phần thưởng vật lý ép kim gửi tận tay bằng `Bộ Thẻ Số & Cẩm Nang 5 Thói Quen Hạnh Phúc (Digital Flashcards)`.
+  - **Thanh lọc tàn dư 21 ngày & rác kỹ thuật**: Đổi nhãn Tab 3 thành `🎯 Thói Quen & Huy Hiệu`, chuyển đổi toàn bộ thông báo hạ tầng phức tạp (Google Sheets, bộ đệm 60s, CSDL trung tâm) thành thông điệp định hướng người học theo nguyên tắc KISS.
+  - **Deploy Vercel Production**: Đã push commit `cbe335e`, kiểm chứng live HTTP 200 no-cache trên `https://delivering-happiness.vercel.app/lms/`.
 - [ ] Hỗ trợ Ban Giảng Huấn vận hành lớp học Apollo và giám sát thu hoạch 6 Trạm trên dashboard Live v2.
 - [ ] Khôi phục phiên bản đầy đủ IAM v1 (team-happiness-iam) sau ngày 20/10/2026 từ git tag.
 - [ ] Tích hợp Trợ lý AI Huấn luyện Hạnh phúc (AI Happiness Coach) hỗ trợ học viên giải đáp tình huống ABCDE sau khóa học.
