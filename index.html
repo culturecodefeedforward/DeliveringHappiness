@@ -148,6 +148,212 @@
       .tool-card-btn.lms-card-btn {
         grid-column: 1 / -1;
       }
+
+      /* ============ HIGH-IMPACT PULSING CTA BUTTONS (LMS & INTEREST) ============ */
+      @keyframes lmsPulseAttention {
+        0%, 100% {
+          box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.9), 0 10px 30px rgba(234, 88, 12, 0.65);
+          filter: brightness(1) saturate(1);
+          border-color: #fef9c3;
+        }
+        50% {
+          box-shadow: 0 0 0 14px rgba(250, 204, 21, 0), 0 0 48px rgba(253, 224, 71, 1), 0 14px 44px rgba(234, 88, 12, 0.9);
+          filter: brightness(1.14) saturate(1.12);
+          border-color: #ffffff;
+        }
+      }
+
+      @keyframes interestPulseEmerald {
+        0%, 100% {
+          box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.85), 0 8px 26px rgba(5, 150, 105, 0.6);
+          filter: brightness(1);
+          border-color: #a7f3d0;
+        }
+        50% {
+          box-shadow: 0 0 0 12px rgba(52, 211, 153, 0), 0 0 40px rgba(110, 231, 183, 0.98), 0 12px 36px rgba(5, 150, 105, 0.85);
+          filter: brightness(1.14);
+          border-color: #ffffff;
+        }
+      }
+
+      @keyframes interestPulseBlue {
+        0%, 100% {
+          box-shadow: 0 0 0 0 rgba(96, 165, 250, 0.85), 0 8px 26px rgba(37, 99, 235, 0.6);
+          filter: brightness(1);
+          border-color: #bfdbfe;
+        }
+        50% {
+          box-shadow: 0 0 0 12px rgba(96, 165, 250, 0), 0 0 40px rgba(147, 197, 253, 0.98), 0 12px 36px rgba(37, 99, 235, 0.85);
+          filter: brightness(1.14);
+          border-color: #ffffff;
+        }
+      }
+
+      @keyframes ctaInnerScalePulse {
+        0%, 100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.035);
+        }
+      }
+
+      @keyframes ctaShimmerSweep {
+        0% {
+          left: -120%;
+        }
+        60%, 100% {
+          left: 140%;
+        }
+      }
+
+      @keyframes liveDotBlink {
+        0%, 100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.22;
+          transform: scale(1.42);
+        }
+      }
+
+      .hero-cta-stack {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        margin-top: 18px;
+        width: 100%;
+      }
+
+      .cta-pulse-inner {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        animation: ctaInnerScalePulse 1.5s infinite ease-in-out;
+      }
+
+      .btn-hero-register-main {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        max-width: 660px;
+        min-height: 64px;
+        font-size: 1.24rem !important;
+        font-weight: 800 !important;
+        padding: 1.1rem 2rem !important;
+        border-radius: 16px !important;
+        border: 2.5px solid #fef08a !important;
+        box-shadow: 0 8px 30px rgba(245, 158, 11, 0.55) !important;
+        letter-spacing: 0.2px;
+      }
+
+      .btn-interest-pulse-emerald {
+        position: relative;
+        overflow: hidden;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        max-width: 660px;
+        min-height: 64px;
+        font-size: 1.22rem !important;
+        font-weight: 800 !important;
+        padding: 1.08rem 1.8rem !important;
+        border-radius: 16px !important;
+        background: linear-gradient(135deg, #10b981 0%, #059669 55%, #047857 100%) !important;
+        color: #ffffff !important;
+        border: 2.5px solid #a7f3d0 !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+        animation: interestPulseEmerald 1.6s infinite ease-in-out;
+        letter-spacing: 0.2px;
+      }
+
+      .btn-interest-pulse-blue {
+        position: relative;
+        overflow: hidden;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        max-width: 660px;
+        min-height: 64px;
+        font-size: 1.2rem !important;
+        font-weight: 800 !important;
+        padding: 1.08rem 1.8rem !important;
+        border-radius: 16px !important;
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 55%, #4f46e5 100%) !important;
+        color: #ffffff !important;
+        border: 2.5px solid #bfdbfe !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+        animation: interestPulseBlue 1.8s infinite ease-in-out;
+        letter-spacing: 0.2px;
+      }
+
+      .btn-lms-mega-pulse {
+        position: relative;
+        overflow: hidden;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        min-height: 74px !important;
+        font-size: 1.36rem !important;
+        font-weight: 800 !important;
+        padding: 1.25rem 2.2rem !important;
+        border-radius: 18px !important;
+        background: linear-gradient(135deg, #fde047 0%, #f59e0b 50%, #ea580c 100%) !important;
+        color: #1c1917 !important;
+        border: 3px solid #fef9c3 !important;
+        animation: lmsPulseAttention 1.5s infinite ease-in-out;
+        letter-spacing: 0.3px;
+        text-decoration: none;
+      }
+
+      .btn-lms-mega-pulse::after,
+      .btn-interest-pulse-emerald::after,
+      .btn-interest-pulse-blue::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -120%;
+        width: 65%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.42), transparent);
+        transform: skewX(-22deg);
+        animation: ctaShimmerSweep 2.6s infinite;
+        pointer-events: none;
+      }
+
+      .btn-lms-mega-pulse:hover,
+      .btn-interest-pulse-emerald:hover,
+      .btn-interest-pulse-blue:hover {
+        transform: translateY(-2px) !important;
+        filter: brightness(1.15);
+      }
+
+      .pulse-dot-indicator {
+        display: inline-block;
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background: #dc2626;
+        box-shadow: 0 0 10px #ef4444;
+        animation: liveDotBlink 1s infinite ease-in-out;
+        flex-shrink: 0;
+      }
+
+      .pulse-dot-indicator.dot-light {
+        background: #fef08a;
+        box-shadow: 0 0 10px #fde047;
+      }
+
       @media (max-width: 640px) {
         .hero {
           padding: 2rem 1rem !important;
@@ -168,6 +374,19 @@
         .hero-hybrid-card .btn-primary {
           width: 100% !important;
           border-radius: 14px !important;
+        }
+        .btn-hero-register-main,
+        .btn-interest-pulse-emerald,
+        .btn-interest-pulse-blue {
+          font-size: 1.08rem !important;
+          padding: 1rem 1.2rem !important;
+          min-height: 58px !important;
+        }
+        .btn-lms-mega-pulse {
+          font-size: 1.16rem !important;
+          padding: 1.08rem 1.2rem !important;
+          min-height: 66px !important;
+          border-radius: 16px !important;
         }
         .hybrid-hubs-grid {
           grid-template-columns: 1fr;
@@ -236,20 +455,32 @@
         </div>
       </div>
 
-      <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 15px;">
-        <a href="register_dhm10.html" class="btn-primary" style="display: inline-block; font-size: 1.05rem; box-shadow: 0 6px 25px rgba(245, 158, 11, 0.45);">
-          👉 Đăng ký DHM10 TP.HCM (Giới hạn 35 suất)
+      <div class="hero-cta-stack">
+        <a href="register_dhm10.html" class="btn-primary btn-hero-register-main">
+          <span>👉 Đăng ký DHM10 TP.HCM (Giới hạn 35 suất)</span>
         </a>
-        <a href="next_dhm.html" class="btn-primary" style="display: inline-block; font-size: 1.05rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #ffffff; box-shadow: none;">
-          ✨ Quan tâm Next DHM (Hà Nội & Đợt tới)
+        <a href="next_dhm.html" class="btn-primary btn-interest-pulse-emerald">
+          <span class="cta-pulse-inner">
+            <span class="pulse-dot-indicator dot-light"></span>
+            <span>✨ Quan tâm Next DHM (Hà Nội &amp; Đợt tới)</span>
+          </span>
         </a>
-        <a href="program-interest.html" class="btn-primary" style="display: inline-block; font-size: 1.05rem; background: rgba(255,255,255,0.06); border: 1px dashed rgba(255,255,255,0.3); color: rgba(255,255,255,0.9); box-shadow: none;">
-          🌱 Đăng ký quan tâm các chương trình khác
+        <a href="program-interest.html" class="btn-primary btn-interest-pulse-blue">
+          <span class="cta-pulse-inner">
+            <span class="pulse-dot-indicator dot-light"></span>
+            <span>🌱 Đăng ký quan tâm các chương trình khác</span>
+          </span>
         </a>
       </div>
     </div>
     
-    <div class="hero-tools-grid">
+    <div class="hero-tools-grid" style="margin-top: 1.5rem;">
+      <a href="/lms" class="tool-card-btn lms-card-btn btn-lms-mega-pulse">
+        <span class="cta-pulse-inner">
+          <span class="pulse-dot-indicator"></span>
+          <span>📚 Đăng nhập Hệ thống LMS (Học viện)</span>
+        </span>
+      </a>
       <a href="personal-value.html" class="tool-card-btn">
         <span>🔍 Khám phá La bàn Giá trị Cá nhân</span>
       </a>
@@ -268,9 +499,6 @@
       </a>
       <a href="assessment.html" class="tool-card-btn">
         <span>📊 Trắc nghiệm Hệ điều hành Hạnh phúc</span>
-      </a>
-      <a href="/lms" class="tool-card-btn lms-card-btn">
-        <span>📚 Đăng nhập Hệ thống LMS (Học viện)</span>
       </a>
     </div>
   </header>
@@ -425,13 +653,21 @@
       <p class="section-sub" style="color: var(--dark); font-size: 1.1rem; margin-bottom: 2rem; max-width: 820px; margin-left: auto; margin-right: auto; line-height: 1.6;">
         Khóa học <strong>Delivering Happiness Masterclass 10 (DHM10)</strong> tiên phong triển khai theo mô hình <strong>Blended Learning kết hợp nền tảng LMS chuyên sâu</strong>, học tập trung Offline tại <strong>TP.HCM</strong> vào <strong>Chủ Nhật 01/11/2026</strong> (Cơ sở Apollo English, 58 Phạm Ngọc Thạch, Q.3 • giới hạn 35 suất First-Come, First-Served). Học viên tại Hà Nội vui lòng để lại thông tin tại <strong>Next DHM</strong> để nhận thông báo sớm nhất cho các khóa tiếp theo!
       </p>
-      <div style="display: flex; flex-direction: row; gap: 15px; flex-wrap: wrap; justify-content: center;">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 14px; justify-content: center; max-width: 660px; margin: 0 auto;">
         <a href="register_dhm10.html" class="btn-primary"
-          style="background: var(--dark); color: var(--warm-yellow); box-shadow: 0 8px 24px rgba(0,0,0,0.15); font-weight: 700;">👉 Đăng ký DHM10 TP.HCM (01/11/2026)</a>
-        <a href="next_dhm.html" class="btn-primary"
-          style="background: rgba(0,0,0,0.12); color: var(--dark); border: 2px solid var(--dark); box-shadow: none; font-weight: 700;">✨ Quan tâm Next DHM (Hà Nội & Đợt tới)</a>
-        <a href="program-interest.html" class="btn-primary"
-          style="background: transparent; color: var(--dark); border: 2px solid var(--dark); box-shadow: none; font-weight: 700;">🌱 Đăng ký quan tâm các chương trình khác</a>
+          style="width: 100%; min-height: 64px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.22rem; border-radius: 16px; background: var(--dark); color: var(--warm-yellow); border: 2.5px solid var(--dark); box-shadow: 0 8px 24px rgba(0,0,0,0.22); font-weight: 800;">👉 Đăng ký DHM10 TP.HCM (01/11/2026)</a>
+        <a href="next_dhm.html" class="btn-primary btn-interest-pulse-emerald">
+          <span class="cta-pulse-inner">
+            <span class="pulse-dot-indicator dot-light"></span>
+            <span>✨ Quan tâm Next DHM (Hà Nội &amp; Đợt tới)</span>
+          </span>
+        </a>
+        <a href="program-interest.html" class="btn-primary btn-interest-pulse-blue">
+          <span class="cta-pulse-inner">
+            <span class="pulse-dot-indicator dot-light"></span>
+            <span>🌱 Đăng ký quan tâm các chương trình khác</span>
+          </span>
+        </a>
       </div>
     </div>
   </section>
@@ -443,7 +679,12 @@
       <p class="section-sub" style="margin-bottom: 3rem;">Kho lưu trữ học thuật (Dành cho thành viên)</p>
       <div style="text-align: center; padding: 3rem; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
         <p style="font-size: 1.2rem; margin-bottom: 2rem;">Vui lòng đăng nhập tài khoản thành viên để truy xuất tài liệu</p>
-        <a href="/lms" class="btn-primary">Đăng nhập ngay</a>
+        <a href="/lms" class="btn-primary btn-lms-mega-pulse" style="max-width: 460px; margin: 0 auto;">
+          <span class="cta-pulse-inner">
+            <span class="pulse-dot-indicator"></span>
+            <span>Đăng nhập ngay</span>
+          </span>
+        </a>
       </div>
     </div>
   </section>
