@@ -72,7 +72,9 @@
                 "Sự hoàn thành các cột mốc và mục tiêu chiến lược (Milestones / Achievement)."
               ],
               "correctAnswer": "Trải nghiệm hạnh phúc và sự mãn nguyện tự thân (Happiness / Eudaimonia).",
-              "explanation": "Theo Slide 12, 13, 14 & 17, khi đào sâu chuỗi câu hỏi 'Tại sao điều đó quan trọng?' cho các mục tiêu đời sống (mua nhà, kiếm tiền, thăng tiến...), con người đều chạm tới đích đến cuối cùng là Hạnh phúc. Aristotle khẳng định: 'Hạnh phúc là mục đích tồn tại của chúng ta' (Eudaimonia - một đời sống mãn nguyện tự thân)."
+              "explanation": "Theo Slide 12, 13, 14 & 17, khi đào sâu chuỗi câu hỏi 'Tại sao điều đó quan trọng?' cho các mục tiêu đời sống (mua nhà, kiếm tiền, thăng tiến...), con người đều chạm tới đích đến cuối cùng là Hạnh phúc. Aristotle khẳng định: 'Hạnh phúc là mục đích tồn tại của chúng ta' (Eudaimonia - một đời sống mãn nguyện tự thân).",
+              "correctIndex": 0,
+              "timeLimit": 30
             },
             {
               "id": "dhm-quiz-2",
@@ -84,7 +86,9 @@
                 "Tự chủ (Autonomy) ➔ Tiến bộ (Progress) ➔ Kết nối đội ngũ (Connectedness)."
               ],
               "correctAnswer": "Thú vui (Pleasure) ➔ Đam mê (Passion) ➔ Mục đích cao cả (Higher Purpose).",
-              "explanation": "Theo Slide 15, Delivering Happiness phân loại ba cấp độ hạnh phúc theo độ bền tăng dần: Thú vui (Pleasure - ngắn hạn) ➔ Đam mê (Passion - bền hơn, dấn thân gắn kết sâu) ➔ Mục đích cao cả / Ý nghĩa (Higher Purpose / Meaning - bền vững nhất, là một phần của điều gì đó lớn lao hơn chính bản thân)."
+              "explanation": "Theo Slide 15, Delivering Happiness phân loại ba cấp độ hạnh phúc theo độ bền tăng dần: Thú vui (Pleasure - ngắn hạn) ➔ Đam mê (Passion - bền hơn, dấn thân gắn kết sâu) ➔ Mục đích cao cả / Ý nghĩa (Higher Purpose / Meaning - bền vững nhất, là một phần của điều gì đó lớn lao hơn chính bản thân).",
+              "correctIndex": 0,
+              "timeLimit": 30
             },
             {
               "id": "dhm-quiz-3",
@@ -96,7 +100,9 @@
                 "Cảm giác thỏa mãn chỉ phụ thuộc hoàn cảnh bên ngoài, khiến cá nhân không thể tự quyết định."
               ],
               "correctAnswer": "Cảm giác thỏa mãn không ở lại mãi, não bộ nhanh chóng thích nghi và ta lại có cột mốc mới.",
-              "explanation": "Theo Slide 14 & 15, bộ não rất dở trong việc dự đoán điều gì duy trì hạnh phúc bền lâu ('Tôi sẽ hạnh phúc khi...'). Niềm vui từ Thú vui và thành tựu bên ngoài nhanh chóng nguội lạnh do cơ chế thích nghi khoái lạc (Hedonic Adaptation), ta lại đặt ra cột mốc mới và tiếp tục chờ đợi hạnh phúc."
+              "explanation": "Theo Slide 14 & 15, bộ não rất dở trong việc dự đoán điều gì duy trì hạnh phúc bền lâu ('Tôi sẽ hạnh phúc khi...'). Niềm vui từ Thú vui và thành tựu bên ngoài nhanh chóng nguội lạnh do cơ chế thích nghi khoái lạc (Hedonic Adaptation), ta lại đặt ra cột mốc mới và tiếp tục chờ đợi hạnh phúc.",
+              "correctIndex": 0,
+              "timeLimit": 30
             },
             {
               "id": "dhm-quiz-4",
@@ -108,7 +114,9 @@
                 "Khi xử lý cùng lúc nhiều nhiệm vụ phức tạp, duy trì nhịp độ làm việc khẩn trương liên tục."
               ],
               "correctAnswer": "Khi kỹ năng gặp thử thách đủ hấp dẫn, tập trung rất sâu và cảm giác thời gian thay đổi.",
-              "explanation": "Theo Slide 15, trải nghiệm Đam mê (Passion) được đặc trưng bởi sự dấn thân, gắn kết sâu sắc khi kỹ năng gặp thử thách xứng tầm, tập trung cao độ đến mức cảm nhận thời gian trôi nhanh vì đang thật sự sống trọn vẹn với điều mình làm."
+              "explanation": "Theo Slide 15, trải nghiệm Đam mê (Passion) được đặc trưng bởi sự dấn thân, gắn kết sâu sắc khi kỹ năng gặp thử thách xứng tầm, tập trung cao độ đến mức cảm nhận thời gian trôi nhanh vì đang thật sự sống trọn vẹn với điều mình làm.",
+              "correctIndex": 0,
+              "timeLimit": 30
             },
             {
               "id": "dhm-quiz-5",
@@ -120,7 +128,9 @@
                 "Giảm thiểu tối đa áp lực công việc hàng ngày, duy trì trạng thái ổn định và an nhàn lâu dài."
               ],
               "correctAnswer": "Thấy việc mình làm có ý nghĩa với người khác, công sức có giá trị vượt ra ngoài task trước mắt.",
-              "explanation": "Theo Slide 15 & 18, Mục đích cao cả (Higher Purpose / Meaning) mang lại hạnh phúc bền vững nhất vì giúp cá nhân kết nối và trở thành một phần của điều gì đó lớn lao hơn chính bản thân mình, thấy công việc đóng góp ý nghĩa cho người khác và cộng đồng."
+              "explanation": "Theo Slide 15 & 18, Mục đích cao cả (Higher Purpose / Meaning) mang lại hạnh phúc bền vững nhất vì giúp cá nhân kết nối và trở thành một phần của điều gì đó lớn lao hơn chính bản thân mình, thấy công việc đóng góp ý nghĩa cho người khác và cộng đồng.",
+              "correctIndex": 0,
+              "timeLimit": 30
             },
             {
               "id": "dhm-quiz-6",
@@ -132,7 +142,9 @@
                 "Tầng 1: Trách nhiệm cá nhân ➔ Tầng 2: Hợp tác đội ngũ ➔ Tầng 3: Cống hiến xã hội."
               ],
               "correctAnswer": "Tầng 1: Đời sống vật chất ➔ Tầng 2: Đời sống tinh thần ➔ Tầng 3: Đời sống tâm hồn.",
-              "explanation": "Theo Slide 16, ẩn dụ Ba Tầng Lầu của Phong Tử Khải mô tả 3 tầng bậc đời sống: Tầng 1 - Cuộc sống vật chất, Tầng 2 - Cuộc sống tinh thần, và Tầng 3 - Cuộc sống tâm hồn (nơi con người tìm kiếm ý nghĩa và chiều sâu đích thực)."
+              "explanation": "Theo Slide 16, ẩn dụ Ba Tầng Lầu của Phong Tử Khải mô tả 3 tầng bậc đời sống: Tầng 1 - Cuộc sống vật chất, Tầng 2 - Cuộc sống tinh thần, và Tầng 3 - Cuộc sống tâm hồn (nơi con người tìm kiếm ý nghĩa và chiều sâu đích thực).",
+              "correctIndex": 0,
+              "timeLimit": 30
             },
             {
               "id": "dhm-quiz-7",
@@ -144,7 +156,9 @@
                 "Peter Drucker (Học giả tiên phong về Quản trị học hiện đại thế giới)."
               ],
               "correctAnswer": "Tony Hsieh (Cố CEO Zappos & Đồng sáng lập Delivering Happiness).",
-              "explanation": "Theo Slide 7, Tony Hsieh (Cố CEO Zappos) khẳng định triết lý quản trị nền tảng: 'Xây dựng một văn hoá tuyệt vời và mọi thứ khác sẽ đi đúng hướng' ('Get the right culture, and everything else will fall into place')."
+              "explanation": "Theo Slide 7, Tony Hsieh (Cố CEO Zappos) khẳng định triết lý quản trị nền tảng: 'Xây dựng một văn hoá tuyệt vời và mọi thứ khác sẽ đi đúng hướng' ('Get the right culture, and everything else will fall into place').",
+              "correctIndex": 0,
+              "timeLimit": 30
             },
             {
               "id": "dhm-quiz-8",
@@ -156,7 +170,9 @@
                 "Bắt đầu từ COMMUNITY (khách hàng, học viên và đối tác phản hồi tích cực về dịch vụ tổ chức)."
               ],
               "correctAnswer": "Bắt đầu từ ME (từng cá nhân tự hiểu mình, lựa chọn thái độ và chịu trách nhiệm với trải nghiệm).",
-              "explanation": "Theo Slide 19 & 20 (và Slide 22), một tổ chức không thể 'làm cho' nhân viên hạnh phúc nếu thiếu nền tảng cá nhân. Hạnh phúc và văn hóa bắt đầu từ CÁ NHÂN (ME) - tự hiểu mình, sống đúng giá trị và chịu trách nhiệm với trải nghiệm; từ đó mới lan tỏa bền vững sang TẬP THỂ (WE) và CỘNG ĐỒNG (COMMUNITY)."
+              "explanation": "Theo Slide 19 & 20 (và Slide 22), một tổ chức không thể 'làm cho' nhân viên hạnh phúc nếu thiếu nền tảng cá nhân. Hạnh phúc và văn hóa bắt đầu từ CÁ NHÂN (ME) - tự hiểu mình, sống đúng giá trị và chịu trách nhiệm với trải nghiệm; từ đó mới lan tỏa bền vững sang TẬP THỂ (WE) và CỘNG ĐỒNG (COMMUNITY).",
+              "correctIndex": 0,
+              "timeLimit": 30
             },
             {
               "id": "dhm-quiz-9",
@@ -168,7 +184,9 @@
                 "Bộ quy tắc ứng xử bắt buộc mà cá nhân cần tuân thủ nghiêm ngặt trong môi trường làm việc."
               ],
               "correctAnswer": "Những điều thật sự quan trọng đến mức chi phối cách mình ra quyết định, phản ứng và ưu tiên.",
-              "explanation": "Theo Slide 21, 22 (Online) & Slide 36 (Offline), Giá trị Cốt lõi Cá nhân (ME Values) là những điều thật sự quan trọng nhất phản ánh động cơ sâu thẳm, chi phối cách ta ra quyết định, ưu tiên và tạo nên sự thống nhất trong công việc cũng như cuộc sống."
+              "explanation": "Theo Slide 21, 22 (Online) & Slide 36 (Offline), Giá trị Cốt lõi Cá nhân (ME Values) là những điều thật sự quan trọng nhất phản ánh động cơ sâu thẳm, chi phối cách ta ra quyết định, ưu tiên và tạo nên sự thống nhất trong công việc cũng như cuộc sống.",
+              "correctIndex": 0,
+              "timeLimit": 30
             },
             {
               "id": "dhm-quiz-10",
@@ -180,7 +198,9 @@
                 "'Quyết định nào sẽ giúp tôi hạn chế tối đa sai sót và làm vừa lòng tất cả các bên liên quan?'"
               ],
               "correctAnswer": "'Khi phải đánh đổi, điều nào thường có trọng lượng lớn hơn trong quyết định của tôi?'",
-              "explanation": "Theo Slide 22 & 37, khi đứng trước tình huống phải đánh đổi (Trade-off) giữa hai giá trị đều tốt đẹp, câu hỏi la bàn dẫn đường là: 'Khi phải đánh đổi, điều nào thường có trọng lượng lớn hơn trong quyết định của tôi?' để hành động thực tế (Đồng Hồ) luôn đồng nhất với điều cốt lõi (La Bàn)."
+              "explanation": "Theo Slide 22 & 37, khi đứng trước tình huống phải đánh đổi (Trade-off) giữa hai giá trị đều tốt đẹp, câu hỏi la bàn dẫn đường là: 'Khi phải đánh đổi, điều nào thường có trọng lượng lớn hơn trong quyết định của tôi?' để hành động thực tế (Đồng Hồ) luôn đồng nhất với điều cốt lõi (La Bàn).",
+              "correctIndex": 0,
+              "timeLimit": 30
             }
           ],
           "iam": {

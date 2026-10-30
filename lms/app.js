@@ -65,7 +65,9 @@ const initDhmLmsApp = () => {
                                                                                     "Sự hoàn thành các cột mốc và mục tiêu chiến lược (Milestones / Achievement)."
                                                         ],
                                                         "correctAnswer": "Trải nghiệm hạnh phúc và sự mãn nguyện tự thân (Happiness / Eudaimonia).",
-                                                        "explanation": "Theo Slide 12, 13, 14 & 17, khi đào sâu chuỗi câu hỏi 'Tại sao điều đó quan trọng?' cho các mục tiêu đời sống (mua nhà, kiếm tiền, thăng tiến...), con người đều chạm tới đích đến cuối cùng là Hạnh phúc. Aristotle khẳng định: 'Hạnh phúc là mục đích tồn tại của chúng ta' (Eudaimonia - một đời sống mãn nguyện tự thân)."
+                                                        "explanation": "Theo Slide 12, 13, 14 & 17, khi đào sâu chuỗi câu hỏi 'Tại sao điều đó quan trọng?' cho các mục tiêu đời sống (mua nhà, kiếm tiền, thăng tiến...), con người đều chạm tới đích đến cuối cùng là Hạnh phúc. Aristotle khẳng định: 'Hạnh phúc là mục đích tồn tại của chúng ta' (Eudaimonia - một đời sống mãn nguyện tự thân).",
+                                                        "correctIndex": 0,
+                                                        "timeLimit": 30
                             },
                             {
                                                         "id": "dhm-quiz-2",
@@ -77,7 +79,9 @@ const initDhmLmsApp = () => {
                                                                                     "Tự chủ (Autonomy) ➔ Tiến bộ (Progress) ➔ Kết nối đội ngũ (Connectedness)."
                                                         ],
                                                         "correctAnswer": "Thú vui (Pleasure) ➔ Đam mê (Passion) ➔ Mục đích cao cả (Higher Purpose).",
-                                                        "explanation": "Theo Slide 15, Delivering Happiness phân loại ba cấp độ hạnh phúc theo độ bền tăng dần: Thú vui (Pleasure - ngắn hạn) ➔ Đam mê (Passion - bền hơn, dấn thân gắn kết sâu) ➔ Mục đích cao cả / Ý nghĩa (Higher Purpose / Meaning - bền vững nhất, là một phần của điều gì đó lớn lao hơn chính bản thân)."
+                                                        "explanation": "Theo Slide 15, Delivering Happiness phân loại ba cấp độ hạnh phúc theo độ bền tăng dần: Thú vui (Pleasure - ngắn hạn) ➔ Đam mê (Passion - bền hơn, dấn thân gắn kết sâu) ➔ Mục đích cao cả / Ý nghĩa (Higher Purpose / Meaning - bền vững nhất, là một phần của điều gì đó lớn lao hơn chính bản thân).",
+                                                        "correctIndex": 0,
+                                                        "timeLimit": 30
                             },
                             {
                                                         "id": "dhm-quiz-3",
@@ -89,7 +93,9 @@ const initDhmLmsApp = () => {
                                                                                     "Cảm giác thỏa mãn chỉ phụ thuộc hoàn cảnh bên ngoài, khiến cá nhân không thể tự quyết định."
                                                         ],
                                                         "correctAnswer": "Cảm giác thỏa mãn không ở lại mãi, não bộ nhanh chóng thích nghi và ta lại có cột mốc mới.",
-                                                        "explanation": "Theo Slide 14 & 15, bộ não rất dở trong việc dự đoán điều gì duy trì hạnh phúc bền lâu ('Tôi sẽ hạnh phúc khi...'). Niềm vui từ Thú vui và thành tựu bên ngoài nhanh chóng nguội lạnh do cơ chế thích nghi khoái lạc (Hedonic Adaptation), ta lại đặt ra cột mốc mới và tiếp tục chờ đợi hạnh phúc."
+                                                        "explanation": "Theo Slide 14 & 15, bộ não rất dở trong việc dự đoán điều gì duy trì hạnh phúc bền lâu ('Tôi sẽ hạnh phúc khi...'). Niềm vui từ Thú vui và thành tựu bên ngoài nhanh chóng nguội lạnh do cơ chế thích nghi khoái lạc (Hedonic Adaptation), ta lại đặt ra cột mốc mới và tiếp tục chờ đợi hạnh phúc.",
+                                                        "correctIndex": 0,
+                                                        "timeLimit": 30
                             },
                             {
                                                         "id": "dhm-quiz-4",
@@ -101,7 +107,9 @@ const initDhmLmsApp = () => {
                                                                                     "Khi xử lý cùng lúc nhiều nhiệm vụ phức tạp, duy trì nhịp độ làm việc khẩn trương liên tục."
                                                         ],
                                                         "correctAnswer": "Khi kỹ năng gặp thử thách đủ hấp dẫn, tập trung rất sâu và cảm giác thời gian thay đổi.",
-                                                        "explanation": "Theo Slide 15, trải nghiệm Đam mê (Passion) được đặc trưng bởi sự dấn thân, gắn kết sâu sắc khi kỹ năng gặp thử thách xứng tầm, tập trung cao độ đến mức cảm nhận thời gian trôi nhanh vì đang thật sự sống trọn vẹn với điều mình làm."
+                                                        "explanation": "Theo Slide 15, trải nghiệm Đam mê (Passion) được đặc trưng bởi sự dấn thân, gắn kết sâu sắc khi kỹ năng gặp thử thách xứng tầm, tập trung cao độ đến mức cảm nhận thời gian trôi nhanh vì đang thật sự sống trọn vẹn với điều mình làm.",
+                                                        "correctIndex": 0,
+                                                        "timeLimit": 30
                             },
                             {
                                                         "id": "dhm-quiz-5",
@@ -113,7 +121,9 @@ const initDhmLmsApp = () => {
                                                                                     "Giảm thiểu tối đa áp lực công việc hàng ngày, duy trì trạng thái ổn định và an nhàn lâu dài."
                                                         ],
                                                         "correctAnswer": "Thấy việc mình làm có ý nghĩa với người khác, công sức có giá trị vượt ra ngoài task trước mắt.",
-                                                        "explanation": "Theo Slide 15 & 18, Mục đích cao cả (Higher Purpose / Meaning) mang lại hạnh phúc bền vững nhất vì giúp cá nhân kết nối và trở thành một phần của điều gì đó lớn lao hơn chính bản thân mình, thấy công việc đóng góp ý nghĩa cho người khác và cộng đồng."
+                                                        "explanation": "Theo Slide 15 & 18, Mục đích cao cả (Higher Purpose / Meaning) mang lại hạnh phúc bền vững nhất vì giúp cá nhân kết nối và trở thành một phần của điều gì đó lớn lao hơn chính bản thân mình, thấy công việc đóng góp ý nghĩa cho người khác và cộng đồng.",
+                                                        "correctIndex": 0,
+                                                        "timeLimit": 30
                             },
                             {
                                                         "id": "dhm-quiz-6",
@@ -125,7 +135,9 @@ const initDhmLmsApp = () => {
                                                                                     "Tầng 1: Trách nhiệm cá nhân ➔ Tầng 2: Hợp tác đội ngũ ➔ Tầng 3: Cống hiến xã hội."
                                                         ],
                                                         "correctAnswer": "Tầng 1: Đời sống vật chất ➔ Tầng 2: Đời sống tinh thần ➔ Tầng 3: Đời sống tâm hồn.",
-                                                        "explanation": "Theo Slide 16, ẩn dụ Ba Tầng Lầu của Phong Tử Khải mô tả 3 tầng bậc đời sống: Tầng 1 - Cuộc sống vật chất, Tầng 2 - Cuộc sống tinh thần, và Tầng 3 - Cuộc sống tâm hồn (nơi con người tìm kiếm ý nghĩa và chiều sâu đích thực)."
+                                                        "explanation": "Theo Slide 16, ẩn dụ Ba Tầng Lầu của Phong Tử Khải mô tả 3 tầng bậc đời sống: Tầng 1 - Cuộc sống vật chất, Tầng 2 - Cuộc sống tinh thần, và Tầng 3 - Cuộc sống tâm hồn (nơi con người tìm kiếm ý nghĩa và chiều sâu đích thực).",
+                                                        "correctIndex": 0,
+                                                        "timeLimit": 30
                             },
                             {
                                                         "id": "dhm-quiz-7",
@@ -137,7 +149,9 @@ const initDhmLmsApp = () => {
                                                                                     "Peter Drucker (Học giả tiên phong về Quản trị học hiện đại thế giới)."
                                                         ],
                                                         "correctAnswer": "Tony Hsieh (Cố CEO Zappos & Đồng sáng lập Delivering Happiness).",
-                                                        "explanation": "Theo Slide 7, Tony Hsieh (Cố CEO Zappos) khẳng định triết lý quản trị nền tảng: 'Xây dựng một văn hoá tuyệt vời và mọi thứ khác sẽ đi đúng hướng' ('Get the right culture, and everything else will fall into place')."
+                                                        "explanation": "Theo Slide 7, Tony Hsieh (Cố CEO Zappos) khẳng định triết lý quản trị nền tảng: 'Xây dựng một văn hoá tuyệt vời và mọi thứ khác sẽ đi đúng hướng' ('Get the right culture, and everything else will fall into place').",
+                                                        "correctIndex": 0,
+                                                        "timeLimit": 30
                             },
                             {
                                                         "id": "dhm-quiz-8",
@@ -149,7 +163,9 @@ const initDhmLmsApp = () => {
                                                                                     "Bắt đầu từ COMMUNITY (khách hàng, học viên và đối tác phản hồi tích cực về dịch vụ tổ chức)."
                                                         ],
                                                         "correctAnswer": "Bắt đầu từ ME (từng cá nhân tự hiểu mình, lựa chọn thái độ và chịu trách nhiệm với trải nghiệm).",
-                                                        "explanation": "Theo Slide 19 & 20 (và Slide 22), một tổ chức không thể 'làm cho' nhân viên hạnh phúc nếu thiếu nền tảng cá nhân. Hạnh phúc và văn hóa bắt đầu từ CÁ NHÂN (ME) - tự hiểu mình, sống đúng giá trị và chịu trách nhiệm với trải nghiệm; từ đó mới lan tỏa bền vững sang TẬP THỂ (WE) và CỘNG ĐỒNG (COMMUNITY)."
+                                                        "explanation": "Theo Slide 19 & 20 (và Slide 22), một tổ chức không thể 'làm cho' nhân viên hạnh phúc nếu thiếu nền tảng cá nhân. Hạnh phúc và văn hóa bắt đầu từ CÁ NHÂN (ME) - tự hiểu mình, sống đúng giá trị và chịu trách nhiệm với trải nghiệm; từ đó mới lan tỏa bền vững sang TẬP THỂ (WE) và CỘNG ĐỒNG (COMMUNITY).",
+                                                        "correctIndex": 0,
+                                                        "timeLimit": 30
                             },
                             {
                                                         "id": "dhm-quiz-9",
@@ -161,7 +177,9 @@ const initDhmLmsApp = () => {
                                                                                     "Bộ quy tắc ứng xử bắt buộc mà cá nhân cần tuân thủ nghiêm ngặt trong môi trường làm việc."
                                                         ],
                                                         "correctAnswer": "Những điều thật sự quan trọng đến mức chi phối cách mình ra quyết định, phản ứng và ưu tiên.",
-                                                        "explanation": "Theo Slide 21, 22 (Online) & Slide 36 (Offline), Giá trị Cốt lõi Cá nhân (ME Values) là những điều thật sự quan trọng nhất phản ánh động cơ sâu thẳm, chi phối cách ta ra quyết định, ưu tiên và tạo nên sự thống nhất trong công việc cũng như cuộc sống."
+                                                        "explanation": "Theo Slide 21, 22 (Online) & Slide 36 (Offline), Giá trị Cốt lõi Cá nhân (ME Values) là những điều thật sự quan trọng nhất phản ánh động cơ sâu thẳm, chi phối cách ta ra quyết định, ưu tiên và tạo nên sự thống nhất trong công việc cũng như cuộc sống.",
+                                                        "correctIndex": 0,
+                                                        "timeLimit": 30
                             },
                             {
                                                         "id": "dhm-quiz-10",
@@ -173,7 +191,9 @@ const initDhmLmsApp = () => {
                                                                                     "'Quyết định nào sẽ giúp tôi hạn chế tối đa sai sót và làm vừa lòng tất cả các bên liên quan?'"
                                                         ],
                                                         "correctAnswer": "'Khi phải đánh đổi, điều nào thường có trọng lượng lớn hơn trong quyết định của tôi?'",
-                                                        "explanation": "Theo Slide 22 & 37, khi đứng trước tình huống phải đánh đổi (Trade-off) giữa hai giá trị đều tốt đẹp, câu hỏi la bàn dẫn đường là: 'Khi phải đánh đổi, điều nào thường có trọng lượng lớn hơn trong quyết định của tôi?' để hành động thực tế (Đồng Hồ) luôn đồng nhất với điều cốt lõi (La Bàn)."
+                                                        "explanation": "Theo Slide 22 & 37, khi đứng trước tình huống phải đánh đổi (Trade-off) giữa hai giá trị đều tốt đẹp, câu hỏi la bàn dẫn đường là: 'Khi phải đánh đổi, điều nào thường có trọng lượng lớn hơn trong quyết định của tôi?' để hành động thực tế (Đồng Hồ) luôn đồng nhất với điều cốt lõi (La Bàn).",
+                                                        "correctIndex": 0,
+                                                        "timeLimit": 30
                             }
 ],
                         iam: {
@@ -1138,6 +1158,31 @@ const initDhmLmsApp = () => {
             try {
                 currentUser = JSON.parse(storedUser);
                 applyUserSession();
+
+                // NẾU TÀI KHOẢN ĐANG Ở TRẠNG THÁI HỌC THỬ (TRIAL) -> KIỂM TRA NỀN XEM ĐÃ ĐƯỢC COACH NÂNG CẤP CHÍNH THỨC CHƯA
+                if (currentUser && (currentUser.isTrial || currentUser.role === "trial") && currentUser.email) {
+                    const webhookUrl = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
+                    fetch(webhookUrl, {
+                        method: "POST",
+                        headers: { "Content-Type": "text/plain;charset=utf-8" },
+                        body: JSON.stringify({ action: "resolve_login_identity", identity: currentUser.email })
+                    }).then(res => res.json()).then(data => {
+                        if (data.success && data.learner && data.learner.enrollment_status === "ACTIVE" && !data.learner.isTrial && data.learner.role !== "trial") {
+                            console.log("[DHM LMS] Phát hiện học viên đã được nâng cấp chính thức từ Webhook:", data.learner);
+                            currentUser = {
+                                ...currentUser,
+                                ...data.learner,
+                                isTrial: false,
+                                role: data.learner.role || "Learner"
+                            };
+                            localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
+                            renderSyllabus();
+                            updateGlobalProgress();
+                        }
+                    }).catch(err => {
+                        console.warn("[DHM LMS] Kiểm tra nâng cấp nền không khả dụng:", err);
+                    });
+                }
             } catch (e) {
                 initGuestPreview();
                 showAuthModal();
@@ -2656,7 +2701,42 @@ const initDhmLmsApp = () => {
     };
 
     // Smart Resume Learning & Status Evaluator (Idempotent 2-Way Renderer)
+    function reconcileStage1QuizInMemory() {
+        const s1Data = (learnerProgress && learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || null;
+        if (!s1Data || !s1Data.quizAnswers) return;
+        const mod1 = (curriculum && curriculum.stages && curriculum.stages[0] && curriculum.stages[0].modules && curriculum.stages[0].modules[0]) || null;
+        const quizzes = (mod1 && Array.isArray(mod1.quizzes)) ? mod1.quizzes : [];
+        if (quizzes.length === 0) return;
+        const saved = s1Data.quizAnswers || {};
+        const answeredCount = Object.keys(saved).length;
+        if (answeredCount < quizzes.length) return;
+        let corr = 0;
+        quizzes.forEach(q => {
+            let cIdx = (typeof q.correctIndex === "number" && q.correctIndex >= 0) ? q.correctIndex : 0;
+            if (typeof q.correctIndex !== "number" && typeof q.correctAnswer === "string" && Array.isArray(q.options)) {
+                const found = q.options.indexOf(q.correctAnswer);
+                if (found !== -1) cIdx = found;
+            }
+            if (saved[q.id] !== undefined && Number(saved[q.id]) === cIdx) corr++;
+        });
+        const pct = Math.round((corr / quizzes.length) * 100);
+        const pass = pct >= 80;
+        if (s1Data.score !== corr || s1Data.percentage !== pct || s1Data.passed !== pass) {
+            if (s1Data.score === 0 && corr > 0 && s1Data.quizAttempts > 1 && !s1Data.hotfix_20261030_regraded) {
+                s1Data.quizAttempts = 1;
+            }
+            s1Data.score = corr;
+            s1Data.totalQuestions = quizzes.length;
+            s1Data.percentage = pct;
+            s1Data.passed = pass;
+            s1Data.hotfix_20261030_regraded = true;
+            saveLearnerProgress();
+            syncQuizResultToWebhook(corr, quizzes.length, pct, pass, s1Data.quizAttempts || 1, saved);
+        }
+    }
+
     function evaluateLearnerStatus() {
+        reconcileStage1QuizInMemory();
         const s1Data = (learnerProgress.stageData && learnerProgress.stageData["stage-1"]) || {};
         const isQuizPassed = Boolean(s1Data.passed || (s1Data.percentage >= 80));
 
@@ -3544,17 +3624,54 @@ const initDhmLmsApp = () => {
         }
         const savedAnswers = sData.quizAnswers || {};
         const maxAttempts = 3;
-        const attempts = sData.quizAttempts !== undefined ? sData.quizAttempts : (Object.keys(savedAnswers).length > 0 ? 1 : 0);
+        let attempts = sData.quizAttempts !== undefined ? sData.quizAttempts : (Object.keys(savedAnswers).length > 0 ? 1 : 0);
         const answeredCount = Object.keys(savedAnswers).length;
         const isCompleted = quizzes.length > 0 && answeredCount === quizzes.length;
 
-        // Calculate score
+        // Dual-schema helper: hỗ trợ cả correctIndex (number) và correctAnswer (string)
+        function getQuizCorrectIndex(q) {
+            if (!q) return 0;
+            if (typeof q.correctIndex === "number" && q.correctIndex >= 0) return q.correctIndex;
+            if (typeof q.correctAnswer === "string" && Array.isArray(q.options)) {
+                const idx = q.options.indexOf(q.correctAnswer);
+                if (idx !== -1) return idx;
+            }
+            return 0;
+        }
+
+        // Calculate score & Self-Heal (Tự chấm lại nếu học viên bị dính lỗi 0/10 trước đó)
         let correct = 0;
         quizzes.forEach(item => {
-            if (savedAnswers[item.id] === item.correctIndex) correct++;
+            const cIdx = getQuizCorrectIndex(item);
+            if (savedAnswers[item.id] !== undefined && Number(savedAnswers[item.id]) === cIdx) {
+                correct++;
+            }
         });
         const percent = quizzes.length > 0 ? Math.round((correct / quizzes.length) * 100) : 0;
         const passed = percent >= 80;
+
+        // Self-healing reconciliation: nếu đã làm đủ 10 câu mà điểm lưu cũ bị lệch (ví dụ 0/10 do thiếu correctIndex), tự động khôi phục ngay
+        if (isCompleted && (sData.score !== correct || sData.percentage !== percent || sData.passed !== passed)) {
+            const wasUnfairZero = (sData.score === 0 && correct > 0);
+            sData.score = correct;
+            sData.totalQuestions = quizzes.length;
+            sData.percentage = percent;
+            sData.passed = passed;
+            if (wasUnfairZero && sData.quizAttempts > 1 && !sData.hotfix_20261030_regraded) {
+                sData.quizAttempts = 1;
+                attempts = 1;
+            }
+            sData.hotfix_20261030_regraded = true;
+            saveLearnerProgress();
+            syncQuizResultToWebhook(correct, quizzes.length, percent, passed, sData.quizAttempts || 1, savedAnswers);
+        } else if (!isCompleted && sData.score === 0 && sData.quizAttempts > 1 && !sData.hotfix_20261030_regraded) {
+            // Học viên bị 0/10 rồi bấm "Thử lại" làm rỗng quizAnswers -> hoàn lại lượt thi về 1
+            sData.quizAttempts = 1;
+            sData.score = null;
+            sData.percentage = null;
+            sData.hotfix_20261030_regraded = true;
+            saveLearnerProgress();
+        }
 
         // Update badges
         if (quizAttemptBadge) {
@@ -3589,8 +3706,9 @@ const initDhmLmsApp = () => {
             const isQuestionAnswered = (userSelected !== undefined);
             q.options.forEach((opt, optIdx) => {
                 let btnClass = "border-brand-border bg-brand-dark/70 text-slate-300 hover:border-brand-amber/50 cursor-pointer active:scale-[0.99]";
+                const qCorrectIdx = getQuizCorrectIndex(q);
                 if (isQuestionAnswered) {
-                    if (optIdx === q.correctIndex) {
+                    if (optIdx === qCorrectIdx) {
                         btnClass = "border-brand-green bg-brand-green/10 text-brand-green font-semibold cursor-default";
                     } else if (optIdx === userSelected) {
                         btnClass = "border-red-500 bg-red-500/10 text-red-400 cursor-default";
@@ -3612,7 +3730,7 @@ const initDhmLmsApp = () => {
 
             let explanationHtml = "";
             if (userSelected !== undefined && q.explanation) {
-                const isUserCorrect = (userSelected === q.correctIndex);
+                const isUserCorrect = (Number(userSelected) === getQuizCorrectIndex(q));
                 explanationHtml = `
                     <div class="mt-2.5 p-3 rounded-lg ${isUserCorrect ? 'bg-brand-green/10 border border-brand-green/30 text-emerald-300' : 'bg-brand-card border border-brand-border text-slate-300'} text-xs leading-relaxed space-y-1">
                         <div class="font-bold flex items-center gap-1.5 ${isUserCorrect ? 'text-brand-green' : 'text-brand-amber'}">
@@ -3650,7 +3768,8 @@ const initDhmLmsApp = () => {
 
                         let currCorrect = 0;
                         quizzes.forEach(item => {
-                            if (learnerProgress.stageData["stage-1"].quizAnswers[item.id] === item.correctIndex) currCorrect++;
+                            const ans = learnerProgress.stageData["stage-1"].quizAnswers[item.id];
+                            if (ans !== undefined && Number(ans) === getQuizCorrectIndex(item)) currCorrect++;
                         });
                         const currPct = Math.round((currCorrect / quizzes.length) * 100);
                         learnerProgress.stageData["stage-1"].score = currCorrect;

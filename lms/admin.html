@@ -2856,10 +2856,32 @@
                     if (!learner) return;
 
                     const rawScore = cp["Điểm Quiz Chặng 1"] !== undefined && cp["Điểm Quiz Chặng 1"] !== "" ? cp["Điểm Quiz Chặng 1"] : (cp["Quiz Score"] !== undefined ? cp["Quiz Score"] : cp["score"]);
-                    const score = parseInt(rawScore || 0, 10);
+                    let score = parseInt(rawScore || 0, 10);
                     const total = parseInt(cp["Tổng Số Câu"] || cp["Quiz Total"] || cp["total"] || 10, 10);
                     const rawPct = cp["Tỷ Lệ Đúng (%)"] !== undefined && cp["Tỷ Lệ Đúng (%)"] !== "" ? cp["Tỷ Lệ Đúng (%)"] : (cp["Quiz Percent"] !== undefined ? cp["Quiz Percent"] : cp["percent"]);
-                    const percent = (rawPct !== undefined && rawPct !== null && rawPct !== "") ? parseInt(rawPct, 10) : (total > 0 ? Math.round((score / total) * 100) : 0);
+                    let percent = (rawPct !== undefined && rawPct !== null && rawPct !== "") ? parseInt(rawPct, 10) : (total > 0 ? Math.round((score / total) * 100) : 0);
+
+                    // Tự động chấm lại từ cột 'Chi Tiết Đáp Án Quiz (JSON)' nếu học viên bị chấm 0/10 do lỗi thiếu correctIndex
+                    const rawAnsJson = cp["Chi Tiết Đáp Án Quiz (JSON)"] || cp["quizAnswersJson"] || cp["answers"];
+                    if (rawAnsJson) {
+                        try {
+                            const ansObj = (typeof rawAnsJson === "string") ? JSON.parse(rawAnsJson) : rawAnsJson;
+                            if (ansObj && typeof ansObj === "object") {
+                                const ansKeys = Object.keys(ansObj).filter(k => k.startsWith("dhm-quiz-"));
+                                if (ansKeys.length > 0) {
+                                    let regraded = 0;
+                                    ansKeys.forEach(k => {
+                                        if (Number(ansObj[k]) === 0) regraded++;
+                                    });
+                                    if (regraded > score) {
+                                        score = regraded;
+                                        percent = total > 0 ? Math.round((score / total) * 100) : 0;
+                                    }
+                                }
+                            }
+                        } catch (eRegrade) {}
+                    }
+
                     const statusStr = String(cp["Trạng Thái Quiz"] || cp["Quiz Passed"] || "").trim();
                     const passed = (statusStr === "Đạt chuẩn" || cp["Quiz Passed"] === true || cp["Quiz Passed"] === "TRUE" || percent >= 80);
                     const duration = parseInt(cp["Thời Gian Làm (giây)"] || cp["Quiz Duration"] || cp["durationSeconds"] || 135, 10);
@@ -3544,6 +3566,13 @@
                         statusBadgeHtml = '<span class="px-2.5 py-1 rounded-lg bg-amber-500/15 text-amber-400 text-[10px] font-semibold border border-amber-500/30">Đang thi lại (&lt;80%)</span>';
                     }
 
+                    const isTrialLearner = Boolean(
+                        learner.isTrial ||
+                        learner.role === "trial" ||
+                        String(learner.cohort || "").toLowerCase().includes("trải nghiệm") ||
+                        String(learner.cohort || "").toLowerCase().includes("trial")
+                    );
+
                     tr.innerHTML = `
                         <td class="p-4">
                             <div class="font-bold text-white flex items-center gap-1.5">
@@ -3566,6 +3595,11 @@
                                 <button class="btn-inspect-test px-2.5 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-brand-amber hover:text-white border border-brand-border font-semibold transition-colors flex items-center gap-1 text-xs" data-id="${escapeHTML(learner.identity)}" title="Xem lịch sử bài thi">
                                     <span>👁️ Lịch Sử</span>
                                 </button>
+                                ${isTrialLearner ? `
+                                    <button class="btn-promote-trial px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-brand-amber/20 to-orange-500/20 hover:from-brand-amber hover:to-orange-500 text-brand-amber hover:text-black border border-brand-amber/40 font-bold transition-all flex items-center gap-1 text-xs shadow-sm hover:scale-105 active:scale-95" data-email="${escapeHTML(learner.email || learner.identity)}" data-name="${escapeHTML(learner.name || '')}" data-phone="${escapeHTML(learner.phone || '')}" data-cohort="DHM10" title="1-Click: Nâng cấp thành Học viên Chính thức DHM10 & Mở Chặng 2">
+                                        <span>🎓 Mở Chặng 2</span>
+                                    </button>
+                                ` : ''}
                                 ${learner.activation_status === "PENDING" ? `
                                     <button class="btn-instant-activate px-2.5 py-1.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white border border-emerald-500/30 font-semibold transition-colors flex items-center gap-1 text-xs" data-compound-key="${escapeHTML(learner.compound_key || '')}" data-email="${escapeHTML(learner.email || learner.identity)}" data-name="${escapeHTML(learner.name || '')}" data-cohort="${escapeHTML(learner.cohort || '')}" data-phone="${escapeHTML(learner.phone || '')}" title="Kích hoạt tức thì bằng tay">
                                         <span>⚡ Kích Hoạt Tay</span>
@@ -6998,6 +7032,65 @@ ${locationDate}`;
 
             // Gắn sự kiện Ủy quyền trên bảng (Event Delegation) cho Kích Hoạt Nhanh & Vô Hiệu Hóa
             document.addEventListener("click", async (e) => {
+                // 0. Nâng cấp 1-Click: Chuyển Học viên Trải nghiệm thành Học viên Chính thức DHM10 & Mở Chặng 2
+                const btnPromote = e.target.closest(".btn-promote-trial");
+                if (btnPromote) {
+                    const email = (btnPromote.dataset.email || "").trim().toLowerCase();
+                    const name = (btnPromote.dataset.name || email.split("@")[0]).trim();
+                    const rawPhone = (btnPromote.dataset.phone || "").trim();
+                    const cleanPhone = rawPhone.replace(/\D/g, "");
+                    const normalizedPhone = (cleanPhone.length === 9 && !cleanPhone.startsWith("0")) ? ("0" + cleanPhone) : cleanPhone;
+                    const targetCohort = (btnPromote.dataset.cohort || "DHM10").trim();
+
+                    if (!confirm(`Bạn có chắc muốn nâng cấp học viên ${name} (${email}) lên Học viên Chính thức ${targetCohort} và mở khóa Chặng 2 ngay?`)) return;
+
+                    btnPromote.disabled = true;
+                    btnPromote.innerHTML = `<span>⏳ Đang mở...</span>`;
+
+                    try {
+                        const res = await fetch(WEBHOOK_URL, {
+                            method: "POST",
+                            headers: { "Content-Type": "text/plain;charset=utf-8" },
+                            body: JSON.stringify({
+                                action: "admin_add_learner",
+                                full_name: name,
+                                email: email,
+                                phone: normalizedPhone,
+                                cohort: targetCohort,
+                                instant_activate: true,
+                                admin_notes: `1-Click Promoted to Official ${targetCohort} (Grant Stage 2)`
+                            })
+                        });
+                        const data = await res.json();
+                        if (data.success) {
+                            lastCreatedCredential = {
+                                cohort: targetCohort,
+                                name: name,
+                                username: email,
+                                password: data.default_password || (normalizedPhone.length >= 4 ? normalizedPhone.slice(-4) : "1234")
+                            };
+                            document.getElementById("cnm-cohort").textContent = lastCreatedCredential.cohort;
+                            document.getElementById("cnm-name").textContent = lastCreatedCredential.name;
+                            document.getElementById("cnm-username").textContent = lastCreatedCredential.username;
+                            document.getElementById("cnm-password").textContent = lastCreatedCredential.password;
+                            credentialModal.classList.remove("hidden");
+                            document.body.classList.add("overflow-hidden");
+
+                            alert(`🎉 Đã nâng cấp thành công học viên ${name} (${email}) thành Học viên Chính thức ${targetCohort}!\nChặng 2 đã được mở khóa tự động.`);
+                            await syncMasterRosterFromSheets(false);
+                        } else {
+                            alert("Lỗi nâng cấp: " + (data.message || data.error));
+                            btnPromote.disabled = false;
+                            btnPromote.innerHTML = `<span>🎓 Mở Chặng 2</span>`;
+                        }
+                    } catch (err) {
+                        alert("Lỗi kết nối: " + err.message);
+                        btnPromote.disabled = false;
+                        btnPromote.innerHTML = `<span>🎓 Mở Chặng 2</span>`;
+                    }
+                    return;
+                }
+
                 // 1. Kích hoạt tay tức thì
                 const btnActivate = e.target.closest(".btn-instant-activate");
                 if (btnActivate) {
