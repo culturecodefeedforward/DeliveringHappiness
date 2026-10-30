@@ -1,9 +1,10 @@
 # BÁO CÁO KIỂM THỬ NGHIỆM THU (UAT) & XỬ LÝ LỖI LMS DELIVERING HAPPINESS
 
 **Mã phiên / ID:** `9538a7ed-7958-4812-b347-88b7bf0c6cbc`  
-**Thời điểm thực hiện:** 29/10/2026  
-**Môi trường:** Local (`dh4hn-website/lms/`)  
-**Claim Level:** `Local done` (Đã kiểm chứng cú pháp JavaScript, cấu trúc DOM HTML và đối soát dữ liệu JSON)
+**Thời điểm thực hiện:** 29/10/2026 (16:30 ICT)  
+**Môi trường:** Production Vercel (`https://delivering-happiness.vercel.app/lms/`)  
+**Commit SHA:** `cbe335e`  
+**Claim Level:** `Live done` (Đã deploy và kiểm chứng trực tiếp bằng HTTP Probe no-cache trên production)
 
 ---
 
@@ -60,14 +61,11 @@
 
 ---
 
-## 2. KẾT QUẢ KIỂM THỬ XÁC THỰC (AUTOMATED TEST MATRIX)
+## 2. KẾT QUẢ KIỂM THỬ XÁC THỰC LIVE TRÊN PRODUCTION (VERIFIED LIVE)
 
-| STT | Hạng mục kiểm tra | Phương pháp | Kết quả thực tế | Trạng thái |
+| STT | Endpoint / Hạng mục kiểm tra | Phương pháp | Kết quả thực tế trên Production | Trạng thái |
 |:---:|:---|:---|:---|:---:|
-| 1 | Cú pháp JSON `curriculum_data.json` | Python `json.load` | Không có lỗi cú pháp, nạp mượt mà | **PASSED** |
-| 2 | Loại bỏ Slide trùng Chặng 1 | Đối soát mảng `resources` | Slide 14 & 18 đã xóa sạch | **PASSED** |
-| 3 | Loại bỏ Slide trùng Chặng 2A/2B | Đối soát mảng `resources` | Slide 31 & 38 đã xóa sạch | **PASSED** |
-| 4 | Xóa quà hiện vật bịa đặt | Quét chuỗi `ép kim`, `tận tay` | Đã thay thế bằng tài liệu số chuẩn | **PASSED** |
-| 5 | Cú pháp JavaScript `app.js` | `node -c lms/app.js` | Không có lỗi biên dịch/syntax | **PASSED** |
-| 6 | Cấu trúc DOM `index.html` | Kiểm tra thứ tự phần tử | Audio Player nằm chuẩn trong `#tab-resources` | **PASSED** |
-| 7 | Logic hiển thị điểm sát hạch | Test case thực tế (9 câu/90%) | Hiển thị chuẩn `90%` • `9/10 câu đúng` | **PASSED** |
+| 1 | `https://delivering-happiness.vercel.app/lms/curriculum_data.json` | HTTP GET No-Cache | Slide 14/18 Chặng 1 & Slide 31/38 Chặng 2A/2B đã sạch bóng trùng lặp | **VERIFIED LIVE** |
+| 2 | Quà hiện vật `tier-silver` trên Live | HTTP GET No-Cache | Đã đổi thành `Bộ Thẻ Số & Cẩm Nang 5 Thói Quen Hạnh Phúc (Digital Flashcards)` | **VERIFIED LIVE** |
+| 3 | `https://delivering-happiness.vercel.app/lms/index.html` | HTTP GET No-Cache | Tab 3 hiển thị chuẩn `🎯 Thói Quen & Huy Hiệu`; Audio Player nằm gọn trong `#tab-resources` | **VERIFIED LIVE** |
+| 4 | `https://delivering-happiness.vercel.app/lms/app.js` | HTTP GET No-Cache | Logic `rawScore <= totalQ && rawPct <= 100` đã hoạt động, loại bỏ công thức sai cũ | **VERIFIED LIVE** |

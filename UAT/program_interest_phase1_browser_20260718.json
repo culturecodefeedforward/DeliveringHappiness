@@ -1,0 +1,102 @@
+{
+  "generatedAt": "2026-07-18T11:30:26.952Z",
+  "checks": [
+    {
+      "surface": "Browser UAT",
+      "name": "initial conditional panels hidden",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\screenshots\\program_interest_phase1_20260718\\desktop-initial.png",
+      "detail": ""
+    },
+    {
+      "surface": "Browser UAT",
+      "name": "DHM8 confirmed success",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\screenshots\\program_interest_phase1_20260718\\desktop-dhm8-success.png",
+      "detail": "{\"status\":{\"text\":\"CultureCode Team đã ghi nhận thông tin quan tâm của bạn. Chúng tôi sẽ liên hệ khi có chương trình phù hợp.\",\"className\":\"status is-visible is-success\"},\"payload\":{\"type\":\"PROGRAM_INTEREST\",\"event_id\":\"PROGRAM_INTEREST_V1\",\"source\":\"Web_Program_Interest\",\"interestUuid\":\"29168ac6-dffd-4568-8028-120d3b0cd667\",\"fullName\":\"Nguyen Van UAT\",\"email\":\"uat@example.com\",\"phone\":\"+84901234567\",\"company\":\"CultureCode Test\",\"role\":\"Quan ly\",\"preferredLocation\":\"TP.HCM\",\"interestedPrograms\":[\"DHM8\"],\"wantsDhm8\":true,\"wantsDhm9\":false,\"wantsNvc\":false,\"wantsAi\":false,\"dhmExpectation\":\"UAT DHM8\",\"dhmPreferredCohort\":\"DHM8 TP.HCM\",\"nvcSituation\":\"\",\"nvcRelationship\":\"\",\"nvcExpectation\":\"\",\"aiExperienceLevel\":\"\",\"aiUseCase\":\"\",\"aiPreferredFormat\":\"\",\"note\":\"\",\"consent\":true}}"
+    },
+    {
+      "surface": "Browser UAT",
+      "name": "DHM9 mobile confirmed success",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\screenshots\\program_interest_phase1_20260718\\mobile-dhm9-success.png",
+      "detail": ""
+    },
+    {
+      "surface": "Browser UAT",
+      "name": "NVC conditional payload succeeds",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\screenshots\\program_interest_phase1_20260718\\desktop-nvc-success.png",
+      "detail": ""
+    },
+    {
+      "surface": "Browser UAT",
+      "name": "AI conditional payload succeeds",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\screenshots\\program_interest_phase1_20260718\\desktop-ai-success.png",
+      "detail": ""
+    },
+    {
+      "surface": "Browser UAT",
+      "name": "UUID mismatch never shows success",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\screenshots\\program_interest_phase1_20260718\\desktop-uuid-mismatch-error.png",
+      "detail": "Hệ thống chưa xác nhận đã ghi nhận. Vui lòng kiểm tra kết nối và thử gửi lại; CultureCode chưa coi lượt này là thành công."
+    },
+    {
+      "surface": "Browser UAT",
+      "name": "JSONP status error never shows success",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\screenshots\\program_interest_phase1_20260718\\desktop-status-error.png",
+      "detail": "Hệ thống chưa xác nhận đã ghi nhận. Vui lòng kiểm tra kết nối và thử gửi lại; CultureCode chưa coi lượt này là thành công."
+    },
+    {
+      "surface": "Browser UAT",
+      "name": "retry recovers and reuses UUID",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\program_interest_phase1_browser_20260718.json",
+      "detail": "{\"first\":{\"text\":\"Hệ thống chưa xác nhận đã ghi nhận. Vui lòng kiểm tra kết nối và thử gửi lại; CultureCode chưa coi lượt này là thành công.\",\"className\":\"status is-visible is-error\"},\"second\":{\"text\":\"CultureCode Team đã ghi nhận thông tin quan tâm của bạn. Chúng tôi sẽ liên hệ khi có chương trình phù hợp.\",\"className\":\"status is-visible is-success\"},\"uuid1\":\"7f9e4d02-69f0-47e0-87aa-207f11883e21\",\"uuid2\":\"7f9e4d02-69f0-47e0-87aa-207f11883e21\"}"
+    },
+    {
+      "surface": "Browser UAT",
+      "name": "homepage links Program Interest",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\screenshots\\program_interest_phase1_20260718\\homepage-cta.png",
+      "detail": "program-interest.html"
+    }
+  ],
+  "evidence": [
+    {
+      "case": "DHM8",
+      "payload": {
+        "type": "PROGRAM_INTEREST",
+        "event_id": "PROGRAM_INTEREST_V1",
+        "source": "Web_Program_Interest",
+        "interestUuid": "29168ac6-dffd-4568-8028-120d3b0cd667",
+        "fullName": "Nguyen Van UAT",
+        "email": "uat@example.com",
+        "phone": "+84901234567",
+        "company": "CultureCode Test",
+        "role": "Quan ly",
+        "preferredLocation": "TP.HCM",
+        "interestedPrograms": [
+          "DHM8"
+        ],
+        "wantsDhm8": true,
+        "wantsDhm9": false,
+        "wantsNvc": false,
+        "wantsAi": false,
+        "dhmExpectation": "UAT DHM8",
+        "dhmPreferredCohort": "DHM8 TP.HCM",
+        "nvcSituation": "",
+        "nvcRelationship": "",
+        "nvcExpectation": "",
+        "aiExperienceLevel": "",
+        "aiUseCase": "",
+        "aiPreferredFormat": "",
+        "note": "",
+        "consent": true
+      }
+    }
+  ]
+}

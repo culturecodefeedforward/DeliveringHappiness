@@ -3,8 +3,12 @@
   "redirects": [
     { "source": "/login", "destination": "/lms", "permanent": true },
     { "source": "/login.html", "destination": "/lms", "permanent": true },
-    { "source": "/interest_dh10", "destination": "/next_dhm", "permanent": true },
-    { "source": "/interest_dh10.html", "destination": "/next_dhm", "permanent": true },
+    { "source": "/interest_dh10", "destination": "/next_dhm", "permanent": false },
+    { "source": "/interest_dh10.html", "destination": "/next_dhm", "permanent": false },
+    { "source": "/interest", "destination": "/next_dhm", "permanent": false },
+    { "source": "/interest.html", "destination": "/next_dhm", "permanent": false },
+    { "source": "/register", "destination": "/register_dhm10", "permanent": false },
+    { "source": "/register.html", "destination": "/register_dhm10", "permanent": false },
     { "source": "/h", "destination": "/", "permanent": false }
   ],
   "rewrites": [

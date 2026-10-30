@@ -894,10 +894,11 @@
     "name": "Lê Thị Hiên",
     "email": "hienle292@gmail.com",
     "phone": "0931494124",
-    "cohort": "DHM_Registration",
+    "cohort": "DHM10",
     "role": "Learner",
-    "is_paid": false,
-    "payment_status": "PENDING"
+    "is_paid": true,
+    "payment_status": "PAID",
+    "isTrial": false
   },
   {
     "name": "Lê Thị Thanh Hằng",
@@ -922,9 +923,10 @@
     "email": "quochung.reo@gmail.com",
     "phone": "0812468678",
     "cohort": "DHM_Registration",
-    "role": "Learner",
+    "role": "trial",
     "is_paid": false,
-    "payment_status": "PENDING"
+    "payment_status": "PENDING",
+    "isTrial": true
   },
   {
     "name": "Nguyễn Duy Trường",
@@ -940,9 +942,10 @@
     "email": "hoanghuongs@gmail.com",
     "phone": "0904647688",
     "cohort": "DHM_Registration",
-    "role": "Learner",
+    "role": "trial",
     "is_paid": false,
-    "payment_status": "PENDING"
+    "payment_status": "PENDING",
+    "isTrial": true
   },
   {
     "name": "Nguyễn Ngọc Khánh Ngân",
@@ -1011,19 +1014,21 @@
     "name": "Ngô Thị Phương Thảo",
     "email": "ngothiphuong.thao@vn.nestle.com",
     "phone": "0347015343",
-    "cohort": "DHM_Registration",
+    "cohort": "DHM10",
     "role": "Learner",
-    "is_paid": false,
-    "payment_status": "PENDING"
+    "is_paid": true,
+    "payment_status": "PAID",
+    "isTrial": false
   },
   {
     "name": "Phúc HIPER",
     "email": "hiper@hiperconsulting.vn",
     "phone": "0844666674",
-    "cohort": "DHM_Registration",
+    "cohort": "DHM10",
     "role": "Learner",
-    "is_paid": false,
-    "payment_status": "PENDING"
+    "is_paid": true,
+    "payment_status": "PAID",
+    "isTrial": false
   },
   {
     "name": "Sofia",
@@ -1605,10 +1610,11 @@
     "name": "Phan thị Thùy Dương",
     "email": "thuyduong@danfoss.com",
     "phone": "0914309900",
-    "cohort": "DHM5",
+    "cohort": "DHM10",
     "role": "Learner",
     "is_paid": true,
-    "payment_status": "PAID"
+    "payment_status": "PAID",
+    "isTrial": false
   },
   {
     "name": "Hoàng Gia Lê Huỳnh Tuyến",
@@ -3698,13 +3704,14 @@
   {
     "name": "Lê Vũ Nhật Vy",
     "email": "vy.levunhat@apollo.edu.vn",
-    "phone": "",
-    "cohort": "Team happiness Apollo OCT2026",
+    "phone": "0972549260",
+    "cohort": "DHM10",
     "role": "Learner",
     "force_pwd_change": false,
     "default_pwd": "1234",
     "is_paid": true,
-    "payment_status": "PAID"
+    "payment_status": "PAID",
+    "isTrial": false
   },
   {
     "name": "Trần Ngọc Bang",
@@ -3830,13 +3837,14 @@
   {
     "name": "Lý Thị Tố Viên",
     "email": "vien.ly@apollo.edu.vn",
-    "phone": "",
-    "cohort": "Team happiness Apollo OCT2026",
+    "phone": "0386618832",
+    "cohort": "DHM10",
     "role": "Learner",
     "force_pwd_change": false,
     "default_pwd": "1234",
     "is_paid": true,
-    "payment_status": "PAID"
+    "payment_status": "PAID",
+    "isTrial": false
   },
   {
     "name": "Nguyễn Ngọc Dung",
@@ -3852,13 +3860,14 @@
   {
     "name": "Lê Thị Kim Cương",
     "email": "cuong.le@apollo.edu.vn",
-    "phone": "",
-    "cohort": "Team happiness Apollo OCT2026",
+    "phone": "0949658091",
+    "cohort": "DHM10",
     "role": "Learner",
     "force_pwd_change": false,
     "default_pwd": "1234",
     "is_paid": true,
-    "payment_status": "PAID"
+    "payment_status": "PAID",
+    "isTrial": false
   },
   {
     "name": "Đoàn Dũng",
@@ -4816,5 +4825,1025 @@
     "center": "Apollo Hà Nội — Phố Huế",
     "is_paid": true,
     "payment_status": "PAID"
+  },
+  {
+    "name": "Nguyễn Thị Như Ý",
+    "email": "nhuyschademan@gmail.com",
+    "phone": "0907475423",
+    "cohort": "DHM10",
+    "role": "Learner",
+    "is_paid": true,
+    "payment_status": "PAID",
+    "isTrial": false
+  },
+  {
+    "name": "Phuoc Nguyen",
+    "email": "phuoc.nguyen@ap.averydennison.com",
+    "phone": "0834330511",
+    "cohort": "DHM10",
+    "role": "Learner",
+    "is_paid": true,
+    "payment_status": "PAID",
+    "isTrial": false
+  },
+  {
+    "name": "Yến Nguyễn",
+    "email": "yennguyen.consulting@gmail.com",
+    "phone": "0935000066",
+    "cohort": "DHM10",
+    "role": "Learner",
+    "is_paid": true,
+    "payment_status": "PAID",
+    "isTrial": false
+  },
+  {
+    "name": "Trần Đình Bảo Ngọc",
+    "email": "baongoc260604@gmail.com",
+    "phone": "0918878338",
+    "cohort": "DHM10",
+    "role": "Learner",
+    "is_paid": true,
+    "payment_status": "PAID",
+    "isTrial": false
+  },
+  {
+    "name": "Lê Nhã Nhật Hân",
+    "email": "nhathanln@gmail.com",
+    "phone": "0941402902",
+    "cohort": "DHM10",
+    "role": "Learner",
+    "is_paid": true,
+    "payment_status": "PAID",
+    "isTrial": false
+  },
+  {
+    "name": "Phạm Uyên Trinh",
+    "email": "uyentrinhp@gmail.com",
+    "phone": "0368111489",
+    "cohort": "DHM10",
+    "role": "Learner",
+    "is_paid": true,
+    "payment_status": "PAID",
+    "isTrial": false
+  },
+  {
+    "name": "Phạm Tấn  Bảo Thuyên",
+    "email": "ptbaothuyen@gmail.com",
+    "phone": "0905116751",
+    "cohort": "DHM10",
+    "role": "Learner",
+    "is_paid": true,
+    "payment_status": "PAID",
+    "isTrial": false
+  },
+  {
+    "name": "Trần Thị Hải Anh",
+    "email": "tranthihaianh.evania@gmail.com",
+    "phone": "0904595100",
+    "cohort": "DHM10",
+    "role": "Learner",
+    "is_paid": true,
+    "payment_status": "PAID",
+    "isTrial": false
+  },
+  {
+    "name": "LUONG KY LINH",
+    "email": "luongkylinh99@gmail.com",
+    "phone": "0562360879",
+    "cohort": "DHM10",
+    "role": "Learner",
+    "is_paid": true,
+    "payment_status": "PAID",
+    "isTrial": false
+  },
+  {
+    "name": "TRUONG THANH CAM",
+    "email": "thanhcam27@gmail.com",
+    "phone": "0903444101",
+    "cohort": "DHM10",
+    "role": "Learner",
+    "is_paid": true,
+    "payment_status": "PAID",
+    "isTrial": false
+  },
+  {
+    "name": "Phạm Ánh Minh",
+    "email": "minhpa8@gmail.com",
+    "phone": "0794289377",
+    "cohort": "DHM10",
+    "role": "Learner",
+    "is_paid": true,
+    "payment_status": "PAID",
+    "isTrial": false
+  },
+  {
+    "name": "Nguyễn Tuyết Vân",
+    "email": "tuyetvannguyen86@gmail.com",
+    "phone": "0908789950",
+    "cohort": "DHM10",
+    "role": "Learner",
+    "is_paid": true,
+    "payment_status": "PAID",
+    "isTrial": false
+  },
+  {
+    "name": "Trần Tường Vi",
+    "email": "trantuongvi@gmail.com",
+    "phone": "0909091049",
+    "cohort": "DHM10",
+    "role": "Learner",
+    "is_paid": true,
+    "payment_status": "PAID",
+    "isTrial": false
+  },
+  {
+    "name": "Trần Thi Mai Thúy",
+    "email": "maithuy639@gmail.com",
+    "phone": "0934578844",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Tran Thi Ngoc Ha",
+    "email": "ngocha032012@gmail.com",
+    "phone": "0901986811",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Hàn Phương Thanh",
+    "email": "thanh.han@apollo.edu.vn",
+    "phone": "0933168639",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Phạm Trường Anh",
+    "email": "phamtruonganh1911@gmail.com",
+    "phone": "0932107853",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nguyễn Phạm Đăng Khoa",
+    "email": "khoa.nguyenphamdang@apollo.edu.vn",
+    "phone": "0986577930",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nguyễn Phi Yến",
+    "email": "yennguyenphi@gmail.com",
+    "phone": "0931146814",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nguyễn thị Hồng",
+    "email": "nguyenthihongbxd72@gmail.com",
+    "phone": "0912044753",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Dang Hien",
+    "email": "dangthuhien2004@gmail.com",
+    "phone": "0904550882",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nguyễn Thi",
+    "email": "thithanhbinh_nguyen@yahoo.com",
+    "phone": "0912352554",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Hoàng Mai Phương",
+    "email": "babysociu235@gmail.com",
+    "phone": "0946218397",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Phan Thị Lan Nhi",
+    "email": "nhi.phan.yuanta@gmail.com",
+    "phone": "0987646237",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Đặng Thu Hương",
+    "email": "hdangthu@gmail.com",
+    "phone": "0869661499",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nguyễn Trí Hiển",
+    "email": "hientringuyen@gmail.com",
+    "phone": "0933015086",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Vũ Thị Ngọc Hạnh",
+    "email": "vuphong07112018@gmail.com",
+    "phone": "0908813115",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Trương Lan Hương",
+    "email": "truonglanhuong91@gmail.com",
+    "phone": "91904999",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nguyễn Hà Giang",
+    "email": "giang.nguyen2@mht.masangroup.com",
+    "phone": "0968204023",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Trần Thị Bích Hảo",
+    "email": "bichhao0707@gmail.com",
+    "phone": "0962905211",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nguyễn Thị Bích Huyền",
+    "email": "huyenntb1@rox.vn",
+    "phone": "0913253471",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Linh Bui",
+    "email": "linh.bui.thuy.1510@gmail.com",
+    "phone": "0904621860",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Trần Thị Huyền",
+    "email": "ngochuyen17091997@gmail.com",
+    "phone": "0862858597",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Lã Trần Minh",
+    "email": "tranminhla1975@gmail.com",
+    "phone": "0385293120",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Hien Bui",
+    "email": "maihienbui@gmail.com",
+    "phone": "0963209191",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Chi Luu le",
+    "email": "chiluule@gmail.com",
+    "phone": "0989605388",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Phuong Dao",
+    "email": "phuong.songha@gmail.com",
+    "phone": "0904666086",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Phạm Thanh Dung",
+    "email": "bestforlastdt@gmail.com",
+    "phone": "0989327899",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nguyễn Quy Long",
+    "email": "nquylong@termo.com.sv",
+    "phone": "0868877998",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Vũ Văn Quỳnh",
+    "email": "vuquynh@termo.com.sv",
+    "phone": "0974955958",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Chu Thị Tâm",
+    "email": "chuthitam@termo.com.sv",
+    "phone": "",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Phạm Phú Cường",
+    "email": "phamcuong@termo.com.sv",
+    "phone": "0968074555",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Hoàng Thị Thu Phương",
+    "email": "hphuong@termo.com.sv",
+    "phone": "0856668868",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nguyễn Thị Hồng Nhung",
+    "email": "nguyenhong@termo.com.sv",
+    "phone": "0948348456",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Trịnh Thị Ánh Minh",
+    "email": "minhtrinh@termo.com.sv",
+    "phone": "0398633071",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Hoàng Thị Ngà",
+    "email": "ngahoang@termo.com.sv",
+    "phone": "0978983699",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nguyễn Quang Định",
+    "email": "nguyenquangdinh@termo.com.sv",
+    "phone": "0827886053",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nguyễn Tiến Chung",
+    "email": "chung.nguyen@termo.com.sv",
+    "phone": "0832588668",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Lê Thu Thảo",
+    "email": "thaolt109@gmail.com",
+    "phone": "0343017710",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Phạm Văn Huân",
+    "email": "phamhuan.dtp@gmail.com",
+    "phone": "0343690117",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Lê Thị Lý",
+    "email": "ly.le@mht.masangroup.com",
+    "phone": "0986333791",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Lê Thị Thu Thuỷ",
+    "email": "lethuytn79@gmail.com",
+    "phone": "0987636248",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Doãn Hoài Bắc",
+    "email": "hoaibac.doan@gmail.com",
+    "phone": "0988643178",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nguyễn Thị Phượng",
+    "email": "nguyenphuong037tnu@gmail.com",
+    "phone": "0985472499",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nguyễn Thị Hồng Minh",
+    "email": "minhnth.hmp@gmail.com",
+    "phone": "0826862313",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Hoàng Huệ",
+    "email": "hoanghue1987@gmail.com",
+    "phone": "0984277598",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Lê Bích Thục",
+    "email": "thucle@vigafun.com",
+    "phone": "0367750806",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Dương Thị Vinh",
+    "email": "duongvinh86@gmail.com",
+    "phone": "0936277115",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Vũ Hoàng (Test QA Next DHM Hanoi)",
+    "email": "dev.nexthn.e2e@culturecode.test",
+    "phone": "0911002233",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nguyễn Cẩm Lê",
+    "email": "lenguyencam@gmail.com",
+    "phone": "0916295830",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Phạm Thị Bích Thuỳ",
+    "email": "rosepham9786@gmail.com",
+    "phone": "0986698848",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Phạm Thị Xuân Linh",
+    "email": "xuanlinh1211@gmail.com",
+    "phone": "0933210029",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Huỳnh Hữu Minh Nhật",
+    "email": "huynhhuuminhnhat@gmail.com",
+    "phone": "0909838257",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Lê Quang Thu Ngọc",
+    "email": "lequangthungoc@gmail.com",
+    "phone": "0938823456",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Đoàn Dũng",
+    "email": "doandungeco@gmail.com",
+    "phone": "0905297813",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Test User",
+    "email": "test@example.com",
+    "phone": "0987654321",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Codex UAT 20260812",
+    "email": "codex.uat.20260812@example.com",
+    "phone": "0987654321",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "ưqwqrwqr",
+    "email": "a@a.v",
+    "phone": "721497174217",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "UAT Program Interest A3 20260813",
+    "email": "uat-program-interest-a3-20260813@example.invalid",
+    "phone": "0900000083",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "dssf33",
+    "email": "a@a.c",
+    "phone": "21232321232213",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "âfas",
+    "email": "sfaf@a.v",
+    "phone": "0222208033",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Thuỷ Tiên",
+    "email": "thuytiendo.ulaw@gmail.com",
+    "phone": "0372676886",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nguyễn Thị Thuỳ Linh",
+    "email": "linh.nguyen@deepc.vn",
+    "phone": "0376498694",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nghiêm Diệu Linh",
+    "email": "nghiemdieulinh89@gmail.com",
+    "phone": "0705041691",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "hungnq",
+    "email": "hungnq@kiennhan.net",
+    "phone": "0895889872",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "vuhoang2708.jul.2026@gmail.com",
+    "email": "vuhoang2708.jul.2026@gmail.com",
+    "phone": "8855654458",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Hoc vien Auto 99",
+    "email": "test.learner.auto99@example.com",
+    "phone": "0901234567",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Học viên Thử nghiệm 01",
+    "email": "demo.learner01@example.com",
+    "phone": "0900000000",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nguyễn Việt Hà",
+    "email": "nguyenvietha101091@gmail.com",
+    "phone": "0349542558",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Phạm Hà Phươnh",
+    "email": "phuong.phamha@gmail.com.vn",
+    "phone": "0989609971",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Huong Ly",
+    "email": "huongly08@gmail.com",
+    "phone": "0982130989",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "giveawayhan2026",
+    "email": "giveawayhan2026@gmail.com",
+    "phone": "0997956464",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nguyễn Thị Trúc Phương",
+    "email": "pbuong.nguyenthitruc@apollo.edu.vn",
+    "phone": "0705149872",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nhi",
+    "email": "nhi.dothiyen@apollo.edu.vn",
+    "phone": "0984590439",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Lê thị Thanh Chỉ",
+    "email": "chi.le.thithanh.271197@gmail.com",
+    "phone": "0363105497",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Hoàng Thanh Thảo",
+    "email": "thao.hoangthanh@apollo.edu.vn",
+    "phone": "0964224187",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Hien",
+    "email": "hienphamthidieu672@gmail.com",
+    "phone": "0355470672",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Phạm Tùng",
+    "email": "pxt.junimin@gmail.com",
+    "phone": "0965570822",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Tùng Phạm",
+    "email": "tung2701.work@gmail.com",
+    "phone": "0965570821",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "giveawwayoct2026",
+    "email": "giveawwayoct2026@gmail.com",
+    "phone": "0123456899",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "hoangknhmy",
+    "email": "hoangknhmy@gmail.com",
+    "phone": "0123456899",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Hồ sỹ Trí",
+    "email": "minhtri190388@gmail.com",
+    "phone": "0972258804",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nguyễn Hoàng Nam",
+    "email": "chipper12495@gmail.com",
+    "phone": "0393006555",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Đỗ Quỳnh Trang",
+    "email": "trang333@gmail.com",
+    "phone": "0976752772",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nguyễn Hoàng Nam",
+    "email": "chipper12494@gmail.com",
+    "phone": "0393006555",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Đỗ Quỳnh Trang",
+    "email": "trangvit13@gmail.com",
+    "phone": "0976752222",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Phan",
+    "email": "havanphan1985@gmail.com",
+    "phone": "0946102885",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "vuhoang2708jul2026",
+    "email": "vuhoang2708jul2026@gmail.com",
+    "phone": "0938364721",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Đinh Thuỳ Anh",
+    "email": "dinhtanh411@gmail.com",
+    "phone": "0397271696",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nguyễn Duy Khánh",
+    "email": "ndk280601@gmail.com",
+    "phone": "0971530951",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Nguyễn Thị Diễm My",
+    "email": "my.nguyenthidiem@apollo.edu.vn",
+    "phone": "0356266269",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
+  },
+  {
+    "name": "Trần Thụy Yến My",
+    "email": "my.tranthuyyen@apollo.edu.vn",
+    "phone": "0989932942",
+    "cohort": "Học viên Trải nghiệm Chặng 1",
+    "role": "trial",
+    "is_paid": false,
+    "payment_status": "TRIAL",
+    "isTrial": true
   }
 ]

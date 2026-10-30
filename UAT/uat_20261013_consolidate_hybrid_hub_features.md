@@ -1,15 +1,18 @@
-# Báo cáo Kiểm thử Nghiệm thu Cục bộ (Local UAT Report)
+# Báo cáo Kiểm thử Nghiệm thu (UAT Report - Local & Live Production)
 **Ngày thực hiện:** 13/10/2026  
 **Mục tiêu:** Kiểm chứng gộp thông tin tính năng trùng lặp của 2 điểm cầu lên phần thông tin chung của 2 miền tại `hero-hybrid-card`.  
-**Tệp kiểm thử:** `dh4hn-website/index.html`  
-**Kịch bản kiểm thử tự động:** `dh4hn-website/scratch/test_consolidated_hubs_puppeteer.js`  
+**Tệp nguồn:** `dh4hn-website/index.html`  
+**Production URL:** `https://delivering-happiness.vercel.app/`  
+**Kịch bản kiểm thử tự động:**  
+- Cục bộ: `dh4hn-website/scratch/test_consolidated_hubs_puppeteer.js`  
+- Trực tuyến (Live): `dh4hn-website/scratch/test_live_consolidated_hubs_puppeteer.js`  
 **Công cụ kiểm thử:** Puppeteer (Headless Chromium)  
 
 ---
 
-## 1. Kết quả Kiểm thử Tổng thể: 100% PASS (5/5 Viewports)
+## 1. Kết quả Kiểm thử Live Production (100% PASS trên cả 5 Viewports)
 
-| Viewport | Kích thước (WxH) | scrollWidth | clientWidth | Tràn viền (Overflow) | Thông tin chung 2 miền ở Header | Điểm cầu HN gọn gàng | Điểm cầu HCM gọn gàng | Trạng thái |
+| Viewport | Kích thước (WxH) | scrollWidth | clientWidth | Tràn viền (Overflow) | Thông tin chung 2 miền ở Header | Điểm cầu HN gọn gàng | Điểm cầu HCM gọn gàng | Trạng thái Live |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **iPhone SE** | 375 x 667 | 375px | 375px | **0px (Không)** | Đạt (Không gian chuẩn QT + Giảng viên cơ hữu) | Đạt (Không trùng lặp) | Đạt (Không trùng lặp) | **PASS** |
 | **iPhone 14** | 390 x 844 | 390px | 390px | **0px (Không)** | Đạt (Không gian chuẩn QT + Giảng viên cơ hữu) | Đạt (Không trùng lặp) | Đạt (Không trùng lặp) | **PASS** |
@@ -19,7 +22,7 @@
 
 ---
 
-## 2. Chi tiết Nghiệm thu Từng Thành phần
+## 2. Chi tiết Nghiệm thu Trực tiếp trên Live Production
 
 1. **Khối Thông tin chung 2 Miền (Header `.hero-hybrid-card`):**
    - Đã đưa 2 ý chung lên phần tiêu đề chung của khóa học:
@@ -34,7 +37,7 @@
 
 ---
 
-## 3. Kết luận
-Mã nguồn cục bộ đáp ứng 100% yêu cầu của User:
-- Giao diện cô đọng, thanh thoát, mạch lạc.
-- Sẵn sàng xin phê duyệt Cấp độ 3 từ User để commit và push lên production.
+## 3. Lịch sử Git & Triển khai
+- **Commit hash:** `2a99116` (`feat(ui): consolidate common hybrid hub features and remove duplicate descriptions`)
+- **Remote branch:** `origin/main` (https://github.com/culturecodefeedforward/DeliveringHappiness.git)
+- **Vercel Production:** Triển khai và xác thực thành công trên URL thực tế `https://delivering-happiness.vercel.app/`.

@@ -1,0 +1,153 @@
+{
+  "targetUrl": "https://delivering-happiness.vercel.app/lms/",
+  "testedAt": "2026-10-05T11:36:53.902Z",
+  "viewports": [
+    "Desktop 1280x800",
+    "Mobile 375x812 (iPhone)"
+  ],
+  "cases": {
+    "case1": {
+      "name": "Modal Quick Start 4 bước chuẩn hóa",
+      "pass": true,
+      "details": {
+        "step1Ok": true,
+        "step2Ok": true,
+        "step3Ok": true,
+        "step4Ok": true,
+        "tipOk": true,
+        "quickStartDismissed": true
+      },
+      "screenshot": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\screenshots\\case1_quick_start_modal_desktop.png"
+    },
+    "case2": {
+      "name": "Nút Video Tổng quan Header/Sidebar & Lightbox Modal",
+      "pass": true,
+      "details": {
+        "videoBtnExists": {
+          "headerBtn": true,
+          "sidebarBtn": true
+        },
+        "titleOk": true,
+        "srcOk": true,
+        "videoClosed": true
+      },
+      "screenshot": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\screenshots\\case2_video_lightbox_desktop.png"
+    },
+    "case3": {
+      "name": "Tiêu đề sạch sẽ Chặng 1 & Thanh Milestone 4 nấc",
+      "pass": true,
+      "details": {
+        "milestoneTextOk": true,
+        "pillsOk": true,
+        "cleanTitlesOk": true,
+        "noMucLabel": true,
+        "pills": {
+          "levels": "○\n1. 3 Cấp Độ Hạnh Phúc",
+          "values": "○\n2. La Bàn Me Values",
+          "drivers": "○\n3. 3 Đòn Bẩy Hạnh Phúc",
+          "quiz": "○\n4. Cổng Vượt Chặng (≥80%)"
+        }
+      },
+      "screenshot": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\screenshots\\case3_milestone_and_clean_titles_desktop.png"
+    },
+    "case4": {
+      "name": "Bài 1.2 render 2 slide inline & Slide inline Bài 1.1, 1.3",
+      "pass": true,
+      "details": {
+        "hasDefSlide": true,
+        "hasSlide23": true,
+        "mod1HasSlides": true,
+        "mod3HasSlides": true,
+        "mod2Imgs": [
+          "https://delivering-happiness.vercel.app/data/artifacts/slides/slide_core_values_definition.jpg",
+          "https://delivering-happiness.vercel.app/data/artifacts/slides/slide_23.png"
+        ]
+      },
+      "screenshot": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\screenshots\\case4_lesson1_2_slides_desktop.png"
+    },
+    "case5": {
+      "name": "PHẦN 2 thực hành Chặng 1 mặc định thu nhỏ (collapsed), mở rộng thành công",
+      "pass": true,
+      "details": {
+        "case5Before": {
+          "hasDetails": true,
+          "isOpen": false,
+          "summaryText": "PHẦN 2 🎯 Thực Hành Định Vị La Bàn (41 Giá Trị & Top 7) Bấm để mở rộng ▼"
+        },
+        "case5After": {
+          "isOpen": true,
+          "hasContent": true
+        }
+      },
+      "screenshot": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\screenshots\\case5_accordion_expanded_desktop.png"
+    },
+    "case6": {
+      "name": "Mobile 375x812 hiển thị rõ ràng cả nút 📘 Lộ trình và ⚡ Vượt chặng ở Sticky Bottom Bar",
+      "pass": true,
+      "details": {
+        "roadmapVisible": true,
+        "quizVisible": true,
+        "roadmapHasIcon": true,
+        "quizHasIcon": true,
+        "bottomBarData": {
+          "roadmap": {
+            "exists": true,
+            "text": "📘\nLộ trình",
+            "rect": {
+              "width": 89.53125,
+              "height": 40,
+              "top": 748,
+              "left": 156.53125
+            },
+            "display": "flex",
+            "visibility": "visible"
+          },
+          "quiz": {
+            "exists": true,
+            "text": "⚡\nVượt chặng",
+            "rect": {
+              "width": 110.9375,
+              "height": 40,
+              "top": 748,
+              "left": 252.0625
+            },
+            "display": "flex",
+            "visibility": "visible"
+          }
+        }
+      },
+      "screenshot": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\screenshots\\case6_mobile_bottom_bar.png"
+    },
+    "case7": {
+      "name": "Console Errors = 0, Network status 200 OK",
+      "pass": true,
+      "details": {
+        "consoleErrorCount": 0,
+        "errors": [],
+        "networkStatuses": {
+          "https://delivering-happiness.vercel.app/lms/app.js": 200,
+          "https://delivering-happiness.vercel.app/lms/curriculum_data.json?v=1791200217525": 200,
+          "main_page": 200,
+          "https://delivering-happiness.vercel.app/data/artifacts/slides/slide_core_values_definition.jpg": 200
+        },
+        "staticFiles200": true
+      }
+    }
+  },
+  "consoleErrors": [],
+  "networkStatuses": {
+    "https://delivering-happiness.vercel.app/lms/app.js": 200,
+    "https://delivering-happiness.vercel.app/lms/curriculum_data.json?v=1791200217525": 200,
+    "main_page": 200,
+    "https://delivering-happiness.vercel.app/data/artifacts/slides/slide_core_values_definition.jpg": 200
+  },
+  "screenshots": [
+    "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\screenshots\\case1_quick_start_modal_desktop.png",
+    "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\screenshots\\case2_video_lightbox_desktop.png",
+    "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\screenshots\\case3_milestone_and_clean_titles_desktop.png",
+    "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\screenshots\\case4_lesson1_2_slides_desktop.png",
+    "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\screenshots\\case5_accordion_collapsed_desktop.png",
+    "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\screenshots\\case5_accordion_expanded_desktop.png",
+    "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\screenshots\\case6_mobile_bottom_bar.png"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "deploymentId": "dpl_DNCLqYW3MjUqj9YF2tyF6mCaUcJo",
+  "deploymentUrl": "https://delivering-happiness-k6wlyj56y-vuhoang2708s-projects.vercel.app",
+  "productionDomain": "https://delivering-happiness.vercel.app",
+  "target": "production",
+  "promotedAt": "2026-10-22T14:16:21+07:00",
+  "promotedBy": "User Sếp Dzũ (Level 3 Approval)",
+  "verdict": "SUCCESS",
+  "checks": {
+    "levers_note_removed": true,
+    "optimism_abcde_present": true,
+    "altruism_concise_giver_present": true,
+    "takers_callout_removed": true,
+    "multi_route_status_200": [
+      "/",
+      "/register_dhm10.html",
+      "/next_dhm.html",
+      "/personal-value.html"
+    ]
+  }
+}

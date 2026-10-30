@@ -1,15 +1,18 @@
-# Báo cáo Kiểm thử Nghiệm thu Cục bộ (Local UAT Report)
+# Báo cáo Kiểm thử Nghiệm thu (UAT Report - Local & Live Production)
 **Ngày thực hiện:** 13/10/2026  
 **Mục tiêu:** Kiểm chứng đưa liên kết LMS lên khối hero tools và dọn gọn khối CTA cuối trang chỉ giữ lại link đăng ký quan tâm DHM10.  
-**Tệp kiểm thử:** `dh4hn-website/index.html`  
-**Kịch bản kiểm thử tự động:** `dh4hn-website/scratch/test_lms_and_cta_puppeteer.js`  
+**Tệp nguồn:** `dh4hn-website/index.html`  
+**Production URL:** `https://delivering-happiness.vercel.app/`  
+**Kịch bản kiểm thử tự động:**  
+- Cục bộ: `dh4hn-website/scratch/test_lms_and_cta_puppeteer.js`  
+- Trực tuyến (Live): `dh4hn-website/scratch/test_live_lms_and_cta_puppeteer.js`  
 **Công cụ kiểm thử:** Puppeteer (Headless Chromium)  
 
 ---
 
-## 1. Kết quả Kiểm thử Tổng thể: 100% PASS (5/5 Viewports)
+## 1. Kết quả Kiểm thử Live Production (100% PASS trên cả 5 Viewports)
 
-| Viewport | Kích thước (WxH) | scrollWidth | clientWidth | Tràn viền (Overflow) | Số lượng Hero Tools | Nút LMS trong Hero Grid | Số lượng Register CTA | Trạng thái |
+| Viewport | Kích thước (WxH) | scrollWidth | clientWidth | Tràn viền (Overflow) | Số lượng Hero Tools | Nút LMS trong Hero Grid | Số lượng Register CTA | Trạng thái Live |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **iPhone SE** | 375 x 667 | 375px | 375px | **0px (Không)** | 7/7 | Có (auto, 343px/343px) | 1 (Chỉ DHM10) | **PASS** |
 | **iPhone 14** | 390 x 844 | 390px | 390px | **0px (Không)** | 7/7 | Có (auto, 358px/358px) | 1 (Chỉ DHM10) | **PASS** |
@@ -19,7 +22,7 @@
 
 ---
 
-## 2. Chi tiết Nghiệm thu Từng Hạng mục
+## 2. Chi tiết Nghiệm thu Từng Hạng mục trên Live Production
 
 ### A. Khối Hero Tools (`.hero-tools-grid`)
 1. **Số lượng liên kết:** Đạt 7 thẻ công cụ (6 thẻ công cụ cũ + 1 thẻ LMS mới).
@@ -38,8 +41,7 @@
 
 ---
 
-## 3. Kết luận
-Mã nguồn cục bộ đáp ứng 100% yêu cầu của User:
-- Link LMS đã nằm chung khối phía trên với giao diện responsive hoàn hảo.
-- Khối CTA cuối trang chỉ còn đúng link đăng ký/quan tâm DHM10.
-- Sẵn sàng xin phê duyệt Cấp độ 3 từ User để commit và push lên production.
+## 3. Lịch sử Git & Triển khai
+- **Commit hash:** `d06a6e6` (`feat(ui): add LMS link to hero tools grid and clean bottom register cta`)
+- **Remote branch:** `origin/main` (https://github.com/culturecodefeedforward/DeliveringHappiness.git)
+- **Vercel Production:** Đồng bộ thành công và đã kiểm chứng bằng Puppeteer trên URL thực tế.

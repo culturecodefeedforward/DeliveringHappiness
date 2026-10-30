@@ -1,5 +1,5 @@
 const DEFAULT_APPS_SCRIPT_URL =
-  'https://script.google.com/macros/s/AKfycbxfbK1IWH_fL-3BzcoYDsdl61L0EpKuuF_MwPgdzDMutHHqECGRRJaDfsBdHqty-Vjtpg/exec';
+  'https://script.google.com/macros/s/AKfycbw6XcQgf367Uusg4CKBV3cA6NWRWHfEi3RGLKf5NIIMmpYqkf0AQdTTNYBdO-wJmjzHvw/exec';
 
 function getRequestToken(req) {
   const auth = req.headers.authorization || req.headers.Authorization || '';

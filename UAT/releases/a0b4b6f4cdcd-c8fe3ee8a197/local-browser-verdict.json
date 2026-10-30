@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-08-06T05:35:49.747Z",
+  "surface": "local-package-browser",
+  "targetUrl": "http://127.0.0.1:4173/program-interest.html",
+  "results": [
+    {
+      "viewport": "desktop",
+      "status": 200,
+      "formPresent": true,
+      "statusPresent": true,
+      "title": "Đăng ký quan tâm chương trình — CultureCode",
+      "screenshot": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\releases\\a0b4b6f4cdcd-c8fe3ee8a197\\local_desktop.png"
+    },
+    {
+      "viewport": "mobile",
+      "status": 304,
+      "formPresent": true,
+      "statusPresent": true,
+      "title": "Đăng ký quan tâm chương trình — CultureCode",
+      "screenshot": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\releases\\a0b4b6f4cdcd-c8fe3ee8a197\\local_mobile.png"
+    }
+  ],
+  "consoleErrors": [],
+  "pageErrors": [],
+  "verdict": "LOCAL_BROWSER_VERIFIED"
+}

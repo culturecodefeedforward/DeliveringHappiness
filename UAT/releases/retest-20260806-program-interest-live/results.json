@@ -1,0 +1,363 @@
+[
+  {
+    "requestedUrl": "https://delivering-happiness.vercel.app/",
+    "viewports": {
+      "desktop": {
+        "status": 200,
+        "finalUrl": "https://delivering-happiness.vercel.app/",
+        "title": "Delivering Happiness — CultureCode Community",
+        "h1": "DeliveringHappiness",
+        "contentType": "text/html; charset=utf-8",
+        "vercelError": null,
+        "vercelId": "hkg1::44vt8-1785997888886-b00f363d515f",
+        "cacheHeader": "HIT",
+        "redirectChain": [
+          {
+            "url": "https://delivering-happiness.vercel.app/",
+            "status": 200
+          }
+        ],
+        "consoleLogs": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "domChecks": {
+          "ctaExists": true,
+          "ctaHref": "interest.html"
+        },
+        "screenshotPath": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\releases\\retest-20260806-program-interest-live\\index_desktop.png"
+      },
+      "mobile": {
+        "status": 304,
+        "finalUrl": "https://delivering-happiness.vercel.app/",
+        "title": "Delivering Happiness — CultureCode Community",
+        "h1": "DeliveringHappiness",
+        "contentType": null,
+        "vercelError": null,
+        "vercelId": "hkg1::cgkb9-1785997891835-8b54e5123fb3",
+        "cacheHeader": "HIT",
+        "redirectChain": [
+          {
+            "url": "https://delivering-happiness.vercel.app/",
+            "status": 304
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/styles.css",
+            "status": 304
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/chat-abcde.css",
+            "status": 304
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/tracking.js?v=2.3",
+            "status": 304
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/script.js",
+            "status": 304
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/chat-abcde.js",
+            "status": 304
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/assets/culturecode-logo-dark.jpg",
+            "status": 304
+          }
+        ],
+        "consoleLogs": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "domChecks": {
+          "ctaExists": true,
+          "ctaHref": "interest.html"
+        },
+        "screenshotPath": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\releases\\retest-20260806-program-interest-live\\index_mobile.png"
+      }
+    }
+  },
+  {
+    "requestedUrl": "https://delivering-happiness.vercel.app/interest.html",
+    "viewports": {
+      "desktop": {
+        "status": 200,
+        "finalUrl": "https://delivering-happiness.vercel.app/interest",
+        "title": "Để lại quan tâm - Delivering Happiness",
+        "h1": "DHM8 đã đủ số lượng đăng ký",
+        "contentType": "text/html; charset=utf-8",
+        "vercelError": null,
+        "vercelId": "hkg1::cgwxj-1785997893571-6260deefa876",
+        "cacheHeader": "MISS",
+        "redirectChain": [
+          {
+            "url": "https://delivering-happiness.vercel.app/interest.html",
+            "status": 308
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/interest",
+            "status": 200
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/styles.css",
+            "status": 304
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/assets/culturecode-logo-dark.jpg",
+            "status": 304
+          }
+        ],
+        "consoleLogs": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "domChecks": {
+          "formExists": true,
+          "interestFormExists": true
+        },
+        "screenshotPath": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\releases\\retest-20260806-program-interest-live\\interest.html_desktop.png"
+      },
+      "mobile": {
+        "status": 304,
+        "finalUrl": "https://delivering-happiness.vercel.app/interest",
+        "title": "Để lại quan tâm - Delivering Happiness",
+        "h1": "DHM8 đã đủ số lượng đăng ký",
+        "contentType": null,
+        "vercelError": null,
+        "vercelId": "hkg1::2kst6-1785997895519-9ce145f3bd21",
+        "cacheHeader": "HIT",
+        "redirectChain": [
+          {
+            "url": "https://delivering-happiness.vercel.app/interest.html",
+            "status": 308
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/interest",
+            "status": 304
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/styles.css",
+            "status": 304
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/assets/culturecode-logo-dark.jpg",
+            "status": 304
+          }
+        ],
+        "consoleLogs": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "domChecks": {
+          "formExists": true,
+          "interestFormExists": true
+        },
+        "screenshotPath": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\releases\\retest-20260806-program-interest-live\\interest.html_mobile.png"
+      }
+    }
+  },
+  {
+    "requestedUrl": "https://delivering-happiness.vercel.app/interest",
+    "viewports": {
+      "desktop": {
+        "status": 304,
+        "finalUrl": "https://delivering-happiness.vercel.app/interest",
+        "title": "Để lại quan tâm - Delivering Happiness",
+        "h1": "DHM8 đã đủ số lượng đăng ký",
+        "contentType": null,
+        "vercelError": null,
+        "vercelId": "hkg1::4l4qg-1785997896773-4988116f4d2a",
+        "cacheHeader": "HIT",
+        "redirectChain": [
+          {
+            "url": "https://delivering-happiness.vercel.app/interest",
+            "status": 304
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/styles.css",
+            "status": 304
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/assets/culturecode-logo-dark.jpg",
+            "status": 304
+          }
+        ],
+        "consoleLogs": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "domChecks": {
+          "formExists": true,
+          "interestFormExists": true
+        },
+        "screenshotPath": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\releases\\retest-20260806-program-interest-live\\interest_desktop.png"
+      },
+      "mobile": {
+        "status": 304,
+        "finalUrl": "https://delivering-happiness.vercel.app/interest",
+        "title": "Để lại quan tâm - Delivering Happiness",
+        "h1": "DHM8 đã đủ số lượng đăng ký",
+        "contentType": null,
+        "vercelError": null,
+        "vercelId": "hkg1::2kst6-1785997898968-498d3ed97303",
+        "cacheHeader": "HIT",
+        "redirectChain": [
+          {
+            "url": "https://delivering-happiness.vercel.app/interest",
+            "status": 304
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/styles.css",
+            "status": 304
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/assets/culturecode-logo-dark.jpg",
+            "status": 304
+          }
+        ],
+        "consoleLogs": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "domChecks": {
+          "formExists": true,
+          "interestFormExists": true
+        },
+        "screenshotPath": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\releases\\retest-20260806-program-interest-live\\interest_mobile.png"
+      }
+    }
+  },
+  {
+    "requestedUrl": "https://delivering-happiness.vercel.app/program-interest.html",
+    "viewports": {
+      "desktop": {
+        "status": 200,
+        "finalUrl": "https://delivering-happiness.vercel.app/program-interest",
+        "title": "Đăng ký quan tâm chương trình — CultureCode",
+        "h1": "Chọn nội dung bạn quan tâm.",
+        "contentType": "text/html; charset=utf-8",
+        "vercelError": null,
+        "vercelId": "hkg1::44vt8-1785997900652-1c82147b9b9f",
+        "cacheHeader": "HIT",
+        "redirectChain": [
+          {
+            "url": "https://delivering-happiness.vercel.app/program-interest.html",
+            "status": 308
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/program-interest",
+            "status": 200
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/assets/culturecode-logo-dark.jpg",
+            "status": 304
+          }
+        ],
+        "consoleLogs": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "domChecks": {
+          "formExists": true,
+          "interestFormExists": true,
+          "statusExists": true,
+          "hasProgramInterestScript": true
+        },
+        "screenshotPath": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\releases\\retest-20260806-program-interest-live\\program-interest.html_desktop.png"
+      },
+      "mobile": {
+        "status": 304,
+        "finalUrl": "https://delivering-happiness.vercel.app/program-interest",
+        "title": "Đăng ký quan tâm chương trình — CultureCode",
+        "h1": "Chọn nội dung bạn quan tâm.",
+        "contentType": null,
+        "vercelError": null,
+        "vercelId": "hkg1::kmxh6-1785997902912-4330d93aaa9f",
+        "cacheHeader": "HIT",
+        "redirectChain": [
+          {
+            "url": "https://delivering-happiness.vercel.app/program-interest.html",
+            "status": 308
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/program-interest",
+            "status": 304
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/assets/culturecode-logo-dark.jpg",
+            "status": 304
+          }
+        ],
+        "consoleLogs": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "domChecks": {
+          "formExists": true,
+          "interestFormExists": true,
+          "statusExists": true,
+          "hasProgramInterestScript": true
+        },
+        "screenshotPath": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\releases\\retest-20260806-program-interest-live\\program-interest.html_mobile.png"
+      }
+    }
+  },
+  {
+    "requestedUrl": "https://delivering-happiness.vercel.app/program-interest",
+    "viewports": {
+      "desktop": {
+        "status": 304,
+        "finalUrl": "https://delivering-happiness.vercel.app/program-interest",
+        "title": "Đăng ký quan tâm chương trình — CultureCode",
+        "h1": "Chọn nội dung bạn quan tâm.",
+        "contentType": null,
+        "vercelError": null,
+        "vercelId": "hkg1::kmxh6-1785997904345-1b59656815a8",
+        "cacheHeader": "HIT",
+        "redirectChain": [
+          {
+            "url": "https://delivering-happiness.vercel.app/program-interest",
+            "status": 304
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/assets/culturecode-logo-dark.jpg",
+            "status": 304
+          }
+        ],
+        "consoleLogs": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "domChecks": {
+          "formExists": true,
+          "interestFormExists": true,
+          "statusExists": true,
+          "hasProgramInterestScript": true
+        },
+        "screenshotPath": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\releases\\retest-20260806-program-interest-live\\program-interest_desktop.png"
+      },
+      "mobile": {
+        "status": 304,
+        "finalUrl": "https://delivering-happiness.vercel.app/program-interest",
+        "title": "Đăng ký quan tâm chương trình — CultureCode",
+        "h1": "Chọn nội dung bạn quan tâm.",
+        "contentType": null,
+        "vercelError": null,
+        "vercelId": "hkg1::kmxh6-1785997906449-da5327d87e58",
+        "cacheHeader": "HIT",
+        "redirectChain": [
+          {
+            "url": "https://delivering-happiness.vercel.app/program-interest",
+            "status": 304
+          },
+          {
+            "url": "https://delivering-happiness.vercel.app/assets/culturecode-logo-dark.jpg",
+            "status": 304
+          }
+        ],
+        "consoleLogs": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "domChecks": {
+          "formExists": true,
+          "interestFormExists": true,
+          "statusExists": true,
+          "hasProgramInterestScript": true
+        },
+        "screenshotPath": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\releases\\retest-20260806-program-interest-live\\program-interest_mobile.png"
+      }
+    }
+  }
+]

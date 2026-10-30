@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-07-23T11:09:49.107Z",
+  "targetUrl": "https://delivering-happiness.vercel.app",
+  "spec": {
+    "expectedReleaseId": "b5678a5-037ac3b8f24b",
+    "expectedCommit": null,
+    "expectedManifestHash": null
+  },
+  "layer1Status": "HTTP_RELEASE_FAILED",
+  "layer2Status": "SKIPPED_FAIL_CLOSED",
+  "verdict": "LIVE_UNVERIFIED_FAILED",
+  "exitCode": 1
+}

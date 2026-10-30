@@ -36,7 +36,7 @@ var BTC_EMAILS = ['chauhm71@gmail.com', 'vuhoang2708@gmail.com', 'hoanhn.edu.vn@
 var DHM8_PRICE = 250000;
 var DHM8_REGISTRATION_CAP = 32;
 var DHM9_REGISTRATION_CAP = 40;
-var DHM10_REGISTRATION_CAP = 40;
+var DHM10_REGISTRATION_CAP = 35;
 var DEFAULT_INTEREST_URL = 'https://delivering-happiness.vercel.app/interest.html';
 var DEFAULT_DH9_INTEREST_URL = 'https://delivering-happiness.vercel.app/interest_dh9.html';
 var DEFAULT_DH10_INTEREST_URL = 'https://delivering-happiness.vercel.app/interest_dh10.html';
@@ -75,6 +75,7 @@ var DHL_REGISTRATION_CAP = 25;
 
 function getLaneKey_(value) {
   var normalized = String(value || '').toLowerCase();
+  if (normalized === 'next_dhm' || normalized === 'nextdhm') return 'next_dhm';
   if (normalized === 'dh10' || normalized === 'dhm10') return 'dh10';
   if (normalized === 'dh9' || normalized === 'dhm9') return 'dh9';
   if (normalized === 'dhl' || normalized === 'leadership') return 'dhl';
@@ -141,6 +142,13 @@ function detectLaneKeyFromPaymentCode_(paymentCode) {
 
 function detectLaneKeyFromPayload_(data) {
   var laneCandidate = String((data && (data.lane || data.registrationLane || data.eventLane)) || '').toLowerCase();
+  if (laneCandidate === 'next_dhm' || laneCandidate === 'nextdhm') return 'next_dhm';
+  var eventId = String((data && data.event_id) || '').toUpperCase();
+  var type = String((data && data.type) || '').toUpperCase();
+  var source = String((data && data.source) || '').toUpperCase();
+  if (eventId.indexOf('NEXT_DHM') !== -1 || type.indexOf('NEXT_DHM') !== -1 || source.indexOf('NEXT_DHM') !== -1) {
+    return 'next_dhm';
+  }
   if (laneCandidate === 'dh10' || laneCandidate === 'dhm10') return 'dh10';
   if (laneCandidate === 'dh9' || laneCandidate === 'dhm9') return 'dh9';
   if (laneCandidate === 'dhl' || laneCandidate === 'leadership') return 'dhl';
@@ -179,6 +187,32 @@ function detectLaneKeyFromPayload_(data) {
 function getLaneConfig_(laneKey) {
   var props = getScriptProperties_();
   var resolvedLane = getLaneKey_(laneKey);
+  if (resolvedLane === 'next_dhm') {
+    return {
+      laneKey: 'next_dhm',
+      paymentPrefix: 'NEXTDHM',
+      paymentPrefixes: ['NEXTDHM'],
+      registrationCap: 0,
+      dataSheetName: 'Next_DHM_Interest',
+      paymentsSheetName: '',
+      outboxSheetName: '',
+      inboxSheetName: '',
+      interestSheetName: 'Next DHM Interest',
+      interestUrl: (props.getProperty('NEXT_DHM_INTEREST_URL') || 'https://delivering-happiness.vercel.app/next_dhm.html').trim(),
+      publicRegisterUrl: '',
+      titleShort: 'Next DHM',
+      classLabel: 'Delivering Happiness Masterclass (Next DHM)',
+      cityLabel: 'Hà Nội & Các khóa tiếp theo',
+      zaloGroupUrl: '',
+      defaultEventId: 'NEXT_DHM_INTEREST',
+      defaultInterestEventId: 'NEXT_DHM_INTEREST',
+      defaultLeadType: 'EVENT_LEAD_NEXT_DHM',
+      defaultLeadSource: 'Web_Next_DHM_Official',
+      defaultInterestType: 'NEXT_DHM_INTEREST',
+      defaultInterestSource: 'Web_Next_DHM_Interest'
+    };
+  }
+
   if (resolvedLane === 'dh10') {
     return {
       laneKey: 'dh10',
@@ -194,9 +228,9 @@ function getLaneConfig_(laneKey) {
       publicRegisterUrl: (props.getProperty('DH10_PUBLIC_REGISTER_URL') || DEFAULT_DH10_PUBLIC_REGISTER_URL).trim(),
       titleShort: 'DHM10',
       classLabel: 'Delivering Happiness Masterclass 10 (DHM10)',
-      cityLabel: 'Hà Nội & TP.HCM',
+      cityLabel: 'TP.HCM (Offline)',
       zaloGroupUrl: (props.getProperty('DH10_ZALO_GROUP_URL') || DEFAULT_DH10_ZALO_GROUP_URL).trim(),
-      defaultEventId: 'DHM10_REG_2026_HYBRID',
+      defaultEventId: 'DHM10_REG_2026_OFFLINE_HCM',
       defaultInterestEventId: 'DHM10_INTEREST',
       defaultLeadType: 'EVENT_LEAD_DHM10',
       defaultLeadSource: 'Web_DHM10_Official',
@@ -851,6 +885,26 @@ function doPost(e) {
       return jsonOut(handleContactCulturecode_(body));
     }
 
+    // --- QUẢN TRỊ HỌC VIÊN TẬP TRUNG (ADMIN MASTER ROSTER MUTATION) ---
+    if (body.action === 'admin_add_learner') {
+      return handleAdminAddLearner(body);
+    }
+    if (body.action === 'admin_instant_activate') {
+      return handleAdminInstantActivate(body);
+    }
+    if (body.action === 'admin_toggle_enrollment_status') {
+      return handleAdminToggleEnrollmentStatus(body);
+    }
+    if (body.action === 'save_coach_note') {
+      return handleSaveCoachNote(body);
+    }
+    if (body.action === 'get_master_roster') {
+      return handleGetMasterRoster(body);
+    }
+    if (body.action === 'resolve_login_identity') {
+      return handleResolveLoginIdentity(body);
+    }
+
     // --- LMS TELEMETRY, CHECKPOINT I•A•M & 5 TRẠM APOLLO ---
     if (
       body.action === 'sync_full_progress' ||
@@ -988,6 +1042,10 @@ function doGet(e) {
         .setMimeType(ContentService.MimeType.JAVASCRIPT);
     }
     return jsonOut(lmsData);
+  }
+
+  if (action === 'get_master_roster') {
+    return handleGetMasterRoster((e && e.parameter) ? e.parameter : {});
   }
 
   if (action === 'migrate_apollo_35_columns') {
@@ -1338,14 +1396,31 @@ function handleInterestLead_(data, laneKey) {
   var lane = getLaneConfig_(laneKey);
   var ss = getSpreadsheet();
   var sheet = ss.getSheetByName(lane.interestSheetName);
+  var isNextDhm = (lane.laneKey === 'next_dhm' ||
+                   String(data.type || '').toUpperCase().indexOf('NEXT_DHM') !== -1 ||
+                   String(data.event_id || '').toUpperCase().indexOf('NEXT_DHM') !== -1 ||
+                   String(data.source || '').toUpperCase().indexOf('NEXT_DHM') !== -1);
+
   if (!sheet) {
     sheet = ss.insertSheet(lane.interestSheetName);
-    sheet.appendRow([
+    var headers = [
       'Timestamp','Họ và tên','Email','Số điện thoại','Công ty',
       'Chức danh','Ghi chú','Source','Event ID','Interest UUID'
-    ]);
+    ];
+    if (isNextDhm) {
+      headers.push('Trạng thái đăng ký chính thức');
+    }
+    sheet.appendRow(headers);
     sheet.getRange('1:1').setFontWeight('bold').setBackground('#d9ead3');
     sheet.setFrozenRows(1);
+  } else if (isNextDhm) {
+    var lastCol = sheet.getLastColumn();
+    if (lastCol > 0) {
+      var firstRow = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+      if (firstRow.indexOf('Trạng thái đăng ký chính thức') === -1) {
+        sheet.getRange(1, lastCol + 1).setValue('Trạng thái đăng ký chính thức').setFontWeight('bold').setBackground('#d9ead3');
+      }
+    }
   }
 
   var uuid = data.interestUuid || '';
@@ -1363,11 +1438,15 @@ function handleInterestLead_(data, laneKey) {
       }
     }
     if (!isDuplicate) {
-      sheet.appendRow([
+      var row = [
         new Date(), data.fullName || '', data.email || '', data.phone || '',
         data.company || '', data.jobTitle || '', data.note || '',
         data.source || lane.defaultInterestSource, data.event_id || lane.defaultInterestEventId, uuid
-      ]);
+      ];
+      if (isNextDhm) {
+        row.push(data.officialRegistrationStatus || 'Chưa đăng ký');
+      }
+      sheet.appendRow(row);
     }
   } finally {
     lock.releaseLock();
@@ -1404,12 +1483,18 @@ function sendInterestFacultyNotification_(ss, data, lane, uuid) {
   var note = escapeHtml_(data.note || '');
   var timeStr = Utilities.formatDate(new Date(), 'Asia/Ho_Chi_Minh', 'HH:mm:ss dd/MM/yyyy');
 
-  var subject = '[CultureCode] Thông báo Ban Giảng Huấn: Đăng ký quan tâm mới - ' + (data.fullName || 'Học viên') + ' (' + (data.location || lane.titleShort) + ')';
+  var isNextDhm = String(data.type || '').toUpperCase().indexOf('NEXT_DHM') !== -1 ||
+                  String(data.event_id || '').toUpperCase().indexOf('NEXT_DHM') !== -1 ||
+                  String(data.source || '').toUpperCase().indexOf('NEXT_DHM') !== -1;
+  var programTitle = isNextDhm ? 'Next DHM' : lane.titleShort;
+  var programBadge = isNextDhm ? 'Next DHM (Hà Nội & Đợt tiếp theo)' : (lane.titleShort + ' (Offline TP.HCM)');
+
+  var subject = '[CultureCode] Thông báo Ban Giảng Huấn: Đăng ký quan tâm ' + programTitle + ' - ' + (data.fullName || 'Học viên') + ' (' + (data.location || programTitle) + ')';
 
   var body =
-    '<div class="greeting">Kính gửi Ban Giảng Huấn & Ban Tổ Chức,</div>' +
+    '<div class="greeting">Kính gửi Ban Giảng Huấn & CultureCode Team,</div>' +
     '<div class="badge-congrats" style="display:inline-block; background-color:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; padding:6px 14px; border-radius:6px; font-size:13px; font-weight:700; margin-bottom:18px; text-transform:uppercase;">' +
-    '✨ Có đăng ký quan tâm mới — ' + escapeHtml_(lane.titleShort) + ' (Hybrid)' +
+    '✨ Có đăng ký quan tâm mới — ' + escapeHtml_(programBadge) +
     '</div>' +
     '<div class="event-box" style="background-color:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:20px; margin:20px 0;">' +
     '<div class="event-title" style="font-size:16px; font-weight:bold; color:#0f766e; margin-bottom:12px;">📋 Chi tiết thông tin người quan tâm:</div>' +
@@ -1423,10 +1508,10 @@ function sendInterestFacultyNotification_(ss, data, lane, uuid) {
     (note ? '<div class="event-detail" style="margin-top:8px; padding-top:8px; border-top:1px dashed #cbd5e1;"><strong>Ghi chú / Kỳ vọng:</strong><br><span style="font-style:italic; white-space:pre-wrap;">' + note + '</span></div>' : '') +
     '<div class="event-detail" style="margin-top:8px; font-size:12px; color:#64748b;"><strong>Thời gian ghi nhận:</strong> ' + timeStr + ' | <strong>Mã UUID:</strong> ' + escapeHtml_(uuid) + '</div>' +
     '</div>' +
-    '<p class="paragraph" style="font-size:13.5px; color:#64748b; font-style:italic;">Email này được gửi tự động từ hệ thống Delivering Happiness khi có khách hàng để lại thông tin quan tâm khóa DHM10.</p>';
+    '<p class="paragraph" style="font-size:13.5px; color:#64748b; font-style:italic;">Email này được gửi tự động từ hệ thống Delivering Happiness khi có khách hàng để lại thông tin quan tâm chương trình ' + escapeHtml_(programTitle) + '.</p>';
 
   var fullHtml = renderEmailShell_(
-    lane.titleShort + ' — Thông báo Đăng ký quan tâm mới',
+    programTitle + ' — Thông báo Đăng ký quan tâm mới',
     'Có người quan tâm mới: ' + name + ' (' + location + ')',
     body
   );
@@ -1437,7 +1522,76 @@ function sendInterestFacultyNotification_(ss, data, lane, uuid) {
     htmlBody: fullHtml
   });
 
-  writeSystemLog(ss, 'INFO', 'Đã gửi mail thông báo quan tâm DHM10 cho BGH', uuid + ' to ' + facultyList.join(','));
+  writeSystemLog(ss, 'INFO', 'Đã gửi mail thông báo quan tâm ' + programTitle + ' cho BGH', uuid + ' to ' + facultyList.join(','));
+}
+
+/**
+ * Đánh dấu học viên đã đăng ký chính thức trong tab Next DHM Interest để loại trừ khỏi chiến dịch gửi mail sau này.
+ */
+function markOfficialRegistrationInNextDhm_(ss, email, cohortName) {
+  if (!email) return false;
+  try {
+    var sheet = ss.getSheetByName('Next DHM Interest');
+    if (!sheet) return false;
+    var values = sheet.getDataRange().getValues();
+    if (values.length <= 1) return false;
+    var emailNorm = String(email).trim().toLowerCase();
+    var colIdx = -1;
+    var headers = values[0];
+    for (var c = 0; c < headers.length; c++) {
+      if (String(headers[c]).indexOf('Trạng thái đăng ký chính thức') !== -1) {
+        colIdx = c;
+        break;
+      }
+    }
+    if (colIdx === -1) return false;
+    var updated = false;
+    for (var i = 1; i < values.length; i++) {
+      var rowEmail = String(values[i][2] || '').trim().toLowerCase();
+      if (rowEmail === emailNorm) {
+        sheet.getRange(i + 1, colIdx + 1).setValue('Đã đăng ký (' + (cohortName || 'Chính thức') + ')');
+        updated = true;
+      }
+    }
+    return updated;
+  } catch (err) {
+    writeSystemLog(ss, 'WARN', 'Lỗi markOfficialRegistrationInNextDhm_: ' + err.message, email);
+    return false;
+  }
+}
+
+/**
+ * Lọc danh sách học viên trong Next DHM Interest chưa đăng ký chính thức để gửi thông báo mở khóa mới.
+ */
+function getUnregisteredNextDhmLeads_(ss) {
+  var sheet = ss.getSheetByName('Next DHM Interest');
+  if (!sheet) return [];
+  var rows = sheet.getDataRange().getValues();
+  if (rows.length <= 1) return [];
+  var headers = rows[0];
+  var statusCol = -1;
+  for (var c = 0; c < headers.length; c++) {
+    if (String(headers[c]).indexOf('Trạng thái đăng ký chính thức') !== -1) {
+      statusCol = c;
+      break;
+    }
+  }
+  var leads = [];
+  for (var i = 1; i < rows.length; i++) {
+    var status = statusCol !== -1 ? String(rows[i][statusCol] || '').trim() : '';
+    if (status.indexOf('Đã đăng ký') !== -1) continue;
+    leads.push({
+      rowIndex: i + 1,
+      fullName: rows[i][1],
+      email: rows[i][2],
+      phone: rows[i][3],
+      company: rows[i][4],
+      jobTitle: rows[i][5],
+      note: rows[i][6],
+      status: status || 'Chưa đăng ký'
+    });
+  }
+  return leads;
 }
 
 function isValidProgramInterestUuid_(value) {
@@ -1803,6 +1957,7 @@ function handleSePayWebhook(body, laneKey) {
   } else {
     var m = matched[0];
     dataSheet.getRange(m.rowIdx + 1, 16).setValue('PAID');
+    markOfficialRegistrationInNextDhm_(ss, dataRows[m.rowIdx][2], lane.titleShort);
     updatePaymentState(paymentsSheet, txId, 'MATCHED', m.uuid);
     enqueueEmail(ss, m.uuid, 'PAID', dataRows[m.rowIdx][2], 'Xác nhận thanh toán ' + lane.titleShort, lane.laneKey);
     var referrerName = dataRows[m.rowIdx][13] || '';
@@ -1871,7 +2026,7 @@ function reprocessDurableInbox() {
   var processed = 0;
   var failed = 0;
 
-  ['dh8', 'dh9'].forEach(function(laneKey) {
+  ['dh8', 'dh9', 'dhl', 'dh10'].forEach(function(laneKey) {
     var lane = getLaneConfig_(laneKey);
     var inbox = ss.getSheetByName(lane.inboxSheetName);
     if (!inbox) return;
@@ -1910,7 +2065,7 @@ function cleanupProcessedInbox(retentionDays) {
   var cutoff = new Date(new Date().getTime() - days * 24 * 60 * 60000);
   var deleted = 0;
 
-  ['dh8', 'dh9'].forEach(function(laneKey) {
+  ['dh8', 'dh9', 'dhl', 'dh10'].forEach(function(laneKey) {
     var inbox = ss.getSheetByName(getLaneConfig_(laneKey).inboxSheetName);
     if (!inbox) return;
     var rows = inbox.getDataRange().getValues();
@@ -1968,6 +2123,7 @@ function processEmailQueue() {
   processEmailQueueForLane_('dh8');
   processEmailQueueForLane_('dh9');
   processEmailQueueForLane_('dhl');
+  processEmailQueueForLane_('dh10');
 }
 
 function processEmailQueueForLane_(laneKey) {
@@ -4415,3 +4571,561 @@ function migrateApolloSheetTo35Columns_() {
   return 'Migration complete: ' + lastRow + ' rows processed, backfilled ' + backfilled + ' station 6 entries.';
 }
 
+
+
+// =============================================================================
+// CENTRALIZED MASTER ROSTER & COMPOUND KEY ADMIN MANAGEMENT API
+// =============================================================================
+
+function getMasterRosterSpreadsheet_() {
+  if (typeof APOLLO_IAM_SPREADSHEET_ID !== 'undefined' && APOLLO_IAM_SPREADSHEET_ID) {
+    try {
+      var ss = SpreadsheetApp.openById(APOLLO_IAM_SPREADSHEET_ID);
+      if (ss) return ss;
+    } catch (e) {
+      console.warn("Could not open APOLLO_IAM_SPREADSHEET_ID:", e);
+    }
+  }
+  return getSpreadsheet();
+}
+
+function generateSecureHexToken(length) {
+  length = length || 32;
+  var byteCount = Math.ceil(length / 2);
+  var randomBytes = Utilities.computeDigest(
+    Utilities.DigestAlgorithm.SHA_256,
+    Utilities.getUuid() + "_" + (new Date().getTime()) + "_" + Math.random()
+  );
+  var hexString = "";
+  for (var i = 0; i < byteCount && i < randomBytes.length; i++) {
+    var byte = randomBytes[i];
+    var unsignedByte = byte < 0 ? byte + 256 : byte;
+    var hex = unsignedByte.toString(16);
+    hexString += (hex.length === 1 ? "0" : "") + hex;
+  }
+  while (hexString.length < length) {
+    hexString += Math.floor(Math.random() * 16).toString(16);
+  }
+  return hexString.substring(0, length);
+}
+
+function validateEmail(email) {
+  if (!email || typeof email !== 'string') return false;
+  var re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return re.test(email);
+}
+
+function validatePhone(phone) {
+  if (!phone || typeof phone !== 'string') return false;
+  var cleanPhone = phone.replace(/[\s.-]/g, '');
+  var re = /^(0|\+84)[3|5|7|8|9][0-9]{8}$/;
+  return re.test(cleanPhone);
+}
+
+function logMasterRosterActivity_(eventType, email, cohort, details) {
+  try {
+    var ss = getMasterRosterSpreadsheet_();
+    var logsSheet = ss.getSheetByName('Activation_Logs');
+    if (!logsSheet) {
+      logsSheet = ss.insertSheet('Activation_Logs');
+      logsSheet.appendRow(['Log_ID', 'Timestamp', 'Event_Type', 'Email', 'Cohort', 'Details']);
+    }
+    var now = new Date();
+    var logId = 'LOG_' + Utilities.formatDate(now, 'GMT+7', 'yyyyMMdd_HHmmss') + '_' + Math.floor(100 + Math.random() * 900);
+    logsSheet.appendRow([logId, now.toISOString(), eventType, email || '', cohort || '', details || '']);
+  } catch (e) {
+    console.warn('logMasterRosterActivity_ error:', e);
+  }
+}
+
+var MASTER_ROSTER_HEADERS = [
+  "Compound_Key", "Email", "Phone", "Full_Name", "Cohort_ID",
+  "Enrollment_Status", "Activation_Status", "Activation_Type", "Role",
+  "Password_Hash", "Default_Password", "Force_Pwd_Change", "Is_Paid",
+  "Payment_Status", "Created_At", "Activated_At", "Admin_Notes"
+];
+
+function getOrCreateMasterRosterSheet(ss) {
+  if (!ss) ss = getMasterRosterSpreadsheet_();
+  var sheet = ss.getSheetByName('Master_Roster');
+  if (!sheet) {
+    sheet = ss.insertSheet('Master_Roster');
+    sheet.appendRow(MASTER_ROSTER_HEADERS);
+    sheet.setFrozenRows(1);
+    sheet.getRange(1, 1, 1, MASTER_ROSTER_HEADERS.length).setFontWeight("bold").setBackground("#F3F4F6");
+  }
+  return sheet;
+}
+
+function normalizeCohortSlug(cohort) {
+  if (!cohort) return "DHM8";
+  return String(cohort).trim().toUpperCase()
+    .replace(/\s+/g, '_')
+    .replace(/[^A-Z0-9_]/g, '');
+}
+
+/**
+ * Thêm học viên bằng tay vào Master_Roster
+ */
+function handleAdminAddLearner(data) {
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(15000)) {
+    return jsonOut({ success: false, error: "LOCK_TIMEOUT", message: "Hệ thống đang bận, vui lòng thử lại sau giây lát." });
+  }
+
+  try {
+    var fullName = data.full_name ? data.full_name.trim() : "";
+    var email = data.email ? data.email.trim().toLowerCase() : "";
+    var rawPhone = data.phone ? data.phone.trim().replace(/\D/g, "") : "";
+    var phone = rawPhone.startsWith("84") ? "0" + rawPhone.slice(2) : rawPhone;
+    var cohort = data.cohort ? data.cohort.trim() : "DHM10";
+    var cohortSlug = normalizeCohortSlug(cohort);
+    var instantActivate = data.instant_activate === true || data.instantActivate === true || data.instant_activate === "true";
+
+    if (!fullName) {
+      return jsonOut({ success: false, error: "MISSING_NAME", message: "Vui lòng nhập họ và tên học viên." });
+    }
+    if (!validateEmail(email)) {
+      return jsonOut({ success: false, error: "INVALID_EMAIL", message: "Địa chỉ email không đúng định dạng." });
+    }
+    if (phone && phone.length < 9) {
+      return jsonOut({ success: false, error: "INVALID_PHONE", message: "Số điện thoại không hợp lệ." });
+    }
+
+    var ss = getMasterRosterSpreadsheet_();
+    var sheet = getOrCreateMasterRosterSheet(ss);
+    var rows = sheet.getDataRange().getValues();
+
+    var versionCount = 0;
+    var existingActiveRowIdx = -1;
+
+    for (var i = 1; i < rows.length; i++) {
+      var rEmail = String(rows[i][1] || "").toLowerCase().trim();
+      var rCohort = normalizeCohortSlug(rows[i][4]);
+      var rStatus = String(rows[i][5] || "").toUpperCase().trim();
+
+      if (rEmail === email && rCohort === cohortSlug) {
+        versionCount++;
+        if (rStatus === "ACTIVE") {
+          existingActiveRowIdx = i + 1;
+        }
+      }
+    }
+
+    if (existingActiveRowIdx !== -1) {
+      return jsonOut({
+        success: false,
+        error: "DUPLICATE_ACTIVE_LEARNER",
+        message: "Học viên với email này đã có hồ sơ ACTIVE trong khóa " + cohort + ". Vui lòng vô hiệu hóa trước nếu muốn tạo bản ghi mới."
+      });
+    }
+
+    var newVersion = "V" + (versionCount + 1);
+    var compoundKey = email + "#" + cohortSlug + "#" + newVersion;
+    var nowIso = new Date().toISOString();
+    var last4 = phone.length >= 4 ? phone.slice(-4) : "1234";
+    var defaultPwd = last4;
+    var pwdHash = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, defaultPwd)
+      .map(function(b) { return (b < 0 ? b + 256 : b).toString(16).padStart(2, '0'); })
+      .join('');
+
+    var enrollmentStatus = "ACTIVE";
+    var activationStatus = instantActivate ? "ACTIVATED" : "PENDING";
+    var activationType = instantActivate ? "INSTANT_MANUAL" : "MAGIC_LINK";
+    var activatedAt = instantActivate ? nowIso : "";
+
+    sheet.appendRow([
+      compoundKey,
+      email,
+      "'" + phone,
+      fullName,
+      cohort,
+      enrollmentStatus,
+      activationStatus,
+      activationType,
+      "Learner",
+      pwdHash,
+      "'" + defaultPwd,
+      true, // Force_Pwd_Change
+      true, // Is_Paid
+      "PAID",
+      nowIso,
+      activatedAt,
+      data.admin_notes || ("Added manually by Admin (" + activationType + ")")
+    ]);
+
+    var activationLink = "";
+    if (!instantActivate) {
+      var token = generateSecureHexToken(32);
+      var tokensSheet = ss.getSheetByName("Activation_Tokens");
+      if (tokensSheet) {
+        tokensSheet.appendRow([
+          Utilities.getUuid(),
+          nowIso,
+          email,
+          token,
+          new Date(Date.now() + 72 * 60 * 60 * 1000).toISOString(),
+          "ACTIVE",
+          "",
+          cohort
+        ]);
+      }
+      activationLink = "https://delivering-happiness.vercel.app/lms/?action=activate_account&token=" + token + "&email=" + encodeURIComponent(email) + "&compound_key=" + encodeURIComponent(compoundKey);
+      
+      try {
+        GmailApp.sendEmail(
+          email,
+          "[Delivering Happiness] Kích hoạt tài khoản học tập - Khóa " + cohort,
+          "Chào " + fullName + ",\n\nBan Giảng Huấn trân trọng gửi bạn liên kết kích hoạt tài khoản học tập trên hệ thống Delivering Happiness LMS:\n" + activationLink + "\n\nLiên kết có hiệu lực trong vòng 72 giờ.\n\nTrân trọng,\nBan Huấn Luyện Culture Code",
+          { name: "Delivering Happiness Academy" }
+        );
+      } catch (mailErr) {
+        console.warn("Lỗi gửi mail kích hoạt:", mailErr);
+      }
+    }
+
+    logMasterRosterActivity_("ADMIN_ADD_LEARNER", email, cohort, "CompoundKey: " + compoundKey + ", Instant: " + instantActivate);
+
+    return jsonOut({
+      success: true,
+      message: instantActivate ? "Đã thêm và kích hoạt học viên thành công!" : "Đã thêm học viên và gửi email kích hoạt!",
+      compound_key: compoundKey,
+      activation_status: activationStatus,
+      default_password: defaultPwd,
+      activation_link: activationLink
+    });
+
+  } catch (err) {
+    return jsonOut({ success: false, error: "SERVER_ERROR", message: err.toString() });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/**
+ * Kích hoạt học viên bằng tay tức thì
+ */
+function handleAdminInstantActivate(data) {
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(15000)) {
+    return jsonOut({ success: false, error: "LOCK_TIMEOUT", message: "Hệ thống đang bận, vui lòng thử lại sau giây lát." });
+  }
+
+  try {
+    var compoundKey = data.compound_key ? data.compound_key.trim() : "";
+    var email = data.email ? data.email.trim().toLowerCase() : "";
+    var cohort = data.cohort ? normalizeCohortSlug(data.cohort) : "";
+
+    if (!compoundKey && (!email || !cohort)) {
+      return jsonOut({ success: false, error: "MISSING_IDENTIFIER", message: "Cần cung cấp Compound_Key hoặc Email + Cohort." });
+    }
+
+    var ss = getMasterRosterSpreadsheet_();
+    var sheet = getOrCreateMasterRosterSheet(ss);
+    var rows = sheet.getDataRange().getValues();
+
+    var targetRowIdx = -1;
+    for (var i = 1; i < rows.length; i++) {
+      var rKey = String(rows[i][0] || "").trim();
+      var rEmail = String(rows[i][1] || "").toLowerCase().trim();
+      var rCohort = normalizeCohortSlug(rows[i][4]);
+
+      if (compoundKey && rKey === compoundKey) {
+        targetRowIdx = i + 1;
+        break;
+      } else if (!compoundKey && rEmail === email && rCohort === cohort) {
+        targetRowIdx = i + 1;
+        break;
+      }
+    }
+
+    if (targetRowIdx === -1) {
+      return jsonOut({ success: false, error: "LEARNER_NOT_FOUND", message: "Không tìm thấy học viên trong danh bạ tập trung." });
+    }
+
+    var nowIso = new Date().toISOString();
+    var currentPhone = String(rows[targetRowIdx - 1][2] || "").replace(/\D/g, "");
+    var last4 = currentPhone.length >= 4 ? currentPhone.slice(-4) : "1234";
+    var defaultPwd = last4;
+    var pwdHash = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, defaultPwd)
+      .map(function(b) { return (b < 0 ? b + 256 : b).toString(16).padStart(2, '0'); })
+      .join('');
+
+    sheet.getRange(targetRowIdx, 6).setValue("ACTIVE");
+    sheet.getRange(targetRowIdx, 7).setValue("ACTIVATED");
+    sheet.getRange(targetRowIdx, 8).setValue("INSTANT_MANUAL");
+    sheet.getRange(targetRowIdx, 10).setValue(pwdHash);
+    sheet.getRange(targetRowIdx, 11).setValue(defaultPwd);
+    sheet.getRange(targetRowIdx, 12).setValue(true);
+    sheet.getRange(targetRowIdx, 16).setValue(nowIso);
+
+    logMasterRosterActivity_("ADMIN_INSTANT_ACTIVATE", email, cohort, "Row: " + targetRowIdx + ", CompoundKey: " + compoundKey);
+
+    return jsonOut({
+      success: true,
+      message: "Đã kích hoạt học viên thành công!",
+      compound_key: rows[targetRowIdx - 1][0],
+      default_password: defaultPwd
+    });
+
+  } catch (err) {
+    return jsonOut({ success: false, error: "SERVER_ERROR", message: err.toString() });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/**
+ * Vô hiệu hóa hoặc Kích hoạt lại quyền truy cập học viên
+ */
+function handleAdminToggleEnrollmentStatus(data) {
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(15000)) {
+    return jsonOut({ success: false, error: "LOCK_TIMEOUT", message: "Hệ thống đang bận, vui lòng thử lại sau giây lát." });
+  }
+
+  try {
+    var compoundKey = data.compound_key ? data.compound_key.trim() : "";
+    var targetStatus = String(data.target_status || "").toUpperCase().trim();
+
+    if (!compoundKey) {
+      return jsonOut({ success: false, error: "MISSING_COMPOUND_KEY", message: "Thiếu Compound_Key định danh bản ghi." });
+    }
+    if (targetStatus !== "ACTIVE" && targetStatus !== "DISABLED" && targetStatus !== "ARCHIVED") {
+      return jsonOut({ success: false, error: "INVALID_STATUS", message: "Trạng thái chỉ có thể là ACTIVE, DISABLED hoặc ARCHIVED." });
+    }
+
+    var ss = getMasterRosterSpreadsheet_();
+    var sheet = getOrCreateMasterRosterSheet(ss);
+    var rows = sheet.getDataRange().getValues();
+
+    var targetRowIdx = -1;
+    for (var i = 1; i < rows.length; i++) {
+      var rKey = String(rows[i][0] || "").trim();
+      if (rKey === compoundKey) {
+        targetRowIdx = i + 1;
+        break;
+      }
+    }
+
+    if (targetRowIdx === -1) {
+      return jsonOut({ success: false, error: "LEARNER_NOT_FOUND", message: "Không tìm thấy học viên với Compound_Key đã cung cấp." });
+    }
+
+    sheet.getRange(targetRowIdx, 6).setValue(targetStatus);
+    var currentNotes = String(rows[targetRowIdx - 1][16] || "");
+    var updateNote = "[" + new Date().toISOString() + "] Status changed to " + targetStatus + " by Admin.";
+    sheet.getRange(targetRowIdx, 17).setValue(currentNotes ? currentNotes + " | " + updateNote : updateNote);
+
+    logMasterRosterActivity_("ADMIN_TOGGLE_STATUS", String(rows[targetRowIdx - 1][1]), String(rows[targetRowIdx - 1][4]), "NewStatus: " + targetStatus);
+
+    return jsonOut({
+      success: true,
+      message: "Đã cập nhật trạng thái học viên thành " + targetStatus + "!",
+      compound_key: compoundKey,
+      enrollment_status: targetStatus
+    });
+
+  } catch (err) {
+    return jsonOut({ success: false, error: "SERVER_ERROR", message: err.toString() });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/**
+ * Lưu ghi chú khai vấn (Coach Notes) trực tiếp vào Master_Roster Google Sheets
+ */
+function handleSaveCoachNote(data) {
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(15000)) {
+    return jsonOut({ success: false, error: "LOCK_TIMEOUT", message: "Hệ thống đang bận, vui lòng thử lại sau giây lát." });
+  }
+
+  try {
+    var compoundKey = data.compound_key ? data.compound_key.trim() : "";
+    var email = data.email ? data.email.trim().toLowerCase() : "";
+    var coachNote = data.coach_note !== undefined ? String(data.coach_note) : "";
+
+    var ss = getMasterRosterSpreadsheet_();
+    var sheet = getOrCreateMasterRosterSheet(ss);
+    var rows = sheet.getDataRange().getValues();
+
+    var targetRowIdx = -1;
+    for (var i = 1; i < rows.length; i++) {
+      var rKey = String(rows[i][0] || "").trim();
+      var rEmail = String(rows[i][1] || "").toLowerCase().trim();
+
+      if (compoundKey && rKey === compoundKey) {
+        targetRowIdx = i + 1;
+        break;
+      } else if (!compoundKey && email && rEmail === email) {
+        targetRowIdx = i + 1;
+        break;
+      }
+    }
+
+    if (targetRowIdx === -1) {
+      return jsonOut({ success: false, error: "LEARNER_NOT_FOUND", message: "Không tìm thấy học viên để lưu ghi chú." });
+    }
+
+    sheet.getRange(targetRowIdx, 17).setValue(coachNote);
+
+    return jsonOut({
+      success: true,
+      message: "Đã lưu ghi chú khai vấn vào Master Roster Google Sheets!",
+      compound_key: rows[targetRowIdx - 1][0]
+    });
+
+  } catch (err) {
+    return jsonOut({ success: false, error: "SERVER_ERROR", message: err.toString() });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/**
+ * Trả về danh sách toàn bộ học viên từ Master_Roster (Hỗ trợ cả REST và JSONP)
+ */
+function handleGetMasterRoster(params) {
+  try {
+    var ss = getMasterRosterSpreadsheet_();
+    var sheet = getOrCreateMasterRosterSheet(ss);
+    var rows = sheet.getDataRange().getValues();
+
+    if (rows.length <= 1) {
+      return jsonOut({ success: true, count: 0, learners: [] });
+    }
+
+    var learners = [];
+    var cohortFilter = params.cohort ? normalizeCohortSlug(params.cohort) : "";
+    var statusFilter = params.status ? String(params.status).toUpperCase().trim() : "";
+
+    for (var i = 1; i < rows.length; i++) {
+      var rCohort = normalizeCohortSlug(rows[i][4]);
+      var rStatus = String(rows[i][5] || "").toUpperCase().trim();
+
+      if (cohortFilter && rCohort !== cohortFilter) continue;
+      if (statusFilter && rStatus !== statusFilter) continue;
+
+      learners.push({
+        compound_key: String(rows[i][0] || ""),
+        email: String(rows[i][1] || ""),
+        phone: String(rows[i][2] || ""),
+        full_name: String(rows[i][3] || ""),
+        cohort: String(rows[i][4] || ""),
+        enrollment_status: rStatus,
+        activation_status: String(rows[i][6] || ""),
+        activation_type: String(rows[i][7] || ""),
+        role: String(rows[i][8] || "Learner"),
+        default_password: String(rows[i][10] || ""),
+        force_pwd_change: rows[i][11] === true || rows[i][11] === "TRUE",
+        is_paid: rows[i][12] === true || rows[i][12] === "TRUE",
+        payment_status: String(rows[i][13] || "PAID"),
+        created_at: rows[i][14],
+        activated_at: rows[i][15],
+        admin_notes: String(rows[i][16] || "")
+      });
+    }
+
+    var callback = params.callback || "";
+    if (callback && typeof CALLBACK_REGEX !== 'undefined' && CALLBACK_REGEX.test(callback)) {
+      return ContentService.createTextOutput(callback + "(" + JSON.stringify({ success: true, count: learners.length, learners: learners }) + ");")
+        .setMimeType(ContentService.MimeType.JAVASCRIPT);
+    }
+
+    return jsonOut({ success: true, count: learners.length, learners: learners });
+
+  } catch (err) {
+    return jsonOut({ success: false, error: "SERVER_ERROR", message: err.toString() });
+  }
+}
+
+/**
+ * Phân giải danh tính khi học viên đăng nhập
+ */
+function handleResolveLoginIdentity(data) {
+  try {
+    var rawIdentity = String(data.identity || data.email || data.phone || "").trim().toLowerCase();
+    if (!rawIdentity) {
+      return jsonOut({ success: false, error: "MISSING_IDENTITY", message: "Vui lòng nhập email hoặc số điện thoại." });
+    }
+
+    var cleanPhone = rawIdentity.replace(/\D/g, "");
+    var normalizedPhone = cleanPhone.startsWith("84") ? "0" + cleanPhone.slice(2) : cleanPhone;
+    if (normalizedPhone.length === 9 && !normalizedPhone.startsWith("0")) {
+      normalizedPhone = "0" + normalizedPhone;
+    }
+
+    var ss = getMasterRosterSpreadsheet_();
+    var sheet = getOrCreateMasterRosterSheet(ss);
+    var rows = sheet.getDataRange().getValues();
+
+    var matching = [];
+
+    for (var i = 1; i < rows.length; i++) {
+      var rKey = String(rows[i][0] || "");
+      var rEmail = String(rows[i][1] || "").toLowerCase().trim();
+      var rPhone = String(rows[i][2] || "").replace(/\D/g, "");
+      var rPhoneNorm = rPhone.startsWith("84") ? "0" + rPhone.slice(2) : rPhone;
+      if (rPhoneNorm.length === 9 && !rPhoneNorm.startsWith("0")) {
+        rPhoneNorm = "0" + rPhoneNorm;
+      }
+
+      var emailMatch = (rawIdentity.indexOf("@") !== -1 && rEmail === rawIdentity);
+      var phoneMatch = (normalizedPhone.length >= 9 && rPhoneNorm === normalizedPhone);
+      var keyMatch = (rKey.toLowerCase() === rawIdentity);
+
+      if (emailMatch || phoneMatch || keyMatch) {
+        var phoneStr = String(rows[i][2] || "").trim();
+        if (phoneStr && phoneStr.length === 9 && !phoneStr.startsWith("0")) {
+          phoneStr = "0" + phoneStr;
+        }
+        var defaultPwdStr = String(rows[i][10] || "").trim();
+        if (defaultPwdStr.length < 4 && phoneStr.length >= 4) {
+          defaultPwdStr = phoneStr.slice(-4);
+        }
+
+        matching.push({
+          compound_key: rKey,
+          email: String(rows[i][1] || "").toLowerCase().trim(),
+          phone: phoneStr,
+          full_name: rows[i][3],
+          name: rows[i][3],
+          cohort: rows[i][4],
+          enrollment_status: rows[i][5],
+          activation_status: rows[i][6],
+          role: rows[i][8],
+          default_password: defaultPwdStr,
+          default_pwd: defaultPwdStr,
+          force_pwd_change: rows[i][11] === true || rows[i][11] === "TRUE",
+          is_paid: rows[i][12] === true || rows[i][12] === "TRUE",
+          payment_status: rows[i][13]
+        });
+      }
+    }
+
+    if (matching.length === 0) {
+      return jsonOut({ success: false, error: "NOT_FOUND", message: "Không tìm thấy thông tin học viên." });
+    }
+
+    var activeList = matching.filter(function(m) { return m.enrollment_status === "ACTIVE"; });
+    if (activeList.length === 1) {
+      return jsonOut({ success: true, learner: activeList[0] });
+    }
+
+    var disabledList = matching.filter(function(m) { return m.enrollment_status === "DISABLED"; });
+    if (activeList.length === 0 && disabledList.length > 0) {
+      return jsonOut({
+        success: false,
+        error: "ACCOUNT_DISABLED",
+        message: "Tài khoản học viên của bạn đang tạm ngưng hoạt động. Vui lòng liên hệ Ban Giảng Huấn để được kích hoạt lại."
+      });
+    }
+
+    return jsonOut({ success: true, count: matching.length, candidates: matching });
+
+  } catch (err) {
+    return jsonOut({ success: false, error: "SERVER_ERROR", message: err.toString() });
+  }
+}

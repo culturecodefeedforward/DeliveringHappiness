@@ -1,0 +1,30 @@
+{
+  "releaseId": "dpl_FVCQkXHnnGBHnY1epjKwaDt5BWPE",
+  "promotedUrl": "https://delivering-happiness.vercel.app",
+  "timestamp": "2026-10-20T22:49:00+07:00",
+  "author": "Antigravity (Gemini)",
+  "scope": [
+    "register_dhm10.html",
+    "next_dhm.html",
+    "index.html",
+    "interest_dh10.html",
+    "Scripts/active_code_gs_final.js"
+  ],
+  "appsScript": {
+    "version": 83,
+    "deploymentId": "AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ",
+    "lane": "next_dhm",
+    "status": "DEPLOYED_AND_VERIFIED",
+    "testEmailMessageId": "1a159ef8648f85c2",
+    "sheetVerified": {
+      "tab": "Next DHM Interest",
+      "row": 2,
+      "officialRegistrationStatus": "Chưa đăng ký"
+    }
+  },
+  "layer1_http": "PASSED (All routes 200 OK)",
+  "layer2_browser": "PASSED (Puppeteer E2E Modal & Submission verified 100%)",
+  "layer3_crm_email": "PASSED (Google Sheet row appended + Gmail Message ID verified)",
+  "live_production_uat": "PASSED (0 errors, no redirects, live modal verified)",
+  "verdict": "LIVE_DONE"
+}

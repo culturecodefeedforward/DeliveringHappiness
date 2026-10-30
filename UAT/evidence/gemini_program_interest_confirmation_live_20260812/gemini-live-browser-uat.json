@@ -1,0 +1,27 @@
+{
+  "tests": {
+    "B-01": "PASS",
+    "B-02": "PASS",
+    "B-03": "PASS",
+    "B-04": "PASS",
+    "B-05": "PASS",
+    "B-06": "PASS",
+    "B-07": "PASS"
+  },
+  "DOM": {
+    "hasForm": true,
+    "hasSubmit": true,
+    "has6Options": true,
+    "hasStatusArea": true,
+    "hasV1": true,
+    "hasCheckStatus": true,
+    "hasUnavailable": true,
+    "noDateNow36": true,
+    "hasFallback": true
+  },
+  "externalWrites": "NONE",
+  "safety": {
+    "appsScriptRequestsContinued": 0,
+    "interceptedRequests": 27
+  }
+}

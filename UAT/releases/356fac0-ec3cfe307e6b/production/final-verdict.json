@@ -1,0 +1,86 @@
+{
+  "phase": "production",
+  "productionUrl": "https://delivering-happiness.vercel.app",
+  "deploymentId": "dpl_E3g3J12dVrgkWcgvJrE4RQzLK2oH",
+  "releaseId": "356fac0-ec3cfe307e6b",
+  "commitSha": "356fac0b9c243fd21c5439fa00421bd6fa5300f0",
+  "timestamp": "2026-08-25T09:47:00+07:00",
+  "checks": [
+    {
+      "layer": "Layer 1 - HTTP & Header Provenance",
+      "route": "/",
+      "status": 200,
+      "xReleaseIdHeader": "356fac0-ec3cfe307e6b",
+      "headerMatchesReleaseId": true,
+      "verdict": "PASS"
+    },
+    {
+      "layer": "Layer 1 - HTTP & Header Provenance",
+      "route": "/register_nvc",
+      "status": 200,
+      "xReleaseIdHeader": "356fac0-ec3cfe307e6b",
+      "headerMatchesReleaseId": true,
+      "verdict": "PASS"
+    },
+    {
+      "layer": "Layer 1 - HTTP & Header Provenance",
+      "route": "/register",
+      "status": 200,
+      "xReleaseIdHeader": "356fac0-ec3cfe307e6b",
+      "headerMatchesReleaseId": true,
+      "verdict": "PASS"
+    },
+    {
+      "layer": "Layer 1 - HTTP & Header Provenance",
+      "route": "/interest",
+      "status": 200,
+      "xReleaseIdHeader": "356fac0-ec3cfe307e6b",
+      "headerMatchesReleaseId": true,
+      "verdict": "PASS"
+    },
+    {
+      "layer": "Layer 1 - HTTP & Header Provenance",
+      "route": "/interest_dh9",
+      "status": 200,
+      "xReleaseIdHeader": "356fac0-ec3cfe307e6b",
+      "headerMatchesReleaseId": true,
+      "verdict": "PASS"
+    },
+    {
+      "layer": "Layer 1 - HTTP & Header Provenance",
+      "route": "/personal-value",
+      "status": 200,
+      "xReleaseIdHeader": "356fac0-ec3cfe307e6b",
+      "headerMatchesReleaseId": true,
+      "verdict": "PASS"
+    },
+    {
+      "layer": "Layer 1 - HTTP & Header Provenance",
+      "route": "/practice-abcde",
+      "status": 200,
+      "xReleaseIdHeader": "356fac0-ec3cfe307e6b",
+      "headerMatchesReleaseId": true,
+      "verdict": "PASS"
+    },
+    {
+      "layer": "Layer 2 - DOM Verification",
+      "route": "/register_nvc",
+      "eventTimeFound": true,
+      "formatFound": true,
+      "verdict": "PASS"
+    },
+    {
+      "layer": "Layer 3 - Visual Screenshot (Desktop)",
+      "route": "/register_nvc",
+      "screenshot": "c:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\releases\\356fac0-ec3cfe307e6b\\production\\live_nvc_desktop.png",
+      "verdict": "PASS"
+    },
+    {
+      "layer": "Layer 3 - Visual Screenshot (Mobile)",
+      "route": "/register_nvc",
+      "screenshot": "c:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\releases\\356fac0-ec3cfe307e6b\\production\\live_nvc_mobile.png",
+      "verdict": "PASS"
+    }
+  ],
+  "finalVerdict": "LIVE_VERIFIED"
+}

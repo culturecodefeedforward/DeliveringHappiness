@@ -1,0 +1,234 @@
+{
+  "generatedAt": "2026-07-18T08:32:57.477Z",
+  "sheetRows": [
+    [
+      "Timestamp",
+      "Interest UUID",
+      "Họ và tên",
+      "Email",
+      "Số điện thoại",
+      "Công ty",
+      "Vai trò",
+      "Khu vực mong muốn",
+      "Chương trình quan tâm",
+      "DHM8",
+      "DHM9",
+      "NVC",
+      "AI",
+      "DHM kỳ vọng",
+      "DHM khóa mong muốn",
+      "NVC tình huống",
+      "NVC mối quan hệ",
+      "NVC kỳ vọng",
+      "AI mức độ kinh nghiệm",
+      "AI nhu cầu ứng dụng",
+      "AI hình thức mong muốn",
+      "Ghi chú",
+      "Đồng ý liên hệ",
+      "Source",
+      "Event ID"
+    ],
+    [
+      "2026-07-18T08:32:57.474Z",
+      "123e4567-e89b-12d3-a456-426614174000",
+      "Nguyen Van A",
+      "a@example.com",
+      "'+84901234567",
+      "CultureCode",
+      "Quan ly",
+      "TP.HCM",
+      "DHM8, NVC, AI",
+      "TRUE",
+      "FALSE",
+      "TRUE",
+      "TRUE",
+      "Hoc ung dung hanh phuc",
+      "DHM8 TP.HCM",
+      "Kho noi dieu quan trong",
+      "Dong nghiep / Doi tac",
+      "Biet lang nghe hon",
+      "Da dung cong cu co ban",
+      "Tu dong hoa cong viec lap lai",
+      "Ket hop",
+      "'=FORMULA",
+      "TRUE",
+      "Web_Program_Interest",
+      "PROGRAM_INTEREST_V1"
+    ],
+    [
+      "2026-07-18T08:32:57.475Z",
+      "123e4567-e89b-42d3-a456-426614174010",
+      "O'Connor",
+      "a@example.com",
+      "'+84901234567",
+      "R&D",
+      "Quan ly",
+      "TP.HCM",
+      "DHM8, NVC, AI",
+      "TRUE",
+      "FALSE",
+      "TRUE",
+      "TRUE",
+      "Hoc ung dung hanh phuc",
+      "DHM8 TP.HCM",
+      "Kho noi dieu quan trong",
+      "Dong nghiep / Doi tac",
+      "Biet lang nghe hon",
+      "Da dung cong cu co ban",
+      "Tu dong hoa cong viec lap lai",
+      "Ket hop",
+      "'=FORMULA",
+      "TRUE",
+      "Web_Program_Interest",
+      "PROGRAM_INTEREST_V1"
+    ]
+  ],
+  "routeJson": {
+    "success": true,
+    "state": "recorded",
+    "interestUuid": "123e4567-e89b-12d3-a456-426614174000",
+    "duplicate": false
+  },
+  "duplicateJson": {
+    "success": true,
+    "state": "recorded",
+    "interestUuid": "123e4567-e89b-12d3-a456-426614174000",
+    "duplicate": true
+  },
+  "status": {
+    "success": true,
+    "state": "recorded",
+    "interestUuid": "123e4567-e89b-12d3-a456-426614174000"
+  },
+  "validJsonp": "programInterestJsonp_abcdef1234567890({\"success\":true,\"state\":\"recorded\",\"interestUuid\":\"123e4567-e89b-12d3-a456-426614174000\"});",
+  "invalidJsonp": "{\"error\":\"INVALID_CALLBACK\"}",
+  "systemLogs": [],
+  "results": [
+    {
+      "surface": "Backend mock",
+      "name": "doPost routes PROGRAM_INTEREST to new handler",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\program_interest_phase1_backend_20260718.json",
+      "detail": "{\"success\":true,\"state\":\"recorded\",\"interestUuid\":\"123e4567-e89b-12d3-a456-426614174000\",\"duplicate\":false}"
+    },
+    {
+      "surface": "Backend mock",
+      "name": "creates Program Interest sheet",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\program_interest_phase1_backend_20260718.json",
+      "detail": ""
+    },
+    {
+      "surface": "Backend mock",
+      "name": "header schema has 25 columns",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\program_interest_phase1_backend_20260718.json",
+      "detail": "Timestamp | Interest UUID | Họ và tên | Email | Số điện thoại | Công ty | Vai trò | Khu vực mong muốn | Chương trình quan tâm | DHM8 | DHM9 | NVC | AI | DHM kỳ vọng | DHM khóa mong muốn | NVC tình huống | NVC mối quan hệ | NVC kỳ vọng | AI mức độ kinh nghiệm | AI nhu cầu ứng dụng | AI hình thức mong muốn | Ghi chú | Đồng ý liên hệ | Source | Event ID"
+    },
+    {
+      "surface": "Backend mock",
+      "name": "appends one row with UUID in idempotency column",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\program_interest_phase1_backend_20260718.json",
+      "detail": ""
+    },
+    {
+      "surface": "Backend mock",
+      "name": "program flags are mapped to columns",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\program_interest_phase1_backend_20260718.json",
+      "detail": ""
+    },
+    {
+      "surface": "Backend mock",
+      "name": "formula-like note is escaped for spreadsheet safety",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\program_interest_phase1_backend_20260718.json",
+      "detail": "'=FORMULA"
+    },
+    {
+      "surface": "Backend mock",
+      "name": "CRM text remains raw instead of HTML entities",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\program_interest_phase1_backend_20260718.json",
+      "detail": "[\"2026-07-18T08:32:57.475Z\",\"123e4567-e89b-42d3-a456-426614174010\",\"O'Connor\",\"a@example.com\",\"'+84901234567\",\"R&D\",\"Quan ly\",\"TP.HCM\",\"DHM8, NVC, AI\",\"TRUE\",\"FALSE\",\"TRUE\",\"TRUE\",\"Hoc ung dung hanh phuc\",\"DHM8 TP.HCM\",\"Kho noi dieu quan trong\",\"Dong nghiep / Doi tac\",\"Biet lang nghe hon\",\"Da dung cong cu co ban\",\"Tu dong hoa cong viec lap lai\",\"Ket hop\",\"'=FORMULA\",\"TRUE\",\"Web_Program_Interest\",\"PROGRAM_INTEREST_V1\"]"
+    },
+    {
+      "surface": "Backend mock",
+      "name": "source is fixed server-side",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\program_interest_phase1_backend_20260718.json",
+      "detail": "Web_Program_Interest"
+    },
+    {
+      "surface": "Backend mock",
+      "name": "UUID idempotency prevents duplicate append",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\program_interest_phase1_backend_20260718.json",
+      "detail": "{\"success\":true,\"state\":\"recorded\",\"interestUuid\":\"123e4567-e89b-12d3-a456-426614174000\",\"duplicate\":true}"
+    },
+    {
+      "surface": "Backend mock",
+      "name": "status returns recorded UUID without PII",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\program_interest_phase1_backend_20260718.json",
+      "detail": "{\"success\":true,\"state\":\"recorded\",\"interestUuid\":\"123e4567-e89b-12d3-a456-426614174000\"}"
+    },
+    {
+      "surface": "Backend mock",
+      "name": "valid JSONP callback returns JavaScript",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\program_interest_phase1_backend_20260718.json",
+      "detail": "programInterestJsonp_abcdef1234567890({\"success\":true,\"state\":\"recorded\",\"interestUuid\":\"123e4567-e89b-12d3-a456-426614174000\"});"
+    },
+    {
+      "surface": "Backend mock",
+      "name": "invalid JSONP callback is rejected",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\program_interest_phase1_backend_20260718.json",
+      "detail": "{\"error\":\"INVALID_CALLBACK\"}"
+    },
+    {
+      "surface": "Backend mock",
+      "name": "DHM cohort must match selected program",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\program_interest_phase1_backend_20260718.json",
+      "detail": ""
+    },
+    {
+      "surface": "Backend mock",
+      "name": "FIELD_TOO_LONG is enforced before sanitize truncation",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\program_interest_phase1_backend_20260718.json",
+      "detail": "{\"ok\":false,\"error\":\"FIELD_TOO_LONG\",\"field\":\"fullName\"}"
+    },
+    {
+      "surface": "Backend mock",
+      "name": "NVC conditional fields are required server-side",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\program_interest_phase1_backend_20260718.json",
+      "detail": ""
+    },
+    {
+      "surface": "Backend mock",
+      "name": "AI conditional fields are required server-side",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\program_interest_phase1_backend_20260718.json",
+      "detail": ""
+    },
+    {
+      "surface": "Backend mock",
+      "name": "DHM conditional fields are required server-side",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\program_interest_phase1_backend_20260718.json",
+      "detail": ""
+    },
+    {
+      "surface": "Backend mock",
+      "name": "handler does not enqueue email/payment side effects",
+      "status": "VERIFIED",
+      "evidence": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\program_interest_phase1_backend_20260718.json",
+      "detail": "[]"
+    }
+  ]
+}

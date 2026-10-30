@@ -323,20 +323,26 @@ Cập nhật và hoàn thiện ngày 12/10/2026 sau khi vá triệt để 6 lỗ
 
 ---
 
-## 11. Kiến Trúc Cổng Quản Trị Ban Giảng Huấn Tinh Gọn (KISS Admin Portal Architecture — `admin.html`)
+## 11. Kiến Trúc Cổng Quản Trị Hợp Nhất 7 Tab & Bộ Lọc Scope 2 Tầng (Unified 7-Tab LMS Admin & Global Dashboard Architecture — Commit 6e0807f 30/10/2026)
 
-- Cổng Quản Trị trung tâm (5.024 dòng mã) là đầu não vận hành LMS của Ban Giảng Huấn và Ban Đào Tạo:
-  + Quản lý danh bạ học viên đa khóa học (DHM3 đến DHM10, Team Happiness Apollo).
-  + Giám sát bài test sát hạch vượt chặng Chặng 1 (tiêu chuẩn 80%, 3 lượt thử, cơ chế khóa cổng).
-  + Chấm điểm & ghi chú phản hồi bài tập chuyển hóa niềm tin giới hạn ABCDE Chặng 3.
-  + Ma trận Heatmap mức độ hoàn thành bài test và Xu hướng xử lý xung đột TKI (Tab 5).
-  + Xuất báo cáo tổng hợp 3 Chặng ra CSV và liên kết trực tiếp Google Sheet thu hoạch (Tab 4).
-- **Các Cơ Chế Tinh Gọn Theo Chuẩn KISS (Commit `da5e849`):**
-  1. *Triệt tiêu rác giao diện đầu trang:* Thanh điều hướng Top Nav và các Tab chính loại bỏ 100% các nút debug (nạp mock, xóa mock, tải roster thủ công, timestamp kết nối webhook).
-  2. *Cơ chế đồng bộ ngầm tĩnh lặng (Silent Background Interval):* Dữ liệu từ Google Sheets được tự động làm mới ngầm mỗi 60 giây (`setInterval(..., 60000)`), ghi log nội bộ qua `console.log`, không làm rung lắc hoặc nhấp nháy giao diện người dùng.
-  3. *Ngăn kéo chẩn đoán ẩn (`#dev-tools-panel`):* Mặc định ẩn hoàn toàn ở chân trang (`Footer`), chỉ hiển thị khi kỹ thuật viên truy cập URL có tham số `?dev=1` hoặc nhấp vào số hiệu bản dựng (`v2.1 • build ...`).
-  4. *Chuẩn hóa câu chữ theo Source of Truth:* Xóa bỏ 100% câu từ bịa đặt ở chân trang (`• Hệ Thống Khai Vấn & Đào Tạo Quản Lý`), chuẩn hóa các trạng thái rỗng (`empty states`) và thẻ thống kê về đúng thuật ngữ sư phạm của khóa học.
-  5. *Độ rộng tối thiểu bảng trạm Tab 2:* Bổ sung `min-w-[950px]` bảo đảm hiển thị trơn tru trên mọi kích thước màn hình mà không vỡ layout CSS.
+- Cổng Quản Trị trung tâm (Teaching DH/dhm-micro-lms/admin.html - 434.709 bytes) là đầu não hợp nhất toàn diện, tích hợp trực tiếp toàn bộ 4 tính năng thu hoạch chuyên sâu từ Full Admin (dhm-admin-full) vào LMS Admin:
+  + **Cấu Trúc 7 Tab Quản Trị Chuẩn Sư Phạm:**
+    1. #pane-test-analytics: Tổng quan & Bài Test Cổng Sát Hạch Chặng 1 (>80%, 3 lượt thi, cơ chế duyệt/kích hoạt tài khoản tức thì).
+    2. #pane-iam-stations: Ma trận Giám Sát Thu Hoạch 6 Trạm I•A•M (Bảng trạm tối thiểu min-w-[950px], lọc theo lớp và tiến độ nộp bài).
+    3. #pane-social-styles: 4 Phong Cách Xã Hội Social Styles theo chuẩn Slide 93/94 v11 (Đại bàng #E4002B, Chim công #F3B400, Bồ câu #92D050, Cú mèo #2563EB) với ma trận 4 góc phần tư SVG/HTML phẳng sạch.
+    4. #pane-tki-conflicts: 5 Phong Cách Xử Lý Xung Đột TKI theo chuẩn Slide 82 v11 (Cạnh tranh #DFAB45, Hợp tác #D15E32, Thỏa hiệp #C90D40, Né tránh #911084, Nhượng bộ #280980).
+    5. #pane-18-boxes: Bảng Thu Hoạch Toàn Diện 18 Ô khóa cứng width: 3240px; min-width: 3240px; với 2 cột đầu (Họ tên, STT) dính cố định (sticky left-0), xuất CSV UTF-8 BOM \uFEFF.
+    6. #pane-collective-cta: Bản Tuyên Ngôn Hành Động Tập Thể STOP • START • CONTINUE (Slide 98 v11), tải văn bản đính kèm UTF-8 BOM \uFEFF.
+    7. #pane-blended-journey: Hành Trình Blended 360° (DHM & Habit Tracker), tổng hợp tiến độ 3 Chặng và liên kết CRM Sheet.
+  + **Bộ Lọc Global Dashboard 2 Tầng Tại Header:**
+    1. *Tầng 1 - Scope Phân Khúc:* Nút chọn nhanh 3 phân khúc: ALL (519 HV toàn hệ sinh thái), DHM (386 HV các khóa đại chúng), TEAM_HAPPINESS (70 HV đối tác).
+    2. *Tầng 2 - Sub-cohort Dropdown:* Danh sách khóa con biến thiên động theo Scope đã chọn (ví dụ: ở Scope TEAM_HAPPINESS hiển thị 38 HV Hà Nội và 32 HV TP.HCM).
+    3. *Graceful Adaptation Banners:* 5 khung thông báo nghiệp vụ ngữ cảnh xuất hiện tự động khi Scope chọn không khớp với bản chất dữ liệu của Tab (ví dụ: báo người dùng chuyển sang Scope DHM khi xem Quiz Chặng 1).
+  + **Bảo Vệ Tính Toàn Vẹn Danh Bạ & Roster:**
+    - Tập dữ liệu 70 học viên quản lý Apollo (pollo_heatmap_data.js - 407.649 bytes) được cách ly độc lập, không tự ý inject vào uthorized_roster.json (508 HV) để chống đội sĩ số ảo.
+    - Cung cấp shim ủy quyền an toàn cho mergeLiveRosterIntoHeatmap() và pplyHeatmapFilters(), tránh lỗi ReferenceError.
+  + **Modal Hồ Sơ 18 Ô Phản Tư:**
+    - Cấy ghép #modal-learner-dossier cho phép click chip học viên ở bất kỳ ô nào để mở chi tiết 6 Trạm I•A•M, đóng mượt mà bằng phím ESC và nhấp backdrop ngoài.
 
 ---
 
@@ -477,6 +483,17 @@ graph TD
      - `GTCL` (Giá trị cốt lõi): Cột 11 (`values_completed`)
      - `ABCDE` (Thực hành lạc quan): Cột 12 (`abcde_completed`)
    - Bổ sung `ABCDE` vào cấu hình `SURVEY_CONFIG`, từ chối ghi nhận nếu `surveyType` không hợp lệ (`colIndex === -1`).
+
+---
+
+## 11. Kiến Trúc Cặp Dự Án Song Sinh & Ma Trận Liên Thông Source of Truth
+*(Teaching DH ⇄ dh4hn-website)*
+
+Hệ thống Delivering Happiness Masterclass (DHM) vận hành trên mô hình **Twin-Workspace Architecture**:
+- **Teaching DH**: Không gian lưu trữ học liệu sư phạm gốc (Slide PPTX, kịch bản, audio bóc băng), mã nguồn phát triển LMS gốc (`dhm-micro-lms/admin.html`), và harness kiểm thử E2E qua Edge CDP (`test_cdp_e2e.js`).
+- **dh4hn-website**: Không gian cổng thông tin tuyển sinh, landing page công chúng (`index.html`, `register_dhm10.html`), và mirror triển khai Vercel Production (`lms/admin.html`, `lms/index.html`, `lms/apollo_heatmap_data.js`).
+- Chi tiết ma trận phân định trách nhiệm, nguồn chuẩn Google Drive và quy tắc đồng bộ xem tại:
+  `docs/INTER_WORKSPACE_SOURCE_OF_TRUTH_MATRIX.md`
 
 
 

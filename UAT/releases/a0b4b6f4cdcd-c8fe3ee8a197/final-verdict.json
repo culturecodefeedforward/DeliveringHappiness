@@ -1,0 +1,34 @@
+{
+  "timestamp": "2026-08-06T05:45:00Z",
+  "releaseId": "a0b4b6f4cdcd-c8fe3ee8a197",
+  "commit": "a0b4b6f4cdcd",
+  "manifestSha256": "c8fe3ee8a197debc68adeefcda064b20ca4be6fb9b14e897a830fa0e8d651a86",
+  "deploymentId": "dpl_2tstTUq3tD9ktX8JrhBAeJAUZ9i6",
+  "deploymentUrl": "https://delivering-happiness-omtnpwdii-vuhoang2708s-projects.vercel.app",
+  "productionUrl": "https://delivering-happiness.vercel.app",
+  "productionAliasDeploymentId": "dpl_CUALTEhpSQiYXhY6roy8oXUJdBYR",
+  "layers": {
+    "sourceAndPackage": "VERIFIED",
+    "localBrowser": "VERIFIED",
+    "backendReadOnlyProbe": "VERIFIED",
+    "stagedHttp": "UNVERIFIED",
+    "stagedBrowser": "UNVERIFIED",
+    "productionAliasRoute": "VERIFIED",
+    "productionBrowser": "VERIFIED"
+  },
+  "evidence": {
+    "contract": "routeCount=7",
+    "layer1Report": "UAT/releases/a0b4b6f4cdcd-c8fe3ee8a197/layer1_http_verdict.json",
+    "localBrowserReport": "UAT/releases/a0b4b6f4cdcd-c8fe3ee8a197/local-browser-verdict.json",
+    "screenshots": [
+      "UAT/releases/a0b4b6f4cdcd-c8fe3ee8a197/local_desktop.png",
+      "UAT/releases/a0b4b6f4cdcd-c8fe3ee8a197/local_mobile.png"
+    ],
+    "backendProbe": "checkProgramInterestStatus returned JSONP state=not_found without writing data",
+    "productionProbe": "/program-interest returned HTTP 200 with form and PROGRAM_INTEREST_V1 after Git auto-deploy",
+    "productionRoutes": "7/7 core routes returned HTTP 200 with cleanUrls",
+    "productionBrowser": "UAT/releases/a0b4b6f4cdcd-c8fe3ee8a197/public-browser-verdict.json"
+  },
+  "verdict": "PUBLIC_ROUTE_VERIFIED_RELEASE_GATE_INCOMPLETE",
+  "reason": "The public alias is serving the pushed route and browser UAT passes, but the staged package URL is protected by Vercel SSO and the public Git deployment does not expose release headers; full immutable release identity verification remains incomplete."
+}

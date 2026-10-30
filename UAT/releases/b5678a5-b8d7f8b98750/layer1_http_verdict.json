@@ -1,0 +1,156 @@
+{
+  "timestamp": "2026-07-24T02:39:21.522Z",
+  "targetUrl": "http://localhost:58888",
+  "expectedSpec": {
+    "expectedReleaseId": "b5678a5-b8d7f8b98750",
+    "expectedCommit": "b5678a5",
+    "expectedManifestHash": "b8d7f8b98750b4912867ed260475c95390e009d26d131ff8661b96515a703528",
+    "expectedTexts": [
+      "Delivering Happiness"
+    ],
+    "forbiddenTexts": []
+  },
+  "passCount": 2,
+  "passesRequired": 2,
+  "attempts": [
+    {
+      "attemptNumber": 1,
+      "timestamp": "2026-07-24T02:39:21.522Z",
+      "routes": [
+        {
+          "route": "/",
+          "url": "http://localhost:58888/?__release_probe=1784860761532rsz7y",
+          "finalUrl": "http://localhost:58888/?__release_probe=1784860761532rsz7y",
+          "status": 200,
+          "observedReleaseId": "b5678a5-b8d7f8b98750",
+          "passed": true
+        },
+        {
+          "route": "/assessment.html",
+          "url": "http://localhost:58888/assessment.html?__release_probe=1784860761541zgsdp",
+          "finalUrl": "http://localhost:58888/assessment.html?__release_probe=1784860761541zgsdp",
+          "status": 200,
+          "observedReleaseId": "b5678a5-b8d7f8b98750",
+          "passed": true
+        },
+        {
+          "route": "/register.html",
+          "url": "http://localhost:58888/register.html?__release_probe=1784860761550qyoos",
+          "finalUrl": "http://localhost:58888/register",
+          "status": 200,
+          "observedReleaseId": "b5678a5-b8d7f8b98750",
+          "passed": true
+        },
+        {
+          "route": "/register_direct.html",
+          "url": "http://localhost:58888/register_direct.html?__release_probe=1784860761563879yb",
+          "finalUrl": "http://localhost:58888/register_direct.html?__release_probe=1784860761563879yb",
+          "status": 200,
+          "observedReleaseId": "b5678a5-b8d7f8b98750",
+          "passed": true
+        },
+        {
+          "route": "/register-test.html",
+          "url": "http://localhost:58888/register-test.html?__release_probe=17848607615712nh82",
+          "finalUrl": "http://localhost:58888/register-test.html?__release_probe=17848607615712nh82",
+          "status": 200,
+          "observedReleaseId": "b5678a5-b8d7f8b98750",
+          "passed": true
+        },
+        {
+          "route": "/dh8/",
+          "url": "http://localhost:58888/dh8/?__release_probe=1784860761580kv14y",
+          "finalUrl": "http://localhost:58888/dh8/?__release_probe=1784860761580kv14y",
+          "status": 200,
+          "observedReleaseId": "b5678a5-b8d7f8b98750",
+          "passed": true
+        }
+      ],
+      "releaseJsonCheck": {
+        "passed": true,
+        "body": {
+          "releaseId": "b5678a5-b8d7f8b98750",
+          "commit": "b5678a5",
+          "fullCommitSha": "b5678a5f861ca2921cc969796d3d66dde16d7b48",
+          "manifestSha256": "b8d7f8b98750b4912867ed260475c95390e009d26d131ff8661b96515a703528",
+          "sourceRef": "HEAD",
+          "builtAt": "2026-07-24T02:39:21.153Z",
+          "fileCount": 95,
+          "provenance": "git-archive-snapshot"
+        },
+        "headerReleaseId": "b5678a5-b8d7f8b98750"
+      },
+      "passed": true
+    },
+    {
+      "attemptNumber": 2,
+      "timestamp": "2026-07-24T02:39:21.588Z",
+      "routes": [
+        {
+          "route": "/",
+          "url": "http://localhost:58888/?__release_probe=1784860761595eg599",
+          "finalUrl": "http://localhost:58888/?__release_probe=1784860761595eg599",
+          "status": 200,
+          "observedReleaseId": "b5678a5-b8d7f8b98750",
+          "passed": true
+        },
+        {
+          "route": "/assessment.html",
+          "url": "http://localhost:58888/assessment.html?__release_probe=1784860761604ue39d",
+          "finalUrl": "http://localhost:58888/assessment.html?__release_probe=1784860761604ue39d",
+          "status": 200,
+          "observedReleaseId": "b5678a5-b8d7f8b98750",
+          "passed": true
+        },
+        {
+          "route": "/register.html",
+          "url": "http://localhost:58888/register.html?__release_probe=1784860761614xw4r5",
+          "finalUrl": "http://localhost:58888/register",
+          "status": 200,
+          "observedReleaseId": "b5678a5-b8d7f8b98750",
+          "passed": true
+        },
+        {
+          "route": "/register_direct.html",
+          "url": "http://localhost:58888/register_direct.html?__release_probe=17848607616248pkys",
+          "finalUrl": "http://localhost:58888/register_direct.html?__release_probe=17848607616248pkys",
+          "status": 200,
+          "observedReleaseId": "b5678a5-b8d7f8b98750",
+          "passed": true
+        },
+        {
+          "route": "/register-test.html",
+          "url": "http://localhost:58888/register-test.html?__release_probe=1784860761631r5nag",
+          "finalUrl": "http://localhost:58888/register-test.html?__release_probe=1784860761631r5nag",
+          "status": 200,
+          "observedReleaseId": "b5678a5-b8d7f8b98750",
+          "passed": true
+        },
+        {
+          "route": "/dh8/",
+          "url": "http://localhost:58888/dh8/?__release_probe=178486076163991bwh",
+          "finalUrl": "http://localhost:58888/dh8/?__release_probe=178486076163991bwh",
+          "status": 200,
+          "observedReleaseId": "b5678a5-b8d7f8b98750",
+          "passed": true
+        }
+      ],
+      "releaseJsonCheck": {
+        "passed": true,
+        "body": {
+          "releaseId": "b5678a5-b8d7f8b98750",
+          "commit": "b5678a5",
+          "fullCommitSha": "b5678a5f861ca2921cc969796d3d66dde16d7b48",
+          "manifestSha256": "b8d7f8b98750b4912867ed260475c95390e009d26d131ff8661b96515a703528",
+          "sourceRef": "HEAD",
+          "builtAt": "2026-07-24T02:39:21.153Z",
+          "fileCount": 95,
+          "provenance": "git-archive-snapshot"
+        },
+        "headerReleaseId": "b5678a5-b8d7f8b98750"
+      },
+      "passed": true
+    }
+  ],
+  "status": "HTTP_RELEASE_VERIFIED"
+}

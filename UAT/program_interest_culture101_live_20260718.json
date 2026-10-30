@@ -1,0 +1,11 @@
+{
+    "timestamp":  "2026-07-18T18:32:19.8903642+07:00",
+    "version":  69,
+    "uuid":  "20260718-c0de-4a11-8abc-000000000003",
+    "backendPost":  "{\"success\":true,\"state\":\"recorded\",\"interestUuid\":\"20260718-c0de-4a11-8abc-000000000003\",\"duplicate\":false}",
+    "statusJsonp":  "programInterestJsonp_20260718culture10101({\"success\":true,\"state\":\"recorded\",\"interestUuid\":\"20260718-c0de-4a11-8abc-000000000003\"});",
+    "frontendStatus":  200,
+    "hasCulture101":  true,
+    "hasNoStep3":  true,
+    "hasFreeText":  true
+}

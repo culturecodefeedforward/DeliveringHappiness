@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-07-23T11:09:48.571Z",
+  "targetUrl": "https://delivering-happiness.vercel.app",
+  "expectedSpec": {
+    "expectedReleaseId": "b5678a5-037ac3b8f24b",
+    "expectedCommit": null,
+    "expectedManifestHash": null
+  },
+  "passCount": 0,
+  "passesRequired": 2,
+  "attempts": [
+    {
+      "attemptNumber": 1,
+      "timestamp": "2026-07-23T11:09:48.571Z",
+      "routes": [],
+      "releaseJsonCheck": {
+        "passed": false,
+        "error": "/release.json returned HTTP 404"
+      },
+      "passed": false
+    }
+  ],
+  "status": "HTTP_RELEASE_FAILED"
+}

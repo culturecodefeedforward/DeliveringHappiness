@@ -1,0 +1,31 @@
+{
+  "timestamp": "2026-07-24T02:39:21.652Z",
+  "targetUrl": "http://localhost:58888",
+  "expectedSpec": {
+    "expectedReleaseId": "b5678a5-b8d7f8b98750",
+    "expectedCommit": "b5678a5",
+    "expectedManifestHash": "b8d7f8b98750b4912867ed260475c95390e009d26d131ff8661b96515a703528",
+    "expectedTexts": [
+      "Delivering Happiness"
+    ],
+    "forbiddenTexts": []
+  },
+  "layer1Status": "HTTP_RELEASE_VERIFIED",
+  "layer2Check": {
+    "mainResponseStatus": 200,
+    "mainResponseFromCache": false,
+    "finalUrl": "http://localhost:58888/",
+    "metaReleaseId": "b5678a5-b8d7f8b98750",
+    "expectedReleaseId": "b5678a5-b8d7f8b98750",
+    "isMetaMatch": true,
+    "missingExpectedInDom": [],
+    "foundForbiddenInDom": [],
+    "consoleErrorsCount": 2,
+    "pageErrorsCount": 0,
+    "desktopScreenshotPath": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\releases\\b5678a5-b8d7f8b98750\\screenshots\\desktop_full.png",
+    "mobileScreenshotPath": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\releases\\b5678a5-b8d7f8b98750\\screenshots\\mobile_full.png",
+    "isBrowserPass": true
+  },
+  "verdict": "LIVE_VERIFIED",
+  "exitCode": 0
+}

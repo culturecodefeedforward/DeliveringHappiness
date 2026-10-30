@@ -1,0 +1,55 @@
+{
+    "timestamp":  "2026-07-18T15:47:22.2636557+07:00",
+    "base":  "https://delivering-happiness.vercel.app",
+    "probes":  [
+                   {
+                       "path":  "/",
+                       "status":  200,
+                       "hasProgramInterest":  false,
+                       "hasCta":  true,
+                       "length":  16514
+                   },
+                   {
+                       "path":  "/assessment.html",
+                       "status":  200,
+                       "hasProgramInterest":  false,
+                       "hasCta":  false,
+                       "length":  5171
+                   },
+                   {
+                       "path":  "/register.html",
+                       "status":  200,
+                       "hasProgramInterest":  false,
+                       "hasCta":  false,
+                       "length":  23759
+                   },
+                   {
+                       "path":  "/register_direct.html",
+                       "status":  200,
+                       "hasProgramInterest":  false,
+                       "hasCta":  false,
+                       "length":  29746
+                   },
+                   {
+                       "path":  "/register-test.html",
+                       "status":  200,
+                       "hasProgramInterest":  false,
+                       "hasCta":  false,
+                       "length":  31978
+                   },
+                   {
+                       "path":  "/dh8/",
+                       "status":  200,
+                       "hasProgramInterest":  false,
+                       "hasCta":  false,
+                       "length":  33937
+                   },
+                   {
+                       "path":  "/program-interest.html",
+                       "status":  200,
+                       "hasProgramInterest":  true,
+                       "hasCta":  false,
+                       "length":  31870
+                   }
+               ]
+}

@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-08-06T05:33:06.439Z",
+  "targetUrl": "https://delivering-happiness-omtnpwdii-vuhoang2708s-projects.vercel.app",
+  "expectedSpec": {
+    "expectedReleaseId": "a0b4b6f4cdcd-c8fe3ee8a197",
+    "expectedCommit": "a0b4b6f4cdcd",
+    "expectedManifestHash": "c8fe3ee8a197debc68adeefcda064b20ca4be6fb9b14e897a830fa0e8d651a86",
+    "expectedTexts": [],
+    "forbiddenTexts": []
+  },
+  "passCount": 0,
+  "passesRequired": 2,
+  "attempts": [
+    {
+      "attemptNumber": 1,
+      "timestamp": "2026-08-06T05:33:06.441Z",
+      "routes": [],
+      "releaseJsonCheck": {
+        "passed": false,
+        "error": "/release.json returned HTTP status 302"
+      },
+      "passed": false
+    }
+  ],
+  "status": "HTTP_RELEASE_FAILED"
+}

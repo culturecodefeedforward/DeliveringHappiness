@@ -780,8 +780,8 @@
                 <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1.5 shadow-lg relative overflow-hidden">
                     <div class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Hoàn Thành Đủ 6 Trạm</div>
                     <div class="flex items-baseline gap-2">
-                        <span id="iam-kpi-full5" class="text-2xl lg:text-3xl font-extrabold text-emerald-400">0</span>
-                        <span id="iam-kpi-full5-pct" class="text-xs text-slate-500 font-mono">(0%)</span>
+                        <span id="iam-kpi-full6" class="text-2xl lg:text-3xl font-extrabold text-emerald-400">0</span>
+                        <span id="iam-kpi-full6-pct" class="text-xs text-slate-500 font-mono">(0%)</span>
                     </div>
                     <div class="text-[11px] text-slate-500">Đã điền trọn vẹn 6 trạm chuyên đề</div>
                 </div>
@@ -2480,8 +2480,8 @@
             // DOM Elements for IAM Stations (Tab 2)
             const iamKpiTotal = document.getElementById("iam-kpi-total");
             const iamKpiTotalOf = document.getElementById("iam-kpi-total-of");
-            const iamKpiFull5 = document.getElementById("iam-kpi-full5");
-            const iamKpiFull5Pct = document.getElementById("iam-kpi-full5-pct");
+            const iamKpiFull6 = document.getElementById("iam-kpi-full6") || document.getElementById("iam-kpi-full5"); const iamKpiFull5 = iamKpiFull6;
+            const iamKpiFull6Pct = document.getElementById("iam-kpi-full6-pct") || document.getElementById("iam-kpi-full5-pct"); const iamKpiFull5Pct = iamKpiFull6Pct;
             const iamKpiAvgScore = document.getElementById("iam-kpi-avg-score");
             const iamKpiWeakest = document.getElementById("iam-kpi-weakest");
             const iamStationHeatmap = document.getElementById("iam-station-heatmap");
@@ -6060,19 +6060,19 @@ ${locationDate}`;
                         <div class="space-y-0.5">
                             <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider">Social Style:</span>
                             <div class="font-extrabold flex items-center gap-1.5" style="color: ${socialColor};">
-                                <span>${escapeHTML(l.social?.styleVN || l.social?.style || "—")}</span>
+                                <span class="${(l.social?.styleVN || l.social?.style) ? '' : 'text-slate-500 font-normal italic'}">${escapeHTML(l.social?.styleVN || l.social?.style || "(Chưa làm khảo sát)")}</span>
                             </div>
                         </div>
                         <div class="space-y-0.5">
                             <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider">Xung Đột TKI:</span>
                             <div class="font-extrabold flex items-center gap-1.5" style="color: ${tkiColor};">
-                                <span>${escapeHTML(l.tki?.dominantVN || l.tki?.dominantMode || "—")}</span>
+                                <span class="${(l.tki?.dominantVN || l.tki?.dominantMode) ? '' : 'text-slate-500 font-normal italic'}">${escapeHTML(l.tki?.dominantVN || l.tki?.dominantMode || "(Chưa làm khảo sát)")}</span>
                             </div>
                         </div>
                         <div class="space-y-0.5">
                             <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider">La Bàn Me Value:</span>
                             <div class="font-bold text-blue-300 truncate">
-                                ${escapeHTML(l.progress?.meValue || "Cam kết")}
+                                ${escapeHTML(l.progress?.meValue || "(Chưa xác lập)")}
                             </div>
                         </div>
                         <div class="space-y-0.5">
@@ -6356,7 +6356,9 @@ ${locationDate}`;
                 document.getElementById('iam-detail-modal'),
                 document.getElementById('heatmap-student-modal'),
                 document.getElementById('modal-18-boxes'),
-                document.getElementById('learner-detail-modal')
+                document.getElementById('learner-detail-modal'),
+                document.getElementById('add-learner-modal'),
+                document.getElementById('credential-notice-modal')
             ];
 
             function closeAnyOpenModal() {

@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-08-06T05:43:54.062Z",
+  "surface": "public-production-browser",
+  "targetUrl": "https://delivering-happiness.vercel.app/program-interest",
+  "results": [
+    {
+      "viewport": "desktop",
+      "status": 200,
+      "formPresent": true,
+      "statusPresent": true,
+      "title": "Đăng ký quan tâm chương trình — CultureCode",
+      "screenshot": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\releases\\a0b4b6f4cdcd-c8fe3ee8a197\\public_desktop.png"
+    },
+    {
+      "viewport": "mobile",
+      "status": 304,
+      "formPresent": true,
+      "statusPresent": true,
+      "title": "Đăng ký quan tâm chương trình — CultureCode",
+      "screenshot": "C:\\Users\\vu.hoang\\.gemini\\antigravity\\scratch\\dh4hn-website\\UAT\\releases\\a0b4b6f4cdcd-c8fe3ee8a197\\public_mobile.png"
+    }
+  ],
+  "consoleErrors": [],
+  "pageErrors": [],
+  "verdict": "PUBLIC_BROWSER_VERIFIED"
+}

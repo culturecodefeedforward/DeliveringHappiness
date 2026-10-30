@@ -540,8 +540,8 @@
         <div class="location-group-title">Địa điểm tham dự mong muốn <span class="req" style="color: #f87171;">*</span></div>
         <div class="location-options">
           <!-- Thẻ Hà Nội -->
-          <label class="location-card" id="cardHanoi" data-region="hn">
-            <input type="radio" name="preferredLocation" value="Hà Nội - Apollo English - Phố Huế" required />
+          <label class="location-card selected" id="cardHanoi" data-region="hn">
+            <input type="radio" name="preferredLocation" value="Hà Nội - Apollo English - Phố Huế" checked required />
             <div class="location-card-content">
               <span class="location-card-title">Hà Nội</span>
               <span class="location-card-venue">Apollo English - Phố Huế (Dự kiến DHM11)</span>
@@ -734,7 +734,13 @@
       var formData = new FormData(event.target);
       var formValues = Object.fromEntries(formData.entries());
 
-      var locationChosen = formValues.preferredLocation || 'Chưa xác định';
+            var locationChosen = formValues.preferredLocation || 'Chưa xác định';
+      if (locationChosen.indexOf('TP.HCM') !== -1 || locationChosen.indexOf('Hồ Chí Minh') !== -1) {
+        submit.disabled = false;
+        submit.textContent = 'Gửi đăng ký quan tâm';
+        openCohortModal('hcm');
+        return;
+      }
       var noteParts = ['[Địa điểm mong muốn: ' + locationChosen + ']'];
 
       var refName = formValues.referrerName ? formValues.referrerName.trim() : '';

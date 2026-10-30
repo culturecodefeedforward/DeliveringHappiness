@@ -1,0 +1,22 @@
+{
+  "timestamp": "2026-08-12T10:24:32.274Z",
+  "targetEndpoint": "https://script.google.com/macros/s/AKfycbxMi_bQBceGxVK_TjbcU5rQNAaLyUXOMuQJHyYWCwdeoWlsccq2kFkhRYVG2meySCsPdA/exec",
+  "deployment": "@69",
+  "verifiedParentId": "1nZVEowJu3j_WC1b3SO1UJU352g_547813-fWT3MQeac",
+  "candidateLink": "1ZToRX6J5Vo6UgHzYEE_eUxU0bVnsGxBRLt-8tduI5CA",
+  "tab": "Program Interest",
+  "uuid": "c6b87a8d-9527-4577-86ba-b363dc03d963",
+  "preflightCount": "BLOCKED_TARGET_MISMATCH",
+  "post1Result": "BLOCKED",
+  "statusReadback": "BLOCKED",
+  "post2Result": "BLOCKED",
+  "finalCount": "BLOCKED",
+  "rowDelta": 0,
+  "systemLog": "UNVERIFIED",
+  "externalWrites": 0,
+  "claimLevel": {
+    "frontend": "UNVERIFIED",
+    "network": "UNVERIFIED",
+    "spreadsheet": "UNVERIFIED"
+  }
+}

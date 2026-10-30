@@ -13,7 +13,7 @@
 // Delivering Happiness Movement (DHM) — Blended LMS Engine v3
 // Standardized Architecture: Pre-Class Online -> Workshop Live 5 Habits -> Post-Class 21-Day Dashboard
 
-document.addEventListener("DOMContentLoaded", () => {
+const initDhmLmsApp = () => {
     // 1. EMBEDDED CURRICULUM FALLBACK (Ensures 100% offline/CDN resilience)
     let curriculum = {
         courseTitle: "Delivering Happiness Movement (DHM) — Blended Learning Journey",
@@ -930,7 +930,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const isApolloOrPwdAuth = learner.force_pwd_change || learner.password_hash || learner.default_pwd || (learner.cohort && learner.cohort.toLowerCase().includes("apollo"));
-        const hasPhone = learner.phone && learner.phone.trim().length >= 8 && !learner.missing_phone;
+        const hasPhone = learner.phone && String(learner.phone).trim().length >= 8 && !learner.missing_phone;
 
         if (!hasPhone && !isApolloOrPwdAuth) {
             if (passwordGroup) passwordGroup.classList.add("hidden");
@@ -975,11 +975,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // Ưu tiên 3: Mật khẩu mặc định khởi tạo
-        const defaultPwd = learner.default_pwd || "1234";
+        const defaultPwd = String(learner.default_pwd || learner.default_password || "1234").trim();
         if (forcePwdChange && pwd === defaultPwd) {
             return { valid: true, mustChange: true };
         }
-        if (learner.default_pwd && pwd === learner.default_pwd) {
+        if (defaultPwd && pwd === defaultPwd) {
             return { valid: true, mustChange: forcePwdChange };
         }
 
@@ -988,7 +988,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return { valid: true, mustChange: false };
         }
         if (learner.phone) {
-            const last4 = normalizePhone(learner.phone).slice(-4);
+            const last4 = normalizePhone(String(learner.phone)).slice(-4);
             if (last4 && pwd === last4) {
                 return { valid: true, mustChange: false };
             }
@@ -6504,7 +6504,22 @@ document.addEventListener("DOMContentLoaded", () => {
                         return;
                     }
                     if (probeData.success && probeData.learner) {
-                        learner = probeData.learner;
+                        const rawL = probeData.learner;
+                        let cleanP = String(rawL.phone || "").trim();
+                        if (cleanP.length === 9 && !cleanP.startsWith("0")) {
+                            cleanP = "0" + cleanP;
+                        }
+                        const defPwd = String(rawL.default_password || rawL.default_pwd || (cleanP.length >= 4 ? cleanP.slice(-4) : "1234")).trim();
+
+                        learner = {
+                            ...rawL,
+                            name: rawL.name || rawL.full_name || rawIdentity.split("@")[0],
+                            email: String(rawL.email || "").toLowerCase().trim(),
+                            phone: cleanP,
+                            phone_last4: cleanP.slice(-4),
+                            default_pwd: defPwd,
+                            default_password: defPwd
+                        };
                         if (Array.isArray(authorizedRoster)) {
                             authorizedRoster.push(learner);
                         }
@@ -7181,6 +7196,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         `;
                         trialStatusMsg.classList.remove("hidden");
                     }
+                    if (btnRequestTrialText) btnRequestTrialText.textContent = "Đã Gửi Liên Kết";
                     startTrialCooldown(60);
                 } else if (data && data.error === "RATE_LIMIT_EXCEEDED") {
                     saveApprovedTrialEmail(email);
@@ -7221,6 +7237,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     `;
                     trialStatusMsg.classList.remove("hidden");
                 }
+                if (btnRequestTrialText) btnRequestTrialText.textContent = "Đã Gửi Liên Kết";
                 startTrialCooldown(60);
             }
         });
@@ -8731,4 +8748,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     });
-});
+};
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initDhmLmsApp);
+} else {
+    initDhmLmsApp();
+}
