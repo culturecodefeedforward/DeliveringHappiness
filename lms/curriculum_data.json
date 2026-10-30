@@ -71,22 +71,20 @@
                 "Sự an toàn tài chính và tích lũy của cải vật chất (Security / Affluence).",
                 "Sự hoàn thành các cột mốc và mục tiêu chiến lược (Milestones / Achievement)."
               ],
-              "correctIndex": 0,
-              "timeLimit": 20,
-              "explanation": "Theo Slide 14 & 18 và lời giảng, khi hỏi 'tại sao' đủ sâu, con người chạm tới mong muốn sâu nhất: tôi sẽ mãn nguyện hơn, hạnh phúc hơn (Eudaimonia - một đời sống có ý nghĩa, có sự phát triển và mãn nguyện)."
+              "correctAnswer": "Trải nghiệm hạnh phúc và sự mãn nguyện tự thân (Happiness / Eudaimonia).",
+              "explanation": "Theo Slide 12, 13, 14 & 17, khi đào sâu chuỗi câu hỏi 'Tại sao điều đó quan trọng?' cho các mục tiêu đời sống (mua nhà, kiếm tiền, thăng tiến...), con người đều chạm tới đích đến cuối cùng là Hạnh phúc. Aristotle khẳng định: 'Hạnh phúc là mục đích tồn tại của chúng ta' (Eudaimonia - một đời sống mãn nguyện tự thân)."
             },
             {
               "id": "dhm-quiz-2",
               "question": "Theo kịch bản bài giảng Delivering Happiness, ba dạng trải nghiệm hạnh phúc theo thứ tự chất lượng và độ bền tăng dần là:",
               "options": [
-                "Thú vui (Pleasure) ➔ Đam mê / Dòng chảy (Flow) ➔ Mục đích cao cả (Higher Purpose).",
+                "Thú vui (Pleasure) ➔ Đam mê (Passion) ➔ Mục đích cao cả (Higher Purpose).",
                 "Đam mê (Passion) ➔ Thú vui (Pleasure) ➔ Mục đích cao cả (Higher Purpose).",
                 "Thú vui (Pleasure) ➔ Mục đích cao cả (Higher Purpose) ➔ Đam mê (Passion).",
                 "Tự chủ (Autonomy) ➔ Tiến bộ (Progress) ➔ Kết nối đội ngũ (Connectedness)."
               ],
-              "correctIndex": 0,
-              "timeLimit": 20,
-              "explanation": "Theo Slide 16, Delivering Happiness phân loại ba dạng trải nghiệm: Thú vui (Pleasure - ngắn) ➔ Đam mê / Flow (bền hơn, gắn kết sâu) ➔ Higher Purpose / Meaning (bền vững nhất, kết nối điều lớn hơn bản thân)."
+              "correctAnswer": "Thú vui (Pleasure) ➔ Đam mê (Passion) ➔ Mục đích cao cả (Higher Purpose).",
+              "explanation": "Theo Slide 15, Delivering Happiness phân loại ba cấp độ hạnh phúc theo độ bền tăng dần: Thú vui (Pleasure - ngắn hạn) ➔ Đam mê (Passion - bền hơn, dấn thân gắn kết sâu) ➔ Mục đích cao cả / Ý nghĩa (Higher Purpose / Meaning - bền vững nhất, là một phần của điều gì đó lớn lao hơn chính bản thân)."
             },
             {
               "id": "dhm-quiz-3",
@@ -97,22 +95,20 @@
                 "Cảm giác thỏa mãn làm suy giảm động lực nội tại, khiến cá nhân ngừng nỗ lực phát triển thêm.",
                 "Cảm giác thỏa mãn chỉ phụ thuộc hoàn cảnh bên ngoài, khiến cá nhân không thể tự quyết định."
               ],
-              "correctIndex": 0,
-              "timeLimit": 20,
-              "explanation": "Theo Slide 15, cảm giác hạnh phúc sau một thành tựu bên ngoài thường không ở lại mãi; rất nhanh ta lại có một cột mốc mới. Nếu luôn gửi hạnh phúc vào tương lai thì ta sẽ dành cả đời để... chờ được hạnh phúc."
+              "correctAnswer": "Cảm giác thỏa mãn không ở lại mãi, não bộ nhanh chóng thích nghi và ta lại có cột mốc mới.",
+              "explanation": "Theo Slide 14 & 15, bộ não rất dở trong việc dự đoán điều gì duy trì hạnh phúc bền lâu ('Tôi sẽ hạnh phúc khi...'). Niềm vui từ Thú vui và thành tựu bên ngoài nhanh chóng nguội lạnh do cơ chế thích nghi khoái lạc (Hedonic Adaptation), ta lại đặt ra cột mốc mới và tiếp tục chờ đợi hạnh phúc."
             },
             {
               "id": "dhm-quiz-4",
-              "question": "Trong bài giảng, trải nghiệm Đam mê / Dòng chảy (Flow) được mô tả chính xác nhất qua trạng thái nào?",
+              "question": "Trong bài giảng, trải nghiệm Đam mê (Passion) được mô tả chính xác nhất qua trạng thái nào?",
               "options": [
                 "Khi kỹ năng gặp thử thách đủ hấp dẫn, tập trung rất sâu và cảm giác thời gian thay đổi.",
                 "Khi công việc diễn ra dễ dàng, không gặp bất kỳ trở ngại nào và hoàn thành trước thời hạn.",
                 "Khi nhận được sự tán thưởng liên tục từ đồng đội, cảm thấy tự hào về vị trí của bản thân.",
                 "Khi xử lý cùng lúc nhiều nhiệm vụ phức tạp, duy trì nhịp độ làm việc khẩn trương liên tục."
               ],
-              "correctIndex": 0,
-              "timeLimit": 20,
-              "explanation": "Theo Slide 16, trải nghiệm Flow xuất hiện khi kỹ năng gặp thử thách đủ hấp dẫn, tập trung rất sâu, nhìn lại đồng hồ thấy mấy tiếng trôi qua lúc nào không hay vì đang thật sự gắn kết với điều mình làm."
+              "correctAnswer": "Khi kỹ năng gặp thử thách đủ hấp dẫn, tập trung rất sâu và cảm giác thời gian thay đổi.",
+              "explanation": "Theo Slide 15, trải nghiệm Đam mê (Passion) được đặc trưng bởi sự dấn thân, gắn kết sâu sắc khi kỹ năng gặp thử thách xứng tầm, tập trung cao độ đến mức cảm nhận thời gian trôi nhanh vì đang thật sự sống trọn vẹn với điều mình làm."
             },
             {
               "id": "dhm-quiz-5",
@@ -121,24 +117,22 @@
                 "Thấy việc mình làm có ý nghĩa với người khác, công sức có giá trị vượt ra ngoài task trước mắt.",
                 "Đạt được vị thế lãnh đạo cao hơn trong tổ chức, có toàn quyền quyết định định hướng công việc.",
                 "Hoàn thành xuất sắc toàn bộ chỉ tiêu đánh giá định kỳ, mang lại nguồn thu nhập tài chính vượt trội.",
-                "Loại bỏ hoàn toàn mọi xung đột và áp lực công việc, duy trì trạng thái thoải mái ổn định lâu dài."
+                "Giảm thiểu tối đa áp lực công việc hàng ngày, duy trì trạng thái ổn định và an nhàn lâu dài."
               ],
-              "correctIndex": 0,
-              "timeLimit": 20,
-              "explanation": "Theo Slide 16 & 21, Higher Purpose là khoảnh khắc thấy việc mình làm có ý nghĩa với người khác, đóng góp vào sự trưởng thành của ai đó, công sức có giá trị vượt ra ngoài task trước mắt và vượt lên trên việc chỉ hoàn thành KPI."
+              "correctAnswer": "Thấy việc mình làm có ý nghĩa với người khác, công sức có giá trị vượt ra ngoài task trước mắt.",
+              "explanation": "Theo Slide 15 & 18, Mục đích cao cả (Higher Purpose / Meaning) mang lại hạnh phúc bền vững nhất vì giúp cá nhân kết nối và trở thành một phần của điều gì đó lớn lao hơn chính bản thân mình, thấy công việc đóng góp ý nghĩa cho người khác và cộng đồng."
             },
             {
               "id": "dhm-quiz-6",
-              "question": "Trong ẩn dụ 'Ba Tầng Lầu' của học giả Phong Tử Khải được trích dẫn ở bài giảng, ba tầng bậc của đời sống con người là:",
+              "question": "Ẩn dụ 'Ba Tầng Lầu' của học giả Phong Tử Khải được bài giảng sử dụng để mô tả hành trình nâng cấp nào trong đời sống con người?",
               "options": [
                 "Tầng 1: Đời sống vật chất ➔ Tầng 2: Đời sống tinh thần ➔ Tầng 3: Đời sống tâm hồn.",
                 "Tầng 1: Nhu cầu sinh lý ➔ Tầng 2: Nhu cầu an toàn ➔ Tầng 3: Nhu cầu tự thể hiện.",
                 "Tầng 1: Kỹ năng chuyên môn ➔ Tầng 2: Năng lực quản trị ➔ Tầng 3: Tầm nhìn lãnh đạo.",
                 "Tầng 1: Trách nhiệm cá nhân ➔ Tầng 2: Hợp tác đội ngũ ➔ Tầng 3: Cống hiến xã hội."
               ],
-              "correctIndex": 0,
-              "timeLimit": 20,
-              "explanation": "Theo Slide 17, ba tầng lầu của Phong Tử Khải là vật chất, tinh thần và tâm hồn. Ngoài việc 'tôi có gì' và 'tôi đạt gì', ta còn sống vì điều gì, đóng góp cho điều gì để đời sống có chiều sâu."
+              "correctAnswer": "Tầng 1: Đời sống vật chất ➔ Tầng 2: Đời sống tinh thần ➔ Tầng 3: Đời sống tâm hồn.",
+              "explanation": "Theo Slide 16, ẩn dụ Ba Tầng Lầu của Phong Tử Khải mô tả 3 tầng bậc đời sống: Tầng 1 - Cuộc sống vật chất, Tầng 2 - Cuộc sống tinh thần, và Tầng 3 - Cuộc sống tâm hồn (nơi con người tìm kiếm ý nghĩa và chiều sâu đích thực)."
             },
             {
               "id": "dhm-quiz-7",
@@ -149,9 +143,8 @@
                 "Mihály Csíkszentmihályi (Giáo sư tiên phong nghiên cứu Dòng chảy).",
                 "Peter Drucker (Học giả tiên phong về Quản trị học hiện đại thế giới)."
               ],
-              "correctIndex": 0,
-              "timeLimit": 20,
-              "explanation": "Theo Slide 09 & 19, triết lý cốt lõi của Tony Hsieh là xây dựng văn hóa đúng đắn thì mọi thứ khác sẽ tự đi đúng hướng."
+              "correctAnswer": "Tony Hsieh (Cố CEO Zappos & Đồng sáng lập Delivering Happiness).",
+              "explanation": "Theo Slide 7, Tony Hsieh (Cố CEO Zappos) khẳng định triết lý quản trị nền tảng: 'Xây dựng một văn hoá tuyệt vời và mọi thứ khác sẽ đi đúng hướng' ('Get the right culture, and everything else will fall into place')."
             },
             {
               "id": "dhm-quiz-8",
@@ -162,9 +155,8 @@
                 "Bắt đầu từ LEADERSHIP (ban lãnh đạo truyền cảm hứng, định hình tầm nhìn và làm gương mẫu mực).",
                 "Bắt đầu từ COMMUNITY (khách hàng, học viên và đối tác phản hồi tích cực về dịch vụ tổ chức)."
               ],
-              "correctIndex": 0,
-              "timeLimit": 20,
-              "explanation": "Theo Slide 20 & 21, một tổ chức không thể 'làm cho' nhân viên hạnh phúc. Happiness bắt đầu từ từng cá nhân (ME) - cách tôi hiểu mình, lựa chọn và chịu trách nhiệm với trải nghiệm; rồi mới lan sang WE và COMMUNITY."
+              "correctAnswer": "Bắt đầu từ ME (từng cá nhân tự hiểu mình, lựa chọn thái độ và chịu trách nhiệm với trải nghiệm).",
+              "explanation": "Theo Slide 19 & 20 (và Slide 22), một tổ chức không thể 'làm cho' nhân viên hạnh phúc nếu thiếu nền tảng cá nhân. Hạnh phúc và văn hóa bắt đầu từ CÁ NHÂN (ME) - tự hiểu mình, sống đúng giá trị và chịu trách nhiệm với trải nghiệm; từ đó mới lan tỏa bền vững sang TẬP THỂ (WE) và CỘNG ĐỒNG (COMMUNITY)."
             },
             {
               "id": "dhm-quiz-9",
@@ -175,9 +167,8 @@
                 "Những khẩu hiệu hành động lý tưởng được đúc kết từ sổ tay văn hóa của các tập đoàn lớn.",
                 "Bộ quy tắc ứng xử bắt buộc mà cá nhân cần tuân thủ nghiêm ngặt trong môi trường làm việc."
               ],
-              "correctIndex": 0,
-              "timeLimit": 20,
-              "explanation": "Theo Slide 22, giá trị cốt lõi không phải phẩm chất 'nên có' hay từ nghe cho hay, mà là những điều thật sự quan trọng đến mức có khả năng ảnh hưởng tới cách mình ra quyết định, phản ứng và ưu tiên."
+              "correctAnswer": "Những điều thật sự quan trọng đến mức chi phối cách mình ra quyết định, phản ứng và ưu tiên.",
+              "explanation": "Theo Slide 21, 22 (Online) & Slide 36 (Offline), Giá trị Cốt lõi Cá nhân (ME Values) là những điều thật sự quan trọng nhất phản ánh động cơ sâu thẳm, chi phối cách ta ra quyết định, ưu tiên và tạo nên sự thống nhất trong công việc cũng như cuộc sống."
             },
             {
               "id": "dhm-quiz-10",
@@ -188,9 +179,8 @@
                 "'Phương án nào giúp tôi tối ưu hóa lợi ích tài chính và thăng tiến nghề nghiệp nhanh nhất?'",
                 "'Quyết định nào sẽ giúp tôi hạn chế tối đa sai sót và làm vừa lòng tất cả các bên liên quan?'"
               ],
-              "correctIndex": 0,
-              "timeLimit": 20,
-              "explanation": "Theo Slide 23, lời giảng nhấn mạnh: 'nếu hai từ đều rất đẹp nhưng buộc phải chọn, hãy hỏi: khi phải đánh đổi, điều nào thường có trọng lượng lớn hơn trong quyết định của tôi?'"
+              "correctAnswer": "'Khi phải đánh đổi, điều nào thường có trọng lượng lớn hơn trong quyết định của tôi?'",
+              "explanation": "Theo Slide 22 & 37, khi đứng trước tình huống phải đánh đổi (Trade-off) giữa hai giá trị đều tốt đẹp, câu hỏi la bàn dẫn đường là: 'Khi phải đánh đổi, điều nào thường có trọng lượng lớn hơn trong quyết định của tôi?' để hành động thực tế (Đồng Hồ) luôn đồng nhất với điều cốt lõi (La Bàn)."
             }
           ],
           "iam": {
@@ -1102,7 +1092,7 @@
       ],
       "flashcardsDeck": {
         "title": "25 Câu Hỏi Tương Tác Khắc Sâu Văn Hóa (Delivering Happiness)",
-        "description": "Lật thẻ phản xạ nhanh để khắc sâu các khái niệm cốt lõi: 3 Cấp độ Hạnh phúc, La bàn & Đồng hồ, 3 Đòn bẩy SDT, 5 Thói quen và DNA Văn hóa.",
+        "description": "Lật thẻ phản xạ nhanh để khắc sâu các khái niệm cốt lõi: 3 Cấp độ Hạnh phúc, La bàn & Đồng hồ, 3 Đòn bẩy SDT, 5 Thói quen và Giá trị Văn hóa.",
         "cards": [
           {
             "front": "Theo định nghĩa về giá trị cốt lõi, 'Đạo đức' được hiểu là gì?",

@@ -470,7 +470,7 @@
                                     </div>
                                     <div class="mt-2 pl-9 sm:pl-11 flex items-center gap-2 flex-wrap text-[11px] text-slate-400">
                                         <span id="badge-status-mod-1-1" class="text-[10px] sm:text-xs px-2 py-0.5 rounded bg-brand-card text-brand-amber font-mono font-bold border border-brand-border shrink-0">3 Cấp Độ</span>
-                                        <span class="leading-tight">Thú vui (Pleasure) • Đam mê & Dòng chảy Flow (Passion) • Mục đích cao cả (Higher Purpose)</span>
+                                        <span class="leading-tight">Thú vui (Pleasure) • Đam mê (Passion) • Mục đích cao cả (Higher Purpose)</span>
                                     </div>
                                 </div>
 
@@ -564,103 +564,10 @@
                                 <!-- ACCORDION BODY (Collapsible) -->
                                 <div id="mod-1-2-body" class="accordion-body hidden p-5 pt-0 border-t border-brand-border/40 space-y-6">
 
-                                    <!-- PERSONAL VALUES TEST SYNC INTEGRATION CONTAINER (FIRST ELEMENT IN MOD-1-2) -->
-                                    <div id="pv-integration-container" class="pt-4 space-y-3">
-                                        <!-- State A: Banner Link (shown when no test result found) -->
-                                        <div id="pv-banner-notest" class="p-3.5 sm:p-4 rounded-xl bg-gradient-to-r from-brand-amber/15 via-brand-surface to-brand-card border border-brand-amber/30 flex items-center justify-between flex-wrap gap-3">
-                                            <div class="space-y-0.5">
-                                                <div class="flex items-center gap-2">
-                                                    <span class="px-2 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px]">GỢI Ý TỰ ĐỘNG</span>
-                                                    <h4 class="text-xs sm:text-sm font-bold text-white">Bạn đã làm bài test La Bàn Giá Trị (1vs1 Duel) trên Landing Page chưa?</h4>
-                                                </div>
-                                                <p class="text-[11px] text-slate-300">
-                                                    Khám phá các giá trị cốt lõi điển hình và xếp hạng qua các tình huống điển hình để tìm ra Top 7 DNA giá trị dẫn đường.
-                                                </p>
-                                            </div>
-                                            <a href="../personal-value.html" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-xl bg-brand-amber hover:bg-amber-400 text-black font-extrabold text-xs shadow-md transition-all flex items-center gap-1.5 shrink-0">
-                                                <span>🧭 Test Me values ↗</span>
-                                            </a>
-                                        </div>
-
-                                        <!-- State B: Result Card (hidden by default, revealed if localStorage has test data) -->
-                                        <div id="pv-test-result-card" class="hidden p-4 rounded-xl bg-gradient-to-br from-brand-surface to-brand-card border-2 border-brand-amber/50 shadow-lg shadow-amber-500/10 space-y-3">
-                                            <div class="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-brand-border/60">
-                                                <div class="flex items-center gap-2.5">
-                                                    <span class="w-8 h-8 rounded-lg bg-brand-amber flex items-center justify-center text-black font-extrabold text-base">🧭</span>
-                                                    <div>
-                                                        <div class="text-xs font-bold text-white flex items-center gap-2">
-                                                            <span>KẾT QUẢ LA BÀN GIÁ TRỊ TỪ BÀI TEST 1VS1</span>
-                                                            <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-semibold border border-emerald-500/30">Đã đồng bộ</span>
-                                                        </div>
-                                                        <p id="pv-result-meta" class="text-[11px] text-slate-400">Dữ liệu từ Landing Page</p>
-                                                    </div>
-                                                </div>
-                                                <div class="flex items-center gap-2">
-                                                    <button type="button" id="btn-apply-top7-values" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-brand-orange to-brand-amber text-black font-extrabold text-xs shadow-md hover:brightness-110 active:scale-95 transition-all flex items-center gap-1.5">
-                                                        <span>✨ Áp dụng Top 7 vào La Bàn</span>
-                                                    </button>
-                                                    <a href="../personal-value.html" target="_blank" rel="noopener noreferrer" class="text-[11px] text-brand-amber hover:underline flex items-center gap-1 py-1 px-2 rounded hover:bg-brand-amber/10 transition-colors">
-                                                        <span>Làm lại ↗</span>
-                                                    </a>
-                                                </div>
-                                                <div id="pv-history-container" class="hidden flex items-center gap-2 pt-1 pb-1 border-t border-brand-border/40">
-                                                    <label for="pv-history-select" class="text-[11px] text-slate-300 font-semibold whitespace-nowrap">Chọn lần làm bài:</label>
-                                                    <select id="pv-history-select" class="bg-brand-dark/90 border border-brand-border rounded-lg px-2.5 py-1 text-xs text-brand-amber font-medium focus:outline-none focus:border-brand-amber cursor-pointer flex-1">
-                                                        <!-- Options injected via JS -->
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="text-[11px] font-semibold text-slate-300 mb-1.5">Top 7 Giá trị cốt lõi ưu tiên cao nhất của bạn:</div>
-                                                <div id="pv-top7-badges" class="flex flex-wrap gap-1.5">
-                                                    <!-- Badges injected via JS -->
-                                                </div>
-                                            </div>
-
-                                            <!-- Khối Phân Tích Biến Động 4 Chiều (Personal Values Transformation Matrix - Tạm ẩn) -->
-                                            <div id="pv-transformation-matrix" class="hidden mt-3 p-3 rounded-xl bg-black/40 border border-brand-amber/30 space-y-2.5" style="display: none !important;">
-                                                <div class="flex items-center justify-between flex-wrap gap-2">
-                                                    <div class="text-[11px] font-bold text-brand-amber flex items-center gap-1.5">
-                                                        <span>📊 PHÂN TÍCH BIẾN ĐỘNG GIÁ TRỊ (SO VỚI LẦN TRƯỚC)</span>
-                                                    </div>
-                                                    <button type="button" id="btn-fill-matrix-to-iam" class="text-[11px] text-brand-amber hover:text-amber-300 font-medium underline flex items-center gap-1">
-                                                        <span>✨ Điền gợi ý vào bài tập IAM bên dưới</span>
-                                                    </button>
-                                                </div>
-                                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                                                    <!-- 1. Mỏ neo cốt lõi -->
-                                                    <div class="p-2.5 rounded-lg bg-brand-surface/70 border border-emerald-500/30">
-                                                        <div class="font-bold text-emerald-400 flex items-center gap-1 text-[11px]">🧭 1. Mỏ neo cốt lõi (Core Anchors)</div>
-                                                        <div id="pv-dim-anchors" class="text-slate-200 mt-1 text-[11px] font-medium"></div>
-                                                        <p class="text-[10px] text-slate-400 italic mt-1">"Điều gì khiến giá trị này luôn là kim chỉ nam vững chắc nhất trong mọi quyết định của bạn?"</p>
-                                                    </div>
-                                                    <!-- 2. Thăng hạng -->
-                                                    <div class="p-2.5 rounded-lg bg-brand-surface/70 border border-amber-500/30">
-                                                        <div class="font-bold text-amber-400 flex items-center gap-1 text-[11px]">🚀 2. Thăng hạng (Ascending)</div>
-                                                        <div id="pv-dim-ascending" class="text-slate-200 mt-1 text-[11px] font-medium"></div>
-                                                        <p class="text-[10px] text-slate-400 italic mt-1">"Trải nghiệm hay bài học thực tế nào thời gian qua đã thôi thúc bạn coi trọng giá trị này nhiều hơn?"</p>
-                                                    </div>
-                                                    <!-- 3. Mới xuất hiện -->
-                                                    <div class="p-2.5 rounded-lg bg-brand-surface/70 border border-cyan-500/30">
-                                                        <div class="font-bold text-cyan-400 flex items-center gap-1 text-[11px]">🌱 3. Mới xuất hiện (Emerging)</div>
-                                                        <div id="pv-dim-emerging" class="text-slate-200 mt-1 text-[11px] font-medium"></div>
-                                                        <p class="text-[10px] text-slate-400 italic mt-1">"Sự thay đổi nào trong công việc hoặc cuộc sống đã đánh thức sự quan tâm của bạn dành cho giá trị này?"</p>
-                                                    </div>
-                                                    <!-- 4. Buông bỏ / Rời khỏi ưu tiên -->
-                                                    <div class="p-2.5 rounded-lg bg-brand-surface/70 border border-rose-500/30">
-                                                        <div class="font-bold text-rose-400 flex items-center gap-1 text-[11px]">🍂 4. Buông bỏ / Lùi lại (Departed)</div>
-                                                        <div id="pv-dim-departed" class="text-slate-200 mt-1 text-[11px] font-medium"></div>
-                                                        <p class="text-[10px] text-slate-400 italic mt-1">"Điều gì trong cuộc sống hoặc công việc thời gian qua đã giúp bạn nhận ra mình sẵn sàng buông bỏ điều này để tập trung cho những giá trị khác?"</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     <!-- ============================================== -->
                                     <!-- PHẦN 1: LÝ THUYẾT & TÀI LIỆU CHUYÊN SÂU        -->
                                     <!-- ============================================== -->
-                                    <div class="pt-2 border-b border-brand-border/60 pb-6 space-y-4">
+                                    <div class="pt-4 border-b border-brand-border/60 pb-6 space-y-4">
                                         <div class="flex items-center justify-between flex-wrap gap-2">
                                             <div class="flex items-center gap-2">
                                                 <span class="px-2.5 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px] uppercase tracking-wider">PHẦN 1</span>
@@ -691,13 +598,13 @@
                                             <div class="rounded-xl overflow-hidden bg-brand-dark/80 border border-brand-border p-2.5 space-y-2 group hover:border-brand-amber/50 transition-all">
                                                 <div class="flex items-center justify-between text-xs">
                                                     <span class="font-bold text-white text-[11px] truncate flex items-center gap-1.5">
-                                                        <span class="w-4 h-4 rounded bg-brand-amber/20 text-brand-amber flex items-center justify-center text-[10px] font-bold">23</span>
-                                                        <span class="truncate">Slide 23: La Bàn Me Values</span>
+                                                        <span class="w-4 h-4 rounded bg-brand-amber/20 text-brand-amber flex items-center justify-center text-[10px] font-bold">22</span>
+                                                        <span class="truncate">Slide 22: La Bàn Me Values</span>
                                                     </span>
                                                     <button type="button" onclick="window.openInfographicModal('data/artifacts/slides/slide_23.png', 'Slide Bài Giảng: La Bàn Me Values (Giá Trị Cốt Lõi Cá Nhân)')" class="text-[10px] text-brand-amber hover:underline shrink-0">🔍 HD</button>
                                                 </div>
                                                 <div class="relative cursor-pointer overflow-hidden rounded-lg border border-brand-border/60 bg-black" onclick="window.openInfographicModal('data/artifacts/slides/slide_23.png', 'Slide Bài Giảng: La Bàn Me Values (Giá Trị Cốt Lõi Cá Nhân)')">
-                                                    <img src="/data/artifacts/slides/slide_23.png" alt="Slide 23: La Bàn Me Values" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                                                    <img src="/data/artifacts/slides/slide_23.png" alt="Slide 22: La Bàn Me Values" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
                                                 </div>
                                                 <p class="text-[10.5px] text-slate-400 leading-snug">Quét QR hoặc làm bài test La Bàn Giá Trị (1vs1 Duel)</p>
                                             </div>
@@ -712,33 +619,83 @@
                                             <div class="flex items-center gap-2">
                                                 <span class="px-2.5 py-0.5 rounded bg-brand-amber text-black font-extrabold text-[10px] uppercase tracking-wider">PHẦN 2</span>
                                                 <span class="text-xs font-bold text-white flex items-center gap-1.5">
-                                                    <span>🧭 Kết Quả La Bàn Giá Trị Dẫn Đường (Top 7 DNA)</span>
+                                                    <span>🧭 Kết Quả La Bàn Giá Trị Dẫn Đường (Top 7 Giá Trị Cốt Lõi)</span>
                                                 </span>
                                             </div>
                                             <a href="../personal-value.html" target="_blank" rel="noopener noreferrer" class="text-[11px] text-brand-amber hover:underline inline-flex items-center gap-1 font-semibold">
-                                                <span>Làm bài test 1vs1 ↗</span>
+                                                <span id="pv-header-test-link">Làm bài test 1vs1 ↗</span>
                                             </a>
                                         </div>
 
-                                        <!-- Khối Cầu Nối La Bàn Giá Trị (Top 7 DNA hoặc Gợi ý Test 1vs1) -->
-                                        <div id="pv-interactive-bridge" class="p-3.5 rounded-xl bg-black/40 border border-brand-border space-y-2.5">
-                                            <div class="flex items-center justify-between flex-wrap gap-2">
-                                                <span class="text-[11px] text-slate-300 font-medium flex items-center gap-1.5">
-                                                    <span>Trạng thái:</span>
-                                                    <span id="pv-bridge-badge" class="text-[10px] px-2 py-0.5 rounded bg-brand-amber/20 text-brand-amber font-mono font-bold">Chưa đồng bộ</span>
-                                                </span>
-                                                <span class="text-[10px] text-slate-400">Đồng bộ tự động từ landing page</span>
+                                        <!-- Container Cầu Nối Duy Nhất: Quản lý 2 trạng thái Chưa test / Đã có kết quả -->
+                                        <div id="pv-integration-container" class="space-y-3">
+                                            <!-- State A: Banner Gợi ý khi chưa có kết quả test -->
+                                            <div id="pv-banner-notest" class="p-3.5 sm:p-4 rounded-xl bg-gradient-to-r from-brand-amber/15 via-brand-surface to-brand-card border border-brand-amber/30 flex items-center justify-between flex-wrap gap-3">
+                                                <div class="space-y-0.5">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="px-2 py-0.5 rounded bg-brand-amber/20 text-brand-amber font-mono font-bold text-[10px] border border-brand-amber/30">Chưa làm bài test</span>
+                                                        <h4 class="text-xs sm:text-sm font-bold text-white">Bạn chưa hoàn thành bài test La Bàn Giá Trị (1vs1 Duel)</h4>
+                                                    </div>
+                                                    <p class="text-[11px] text-slate-300">
+                                                        Khám phá 41 giá trị cốt lõi điển hình và xếp hạng qua các tình huống 1vs1 để tìm ra Top 7 Giá trị cốt lõi (Me Values) của riêng bạn trước khi bước vào Check point 1.
+                                                    </p>
+                                                </div>
+                                                <a href="../personal-value.html" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-xl bg-brand-amber hover:bg-amber-400 text-black font-extrabold text-xs shadow-md transition-all flex items-center gap-1.5 shrink-0">
+                                                    <span>🧭 Test Me values ↗</span>
+                                                </a>
                                             </div>
 
-                                            <!-- Container chứa danh sách badges Top 7 -->
-                                            <div id="pv-bridge-badges" class="flex flex-wrap gap-1.5 pt-1">
-                                                <p class="text-[11px] text-slate-400 italic">
-                                                    Bạn chưa hoàn thành bài test La Bàn Giá Trị. Hãy <a href="../personal-value.html" target="_blank" rel="noopener noreferrer" class="text-brand-amber font-semibold underline">nhấn vào đây để làm bài test 1vs1 Duel</a> để tìm ra Top 7 DNA giá trị dẫn đường trước khi bước vào Check point 1.
-                                                </p>
+                                            <!-- State B: Result Card Duy Nhất khi đã có kết quả test -->
+                                            <div id="pv-test-result-card" class="hidden p-4 rounded-xl bg-gradient-to-br from-brand-surface to-brand-card border-2 border-brand-amber/50 shadow-lg shadow-amber-500/10 space-y-3">
+                                                <div class="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-brand-border/60">
+                                                    <div class="flex items-center gap-2.5">
+                                                        <span class="w-8 h-8 rounded-lg bg-brand-amber flex items-center justify-center text-black font-extrabold text-base">🧭</span>
+                                                        <div>
+                                                            <div class="text-xs font-bold text-white flex items-center gap-2">
+                                                                <span>KẾT QUẢ LA BÀN GIÁ TRỊ TỪ BÀI TEST 1VS1</span>
+                                                                <span id="pv-bridge-badge" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-semibold border border-emerald-500/30">Đã đồng bộ</span>
+                                                            </div>
+                                                            <p id="pv-result-meta" class="text-[11px] text-slate-400">Dữ liệu từ Landing Page</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex items-center gap-2">
+                                                        <a href="../personal-value.html" target="_blank" rel="noopener noreferrer" class="text-[11px] text-brand-amber hover:underline flex items-center gap-1 py-1 px-2 rounded hover:bg-brand-amber/10 transition-colors font-semibold">
+                                                            <span>Làm lại ↗</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+
+                                                <div id="pv-history-container" class="hidden flex items-center gap-2 pt-1 pb-1 border-t border-brand-border/40">
+                                                    <label for="pv-history-select" class="text-[11px] text-slate-300 font-semibold whitespace-nowrap">Chọn lần làm bài:</label>
+                                                    <select id="pv-history-select" class="bg-brand-dark/90 border border-brand-border rounded-lg px-2.5 py-1 text-xs text-brand-amber font-medium focus:outline-none focus:border-brand-amber cursor-pointer flex-1">
+                                                        <!-- Options injected via JS -->
+                                                    </select>
+                                                </div>
+
+                                                <div>
+                                                    <div class="text-[11px] font-semibold text-slate-300 mb-1.5 flex items-center justify-between flex-wrap gap-1">
+                                                        <span>Top 7 Giá trị cốt lõi ưu tiên cao nhất của bạn:</span>
+                                                        <span class="text-[10px] text-brand-amber/80 italic">Bấm vào thẻ để tự động điền vào Trạm Đúc Kết I•A•M</span>
+                                                    </div>
+                                                    <div id="pv-top7-badges" class="flex flex-wrap gap-1.5">
+                                                        <!-- Badges injected via JS -->
+                                                    </div>
+                                                    <!-- Backward compatibility anchors -->
+                                                    <div id="pv-bridge-badges" class="hidden"></div>
+                                                    <button type="button" id="btn-apply-top7-values" class="hidden"></button>
+                                                </div>
+
+                                                <!-- Khối Phân Tích Biến Động 4 Chiều (Giữ ẩn) -->
+                                                <div id="pv-transformation-matrix" class="hidden" style="display: none !important;">
+                                                    <div id="pv-dim-anchors"></div>
+                                                    <div id="pv-dim-ascending"></div>
+                                                    <div id="pv-dim-emerging"></div>
+                                                    <div id="pv-dim-departed"></div>
+                                                    <button type="button" id="btn-fill-matrix-to-iam" class="hidden"></button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-
                                     <!-- End Accordion Body Mod 1.2 -->
                                 </div>
                             </div>

@@ -47,7 +47,7 @@ const initDhmLmsApp = () => {
                 summary: "Mọi hành động con người đều hội tụ về đích đến là Hạnh phúc (Aristotle). Tuy nhiên, não bộ rất nhanh thích nghi với Thú vui ngắn hạn do cơ chế thích nghi khoái lạc (Hedonic Adaptation). Để bền vững, ta cần nâng cấp lên sự Đam mê dấn thân (The Engaged Life) và Mục đích cao cả (Higher Purpose).",
                 insights: [
                     { title: "Cấp độ 1: Thú vui (Pleasure)", desc: "Nhanh nguội lạnh do cơ chế thích nghi khoái lạc. Tiền bạc, tiện nghi vật chất chỉ đem lại thỏa mãn nhất thời." },
-                    { title: "Cấp độ 2: Đam mê & Dòng chảy Flow (Passion)", desc: "Phiêu và gắn kết. Thời gian trôi nhanh (Mihály Csíkszentmihályi & Martin Seligman)." },
+                    { title: "Cấp độ 2: Đam mê (Passion)", desc: "Dấn thân và gắn kết sâu với công việc. Say mê làm việc đến mức quên đi thời gian." },
                     { title: "Cấp độ 3: Mục đích cao cả (Higher Purpose)", desc: "Cấp độ bền vững nhất. Thấy công việc của mình có ý nghĩa, phụng sự và đóng góp giá trị cho cộng đồng." }
                 ],
                 modules: [
@@ -64,22 +64,20 @@ const initDhmLmsApp = () => {
                                                                                     "Sự an toàn tài chính và tích lũy của cải vật chất (Security / Affluence).",
                                                                                     "Sự hoàn thành các cột mốc và mục tiêu chiến lược (Milestones / Achievement)."
                                                         ],
-                                                        "correctIndex": 0,
-                                                        "timeLimit": 20,
-                                                        "explanation": "Theo Slide 14 & 18 và lời giảng, khi hỏi 'tại sao' đủ sâu, con người chạm tới mong muốn sâu nhất: tôi sẽ mãn nguyện hơn, hạnh phúc hơn (Eudaimonia - một đời sống có ý nghĩa, có sự phát triển và mãn nguyện)."
+                                                        "correctAnswer": "Trải nghiệm hạnh phúc và sự mãn nguyện tự thân (Happiness / Eudaimonia).",
+                                                        "explanation": "Theo Slide 12, 13, 14 & 17, khi đào sâu chuỗi câu hỏi 'Tại sao điều đó quan trọng?' cho các mục tiêu đời sống (mua nhà, kiếm tiền, thăng tiến...), con người đều chạm tới đích đến cuối cùng là Hạnh phúc. Aristotle khẳng định: 'Hạnh phúc là mục đích tồn tại của chúng ta' (Eudaimonia - một đời sống mãn nguyện tự thân)."
                             },
                             {
                                                         "id": "dhm-quiz-2",
                                                         "question": "Theo kịch bản bài giảng Delivering Happiness, ba dạng trải nghiệm hạnh phúc theo thứ tự chất lượng và độ bền tăng dần là:",
                                                         "options": [
-                                                                                    "Thú vui (Pleasure) ➔ Đam mê / Dòng chảy (Flow) ➔ Mục đích cao cả (Higher Purpose).",
+                                                                                    "Thú vui (Pleasure) ➔ Đam mê (Passion) ➔ Mục đích cao cả (Higher Purpose).",
                                                                                     "Đam mê (Passion) ➔ Thú vui (Pleasure) ➔ Mục đích cao cả (Higher Purpose).",
                                                                                     "Thú vui (Pleasure) ➔ Mục đích cao cả (Higher Purpose) ➔ Đam mê (Passion).",
                                                                                     "Tự chủ (Autonomy) ➔ Tiến bộ (Progress) ➔ Kết nối đội ngũ (Connectedness)."
                                                         ],
-                                                        "correctIndex": 0,
-                                                        "timeLimit": 20,
-                                                        "explanation": "Theo Slide 16, Delivering Happiness phân loại ba dạng trải nghiệm: Thú vui (Pleasure - ngắn) ➔ Đam mê / Flow (bền hơn, gắn kết sâu) ➔ Higher Purpose / Meaning (bền vững nhất, kết nối điều lớn hơn bản thân)."
+                                                        "correctAnswer": "Thú vui (Pleasure) ➔ Đam mê (Passion) ➔ Mục đích cao cả (Higher Purpose).",
+                                                        "explanation": "Theo Slide 15, Delivering Happiness phân loại ba cấp độ hạnh phúc theo độ bền tăng dần: Thú vui (Pleasure - ngắn hạn) ➔ Đam mê (Passion - bền hơn, dấn thân gắn kết sâu) ➔ Mục đích cao cả / Ý nghĩa (Higher Purpose / Meaning - bền vững nhất, là một phần của điều gì đó lớn lao hơn chính bản thân)."
                             },
                             {
                                                         "id": "dhm-quiz-3",
@@ -90,22 +88,20 @@ const initDhmLmsApp = () => {
                                                                                     "Cảm giác thỏa mãn làm suy giảm động lực nội tại, khiến cá nhân ngừng nỗ lực phát triển thêm.",
                                                                                     "Cảm giác thỏa mãn chỉ phụ thuộc hoàn cảnh bên ngoài, khiến cá nhân không thể tự quyết định."
                                                         ],
-                                                        "correctIndex": 0,
-                                                        "timeLimit": 20,
-                                                        "explanation": "Theo Slide 15, cảm giác hạnh phúc sau một thành tựu bên ngoài thường không ở lại mãi; rất nhanh ta lại có một cột mốc mới. Nếu luôn gửi hạnh phúc vào tương lai thì ta sẽ dành cả đời để... chờ được hạnh phúc."
+                                                        "correctAnswer": "Cảm giác thỏa mãn không ở lại mãi, não bộ nhanh chóng thích nghi và ta lại có cột mốc mới.",
+                                                        "explanation": "Theo Slide 14 & 15, bộ não rất dở trong việc dự đoán điều gì duy trì hạnh phúc bền lâu ('Tôi sẽ hạnh phúc khi...'). Niềm vui từ Thú vui và thành tựu bên ngoài nhanh chóng nguội lạnh do cơ chế thích nghi khoái lạc (Hedonic Adaptation), ta lại đặt ra cột mốc mới và tiếp tục chờ đợi hạnh phúc."
                             },
                             {
                                                         "id": "dhm-quiz-4",
-                                                        "question": "Trong bài giảng, trải nghiệm Đam mê / Dòng chảy (Flow) được mô tả chính xác nhất qua trạng thái nào?",
+                                                        "question": "Trong bài giảng, trải nghiệm Đam mê (Passion) được mô tả chính xác nhất qua trạng thái nào?",
                                                         "options": [
                                                                                     "Khi kỹ năng gặp thử thách đủ hấp dẫn, tập trung rất sâu và cảm giác thời gian thay đổi.",
                                                                                     "Khi công việc diễn ra dễ dàng, không gặp bất kỳ trở ngại nào và hoàn thành trước thời hạn.",
                                                                                     "Khi nhận được sự tán thưởng liên tục từ đồng đội, cảm thấy tự hào về vị trí của bản thân.",
                                                                                     "Khi xử lý cùng lúc nhiều nhiệm vụ phức tạp, duy trì nhịp độ làm việc khẩn trương liên tục."
                                                         ],
-                                                        "correctIndex": 0,
-                                                        "timeLimit": 20,
-                                                        "explanation": "Theo Slide 16, trải nghiệm Flow xuất hiện khi kỹ năng gặp thử thách đủ hấp dẫn, tập trung rất sâu, nhìn lại đồng hồ thấy mấy tiếng trôi qua lúc nào không hay vì đang thật sự gắn kết với điều mình làm."
+                                                        "correctAnswer": "Khi kỹ năng gặp thử thách đủ hấp dẫn, tập trung rất sâu và cảm giác thời gian thay đổi.",
+                                                        "explanation": "Theo Slide 15, trải nghiệm Đam mê (Passion) được đặc trưng bởi sự dấn thân, gắn kết sâu sắc khi kỹ năng gặp thử thách xứng tầm, tập trung cao độ đến mức cảm nhận thời gian trôi nhanh vì đang thật sự sống trọn vẹn với điều mình làm."
                             },
                             {
                                                         "id": "dhm-quiz-5",
@@ -114,24 +110,22 @@ const initDhmLmsApp = () => {
                                                                                     "Thấy việc mình làm có ý nghĩa với người khác, công sức có giá trị vượt ra ngoài task trước mắt.",
                                                                                     "Đạt được vị thế lãnh đạo cao hơn trong tổ chức, có toàn quyền quyết định định hướng công việc.",
                                                                                     "Hoàn thành xuất sắc toàn bộ chỉ tiêu đánh giá định kỳ, mang lại nguồn thu nhập tài chính vượt trội.",
-                                                                                    "Loại bỏ hoàn toàn mọi xung đột và áp lực công việc, duy trì trạng thái thoải mái ổn định lâu dài."
+                                                                                    "Giảm thiểu tối đa áp lực công việc hàng ngày, duy trì trạng thái ổn định và an nhàn lâu dài."
                                                         ],
-                                                        "correctIndex": 0,
-                                                        "timeLimit": 20,
-                                                        "explanation": "Theo Slide 16 & 21, Higher Purpose là khoảnh khắc thấy việc mình làm có ý nghĩa với người khác, đóng góp vào sự trưởng thành của ai đó, công sức có giá trị vượt ra ngoài task trước mắt và vượt lên trên việc chỉ hoàn thành KPI."
+                                                        "correctAnswer": "Thấy việc mình làm có ý nghĩa với người khác, công sức có giá trị vượt ra ngoài task trước mắt.",
+                                                        "explanation": "Theo Slide 15 & 18, Mục đích cao cả (Higher Purpose / Meaning) mang lại hạnh phúc bền vững nhất vì giúp cá nhân kết nối và trở thành một phần của điều gì đó lớn lao hơn chính bản thân mình, thấy công việc đóng góp ý nghĩa cho người khác và cộng đồng."
                             },
                             {
                                                         "id": "dhm-quiz-6",
-                                                        "question": "Trong ẩn dụ 'Ba Tầng Lầu' của học giả Phong Tử Khải được trích dẫn ở bài giảng, ba tầng bậc của đời sống con người là:",
+                                                        "question": "Ẩn dụ 'Ba Tầng Lầu' của học giả Phong Tử Khải được bài giảng sử dụng để mô tả hành trình nâng cấp nào trong đời sống con người?",
                                                         "options": [
                                                                                     "Tầng 1: Đời sống vật chất ➔ Tầng 2: Đời sống tinh thần ➔ Tầng 3: Đời sống tâm hồn.",
                                                                                     "Tầng 1: Nhu cầu sinh lý ➔ Tầng 2: Nhu cầu an toàn ➔ Tầng 3: Nhu cầu tự thể hiện.",
                                                                                     "Tầng 1: Kỹ năng chuyên môn ➔ Tầng 2: Năng lực quản trị ➔ Tầng 3: Tầm nhìn lãnh đạo.",
                                                                                     "Tầng 1: Trách nhiệm cá nhân ➔ Tầng 2: Hợp tác đội ngũ ➔ Tầng 3: Cống hiến xã hội."
                                                         ],
-                                                        "correctIndex": 0,
-                                                        "timeLimit": 20,
-                                                        "explanation": "Theo Slide 17, ba tầng lầu của Phong Tử Khải là vật chất, tinh thần và tâm hồn. Ngoài việc 'tôi có gì' và 'tôi đạt gì', ta còn sống vì điều gì, đóng góp cho điều gì để đời sống có chiều sâu."
+                                                        "correctAnswer": "Tầng 1: Đời sống vật chất ➔ Tầng 2: Đời sống tinh thần ➔ Tầng 3: Đời sống tâm hồn.",
+                                                        "explanation": "Theo Slide 16, ẩn dụ Ba Tầng Lầu của Phong Tử Khải mô tả 3 tầng bậc đời sống: Tầng 1 - Cuộc sống vật chất, Tầng 2 - Cuộc sống tinh thần, và Tầng 3 - Cuộc sống tâm hồn (nơi con người tìm kiếm ý nghĩa và chiều sâu đích thực)."
                             },
                             {
                                                         "id": "dhm-quiz-7",
@@ -142,9 +136,8 @@ const initDhmLmsApp = () => {
                                                                                     "Mihály Csíkszentmihályi (Giáo sư tiên phong nghiên cứu Dòng chảy).",
                                                                                     "Peter Drucker (Học giả tiên phong về Quản trị học hiện đại thế giới)."
                                                         ],
-                                                        "correctIndex": 0,
-                                                        "timeLimit": 20,
-                                                        "explanation": "Theo Slide 09 & 19, triết lý cốt lõi của Tony Hsieh là xây dựng văn hóa đúng đắn thì mọi thứ khác sẽ tự đi đúng hướng."
+                                                        "correctAnswer": "Tony Hsieh (Cố CEO Zappos & Đồng sáng lập Delivering Happiness).",
+                                                        "explanation": "Theo Slide 7, Tony Hsieh (Cố CEO Zappos) khẳng định triết lý quản trị nền tảng: 'Xây dựng một văn hoá tuyệt vời và mọi thứ khác sẽ đi đúng hướng' ('Get the right culture, and everything else will fall into place')."
                             },
                             {
                                                         "id": "dhm-quiz-8",
@@ -155,9 +148,8 @@ const initDhmLmsApp = () => {
                                                                                     "Bắt đầu từ LEADERSHIP (ban lãnh đạo truyền cảm hứng, định hình tầm nhìn và làm gương mẫu mực).",
                                                                                     "Bắt đầu từ COMMUNITY (khách hàng, học viên và đối tác phản hồi tích cực về dịch vụ tổ chức)."
                                                         ],
-                                                        "correctIndex": 0,
-                                                        "timeLimit": 20,
-                                                        "explanation": "Theo Slide 20 & 21, một tổ chức không thể 'làm cho' nhân viên hạnh phúc. Happiness bắt đầu từ từng cá nhân (ME) - cách tôi hiểu mình, lựa chọn và chịu trách nhiệm với trải nghiệm; rồi mới lan sang WE và COMMUNITY."
+                                                        "correctAnswer": "Bắt đầu từ ME (từng cá nhân tự hiểu mình, lựa chọn thái độ và chịu trách nhiệm với trải nghiệm).",
+                                                        "explanation": "Theo Slide 19 & 20 (và Slide 22), một tổ chức không thể 'làm cho' nhân viên hạnh phúc nếu thiếu nền tảng cá nhân. Hạnh phúc và văn hóa bắt đầu từ CÁ NHÂN (ME) - tự hiểu mình, sống đúng giá trị và chịu trách nhiệm với trải nghiệm; từ đó mới lan tỏa bền vững sang TẬP THỂ (WE) và CỘNG ĐỒNG (COMMUNITY)."
                             },
                             {
                                                         "id": "dhm-quiz-9",
@@ -168,9 +160,8 @@ const initDhmLmsApp = () => {
                                                                                     "Những khẩu hiệu hành động lý tưởng được đúc kết từ sổ tay văn hóa của các tập đoàn lớn.",
                                                                                     "Bộ quy tắc ứng xử bắt buộc mà cá nhân cần tuân thủ nghiêm ngặt trong môi trường làm việc."
                                                         ],
-                                                        "correctIndex": 0,
-                                                        "timeLimit": 20,
-                                                        "explanation": "Theo Slide 22, giá trị cốt lõi không phải phẩm chất 'nên có' hay từ nghe cho hay, mà là những điều thật sự quan trọng đến mức có khả năng ảnh hưởng tới cách mình ra quyết định, phản ứng và ưu tiên."
+                                                        "correctAnswer": "Những điều thật sự quan trọng đến mức chi phối cách mình ra quyết định, phản ứng và ưu tiên.",
+                                                        "explanation": "Theo Slide 21, 22 (Online) & Slide 36 (Offline), Giá trị Cốt lõi Cá nhân (ME Values) là những điều thật sự quan trọng nhất phản ánh động cơ sâu thẳm, chi phối cách ta ra quyết định, ưu tiên và tạo nên sự thống nhất trong công việc cũng như cuộc sống."
                             },
                             {
                                                         "id": "dhm-quiz-10",
@@ -181,9 +172,8 @@ const initDhmLmsApp = () => {
                                                                                     "'Phương án nào giúp tôi tối ưu hóa lợi ích tài chính và thăng tiến nghề nghiệp nhanh nhất?'",
                                                                                     "'Quyết định nào sẽ giúp tôi hạn chế tối đa sai sót và làm vừa lòng tất cả các bên liên quan?'"
                                                         ],
-                                                        "correctIndex": 0,
-                                                        "timeLimit": 20,
-                                                        "explanation": "Theo Slide 23, lời giảng nhấn mạnh: 'nếu hai từ đều rất đẹp nhưng buộc phải chọn, hãy hỏi: khi phải đánh đổi, điều nào thường có trọng lượng lớn hơn trong quyết định của tôi?'"
+                                                        "correctAnswer": "'Khi phải đánh đổi, điều nào thường có trọng lượng lớn hơn trong quyết định của tôi?'",
+                                                        "explanation": "Theo Slide 22 & 37, khi đứng trước tình huống phải đánh đổi (Trade-off) giữa hai giá trị đều tốt đẹp, câu hỏi la bàn dẫn đường là: 'Khi phải đánh đổi, điều nào thường có trọng lượng lớn hơn trong quyết định của tôi?' để hành động thực tế (Đồng Hồ) luôn đồng nhất với điều cốt lõi (La Bàn)."
                             }
 ],
                         iam: {
@@ -3147,11 +3137,12 @@ const initDhmLmsApp = () => {
         const cardEl = document.getElementById("pv-test-result-card");
         const metaEl = document.getElementById("pv-result-meta");
         const badgesEl = document.getElementById("pv-top7-badges");
-        const btnApplyEl = document.getElementById("btn-apply-top7-values");
+        const cp1BadgesEl = document.getElementById("cp1-bridge-badges");
+        const bridgeBadges = document.getElementById("pv-bridge-badges");
+        const valuesCountBadge = document.getElementById("values-count-badge");
         const historyContainer = document.getElementById("pv-history-container");
         const historySelect = document.getElementById("pv-history-select");
         const matrixEl = document.getElementById("pv-transformation-matrix");
-        const btnFillIam = document.getElementById("btn-fill-matrix-to-iam");
 
         if (!bannerEl || !cardEl) return;
 
@@ -3169,7 +3160,6 @@ const initDhmLmsApp = () => {
                 } catch (e) {}
             }
 
-            // Đọc thêm bản đơn lẻ theo email (bỏ encodeURIComponent để khớp định dạng)
             const singleKey = "dhm_pv_" + emailKey;
             const legacyKey = "dhm_pv_" + encodeURIComponent(emailKey);
             const savedByEmail = localStorage.getItem(singleKey) || localStorage.getItem(legacyKey);
@@ -3186,7 +3176,7 @@ const initDhmLmsApp = () => {
             }
         }
 
-        // Đọc fallback bản latest nếu chưa có (chỉ nhận nếu khớp email của currentUser để chống rò rỉ session)
+        // Đọc fallback bản latest nếu chưa có hoặc bổ sung vào lịch sử
         const savedLatest = localStorage.getItem("dhm_personal_values_latest");
         if (savedLatest) {
             try {
@@ -3212,15 +3202,63 @@ const initDhmLmsApp = () => {
             return timeB - timeA;
         });
 
-        // 2. Nếu không có dữ liệu
+        // 2. Nếu không có dữ liệu bài test
         if (pvHistory.length === 0) {
             bannerEl.classList.remove("hidden");
             cardEl.classList.add("hidden");
+            if (valuesCountBadge) {
+                const selCount = (learnerProgress?.stageData?.["stage-1"]?.selectedValues || []).length;
+                valuesCountBadge.textContent = `${selCount} Đã chọn`;
+                valuesCountBadge.className = "text-[10px] sm:text-xs px-2 py-0.5 rounded bg-brand-amber/20 text-brand-amber font-bold border border-brand-amber/30 shrink-0";
+            }
+            if (cp1BadgesEl) {
+                cp1BadgesEl.innerHTML = `
+                    <p class="text-[11px] text-slate-400 italic leading-relaxed">
+                        Chưa có kết quả La Bàn Giá Trị. Bạn có thể tự nhập giá trị tâm đắc vào ô I bên dưới hoặc làm bài test 1vs1 ở phần La Bàn Giá Trị Cá Nhân (Me Values).
+                    </p>
+                `;
+            }
             return;
         }
 
+        // Đã có kết quả: ẩn banner chưa test, hiện card kết quả duy nhất
         bannerEl.classList.add("hidden");
         cardEl.classList.remove("hidden");
+
+        // Helper click-to-fill vào ô I của Đúc kết I•A•M
+        function handleBadgeClick(val) {
+            const iamInput = document.getElementById("iam-cp1-i");
+            if (iamInput) {
+                iamInput.value = val;
+                if (!learnerProgress.stageData["stage-1"]) learnerProgress.stageData["stage-1"] = {};
+                learnerProgress.stageData["stage-1"].iam_cp1 = learnerProgress.stageData["stage-1"].iam_cp1 || {};
+                learnerProgress.stageData["stage-1"].iam_cp1.I = val;
+                learnerProgress.stageData["stage-1"].iam_1_2 = learnerProgress.stageData["stage-1"].iam_1_2 || {};
+                learnerProgress.stageData["stage-1"].iam_1_2.I = val;
+                debouncedSave();
+                renderSyllabus();
+                updateStage1Milestones();
+                evaluateLearnerStatus();
+                openAccordionModule("stage1-mod-cp1");
+                iamInput.focus();
+                iamInput.classList.add("ring-2", "ring-brand-amber");
+                setTimeout(() => iamInput.classList.remove("ring-2", "ring-brand-amber"), 1200);
+            }
+        }
+
+        function createBadgeBtn(val, idx) {
+            const badge = document.createElement("button");
+            badge.type = "button";
+            badge.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-brand-surface border border-brand-amber/40 text-xs font-semibold text-white hover:border-brand-amber hover:bg-brand-amber/15 transition-all shadow-sm active:scale-95 group";
+            badge.innerHTML = `
+                <span class="w-4 h-4 rounded-full bg-brand-amber text-black text-[10px] font-extrabold flex items-center justify-center shrink-0">${idx + 1}</span>
+                <span class="text-brand-amber group-hover:text-amber-300">${val}</span>
+                <span class="text-[10px] text-slate-400 group-hover:text-white ml-0.5 opacity-60 group-hover:opacity-100">↵ Điền I•A•M</span>
+            `;
+            badge.title = `Nhấp để tự động điền giá trị "${val}" vào ô I (Interested) của Trạm Đúc Kết I • A • M`;
+            badge.onclick = () => handleBadgeClick(val);
+            return badge;
+        }
 
         // 3. Hàm hiển thị dữ liệu của một lần làm bài cụ thể
         function displayPvSession(index) {
@@ -3233,199 +3271,80 @@ const initDhmLmsApp = () => {
                 metaEl.textContent = `Học viên: ${learnerName} • Ngày test: ${dateStr}`;
             }
 
-            if (badgesEl) {
-                badgesEl.innerHTML = "";
-                pvData.top7.forEach((item, idx) => {
-                    const valName = typeof item === "string" ? item : (item.name || item);
-                    const badge = document.createElement("span");
-                    badge.className = "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-brand-amber/15 text-brand-amber border border-brand-amber/30 text-xs font-semibold";
-                    badge.innerHTML = `<span class="w-4 h-4 rounded-full bg-brand-amber text-black text-[10px] font-extrabold flex items-center justify-center shrink-0">${idx + 1}</span><span>${valName}</span>`;
-                    badgesEl.appendChild(badge);
-                });
-            }
+            // Trích xuất danh sách tên Top 7
+            const rawTop7 = (pvData.top7 || []).map(item => typeof item === "string" ? item : (item.name || item)).filter(Boolean);
 
-            if (btnApplyEl) {
-                btnApplyEl.onclick = () => {
-                    const mod2 = (curriculum.stages[0]?.modules && curriculum.stages[0].modules[1]) ? curriculum.stages[0].modules[1] : null;
-                    const availableOptions = (mod2 && mod2.valueOptions) ? mod2.valueOptions : [];
+            // Tự động ánh xạ vào từ vựng curriculum và TỰ ĐỘNG ÁP DỤNG (Zero-Click KISS)
+            const mod2 = (curriculum.stages[0]?.modules && curriculum.stages[0].modules[1]) ? curriculum.stages[0].modules[1] : null;
+            const availableOptions = (mod2 && mod2.valueOptions) ? mod2.valueOptions : [];
 
-                    const mappedValues = [];
-                    pvData.top7.forEach(item => {
-                        const rawName = typeof item === "string" ? item : (item.name || item);
-                        if (!rawName) return;
-
-                        if (PV_TO_CURRICULUM_MAP[rawName]) {
-                            mappedValues.push(PV_TO_CURRICULUM_MAP[rawName]);
-                            return;
-                        }
-                        const exact = availableOptions.find(opt => opt === rawName);
-                        if (exact) {
-                            mappedValues.push(exact);
-                            return;
-                        }
-                        const starts = availableOptions.find(opt => opt.toLowerCase().startsWith(rawName.toLowerCase()));
-                        if (starts) {
-                            mappedValues.push(starts);
-                            return;
-                        }
-                        const incl = availableOptions.find(opt => opt.toLowerCase().includes(rawName.toLowerCase()));
-                        if (incl) {
-                            mappedValues.push(incl);
-                            return;
-                        }
-                        mappedValues.push(rawName);
-                    });
-
-                    const uniqueMapped = Array.from(new Set(mappedValues));
-
-                    if (!learnerProgress.stageData["stage-1"]) {
-                        learnerProgress.stageData["stage-1"] = { selectedValues: [] };
-                    }
-                    learnerProgress.stageData["stage-1"].selectedValues = uniqueMapped;
-                    saveLearnerProgress();
-                    syncMeValuesToWebhook(uniqueMapped);
-                    renderStage1View(curriculum.stages[0]);
-                    renderSyllabus();
-
-                    const originalHtml = btnApplyEl.innerHTML;
-                    btnApplyEl.innerHTML = `<span>✓ Đã Áp Dụng Top 7!</span>`;
-                    btnApplyEl.classList.remove("from-brand-orange", "to-brand-amber");
-                    btnApplyEl.classList.add("bg-brand-green", "text-black");
-                    setTimeout(() => {
-                        btnApplyEl.innerHTML = originalHtml;
-                        btnApplyEl.classList.add("from-brand-orange", "to-brand-amber");
-                        btnApplyEl.classList.remove("bg-brand-green", "text-black");
-                    }, 2500);
-
-                    const bridgeEl = document.getElementById("pv-interactive-bridge") || document.getElementById("values-grid");
-                    if (bridgeEl) {
-                        bridgeEl.scrollIntoView({ behavior: "smooth", block: "center" });
-                    }
-                };
-            }
-
-            // 4. Ma trận phân tích biến động 4 chiều (Tạm ẩn theo yêu cầu)
-            /*
-            if (pvHistory.length >= 2 && matrixEl) {
-                matrixEl.classList.remove("hidden");
-                const prevIndex = index < pvHistory.length - 1 ? index + 1 : pvHistory.length - 1;
-                const prevData = pvHistory[prevIndex];
-                calculateAndRenderMatrix(pvData, prevData);
-            } else if (matrixEl) {
-                matrixEl.classList.add("hidden");
-            }
-            */
-            if (matrixEl) {
-                matrixEl.classList.add("hidden");
-            }
-        }
-
-        function calculateAndRenderMatrix(currData, prevData) {
-            const extractNames = (list) => (list || []).map(x => typeof x === "string" ? x.trim() : (x.name ? x.name.trim() : ""));
-            const currNames = extractNames(currData.top7);
-            const prevNames = extractNames(prevData.top7);
-
-            const currTop3 = currNames.slice(0, 3);
-            const prevTop3 = prevNames.slice(0, 3);
-
-            // 1. Mỏ neo cốt lõi: Nằm trong Top 3 của cả 2 lần (hoặc có độ ổn định cao)
-            let anchors = currTop3.filter(name => prevTop3.includes(name));
-            if (anchors.length === 0) {
-                currNames.forEach((name, idx) => {
-                    const prevIdx = prevNames.indexOf(name);
-                    if (prevIdx !== -1 && Math.abs(idx - prevIdx) <= 1 && !anchors.includes(name)) {
-                        anchors.push(name);
-                    }
-                });
-            }
-
-            // 2. Thăng hạng: Tăng ít nhất 2 bậc hoặc từ ngoài lọt vào Top 3
-            const ascending = [];
-            currNames.forEach((name, currIdx) => {
-                const prevIdx = prevNames.indexOf(name);
-                if (prevIdx !== -1) {
-                    if (prevIdx - currIdx >= 2 || (prevIdx >= 3 && currIdx < 3)) {
-                        ascending.push(`${name} (#${prevIdx + 1} ➔ #${currIdx + 1})`);
-                    }
+            const mappedValues = [];
+            rawTop7.forEach(rawName => {
+                if (PV_TO_CURRICULUM_MAP[rawName]) {
+                    mappedValues.push(PV_TO_CURRICULUM_MAP[rawName]);
+                    return;
                 }
+                const exact = availableOptions.find(opt => opt === rawName);
+                if (exact) {
+                    mappedValues.push(exact);
+                    return;
+                }
+                const starts = availableOptions.find(opt => opt.toLowerCase().startsWith(rawName.toLowerCase()));
+                if (starts) {
+                    mappedValues.push(starts);
+                    return;
+                }
+                const incl = availableOptions.find(opt => opt.toLowerCase().includes(rawName.toLowerCase()));
+                if (incl) {
+                    mappedValues.push(incl);
+                    return;
+                }
+                mappedValues.push(rawName);
             });
 
-            // 3. Mới xuất hiện: Lần đầu lọt Top 7
-            const emerging = currNames.filter(name => !prevNames.includes(name));
+            const uniqueMapped = Array.from(new Set(mappedValues));
 
-            // 4. Buông bỏ / Rời khỏi ưu tiên: Từng có trong lần trước nhưng lần này vắng mặt
-            const departed = prevNames.filter(name => !currNames.includes(name));
+            // Tự động lưu vào learnerProgress nếu chưa có hoặc có sự thay đổi
+            if (!learnerProgress.stageData["stage-1"]) {
+                learnerProgress.stageData["stage-1"] = { selectedValues: [] };
+            }
+            const currentSelected = learnerProgress.stageData["stage-1"].selectedValues || [];
+            const isDifferent = currentSelected.length !== uniqueMapped.length || uniqueMapped.some((v, i) => v !== currentSelected[i]);
 
-            const elAnchors = document.getElementById("pv-dim-anchors");
-            const elAscending = document.getElementById("pv-dim-ascending");
-            const elEmerging = document.getElementById("pv-dim-emerging");
-            const elDeparted = document.getElementById("pv-dim-departed");
+            if (isDifferent && uniqueMapped.length > 0) {
+                learnerProgress.stageData["stage-1"].selectedValues = uniqueMapped;
+                saveLearnerProgress();
+                syncMeValuesToWebhook(uniqueMapped);
+            }
 
-            if (elAnchors) elAnchors.textContent = anchors.length > 0 ? anchors.join(", ") : "(Chưa có mỏ neo bất biến)";
-            if (elAscending) elAscending.textContent = ascending.length > 0 ? ascending.join(", ") : "(Không có thay đổi thứ hạng đáng kể)";
-            if (elEmerging) elEmerging.textContent = emerging.length > 0 ? emerging.join(", ") : "(Không có giá trị mới)";
-            if (elDeparted) elDeparted.textContent = departed.length > 0 ? departed.join(", ") : "(Không có giá trị nào bị lùi lại)";
+            // Cập nhật huy hiệu tiêu đề Module 1.2
+            if (valuesCountBadge) {
+                valuesCountBadge.textContent = `✓ 7 Giá Trị Cốt Lõi`;
+                valuesCountBadge.className = "text-[10px] sm:text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30 shrink-0";
+            }
 
-            if (btnFillIam) {
-                btnFillIam.onclick = () => {
-                    const anchorText = anchors.length > 0 ? anchors.join(", ") : currNames[0];
-                    const ascText = ascending.length > 0 ? ascending[0] : (emerging[0] || currNames[1] || "mới");
-                    const valI = `Qua các lần tự đánh giá, mỏ neo cốt lõi vững chắc nhất của tôi là: ${anchorText}. Giá trị ${ascText} đang dần trở thành ưu tiên hàng đầu.`;
-                    const valA = `Tôi sẽ dùng giá trị [${anchorText}] làm kim chỉ nam để đưa ra lựa chọn hành động dứt khoát, nhất quán trong quyết định sắp tới.`;
-                    const valM = departed.length > 0 
-                        ? `Nhận diện những giá trị đã buông bỏ (${departed.join(", ")}) giúp tôi hiểu sâu sắc rằng việc buông bỏ bớt những kỳ vọng cũ là cần thiết để tập trung trọn vẹn cho những giá trị sống đích thực.`
-                        : `Sống trọn vẹn và nhất quán với các giá trị cốt lõi này giúp tôi xây dựng phiên bản chân thật, tràn đầy năng lượng và tự do nội tại.`;
-
-                    const elInputI = document.getElementById("iam-cp1-i");
-                    const elInputA = document.getElementById("iam-cp1-a");
-                    const elInputM = document.getElementById("iam-cp1-m");
-
-                    if (!learnerProgress.stageData["stage-1"]) {
-                        learnerProgress.stageData["stage-1"] = {};
-                    }
-                    if (!learnerProgress.stageData["stage-1"].iam_cp1) {
-                        learnerProgress.stageData["stage-1"].iam_cp1 = {};
-                    }
-                    if (!learnerProgress.stageData["stage-1"].iam_1_2) {
-                        learnerProgress.stageData["stage-1"].iam_1_2 = {};
-                    }
-
-                    if (elInputI) {
-                        elInputI.value = valI;
-                        learnerProgress.stageData["stage-1"].iam_cp1.I = valI;
-                        learnerProgress.stageData["stage-1"].iam_1_2.I = valI;
-                    }
-                    if (elInputA) {
-                        elInputA.value = valA;
-                        learnerProgress.stageData["stage-1"].iam_cp1.A = valA;
-                        learnerProgress.stageData["stage-1"].iam_1_2.A = valA;
-                    }
-                    if (elInputM) {
-                        elInputM.value = valM;
-                        learnerProgress.stageData["stage-1"].iam_cp1.M = valM;
-                        learnerProgress.stageData["stage-1"].iam_1_2.M = valM;
-                    }
-
-                    saveLearnerProgress();
-                    renderSyllabus();
-                    updateStage1Milestones();
-
-                    const oldText = btnFillIam.innerHTML;
-                    btnFillIam.innerHTML = `<span>✓ Đã điền gợi ý vào Đúc Kết I • A • M!</span>`;
-                    setTimeout(() => { btnFillIam.innerHTML = oldText; }, 2500);
-
-                    // Mở Đúc Kết I • A • M 1.1 accordion nếu đang đóng
-                    openAccordionModule("stage1-mod-cp1");
-
-                    if (elInputI) {
-                        elInputI.scrollIntoView({ behavior: "smooth", block: "center" });
-                        elInputI.focus();
-                    }
-                };
+            // Render 7 badges tương tác vào cả thẻ Phần 2 và Checkpoint 1
+            if (badgesEl) {
+                badgesEl.innerHTML = "";
+                uniqueMapped.forEach((val, idx) => {
+                    badgesEl.appendChild(createBadgeBtn(val, idx));
+                });
+            }
+            if (bridgeBadges) {
+                bridgeBadges.innerHTML = "";
+                uniqueMapped.forEach((val, idx) => {
+                    bridgeBadges.appendChild(createBadgeBtn(val, idx));
+                });
+            }
+            if (cp1BadgesEl) {
+                cp1BadgesEl.innerHTML = "";
+                uniqueMapped.forEach((val, idx) => {
+                    cp1BadgesEl.appendChild(createBadgeBtn(val, idx));
+                });
             }
         }
 
-        // 5. Cấu hình Dropdown chọn lần làm bài
+        // 4. Dropdown chọn lịch sử khi có >= 2 lần làm bài
         if (historyContainer && historySelect) {
             if (pvHistory.length > 1) {
                 historyContainer.classList.remove("hidden");
@@ -3447,13 +3366,10 @@ const initDhmLmsApp = () => {
             }
         }
 
-        // Render lần làm bài mới nhất (index 0)
+        // Hiển thị lần mới nhất
         displayPvSession(0);
-
-        // 6. Cập nhật URL liên kết La Bàn kèm email và source=lms
         updatePersonalValueLinks();
 
-        // 7. Kích hoạt đồng bộ ngầm xuyên thiết bị (Cross-device Sync)
         if (currentUser && currentUser.email) {
             syncCrossDevicePVHistory(currentUser.email, pvHistory);
         }
@@ -3670,16 +3586,20 @@ const initDhmLmsApp = () => {
             const userSelected = savedAnswers[q.id];
 
             let optionsHtml = "";
+            const isQuestionAnswered = (userSelected !== undefined);
             q.options.forEach((opt, optIdx) => {
-                let btnClass = "border-brand-border bg-brand-dark/70 text-slate-300 hover:border-brand-amber/50";
-                if (userSelected !== undefined) {
+                let btnClass = "border-brand-border bg-brand-dark/70 text-slate-300 hover:border-brand-amber/50 cursor-pointer active:scale-[0.99]";
+                if (isQuestionAnswered) {
                     if (optIdx === q.correctIndex) {
-                        btnClass = "border-brand-green bg-brand-green/10 text-brand-green font-semibold";
+                        btnClass = "border-brand-green bg-brand-green/10 text-brand-green font-semibold cursor-default";
                     } else if (optIdx === userSelected) {
-                        btnClass = "border-red-500 bg-red-500/10 text-red-400";
+                        btnClass = "border-red-500 bg-red-500/10 text-red-400 cursor-default";
+                    } else {
+                        btnClass = "border-brand-border/40 bg-brand-dark/40 text-slate-500 opacity-60 cursor-default";
                     }
                 }
-                const disabledAttr = isLockedOut ? "disabled" : "";
+                // Khóa disabled nếu đã hết lượt thi HOẶC câu này đã được chọn trong lượt hiện tại
+                const disabledAttr = (isLockedOut || isQuestionAnswered) ? "disabled" : "";
                 optionsHtml += `
                     <button class="quiz-opt-btn w-full text-left p-3 rounded-lg border text-xs transition-all flex items-start gap-2.5 min-h-[44px] ${btnClass}" data-qid="${q.id}" data-optidx="${optIdx}" ${disabledAttr}>
                         <span class="w-5 h-5 rounded flex items-center justify-center font-bold text-[10px] bg-brand-card border border-brand-border shrink-0 mt-0.5">
@@ -3711,13 +3631,17 @@ const initDhmLmsApp = () => {
                 ${explanationHtml}
             `;
 
-            if (!isLockedOut) {
+            if (!isLockedOut && userSelected === undefined) {
                 qBox.querySelectorAll(".quiz-opt-btn").forEach(btn => {
                     btn.addEventListener("click", () => {
                         const qId = btn.getAttribute("data-qid");
                         const optIdx = parseInt(btn.getAttribute("data-optidx"));
                         if (!learnerProgress.stageData["stage-1"].quizAnswers) {
                             learnerProgress.stageData["stage-1"].quizAnswers = {};
+                        }
+                        // CHỐT CHẶN: Chỉ cho phép chọn 1 lần duy nhất trong mỗi lượt thi!
+                        if (learnerProgress.stageData["stage-1"].quizAnswers[qId] !== undefined) {
+                            return;
                         }
                         learnerProgress.stageData["stage-1"].quizAnswers[qId] = optIdx;
                         if (!learnerProgress.stageData["stage-1"].quizAttempts) {
@@ -3813,7 +3737,7 @@ const initDhmLmsApp = () => {
             }
         }
 
-        // 9.2 Render Me Values Interactive Bridge (Top 7 DNA & 1-Click Fill IAM)
+        // 9.2 Render Me Values Interactive Bridge (Top 7 Me Values & 1-Click Fill IAM)
         function renderMeValuesInteractiveBridge(sData) {
             const bridgeBadges = document.getElementById("pv-bridge-badges");
             const cp1BridgeBadges = document.getElementById("cp1-bridge-badges");
@@ -3893,7 +3817,7 @@ const initDhmLmsApp = () => {
                 }
 
                 if (bridgeBadge) {
-                    bridgeBadge.textContent = `${displayValues.length} Giá Trị (Top DNA)`;
+                    bridgeBadge.textContent = `${displayValues.length} Giá Trị Cốt Lõi`;
                     bridgeBadge.className = "text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono font-bold border border-emerald-500/30";
                 }
                 if (bridgeHint) {
@@ -7797,7 +7721,7 @@ const initDhmLmsApp = () => {
             <div class="space-y-2.5">
                 <div class="flex items-center justify-between pb-1 border-b border-brand-border/60">
                     <h5 class="font-bold text-brand-amber flex items-center gap-1.5 text-xs">
-                        <span>💎</span> Top 7 Giá Trị Bản Thân (Me Values DNA)
+                        <span>💎</span> Top 7 Giá Trị Cốt Lõi Cá Nhân (Me Values)
                     </h5>
                     <span class="text-[11px] font-mono text-slate-400 font-semibold">${selectedValues.length}/7 giá trị</span>
                 </div>
@@ -8205,7 +8129,7 @@ const initDhmLmsApp = () => {
 
         md += `---\n\n`;
         md += `## 2. 🧭 LA BÀN GIÁ TRỊ & CỔNG SÁT HẠCH\n\n`;
-        md += `### Top 7 Me Values (DNA Cá Nhân)\n`;
+        md += `### Top 7 Giá Trị Cốt Lõi Cá Nhân (Me Values)\n`;
         if (!selectedValues.length) {
             md += `*(Chưa chọn)*\n\n`;
         } else {
