@@ -79,6 +79,10 @@ cầu duyệt, không phải approval trực tiếp.
 1. **Cấm Deploy Trực tiếp Production (Production Lock):** Tuyệt đối cấm Agent tự ý chạy lệnh `vercel --prod` không kèm cờ `--skip-domain` trên local hoặc trong session để đẩy thẳng mã nguồn lên Production URL công khai.
 2. **Quy trình Staged Deployment bắt buộc:** Mọi đợt phát hành Production đều phải qua lệnh `vercel --prod --skip-domain` từ gói `release_package` sạch, lấy `deployment-id`, thực hiện UAT 3 Lớp trên Staged URL, và lưu bằng chứng bất biến tại `UAT/releases/<release-id>/final-verdict.json`.
 3. **Claim Gate:** Agent tuyệt đối KHÔNG được tuyên bố `Live verified` hoặc `Production Ready` nếu chưa pass cả 3 Lớp UAT và được Sếp Dzũ phê duyệt riêng cho thao tác `vercel promote <deployment-id>`.
+4. **Quy định Khép kín Chuỗi Triển Khai LMS & Landing Page (Mandatory End-to-End LMS Deployment Rule):**
+   - Mọi thay đổi trong thư mục `lms/` (bao gồm `master_learners_roster.json`, `authorized_roster.json`, `app.js`, `index.html`, `admin.html`) hoặc các trang công chúng (`index.html`, `register_dhm10.html`, `next_dhm.html`) sau khi hoàn tất kiểm thử ở local BẮT BUỘC phải được đồng bộ ngay lập tức sang `release_package/`.
+   - Agent phải tự động kích hoạt lệnh Staged Deployment: `cd release_package; vercel --prod --skip-domain --yes` để lấy `deployment-id`.
+   - Ngay trong báo cáo hoàn thành phase, Agent BẮT BUỘC phải đính kèm khối mã `XÁC NHẬN CẤP ĐỘ 3:` đề xuất lệnh `vercel promote <deployment-id> --yes`. CẤM TUYỆT ĐỐI việc báo cáo "Hoàn tất 100%" mà để dữ liệu học viên mới nằm lại ở local, khiến người dùng trên Live không thể truy cập.
 
 ## 5. 3 Nguyên tắc Kiến trúc Cấu hình Động & Binding Nguồn chuẩn (Dynamic Configuration & Contract Binding Principles)
 

@@ -15,12 +15,12 @@ const quizData = [
     {
         q: "Trong mô hình 3 Đòn bẩy của Delivering Happiness, An toàn tâm lý (Psychological Safety) là điều kiện nền tảng để xây dựng đòn bẩy nào?",
         options: [
-            { text: "Cảm giác Tự chủ (Autonomy) — dám lên tiếng, thử nghiệm và chịu trách nhiệm.", isCorrect: true },
+            { text: "Cảm giác Tự chủ (Control) — dám lên tiếng, thử nghiệm và chịu trách nhiệm.", isCorrect: true },
             { text: "Cảm giác Kết nối (Connectedness) — tạo dựng mối quan hệ hòa ái và gắn kết sâu sắc.", isCorrect: false },
             { text: "Cảm giác Tiến bộ (Progress) — ghi nhận các bước tiến và thành tựu cá nhân.", isCorrect: false },
             { text: "Cảm giác Dấn thân (Engagement) — đắm chìm vào công việc với động lực nội tại.", isCorrect: false }
         ],
-        explanation: "Theo Slide 31 của Delivering Happiness, An toàn tâm lý (Psychological Safety) là điều kiện nền tảng thuộc Đòn bẩy Tự chủ (Autonomy), giúp nhân viên dám nói lên tiếng nói cá nhân, thử nghiệm cách làm mới và chịu trách nhiệm."
+        explanation: "Trong mô hình Delivering Happiness, An toàn tâm lý (Psychological Safety) là điều kiện nền tảng thuộc Đòn bẩy Tự chủ (Autonomy), giúp nhân viên dám nói lên tiếng nói cá nhân, thử nghiệm cách làm mới và chịu trách nhiệm."
     },
     {
         q: "Trong môi trường công việc, cảm giác 'Tự chủ' (Autonomy) được hiểu chính xác nhất là:",
@@ -43,34 +43,34 @@ const quizData = [
         explanation: "Các bước tiến nhỏ (Small wins) giải phóng Dopamine liên tục, tạo động lực nội tại nuôi dưỡng năng lượng hành động bền bỉ."
     },
     {
-        q: "Khái niệm 'Psychological Safety' (An toàn tâm lý) đóng vai trò gì đối với Đòn bẩy Tự chủ trong tổ chức?",
+        q: "Một nhân viên báo cáo sai sót trong công việc. Theo tinh thần xây dựng môi trường An toàn tâm lý, người quản lý nên phản ứng như thế nào?",
         options: [
-            { text: "Thiết lập cơ chế kiểm soát nội bộ nghiêm ngặt để ngăn ngừa rủi ro sai sót quy trình (Internal Control).", isCorrect: false },
-            { text: "Đảm bảo sự đồng thuận tuyệt đối trong mọi cuộc họp và hạn chế các tranh luận trái chiều (Strict Consensus).", isCorrect: false },
-            { text: "Cung cấp chính sách phúc lợi và bảo đảm tài chính toàn diện để nhân viên an tâm làm việc (Job Security).", isCorrect: false },
-            { text: "Tạo môi trường an toàn để mọi người dám chia sẻ sai sót và thử nghiệm ý tưởng mới (Safe to Speak Up).", isCorrect: true }
+            { text: "Xem mọi sai sót là không thể chấp nhận và yêu cầu nhân viên chịu trách nhiệm như nhau, bất kể nguyên nhân.", isCorrect: false },
+            { text: "Bỏ qua sai sót để nhân viên không cảm thấy áp lực hoặc mất tự tin.", isCorrect: false },
+            { text: "Tập trung tìm người chịu trách nhiệm trước khi tìm hiểu nguyên nhân và cách khắc phục.", isCorrect: false },
+            { text: "Cùng nhân viên tìm hiểu nguyên nhân, phân biệt lỗi phòng tránh được (prevented), lỗi phức tạp của hệ thống (complexity) và lỗi thông minh phát sinh khi thử nghiệm điều mới (intelligence), từ đó lựa chọn cách xử lý phù hợp.", isCorrect: true }
         ],
-        explanation: "An toàn tâm lý tạo môi trường tin cậy để mọi người dám lên tiếng, chia sẻ sai sót và thử nghiệm ý tưởng mới (Safe to Speak Up) mà không sợ bị phán xét hay trừng phạt."
+        explanation: "Phân biệt các loại lỗi giúp tổ chức lựa chọn cách phản hồi phù hợp thay vì quy mọi sai sót về lỗi cá nhân."
     },
     {
         q: "Theo mô hình Delivering Happiness (kế thừa từ Martin Seligman), đâu là 3 cấp độ hạnh phúc theo thứ tự độ bền vững tăng dần?",
         options: [
-            { text: "Thú vui (Pleasure) ➔ Đam mê / Dòng chảy (Passion / Flow) ➔ Mục đích cao cả (Higher Purpose).", isCorrect: true },
+            { text: "Thú vui (Pleasure) ➔ Đam mê (Passion) ➔ Mục đích cao cả (Higher Purpose).", isCorrect: true },
             { text: "Cảm giác Kết nối (Connectedness) ➔ Cảm giác Tự chủ (Autonomy) ➔ Cảm giác Tiến bộ (Progress).", isCorrect: false },
             { text: "Thực hành Biết ơn (Gratitude) ➔ Trạng thái Tỉnh thức (Mindfulness) ➔ Tinh thần Vị nhân (Altruism).", isCorrect: false },
             { text: "Nhận thức Giá trị (Core Values) ➔ Chuẩn hóa Hành vi (Key Behaviors) ➔ Văn hóa Tổ chức (Culture).", isCorrect: false }
         ],
-        explanation: "3 cấp độ hạnh phúc theo thứ tự bền vững tăng dần: Thú vui (Pleasure) ➔ Đam mê / Dòng chảy (Passion / Flow) ➔ Mục đích cao cả (Higher Purpose)."
+        explanation: "3 cấp độ hạnh phúc theo thứ tự bền vững tăng dần: Thú vui (Pleasure) ➔ Đam mê (Passion) ➔ Mục đích cao cả (Higher Purpose)."
     },
     {
-        q: "Ai là tác giả của triết lý quản trị nổi tiếng: \"Xây dựng một văn hóa tuyệt vời và mọi thứ khác sẽ đi đúng hướng\" (Get the right culture, and everything else will fall into place)?",
+        q: "Trong Delivering Happiness, ME Values có vai trò như một chiếc la bàn định hướng hành động. Tình huống nào dưới đây thể hiện rõ nhất việc một người thực sự sống theo giá trị cốt lõi của mình, thay vì chỉ tuyên ngôn những giá trị đó?",
         options: [
-            { text: "Martin Seligman (Nhà tâm lý học, cha đẻ Tâm lý học Tích cực).", isCorrect: false },
-            { text: "Mihály Csíkszentmihályi (Giáo sư tiên phong nghiên cứu về Dòng chảy).", isCorrect: false },
-            { text: "Tony Hsieh (Cố CEO Zappos & Đồng sáng lập Delivering Happiness).", isCorrect: true },
-            { text: "Aristotle (Triết gia Hy Lạp cổ đại với khái niệm Hạnh phúc Eudaimonia).", isCorrect: false }
+            { text: "Luôn nhắc đến sự trung thực như một giá trị quan trọng, nhưng che giấu sai sót khi việc thừa nhận có thể ảnh hưởng đến hình ảnh cá nhân.", isCorrect: false },
+            { text: "Chỉ thể hiện những giá trị được tổ chức đề cao khi có lãnh đạo quan sát hoặc đánh giá.", isCorrect: false },
+            { text: "Kiên định với giá trị trung thực bằng cách chủ động thừa nhận sai sót, minh bạch thông tin và chịu trách nhiệm, ngay cả khi điều đó khiến bản thân gặp bất lợi trước mắt.", isCorrect: true },
+            { text: "Lựa chọn hành động theo số đông để tránh bất đồng, dù điều đó trái với những giá trị bản thân đã xác định.", isCorrect: false }
         ],
-        explanation: "Tony Hsieh (Cố CEO Zappos & Đồng sáng lập Delivering Happiness) là tác giả của triết lý quản trị kinh điển: 'Get the right culture, and everything else will fall into place'."
+        explanation: "Giá trị cốt lõi thực sự được thể hiện qua lựa chọn và hành động, đặc biệt trong những tình huống khó khăn khi sống đúng với giá trị có thể phải trả giá. Giá trị không chỉ nằm ở điều ta nói, mà còn ở cách ta hành động khi không có ai giám sát."
     },
     {
         q: "Trong Đòn bẩy Kết nối (Connectedness), trạng thái 'Sống hòa ái' được thể hiện trọn vẹn qua 3 mối quan hệ nào?",
@@ -83,24 +83,24 @@ const quizData = [
         explanation: "Trong Đòn bẩy Kết nối (Connectedness), 'Sống hòa ái' gồm 3 mối quan hệ: với Bản thân (Self), với Người khác (Others) và với Thiên nhiên (Nature)."
     },
     {
-        q: "Đâu là định nghĩa chuẩn xác nhất về Ownership Advantage™ (Lợi thế của tinh thần làm chủ) trên Slide bài giảng?",
+        q: "Khi quan sát một đội ngũ làm việc hiệu quả, bạn nhận thấy các thành viên được chủ động lựa chọn cách thực hiện công việc trong phạm vi mục tiêu chung. Bài học nào dưới đây phù hợp nhất với đòn bẩy Tự chủ?",
         options: [
-            { text: "Cảm giác được tổ chức chú ý và tôn trọng ý kiến đóng góp cá nhân (Being Heard & Valued).", isCorrect: false },
-            { text: "Cảm giác gắn kết, tương tác cởi mở và quan tâm chân thành đến đồng đội (Sense of Connection).", isCorrect: false },
-            { text: "Được tự do bộc lộ bản sắc con người thật trong môi trường công sở (Authentic Self at Work).", isCorrect: false },
-            { text: "Lựa chọn cá nhân trong việc tự giác chịu trách nhiệm về kết quả (Personal Choice to Own Results).", isCorrect: true }
+            { text: "Tự chủ có nghĩa là mỗi người được làm theo ý mình mà không cần quan tâm đến mục tiêu chung.", isCorrect: false },
+            { text: "Để đảm bảo chất lượng, người quản lý nên quyết định chi tiết cách làm và yêu cầu nhân viên tuân thủ tuyệt đối.", isCorrect: false },
+            { text: "Tự chủ chỉ phù hợp với những nhân viên có thâm niên và không cần áp dụng cho nhân viên mới.", isCorrect: false },
+            { text: "Trao quyền chủ động giúp nhân viên phát huy khả năng, đưa ra quyết định và tự chịu trách nhiệm về kết quả trong phạm vi được thống nhất.", isCorrect: true }
         ],
-        explanation: "Ownership Advantage™ là sự lựa chọn cá nhân trong việc tự giác chịu trách nhiệm về kết quả hành động (Personal Choice to Own Results)."
+        explanation: "Tự chủ tạo điều kiện để mỗi người chủ động hành động và phát huy năng lực, đồng thời vẫn gắn với mục tiêu chung và trách nhiệm cá nhân."
     },
     {
-        q: "Theo khoa học hạnh phúc, tại sao các mục tiêu bên ngoài như mua nhà, thăng chức hay tích lũy tài chính không đảm bảo hạnh phúc bền vững?",
+        q: "Theo khoa học hạnh phúc, tại sao các mục tiêu bên ngoài như mua nhà, thăng chức hay tích lũy tài chính không đảm bảo hạnh phúc bền lâu?",
         options: [
             { text: "Vì chúng làm triệt tiêu hoàn toàn động lực nội tại (Intrinsic Motivation) và khả năng sáng tạo tự thân.", isCorrect: false },
-            { text: "Vì cơ chế thích nghi khoái lạc (Hedonic Adaptation) khiến cảm giác thỏa mãn tan biến nhanh và ta lại lập tức đặt cột mốc mới.", isCorrect: true },
+            { text: "Vì niềm vui từ việc đạt được thành tựu bên ngoài có thể giảm dần theo thời gian, trong khi hạnh phúc bền lâu phụ thuộc vào đam mê, mục đích cao cả, lẽ sống của mỗi chúng ta.", isCorrect: true },
             { text: "Vì các mục tiêu vật chất luôn làm suy yếu cảm giác kết nối sâu sắc (Deep Connectedness) giữa cá nhân với tổ chức.", isCorrect: false },
             { text: "Vì việc theo đuổi danh vọng bên ngoài sẽ trực tiếp phá vỡ la bàn giá trị cốt lõi (Core Values Compass) của mỗi người.", isCorrect: false }
         ],
-        explanation: "Cơ chế thích nghi khoái lạc (Hedonic Adaptation) khiến con người nhanh chóng quen với tiện nghi mới, làm cảm xúc hưng phấn ban đầu mau chóng tan biến."
+        explanation: "Thành công vật chất vẫn có thể đóng góp vào hạnh phúc, đặc biệt khi giúp đáp ứng nhu cầu thiết yếu và tạo sự an toàn. Tuy nhiên, niềm vui từ thành tựu thường không duy trì nguyên vẹn mãi mãi; những yếu tố như ý nghĩa và lẽ sống rất quan trọng."
     }
 ];
 

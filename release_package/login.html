@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập LMS - CultureCode</title>
+    <meta http-equiv="refresh" content="0; url=/lms">
+    <script>window.location.replace("/lms");</script>
+    <title>Đang chuyển hướng đến LMS - Delivering Happiness</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;800&display=swap"
@@ -146,64 +148,13 @@
 
     <div class="login-card">
         <img src="data/logo.jpg" alt="Logo" class="logo" style="border-radius: 12px;">
-        <h1>Hệ thống LMS</h1>
-        <p class="subtitle">Truy cập Thư viện kiến thức CultureCode</p>
-
-        <div class="input-group">
-            <label>Tên đăng nhập</label>
-            <input type="text" id="username" placeholder="Nhập email hoặc username">
+        <h1>Hệ thống Blended LMS</h1>
+        <p class="subtitle">Đang tự động chuyển hướng đến Trung tâm học tập...</p>
+        <div style="margin: 2rem 0;">
+            <a href="/lms" class="btn-primary" style="display: inline-block; padding: 12px 24px; background: #f59e0b; color: #000; font-weight: 700; border-radius: 8px; text-decoration: none;">Vào Học Ngay ➔</a>
         </div>
-
-        <div class="input-group">
-            <label>Mật khẩu</label>
-            <input type="password" id="password" placeholder="••••••••">
-        </div>
-
-        <button class="btn-login" id="loginBtn">Đăng nhập</button>
-
-        <div class="status-badge">🏗️ Đang xây dựng</div>
-
         <a href="index.html" class="back-link">← Quay lại trang chủ</a>
     </div>
-
-    <script>
-        async function hashString(str) {
-            if (window.crypto && window.crypto.subtle) {
-                const msgBuffer = new TextEncoder().encode(str);
-                const hashBuffer = await window.crypto.subtle.digest("SHA-256", msgBuffer);
-                return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, "0")).join("");
-            }
-            return "";
-        }
-
-        const ADMIN_USER_HASH = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918";
-        const ADMIN_PASS_HASH = "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5";
-        const ADMIN_SESSION_KEY = "dhm_admin_authenticated";
-
-        async function handleLogin() {
-            const user = document.getElementById('username').value.trim().toLowerCase();
-            const pass = document.getElementById('password').value.trim();
-
-            const userHash = await hashString(user);
-            const passHash = await hashString(pass);
-
-            if (userHash === ADMIN_USER_HASH && passHash === ADMIN_PASS_HASH) {
-                sessionStorage.setItem(ADMIN_SESSION_KEY, 'true');
-                alert('Đăng nhập thành công!');
-                window.location.href = 'lms_dashboard.html';
-            } else {
-                alert('Tên đăng nhập hoặc mật khẩu không đúng!');
-            }
-        }
-
-        document.getElementById('loginBtn').addEventListener('click', handleLogin);
-        document.getElementById('password').addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') handleLogin();
-        });
-        document.getElementById('username').addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') handleLogin();
-        });
-    </script>
 </body>
 
 </html>

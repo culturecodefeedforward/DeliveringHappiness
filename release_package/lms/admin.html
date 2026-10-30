@@ -2869,9 +2869,14 @@
                             if (ansObj && typeof ansObj === "object") {
                                 const ansKeys = Object.keys(ansObj).filter(k => k.startsWith("dhm-quiz-"));
                                 if (ansKeys.length > 0) {
+                                    const CANONICAL_QUIZ_KEYS = {
+                                        "dhm-quiz-1": 0, "dhm-quiz-2": 0, "dhm-quiz-3": 0, "dhm-quiz-4": 0, "dhm-quiz-5": 0,
+                                        "dhm-quiz-6": 0, "dhm-quiz-7": 0, "dhm-quiz-8": 0, "dhm-quiz-9": 0, "dhm-quiz-10": 0
+                                    };
                                     let regraded = 0;
                                     ansKeys.forEach(k => {
-                                        if (Number(ansObj[k]) === 0) regraded++;
+                                        const expectedIdx = CANONICAL_QUIZ_KEYS[k] !== undefined ? CANONICAL_QUIZ_KEYS[k] : 0;
+                                        if (Number(ansObj[k]) === expectedIdx) regraded++;
                                     });
                                     if (regraded > score) {
                                         score = regraded;

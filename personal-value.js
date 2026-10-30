@@ -986,7 +986,13 @@ let authorizedRoster = [];
 async function loadAuthorizedRoster() {
   if (authorizedRoster && authorizedRoster.length > 0) return authorizedRoster;
   try {
-    const paths = ["/lms/authorized_roster.json", "lms/authorized_roster.json", "./lms/authorized_roster.json"];
+    const paths = [
+      "/lms/master_learners_roster.json",
+      "lms/master_learners_roster.json",
+      "/lms/authorized_roster.json",
+      "lms/authorized_roster.json",
+      "./lms/authorized_roster.json"
+    ];
     for (const p of paths) {
       try {
         const resp = await fetch(p + "?v=" + Date.now());
@@ -1000,7 +1006,7 @@ async function loadAuthorizedRoster() {
       } catch (err) {}
     }
   } catch (e) {
-    console.warn("Không thể tải authorized_roster.json:", e);
+    console.warn("Không thể tải roster:", e);
   }
   return [];
 }
@@ -1125,58 +1131,68 @@ function findLearnerInRoster(rawInput, roster) {
   const normPhone = normalizePhone(rawInput);
   const list = roster || authorizedRoster || [];
 
-  // 1. Kiểm tra danh bạ chính thức
+  const candidates = [];
   for (const item of list) {
     const itemEmail = item.email ? normalizeIdentity(item.email) : "";
     const itemPhone = item.phone || item.phone_full || item.phone_raw || "";
     const normItemPhone = normalizePhone(itemPhone);
+    const itemAliases = Array.isArray(item.aliases) ? item.aliases.map(normalizeIdentity) : [];
 
-    const emailMatch = itemEmail && itemEmail === normInput;
-    const phoneMatch = normPhone && normPhone.length >= 9 && normItemPhone && normItemPhone === normPhone;
+    const emailMatch = Boolean((itemEmail && itemEmail === normInput) || itemAliases.includes(normInput));
+    const phoneMatch = Boolean(normPhone && normPhone.length >= 9 && normItemPhone && normItemPhone === normPhone);
 
     if (emailMatch || phoneMatch) {
-      return {
-        lead_id: item.learner_id || "",
-        full_name: item.name || item.full_name || item.email,
-        email: item.email ? item.email.toLowerCase().trim() : (normInput.includes("@") ? normInput : ""),
-        phone: item.phone || item.phone_full || normPhone || "",
-        phone_last4: item.phone_last4 || (item.phone ? normalizePhone(item.phone).slice(-4) : ""),
-        default_pwd: item.default_pwd || "",
-        password: item.password || "",
-        cohort: item.cohort || "Học viên",
-        role: item.role || "Learner",
-        status: "verified"
-      };
+      candidates.push(item);
     }
   }
 
-  // 2. Kiểm tra thêm trong overrides nếu có
-  try {
-    const rawOverrides = localStorage.getItem("dhm_roster_overrides");
-    if (rawOverrides) {
-      const overrides = JSON.parse(rawOverrides);
-      for (const ov of Object.values(overrides)) {
-        const ovEmail = ov.email ? normalizeIdentity(ov.email) : "";
-        const ovPhone = normalizePhone(ov.phone || "");
-        if ((ovEmail && ovEmail === normInput) || (normPhone && normPhone.length >= 9 && ovPhone === normPhone)) {
-          return {
-            lead_id: ov.learner_id || "",
-            full_name: ov.name || ov.full_name || ov.email,
-            email: ov.email ? ov.email.toLowerCase().trim() : "",
-            phone: ov.phone || "",
-            phone_last4: ov.phone_last4 || (ov.phone ? normalizePhone(ov.phone).slice(-4) : ""),
-            default_pwd: ov.default_pwd || "",
-            password: ov.password || "",
-            cohort: ov.cohort || "Học viên",
-            role: ov.role || "Learner",
-            status: "verified"
-          };
+  if (candidates.length === 0) {
+    try {
+      const rawOverrides = localStorage.getItem("dhm_roster_overrides");
+      if (rawOverrides) {
+        const overrides = JSON.parse(rawOverrides);
+        for (const ov of Object.values(overrides)) {
+          const ovEmail = ov.email ? normalizeIdentity(ov.email) : "";
+          const ovPhone = normalizePhone(ov.phone || "");
+          if ((ovEmail && ovEmail === normInput) || (normPhone && normPhone.length >= 9 && ovPhone === normPhone)) {
+            return {
+              lead_id: ov.learner_id || "",
+              full_name: ov.name || ov.full_name || ov.email,
+              email: ov.email ? ov.email.toLowerCase().trim() : "",
+              phone: ov.phone || "",
+              phone_last4: ov.phone_last4 || (ov.phone ? normalizePhone(ov.phone).slice(-4) : ""),
+              default_pwd: ov.default_pwd || "",
+              password: ov.password || "",
+              cohort: ov.cohort || "Học viên",
+              role: ov.role || "Learner",
+              status: "verified"
+            };
+          }
         }
       }
-    }
-  } catch (e) {}
+    } catch (e) {}
+    return null;
+  }
 
-  return null;
+  // Ưu tiên bản ghi: Đã thanh toán (PAID) > Khóa học chính thức (DHM / Apollo) > Bản ghi đầu tiên
+  const best = candidates.find(c => c.is_paid === true || String(c.payment_status || "").toUpperCase() === "PAID")
+            || candidates.find(c => String(c.cohort || "").toUpperCase().includes("DHM"))
+            || candidates.find(c => String(c.cohort || "").toUpperCase().includes("APOLLO"))
+            || candidates[0];
+
+  return {
+    lead_id: best.learner_id || "",
+    full_name: best.name || best.full_name || best.email,
+    email: best.email ? best.email.toLowerCase().trim() : (normInput.includes("@") ? normInput : ""),
+    phone: best.phone || best.phone_full || normPhone || "",
+    phone_last4: best.phone_last4 || (best.phone ? normalizePhone(best.phone).slice(-4) : (normPhone ? normPhone.slice(-4) : "")),
+    default_pwd: best.default_pwd || "",
+    password: best.password || "",
+    cohort: best.cohort || "Học viên",
+    role: best.role || "Learner",
+    is_paid: Boolean(best.is_paid === true || String(best.payment_status || "").toUpperCase() === "PAID"),
+    status: "verified"
+  };
 }
 
 function getStoredUserAuth() {

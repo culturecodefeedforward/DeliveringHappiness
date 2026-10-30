@@ -3,104 +3,104 @@
 
 const quizData = [
     {
-        q: "Bạn có một định hướng cuộc đời (Mục tiêu/Đam mê) rất rõ ràng và hay nói về nó, nhưng lại không dành thời gian hay tiền bạc để rèn luyện. Trạng thái này gọi là gì?",
+        q: "Trong Cảm giác 'Tiến bộ' (Sense of Progress), yếu tố nào quan trọng nhất để nuôi dưỡng động lực nội tại?",
         options: [
-            { text: "Kẻ mộng mơ, lười biếng.", isCorrect: false },
-            { text: "Chỉ nói không làm (NATO).", isCorrect: true },
-            { text: "Người thiếu kỷ luật bản thân.", isCorrect: false },
-            { text: "Người có tư duy tích cực nhưng thiếu thực tế.", isCorrect: false }
+            { text: "Sự ghi nhận liên tục các bước tiến nhỏ (Small wins) để kích hoạt Dopamine tự nhiên.", isCorrect: true },
+            { text: "Những phần thưởng tài chính đột biến vào cuối năm (Annual bonuses) dựa trên kết quả KPI.", isCorrect: false },
+            { text: "Việc duy trì tiêu chuẩn kỷ luật nghiêm ngặt (Strict accountability) để không bao giờ xảy ra lỗi.", isCorrect: false },
+            { text: "Cán đích hoàn thành các đại dự án chiến lược (Milestone achievements) có quy mô lớn của tổ chức.", isCorrect: false }
         ],
-        explanation: "Chỉ nói không làm (NATO - No Action Talk Only) – Trạng thái chỉ có Kim chỉ nam (Compass) mà thiếu Thời gian (Watch) và Nguồn lực (Dollar)."
+        explanation: "Sự ghi nhận liên tục các bước tiến nhỏ (Small wins) giúp kích hoạt Dopamine tự nhiên, nuôi dưỡng cảm giác tiến bộ bền vững."
     },
     {
-        q: "Công thức thực tế nhất để tạo ra Giá trị (Value) không thể thay thế của một con người là gì?",
+        q: "Trong mô hình 3 Đòn bẩy của Delivering Happiness, An toàn tâm lý (Psychological Safety) là điều kiện nền tảng để xây dựng đòn bẩy nào?",
         options: [
-            { text: "Thái độ + Kỹ năng + Kiến thức.", isCorrect: false },
-            { text: "Giá trị = Kim chỉ nam + Thời gian + Nguồn lực.", isCorrect: true },
-            { text: "Chỉ số thông minh + Chỉ số cảm xúc + May mắn.", isCorrect: false },
-            { text: "Nỗ lực x Sự thông minh.", isCorrect: false }
+            { text: "Cảm giác Tự chủ (Control) — dám lên tiếng, thử nghiệm và chịu trách nhiệm.", isCorrect: true },
+            { text: "Cảm giác Kết nối (Connectedness) — tạo dựng mối quan hệ hòa ái và gắn kết sâu sắc.", isCorrect: false },
+            { text: "Cảm giác Tiến bộ (Progress) — ghi nhận các bước tiến và thành tựu cá nhân.", isCorrect: false },
+            { text: "Cảm giác Dấn thân (Engagement) — đắm chìm vào công việc với động lực nội tại.", isCorrect: false }
         ],
-        explanation: "Giá trị (Value) = Kim chỉ nam (Compass) + Thời gian (Watch) + Nguồn lực (Dollar). Định hướng đúng kết hợp với kỷ luật thời gian và tối ưu hóa nguồn lực."
+        explanation: "Trong mô hình Delivering Happiness, An toàn tâm lý (Psychological Safety) là điều kiện nền tảng thuộc Đòn bẩy Tự chủ (Autonomy), giúp nhân viên dám nói lên tiếng nói cá nhân, thử nghiệm cách làm mới và chịu trách nhiệm."
     },
     {
-        q: "Khi đối mặt với một cơn giận hoặc một quyết định bốc đồng sắp xảy ra, phương pháp 'sơ cứu tâm lý' ngay lập tức là gì?",
+        q: "Trong môi trường công việc, cảm giác 'Tự chủ' (Autonomy) được hiểu chính xác nhất là:",
         options: [
-            { text: "Cố gắng kiềm chế, uống nước, đi chỗ khác.", isCorrect: false },
-            { text: "Tỉnh thức với công cụ SBA.", isCorrect: true },
-            { text: "Hít sâu 3 lần và nhắm mắt lại.", isCorrect: false },
-            { text: "Đếm từ 1 đến 10 để kiềm chế cơn giận.", isCorrect: false }
+            { text: "Có quyền chủ động lựa chọn và kiểm soát phương pháp thực hiện công việc (Method Control).", isCorrect: true },
+            { text: "Được quyền phân công mệnh lệnh và kiểm soát trực tiếp tiến độ của người khác (Task Authority).", isCorrect: false },
+            { text: "Tự do làm việc độc lập hoàn toàn mà không cần phối hợp hay báo cáo quy trình (No Oversight).", isCorrect: false },
+            { text: "Quyền miễn trừ khỏi các cam kết mục tiêu chung khi gặp trở ngại khách quan (Risk Exemption).", isCorrect: false }
         ],
-        explanation: "Tỉnh thức (Mindfulness) với công cụ SBA: Stop (Dừng lại) - Breathe (Hít thở) - Ask (Tự hỏi mình một câu hỏi chất lượng)."
+        explanation: "Cảm giác Tự chủ (Autonomy) là có quyền chủ động lựa chọn và kiểm soát phương pháp thực hiện công việc (Method Control) để đạt mục tiêu chung."
     },
     {
-        q: "Cảm giác thỏa mãn khi ăn một món ngon, lướt Tiktok hoặc chơi game giải trí thuộc nhóm hạnh phúc nào?",
+        q: "Tại sao cảm giác 'Tiến bộ' (Progress) lại quan trọng hơn việc Đạt mục tiêu cuối cùng theo khoa học hạnh phúc?",
         options: [
-            { text: "Sở thích, niềm vui.", isCorrect: false },
-            { text: "Cấp độ 1 - Thú vui.", isCorrect: true },
-            { text: "Đam mê nhất thời.", isCorrect: false },
-            { text: "Sự thư giãn đơn thuần.", isCorrect: false }
+            { text: "Vì các bước tiến nhỏ (Small wins) giải phóng Dopamine liên tục giúp duy trì năng lượng hành động.", isCorrect: true },
+            { text: "Vì cảm giác tiến bộ giúp triệt tiêu hoàn toàn tác động tiêu cực của các thất bại tạm thời (Zero failures).", isCorrect: false },
+            { text: "Vì đích đến cuối cùng luôn kích hoạt bẫy lo âu và áp lực phải liên tục đặt mục tiêu cao hơn (End-goal anxiety).", isCorrect: false },
+            { text: "Vì sự tiến bộ là chỉ số duy nhất có thể định lượng chính xác bằng các khung đo lường năng lực (KPI metrics).", isCorrect: false }
         ],
-        explanation: "Cấp độ 1 - Thú vui (Pleasure). Những khoái cảm ngắn hạn cần nhận biết để không bị nghiện và nhầm lẫn với Hạnh phúc đích thực (Higher Purpose)."
+        explanation: "Các bước tiến nhỏ (Small wins) giải phóng Dopamine liên tục, tạo động lực nội tại nuôi dưỡng năng lượng hành động bền bỉ."
     },
     {
-        q: "Để một nhân sự thực sự hạnh phúc và cống hiến hết mình tại nơi làm việc, sếp cần cung cấp 3 đòn bẩy tâm lý nào?",
+        q: "Một nhân viên báo cáo sai sót trong công việc. Theo tinh thần xây dựng môi trường An toàn tâm lý, người quản lý nên phản ứng như thế nào?",
         options: [
-            { text: "Lương cao, sếp tâm lý, đồng nghiệp vui vẻ.", isCorrect: false },
-            { text: "Sự Tiến bộ, Quyền Tự chủ và Sự Kết nối.", isCorrect: true },
-            { text: "Môi trường làm việc chuyên nghiệp + Chế độ đãi ngộ tốt.", isCorrect: false },
-            { text: "Công việc ổn định + Cơ hội thăng tiến rõ ràng.", isCorrect: false }
+            { text: "Xem mọi sai sót là không thể chấp nhận và yêu cầu nhân viên chịu trách nhiệm như nhau, bất kể nguyên nhân.", isCorrect: false },
+            { text: "Bỏ qua sai sót để nhân viên không cảm thấy áp lực hoặc mất tự tin.", isCorrect: false },
+            { text: "Tập trung tìm người chịu trách nhiệm trước khi tìm hiểu nguyên nhân và cách khắc phục.", isCorrect: false },
+            { text: "Cùng nhân viên tìm hiểu nguyên nhân, phân biệt lỗi phòng tránh được (prevented), lỗi phức tạp của hệ thống (complexity) và lỗi thông minh phát sinh khi thử nghiệm điều mới (intelligence), từ đó lựa chọn cách xử lý phù hợp.", isCorrect: true }
         ],
-        explanation: "Gồm có: Sense of Progress (Thấy mình tiến bộ), Control (Có quyền kiểm soát/Tự chủ) và Connectedness (Sự kết nối ý nghĩa)."
+        explanation: "Phân biệt các loại lỗi giúp tổ chức lựa chọn cách phản hồi phù hợp thay vì quy mọi sai sót về lỗi cá nhân."
     },
     {
-        q: "Để rèn luyện thói quen Lạc quan một cách có hệ thống chứ không phải kiểu tích cực độc hại, bạn dùng công cụ nào?",
+        q: "Theo mô hình Delivering Happiness (kế thừa từ Martin Seligman), đâu là 3 cấp độ hạnh phúc theo thứ tự độ bền vững tăng dần?",
         options: [
-            { text: "Cứ cười lên thôi, nghĩ về những điều tốt đẹp.", isCorrect: false },
-            { text: "Mô hình ABCDE.", isCorrect: true },
-            { text: "Viết nhật ký biết ơn mỗi ngày.", isCorrect: false },
-            { text: "Tự ám thị những điều tích cực.", isCorrect: false }
+            { text: "Thú vui (Pleasure) ➔ Đam mê (Passion) ➔ Mục đích cao cả (Higher Purpose).", isCorrect: true },
+            { text: "Cảm giác Kết nối (Connectedness) ➔ Cảm giác Tự chủ (Autonomy) ➔ Cảm giác Tiến bộ (Progress).", isCorrect: false },
+            { text: "Thực hành Biết ơn (Gratitude) ➔ Trạng thái Tỉnh thức (Mindfulness) ➔ Tinh thần Vị nhân (Altruism).", isCorrect: false },
+            { text: "Nhận thức Giá trị (Core Values) ➔ Chuẩn hóa Hành vi (Key Behaviors) ➔ Văn hóa Tổ chức (Culture).", isCorrect: false }
         ],
-        explanation: "Mô hình ABCDE: Phân tích Sự kiện (Adversity), Niềm tin (Belief), Hệ quả (Consequence), Tranh luận (Disputation) và Thôi thúc (Energization) để tái định hình tư duy logic."
+        explanation: "3 cấp độ hạnh phúc theo thứ tự bền vững tăng dần: Thú vui (Pleasure) ➔ Đam mê (Passion) ➔ Mục đích cao cả (Higher Purpose)."
     },
     {
-        q: "Trạng thái bạn làm việc say mê đến mức quên cả thời gian và không cảm thấy mệt mỏi, năng suất tăng gấp nhiều lần được gọi là gì?",
+        q: "Trong Delivering Happiness, ME Values có vai trò như một chiếc la bàn định hướng hành động. Tình huống nào dưới đây thể hiện rõ nhất việc một người thực sự sống theo giá trị cốt lõi của mình, thay vì chỉ tuyên ngôn những giá trị đó?",
         options: [
-            { text: "Đang vào phom, làm việc năng suất.", isCorrect: false },
-            { text: "Trạng thái Dòng chảy (Flow).", isCorrect: true },
-            { text: "Làm việc bằng cả niềm đam mê.", isCorrect: false },
-            { text: "Sự tập trung tuyệt đối.", isCorrect: false }
+            { text: "Luôn nhắc đến sự trung thực như một giá trị quan trọng, nhưng che giấu sai sót khi việc thừa nhận có thể ảnh hưởng đến hình ảnh cá nhân.", isCorrect: false },
+            { text: "Chỉ thể hiện những giá trị được tổ chức đề cao khi có lãnh đạo quan sát hoặc đánh giá.", isCorrect: false },
+            { text: "Kiên định với giá trị trung thực bằng cách chủ động thừa nhận sai sót, minh bạch thông tin và chịu trách nhiệm, ngay cả khi điều đó khiến bản thân gặp bất lợi trước mắt.", isCorrect: true },
+            { text: "Lựa chọn hành động theo số đông để tránh bất đồng, dù điều đó trái với những giá trị bản thân đã xác định.", isCorrect: false }
         ],
-        explanation: "Trạng thái Dòng chảy (Flow) hoặc rèn luyện qua các 'Dòng chảy nhỏ' (Microflow) hàng ngày."
+        explanation: "Giá trị cốt lõi thực sự được thể hiện qua lựa chọn và hành động, đặc biệt trong những tình huống khó khăn khi sống đúng với giá trị có thể phải trả giá. Giá trị không chỉ nằm ở điều ta nói, mà còn ở cách ta hành động khi không có ai giám sát."
     },
     {
-        q: "Văn hóa nền tảng số 1 để một tập thể dám nói lên sự thật, dám sáng tạo và cống hiến là gì?",
+        q: "Trong Đòn bẩy Kết nối (Connectedness), trạng thái 'Sống hòa ái' được thể hiện trọn vẹn qua 3 mối quan hệ nào?",
         options: [
-            { text: "Môi trường thân thiện, văn hóa gia đình.", isCorrect: false },
-            { text: "Sự An toàn tâm lý.", isCorrect: true },
-            { text: "Hệ thống quản trị minh bạch.", isCorrect: false },
-            { text: "Sự tôn trọng và lắng nghe cấp dưới.", isCorrect: false }
+            { text: "Hòa ái với Bản thân (Self), với Người khác (Others) và với Thiên nhiên (Nature).", isCorrect: true },
+            { text: "Hòa hợp với Mục tiêu (Goals), với Thành tích (Results) và với Lợi nhuận (Profit).", isCorrect: false },
+            { text: "Đồng điệu với Tự chủ (Autonomy), với Tiến bộ (Progress) và với Năng lực (Competence).", isCorrect: false },
+            { text: "Gắn kết với Tổ chức (Company), với Khách hàng (Clients) và với Quy trình (Process).", isCorrect: false }
         ],
-        explanation: "An toàn tâm lý (Psychological Safety) – Đảm bảo nhân sự không sợ bị trừng phạt khi nêu ý kiến hay mắc sai lầm có tính toán."
+        explanation: "Trong Đòn bẩy Kết nối (Connectedness), 'Sống hòa ái' gồm 3 mối quan hệ: với Bản thân (Self), với Người khác (Others) và với Thiên nhiên (Nature)."
     },
     {
-        q: "Công cụ nào rẻ nhất nhưng hiệu quả nhất để xây dựng văn hóa Biết ơn trong một tổ chức?",
+        q: "Khi quan sát một đội ngũ làm việc hiệu quả, bạn nhận thấy các thành viên được chủ động lựa chọn cách thực hiện công việc trong phạm vi mục tiêu chung. Bài học nào dưới đây phù hợp nhất với đòn bẩy Tự chủ?",
         options: [
-            { text: "Thưởng tiền nóng, tặng quà.", isCorrect: false },
-            { text: "Thẻ ghi nhận (WOW Cards).", isCorrect: true },
-            { text: "Bình chọn nhân viên xuất sắc nhất tháng.", isCorrect: false },
-            { text: "Tổ chức các buổi tiệc gắn kết đội ngũ.", isCorrect: false }
+            { text: "Tự chủ có nghĩa là mỗi người được làm theo ý mình mà không cần quan tâm đến mục tiêu chung.", isCorrect: false },
+            { text: "Để đảm bảo chất lượng, người quản lý nên quyết định chi tiết cách làm và yêu cầu nhân viên tuân thủ tuyệt đối.", isCorrect: false },
+            { text: "Tự chủ chỉ phù hợp với những nhân viên có thâm niên và không cần áp dụng cho nhân viên mới.", isCorrect: false },
+            { text: "Trao quyền chủ động giúp nhân viên phát huy khả năng, đưa ra quyết định và tự chịu trách nhiệm về kết quả trong phạm vi được thống nhất.", isCorrect: true }
         ],
-        explanation: "Thẻ ghi nhận (WOW Cards) – Những tấm thiệp/ghi nhận cụ thể, chân thành và kịp thời gửi đến đồng nghiệp."
+        explanation: "Tự chủ tạo điều kiện để mỗi người chủ động hành động và phát huy năng lực, đồng thời vẫn gắn với mục tiêu chung và trách nhiệm cá nhân."
     },
     {
-        q: "Để phát triển năng lực của bản thân một cách bền vững theo thói quen Vị nhân, cách nhanh nhất là gì?",
+        q: "Theo khoa học hạnh phúc, tại sao các mục tiêu bên ngoài như mua nhà, thăng chức hay tích lũy tài chính không đảm bảo hạnh phúc bền lâu?",
         options: [
-            { text: "Đi học thêm thật nhiều khóa học, đọc nhiều sách.", isCorrect: false },
-            { text: "Người đồng hành / Người dẫn dắt.", isCorrect: true },
-            { text: "Tự mày mò nghiên cứu và trải nghiệm thực tế.", isCorrect: false },
-            { text: "Thay đổi môi trường làm việc để học hỏi thêm.", isCorrect: false }
+            { text: "Vì chúng làm triệt tiêu hoàn toàn động lực nội tại (Intrinsic Motivation) và khả năng sáng tạo tự thân.", isCorrect: false },
+            { text: "Vì niềm vui từ việc đạt được thành tựu bên ngoài có thể giảm dần theo thời gian, trong khi hạnh phúc bền lâu phụ thuộc vào đam mê, mục đích cao cả, lẽ sống của mỗi chúng ta.", isCorrect: true },
+            { text: "Vì các mục tiêu vật chất luôn làm suy yếu cảm giác kết nối sâu sắc (Deep Connectedness) giữa cá nhân với tổ chức.", isCorrect: false },
+            { text: "Vì việc theo đuổi danh vọng bên ngoài sẽ trực tiếp phá vỡ la bàn giá trị cốt lõi (Core Values Compass) của mỗi người.", isCorrect: false }
         ],
-        explanation: "Tìm kiếm Người đồng hành (Buddy) hoặc Người dẫn dắt (Mentor) để cùng chia sẻ, giúp đỡ hoặc được dẫn dắt."
+        explanation: "Thành công vật chất vẫn có thể đóng góp vào hạnh phúc, đặc biệt khi giúp đáp ứng nhu cầu thiết yếu và tạo sự an toàn. Tuy nhiên, niềm vui từ thành tựu thường không duy trì nguyên vẹn mãi mãi; những yếu tố như ý nghĩa và lẽ sống rất quan trọng."
     }
 ];
 
@@ -160,10 +160,7 @@ function renderQuestion() {
                 </div>
             `).join('')}
         </div>
-        <div class="quiz-feedback" id="quizFeedback">
-            <h4>Đáp án đúng:</h4>
-            <p>${data.explanation}</p>
-        </div>
+        <div class="quiz-feedback" id="quizFeedback" style="display:none"></div>
         <button class="btn-quiz-next" id="quizNextBtn" onclick="nextQuestion()">Tiếp theo</button>
     `;
     answered = false;
@@ -182,18 +179,25 @@ function handleAnswer(index, isCorrect) {
         result: isCorrect ? 'Đúng' : 'Sai'
     });
 
-    // Find and highlight correct option if user was wrong
-    if (!isCorrect) {
-        options.forEach((opt, idx) => {
-            if (quizData[currentStep].shuffledOptions[idx].isCorrect) {
-                opt.classList.add('correct');
-            }
-        });
-    } else {
+    const feedbackEl = document.getElementById('quizFeedback');
+
+    if (isCorrect) {
         score++;
+        feedbackEl.className = 'quiz-feedback feedback-correct';
+        feedbackEl.innerHTML = `
+            <h4>Chính xác! ✓</h4>
+            <p>${quizData[currentStep].explanation}</p>
+        `;
+    } else {
+        // Khi người đánh giá chọn sai: chỉ báo sai, KHÔNG highlight đáp án đúng và KHÔNG tiết lộ đáp án đúng
+        feedbackEl.className = 'quiz-feedback feedback-wrong';
+        feedbackEl.innerHTML = `
+            <h4>Chưa chính xác! ✗</h4>
+            <p>Lựa chọn này chưa đúng. Hãy tiếp tục câu hỏi tiếp theo.</p>
+        `;
     }
 
-    document.getElementById('quizFeedback').style.display = 'block';
+    feedbackEl.style.display = 'block';
     document.getElementById('quizNextBtn').style.display = 'block';
 }
 

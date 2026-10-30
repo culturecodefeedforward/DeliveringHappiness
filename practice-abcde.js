@@ -56,7 +56,13 @@
   async function loadAuthorizedRoster() {
     if (authorizedRoster && authorizedRoster.length > 0) return authorizedRoster;
     try {
-      const paths = ["/lms/authorized_roster.json", "lms/authorized_roster.json", "./lms/authorized_roster.json"];
+      const paths = [
+        "/lms/master_learners_roster.json",
+        "lms/master_learners_roster.json",
+        "/lms/authorized_roster.json",
+        "lms/authorized_roster.json",
+        "./lms/authorized_roster.json"
+      ];
       for (const p of paths) {
         try {
           const resp = await fetch(p + "?v=" + Date.now());
@@ -70,7 +76,7 @@
         } catch (err) {}
       }
     } catch (e) {
-      console.warn("Không thể tải authorized_roster.json:", e);
+      console.warn("Không thể tải roster:", e);
     }
     return [];
   }
@@ -94,50 +100,61 @@
     const normPhone = normalizePhone(rawInput);
     const list = roster || authorizedRoster || [];
 
+    const candidates = [];
     for (const item of list) {
       const itemEmail = item.email ? normalizeIdentity(item.email) : "";
       const itemPhone = item.phone || item.phone_full || item.phone_raw || "";
       const normItemPhone = normalizePhone(itemPhone);
+      const itemAliases = Array.isArray(item.aliases) ? item.aliases.map(normalizeIdentity) : [];
 
-      const emailMatch = Boolean(itemEmail && itemEmail === normInput);
+      const emailMatch = Boolean((itemEmail && itemEmail === normInput) || itemAliases.includes(normInput));
       const phoneMatch = Boolean(normPhone && normPhone.length >= 9 && normItemPhone && normItemPhone === normPhone);
 
       if (emailMatch || phoneMatch) {
-        return {
-          lead_id: item.learner_id || "",
-          full_name: item.name || item.full_name || item.email,
-          email: item.email ? item.email.toLowerCase().trim() : (normInput.includes("@") ? normInput : ""),
-          phone: item.phone || item.phone_full || normPhone || "",
-          cohort: item.cohort || "Học viên",
-          role: item.role || "Learner",
-          status: "verified"
-        };
+        candidates.push(item);
       }
     }
 
-    try {
-      const rawOverrides = localStorage.getItem("dhm_roster_overrides");
-      if (rawOverrides) {
-        const overrides = JSON.parse(rawOverrides);
-        for (const ov of Object.values(overrides)) {
-          const ovEmail = ov.email ? normalizeIdentity(ov.email) : "";
-          const ovPhone = normalizePhone(ov.phone || "");
-          if ((ovEmail && ovEmail === normInput) || (normPhone && normPhone.length >= 9 && ovPhone === normPhone)) {
-            return {
-              lead_id: ov.learner_id || "",
-              full_name: ov.name || ov.full_name || ov.email,
-              email: ov.email ? ov.email.toLowerCase().trim() : "",
-              phone: ov.phone || "",
-              cohort: ov.cohort || "Học viên",
-              role: ov.role || "Learner",
-              status: "verified"
-            };
+    if (candidates.length === 0) {
+      try {
+        const rawOverrides = localStorage.getItem("dhm_roster_overrides");
+        if (rawOverrides) {
+          const overrides = JSON.parse(rawOverrides);
+          for (const ov of Object.values(overrides)) {
+            const ovEmail = ov.email ? normalizeIdentity(ov.email) : "";
+            const ovPhone = normalizePhone(ov.phone || "");
+            if ((ovEmail && ovEmail === normInput) || (normPhone && normPhone.length >= 9 && ovPhone === normPhone)) {
+              return {
+                lead_id: ov.learner_id || "",
+                full_name: ov.name || ov.full_name || ov.email,
+                email: ov.email ? ov.email.toLowerCase().trim() : "",
+                phone: ov.phone || "",
+                cohort: ov.cohort || "Học viên",
+                role: ov.role || "Learner",
+                status: "verified"
+              };
+            }
           }
         }
-      }
-    } catch (e) {}
+      } catch (e) {}
+      return null;
+    }
 
-    return null;
+    const best = candidates.find(c => c.is_paid === true || String(c.payment_status || "").toUpperCase() === "PAID")
+              || candidates.find(c => String(c.cohort || "").toUpperCase().includes("DHM"))
+              || candidates.find(c => String(c.cohort || "").toUpperCase().includes("APOLLO"))
+              || candidates[0];
+
+    return {
+      lead_id: best.learner_id || "",
+      full_name: best.name || best.full_name || best.email,
+      email: best.email ? best.email.toLowerCase().trim() : (normInput.includes("@") ? normInput : ""),
+      phone: best.phone || best.phone_full || normPhone || "",
+      cohort: best.cohort || "Học viên",
+      role: best.role || "Learner",
+      is_paid: Boolean(best.is_paid === true || String(best.payment_status || "").toUpperCase() === "PAID"),
+      status: "verified"
+    };
   }
 
   function getStoredUserAuth() {

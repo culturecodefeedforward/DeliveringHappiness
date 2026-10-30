@@ -893,7 +893,7 @@
   {
     "name": "Lê Thị Hiên",
     "email": "hienle292@gmail.com",
-    "phone": "0931494124",
+    "phone": "0931494127",
     "cohort": "DHM10",
     "role": "Learner",
     "is_paid": true,
@@ -1013,7 +1013,7 @@
   {
     "name": "Ngô Thị Phương Thảo",
     "email": "ngothiphuong.thao@vn.nestle.com",
-    "phone": "0347015343",
+    "phone": "0347015043",
     "cohort": "DHM10",
     "role": "Learner",
     "is_paid": true,
@@ -1609,12 +1609,15 @@
   {
     "name": "Phan thị Thùy Dương",
     "email": "thuyduong@danfoss.com",
-    "phone": "0914309900",
+    "phone": "0914227373",
     "cohort": "DHM10",
     "role": "Learner",
     "is_paid": true,
     "payment_status": "PAID",
-    "isTrial": false
+    "isTrial": false,
+    "aliases": [
+      "thuyduonggl@gmail.com"
+    ]
   },
   {
     "name": "Hoàng Gia Lê Huỳnh Tuyến",
@@ -4411,7 +4414,7 @@
   {
     "name": "Trần Thị Mỹ Linh",
     "email": "linh.tranthimy@apollo.edu.vn",
-    "phone": "",
+    "phone": "0931831897",
     "cohort": "Team happiness Apollo OCT2026",
     "role": "Learner",
     "force_pwd_change": false,
@@ -4477,7 +4480,7 @@
   {
     "name": "Hoàng Đặng Anh Khang",
     "email": "khang.hoangdanganh@apollo.edu.vn",
-    "phone": "",
+    "phone": "0796939451",
     "cohort": "Team happiness Apollo OCT2026",
     "role": "Learner",
     "force_pwd_change": false,
@@ -4994,7 +4997,10 @@
     "role": "trial",
     "is_paid": false,
     "payment_status": "TRIAL",
-    "isTrial": true
+    "isTrial": true,
+    "aliases": [
+      "anh.phamtruong@apollo.edu.vn"
+    ]
   },
   {
     "name": "Nguyễn Phạm Đăng Khoa",
@@ -5845,5 +5851,38 @@
     "is_paid": false,
     "payment_status": "TRIAL",
     "isTrial": true
+  },
+  {
+    "name": "Trần Thị Thu Hà",
+    "email": "tranthithuha.shmt68@gmail.com",
+    "phone": "0862948749",
+    "cohort": "DHM10",
+    "role": "Learner",
+    "is_paid": false,
+    "payment_status": "PENDING",
+    "isTrial": true,
+    "aliases": []
+  },
+  {
+    "name": "Trần Mai Đăng Khôi",
+    "email": "dangkhoi.tm1802@gmail.com",
+    "phone": "0933542422",
+    "cohort": "DHM10",
+    "role": "Learner",
+    "is_paid": false,
+    "payment_status": "PENDING",
+    "isTrial": true,
+    "aliases": []
+  },
+  {
+    "name": "Thùy Dương",
+    "email": "thuyduonggl@gmail.com",
+    "phone": "0914227373",
+    "cohort": "DHM10",
+    "role": "Learner",
+    "is_paid": true,
+    "payment_status": "PAID",
+    "isTrial": false,
+    "primary_email": "thuyduong@danfoss.com"
   }
 ]
