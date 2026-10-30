@@ -34,3 +34,9 @@ lms/live_submissions.json
 lms/_backup*/
 lms/Implementation Plan/
 lms/UAT/
+
+# Test dumps, raw form HTML and node_modules
+**/node_modules/
+node_modules/
+UAT/error_page.html
+UAT/playwright_test/node_modules/
