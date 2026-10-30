@@ -1043,6 +1043,15 @@ const initDhmLmsApp = () => {
         const action = urlParams.get("action");
 
         if (token && (action === "verify" || action === "verify_token")) {
+            // Kiểm tra hiệu lực chỉ trong ngày hôm nay 30/10/2026 theo yêu cầu Sếp Dzũ
+            const expirationTime = new Date("2026-10-31T00:00:00+07:00").getTime();
+            if (Date.now() >= expirationTime) {
+                window.history.replaceState({}, document.title, window.location.pathname);
+                alert("⚠️ Liên kết trải nghiệm Chặng 1 đã hết hạn!\n\nLiên kết này chỉ có hiệu lực duy nhất trong ngày diễn ra Webinar (Thứ Sáu 30/10/2026). Sang ngày mới liên kết đã tự động vô hiệu lực.\n\nVui lòng liên hệ Ban Giảng Huấn nếu bạn cần hỗ trợ.");
+                if (typeof showAuthModal === "function") showAuthModal();
+                return false;
+            }
+
             const cleanEmail = (email || "").trim().toLowerCase();
             if (cleanEmail) {
                 saveApprovedTrialEmail(cleanEmail);
@@ -1077,6 +1086,15 @@ const initDhmLmsApp = () => {
 
                 const resp = await fetch(verifyEndpoint);
                 const data = await resp.json();
+
+                if (data && data.error === "TOKEN_EXPIRED") {
+                    localStorage.removeItem("dhm_lms_auth_user");
+                    currentUser = null;
+                    applyUserSession();
+                    alert("⚠️ Liên kết trải nghiệm Chặng 1 đã hết hạn!\n\nLiên kết này chỉ có hiệu lực duy nhất trong ngày diễn ra Webinar (Thứ Sáu 30/10/2026).\n\nVui lòng liên hệ Ban Giảng Huấn nếu bạn cần hỗ trợ.");
+                    if (typeof showAuthModal === "function") showAuthModal();
+                    return false;
+                }
 
                 if ((data && data.success && data.verified) || (data && data.error === "TOKEN_ALREADY_USED")) {
                     const user = (data && data.user) || {};
@@ -3286,13 +3304,18 @@ const initDhmLmsApp = () => {
                 };
             }
 
-            // 4. Ma trận phân tích biến động 4 chiều
+            // 4. Ma trận phân tích biến động 4 chiều (Tạm ẩn theo yêu cầu)
+            /*
             if (pvHistory.length >= 2 && matrixEl) {
                 matrixEl.classList.remove("hidden");
                 const prevIndex = index < pvHistory.length - 1 ? index + 1 : pvHistory.length - 1;
                 const prevData = pvHistory[prevIndex];
                 calculateAndRenderMatrix(pvData, prevData);
             } else if (matrixEl) {
+                matrixEl.classList.add("hidden");
+            }
+            */
+            if (matrixEl) {
                 matrixEl.classList.add("hidden");
             }
         }
