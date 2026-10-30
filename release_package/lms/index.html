@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Delivering Happiness Movement — Blended Micro-LMS</title>
-    <meta name="description" content="Cổng đồng hành học tập số Delivering Happiness theo chuẩn Blended Learning: Online Pre-class → Offline Workshop Live 5 Thói quen → Online Post-class 21 Ngày." />
+    <meta name="description" content="Cổng đồng hành học tập số Delivering Happiness theo chuẩn Blended Learning: Online Pre-class → Offline Workshop Live 5 Thói quen → Online Post-class Đồng hành Chuyển hóa." />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -3324,8 +3324,21 @@
     </div>
 
     <!-- ENGINE LOGIC -->
-    <script src="../chat-abcde.js"></script>
-    <script src="/lms/app.js"></script>
+    <script src="../chat-abcde.js" onerror="console.log('Standalone preview mode: external chat-abcde skipped');"></script>
+    <script>
+        (function() {
+            var s = document.createElement('script');
+            s.src = window.location.pathname.startsWith('/lms') ? '/lms/app.js' : 'app.js';
+            s.onerror = function() {
+                if (s.src.indexOf('/lms/app.js') !== -1) {
+                    var fb = document.createElement('script');
+                    fb.src = 'app.js';
+                    document.body.appendChild(fb);
+                }
+            };
+            document.body.appendChild(s);
+        })();
+    </script>
 </body>
 
 </html>
