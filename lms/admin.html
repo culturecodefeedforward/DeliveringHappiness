@@ -415,7 +415,7 @@
                 </button>
                 <!-- Tab 2 -->
                 <button id="tab-btn-iam-stations" class="tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent shrink-0 whitespace-nowrap" data-pane="pane-iam-stations">
-                    <span>🏆 Ma Trận 6 Trạm I•A•M</span>
+                    <span id="tab-btn-iam-label">🏆 Ma Trận 6 Trạm I•A•M</span>
                     <span id="badge-iam-learners-count" class="px-2 py-0.5 rounded-full bg-brand-surface text-slate-300 font-mono text-[11px]">0</span>
                 </button>
                 <!-- Tab 3 -->
@@ -454,8 +454,8 @@
             <div id="adaptation-banner-quiz" class="hidden p-4 rounded-2xl bg-brand-amber/10 border border-brand-amber/30 flex items-start gap-3 text-xs mb-4 shadow-sm">
                 <span class="text-xl shrink-0">ℹ️</span>
                 <div class="space-y-1 text-slate-200">
-                    <div class="font-bold text-brand-amber">Thông báo nghiệp vụ phạm vi học viên:</div>
-                    <div>Đội ngũ Quản lý Team Happiness tham gia Workshop trực tiếp và hoàn thành 6 Trạm I•A•M &amp; Khảo sát Chuyên sâu (không qua Cổng Sát Hạch Quiz LMS trực tuyến). Vui lòng chuyển sang Tab 2, 3, 4, 5, 6 để xem dữ liệu thu hoạch.</div>
+                    <div class="font-bold text-brand-amber">Thông báo phân tách cấu trúc khóa học (Khóa Team Happiness vs Lớp DHM):</div>
+                    <div><strong>Team Happiness</strong> là khóa học chung thuộc nhóm <strong>Chương trình Tri ân</strong> (trong đó <em>Apollo</em> là khách hàng đầu tiên mời đội ngũ CultureCode về dạy In-house). Học viên khóa Team Happiness tham gia Workshop trực tiếp và thu hoạch <strong>6 Trạm I•A•M, Social Styles &amp; TKI</strong> (không qua Cổng Sát Hạch Quiz Chặng 1 của Lớp DHM). Vui lòng chuyển sang Tab 2, 3, 4, 5, 6 để xem dữ liệu thu hoạch.</div>
                 </div>
             </div>
 
@@ -762,53 +762,62 @@
         </section>
 
         <!-- ========================================== -->
-        <!-- PANE 2: IAM STATIONS DASHBOARD (6 TRẠM)   -->
+        <!-- PANE 2: IAM STATIONS / DHM 5 HABITS        -->
         <!-- ========================================== -->
         <section id="pane-iam-stations" class="space-y-8 hidden">
+
+            <!-- COURSE CURRICULUM ONTOLOGY BANNER -->
+            <div id="adaptation-banner-iam" class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-start gap-3 text-xs shadow-sm">
+                <span id="adaptation-banner-iam-icon" class="text-xl shrink-0">🏢</span>
+                <div class="space-y-1 text-slate-200">
+                    <div id="adaptation-banner-iam-title" class="font-bold text-emerald-400">Cấu trúc Giáo trình Khóa Team Happiness (Chương trình Tri ân &amp; In-house):</div>
+                    <div id="adaptation-banner-iam-desc"><strong>Team Happiness</strong> là khóa học chung thuộc nhóm các <strong>chương trình tri ân</strong> của CultureCode (bên cạnh các khóa tri ân chuyên sâu riêng cho <em>Thói quen Phiêu - Flow</em>, <em>Thói quen Lạc quan - ABCDE</em> ứng với Chặng 2B). Trong đó, <strong>Apollo</strong> là khách hàng đầu tiên mời đội ngũ CultureCode về dạy In-house khóa Team Happiness với <strong>6 Trạm I•A•M</strong> &amp; thang điểm 20 (không đánh đồng Team Happiness chỉ là Apollo).</div>
+                </div>
+            </div>
 
             <!-- IAM KPI METRICS CARDS -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1.5 shadow-lg relative overflow-hidden">
-                    <div class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">HV Đã Tham Gia Workshop</div>
+                    <div id="iam-kpi-card1-title" class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">HV Đã Tham Gia Workshop</div>
                     <div class="flex items-baseline gap-2">
                         <span id="iam-kpi-total" class="text-2xl lg:text-3xl font-extrabold text-white">0</span>
                         <span id="iam-kpi-total-of" class="text-xs text-slate-500 font-mono">/ 0 HV</span>
                     </div>
-                    <div class="text-[11px] text-emerald-400 font-medium">Thu hoạch thực tế từ Workshop I•A•M</div>
+                    <div id="iam-kpi-card1-sub" class="text-[11px] text-emerald-400 font-medium">Thu hoạch thực tế từ Workshop I•A•M</div>
                 </div>
 
                 <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1.5 shadow-lg relative overflow-hidden">
-                    <div class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Hoàn Thành Đủ 6 Trạm</div>
+                    <div id="iam-kpi-card2-title" class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Hoàn Thành Đủ 6 Trạm</div>
                     <div class="flex items-baseline gap-2">
                         <span id="iam-kpi-full6" class="text-2xl lg:text-3xl font-extrabold text-emerald-400">0</span>
                         <span id="iam-kpi-full6-pct" class="text-xs text-slate-500 font-mono">(0%)</span>
                     </div>
-                    <div class="text-[11px] text-slate-500">Đã điền trọn vẹn 6 trạm chuyên đề</div>
+                    <div id="iam-kpi-card2-sub" class="text-[11px] text-slate-500">Đã điền trọn vẹn 6 trạm chuyên đề</div>
                 </div>
 
                 <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1.5 shadow-lg relative overflow-hidden">
-                    <div class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Điểm I•A•M Trung Bình</div>
+                    <div id="iam-kpi-card3-title" class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Điểm I•A•M Trung Bình</div>
                     <div class="flex items-baseline gap-2">
                         <span id="iam-kpi-avg-score" class="text-2xl lg:text-3xl font-extrabold text-brand-amber">0.0</span>
-                        <span class="text-xs text-slate-500 font-mono">/ 20 điểm</span>
+                        <span id="iam-kpi-card3-unit" class="text-xs text-slate-500 font-mono">/ 20 điểm</span>
                     </div>
-                    <div class="text-[11px] text-brand-amber/80">Điểm Hạnh Phúc + Lãnh Đạo</div>
+                    <div id="iam-kpi-card3-sub" class="text-[11px] text-brand-amber/80">Điểm Hạnh Phúc + Lãnh Đạo</div>
                 </div>
 
                 <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1.5 shadow-lg relative overflow-hidden">
-                    <div class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Trạm Cần Hỗ Trợ Nhiều Nhất</div>
+                    <div id="iam-kpi-card4-title" class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Trạm Cần Hỗ Trợ Nhiều Nhất</div>
                     <div id="iam-kpi-weakest" class="text-lg font-bold text-rose-400 truncate">—</div>
-                    <div class="text-[11px] text-slate-500">Trạm có ít lượt hoàn thành nhất</div>
+                    <div id="iam-kpi-card4-sub" class="text-[11px] text-slate-500">Trạm có ít lượt hoàn thành nhất</div>
                 </div>
             </div>
 
-            <!-- HEATMAP 6 TRẠM WORKSHOP -->
+            <!-- HEATMAP TRẠM / THÓI QUEN -->
             <div class="p-6 rounded-2xl bg-brand-surface border border-brand-border space-y-4 shadow-lg">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                        <span>📊 Tỷ Lệ Hoàn Thành Theo 6 Trạm Workshop Team Happiness</span>
+                        <span id="iam-heatmap-title">📊 Tỷ Lệ Hoàn Thành Theo 6 Trạm Workshop Team Happiness</span>
                     </h3>
-                    <div class="text-xs text-slate-400">Dữ liệu tổng hợp thời gian thực từ Google Sheets</div>
+                    <div id="iam-heatmap-sub" class="text-xs text-slate-400">Dữ liệu tổng hợp thời gian thực từ Google Sheets</div>
                 </div>
                 <div id="iam-station-heatmap" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
                     <!-- Populated via JavaScript -->
@@ -831,50 +840,50 @@
 
                 <!-- Station Filter Pills cho Chế Độ Thẻ (Cards) -->
                 <div id="iam-cards-station-pills" class="flex items-center gap-1.5 flex-wrap hidden">
-                    <button type="button" class="iam-tab-filter-pill active px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-amber text-black shadow-sm" data-station="ALL">Tất cả Trạm</button>
-                    <button type="button" class="iam-tab-filter-pill px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="1">Trạm 1</button>
-                    <button type="button" class="iam-tab-filter-pill px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="2">Trạm 2</button>
-                    <button type="button" class="iam-tab-filter-pill px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="3">Trạm 3</button>
-                    <button type="button" class="iam-tab-filter-pill px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="4">Trạm 4</button>
-                    <button type="button" class="iam-tab-filter-pill px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="5">Trạm 5</button>
-                    <button type="button" class="iam-tab-filter-pill px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="6">Trạm 6</button>
-                    <button type="button" class="iam-tab-filter-pill px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="ACTION">🎯 Cam Kết Stop • Start • Continue</button>
+                    <button type="button" class="iam-tab-filter-pill active px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-amber text-black shadow-sm" data-station="ALL">Tất cả</button>
+                    <button type="button" class="iam-tab-filter-pill px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="1" id="iam-pill-1">Trạm 1</button>
+                    <button type="button" class="iam-tab-filter-pill px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="2" id="iam-pill-2">Trạm 2</button>
+                    <button type="button" class="iam-tab-filter-pill px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="3" id="iam-pill-3">Trạm 3</button>
+                    <button type="button" class="iam-tab-filter-pill px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="4" id="iam-pill-4">Trạm 4</button>
+                    <button type="button" class="iam-tab-filter-pill px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="5" id="iam-pill-5">Trạm 5</button>
+                    <button type="button" class="iam-tab-filter-pill px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="6" id="iam-pill-6">Trạm 6</button>
+                    <button type="button" class="iam-tab-filter-pill px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-card hover:bg-brand-border text-slate-300 border border-brand-border transition-colors" data-station="ACTION" id="iam-pill-action">🎯 Cam Kết Stop • Start • Continue</button>
                 </div>
             </div>
 
-            <!-- CONTROLS & BỘ LỌC ĐA CHIỀU 6 TRẠM -->
+            <!-- CONTROLS & BỘ LỌC ĐA CHIỀU -->
             <div class="p-4 rounded-2xl bg-brand-surface border border-brand-border space-y-3 shadow-lg">
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
                     <div class="flex items-center gap-2.5 flex-wrap w-full sm:w-auto">
                         <!-- Lọc Khóa học / Cohort -->
                         <div class="relative">
                             <select id="iam-filter-cohort" class="bg-brand-card border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-brand-amber pr-8">
-                                <option value="Team happiness Apollo OCT2026">Team happiness Apollo OCT2026</option>
                                 <option value="all">Tất cả Khóa học</option>
+                                <option value="Team happiness Apollo OCT2026">Team happiness Apollo OCT2026</option>
                             </select>
                         </div>
 
                         <!-- Lọc Center -->
-                        <div class="relative">
+                        <div class="relative" id="iam-filter-center-wrap">
                             <select id="iam-filter-center" class="bg-brand-card border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-brand-amber pr-8">
                                 <option value="all">Tất cả cơ sở / chi nhánh</option>
                             </select>
                         </div>
 
                         <!-- Lọc Phòng Ban -->
-                        <div class="relative">
+                        <div class="relative" id="iam-filter-dept-wrap">
                             <select id="iam-filter-department" class="bg-brand-card border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-brand-amber pr-8">
                                 <option value="all">Tất cả Phòng ban</option>
                             </select>
                         </div>
 
-                        <!-- Lọc Tiến Độ Trạm -->
+                        <!-- Lọc Tiến Độ Trạm / Thói Quen -->
                         <div class="relative">
                             <select id="iam-filter-stations-count" class="bg-brand-card border border-brand-border rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-brand-amber pr-8">
-                                <option value="all">Tất cả số trạm</option>
-                                <option value="6">Đủ 6/6 Trạm</option>
-                                <option value="1_5">1 - 5 Trạm</option>
-                                <option value="0">Chưa làm trạm nào</option>
+                                <option value="all">Tất cả tiến độ</option>
+                                <option value="6">Đủ trọn vẹn (100%)</option>
+                                <option value="1_5">Đang thực hiện (Một phần)</option>
+                                <option value="0">Chưa bắt đầu (0%)</option>
                             </select>
                         </div>
                     </div>
@@ -884,19 +893,19 @@
                             <input type="text" id="iam-search-input" placeholder="Tìm theo tên, email, SĐT..." class="w-full bg-brand-card border border-brand-border rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-amber" />
                         </div>
                         <button id="btn-export-iam-csv" class="px-3.5 py-2 rounded-xl bg-brand-card hover:bg-brand-border text-slate-300 hover:text-white text-xs font-semibold border border-brand-border transition-all flex items-center gap-1.5 shadow-sm whitespace-nowrap">
-                            <span>📥 Xuất CSV 6 Trạm</span>
+                            <span id="btn-export-iam-csv-label">📥 Xuất CSV 6 Trạm</span>
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- KHU VỰC 1: BẢNG DANH SÁCH THU HOẠCH 6 TRẠM -->
+            <!-- KHU VỰC 1: BẢNG DANH SÁCH THU HOẠCH -->
             <div id="iam-table-container">
                 <div class="rounded-2xl bg-brand-surface border border-brand-border overflow-hidden shadow-lg">
                     <div class="overflow-x-auto">
                         <table class="w-full min-w-[950px] text-left border-collapse text-xs">
                             <thead>
-                                <tr class="border-b border-brand-border bg-brand-card/60 text-slate-400 font-semibold uppercase text-[10px] tracking-wider">
+                                <tr id="iam-table-thead-row" class="border-b border-brand-border bg-brand-card/60 text-slate-400 font-semibold uppercase text-[10px] tracking-wider">
                                     <th class="p-4">Họ và tên / Tài khoản</th>
                                     <th class="p-4">Cơ Sở / Chi Nhánh</th>
                                     <th class="p-4">Phòng Ban</th>
@@ -974,7 +983,7 @@
                         <span id="blended-kpi-all4" class="text-2xl lg:text-3xl font-extrabold text-emerald-400">0</span>
                         <span id="blended-kpi-all4-pct" class="text-xs text-slate-500 font-mono">(0%)</span>
                     </div>
-                    <div class="text-[11px] text-emerald-400 font-medium">Quiz + Values + ABCDE + 6 Trạm</div>
+                    <div id="blended-kpi-all4-sub" class="text-[11px] text-emerald-400 font-medium">Quiz + Me Values + ABCDE + I•A•M</div>
                 </div>
 
                 <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1.5 shadow-lg relative overflow-hidden">
@@ -987,7 +996,7 @@
                 </div>
 
                 <div class="p-5 rounded-2xl bg-brand-surface border border-brand-border space-y-1.5 shadow-lg relative overflow-hidden">
-                    <div class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Hoàn Thành 6 Trạm Workshop</div>
+                    <div id="blended-kpi-iam-title" class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Hoàn Thành Thu Hoạch I•A•M</div>
                     <div class="flex items-baseline gap-2">
                         <span id="blended-kpi-iam-rate" class="text-2xl lg:text-3xl font-extrabold text-blue-400">0%</span>
                         <span id="blended-kpi-iam-count" class="text-xs text-slate-500 font-mono">(0 HV)</span>
@@ -1049,7 +1058,7 @@
                                 <th class="p-4 text-center">Trụ Cột 1: Quiz (&gt;80%)</th>
                                 <th class="p-4 text-center">Trụ Cột 2: Me Values</th>
                                 <th class="p-4 text-center">Trụ Cột 3: ABCDE</th>
-                                <th class="p-4 text-center">Trụ Cột 4: 6 Trạm I•A•M</th>
+                                <th id="blended-th-pillar4" class="p-4 text-center">Trụ Cột 4: Đúc Kết I•A•M</th>
                                 <th class="p-4 text-center">Tiến Độ 360°</th>
                                 <th class="p-4 text-right">Chi Tiết</th>
                             </tr>
@@ -1190,8 +1199,8 @@
             <div id="adaptation-banner-social" class="hidden p-4 rounded-2xl bg-brand-amber/10 border border-brand-amber/30 flex items-start gap-3 text-xs mb-4 shadow-sm">
                 <span class="text-xl shrink-0">ℹ️</span>
                 <div class="space-y-1 text-slate-200">
-                    <div class="font-bold text-brand-amber">Thông báo nghiệp vụ phạm vi học viên:</div>
-                    <div>Học viên lớp DHM Đại Chúng tham gia lộ trình Micro-LMS trực tuyến (không thực hiện bài đo Social Styles &amp; TKI Offline). Vui lòng chuyển sang Scope '🏢 Chỉ xem Team Happiness' hoặc '🌐 Tất Cả' để xem bản đồ tọa độ đội ngũ.</div>
+                    <div class="font-bold text-brand-amber">Thông báo phân tách cấu trúc khóa học (Lớp DHM vs Khóa Team Happiness):</div>
+                    <div>Học viên <strong>Lớp DHM</strong> tham gia lộ trình 3 Chặng Blended Learning &amp; 5 Thói quen hạnh phúc (xem tại Tab 1, Tab 2 và Tab 7). Học phần đo lường <strong>Social Styles (4 Phong cách Xã hội)</strong> thuộc chương trình <strong>Team Happiness</strong> (khóa chung thuộc nhóm Chương trình Tri ân; trong đó <em>Apollo</em> là khách hàng đầu tiên mời CultureCode dạy In-house). Vui lòng chuyển sang phân khúc <strong>'🏢 Team Happiness'</strong> hoặc <strong>'🌐 Tất Cả'</strong> để xem bản đồ tọa độ đội ngũ.</div>
                 </div>
             </div>
 
@@ -1359,8 +1368,8 @@
             <div id="adaptation-banner-tki" class="hidden p-4 rounded-2xl bg-brand-amber/10 border border-brand-amber/30 flex items-start gap-3 text-xs mb-4 shadow-sm">
                 <span class="text-xl shrink-0">ℹ️</span>
                 <div class="space-y-1 text-slate-200">
-                    <div class="font-bold text-brand-amber">Thông báo nghiệp vụ phạm vi học viên:</div>
-                    <div>Học viên lớp DHM Đại Chúng tham gia lộ trình Micro-LMS trực tuyến (không thực hiện bài đo Social Styles &amp; TKI Offline). Vui lòng chuyển sang Scope '🏢 Chỉ xem Team Happiness' hoặc '🌐 Tất Cả' để xem bản đồ tọa độ đội ngũ.</div>
+                    <div class="font-bold text-brand-amber">Thông báo phân tách cấu trúc khóa học (Lớp DHM vs Khóa Team Happiness):</div>
+                    <div>Học viên <strong>Lớp DHM</strong> tham gia lộ trình 3 Chặng Blended Learning &amp; 5 Thói quen hạnh phúc (xem tại Tab 1, Tab 2 và Tab 7). Học phần đo lường <strong>5 Phong cách Xử lý Xung đột TKI</strong> thuộc chương trình <strong>Team Happiness</strong> (khóa chung thuộc nhóm Chương trình Tri ân; trong đó <em>Apollo</em> là khách hàng đầu tiên mời CultureCode dạy In-house). Vui lòng chuyển sang phân khúc <strong>'🏢 Team Happiness'</strong> hoặc <strong>'🌐 Tất Cả'</strong> để xem bản đồ TKI.</div>
                 </div>
             </div>
 
@@ -1549,8 +1558,8 @@
             <div id="adaptation-banner-18boxes" class="hidden p-4 rounded-2xl bg-brand-amber/10 border border-brand-amber/30 flex items-start gap-3 text-xs mb-4 shadow-sm">
                 <span class="text-xl shrink-0">ℹ️</span>
                 <div class="space-y-1 text-slate-200">
-                    <div class="font-bold text-brand-amber">Thông báo nghiệp vụ phạm vi học viên:</div>
-                    <div>Học viên lớp DHM Đại Chúng tham gia lộ trình Micro-LMS trực tuyến (không thực hiện bài nộp 18 Ô Offline). Vui lòng chuyển sang Scope '🏢 Chỉ xem Team Happiness' hoặc '🌐 Tất Cả' để xem bảng thu hoạch.</div>
+                    <div class="font-bold text-brand-amber">Thông báo phân tách cấu trúc khóa học (Lớp DHM vs Khóa Team Happiness):</div>
+                    <div>Học viên <strong>Lớp DHM</strong> thực hành 5 Thói quen hạnh phúc &amp; đúc kết I•A•M theo 3 Chặng (xem tại Tab 2 &amp; Tab 7). <strong>Bảng 18 Cột (6 Trạm × 3 mục I•A•M)</strong> là cấu trúc thu hoạch của khóa <strong>Team Happiness</strong> (khóa chung thuộc nhóm Chương trình Tri ân; với <em>Apollo</em> là khách hàng đầu tiên mời CultureCode dạy In-house). Vui lòng chuyển sang phân khúc <strong>'🏢 Team Happiness'</strong> hoặc <strong>'🌐 Tất Cả'</strong> để xem bảng 18 cột.</div>
                 </div>
             </div>
 
@@ -1654,8 +1663,8 @@
             <div id="adaptation-banner-cta" class="hidden p-4 rounded-2xl bg-brand-amber/10 border border-brand-amber/30 flex items-start gap-3 text-xs mb-4 shadow-sm">
                 <span class="text-xl shrink-0">ℹ️</span>
                 <div class="space-y-1 text-slate-200">
-                    <div class="font-bold text-brand-amber">Thông báo nghiệp vụ phạm vi học viên:</div>
-                    <div>Học viên lớp DHM Đại Chúng tham gia lộ trình Micro-LMS trực tuyến (không thực hiện cam kết Trạm 6 Offline). Vui lòng chuyển sang Scope '🏢 Chỉ xem Team Happiness' hoặc '🌐 Tất Cả' để xem bản tuyên ngôn hành động.</div>
+                    <div class="font-bold text-brand-amber">Thông báo phân tách cấu trúc khóa học (Lớp DHM vs Khóa Team Happiness):</div>
+                    <div>Học viên <strong>Lớp DHM</strong> thực hành 5 Thói quen hạnh phúc &amp; Sổ tay ABCDE (xem tại Tab 2 &amp; Tab 7). <strong>Bản Tuyên Ngôn Hành Động Tập Thể (Stop • Start • Continue — Trạm 6)</strong> là học phần của khóa <strong>Team Happiness</strong> (khóa chung thuộc nhóm Chương trình Tri ân; với <em>Apollo</em> là khách hàng đầu tiên mời CultureCode dạy In-house). Vui lòng chuyển sang phân khúc <strong>'🏢 Team Happiness'</strong> hoặc <strong>'🌐 Tất Cả'</strong> để xem bản tuyên ngôn.</div>
                 </div>
             </div>
 
@@ -2534,18 +2543,22 @@
                 const currentTestVal = testFilterCohort ? testFilterCohort.value : "all";
                 const currentGenVal = generalFilterCohort ? generalFilterCohort.value : "all";
                 const currentBlendedCohortVal = blendedFilterCohort ? blendedFilterCohort.value : "all";
-                const currentIamCohortVal = iamFilterCohort ? iamFilterCohort.value : "Team happiness Apollo OCT2026";
+                const currentIamCohortVal = iamFilterCohort ? iamFilterCohort.value : "all";
                 const currentIamCenterVal = iamFilterCenter ? iamFilterCenter.value : "all";
                 const currentIamDeptVal = iamFilterDepartment ? iamFilterDepartment.value : "all";
                 const currentBlendedCenterVal = blendedFilterCenter ? blendedFilterCenter.value : "all";
 
+                const scopedPoolForDropdown = (typeof computeScopedLearnersPool === "function" && typeof currentGlobalScope !== "undefined")
+                    ? computeScopedLearnersPool(allLearners, currentGlobalScope, "all")
+                    : allLearners;
+
                 const cohortCounts = {};
-                allLearners.forEach(l => {
+                scopedPoolForDropdown.forEach(l => {
                     const c = l.cohort || "Khác";
                     cohortCounts[c] = (cohortCounts[c] || 0) + 1;
                 });
 
-                const priority = ["Team happiness Apollo OCT2026", "DHM8", "DHM9", "BTC / Coach"];
+                const priority = ["DHM10", "DHM9", "DHM8", "DHM7", "DHM6", "DHM5", "DHM4", "DHM3", "Team happiness Apollo OCT2026", "BTC / Coach"];
                 const allCohorts = Object.keys(cohortCounts).sort((a, b) => {
                     const idxA = priority.indexOf(a);
                     const idxB = priority.indexOf(b);
@@ -2555,7 +2568,13 @@
                     return a.localeCompare(b);
                 });
 
-                const optionsHtml = `<option value="all">Tất cả Khóa học (${allLearners.length} HV)</option>` +
+                const scopeAllLabel = (typeof currentGlobalScope !== "undefined" && currentGlobalScope === "DHM")
+                    ? `Tất cả lớp DHM (${scopedPoolForDropdown.length} HV)`
+                    : (typeof currentGlobalScope !== "undefined" && currentGlobalScope === "TEAM_HAPPINESS")
+                        ? `Tất cả khóa Team Happiness (${scopedPoolForDropdown.length} HV)`
+                        : `Tất cả Khóa học (${scopedPoolForDropdown.length} HV)`;
+
+                const optionsHtml = `<option value="all">${scopeAllLabel}</option>` +
                     allCohorts.map(c => `<option value="${escapeHTML(c)}">${escapeHTML(c)} (${cohortCounts[c]} HV)</option>`).join("");
 
                 if (testFilterCohort) {
@@ -2575,7 +2594,7 @@
 
                 if (iamFilterCohort) {
                     iamFilterCohort.innerHTML = optionsHtml;
-                    iamFilterCohort.value = (allCohorts.includes(currentIamCohortVal) || currentIamCohortVal === "all") ? currentIamCohortVal : (allCohorts.includes("Team happiness Apollo OCT2026") ? "Team happiness Apollo OCT2026" : "all");
+                    iamFilterCohort.value = (allCohorts.includes(currentIamCohortVal) || currentIamCohortVal === "all") ? currentIamCohortVal : "all";
                 }
 
                 // Dynamic Center Dropdowns (Kết hợp 22 Center chuẩn + Center thực tế trong dữ liệu)
@@ -2935,14 +2954,19 @@
                         learner.data.stageData["stage-2"].iam = { I: cp2I || "", A: cp2A || "", M: cp2M || "" };
                     }
 
-                    // Merge ABCDE hoặc Thói quen Chặng 2/3
+                    // Merge ABCDE & 5 Thói Quen Hạnh Phúc (Chặng 2A & 2B) của Lớp DHM
                     const rawSets = cp["Dữ Liệu Gốc Đầy Đủ (Raw JSON Sets)"] || cp["Chặng 2 - 5 Thói Quen (JSON)"];
-                    if (rawSets && typeof rawSets === "string" && rawSets.includes("optimism")) {
+                    if (rawSets && typeof rawSets === "string") {
                         try {
                             const parsedHabits = JSON.parse(rawSets);
+                            if (!learner.data) learner.data = { stageData: {} };
+                            if (!learner.data.stageData) learner.data.stageData = {};
+                            learner.data.stageData["stage-2"] = learner.data.stageData["stage-2"] || {};
+                            learner.data.stageData["stage-2"].habits = Object.assign(
+                                learner.data.stageData["stage-2"].habits || {},
+                                parsedHabits
+                            );
                             if (parsedHabits.optimism?.abcde?.D) {
-                                if (!learner.data) learner.data = { stageData: {} };
-                                if (!learner.data.stageData) learner.data.stageData = {};
                                 learner.data.stageData["stage-3"] = { abcde: parsedHabits.optimism.abcde };
                                 learner.stage3AbcdeFilled = true;
                                 learner.completedStagesCount = Math.max(learner.completedStagesCount || 0, 3);
@@ -3886,12 +3910,88 @@
                 }
             }
 
+            // Helper: Tính toán tiến độ 5 Thói quen hạnh phúc (Chặng 2A & 2B) của Học viên Lớp DHM
+            function getDhmHabitsStatus(learner) {
+                const sd = learner?.data?.stageData || {};
+                const h2 = sd["stage-2"]?.habits || {};
+                const h2a = sd["stage-2a"]?.habits || {};
+                const h2b = sd["stage-2b"]?.habits || {};
+                const s1 = sd["stage-1"] || {};
+                const s2 = sd["stage-2"] || {};
+                const s3 = sd["stage-3"] || {};
+
+                const mindObj = h2.mindfulness || h2a.mindfulness || {};
+                const gratObj = h2.gratitude || h2a.gratitude || {};
+                const altObj = h2.altruism || h2a.altruism || {};
+                const flowObj = h2.flow || h2b.flow || {};
+                const optObj = h2.optimism || h2b.optimism || {};
+
+                const s1Done = Boolean(learner.stage1Passed || learner.eventualPassed80 || s1.passed);
+                const meValuesDone = Boolean((learner.stage2ValuesCount || 0) > 0 || (s2.selectedValues && s2.selectedValues.length > 0));
+                const s1IamDone = Boolean(s1.iam?.I || s1.iam?.A || s1.iam?.M || s1.reflection);
+                const s2IamDone = Boolean(s2.iam?.I || s2.iam?.A || s2.iam?.M || s2.reflection);
+
+                // 5 Thói quen hạnh phúc chuẩn DHM:
+                // 1. Tỉnh thức (SBA) - Chặng 2A
+                const h1Done = Boolean(
+                    mindObj.iam?.I || mindObj.iam?.A || mindObj.iam?.M ||
+                    mindObj.situation || mindObj.sbaChecks?.s ||
+                    s1IamDone || s2IamDone
+                );
+                // 2. Biết ơn (Gratitude) - Chặng 2A
+                const h2Done = Boolean(
+                    gratObj.iam?.I || gratObj.iam?.A || gratObj.iam?.M ||
+                    (Array.isArray(gratObj.items) && gratObj.items.some(Boolean)) ||
+                    gratObj.card?.msg || meValuesDone
+                );
+                // 3. Vị nhân (Altruism & Smart Giver) - Chặng 2A
+                const h3Done = Boolean(
+                    altObj.iam?.I || altObj.iam?.A || altObj.iam?.M ||
+                    altObj.act || altObj.style ||
+                    (learner.completedStagesCount || 0) >= 2
+                );
+                // 4. Phiêu (Flow & Microflow) - Chặng 2B (Khóa chuyên sâu)
+                const h4Done = Boolean(
+                    flowObj.iam?.I || flowObj.iam?.A || flowObj.iam?.M ||
+                    flowObj.boringTask || flowObj.redesign ||
+                    (learner.completedStagesCount || 0) >= 3
+                );
+                // 5. Lạc quan (Optimism & ABCDE) - Chặng 2B (Khóa chuyên sâu)
+                const h5Done = Boolean(
+                    optObj.iam?.I || optObj.iam?.A || optObj.iam?.M ||
+                    optObj.abcde?.D || s3.abcde?.D || learner.stage3AbcdeFilled
+                );
+
+                const habitsArr = [h1Done, h2Done, h3Done, h4Done, h5Done];
+                const completedHabitsCount = habitsArr.filter(Boolean).length;
+                const anyActivity = Boolean(s1Done || meValuesDone || completedHabitsCount > 0 || (learner.totalAttempts || 0) > 0);
+                const stagesCount = Math.max(
+                    learner.completedStagesCount || 0,
+                    (s1Done ? 1 : 0) + ((meValuesDone || h1Done || h2Done || h3Done) ? 1 : 0) + ((h4Done || h5Done) ? 1 : 0)
+                );
+
+                return {
+                    s1Done,
+                    meValuesDone,
+                    h1Done,
+                    h2Done,
+                    h3Done,
+                    h4Done,
+                    h5Done,
+                    habitsArr,
+                    completedHabitsCount,
+                    anyActivity,
+                    stagesCount
+                };
+            }
+
             function renderIamTabCardsGrid() {
                 const grid = document.getElementById("iam-tab-cards-grid");
                 if (!grid) return;
                 grid.innerHTML = "";
 
-                const cohort = iamFilterCohort ? iamFilterCohort.value : "Team happiness Apollo OCT2026";
+                const isDhmScope = (typeof currentGlobalScope !== "undefined" && currentGlobalScope === "DHM");
+                const cohort = iamFilterCohort ? iamFilterCohort.value : "all";
                 const center = iamFilterCenter ? iamFilterCenter.value : "all";
                 const dept = iamFilterDepartment ? iamFilterDepartment.value : "all";
                 const query = (iamSearchInput ? iamSearchInput.value : "").toLowerCase().trim();
@@ -3900,13 +4000,7 @@
                     ? computeScopedLearnersPool(allLearners, currentGlobalScope, currentSubCohort)
                     : allLearners;
 
-                const candidates = scopedGeneral.filter(l => {
-                    const hasStations = l.iamStations && Object.keys(l.iamStations).length > 0;
-                    const isSelectedCohort = (cohort === "all") || (l.cohort === cohort) || (cohort === "Team happiness Apollo OCT2026" && (l.cohort === "Team happiness Apollo OCT2026" || (l.email && l.email.toLowerCase().includes("apollo.edu.vn"))));
-                    return hasStations || isSelectedCohort;
-                });
-
-                const filtered = candidates.filter(l => {
+                const filtered = scopedGeneral.filter(l => {
                     if (cohort !== "all") {
                         if (cohort === "Team happiness Apollo OCT2026") {
                             if (l.cohort !== "Team happiness Apollo OCT2026" && (!l.email || !l.email.toLowerCase().includes("apollo.edu.vn"))) return false;
@@ -3914,9 +4008,10 @@
                             return false;
                         }
                     }
-                    if (center !== "all" && l.center !== center) return false;
-                    if (dept !== "all" && l.department !== dept) return false;
-
+                    if (!isDhmScope) {
+                        if (center !== "all" && l.center !== center) return false;
+                        if (dept !== "all" && l.department !== dept) return false;
+                    }
                     if (query) {
                         const matchQ = (l.name || "").toLowerCase().includes(query) ||
                                        (l.identity || "").toLowerCase().includes(query) ||
@@ -3924,17 +4019,45 @@
                                        (l.phone || "").includes(query);
                         if (!matchQ) return false;
                     }
-                    return true;
+                    if (isDhmScope) {
+                        return getDhmHabitsStatus(l).anyActivity;
+                    }
+                    return l.iamStations && Object.keys(l.iamStations).length > 0;
                 });
 
                 if (filtered.length === 0) {
-                    grid.innerHTML = `<div class="col-span-full text-center p-8 text-slate-500">Không tìm thấy bài tập thu hoạch nào phù hợp.</div>`;
+                    grid.innerHTML = `<div class="col-span-full text-center p-8 text-slate-500">Chưa có bài thu hoạch nào trong bộ lọc này.</div>`;
                     return;
                 }
 
                 filtered.forEach(l => {
                     const card = document.createElement("div");
                     card.className = "p-4 rounded-xl bg-brand-surface border border-brand-border hover:border-brand-amber/50 transition-all cursor-pointer shadow-md space-y-2.5";
+
+                    if (isDhmScope) {
+                        const hs = getDhmHabitsStatus(l);
+                        card.onclick = () => openDetailModal(l.identity || l.email);
+                        const vals = l.data?.stageData?.["stage-2"]?.selectedValues || [];
+                        const abcdeD = l.data?.stageData?.["stage-3"]?.abcde?.D || "";
+                        card.innerHTML = `
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <div class="font-bold text-white text-xs">${escapeHTML(l.name || "Học viên")}</div>
+                                    <div class="text-[10px] text-slate-400">Khóa ${escapeHTML(l.cohort || "DHM")} • <span class="text-emerald-400 font-bold">${hs.completedHabitsCount}/5 Thói quen</span></div>
+                                </div>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-brand-amber/15 text-brand-amber border border-brand-amber/30">
+                                    ${hs.stagesCount}/3 Chặng
+                                </span>
+                            </div>
+                            <div class="text-[11px] text-slate-300 space-y-1">
+                                <div>🧭 <strong>Me Values:</strong> ${vals.length > 0 ? escapeHTML(vals.slice(0, 3).join(", ")) : "Chưa chọn"}</div>
+                                <div>☀️ <strong>Phản biện D (ABCDE):</strong> ${escapeHTML(abcdeD || "Chưa nộp")}</div>
+                            </div>
+                        `;
+                        grid.appendChild(card);
+                        return;
+                    }
+
                     card.onclick = () => openIamDetailModal(l.identity || l.email);
 
                     let contentHtml = "";
@@ -3944,7 +4067,7 @@
                     if (iamActiveCardsStationFilter === "ALL") {
                         contentHtml = `
                             <div class="text-[11px] text-slate-300 space-y-1">
-                                <div class="text-blue-400 font-bold">Trạm 1</div>
+                                <div class="text-blue-400 font-bold">Trạm 1: DHM</div>
                                 <div>💡 ${escapeHTML(st1?.interested || "Chưa có bài")}</div>
                                 ${(actionCommit.stop || actionCommit.start) ? `
                                 <div class="pt-1.5 border-t border-brand-border/60">
@@ -4009,9 +4132,11 @@
             }
 
             // ==========================================
-            // RENDER IAM STATIONS DASHBOARD (TAB 2)
+            // RENDER IAM STATIONS / DHM 5 HABITS (TAB 2)
             // ==========================================
             function renderIamDashboard() {
+                const isDhmScope = (typeof currentGlobalScope !== "undefined" && currentGlobalScope === "DHM");
+
                 const scopedGeneral = typeof computeScopedLearnersPool === "function"
                     ? computeScopedLearnersPool(allLearners, currentGlobalScope, currentSubCohort)
                     : allLearners;
@@ -4025,8 +4150,185 @@
                     return l.cohort === cohort;
                 });
 
-                const activeLearners = targetPool.filter(l => l.iamStations && Object.keys(l.iamStations).length > 0);
-                const totalInCohort = targetPool.length || (cohort === "Team happiness Apollo OCT2026" ? 124 : 0);
+                // DOM Elements for dynamic Course Separation
+                const tabBtnLabel = document.getElementById("tab-btn-iam-label");
+                const bannerIcon = document.getElementById("adaptation-banner-iam-icon");
+                const bannerTitle = document.getElementById("adaptation-banner-iam-title");
+                const bannerDesc = document.getElementById("adaptation-banner-iam-desc");
+                const c1Title = document.getElementById("iam-kpi-card1-title");
+                const c1Sub = document.getElementById("iam-kpi-card1-sub");
+                const c2Title = document.getElementById("iam-kpi-card2-title");
+                const c2Sub = document.getElementById("iam-kpi-card2-sub");
+                const c3Title = document.getElementById("iam-kpi-card3-title");
+                const c3Unit = document.getElementById("iam-kpi-card3-unit");
+                const c3Sub = document.getElementById("iam-kpi-card3-sub");
+                const c4Title = document.getElementById("iam-kpi-card4-title");
+                const c4Sub = document.getElementById("iam-kpi-card4-sub");
+                const hmTitle = document.getElementById("iam-heatmap-title");
+                const hmSub = document.getElementById("iam-heatmap-sub");
+                const centerWrap = document.getElementById("iam-filter-center-wrap");
+                const deptWrap = document.getElementById("iam-filter-dept-wrap");
+                const exportBtnLabel = document.getElementById("btn-export-iam-csv-label");
+                const theadRow = document.getElementById("iam-table-thead-row");
+
+                if (isDhmScope) {
+                    // ==================================================
+                    // CHẾ ĐỘ 1: LỚP DHM (5 THÓI QUEN HẠNH PHÚC & 3 CHẶNG)
+                    // ==================================================
+                    if (tabBtnLabel) tabBtnLabel.textContent = "🌿 5 Thói Quen Hạnh Phúc & I•A•M";
+                    if (bannerIcon) bannerIcon.textContent = "🌿";
+                    if (bannerTitle) bannerTitle.textContent = "Cấu trúc Giáo trình Lớp DHM (Delivering Happiness Masterclass — 3 Chặng & 5 Thói Quen Hạnh Phúc):";
+                    if (bannerDesc) {
+                        bannerDesc.innerHTML = `Học viên <strong>Lớp DHM</strong> học theo lộ trình 3 Chặng Blended Learning: <strong>Chặng 1 Online</strong> (3 Cấp độ hạnh phúc, La bàn Me Values &amp; Cổng sát hạch Quiz ≥80%) ➔ <strong>Chặng 2A Offline</strong> (3 Thói quen nền tảng: <em>1. Tỉnh thức - SBA, 2. Biết ơn, 3. Vị nhân - Smart Giver</em>) ➔ <strong>Chặng 2B / Khóa Tri ân chuyên sâu</strong> (2 Thói quen bứt phá: <em>4. Phiêu - Flow, 5. Lạc quan - ABCDE</em>) ➔ <strong>Chặng 3 Đồng hành</strong>.`;
+                    }
+                    if (c1Title) c1Title.textContent = "HV Đã Tham Gia Học Tập";
+                    if (c1Sub) c1Sub.textContent = "Đã thực hành Chặng 1 / 5 Thói quen DHM";
+                    if (c2Title) c2Title.textContent = "Hoàn Thành Đủ 5 Thói Quen";
+                    if (c2Sub) c2Sub.textContent = "Tỉnh thức • Biết ơn • Vị nhân • Phiêu • Lạc quan";
+                    if (c3Title) c3Title.textContent = "Tiến Độ Chặng Trung Bình";
+                    if (c3Unit) c3Unit.textContent = "/ 3 Chặng";
+                    if (c3Sub) c3Sub.textContent = "Chặng 1 Online • Chặng 2A/2B • Chặng 3";
+                    if (c4Title) c4Title.textContent = "Thói Quen Cần Đồng Hành";
+                    if (c4Sub) c4Sub.textContent = "Học phần có ít lượt hoàn thành nhất";
+                    if (hmTitle) hmTitle.textContent = "📊 Tỷ Lệ Thực Hành 5 Thói Quen Hạnh Phúc & Đúc Kết I•A•M (Lớp DHM)";
+                    if (hmSub) hmSub.textContent = "Nguồn chuẩn: curriculum_data.json (Chặng 2A: Tỉnh thức, Biết ơn, Vị nhân • Chặng 2B: Phiêu, Lạc quan)";
+                    if (centerWrap) centerWrap.classList.add("hidden");
+                    if (deptWrap) deptWrap.classList.add("hidden");
+                    if (exportBtnLabel) exportBtnLabel.textContent = "📥 Xuất CSV 5 Thói Quen (DHM)";
+                    if (theadRow) {
+                        theadRow.innerHTML = `
+                            <th class="p-4">Họ và tên / Tài khoản</th>
+                            <th class="p-4">Khóa DHM</th>
+                            <th class="p-4 text-center">Chặng 1 (Quiz &amp; Me Values)</th>
+                            <th class="p-4 text-center">1. Tỉnh Thức (2A)</th>
+                            <th class="p-4 text-center">2. Biết Ơn (2A)</th>
+                            <th class="p-4 text-center">3. Vị Nhân (2A)</th>
+                            <th class="p-4 text-center">4. Phiêu - Flow (2B)</th>
+                            <th class="p-4 text-center">5. Lạc Quan - ABCDE (2B)</th>
+                            <th class="p-4 text-center">Tiến Độ</th>
+                            <th class="p-4 text-right">Chi Tiết</th>
+                        `;
+                    }
+
+                    const totalInDhm = targetPool.length; // Chính xác 481 HV (hoặc sĩ số lớp con DHM đang chọn)
+                    const activeDhm = targetPool.filter(l => getDhmHabitsStatus(l).anyActivity);
+                    const full5Habits = activeDhm.filter(l => getDhmHabitsStatus(l).completedHabitsCount >= 5).length;
+
+                    if (iamKpiTotal) iamKpiTotal.textContent = activeDhm.length;
+                    if (iamKpiTotalOf) iamKpiTotalOf.textContent = `/ ${totalInDhm} HV`;
+
+                    if (iamKpiFull5) iamKpiFull5.textContent = full5Habits;
+                    if (iamKpiFull5Pct) {
+                        const pct = activeDhm.length > 0 ? Math.round((full5Habits / activeDhm.length) * 100) : 0;
+                        iamKpiFull5Pct.textContent = `(${pct}%)`;
+                    }
+
+                    const stagesList = activeDhm.map(l => getDhmHabitsStatus(l).stagesCount);
+                    const avgSt = stagesList.length > 0 ? (stagesList.reduce((a, b) => a + b, 0) / stagesList.length).toFixed(1) : "0.0";
+                    if (iamKpiAvgScore) iamKpiAvgScore.textContent = avgSt;
+
+                    const habitCounts = [0, 0, 0, 0, 0];
+                    const habitNames = [
+                        "🌿 1. Tỉnh thức (SBA)",
+                        "🙏 2. Biết ơn (Gratitude)",
+                        "🤝 3. Vị nhân (Smart Giver)",
+                        "🌀 4. Phiêu (Flow — 2B)",
+                        "☀️ 5. Lạc quan (ABCDE — 2B)"
+                    ];
+                    targetPool.forEach(l => {
+                        const hs = getDhmHabitsStatus(l);
+                        hs.habitsArr.forEach((done, idx) => {
+                            if (done) habitCounts[idx]++;
+                        });
+                    });
+
+                    if (iamKpiWeakest) {
+                        if (activeDhm.length > 0) {
+                            const minVal = Math.min(...habitCounts);
+                            const minIdx = habitCounts.indexOf(minVal);
+                            iamKpiWeakest.textContent = `${habitNames[minIdx]} (${habitCounts[minIdx]} HV)`;
+                        } else {
+                            iamKpiWeakest.textContent = "Chặng 2B: Phiêu & Lạc quan";
+                        }
+                    }
+
+                    if (iamStationHeatmap) {
+                        iamStationHeatmap.className = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3";
+                        iamStationHeatmap.innerHTML = "";
+                        for (let i = 0; i < 5; i++) {
+                            const pct = totalInDhm > 0 ? Math.round((habitCounts[i] / totalInDhm) * 100) : 0;
+                            const colorClass = pct >= 80 ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" :
+                                               pct >= 30 ? "bg-amber-500/20 text-amber-400 border-amber-500/30" :
+                                               "bg-blue-500/15 text-blue-300 border-blue-500/30";
+                            iamStationHeatmap.innerHTML += `
+                                <div class="p-4 rounded-xl ${colorClass} border text-center transition-all hover:scale-105">
+                                    <div class="text-2xl font-extrabold">${pct}%</div>
+                                    <div class="text-xs mt-1 font-semibold">${habitNames[i]}</div>
+                                    <div class="text-[10px] opacity-70 mt-0.5">${habitCounts[i]} / ${totalInDhm} HV</div>
+                                </div>
+                            `;
+                        }
+                    }
+
+                    if (badgeIamLearnersCount) {
+                        badgeIamLearnersCount.textContent = `${activeDhm.length} HV`;
+                    }
+
+                    renderIamTable();
+                    if (iamActiveViewMode === "cards") {
+                        renderIamTabCardsGrid();
+                    }
+                    return;
+                }
+
+                // ==================================================
+                // CHẾ ĐỘ 2: KHÓA TEAM HAPPINESS / TOÀN HỆ THỐNG (6 TRẠM I•A•M)
+                // ==================================================
+                if (tabBtnLabel) tabBtnLabel.textContent = "🏆 Ma Trận 6 Trạm I•A•M";
+                if (bannerIcon) bannerIcon.textContent = "🏢";
+                if (bannerTitle) bannerTitle.textContent = "Cấu trúc Giáo trình Khóa Team Happiness (Chương trình Tri ân & In-house):";
+                if (bannerDesc) {
+                    bannerDesc.innerHTML = `<strong>Team Happiness</strong> là khóa học chung thuộc nhóm các <strong>chương trình tri ân</strong> của CultureCode (bên cạnh các khóa tri ân chuyên sâu riêng cho <em>Thói quen Phiêu - Flow</em>, <em>Thói quen Lạc quan - ABCDE</em> ứng với Chặng 2B sẽ xây dựng sau). Trong đó, <strong>Apollo</strong> là khách hàng đầu tiên mời đội ngũ CultureCode về dạy In-house khóa Team Happiness với <strong>6 Trạm I•A•M</strong> &amp; thang điểm 20 (không đánh đồng Team Happiness chỉ là Apollo).`;
+                }
+                if (c1Title) c1Title.textContent = "HV Đã Tham Gia Workshop";
+                if (c1Sub) c1Sub.textContent = "Thu hoạch thực tế từ Workshop Team Happiness";
+                if (c2Title) c2Title.textContent = "Hoàn Thành Đủ 6 Trạm";
+                if (c2Sub) c2Sub.textContent = "Đã điền trọn vẹn 6 trạm chuyên đề";
+                if (c3Title) c3Title.textContent = "Điểm I•A•M Trung Bình";
+                if (c3Unit) c3Unit.textContent = "/ 20 điểm";
+                if (c3Sub) c3Sub.textContent = "Điểm Hạnh Phúc + Lãnh Đạo";
+                if (c4Title) c4Title.textContent = "Trạm Cần Hỗ Trợ Nhiều Nhất";
+                if (c4Sub) c4Sub.textContent = "Trạm có ít lượt hoàn thành nhất";
+                if (hmTitle) hmTitle.textContent = "📊 Tỷ Lệ Hoàn Thành Theo 6 Trạm Workshop Team Happiness";
+                if (hmSub) hmSub.textContent = "Dữ liệu tổng hợp thời gian thực từ Google Sheets (6 Trạm × 3 mục I•A•M)";
+                if (centerWrap) centerWrap.classList.remove("hidden");
+                if (deptWrap) deptWrap.classList.remove("hidden");
+                if (exportBtnLabel) exportBtnLabel.textContent = "📥 Xuất CSV 6 Trạm";
+                if (theadRow) {
+                    theadRow.innerHTML = `
+                        <th class="p-4">Họ và tên / Tài khoản</th>
+                        <th class="p-4">Cơ Sở / Đơn Vị</th>
+                        <th class="p-4">Phòng Ban</th>
+                        <th class="p-4 text-center">TRẠM 1: DHM</th>
+                        <th class="p-4 text-center">TRẠM 2: MINDSET</th>
+                        <th class="p-4 text-center">TRẠM 3: SKILLSET</th>
+                        <th class="p-4 text-center">TRẠM 4: SOCIAL</th>
+                        <th class="p-4 text-center">TRẠM 5: TKI</th>
+                        <th class="p-4 text-center">TRẠM 6: CTA</th>
+                        <th class="p-4 text-center">Tiến Độ</th>
+                        <th class="p-4 text-right">Chi Tiết</th>
+                    `;
+                }
+
+                // Khi xem ở Scope TEAM_HAPPINESS hoặc ALL, lọc nhóm học viên thuộc khóa Team Happiness (chuẩn 70 HV: 38 HN + 32 HCM)
+                const teamCandidates = (currentGlobalScope === "ALL" && cohort === "all")
+                    ? targetPool.filter(l => isTeamHappinessLearner(l) || (l.iamStations && Object.keys(l.iamStations).length > 0))
+                    : targetPool;
+
+                const activeLearners = teamCandidates.filter(l => l.iamStations && Object.keys(l.iamStations).length > 0);
+                const totalInCohort = (typeof activeLearnersPool !== "undefined" && Array.isArray(activeLearnersPool) && activeLearnersPool.length > 0 && cohort === "all")
+                    ? activeLearnersPool.length
+                    : (teamCandidates.length || 70);
 
                 // KPI 1: Đã tham gia
                 if (iamKpiTotal) iamKpiTotal.textContent = activeLearners.length;
@@ -4047,6 +4349,14 @@
 
                 // KPI 4: Trạm ít lượt nhất
                 const stationCounts = [0, 0, 0, 0, 0, 0];
+                const stationNames = [
+                    "Trạm 1: DHM",
+                    "Trạm 2: Mindset",
+                    "Trạm 3: Skillset",
+                    "Trạm 4: Social Styles",
+                    "Trạm 5: TKI Modes",
+                    "Trạm 6: CTA"
+                ];
                 activeLearners.forEach(l => {
                     for (let i = 1; i <= 6; i++) {
                         if (l.iamStations && l.iamStations[`station${i}`]?.completed) {
@@ -4059,7 +4369,7 @@
                     if (activeLearners.length > 0) {
                         const minVal = Math.min(...stationCounts);
                         const minIdx = stationCounts.indexOf(minVal);
-                        iamKpiWeakest.textContent = `Trạm ${minIdx + 1} (${stationCounts[minIdx]} HV)`;
+                        iamKpiWeakest.textContent = `${stationNames[minIdx]} (${stationCounts[minIdx]} HV)`;
                     } else {
                         iamKpiWeakest.textContent = "—";
                     }
@@ -4067,15 +4377,8 @@
 
                 // Heatmap 6 Trạm
                 if (iamStationHeatmap) {
+                    iamStationHeatmap.className = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3";
                     iamStationHeatmap.innerHTML = "";
-                    const stationNames = [
-                        "Trạm 1",
-                        "Trạm 2",
-                        "Trạm 3",
-                        "Trạm 4",
-                        "Trạm 5",
-                        "Trạm 6"
-                    ];
                     for (let i = 0; i < 6; i++) {
                         const pct = totalInCohort > 0 ? Math.round((stationCounts[i] / totalInCohort) * 100) : 0;
                         const colorClass = pct >= 80 ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" :
@@ -4103,8 +4406,9 @@
             }
 
             function renderIamTable() {
+                const isDhmScope = (typeof currentGlobalScope !== "undefined" && currentGlobalScope === "DHM");
                 const query = (iamSearchInput ? iamSearchInput.value : "").toLowerCase().trim();
-                const cohort = iamFilterCohort ? iamFilterCohort.value : "Team happiness Apollo OCT2026";
+                const cohort = iamFilterCohort ? iamFilterCohort.value : "all";
                 const center = iamFilterCenter ? iamFilterCenter.value : "all";
                 const dept = iamFilterDepartment ? iamFilterDepartment.value : "all";
                 const stFilter = iamFilterStationsCount ? iamFilterStationsCount.value : "all";
@@ -4113,8 +4417,131 @@
                     ? computeScopedLearnersPool(allLearners, currentGlobalScope, currentSubCohort)
                     : allLearners;
 
+                if (isDhmScope) {
+                    const filteredDhm = scopedGeneral.filter(l => {
+                        if (cohort !== "all" && l.cohort !== cohort) return false;
+                        const hs = getDhmHabitsStatus(l);
+                        if ((stFilter === "6" || stFilter === "5") && hs.completedHabitsCount < 5) return false;
+                        if ((stFilter === "1_5" || stFilter === "1_4") && (hs.completedHabitsCount < 1 || hs.completedHabitsCount >= 5)) return false;
+                        if (stFilter === "0" && hs.anyActivity) return false;
+                        if (query) {
+                            const matchQ = (l.name || "").toLowerCase().includes(query) ||
+                                           (l.identity || "").toLowerCase().includes(query) ||
+                                           (l.email || "").toLowerCase().includes(query) ||
+                                           (l.phone || "").includes(query);
+                            if (!matchQ) return false;
+                        }
+                        return true;
+                    });
+
+                    filteredDhm.sort((a, b) => {
+                        const hsA = getDhmHabitsStatus(a);
+                        const hsB = getDhmHabitsStatus(b);
+                        if (hsB.completedHabitsCount !== hsA.completedHabitsCount) return hsB.completedHabitsCount - hsA.completedHabitsCount;
+                        if (hsB.stagesCount !== hsA.stagesCount) return hsB.stagesCount - hsA.stagesCount;
+                        return (a.name || "").localeCompare(b.name || "", "vi");
+                    });
+
+                    if (iamTableBody) {
+                        iamTableBody.innerHTML = "";
+                        if (iamInactiveTableBody) iamInactiveTableBody.innerHTML = "";
+
+                        if (filteredDhm.length === 0) {
+                            if (iamTableEmpty) iamTableEmpty.classList.remove("hidden");
+                            if (iamInactiveAccordion) iamInactiveAccordion.classList.add("hidden");
+                            return;
+                        }
+                        if (iamTableEmpty) iamTableEmpty.classList.add("hidden");
+
+                        function renderHabitBadge(done, labelDone = "✓ Đã làm") {
+                            return done
+                                ? `<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-semibold text-[10px] border border-emerald-500/30">${labelDone}</span>`
+                                : '<span class="px-2 py-0.5 rounded bg-brand-card text-slate-500 text-[10px]">Chưa</span>';
+                        }
+
+                        function createDhmHabitRow(learner, isInactive = false) {
+                            const tr = document.createElement("tr");
+                            tr.className = isInactive ? "hover:bg-brand-card/30 transition-colors opacity-80" : "hover:bg-brand-card/40 transition-colors";
+                            const hs = getDhmHabitsStatus(learner);
+                            const pct = Math.round((hs.completedHabitsCount / 5) * 100);
+                            const c1Str = hs.s1Done && hs.meValuesDone ? "✓ Quiz + Values" : (hs.s1Done ? "✓ Đạt Quiz" : (hs.meValuesDone ? "✓ Me Values" : "Chưa"));
+
+                            tr.innerHTML = `
+                                <td class="p-4">
+                                    <div class="font-bold text-white">${escapeHTML(learner.name)}</div>
+                                    <div class="text-[11px] text-slate-500 font-mono">${escapeHTML(learner.identity || learner.email || learner.phone || "—")}</div>
+                                </td>
+                                <td class="p-4">
+                                    <span class="px-2 py-0.5 rounded bg-brand-card text-brand-amber border border-brand-border font-mono text-xs font-bold">${escapeHTML(learner.cohort || "DHM")}</span>
+                                </td>
+                                <td class="p-4 text-center">${renderHabitBadge(hs.s1Done || hs.meValuesDone, c1Str)}</td>
+                                <td class="p-4 text-center">${renderHabitBadge(hs.h1Done)}</td>
+                                <td class="p-4 text-center">${renderHabitBadge(hs.h2Done)}</td>
+                                <td class="p-4 text-center">${renderHabitBadge(hs.h3Done)}</td>
+                                <td class="p-4 text-center">${renderHabitBadge(hs.h4Done)}</td>
+                                <td class="p-4 text-center">${renderHabitBadge(hs.h5Done)}</td>
+                                <td class="p-4 text-center">
+                                    <div class="flex items-center justify-center gap-1.5">
+                                        <div class="w-12 h-1.5 bg-brand-dark rounded-full overflow-hidden border border-brand-border">
+                                            <div class="h-full ${hs.completedHabitsCount === 5 ? 'bg-emerald-400' : 'bg-brand-amber'} rounded-full" style="width: ${pct}%"></div>
+                                        </div>
+                                        <span class="font-mono text-xs font-bold ${hs.completedHabitsCount === 5 ? 'text-emerald-400' : hs.completedHabitsCount > 0 ? 'text-brand-amber' : 'text-slate-500'}">${hs.completedHabitsCount}/5 TQ</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-500 font-mono mt-0.5">${hs.stagesCount}/3 Chặng</div>
+                                </td>
+                                <td class="p-4 text-right">
+                                    <button class="btn-inspect-dhm-habit px-3 py-1.5 rounded-lg bg-brand-card hover:bg-brand-border text-brand-amber hover:text-white border border-brand-border font-semibold transition-colors text-xs" data-id="${escapeHTML(learner.identity)}">
+                                        👁️ Xem Bài Làm
+                                    </button>
+                                </td>
+                            `;
+                            return tr;
+                        }
+
+                        const activeDhmList = filteredDhm.filter(l => getDhmHabitsStatus(l).anyActivity);
+                        const inactiveDhmList = filteredDhm.filter(l => !getDhmHabitsStatus(l).anyActivity);
+
+                        if (stFilter === "0") {
+                            inactiveDhmList.forEach(l => iamTableBody.appendChild(createDhmHabitRow(l, false)));
+                            if (iamInactiveAccordion) iamInactiveAccordion.classList.add("hidden");
+                        } else {
+                            if (activeDhmList.length > 0) {
+                                activeDhmList.forEach(l => iamTableBody.appendChild(createDhmHabitRow(l, false)));
+                            } else if (inactiveDhmList.length > 0) {
+                                iamTableBody.innerHTML = '<tr><td colspan="10" class="p-8 text-center text-slate-500 text-xs">Chưa có học viên nào nộp bài thực hành 5 Thói quen trong bộ lọc này. Xem danh sách học viên ở Accordion bên dưới.</td></tr>';
+                            }
+
+                            if (iamInactiveTableBody && iamInactiveAccordion) {
+                                if (inactiveDhmList.length > 0) {
+                                    inactiveDhmList.forEach(l => iamInactiveTableBody.appendChild(createDhmHabitRow(l, true)));
+                                    iamInactiveAccordion.classList.remove("hidden");
+                                    if (iamInactiveCountBadge) iamInactiveCountBadge.textContent = `${inactiveDhmList.length} HV`;
+                                } else {
+                                    iamInactiveAccordion.classList.add("hidden");
+                                }
+                            }
+                        }
+
+                        document.querySelectorAll(".btn-inspect-dhm-habit").forEach(btn => {
+                            btn.addEventListener("click", () => {
+                                const id = btn.getAttribute("data-id");
+                                openDetailModal(id);
+                            });
+                        });
+
+                        if (iamActiveViewMode === "cards") {
+                            renderIamTabCardsGrid();
+                        }
+                    }
+                    return;
+                }
+
+                // Chế độ Team Happiness / Toàn hệ thống (6 Trạm I•A•M)
                 const candidates = scopedGeneral.filter(l => {
                     const hasStations = l.iamStations && Object.keys(l.iamStations).length > 0;
+                    if (currentGlobalScope === "ALL" && cohort === "all") {
+                        return hasStations || isTeamHappinessLearner(l);
+                    }
                     const isSelectedCohort = (cohort === "all") || (l.cohort === cohort) || (cohort === "Team happiness Apollo OCT2026" && (l.cohort === "Team happiness Apollo OCT2026" || (l.email && l.email.toLowerCase().includes("apollo.edu.vn"))));
                     return hasStations || isSelectedCohort;
                 });
@@ -4145,7 +4572,6 @@
                     return true;
                 });
 
-                // Sắp xếp ưu tiên: Số trạm I•A•M hoàn thành giảm dần (5 -> 4 -> 3 -> 2 -> 1 -> 0), sau đó tổng điểm I•A•M giảm dần
                 filtered.sort((a, b) => {
                     const stCountA = a.iamCompletedStationsCount || (a.iamStations ? Object.keys(a.iamStations).length : 0);
                     const stCountB = b.iamCompletedStationsCount || (b.iamStations ? Object.keys(b.iamStations).length : 0);
@@ -4229,18 +4655,15 @@
                     const inactiveIamLearners = filtered.filter(l => (l.iamCompletedStationsCount || (l.iamStations ? Object.keys(l.iamStations).length : 0)) === 0);
 
                     if (stFilter === "0") {
-                        // Người quản trị chọn xem riêng nhóm chưa làm trạm
                         inactiveIamLearners.forEach(l => iamTableBody.appendChild(createIamRow(l, false)));
                         if (iamInactiveAccordion) iamInactiveAccordion.classList.add("hidden");
                     } else {
-                        // Mặc định: Bảng chính chỉ hiển thị học viên đã có ít nhất 1 trạm
                         if (activeIamLearners.length > 0) {
                             activeIamLearners.forEach(l => iamTableBody.appendChild(createIamRow(l, false)));
                         } else if (inactiveIamLearners.length > 0) {
                             iamTableBody.innerHTML = '<tr><td colspan="11" class="p-8 text-center text-slate-500 text-xs">Chưa có học viên nào hoàn thành trạm I•A•M trong bộ lọc này. Xem danh sách chi tiết ở Accordion bên dưới.</td></tr>';
                         }
 
-                        // Gom học viên chưa tham gia trạm vào Accordion thu gọn
                         if (iamInactiveTableBody && iamInactiveAccordion) {
                             if (inactiveIamLearners.length > 0) {
                                 inactiveIamLearners.forEach(l => iamInactiveTableBody.appendChild(createIamRow(l, true)));
@@ -4541,11 +4964,19 @@
                             ? '<span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-semibold text-[10px]">✓ Đã nộp</span>' 
                             : '<span class="px-2 py-0.5 rounded bg-brand-card text-slate-500 text-[10px]">Chưa nộp</span>';
 
-                        const p4Badge = stCount >= 6 
-                            ? '<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold text-[10px]">✓ 6/6 Trạm</span>' 
-                            : (stCount > 0 
-                                ? `<span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-semibold text-[10px]">${stCount}/6 Trạm</span>` 
-                                : '<span class="px-2 py-0.5 rounded bg-brand-card text-slate-500 text-[10px]">0/6 Trạm</span>');
+                        const isLearnerTH = isTeamHappinessLearner(learner);
+                        const dhmHs = !isLearnerTH ? getDhmHabitsStatus(learner) : null;
+                        const p4Badge = isLearnerTH
+                            ? (stCount >= 6 
+                                ? '<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold text-[10px]">✓ 6/6 Trạm</span>' 
+                                : (stCount > 0 
+                                    ? `<span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-semibold text-[10px]">${stCount}/6 Trạm</span>` 
+                                    : '<span class="px-2 py-0.5 rounded bg-brand-card text-slate-500 text-[10px]">0/6 Trạm</span>'))
+                            : (dhmHs.completedHabitsCount >= 5
+                                ? '<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold text-[10px]">✓ 5/5 Thói quen</span>'
+                                : (dhmHs.completedHabitsCount > 0
+                                    ? `<span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-semibold text-[10px]">${dhmHs.completedHabitsCount}/5 Thói quen</span>`
+                                    : '<span class="px-2 py-0.5 rounded bg-brand-card text-slate-500 text-[10px]">0/5 Thói quen</span>'));
 
                         tr.innerHTML = `
                             <td class="p-4">
@@ -5190,6 +5621,13 @@
                     }
                 }
 
+                // Đồng bộ toàn bộ bộ lọc khóa học bên trong các Tab để không bao giờ bị kẹt cứng "Team happiness Apollo OCT2026" khi chuyển sang Lớp DHM
+                if (iamFilterCohort) iamFilterCohort.value = "all";
+                if (testFilterCohort) testFilterCohort.value = "all";
+                if (blendedFilterCohort) blendedFilterCohort.value = "all";
+                if (generalFilterCohort) generalFilterCohort.value = "all";
+                if (typeof updateCohortFilterOptions === "function") updateCohortFilterOptions();
+
                 updateSubCohortDropdownOptions(scope, subCohort);
                 applyScopeFilterToActiveTabs();
             }
@@ -5224,8 +5662,8 @@
                     sorted.forEach(c => {
                         options.push({ value: c, label: `${c} (${cohortMap[c]} HV)` });
                     });
-                    options.push({ value: "hn", label: `Quản Lý Apollo Hà Nội (38 HV)` });
-                    options.push({ value: "hcm", label: `Quản Lý Apollo TP.HCM (32 HV)` });
+                    options.push({ value: "hn", label: `Team Happiness — In-house Apollo Hà Nội (KH đầu tiên - 38 HV)` });
+                    options.push({ value: "hcm", label: `Team Happiness — In-house Apollo TP.HCM (KH đầu tiên - 32 HV)` });
                 } else if (scope === "DHM") {
                     const dhmList = allLearners.filter(l => !isTeamHappinessLearner(l));
                     options.push({ value: "all", label: `Tất cả lớp DHM (${dhmList.length} HV)` });
@@ -5257,9 +5695,9 @@
                         return c.includes("hồ chí minh") || c.includes("hcm") || c.includes("tp.hcm");
                     }).length;
 
-                    options.push({ value: "all", label: `Tất cả Team Happiness (${teamList.length} HV)` });
-                    options.push({ value: "hn", label: `Khóa Quản Lý Apollo Hà Nội (${hnCount} HV)` });
-                    options.push({ value: "hcm", label: `Khóa Quản Lý Apollo TP.HCM (${hcmCount} HV)` });
+                    options.push({ value: "all", label: `Tất cả Khóa Team Happiness (Chương trình Tri ân / In-house - ${teamList.length} HV)` });
+                    options.push({ value: "hn", label: `In-house Apollo Hà Nội (KH đầu tiên - ${hnCount} HV)` });
+                    options.push({ value: "hcm", label: `In-house Apollo TP.HCM (KH đầu tiên - ${hcmCount} HV)` });
                 }
 
                 select.innerHTML = options.map(opt => `<option value="${escapeHTML(opt.value)}">${escapeHTML(opt.label)}</option>`).join("");
