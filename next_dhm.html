@@ -554,8 +554,8 @@
             <input type="radio" name="preferredLocation" value="TP.HCM - Cơ sở Apollo English" required />
             <div class="location-card-content">
               <span class="location-card-title">TP. Hồ Chí Minh</span>
-              <span class="location-card-venue">Cơ sở Apollo English (DHM10)</span>
-              <span class="location-status-badge badge-open">Đang mở đăng ký</span>
+              <span class="location-card-venue">Cơ sở Apollo English (Next DHM)</span>
+              <span class="location-status-badge badge-pending">Nhận thông tin đợt tới</span>
             </div>
           </label>
         </div>
@@ -620,7 +620,7 @@
         Bạn có muốn chuyển sang trang Đăng ký & Giữ chỗ ngay bây giờ không?
       </p>
       <div class="modal-actions">
-        <a href="register_dhm10.html" class="btn-modal-primary" id="btnGoRegister">👉 Đến trang Đăng ký ngay</a>
+        <a href="next_dhm.html" class="btn-modal-primary" id="btnGoRegister">👉 Nhận thông tin các khóa sau</a>
         <button type="button" class="btn-modal-secondary" id="btnCloseModal">Ở lại để nhận thông tin các khóa sau</button>
       </div>
     </div>
@@ -632,13 +632,13 @@
     // CẤU HÌNH CÁC KHÓA ĐANG MỞ / DỰ KIẾN (Dễ dàng mở rộng cho tương lai)
     const ACTIVE_COHORTS_CONFIG = {
       hcm: {
-        isOpen: true,
+        isOpen: false,
         cohortName: "Khóa DHM10 tại TP.HCM",
         eventDate: "Chủ Nhật 01/11/2026 (Offline trực tiếp) • Khởi động Webinar LMS: Tối Thứ Sáu 30/10/2026",
         venue: "Cơ sở Apollo English, 58 Phạm Ngọc Thạch, Phường Võ Thị Sáu, Quận 3, TP.HCM",
         fee: "250.000đ (Chi phí hậu cần, tài liệu, ăn trưa & teabreak)",
         cap: 35,
-        registerUrl: "register_dhm10.html"
+        registerUrl: "next_dhm.html"
       },
       hn: {
         isOpen: false,

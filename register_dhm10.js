@@ -308,6 +308,9 @@ async function fetchRegistrationStatus(uuid, attempt, paymentCode) {
 }
 
 function fetchRegistrationAvailability() {
+    if (window.DHM10_REGISTRATION_CLOSED !== false) {
+        return Promise.resolve({ registrationOpen: false, interestLink: DH_INTEREST_URL });
+    }
     return new Promise((resolve, reject) => {
         let callbackName;
         try {

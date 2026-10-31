@@ -273,6 +273,35 @@
         letter-spacing: 0.2px;
       }
 
+      .btn-interest-emerald-static {
+        position: relative;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        max-width: 660px;
+        min-height: 64px;
+        font-size: 1.22rem !important;
+        font-weight: 800 !important;
+        padding: 1.08rem 1.8rem !important;
+        border-radius: 16px !important;
+        background: linear-gradient(135deg, #10b981 0%, #059669 55%, #047857 100%) !important;
+        color: #ffffff !important;
+        border: 2.5px solid #a7f3d0 !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 6px 20px rgba(5, 150, 105, 0.35) !important;
+        letter-spacing: 0.2px;
+        text-decoration: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+      }
+
+      .btn-interest-emerald-static:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 10px 28px rgba(5, 150, 105, 0.5) !important;
+        filter: brightness(1.08);
+      }
+
       .btn-interest-pulse-blue {
         position: relative;
         overflow: hidden;
@@ -376,6 +405,7 @@
           border-radius: 14px !important;
         }
         .btn-hero-register-main,
+        .btn-interest-emerald-static,
         .btn-interest-pulse-emerald,
         .btn-interest-pulse-blue {
           font-size: 1.08rem !important;
@@ -439,10 +469,10 @@
         <!-- Khu vực HCM -->
         <div class="hybrid-hub-item hcm-col" style="border-color: rgba(245, 158, 11, 0.6); background: rgba(245, 158, 11, 0.1);">
           <div style="display: inline-flex; align-items: center; gap: 6px; color: var(--warm-yellow); font-weight: 700; font-size: 1.05rem;">
-            <span>📍</span> TP. Hồ Chí Minh (DHM10)
+            <span>📍</span> TP. Hồ Chí Minh (Next DHM)
           </div>
           <div style="color: #ffffff; font-weight: 600; font-size: 0.95rem; margin-top: 2px;">Cơ sở Apollo English, Q.3</div>
-          <div style="font-size: 0.8rem; color: #6ee7b7; font-weight: 700; margin-top: 4px;">🟢 Đang mở đăng ký (35 suất)</div>
+          <div style="font-size: 0.8rem; color: #fcd34d; font-weight: 700; margin-top: 4px;">🟡 Đăng ký nhận thông tin đợt tới</div>
         </div>
 
         <!-- Khu vực HN -->
@@ -456,14 +486,8 @@
       </div>
 
       <div class="hero-cta-stack">
-        <a href="register_dhm10.html" class="btn-primary btn-hero-register-main">
-          <span>👉 Đăng ký DHM10 TP.HCM (Giới hạn 35 suất)</span>
-        </a>
-        <a href="next_dhm.html" class="btn-primary btn-interest-pulse-emerald">
-          <span class="cta-pulse-inner">
-            <span class="pulse-dot-indicator dot-light"></span>
-            <span>✨ Quan tâm Next DHM (Hà Nội &amp; Đợt tới)</span>
-          </span>
+        <a href="next_dhm.html" class="btn-primary btn-interest-emerald-static">
+          <span>✨ Quan tâm Next DHM (Hà Nội, TP.HCM &amp; Đợt tới)</span>
         </a>
         <a href="program-interest.html" class="btn-primary btn-interest-pulse-blue">
           <span class="cta-pulse-inner">
@@ -471,6 +495,26 @@
             <span>🌱 Đăng ký quan tâm các chương trình khác</span>
           </span>
         </a>
+      </div>
+
+      <!-- QR CODE LANDING PAGE -->
+      <div class="hero-qr-container" style="margin-top: 1.6rem; padding-top: 1.4rem; border-top: 1px dashed rgba(255, 255, 255, 0.15); display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap;">
+        <div style="background: #ffffff; padding: 8px; border-radius: 12px; box-shadow: 0 4px 18px rgba(0,0,0,0.35); display: inline-flex;">
+          <img src="assets/qr_landing_page.png" alt="QR Code Landing Page Delivering Happiness" style="width: 96px; height: 96px; display: block; border-radius: 6px;" />
+        </div>
+        <div style="text-align: left; max-width: 330px;">
+          <div style="color: var(--warm-yellow); font-weight: 700; font-size: 0.98rem; display: flex; align-items: center; gap: 6px;">
+            <span>📱</span> Quét mã QR vào Landing Page
+          </div>
+          <div style="font-size: 0.84rem; color: rgba(255, 255, 255, 0.8); margin-top: 3px; line-height: 1.35;">
+            Mở nhanh trên điện thoại hoặc lưu / chia sẻ cho đồng nghiệp &amp; bạn bè.
+          </div>
+          <div style="margin-top: 6px;">
+            <a href="assets/qr_landing_page.png" download="QR_LandingPage_DeliveringHappiness.png" style="display: inline-flex; align-items: center; gap: 5px; color: #93c5fd; font-size: 0.8rem; text-decoration: none; font-weight: 600; border-bottom: 1px dotted #93c5fd;">
+              <span>📥 Tải ảnh QR Code (PNG)</span>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
     
@@ -649,18 +693,13 @@
   <section class="section register-cta" id="register"
     style="background: var(--warm-yellow); color: var(--dark); text-align: center; padding: 4rem 1.5rem;">
     <div class="container">
-      <h2 class="section-title" style="margin-bottom: 1rem;">Sẵn sàng kiến tạo văn hóa hạnh phúc cùng DHM10?</h2>
+      <h2 class="section-title" style="margin-bottom: 1rem;">Sẵn sàng kiến tạo văn hóa hạnh phúc cùng DHM?</h2>
       <p class="section-sub" style="color: var(--dark); font-size: 1.1rem; margin-bottom: 2rem; max-width: 820px; margin-left: auto; margin-right: auto; line-height: 1.6;">
-        Khóa học <strong>Delivering Happiness Masterclass 10 (DHM10)</strong> tiên phong triển khai theo mô hình <strong>Blended Learning kết hợp nền tảng LMS chuyên sâu</strong>, học tập trung Offline tại <strong>TP.HCM</strong> vào <strong>Chủ Nhật 01/11/2026</strong> (Cơ sở Apollo English, 58 Phạm Ngọc Thạch, Q.3 • giới hạn 35 suất First-Come, First-Served). Học viên tại Hà Nội vui lòng để lại thông tin tại <strong>Next DHM</strong> để nhận thông báo sớm nhất cho các khóa tiếp theo!
+        Chuỗi chương trình <strong>Delivering Happiness Masterclass (DHM)</strong> tiên phong triển khai theo mô hình <strong>Blended Learning kết hợp nền tảng LMS chuyên sâu</strong>. Quý học viên và tổ chức quan tâm vui lòng để lại thông tin tại <strong>Next DHM</strong> để nhận thông báo sớm nhất cho các khóa tiếp theo tại TP.HCM &amp; Hà Nội!
       </p>
       <div style="display: flex; flex-direction: column; align-items: center; gap: 14px; justify-content: center; max-width: 660px; margin: 0 auto;">
-        <a href="register_dhm10.html" class="btn-primary"
-          style="width: 100%; min-height: 64px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.22rem; border-radius: 16px; background: var(--dark); color: var(--warm-yellow); border: 2.5px solid var(--dark); box-shadow: 0 8px 24px rgba(0,0,0,0.22); font-weight: 800;">👉 Đăng ký DHM10 TP.HCM (01/11/2026)</a>
-        <a href="next_dhm.html" class="btn-primary btn-interest-pulse-emerald">
-          <span class="cta-pulse-inner">
-            <span class="pulse-dot-indicator dot-light"></span>
-            <span>✨ Quan tâm Next DHM (Hà Nội &amp; Đợt tới)</span>
-          </span>
+        <a href="next_dhm.html" class="btn-primary btn-interest-emerald-static">
+          <span>✨ Quan tâm Next DHM (Hà Nội, TP.HCM &amp; Đợt tới)</span>
         </a>
         <a href="program-interest.html" class="btn-primary btn-interest-pulse-blue">
           <span class="cta-pulse-inner">
@@ -668,6 +707,21 @@
             <span>🌱 Đăng ký quan tâm các chương trình khác</span>
           </span>
         </a>
+      </div>
+
+      <!-- QR CODE BOTTOM SECTION -->
+      <div style="margin-top: 2.2rem; padding-top: 1.5rem; border-top: 1px dashed rgba(0, 0, 0, 0.15); display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap;">
+        <div style="background: #ffffff; padding: 8px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); display: inline-flex;">
+          <img src="assets/qr_landing_page.png" alt="QR Code Landing Page Delivering Happiness" style="width: 88px; height: 88px; display: block; border-radius: 6px;" />
+        </div>
+        <div style="text-align: left; max-width: 320px;">
+          <div style="color: var(--dark); font-weight: 700; font-size: 0.98rem; display: flex; align-items: center; gap: 6px;">
+            <span>📱</span> Quét mã QR Landing Page
+          </div>
+          <div style="font-size: 0.84rem; color: rgba(0, 0, 0, 0.75); margin-top: 3px; line-height: 1.35;">
+            Lưu ảnh mã QR hoặc chia sẻ nhanh đường dẫn khóa học đến tổ chức &amp; đội ngũ của bạn.
+          </div>
+        </div>
       </div>
     </div>
   </section>
