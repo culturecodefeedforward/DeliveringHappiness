@@ -2319,27 +2319,48 @@
             // Generic 4-Tab Switching Logic
             const allTabBtns = document.querySelectorAll(".tab-btn");
             const allPanes = document.querySelectorAll('[id^="pane-"]');
+            const TEAM_HAPPINESS_ONLY_PANE_IDS = new Set([
+                "pane-social-styles",
+                "pane-tki-conflicts",
+                "pane-18-boxes",
+                "pane-collective-cta"
+            ]);
+
+            function isPaneAllowedInCurrentScope(paneId) {
+                return currentGlobalScope !== "DHM" || !TEAM_HAPPINESS_ONLY_PANE_IDS.has(paneId);
+            }
+
+            function setTabButtonVisualState(button, isActive) {
+                if (!button) return;
+
+                // Chỉ đổi lớp giao diện cần thiết; không thay toàn bộ className để giữ nguyên hidden.
+                button.classList.remove(
+                    "active", "font-semibold", "text-slate-400", "hover:text-white", "hover:bg-brand-card",
+                    "font-bold", "bg-gradient-to-r", "from-brand-orange", "to-brand-amber", "text-black", "shadow-lg",
+                    "border", "border-transparent"
+                );
+                if (isActive) {
+                    button.classList.add("active", "font-bold", "bg-gradient-to-r", "from-brand-orange", "to-brand-amber", "text-black", "shadow-lg");
+                } else {
+                    button.classList.add("font-semibold", "text-slate-400", "hover:text-white", "hover:bg-brand-card", "border", "border-transparent");
+                }
+
+                const badge = button.querySelector("[id^='badge-']");
+                if (!badge) return;
+                badge.classList.remove("bg-brand-surface", "text-slate-300", "bg-black/20", "text-black");
+                badge.classList.add(...(isActive ? ["bg-black/20", "text-black"] : ["bg-brand-surface", "text-slate-300"]));
+            }
 
             allTabBtns.forEach(btn => {
                 btn.addEventListener("click", () => {
                     const targetPane = btn.dataset.pane;
-                    if (!targetPane) return;
+                    if (!targetPane || btn.classList.contains("hidden") || !isPaneAllowedInCurrentScope(targetPane)) return;
 
                     // Reset all tab button styles & badge styles
-                    allTabBtns.forEach(b => {
-                        b.className = "tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-400 hover:text-white hover:bg-brand-card transition-all flex items-center gap-2 border border-transparent shrink-0 whitespace-nowrap";
-                        const bBadge = b.querySelector("[id^='badge-']");
-                        if (bBadge) {
-                            bBadge.className = "px-2 py-0.5 rounded-full bg-brand-surface text-slate-300 font-mono text-[11px]";
-                        }
-                    });
+                    allTabBtns.forEach(b => setTabButtonVisualState(b, false));
 
                     // Activate clicked tab button & badge
-                    btn.className = "tab-btn active px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-amber text-black shadow-lg shrink-0 whitespace-nowrap";
-                    const activeBadge = btn.querySelector("[id^='badge-']");
-                    if (activeBadge) {
-                        activeBadge.className = "px-2 py-0.5 rounded-full bg-black/20 text-black font-mono text-[11px]";
-                    }
+                    setTabButtonVisualState(btn, true);
 
                     // Show/Hide corresponding pane
                     allPanes.forEach(p => p.classList.add("hidden"));
@@ -2378,6 +2399,17 @@
             const AUTO_REFRESH_INTERVAL_MS = 60000; // 60 giây
             let autoRefreshTimer = null;
             let lastFetchTimestamp = null;
+            let loadSessionCounter = 0;
+            let activeLoadSessionId = 0;
+
+            function beginLoadSession() {
+                activeLoadSessionId = ++loadSessionCounter;
+                return activeLoadSessionId;
+            }
+
+            function isCurrentLoadSession(loadSessionId) {
+                return loadSessionId === activeLoadSessionId;
+            }
 
             // Parsed Google Sheets Data Storage
             let parsedLmsCheckpoints = [];
@@ -2701,14 +2733,16 @@
             // ==========================================
             // AUTO-MERGE ROSTER (500+ LEARNERS & 123 APOLLO)
             // ==========================================
-            async function syncAndMergeRoster(forceReseedApollo = false) {
+            async function syncAndMergeRoster(forceReseedApollo = false, loadSessionId = beginLoadSession()) {
                 try {
                     const res = await fetch(`authorized_roster.json?t=${Date.now()}`);
+                    if (!isCurrentLoadSession(loadSessionId)) return;
                     if (!res.ok) {
                         console.warn("Could not fetch authorized_roster.json, status:", res.status);
                         return;
                     }
                     const roster = await res.json();
+                    if (!isCurrentLoadSession(loadSessionId)) return;
                     if (!Array.isArray(roster) || roster.length === 0) return;
 
                     // Retain only learners belonging to the official authorized roster
@@ -3103,9 +3137,17 @@
             }
 
             let isFetchingLiveData = false;
+            let liveFetchAttemptCounter = 0;
+            let activeLiveFetchAttemptId = 0;
+            let activeLiveFetchLoadSessionId = 0;
 
-            async function fetchLiveDataFromWebhook(showAlert = false) {
-                if (isFetchingLiveData) return 0;
+            async function fetchLiveDataFromWebhook(showAlert = false, loadSessionId = beginLoadSession()) {
+                if (!isCurrentLoadSession(loadSessionId)) return 0;
+                if (isFetchingLiveData && activeLiveFetchLoadSessionId === loadSessionId) return 0;
+
+                const fetchAttemptId = ++liveFetchAttemptCounter;
+                activeLiveFetchAttemptId = fetchAttemptId;
+                activeLiveFetchLoadSessionId = loadSessionId;
                 isFetchingLiveData = true;
                 if (webhookFetchStatus) {
                     webhookFetchStatus.textContent = "⏳ Đang kết nối Google Sheets...";
@@ -3115,10 +3157,12 @@
                 try {
                     const url = `${WEBHOOK_URL}?action=${WEBHOOK_ACTION}&t=${Date.now()}`;
                     const res = await fetch(url);
+                    if (!isCurrentLoadSession(loadSessionId) || activeLiveFetchAttemptId !== fetchAttemptId) return 0;
                     if (!res.ok) {
                         throw new Error(`HTTP ${res.status}: ${res.statusText}`);
                     }
                     const data = await res.json();
+                    if (!isCurrentLoadSession(loadSessionId) || activeLiveFetchAttemptId !== fetchAttemptId) return 0;
                     if (!data || !data.success) {
                         throw new Error(data?.error || "Dữ liệu trả về không hợp lệ từ GAS");
                     }
@@ -3138,27 +3182,44 @@
                     if (showAlert) {
                         alert(`Đồng bộ thành công từ Google Sheets!\n- ${parsedLmsCheckpoints.length} bài Quiz LMS\n- ${parsedApolloSummary.length} bản ghi tổng hợp 6 Trạm\n- ${parsedApolloLogs.length} nhật ký từng trạm\n- Đã cập nhật ${mergedCount} học viên vào Dashboard.`);
                     }
-                    isFetchingLiveData = false;
                     return mergedCount;
                 } catch (err) {
+                    if (!isCurrentLoadSession(loadSessionId) || activeLiveFetchAttemptId !== fetchAttemptId) return 0;
                     console.warn("fetchLiveDataFromWebhook failed, trying JSONP fallback:", err);
                     if (webhookFetchStatus) {
                         webhookFetchStatus.textContent = "⏳ Đang thử Fallback qua JSONP...";
                         webhookFetchStatus.className = "text-xs text-amber-400 font-mono";
                     }
-                    return fetchLiveDataViaJsonp(showAlert);
+                    return await fetchLiveDataViaJsonp(showAlert, loadSessionId, fetchAttemptId);
+                } finally {
+                    if (activeLiveFetchAttemptId === fetchAttemptId) {
+                        isFetchingLiveData = false;
+                        activeLiveFetchAttemptId = 0;
+                        activeLiveFetchLoadSessionId = 0;
+                    }
                 }
             }
 
-            function fetchLiveDataViaJsonp(showAlert = false) {
+            function fetchLiveDataViaJsonp(showAlert = false, loadSessionId = beginLoadSession(), fetchAttemptId = activeLiveFetchAttemptId) {
+                if (!isCurrentLoadSession(loadSessionId) || activeLiveFetchAttemptId !== fetchAttemptId) return Promise.resolve(0);
+
                 return new Promise((resolve) => {
                     const randomSuffix = Array.from(crypto.getRandomValues(new Uint8Array(12)))
                         .map(b => b.toString(36).padStart(2, "0")).join("").slice(0, 20);
                     const callbackName = `dh10Jsonp_${randomSuffix}`;
                     const script = document.createElement("script");
 
+                    function isCurrentAttempt() {
+                        return isCurrentLoadSession(loadSessionId) && activeLiveFetchAttemptId === fetchAttemptId;
+                    }
+
                     const timeoutId = setTimeout(() => {
+                        const isLatest = isCurrentAttempt();
                         cleanup();
+                        if (!isLatest) {
+                            resolve(0);
+                            return;
+                        }
                         if (webhookFetchStatus) {
                             webhookFetchStatus.textContent = "❌ Lỗi kết nối Google Sheets (Timeout)";
                             webhookFetchStatus.className = "text-xs text-rose-400 font-mono";
@@ -3171,11 +3232,20 @@
                         clearTimeout(timeoutId);
                         delete window[callbackName];
                         if (script.parentNode) script.parentNode.removeChild(script);
-                        isFetchingLiveData = false;
+                        if (activeLiveFetchAttemptId === fetchAttemptId) {
+                            isFetchingLiveData = false;
+                            activeLiveFetchAttemptId = 0;
+                            activeLiveFetchLoadSessionId = 0;
+                        }
                     }
 
                     window[callbackName] = function(data) {
+                        const isLatest = isCurrentAttempt();
                         cleanup();
+                        if (!isLatest) {
+                            resolve(0);
+                            return;
+                        }
                         if (data && data.success) {
                             parsedLmsCheckpoints = parse2DArrayToObjects(data.lmsCheckpoints || []);
                             parsedApolloSummary = parse2DArrayToObjects(data.apolloSummary || []);
@@ -3204,7 +3274,12 @@
 
                     script.src = `${WEBHOOK_URL}?action=${WEBHOOK_ACTION}&callback=${callbackName}&t=${Date.now()}`;
                     script.onerror = () => {
+                        const isLatest = isCurrentAttempt();
                         cleanup();
+                        if (!isLatest) {
+                            resolve(0);
+                            return;
+                        }
                         if (webhookFetchStatus) {
                             webhookFetchStatus.textContent = "❌ Lỗi tải Webhook Script";
                             webhookFetchStatus.className = "text-xs text-rose-400 font-mono";
@@ -3271,7 +3346,8 @@
             // ==========================================
             // DATA LOADING & NORMALIZATION
             // ==========================================
-            async function loadAllData() {
+            async function loadAllData(loadSessionId = beginLoadSession()) {
+                if (!isCurrentLoadSession(loadSessionId)) return false;
                 try {
                     const raw = localStorage.getItem(REGISTRY_KEY);
                     allLearners = raw ? JSON.parse(raw) : [];
@@ -3281,10 +3357,12 @@
 
                 // Bước 0: Khởi tạo tức thì Tab Heatmap Apollo từ Baseline (không phụ thuộc độ trễ mạng)
                 await initApolloHeatmap();
+                if (!isCurrentLoadSession(loadSessionId)) return false;
                 mergeHeatmapIntoAllLearners();
 
                 // Bước 1: Nạp Roster chính thức (507 HV, bao gồm 123 HV Apollo)
-                await syncAndMergeRoster(false);
+                await syncAndMergeRoster(false, loadSessionId);
+                if (!isCurrentLoadSession(loadSessionId)) return false;
 
                 // Cập nhật bộ lọc toàn cục ngay tức thì sau khi nạp Roster 508 HV
                 if (typeof setGlobalDashboardScope === "function") {
@@ -3292,7 +3370,8 @@
                 }
 
                 // Bước 2: Tải dữ liệu thời gian thực từ Google Sheets (3 tabs: LMS Checkpoints, Apollo Summary, Apollo Logs)
-                await fetchLiveDataFromWebhook(false);
+                await fetchLiveDataFromWebhook(false, loadSessionId);
+                if (!isCurrentLoadSession(loadSessionId)) return false;
 
                 // Bước 3: Đồng bộ bài thi thực tế của chính tài khoản đang đăng nhập trên trình duyệt hiện tại (nếu có)
                 syncLocalSessionProgress();
@@ -3322,6 +3401,7 @@
                 window.allLearners = allLearners;
                 window.teamHappinessLearners = teamHappinessLearners;
                 window.activeLearnersPool = activeLearnersPool;
+                return true;
             }
             window.loadAllData = loadAllData;
 
@@ -3698,7 +3778,8 @@
             // Open Test Detail Modal
             function openTestDetailModal(identity) {
                 const learner = allLearners.find(l => l.identity === identity);
-                if (!learner) return;
+                if (!learner || !isLearnerAllowedInCurrentScope(learner)) return;
+                markLearnerModalScope(document.getElementById("test-detail-modal"), learner);
 
                 activeTestLearnerIdentity = identity;
                 testModalLearnerName.textContent = learner.name;
@@ -3815,21 +3896,30 @@
 
             // Sync Roster button handler (500+ learners & 123 Apollo)
             if (btnSyncRoster) {
+                let syncRosterUiCounter = 0;
                 btnSyncRoster.addEventListener("click", async () => {
                     const origHtml = btnSyncRoster.innerHTML;
+                    const syncUiId = ++syncRosterUiCounter;
+                    const loadSessionId = beginLoadSession();
                     btnSyncRoster.innerHTML = "<span>⏳ Đang đồng bộ...</span>";
                     btnSyncRoster.disabled = true;
-                    await syncAndMergeRoster(true);
-                    renderTestAnalytics();
-                    renderIamDashboard();
-                    renderBlendedJourney();
-                    renderGeneralDashboard();
-                    mergeLiveRosterIntoHeatmap();
-                    populateHeatmapDropdowns();
-                    applyHeatmapFilters();
-                    btnSyncRoster.innerHTML = origHtml;
-                    btnSyncRoster.disabled = false;
-                    alert(`Đã đồng bộ thành công ${allLearners.length} học viên từ Roster chuẩn (bao gồm 123 học viên Apollo)!`);
+                    try {
+                        await syncAndMergeRoster(true, loadSessionId);
+                        if (!isCurrentLoadSession(loadSessionId)) return;
+                        renderTestAnalytics();
+                        renderIamDashboard();
+                        renderBlendedJourney();
+                        renderGeneralDashboard();
+                        mergeLiveRosterIntoHeatmap();
+                        populateHeatmapDropdowns();
+                        applyHeatmapFilters();
+                        alert(`Đã đồng bộ thành công ${allLearners.length} học viên từ Roster chuẩn (bao gồm 123 học viên Apollo)!`);
+                    } finally {
+                        if (syncUiId === syncRosterUiCounter) {
+                            btnSyncRoster.innerHTML = origHtml;
+                            btnSyncRoster.disabled = false;
+                        }
+                    }
                 });
             }
 
@@ -3951,7 +4041,8 @@
 
             // Export Test Analytics CSV with UTF-8 BOM
             btnExportTestCsv.addEventListener("click", () => {
-                if (allLearners.length === 0) {
+                const exportLearners = getScopedGeneralLearners();
+                if (exportLearners.length === 0) {
                     alert("Chưa có dữ liệu học viên để xuất!");
                     return;
                 }
@@ -3959,7 +4050,7 @@
                 let csv = "\uFEFF"; // UTF-8 BOM
                 csv += "Họ và tên,Email/SĐT,Khóa học,Số lần test,Điểm Lần 1,Tỷ lệ Lần 1,Điểm Lần 2,Tỷ lệ Lần 2,Điểm Lần 3,Tỷ lệ Lần 3,Lần cán đích >80%,Độ cải thiện (Delta),Trạng thái đo lường,Ghi chú Giảng viên\n";
 
-                allLearners.forEach(l => {
+                exportLearners.forEach(l => {
                     const att1 = l.testAttempts[0];
                     const att2 = l.testAttempts[1];
                     const att3 = l.testAttempts[2];
@@ -3995,7 +4086,7 @@
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
             });
 
             // State for Tab 2 View Mode & Cards Filter
@@ -4814,7 +4905,8 @@
 
             function openIamDetailModal(identity) {
                 const learner = allLearners.find(l => l.identity === identity || l.email === identity || l.phone === identity);
-                if (!learner) return;
+                if (!learner || !isLearnerAllowedInCurrentScope(learner)) return;
+                markLearnerModalScope(document.getElementById("iam-detail-modal"), learner);
 
                 activeIamLearnerIdentity = identity;
                 if (iamModalLearnerName) iamModalLearnerName.textContent = learner.name || "—";
@@ -5274,7 +5366,7 @@
             // Export IAM CSV with UTF-8 BOM
             if (btnExportIamCsv) {
                 btnExportIamCsv.addEventListener("click", () => {
-                    const apolloLearners = allLearners.filter(l => (l.iamStations && Object.keys(l.iamStations).length > 0) || (l.cohort && l.cohort.includes("Apollo")));
+                    const apolloLearners = getScopedGeneralLearners().filter(l => (l.iamStations && Object.keys(l.iamStations).length > 0) || (l.cohort && l.cohort.includes("Apollo")));
                     if (apolloLearners.length === 0) {
                         alert("Chưa có dữ liệu học viên 6 Trạm I•A•M để xuất!");
                         return;
@@ -5311,14 +5403,15 @@
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
+                    setTimeout(() => URL.revokeObjectURL(url), 1000);
                 });
             }
 
             // Export Blended 360 CSV with UTF-8 BOM
             if (btnExportBlendedCsv) {
                 btnExportBlendedCsv.addEventListener("click", () => {
-                    if (allLearners.length === 0) {
+                    const exportLearners = getScopedGeneralLearners();
+                    if (exportLearners.length === 0) {
                         alert("Chưa có dữ liệu học viên để xuất!");
                         return;
                     }
@@ -5326,7 +5419,7 @@
                     let csv = "\uFEFF"; // UTF-8 BOM
                     csv += "Họ và tên,Tài khoản/Email/SĐT,Khóa học,Apollo Center,Phòng ban,Trụ cột 1 - Quiz,Điểm Quiz,Trụ cột 2 - Me Values,Trụ cột 3 - ABCDE,Trụ cột 4 - 6 Trạm IAM,Tiến độ 360 (%),Ghi chú Coach\n";
 
-                    allLearners.forEach(l => {
+                    exportLearners.forEach(l => {
                         const name = (l.name || "").replace(/"/g, '""');
                         const id = (l.identity || l.email || l.phone || "").replace(/"/g, '""');
                         const cohort = (l.cohort || "DHM8").replace(/"/g, '""');
@@ -5362,7 +5455,7 @@
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
+                    setTimeout(() => URL.revokeObjectURL(url), 1000);
                 });
             }
 
@@ -5478,7 +5571,8 @@
 
             function openDetailModal(identity) {
                 const learner = allLearners.find(l => l.identity === identity);
-                if (!learner) return;
+                if (!learner || !isLearnerAllowedInCurrentScope(learner)) return;
+                markLearnerModalScope(document.getElementById("detail-modal"), learner);
 
                 activeLearnerIdentity = identity;
                 modalLearnerName.textContent = learner.name;
@@ -5551,7 +5645,8 @@
 
             // Export General CSV
             btnExportCsv.addEventListener("click", () => {
-                if (allLearners.length === 0) {
+                const exportLearners = getScopedGeneralLearners();
+                if (exportLearners.length === 0) {
                     alert("Chưa có dữ liệu học viên để xuất!");
                     return;
                 }
@@ -5559,7 +5654,7 @@
                 let csv = "\uFEFF"; // UTF-8 BOM
                 csv += "Họ và tên,Email/SĐT,Tiến độ %,Chặng hoàn thành,Quiz Chặng 1,Me Values Chặng 2,ABCDE Chặng 3,Ghi chú Coach,Hoạt động cuối\n";
 
-                allLearners.forEach(l => {
+                exportLearners.forEach(l => {
                     const pct = Math.round(((l.completedStagesCount || 0) / 3) * 100);
                     const q1 = (l.stage1Passed || l.eventualPassed80) ? "Đạt" : "Chưa đạt";
                     const vals = (l.data?.stageData?.["stage-2"]?.selectedValues || []).join(" | ").replace(/"/g, '""');
@@ -5578,7 +5673,7 @@
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
             });
 
 
@@ -5707,6 +5802,16 @@
                 return computeScopedLearnersPool(allLearners, currentGlobalScope, currentSubCohort);
             }
 
+            function isLearnerAllowedInCurrentScope(learner) {
+                return !(currentGlobalScope === "DHM" && learner && isTeamHappinessLearner(learner));
+            }
+
+            function markLearnerModalScope(modal, learner) {
+                if (modal && learner) {
+                    modal.dataset.learnerScope = isTeamHappinessLearner(learner) ? "TEAM_HAPPINESS" : "DHM";
+                }
+            }
+
             function setGlobalDashboardScope(scope, subCohort = "all") {
                 currentGlobalScope = scope;
                 currentSubCohort = subCohort;
@@ -5714,6 +5819,17 @@
                 window.currentSubCohort = subCohort;
                 sessionStorage.setItem("dhm_admin_global_scope", scope);
                 sessionStorage.setItem("dhm_admin_sub_cohort", subCohort);
+
+                if (scope === "DHM") {
+                    let closedTeamModal = false;
+                    document.querySelectorAll('[data-learner-scope="TEAM_HAPPINESS"]').forEach(modal => {
+                        if (!modal.classList.contains("hidden")) {
+                            modal.classList.add("hidden");
+                            closedTeamModal = true;
+                        }
+                    });
+                    if (closedTeamModal) document.body.classList.remove("overflow-hidden");
+                }
 
                 // Update UI button styles
                 const btnAll = document.getElementById("scope-btn-all");
@@ -5893,7 +6009,7 @@
                 const tabBtnSocial = document.getElementById("tab-btn-social-styles");
                 const tabBtnTki = document.getElementById("tab-btn-tki-conflicts");
                 const tabBtn18 = document.getElementById("tab-btn-18-boxes");
-                const tabBtnCta = document.getElementById("tab-btn-cta");
+                const tabBtnCta = document.getElementById("tab-btn-collective-cta");
                 const tabBtnBlended = document.getElementById("tab-btn-blended-journey");
                 const tabBtnIamLabel = document.getElementById("tab-btn-iam-label");
 
@@ -5901,11 +6017,13 @@
                 const isTeamScopeActive = (currentGlobalScope === "TEAM_HAPPINESS");
 
                 if (isDhmScopeActive) {
+                    clearTeamHappinessRenderedContent();
                     // Lớp DHM: ẨN HOÀN TOÀN các tab đặc thù của Team Happiness Apollo (SS, TKI, 18 Ô, CTA)
                     if (tabBtnSocial) tabBtnSocial.classList.add("hidden");
                     if (tabBtnTki) tabBtnTki.classList.add("hidden");
                     if (tabBtn18) tabBtn18.classList.add("hidden");
                     if (tabBtnCta) tabBtnCta.classList.add("hidden");
+                    TEAM_HAPPINESS_ONLY_PANE_IDS.forEach(paneId => document.getElementById(paneId)?.classList.add("hidden"));
                     if (tabBtnBlended) tabBtnBlended.classList.remove("hidden");
                     if (tabBtnIam) tabBtnIam.classList.remove("hidden");
                     if (tabBtnIamLabel) tabBtnIamLabel.textContent = "🌿 Thu Hoạch I•A•M & 5 Thói Quen (DHM)";
@@ -5945,6 +6063,37 @@
                 renderTabCollectiveCta();
                 if (typeof renderBlendedJourney === "function") renderBlendedJourney();
                 if (typeof renderGeneralDashboard === "function") renderGeneralDashboard();
+            }
+
+            function clearTeamHappinessRenderedContent() {
+                const renderedTargetIds = [
+                    "social-quad-tl", "social-quad-tr", "social-quad-bl", "social-quad-br",
+                    "list-social-driver-chips", "list-social-expressive-chips", "list-social-analytical-chips", "list-social-amiable-chips",
+                    "social-student-tbody",
+                    "tki-quad-tl", "tki-quad-tr", "tki-quad-center", "tki-quad-bl", "tki-quad-br",
+                    "list-tki-competing-chips", "list-tki-collaborating-chips", "list-tki-compromising-chips", "list-tki-avoiding-chips", "list-tki-accommodating-chips",
+                    "tki-student-tbody", "table18-tbody",
+                    "cta-stop-tbody", "cta-start-tbody", "cta-continue-tbody", "collective-cta-content"
+                ];
+                renderedTargetIds.forEach(id => document.getElementById(id)?.replaceChildren());
+
+                const neutralTextById = {
+                    "social-filtered-count-badge": "0 / 0 HV đã khảo sát",
+                    "social-student-table-count": "0 học viên",
+                    "tki-filtered-count-badge": "0 / 0 HV đã khảo sát",
+                    "tki-student-table-count": "0 học viên",
+                    "table18-count-info": "Đang hiển thị: 0 học viên",
+                    "cta-stop-count": "0 cam kết",
+                    "cta-stop-unique-badge": "0 nhóm hành động",
+                    "cta-start-count": "0 cam kết",
+                    "cta-start-unique-badge": "0 nhóm hành động",
+                    "cta-continue-count": "0 cam kết",
+                    "cta-continue-unique-badge": "0 nhóm hành động"
+                };
+                Object.entries(neutralTextById).forEach(([id, value]) => {
+                    const element = document.getElementById(id);
+                    if (element) element.textContent = value;
+                });
             }
 
             // ==========================================
@@ -6067,6 +6216,7 @@
             // TAB 3: SOCIAL STYLES HEATMAP (4 MÀU SLIDE 93/94 v11)
             // ==========================================
             function renderSocialHeatmap() {
+                if (currentGlobalScope === "DHM") return;
                 const pool = activeLearnersPool;
                 const total = pool.length;
 
@@ -6202,6 +6352,7 @@
             // TAB 4: TKI CONFLICT MODES (5 MÀU SLIDE 82 v11)
             // ==========================================
             function renderTkiHeatmap() {
+                if (currentGlobalScope === "DHM") return;
                 const pool = activeLearnersPool;
                 const total = pool.length;
 
@@ -6343,6 +6494,7 @@
             // TAB 5: BẢNG 18 CỘT THU HOẠCH CHI TIẾT 6 TRẠM (RỘNG CỐ ĐỊNH 3.240PX)
             // ==========================================
             function renderTab18Boxes() {
+                if (currentGlobalScope === "DHM") return;
                 const tbody = document.getElementById("table18-tbody");
                 if (!tbody) return;
                 const search = (document.getElementById("table18-search-input")?.value || "").toLowerCase().trim();
@@ -6425,6 +6577,7 @@
             }
 
             function export18ColCsv() {
+                if (currentGlobalScope === "DHM") return;
                 const list = activeLearnersPool;
                 if (!list.length) {
                     showToast("Không có dữ liệu để xuất CSV!", "error");
@@ -6520,6 +6673,7 @@
             }
 
             function renderTabCollectiveCta() {
+                if (currentGlobalScope === "DHM") return;
                 const pool = activeLearnersPool;
                 const total = pool.length;
 
@@ -6792,7 +6946,9 @@ ${locationDate}`;
                         (item.identity && item.identity.toLowerCase() === query)
                     );
                 }
-                if (!l) return;
+                if (!l || !isLearnerAllowedInCurrentScope(l)) return;
+                markLearnerModalScope(document.getElementById("modal-18-boxes"), l);
+                markLearnerModalScope(document.getElementById("learner-detail-modal"), l);
                 populateUnifiedLearnerModal(l);
 
                 document.getElementById("modal-18-boxes")?.classList.remove("hidden");
@@ -7319,7 +7475,13 @@ ${locationDate}`;
             });
 
             // Hàm đồng bộ Master Roster trực tiếp từ Google Sheets Webhook
-            async function syncMasterRosterFromSheets(showAlert = false) {
+            let masterRosterSyncUiCounter = 0;
+            let activeMasterRosterSyncUiId = 0;
+
+            async function syncMasterRosterFromSheets(showAlert = false, loadSessionId = beginLoadSession()) {
+                if (!isCurrentLoadSession(loadSessionId)) return;
+                const syncUiId = ++masterRosterSyncUiCounter;
+                activeMasterRosterSyncUiId = syncUiId;
                 if (btnSyncMasterSheets) {
                     btnSyncMasterSheets.textContent = "⏳ Đang tải...";
                     btnSyncMasterSheets.disabled = true;
@@ -7330,25 +7492,32 @@ ${locationDate}`;
                     let rosterData = null;
                     try {
                         const res = await fetch(`${WEBHOOK_URL}?action=get_master_roster&t=${Date.now()}`);
+                        if (!isCurrentLoadSession(loadSessionId) || activeMasterRosterSyncUiId !== syncUiId) return;
                         if (res.ok) {
                             const json = await res.json();
+                            if (!isCurrentLoadSession(loadSessionId) || activeMasterRosterSyncUiId !== syncUiId) return;
                             const list = json.data || json.learners;
                             if (json.success && Array.isArray(list) && list.length > 0) {
                                 rosterData = list;
                             }
                         }
                     } catch (e) {
+                        if (!isCurrentLoadSession(loadSessionId) || activeMasterRosterSyncUiId !== syncUiId) return;
                         console.warn("Không kết nối trực tiếp được Webhook get_master_roster, fallback tệp cục bộ:", e);
                     }
 
                     // Fallback tệp master_roster_sheets_data.json
                     if (!rosterData) {
+                        if (!isCurrentLoadSession(loadSessionId) || activeMasterRosterSyncUiId !== syncUiId) return;
                         const fallbackRes = await fetch(`master_roster_sheets_data.json?t=${Date.now()}`);
+                        if (!isCurrentLoadSession(loadSessionId) || activeMasterRosterSyncUiId !== syncUiId) return;
                         if (fallbackRes.ok) {
                             rosterData = await fallbackRes.json();
+                            if (!isCurrentLoadSession(loadSessionId) || activeMasterRosterSyncUiId !== syncUiId) return;
                         }
                     }
 
+                    if (!isCurrentLoadSession(loadSessionId) || activeMasterRosterSyncUiId !== syncUiId) return;
                     if (rosterData && Array.isArray(rosterData)) {
                         rosterData.forEach(r => {
                             const rEmail = (r.Email || r.email || "").toLowerCase().trim();
@@ -7403,12 +7572,15 @@ ${locationDate}`;
                         }
                     }
                 } catch (err) {
-                    if (showAlert) alert("Lỗi khi tải dữ liệu từ Google Sheets: " + err.message);
+                    if (isCurrentLoadSession(loadSessionId) && activeMasterRosterSyncUiId === syncUiId && showAlert) {
+                        alert("Lỗi khi tải dữ liệu từ Google Sheets: " + err.message);
+                    }
                 } finally {
-                    if (btnSyncMasterSheets) {
+                    if (activeMasterRosterSyncUiId === syncUiId && btnSyncMasterSheets) {
                         btnSyncMasterSheets.textContent = "🔄 Tải Từ Sheet";
                         btnSyncMasterSheets.disabled = false;
                     }
+                    if (activeMasterRosterSyncUiId === syncUiId) activeMasterRosterSyncUiId = 0;
                 }
             }
 
