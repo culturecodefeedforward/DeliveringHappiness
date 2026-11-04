@@ -514,7 +514,7 @@
     <div class="info-card-box">
       <strong style="color: var(--warm-yellow, #f59e0b); font-size: 1rem;">📌 Quy trình tiếp nhận & Quyền lợi ưu tiên:</strong>
       <ul>
-        <li><strong>Không gian đào tạo chuẩn mực:</strong> Học viên tham gia trực tiếp tại cơ sở đối tác chuẩn mực (Hà Nội: <strong>Apollo English - Phố Huế</strong>; TP.HCM: <strong>Cơ sở Apollo English</strong>).</li>
+        <li><strong>Không gian đào tạo chuẩn mực:</strong> Học viên tham gia trực tiếp tại cơ sở đối tác chuẩn mực (Hà Nội: <strong>Apollo English - Phố Huế</strong>; TP.HCM: <strong>Apollo English - Phạm Ngọc Thạch</strong>).</li>
         <li><strong>Quyền lợi ưu tiên:</strong> Khi để lại thông tin quan tâm, CultureCode Team sẽ lưu bạn vào danh sách ưu tiên. Ngay khi khóa học tại khu vực bạn đăng ký mở cổng tuyển sinh, bạn sẽ nhận được thông báo sớm nhất để giữ chỗ chính thức.</li>
       </ul>
     </div>
@@ -551,11 +551,11 @@
 
           <!-- Thẻ TP.HCM -->
           <label class="location-card" id="cardHcm" data-region="hcm">
-            <input type="radio" name="preferredLocation" value="TP.HCM - Cơ sở Apollo English" required />
+            <input type="radio" name="preferredLocation" value="TP.HCM - Apollo English - Phạm Ngọc Thạch" required />
             <div class="location-card-content">
               <span class="location-card-title">TP. Hồ Chí Minh</span>
-              <span class="location-card-venue">Cơ sở Apollo English (DHM10)</span>
-              <span class="location-status-badge badge-open">Đang mở đăng ký</span>
+              <span class="location-card-venue">Apollo English - Phạm Ngọc Thạch (Dự kiến DHM12)</span>
+              <span class="location-status-badge badge-pending">Nhận thông tin đợt tới</span>
             </div>
           </label>
         </div>
@@ -620,7 +620,7 @@
         Bạn có muốn chuyển sang trang Đăng ký & Giữ chỗ ngay bây giờ không?
       </p>
       <div class="modal-actions">
-        <a href="register_dhm10.html" class="btn-modal-primary" id="btnGoRegister">👉 Đến trang Đăng ký ngay</a>
+        <a href="next_dhm.html" class="btn-modal-primary" id="btnGoRegister">👉 Nhận thông tin các khóa sau</a>
         <button type="button" class="btn-modal-secondary" id="btnCloseModal">Ở lại để nhận thông tin các khóa sau</button>
       </div>
     </div>
@@ -632,13 +632,13 @@
     // CẤU HÌNH CÁC KHÓA ĐANG MỞ / DỰ KIẾN (Dễ dàng mở rộng cho tương lai)
     const ACTIVE_COHORTS_CONFIG = {
       hcm: {
-        isOpen: true,
-        cohortName: "Khóa DHM10 tại TP.HCM",
-        eventDate: "Chủ Nhật 01/11/2026 (Offline trực tiếp) • Khởi động Webinar LMS: Tối Thứ Sáu 30/10/2026",
+        isOpen: false,
+        cohortName: "Khóa DHM12 tại TP.HCM",
+        eventDate: "Dự kiến Quý 4/2026 (Offline trực tiếp)",
         venue: "Cơ sở Apollo English, 58 Phạm Ngọc Thạch, Phường Võ Thị Sáu, Quận 3, TP.HCM",
         fee: "250.000đ (Chi phí hậu cần, tài liệu, ăn trưa & teabreak)",
         cap: 35,
-        registerUrl: "register_dhm10.html"
+        registerUrl: "next_dhm.html"
       },
       hn: {
         isOpen: false,
@@ -647,7 +647,7 @@
         venue: "Apollo English - Phố Huế, Hà Nội",
         fee: "250.000đ",
         cap: 35,
-        registerUrl: "register_dhm11.html"
+        registerUrl: "next_dhm.html"
       }
     };
 
@@ -734,13 +734,7 @@
       var formData = new FormData(event.target);
       var formValues = Object.fromEntries(formData.entries());
 
-            var locationChosen = formValues.preferredLocation || 'Chưa xác định';
-      if (locationChosen.indexOf('TP.HCM') !== -1 || locationChosen.indexOf('Hồ Chí Minh') !== -1) {
-        submit.disabled = false;
-        submit.textContent = 'Gửi đăng ký quan tâm';
-        openCohortModal('hcm');
-        return;
-      }
+      var locationChosen = formValues.preferredLocation || 'Chưa xác định';
       var noteParts = ['[Địa điểm mong muốn: ' + locationChosen + ']'];
 
       var refName = formValues.referrerName ? formValues.referrerName.trim() : '';

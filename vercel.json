@@ -7,8 +7,8 @@
     { "source": "/interest_dh10.html", "destination": "/next_dhm", "permanent": false },
     { "source": "/interest", "destination": "/next_dhm", "permanent": false },
     { "source": "/interest.html", "destination": "/next_dhm", "permanent": false },
-    { "source": "/register", "destination": "/register_dhm10", "permanent": false },
-    { "source": "/register.html", "destination": "/register_dhm10", "permanent": false },
+    { "source": "/register", "destination": "/next_dhm", "permanent": false },
+    { "source": "/register.html", "destination": "/next_dhm", "permanent": false },
     { "source": "/h", "destination": "/", "permanent": false }
   ],
   "rewrites": [
