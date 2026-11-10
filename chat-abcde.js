@@ -18,6 +18,19 @@
     D: "",
     E: ""
   };
+  const SYSTEM_BUTTON_PROMPTS = [
+    "Tôi muốn phản biện sâu thêm.",
+    "Tôi muốn phản biện thêm.",
+    "Tôi đã sẵn sàng chuyển sang bước E.",
+    "Đã hiệu quả, đi tiếp"
+  ];
+  let rawStepMessages = {
+    STEP_A: [],
+    STEP_B: [],
+    STEP_C: [],
+    STEP_D: [],
+    STEP_E: []
+  };
 
   // Focus management
   let _lastFocusedEl = null;
@@ -422,9 +435,9 @@
     inputField.value = "";
     appendMessage("user", text);
 
-    // Save step response to currentPractice object locally during disputation loop
-    if (currentState === "STEP_D") {
-      currentPractice.D += (currentPractice.D ? "\n" : "") + text;
+    // Thu thập câu trả lời của học viên theo từng bước (lọc bỏ các câu lệnh nút bấm tự động)
+    if (rawStepMessages[currentState] && !SYSTEM_BUTTON_PROMPTS.includes(text)) {
+      rawStepMessages[currentState].push(text);
     }
 
     // Call Socratic Chat API
@@ -553,6 +566,63 @@
     }
   }
 
+  // Xây dựng dữ liệu bài tập ABCDE chuẩn hóa và làm sạch (bảo toàn nghịch cảnh A, lọc nút bấm D, đúc kết E)
+  function buildStructuredPracticeData() {
+    // 1. Bước A: Nghịch cảnh (Adversity)
+    let aText = "";
+    if (rawStepMessages.STEP_A.length === 1) {
+      aText = rawStepMessages.STEP_A[0];
+    } else if (rawStepMessages.STEP_A.length > 1) {
+      aText = "• Nghịch cảnh ban đầu: " + rawStepMessages.STEP_A[0] + "\n• Chi tiết bổ sung bối cảnh: " + rawStepMessages.STEP_A.slice(1).join(" — ");
+    } else {
+      aText = currentPractice.A || "";
+    }
+
+    // 2. Bước B: Niềm tin tự động (Belief)
+    let bText = rawStepMessages.STEP_B.length > 0 ? rawStepMessages.STEP_B.join("\n") : (currentPractice.B || "");
+
+    // 3. Bước C: Hệ quả (Consequence)
+    let cText = rawStepMessages.STEP_C.length > 0 ? rawStepMessages.STEP_C.join("\n") : (currentPractice.C || "");
+
+    // 4. Bước D: Phản biện (Disputation) - định dạng phân đoạn góc nhìn
+    let dText = "";
+    if (rawStepMessages.STEP_D.length === 1) {
+      dText = rawStepMessages.STEP_D[0];
+    } else if (rawStepMessages.STEP_D.length > 1) {
+      dText = rawStepMessages.STEP_D.map((m, idx) => `• Góc nhìn ${idx + 1}: ${m}`).join("\n");
+    } else {
+      dText = currentPractice.D || "";
+    }
+
+    // 5. Bước E: Thiết lập Năng lượng & Hành động (Energization) + Đúc kết AI
+    let eText = "";
+    if (rawStepMessages.STEP_E.length > 0) {
+      eText = rawStepMessages.STEP_E.map(m => `• ${m}`).join("\n");
+    } else {
+      eText = currentPractice.E || "";
+    }
+
+    // Tìm câu AI Coach cuối cùng ở bước E trong chatHistory
+    let lastAiMsg = "";
+    for (let i = chatHistory.length - 1; i >= 0; i--) {
+      if (chatHistory[i].role === "ai" && chatHistory[i].content) {
+        lastAiMsg = chatHistory[i].content.replace(/\[NEXT_STATE:[^\]]+\]/g, "").trim();
+        break;
+      }
+    }
+    if (lastAiMsg) {
+      eText += (eText ? "\n\n" : "") + "💡 Lời đúc kết từ AI Socratic:\n" + lastAiMsg;
+    }
+
+    return {
+      A: aText,
+      B: bText,
+      C: cText,
+      D: dText,
+      E: eText
+    };
+  }
+
   // State: SUBMIT - Render Email Form
   function renderSubmitForm() {
     updateStatus("Gửi báo cáo", null);
@@ -599,6 +669,7 @@
       submitError.style.display = "none";
 
       try {
+        const structuredData = buildStructuredPracticeData();
         // Submit luôn đi qua api/chat-abcde chính để đồng nhất chữ ký HMAC gửi Apps Script
         const response = await fetch("/api/chat-abcde", {
           method: "POST",
@@ -609,7 +680,8 @@
             fullName: fullName,
             email: email,
             chatVersion: chatVersion, // Gửi phiên bản sử dụng
-            data: currentPractice
+            data: structuredData,
+            history: chatHistory
           })
         });
 

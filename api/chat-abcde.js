@@ -261,6 +261,8 @@ async function handler(req, res) {
     const stringToSign = `${timestamp}.${nonce}.${payloadHash}`;
     const signature = crypto.createHmac('sha256', sharedToken).update(stringToSign).digest('hex');
 
+    const history = Array.isArray(body.history) ? body.history : [];
+
     const upstreamPayload = {
       action: 'submit_abcde',
       timestamp: timestamp,
@@ -270,6 +272,7 @@ async function handler(req, res) {
       fullName: fullName,
       email: email,
       data: practiceData,
+      history: history,
       passcode: passcode,
       chatVersion: chatVersion
     };
