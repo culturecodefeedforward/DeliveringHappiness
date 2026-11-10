@@ -1,5 +1,14 @@
 {
   "cleanUrls": true,
+  "functions": {
+    "api/chat-abcde-rag.js": {
+      "maxDuration": 30,
+      "includeFiles": "data/artifacts/**"
+    },
+    "api/chat-abcde.js": {
+      "maxDuration": 30
+    }
+  },
   "redirects": [
     { "source": "/login", "destination": "/lms", "permanent": true },
     { "source": "/login.html", "destination": "/lms", "permanent": true },

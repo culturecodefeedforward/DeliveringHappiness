@@ -153,7 +153,7 @@ async function handler(req, res) {
     return sendJson(res, 500, { success: false, error: 'MISSING_API_KEY', message: 'Cấu hình hệ thống bị thiếu.' });
   }
 
-  const geminiModel = process.env.GEMINI_MODEL || 'gemini-3.1-flash-lite';
+  const geminiModel = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
 
   // Action: Chat
   if (action === 'chat') {
@@ -182,15 +182,27 @@ async function handler(req, res) {
     const targetUrl = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`;
 
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 9000); // 9 giây timeout an toàn trước trần Vercel
+
       const response = await fetch(targetUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestPayload)
+        body: JSON.stringify(requestPayload),
+        signal: controller.signal
       });
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         const errText = await response.text();
-        console.error('Gemini API Error:', errText);
+        console.error('Gemini API Error:', response.status, errText);
+        if (response.status === 429) {
+          return sendJson(res, 429, {
+            success: false,
+            error: 'GEMINI_RATE_LIMIT',
+            message: 'Hệ thống AI đang tiếp nhận nhiều lượt thực hành cùng lúc. Vui lòng thử lại sau 15 giây.'
+          });
+        }
         return sendJson(res, 502, { success: false, error: 'GEMINI_API_FAILED', message: 'Không thể nhận phản hồi từ AI.' });
       }
 
@@ -217,7 +229,12 @@ async function handler(req, res) {
       return sendJson(res, 200, { success: true, reply: cleanReply, nextState: nextState });
     } catch (err) {
       console.error('Fetch Gemini exception:', err);
-      return sendJson(res, 502, { success: false, error: 'FETCH_GEMINI_EXCEPTION', message: 'Lỗi kết nối AI.' });
+      const isTimeout = err.name === 'AbortError' || err.name === 'TimeoutError';
+      return sendJson(res, 502, {
+        success: false,
+        error: isTimeout ? 'GEMINI_TIMEOUT' : 'FETCH_GEMINI_EXCEPTION',
+        message: isTimeout ? 'Yêu cầu tới AI đã quá thời gian chờ. Vui lòng bấm Thử lại tin nhắn.' : 'Lỗi kết nối AI.'
+      });
     }
   }
 

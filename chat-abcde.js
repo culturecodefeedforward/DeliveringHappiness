@@ -339,9 +339,9 @@
     inputField.focus();
   }
 
-  // Handling Fallback to Stable UI when RAG fails
+  // Handling Fallback to Stable UI when RAG is explicitly disabled
   function renderFallbackNotice(lastMessage) {
-    appendMessage("system", "⚠️ Phiên bản thử nghiệm (RAG Beta) đang gặp sự cố kết nối hoặc đã bị tắt. Bạn có muốn chuyển về Bản ổn định để tiếp tục bài thực hành không?");
+    appendMessage("system", "⚠️ Phiên bản thử nghiệm (RAG Beta) hiện đang tạm tắt. Bạn có muốn chuyển về Bản ổn định để tiếp tục bài thực hành không?");
     
     const fallbackEl = document.createElement("div");
     fallbackEl.className = "abcde-fallback-area";
@@ -367,6 +367,48 @@
       appendMessage("system", "🔄 Đã chuyển sang Bản ổn định. Đang gửi lại phản hồi của bạn...");
       
       // Gửi lại tin nhắn
+      inputField.value = lastMessage;
+      handleUserMessage();
+    });
+  }
+
+  // Handling Transient Error in Beta mode (keeps inputArea active, offers Retry + Switch)
+  function renderTransientError(lastMessage, errorMsg) {
+    appendMessage("system", `⚠️ ${errorMsg || "Kết nối tới AI đang bị chậm hoặc gián đoạn."} Bạn có thể nhấn [Thử lại tin nhắn] hoặc [Chuyển về Bản ổn định]:`);
+
+    const retryEl = document.createElement("div");
+    retryEl.className = "abcde-retry-area";
+    retryEl.style.display = "flex";
+    retryEl.style.justify = "center";
+    retryEl.style.gap = "10px";
+    retryEl.style.marginTop = "10px";
+    retryEl.style.padding = "5px";
+    retryEl.style.flexWrap = "wrap";
+    retryEl.innerHTML = `
+      <button class="abcde-btn-send" id="btnRetryMessage" style="background: linear-gradient(135deg, #0284c7, #38bdf8); padding: 8px 16px; font-size: 0.9rem;">🔄 Thử lại tin nhắn</button>
+      <button class="abcde-btn-send" id="btnSwitchToStable" style="background-color: #d97706; padding: 8px 16px; font-size: 0.9rem;">Chuyển về Bản ổn định</button>
+    `;
+    chatBody.appendChild(retryEl);
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+    // Giữ nguyên ô nhập văn bản và cho phép gõ lại
+    inputArea.style.display = "flex";
+    inputField.disabled = false;
+    btnSend.disabled = false;
+    inputField.value = lastMessage;
+    inputField.focus();
+
+    document.getElementById("btnRetryMessage").addEventListener("click", () => {
+      retryEl.remove();
+      inputField.value = lastMessage;
+      handleUserMessage();
+    });
+
+    document.getElementById("btnSwitchToStable").addEventListener("click", () => {
+      retryEl.remove();
+      chatVersion = "stable";
+      activeApiEndpoint = "/api/chat-abcde";
+      appendMessage("system", "🔄 Đã chuyển sang Bản ổn định. Đang gửi lại phản hồi của bạn...");
       inputField.value = lastMessage;
       handleUserMessage();
     });
@@ -405,22 +447,46 @@
         })
       });
 
-      // Bắt lỗi 503 hoặc 502 khi RAG Beta bị tắt / lỗi
-      if (response.status === 503 || response.status === 502) {
-        removeTypingIndicator();
-        btnSend.disabled = false;
-        inputField.disabled = false;
-        
+      // Phòng vệ kép phân tích JSON (xử lý khi Vercel trả HTML 504 Gateway Timeout)
+      const contentType = response.headers.get("content-type") || "";
+      let result = null;
+      if (contentType.includes("application/json")) {
+        try {
+          result = await response.json();
+        } catch (jsonErr) {
+          result = null;
+        }
+      }
+
+      removeTypingIndicator();
+      btnSend.disabled = false;
+      inputField.disabled = false;
+
+      // 1. Kiểm tra trạng thái RAG bị tắt chủ động từ quản trị viên (HTTP 503)
+      if (response.status === 503 && result && result.error === "RAG_BETA_DISABLED") {
         if (chatVersion === "beta") {
           renderFallbackNotice(text);
           return;
         }
       }
 
-      const result = await response.json();
-      removeTypingIndicator();
-      btnSend.disabled = false;
-      inputField.disabled = false;
+      // 2. Xử lý các mã lỗi hoặc khi server không trả về JSON hợp lệ (502, 504, 429...)
+      if (!response.ok || !result) {
+        let errorMsg = result && result.message ? result.message : "";
+        if (response.status === 429) {
+          errorMsg = errorMsg || "Hệ thống AI đang tiếp nhận nhiều lượt thực hành. Vui lòng thử lại sau 15 giây.";
+        } else if (response.status === 504 || response.status === 502) {
+          errorMsg = errorMsg || "Máy chủ AI phản hồi chậm hơn thường lệ (kết nối mạng tạm ngắt quãng).";
+        }
+
+        if (chatVersion === "beta") {
+          renderTransientError(text, errorMsg);
+          return;
+        } else {
+          appendMessage("system", `Lỗi (${response.status}): ${errorMsg || "Không thể tải phản hồi từ AI. Vui lòng thử lại."}`);
+          return;
+        }
+      }
 
       if (result.success) {
         appendMessage("ai", result.reply);
@@ -480,7 +546,7 @@
       inputField.disabled = false;
       
       if (chatVersion === "beta") {
-        renderFallbackNotice(text);
+        renderTransientError(text, "Lỗi kết nối mạng: Không thể gửi yêu cầu tới máy chủ.");
       } else {
         appendMessage("system", "Lỗi mạng: Vui lòng thử lại tin nhắn vừa rồi.");
       }
