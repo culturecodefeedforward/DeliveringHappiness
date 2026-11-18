@@ -2,6 +2,8 @@
 // SCOPE: Analytics only (fire-and-forget). Logic đăng ký nghiệp vụ nằm trong register.js.
 
 const SHEET_WEBAPP_URL = window.CUSTOM_WEBAPP_URL || "https://script.google.com/macros/s/AKfycbxxbba8bvb7H2Em179HgJUv0Tj8dnxWIuGynmVqjDcPVwADrTBXxx7UwE5AKroIQR5i/exec";
+// Tạm khóa gửi analytics ra ngoài đến khi User chốt chính sách đồng ý, lưu trữ và chống lạm dụng.
+const PUBLIC_ANALYTICS_ENABLED = false;
 const sessionId = 'dh-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);
 
 window.sessionId = sessionId; // Export cho quiz.js dùng chung
@@ -11,6 +13,7 @@ window.sessionId = sessionId; // Export cho quiz.js dùng chung
  * Lỗi analytics KHÔNG ảnh hưởng luồng đăng ký nghiệp vụ.
  */
 async function logAnalytics(event, detail, extra = {}) {
+    if (!PUBLIC_ANALYTICS_ENABLED) return;
     const targetUrl = window.CUSTOM_WEBAPP_URL || SHEET_WEBAPP_URL;
     if (!targetUrl) return;
     try {

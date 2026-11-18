@@ -7,11 +7,31 @@
     { "source": "/interest_dh10.html", "destination": "/next_dhm", "permanent": false },
     { "source": "/interest", "destination": "/next_dhm", "permanent": false },
     { "source": "/interest.html", "destination": "/next_dhm", "permanent": false },
-    { "source": "/register", "destination": "/register_dhm10", "permanent": false },
-    { "source": "/register.html", "destination": "/register_dhm10", "permanent": false },
+    { "source": "/register", "destination": "/next_dhm", "permanent": false },
+    { "source": "/register.html", "destination": "/next_dhm", "permanent": false },
     { "source": "/h", "destination": "/", "permanent": false }
   ],
   "rewrites": [
+    { "source": "/api/leads", "destination": "/api/arch01?__arch01_route=/api/leads" },
+    { "source": "/api/assessment/attempts", "destination": "/api/arch01?__arch01_route=/api/assessment/attempts" },
+    { "source": "/api/assessment/personal-values", "destination": "/api/arch01?__arch01_route=/api/assessment/personal-values" },
+    { "source": "/api/hub/survey-completion", "destination": "/api/arch01?__arch01_route=/api/hub/survey-completion" },
+    { "source": "/api/auth/login", "destination": "/api/arch01?__arch01_route=/api/auth/login" },
+    { "source": "/api/auth/session", "destination": "/api/arch01?__arch01_route=/api/auth/session" },
+    { "source": "/api/auth/refresh", "destination": "/api/arch01?__arch01_route=/api/auth/refresh" },
+    { "source": "/api/auth/password", "destination": "/api/arch01?__arch01_route=/api/auth/password" },
+    { "source": "/api/auth/logout", "destination": "/api/arch01?__arch01_route=/api/auth/logout" },
+    { "source": "/api/auth/trial/request", "destination": "/api/arch01?__arch01_route=/api/auth/trial/request" },
+    { "source": "/api/auth/trial/activate", "destination": "/api/arch01?__arch01_route=/api/auth/trial/activate" },
+    { "source": "/api/auth/trial/session", "destination": "/api/arch01?__arch01_route=/api/auth/trial/session" },
+    { "source": "/api/auth/trial/refresh", "destination": "/api/arch01?__arch01_route=/api/auth/trial/refresh" },
+    { "source": "/api/auth/trial/logout", "destination": "/api/arch01?__arch01_route=/api/auth/trial/logout" },
+    { "source": "/api/telemetry/progress", "destination": "/api/arch01?__arch01_route=/api/telemetry/progress" },
+    { "source": "/api/telemetry/progress/restore", "destination": "/api/arch01?__arch01_route=/api/telemetry/progress/restore" },
+    { "source": "/api/admin/login", "destination": "/api/arch01?__arch01_route=/api/admin/login" },
+    { "source": "/api/admin/session", "destination": "/api/arch01?__arch01_route=/api/admin/session" },
+    { "source": "/api/admin/logout", "destination": "/api/arch01?__arch01_route=/api/admin/logout" },
+    { "source": "/api/admin/roster", "destination": "/api/arch01?__arch01_route=/api/admin/roster" },
     { "source": "/lms/data/:path*", "destination": "/data/:path*" }
   ]
 }

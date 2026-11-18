@@ -52,32 +52,9 @@
     checkLmsSyncNotice();
   });
 
-  // Tải danh bạ học viên chính thức (Roster)
+  // Roster công khai đã được gỡ bỏ theo chuẩn bảo mật SEC-01
   async function loadAuthorizedRoster() {
-    if (authorizedRoster && authorizedRoster.length > 0) return authorizedRoster;
-    try {
-      const paths = [
-        "/lms/master_learners_roster.json",
-        "lms/master_learners_roster.json",
-        "/lms/authorized_roster.json",
-        "lms/authorized_roster.json",
-        "./lms/authorized_roster.json"
-      ];
-      for (const p of paths) {
-        try {
-          const resp = await fetch(p + "?v=" + Date.now());
-          if (resp.ok) {
-            const data = await resp.json();
-            if (Array.isArray(data) && data.length > 0) {
-              authorizedRoster = data;
-              return authorizedRoster;
-            }
-          }
-        } catch (err) {}
-      }
-    } catch (e) {
-      console.warn("Không thể tải roster:", e);
-    }
+    authorizedRoster = [];
     return [];
   }
 
@@ -516,6 +493,27 @@
       }, 1000);
     }
 
+    function restoreTrialFormAfterFailure(message) {
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
+      if (formSection) formSection.style.display = "block";
+      if (waitingSection) waitingSection.style.display = "none";
+      showTrialError(message);
+      if (btnSubmitTrial) {
+        btnSubmitTrial.disabled = false;
+        btnSubmitTrial.innerText = "Nhận Liên Kết Kích Hoạt Qua Email";
+      }
+      if (btnResend) {
+        btnResend.disabled = false;
+        btnResend.style.cursor = "pointer";
+        btnResend.style.background = "#ffffff";
+        btnResend.style.color = "#d97706";
+        btnResend.innerText = "Gửi lại liên kết mới";
+      }
+    }
+
     async function handleTrialSubmit() {
       clearTrialError();
       const fn = fullNameInput ? fullNameInput.value.trim() : "";
@@ -565,7 +563,7 @@
         });
         const res = await resp.json();
 
-        if (res && res.success) {
+        if (resp.status === 200 && res && res.success === true) {
           if (formSection) formSection.style.display = "none";
           if (waitingSection) {
             waitingSection.style.display = "block";
@@ -573,20 +571,11 @@
           }
           startCountdown(res.retry_after_seconds || 60);
         } else {
-          showTrialError(res.message || "Không thể gửi email lúc này. Vui lòng thử lại sau.");
-          if (btnSubmitTrial) {
-            btnSubmitTrial.disabled = false;
-            btnSubmitTrial.innerText = "Nhận Liên Kết Kích Hoạt Qua Email";
-          }
+          restoreTrialFormAfterFailure(res.message || "Không thể gửi email lúc này. Vui lòng thử lại sau.");
         }
       } catch (err) {
-        // Fallback offline / network glitch
-        if (formSection) formSection.style.display = "none";
-        if (waitingSection) {
-          waitingSection.style.display = "block";
-          if (waitingEmail) waitingEmail.innerText = em;
-        }
-        startCountdown(60);
+        // Không xác nhận được phản hồi; không hiển thị như email đã được gửi.
+        restoreTrialFormAfterFailure("Không xác nhận được trạng thái yêu cầu. Hãy kiểm tra email trước khi thử lại.");
       }
     }
 

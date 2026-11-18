@@ -91,6 +91,28 @@
             }
         }
 
+        /* Mobile Sidebar Width Guard (prevents horizontal overflow on narrow viewports) */
+        @media (max-width: 1023.98px) {
+            aside#sidebar {
+                width: 20rem;
+                max-width: min(85vw, calc(100vw - 32px));
+            }
+        }
+
+        /* Compact Header Guard for 360px Mobile Viewports */
+        @media (max-width: 389.98px) {
+            body > header {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+            body > header > div:first-child {
+                gap: 0.375rem;
+            }
+            body > header #user-display-name {
+                max-width: 28px;
+            }
+        }
+
         .scenario-accordion-content {
             transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
         }
@@ -243,7 +265,7 @@
     <div class="flex-1 flex overflow-hidden relative">
 
         <!-- SIDEBAR: CURRICULUM SYLLABUS (Left Column) -->
-        <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-30 w-84 lg:w-96 bg-brand-surface border-r border-brand-border flex flex-col transition-all duration-300 transform -translate-x-full lg:translate-x-0 h-[calc(100vh-61px)]">
+        <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-30 w-80 max-w-[calc(100vw-32px)] lg:w-96 lg:max-w-none bg-brand-surface border-r border-brand-border flex flex-col transition-all duration-300 transform -translate-x-full lg:translate-x-0 h-[calc(100vh-61px)]">
             <div class="p-4 border-b border-brand-border flex items-center justify-between">
                 <div>
                     <h2 class="text-xs uppercase tracking-wider font-bold text-slate-400">Giáo Trình Khóa Học</h2>
@@ -1017,7 +1039,7 @@
                                         </h4>
                                     </div>
                                     <div class="flex items-center gap-2 flex-wrap">
-                                        <button class="btn-play-habit-audio text-xs text-brand-amber hover:underline flex items-center gap-1 cursor-pointer" data-audio="data/artifacts/70000_gio_lam_viec.mp3">
+                                        <button class="btn-play-habit-audio text-xs text-brand-amber hover:underline flex items-center gap-1 cursor-pointer" data-audio="../data/artifacts/70000_gio_lam_viec.mp3">
                                             <span>▶ Audio Tự Chủ (70.000 giờ)</span>
                                         </button>
                                         <span class="text-slate-600">•</span>
@@ -2663,7 +2685,7 @@
                             </div>
 
                             <label class="flex items-start gap-2 cursor-pointer pt-1">
-                                <input type="checkbox" id="trial-consent" checked class="mt-0.5 rounded border-slate-700 text-brand-amber focus:ring-brand-amber" />
+                                <input type="checkbox" id="trial-consent" class="mt-0.5 rounded border-slate-700 text-brand-amber focus:ring-brand-amber" />
                                 <span class="text-[10.5px] text-slate-400 leading-tight">
                                     Đăng ký thông tin &amp; nhận liên kết kích hoạt học thử qua email.
                                 </span>
@@ -3281,6 +3303,13 @@
     </div>
 
     <!-- ENGINE LOGIC -->
+    <script>
+        window.__DHM_LOCAL_API_CONFIG__ = {
+            enabled: true,
+            accessTokenStorageKey: "dhm_lms_api_access_token",
+            refreshTokenStorageKey: "dhm_lms_api_refresh_token"
+        };
+    </script>
     <script src="../chat-abcde.js" onerror="console.log('Standalone preview mode: external chat-abcde skipped');"></script>
     <script>
         (function() {

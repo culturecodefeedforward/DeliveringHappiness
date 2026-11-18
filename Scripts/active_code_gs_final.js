@@ -42,6 +42,7 @@ var DEFAULT_DH9_INTEREST_URL = 'https://delivering-happiness.vercel.app/interest
 var DEFAULT_DH10_INTEREST_URL = 'https://delivering-happiness.vercel.app/interest_dh10.html';
 var CALLBACK_REGEX = /^dh(?:m8|9|10)Jsonp_[A-Za-z0-9]{16,40}$/;
 var PROGRAM_INTEREST_CALLBACK_REGEX = /^programInterestJsonp_[A-Za-z0-9]{16,40}$/;
+var NEXT_DHM_INTEREST_CALLBACK_REGEX = /^nextDhmInterestJsonp_[A-Za-z0-9]{16,40}$/;
 var PROGRAM_INTEREST_SHEET_NAME = 'Program Interest';
 var PROGRAM_INTEREST_EVENT_ID = 'PROGRAM_INTEREST_V1';
 var PROGRAM_INTEREST_HEADERS = [
@@ -837,6 +838,20 @@ function doPost(e) {
       return handleProgramInterest_(body);
     }
 
+    // --- BLOOMING ON 1 (5 NGÔN NGỮ TRÂN TRỌNG, WORKSHOP I•A•M & CRM FUNNEL) ---
+    if (body.action === 'sync_5lang_result' || String(body.type || '').toUpperCase() === 'FIVE_LANG_SUBMISSION') {
+      return handleBlooming5LangSubmission_(body);
+    }
+    if (body.action === 'sync_blooming_workshop' || String(body.type || '').toUpperCase() === 'BLOOMING_WORKSHOP_SUBMISSION') {
+      return handleBloomingWorkshopSubmission_(body);
+    }
+    if (body.action === 'sync_blooming_checkin' || String(body.type || '').toUpperCase() === 'BLOOMING_CHECKIN') {
+      return handleBloomingCheckinSubmission_(body);
+    }
+    if (body.action === 'blooming_funnel_optin' || String(body.type || '').toUpperCase() === 'BLOOMING_ON_INTEREST') {
+      return handleBloomingFunnelOptin_(body);
+    }
+
     if (String(body.type || '').toUpperCase().indexOf('INTEREST') !== -1) {
       return handleInterestLead_(body, detectLaneKeyFromPayload_(body));
     }
@@ -858,7 +873,7 @@ function doPost(e) {
 
     // --- BÀI TEST GIÁ TRỊ CỐT LÕI (PERSONAL VALUES) ---
     if (body.action === 'submit_pv') {
-      return handlePersonalValuesSubmission(body);
+      return jsonOut(handlePersonalValuesSubmission(body));
     }
 
     // --- CỔNG ĐỊNH DANH AUTH GATE (SS, TKI, GTCL) ---
@@ -872,7 +887,16 @@ function doPost(e) {
       return handleAuthGateSyncSurveyCompletion_(body);
     }
 
-    // --- THỰC HÀNH LẠC QUAN ABCDE ---
+    // --- THỰC HÀNH LẠC QUAN ABCDE (HMAC GATEWAY & 1B-LMS) ---
+    if (body.action === 'abcde_verify_lms_owner') {
+      return jsonOut(handleAbcdeVerifyLmsOwner(body));
+    }
+    if (body.action === 'abcde_request_email_otp') {
+      return jsonOut(handleAbcdeRequestEmailOtp(body));
+    }
+    if (body.action === 'abcde_verify_email_otp') {
+      return jsonOut(handleAbcdeVerifyEmailOtp(body));
+    }
     if (body.action === 'submit_abcde') {
       return jsonOut(handleAbcdeSubmission(body));
     }
@@ -1009,6 +1033,17 @@ function doGet(e) {
     var interestStatus = getProgramInterestStatus_(e.parameter.interestUuid || e.parameter.uuid || '');
     return ContentService
       .createTextOutput(callback + '(' + JSON.stringify(interestStatus) + ');')
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+
+  if (action === 'checkNextDhmInterestStatus') {
+    if (!NEXT_DHM_INTEREST_CALLBACK_REGEX.test(callback)) {
+      return ContentService.createTextOutput('{"error":"INVALID_CALLBACK"}')
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    var nextDhmInterestStatus = getNextDhmInterestStatus_(e.parameter.interestUuid || '');
+    return ContentService
+      .createTextOutput(callback + '(' + JSON.stringify(nextDhmInterestStatus) + ');')
       .setMimeType(ContentService.MimeType.JAVASCRIPT);
   }
 
@@ -1516,13 +1551,27 @@ function sendInterestFacultyNotification_(ss, data, lane, uuid) {
     body
   );
 
+  var testMode = props.getProperty('TEST_MODE') === 'true';
+  var allowlistStr = props.getProperty('RECIPIENT_ALLOWLIST') || '';
+  var allowlist = allowlistStr.split(',').map(function(e) { return e.trim(); }).filter(Boolean);
+  var targetTo = facultyList.join(',');
+  var finalSubject = subject;
+  if (testMode) {
+    if (!allowlist.length) {
+      writeSystemLog(ss, 'WARN', 'Skipping Interest faculty email: TEST_MODE active but RECIPIENT_ALLOWLIST empty');
+      return;
+    }
+    targetTo = allowlist.join(',');
+    finalSubject = '[TEST -> ' + facultyList.join(',') + '] ' + subject;
+  }
+
   MailApp.sendEmail({
-    to: facultyList.join(','),
-    subject: subject,
+    to: targetTo,
+    subject: finalSubject,
     htmlBody: fullHtml
   });
 
-  writeSystemLog(ss, 'INFO', 'Đã gửi mail thông báo quan tâm ' + programTitle + ' cho BGH', uuid + ' to ' + facultyList.join(','));
+  writeSystemLog(ss, 'INFO', 'Đã gửi mail thông báo quan tâm ' + programTitle + ' cho BGH', uuid + ' to ' + targetTo);
 }
 
 /**
@@ -1832,6 +1881,43 @@ function getProgramInterestStatus_(interestUuid) {
   }
 
   var existingUuids = sheet.getRange(2, 2, sheet.getLastRow() - 1, 1).getValues();
+  for (var i = 0; i < existingUuids.length; i++) {
+    if (String(existingUuids[i][0] || '').trim() === uuid) {
+      return { success: true, state: 'recorded', interestUuid: uuid };
+    }
+  }
+  return { success: true, state: 'not_found', interestUuid: uuid };
+}
+
+function getNextDhmInterestStatus_(interestUuid) {
+  var uuid = String(interestUuid || '').trim();
+  if (!isValidProgramInterestUuid_(uuid)) {
+    return { success: false, state: 'error', error: 'INVALID_UUID', interestUuid: uuid };
+  }
+
+  var lane = getLaneConfig_('next_dhm');
+  var sheet = getSpreadsheet().getSheetByName(lane.interestSheetName);
+  if (!sheet || sheet.getLastRow() <= 1) {
+    return { success: true, state: 'not_found', interestUuid: uuid };
+  }
+
+  var lastColumn = sheet.getLastColumn();
+  if (lastColumn < 1) {
+    return { success: false, state: 'error', error: 'STATUS_SCHEMA_UNAVAILABLE', interestUuid: uuid };
+  }
+  var headers = sheet.getRange(1, 1, 1, lastColumn).getValues()[0];
+  var uuidColumn = -1;
+  for (var h = 0; h < headers.length; h++) {
+    if (String(headers[h] || '').trim().toLowerCase() === 'interest uuid') {
+      uuidColumn = h + 1;
+      break;
+    }
+  }
+  if (uuidColumn < 1) {
+    return { success: false, state: 'error', error: 'STATUS_SCHEMA_UNAVAILABLE', interestUuid: uuid };
+  }
+
+  var existingUuids = sheet.getRange(2, uuidColumn, sheet.getLastRow() - 1, 1).getValues();
   for (var i = 0; i < existingUuids.length; i++) {
     if (String(existingUuids[i][0] || '').trim() === uuid) {
       return { success: true, state: 'recorded', interestUuid: uuid };
@@ -2875,110 +2961,757 @@ function handleGetPvHistory_(email) {
   }
 }
 
+function abcdeBytesToHex_(bytes) {
+  var hex = '';
+  for (var i = 0; i < bytes.length; i++) {
+    var unsignedByte = bytes[i] < 0 ? bytes[i] + 256 : bytes[i];
+    hex += ('0' + unsignedByte.toString(16)).slice(-2);
+  }
+  return hex;
+}
+
+function abcdeSha256Hex_(input) {
+  var bytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, String(input || ''), Utilities.Charset.UTF_8);
+  return abcdeBytesToHex_(bytes);
+}
+
+function abcdeHmacSha256Hex_(message, secret) {
+  var bytes = Utilities.computeHmacSha256Signature(String(message || ''), String(secret || ''), Utilities.Charset.UTF_8);
+  return abcdeBytesToHex_(bytes);
+}
+
+function abcdeConstantTimeEqual_(a, b) {
+  var sa = String(a || '');
+  var sb = String(b || '');
+  if (sa.length === 0 || sa.length !== sb.length) return false;
+  var diff = 0;
+  for (var i = 0; i < sa.length; i++) {
+    diff |= (sa.charCodeAt(i) ^ sb.charCodeAt(i));
+  }
+  return diff === 0;
+}
+
+function sortAbcdeCanonicalValue_(val) {
+  if (val === null || typeof val !== 'object') return val;
+  if (Array.isArray(val)) {
+    return val.map(function(item) { return item === undefined ? null : sortAbcdeCanonicalValue_(item); });
+  }
+  var keys = Object.keys(val).sort();
+  var out = {};
+  for (var i = 0; i < keys.length; i++) {
+    var k = keys[i];
+    if (val[k] !== undefined) {
+      out[k] = sortAbcdeCanonicalValue_(val[k]);
+    }
+  }
+  return out;
+}
+
+function canonicalAbcdeJsonStringify_(val) {
+  return JSON.stringify(sortAbcdeCanonicalValue_(val));
+}
+
+function buildAbcdeCanonicalActionObject_(body, expectedAction) {
+  if (expectedAction === 'submit_abcde') {
+    return {
+      action: 'submit_abcde',
+      submissionId: String(body.submissionId || '').trim(),
+      fullName: String(body.fullName || '').trim(),
+      email: String(body.email || '').trim().toLowerCase(),
+      passcode: String(body.passcode || '').trim().toUpperCase(),
+      chatVersion: String(body.chatVersion || 'stable').trim(),
+      emailAuthVerified: Boolean(body.emailAuthVerified),
+      data: (body.data && typeof body.data === 'object' && !Array.isArray(body.data)) ? body.data : {},
+      history: Array.isArray(body.history) ? body.history : []
+    };
+  }
+  if (expectedAction === 'abcde_verify_lms_owner') {
+    return {
+      action: 'abcde_verify_lms_owner',
+      email: String(body.email || '').trim().toLowerCase(),
+      password: String(body.password || '').trim()
+    };
+  }
+  if (expectedAction === 'abcde_request_email_otp') {
+    return {
+      action: 'abcde_request_email_otp',
+      email: String(body.email || '').trim().toLowerCase()
+    };
+  }
+  if (expectedAction === 'abcde_verify_email_otp') {
+    return {
+      action: 'abcde_verify_email_otp',
+      email: String(body.email || '').trim().toLowerCase(),
+      otp: String(body.otp || '').trim()
+    };
+  }
+  return { action: expectedAction };
+}
+
+function verifyAbcdeGatewaySignature_(body, expectedAction) {
+  var props = getScriptProperties_();
+  var hmacMode = String(props.getProperty('ABCDE_HMAC_MODE') || 'STRICT').trim().toUpperCase();
+  var sharedToken = String(props.getProperty('DHM8_APPS_SCRIPT_TOKEN') || '').trim();
+  var signature = String((body && body.signature) || '').trim().toLowerCase();
+  var payloadHash = String((body && body.payloadHash) || '').trim().toLowerCase();
+  var nonce = String((body && body.nonce) || '').trim();
+  var ts = Number(body && body.timestamp);
+
+  // Chế độ chuyển tiếp OBSERVE chỉ dùng tạm trong cửa sổ phát hành ngắn khi không có token/signature mới
+  if (!sharedToken) {
+    if (hmacMode === 'OBSERVE') {
+      return { ok: true, mode: 'OBSERVE', observeWarning: 'MISSING_DHM8_APPS_SCRIPT_TOKEN' };
+    }
+    return { ok: false, error: 'GAS_CONFIG_ERROR', message: 'Thiếu cấu hình khóa bảo mật DHM8_APPS_SCRIPT_TOKEN trên Apps Script.' };
+  }
+
+  if (!signature || !payloadHash || !nonce || isNaN(ts)) {
+    if (hmacMode === 'OBSERVE') {
+      return { ok: true, mode: 'OBSERVE', observeWarning: 'MISSING_SIGNATURE_FIELDS' };
+    }
+    return { ok: false, error: 'INVALID_SIGNATURE', message: 'Thiếu chữ ký xác thực từ cổng API.' };
+  }
+
+  if (!/^[A-Za-z0-9_-]{16,128}$/.test(nonce)) {
+    return { ok: false, error: 'INVALID_SIGNATURE', message: 'Nonce không hợp lệ.' };
+  }
+
+  var nowSec = Math.floor(Date.now() / 1000);
+  if (Math.abs(nowSec - ts) > 300) {
+    return { ok: false, error: 'SIGNATURE_EXPIRED', message: 'Chữ ký xác thực đã hết hạn (> 300 giây).' };
+  }
+
+  var canonicalObj = buildAbcdeCanonicalActionObject_(body, expectedAction);
+  var expectedHash = abcdeSha256Hex_(canonicalAbcdeJsonStringify_(canonicalObj));
+  if (!abcdeConstantTimeEqual_(expectedHash, payloadHash)) {
+    if (hmacMode === 'OBSERVE') {
+      return { ok: true, mode: 'OBSERVE', observeWarning: 'PAYLOAD_HASH_MISMATCH' };
+    }
+    return { ok: false, error: 'INVALID_SIGNATURE', message: 'Nội dung dữ liệu không khớp chữ ký xác thực.' };
+  }
+
+  var stringToSign = expectedAction + '.' + ts + '.' + nonce + '.' + expectedHash;
+  var expectedSig = abcdeHmacSha256Hex_(stringToSign, sharedToken);
+  if (!abcdeConstantTimeEqual_(expectedSig, signature)) {
+    if (hmacMode === 'OBSERVE') {
+      return { ok: true, mode: 'OBSERVE', observeWarning: 'SIGNATURE_MISMATCH' };
+    }
+    return { ok: false, error: 'INVALID_SIGNATURE', message: 'Chữ ký HMAC không hợp lệ.' };
+  }
+
+  var cache = CacheService.getScriptCache();
+  var nonceKey = 'abcde_nonce_' + abcdeSha256Hex_(nonce).slice(0, 32);
+  if (cache.get(nonceKey)) {
+    return { ok: false, error: 'REPLAY_DETECTED', message: 'Yêu cầu đã được xử lý (trùng nonce).' };
+  }
+  cache.put(nonceKey, '1', 600);
+
+  return { ok: true, mode: hmacMode };
+}
+
+function getLatestLmsPasswordHash_(email) {
+  var cleanEmail = String(email || '').trim().toLowerCase();
+  if (!cleanEmail) return '';
+  var sheetsToCheck = [];
+  try {
+    if (typeof APOLLO_IAM_SPREADSHEET_ID !== 'undefined' && APOLLO_IAM_SPREADSHEET_ID) {
+      var apolloSs = SpreadsheetApp.openById(APOLLO_IAM_SPREADSHEET_ID);
+      if (apolloSs) sheetsToCheck.push(apolloSs);
+    }
+  } catch (eApollo) {}
+  try {
+    var mainSs = getSpreadsheet();
+    if (mainSs) sheetsToCheck.push(mainSs);
+  } catch (eMain) {}
+
+  var latestHash = '';
+  var latestTime = '';
+  for (var s = 0; s < sheetsToCheck.length; s++) {
+    try {
+      var sheet = sheetsToCheck[s].getSheetByName('LMS_Password_Updates');
+      if (!sheet) continue;
+      var rows = sheet.getDataRange().getValues();
+      for (var i = rows.length - 1; i >= 1; i--) {
+        if (String(rows[i][1] || '').trim().toLowerCase() === cleanEmail) {
+          var h = String(rows[i][2] || '').trim().toLowerCase();
+          var ts = String(rows[i][0] || '').trim();
+          if (h && (!latestHash || ts > latestTime)) {
+            latestHash = h;
+            latestTime = ts;
+          }
+          break;
+        }
+      }
+    } catch (eRead) {}
+  }
+  return latestHash;
+}
+
+function findEligibleAbcdeLearner_(email, allowAuthGateVerified) {
+  var cleanEmail = String(email || '').trim().toLowerCase();
+  if (!cleanEmail) return null;
+
+  // 1. Tra cứu Master_Roster (ưu tiên tài khoản ACTIVE)
+  try {
+    var rosterSs = getMasterRosterSpreadsheet_();
+    var rosterSheet = getOrCreateMasterRosterSheet(rosterSs);
+    var rows = rosterSheet.getDataRange().getValues();
+    var disabledFound = false;
+
+    for (var i = 1; i < rows.length; i++) {
+      var rEmail = String(rows[i][1] || '').trim().toLowerCase();
+      if (rEmail !== cleanEmail) continue;
+      var status = String(rows[i][5] || '').trim().toUpperCase();
+      if (status === 'ACTIVE') {
+        return {
+          source: 'MASTER_ROSTER',
+          email: cleanEmail,
+          fullName: String(rows[i][3] || '').trim() || cleanEmail,
+          phone: String(rows[i][2] || '').trim(),
+          passwordHash: String(rows[i][9] || '').trim().toLowerCase(),
+          defaultPassword: String(rows[i][10] || '').trim()
+        };
+      }
+      if (status === 'DISABLED') {
+        disabledFound = true;
+      }
+    }
+    if (disabledFound && !allowAuthGateVerified) {
+      return { source: 'DISABLED', email: cleanEmail };
+    }
+  } catch (eRoster) {
+    Logger.log('findEligibleAbcdeLearner_ roster err: ' + eRoster.toString());
+  }
+
+  // 2. Nếu được phép, tra cứu Leads_Directory (Auth Gate đã verified)
+  if (allowAuthGateVerified) {
+    try {
+      var mainSs = getSpreadsheet();
+      var leadsSheet = mainSs.getSheetByName(AUTH_GATE_CONFIG.SHEET_LEADS);
+      if (leadsSheet) {
+        var leadsRows = leadsSheet.getDataRange().getValues();
+        for (var j = 1; j < leadsRows.length; j++) {
+          var lEmail = String(leadsRows[j][3] || '').trim().toLowerCase();
+          var lStatus = String(leadsRows[j][4] || '').trim().toLowerCase();
+          if (lEmail === cleanEmail && lStatus === 'verified') {
+            return {
+              source: 'AUTH_GATE',
+              email: cleanEmail,
+              fullName: String(leadsRows[j][1] || '').trim() || cleanEmail
+            };
+          }
+        }
+      }
+    } catch (eLeads) {
+      Logger.log('findEligibleAbcdeLearner_ leads err: ' + eLeads.toString());
+    }
+  }
+
+  return null;
+}
+
+function handleAbcdeVerifyLmsOwner(body) {
+  var sigCheck = verifyAbcdeGatewaySignature_(body, 'abcde_verify_lms_owner');
+  if (!sigCheck.ok) {
+    return { success: false, verified: false, error: sigCheck.error, message: sigCheck.message };
+  }
+
+  var email = String((body && body.email) || '').trim().toLowerCase();
+  var password = String((body && body.password) || '').trim();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !password) {
+    return { success: false, verified: false, error: 'INVALID_INPUT', message: 'Vui lòng nhập đầy đủ Email và Mật khẩu LMS.' };
+  }
+
+  var learner = findEligibleAbcdeLearner_(email, false);
+  if (!learner) {
+    return {
+      success: false,
+      verified: false,
+      error: 'NOT_FOUND_OR_INACTIVE',
+      message: 'Email này chưa có tài khoản LMS đang hoạt động. Bạn có thể dùng phương thức OTP 6 số (nếu đã kích hoạt Auth Gate) hoặc lưu PDF ngay trên màn hình.'
+    };
+  }
+  if (learner.source === 'DISABLED') {
+    return { success: false, verified: false, error: 'ACCOUNT_DISABLED', message: 'Tài khoản LMS của bạn hiện đang tạm ngưng.' };
+  }
+
+  var updatedHash = getLatestLmsPasswordHash_(email);
+  var effectiveHash = updatedHash || learner.passwordHash;
+  var matched = false;
+
+  if (effectiveHash) {
+    matched = abcdeSha256Hex_(password) === effectiveHash;
+  } else {
+    if (learner.defaultPassword && learner.defaultPassword.length >= 4 && password === learner.defaultPassword) {
+      matched = true;
+    } else {
+      var normPhone = normalizePhone(learner.phone);
+      if (normPhone && normPhone.length >= 4 && password === normPhone.slice(-4)) {
+        matched = true;
+      }
+    }
+  }
+
+  if (!matched) {
+    return { success: false, verified: false, error: 'INVALID_CREDENTIALS', message: 'Mật khẩu LMS chưa chính xác.' };
+  }
+
+  return {
+    success: true,
+    verified: true,
+    email: learner.email,
+    fullName: learner.fullName
+  };
+}
+
+function generateAbcdeSixDigitOtp_() {
+  var bytes = Utilities.computeDigest(
+    Utilities.DigestAlgorithm.SHA_256,
+    Utilities.getUuid() + ':' + new Date().getTime() + ':' + Math.random(),
+    Utilities.Charset.UTF_8
+  );
+  var num = 0;
+  for (var i = 0; i < 4; i++) {
+    var b = bytes[i] < 0 ? bytes[i] + 256 : bytes[i];
+    num = (num * 256 + b) >>> 0;
+  }
+  return ('000000' + (num % 1000000)).slice(-6);
+}
+
+function sendAbcdeOtpEmail_(recipientEmail, fullName, otp) {
+  var props = getScriptProperties_();
+  var ss = getSpreadsheet();
+  var testMode = props.getProperty('TEST_MODE') === 'true';
+  var allowlistStr = props.getProperty('RECIPIENT_ALLOWLIST') || '';
+  var allowlist = allowlistStr.split(',').map(function(e) { return e.trim(); }).filter(Boolean);
+
+  var toAddress = testMode ? allowlist.join(',') : recipientEmail;
+  if (!toAddress) {
+    writeSystemLog(ss, 'WARN', 'Skipping ABCDE OTP email: TEST_MODE active but RECIPIENT_ALLOWLIST empty');
+    return { sent: false, message: 'TEST_MODE đang bật nhưng chưa có RECIPIENT_ALLOWLIST.' };
+  }
+
+  var safeName = formatAbcdeHtmlField_(fullName || 'bạn');
+  var subject = 'Mã xác thực OTP nhận báo cáo ABCDE - Delivering Happiness';
+  var htmlBody =
+    '<div style="font-family: Arial, sans-serif; max-width: 520px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; color: #1e293b;">' +
+    '<h2 style="color: #0284c7; margin-top: 0;">🔐 Xác thực nhận báo cáo Thực hành ABCDE</h2>' +
+    '<p>Xin chào <strong>' + safeName + '</strong>,</p>' +
+    '<p>Mã OTP dùng 1 lần để xác thực quyền sở hữu email nhận báo cáo thực hành ABCDE của bạn là:</p>' +
+    '<div style="text-align: center; margin: 20px 0;">' +
+    '<span style="display: inline-block; font-size: 28px; letter-spacing: 6px; font-weight: bold; color: #0f172a; background: #f1f5f9; padding: 12px 24px; border-radius: 8px; border: 1px dashed #64748b;">' + otp + '</span>' +
+    '</div>' +
+    '<p style="font-size: 13px; color: #475569;">Mã này có hiệu lực trong <strong>10 phút</strong> và chỉ dùng được 1 lần. Nếu không phải bạn yêu cầu, vui lòng bỏ qua email này.</p>' +
+    '</div>';
+
+  MailApp.sendEmail({
+    to: toAddress,
+    subject: subject,
+    htmlBody: htmlBody
+  });
+
+  return { sent: true, message: 'Đã gửi mã OTP qua email.' };
+}
+
+function handleAbcdeRequestEmailOtp(body) {
+  var sigCheck = verifyAbcdeGatewaySignature_(body, 'abcde_request_email_otp');
+  if (!sigCheck.ok) {
+    return { success: false, error: sigCheck.error, message: sigCheck.message };
+  }
+
+  var email = String((body && body.email) || '').trim().toLowerCase();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return { success: false, error: 'INVALID_EMAIL', message: 'Địa chỉ Email không hợp lệ.' };
+  }
+
+  var learner = findEligibleAbcdeLearner_(email, true);
+  if (!learner || learner.source === 'DISABLED') {
+    return {
+      success: false,
+      error: 'NOT_AUTHORIZED_LEARNER',
+      message: 'Email này chưa thuộc danh sách Học viên LMS đang hoạt động hoặc tài khoản đã kích hoạt Auth Gate. Bạn vẫn có thể xem, sao chép hoặc lưu PDF ngay trên màn hình!'
+    };
+  }
+
+  var props = getScriptProperties_();
+  if (props.getProperty('KILL_SWITCH_EMAIL') === 'true') {
+    return { success: false, error: 'EMAIL_DISABLED', message: 'Hệ thống gửi email hiện đang tạm tắt.' };
+  }
+  if (getRemainingQuota() < 30) {
+    return {
+      success: false,
+      error: 'QUOTA_LOW',
+      message: 'Hạn mức email hệ thống trong ngày sắp đạt ngưỡng bảo toàn. Vui lòng dùng tính năng Sao chép hoặc Lưu PDF ngay trên màn hình.'
+    };
+  }
+
+  var cache = CacheService.getScriptCache();
+  var emailHash = abcdeSha256Hex_(email).slice(0, 32);
+  var cdKey = 'abcde_otp_cd_' + emailHash;
+  if (cache.get(cdKey)) {
+    return {
+      success: false,
+      error: 'OTP_COOLDOWN',
+      message: 'Vui lòng chờ 60 giây trước khi yêu cầu gửi lại mã OTP.'
+    };
+  }
+
+  var otp = generateAbcdeSixDigitOtp_();
+  var otpKey = 'abcde_otp_' + emailHash;
+  var otpRecord = {
+    codeHash: abcdeSha256Hex_(email + ':' + otp),
+    attempts: 0,
+    exp: new Date().getTime() + 600000,
+    fullName: learner.fullName
+  };
+
+  cache.put(otpKey, JSON.stringify(otpRecord), 600);
+  cache.put(cdKey, '1', 60);
+
+  try {
+    var mailRes = sendAbcdeOtpEmail_(email, learner.fullName, otp);
+    if (!mailRes.sent) {
+      cache.remove(otpKey);
+      return { success: false, error: 'EMAIL_SEND_FAILED', message: mailRes.message };
+    }
+  } catch (mailErr) {
+    cache.remove(otpKey);
+    return { success: false, error: 'EMAIL_SEND_FAILED', message: 'Không thể gửi email OTP: ' + mailErr.toString() };
+  }
+
+  return {
+    success: true,
+    email: email,
+    cooldownSeconds: 60,
+    message: 'Mã OTP 6 số đã được gửi tới hộp thư của bạn (có hiệu lực 10 phút).'
+  };
+}
+
+function handleAbcdeVerifyEmailOtp(body) {
+  var sigCheck = verifyAbcdeGatewaySignature_(body, 'abcde_verify_email_otp');
+  if (!sigCheck.ok) {
+    return { success: false, verified: false, error: sigCheck.error, message: sigCheck.message };
+  }
+
+  var email = String((body && body.email) || '').trim().toLowerCase();
+  var otp = String((body && body.otp) || '').trim();
+  if (!email || !/^\d{6}$/.test(otp)) {
+    return { success: false, verified: false, error: 'INVALID_OTP_FORMAT', message: 'Vui lòng nhập Email và mã OTP gồm 6 chữ số.' };
+  }
+
+  var cache = CacheService.getScriptCache();
+  var emailHash = abcdeSha256Hex_(email).slice(0, 32);
+  var otpKey = 'abcde_otp_' + emailHash;
+  var raw = cache.get(otpKey);
+  if (!raw) {
+    return { success: false, verified: false, error: 'OTP_EXPIRED', message: 'Mã OTP không tồn tại hoặc đã hết hạn. Vui lòng yêu cầu mã mới.' };
+  }
+
+  var rec = null;
+  try {
+    rec = JSON.parse(raw);
+  } catch (eParse) {
+    cache.remove(otpKey);
+    return { success: false, verified: false, error: 'OTP_INVALID_STATE', message: 'Phiên OTP không hợp lệ. Vui lòng yêu cầu mã mới.' };
+  }
+
+  var nowMs = new Date().getTime();
+  if (!rec || nowMs > rec.exp || rec.attempts >= 5) {
+    cache.remove(otpKey);
+    return { success: false, verified: false, error: 'OTP_LOCKED', message: 'Mã OTP đã hết hạn hoặc nhập sai quá 5 lần.' };
+  }
+
+  var expectedHash = abcdeSha256Hex_(email + ':' + otp);
+  if (!abcdeConstantTimeEqual_(expectedHash, rec.codeHash)) {
+    rec.attempts = Number(rec.attempts || 0) + 1;
+    if (rec.attempts >= 5) {
+      cache.remove(otpKey);
+      return { success: false, verified: false, error: 'OTP_LOCKED', message: 'Bạn đã nhập sai OTP 5 lần. Vui lòng yêu cầu mã mới.' };
+    }
+    var remSec = Math.max(10, Math.ceil((rec.exp - nowMs) / 1000));
+    cache.put(otpKey, JSON.stringify(rec), remSec);
+    return {
+      success: false,
+      verified: false,
+      error: 'INVALID_OTP',
+      remainingAttempts: 5 - rec.attempts,
+      message: 'Mã OTP chưa đúng (còn ' + (5 - rec.attempts) + ' lần thử).'
+    };
+  }
+
+  cache.remove(otpKey);
+  return {
+    success: true,
+    verified: true,
+    email: email,
+    fullName: String(rec.fullName || '').trim() || email
+  };
+}
+
 function handleAbcdeSubmission(body) {
+  var sigCheck = verifyAbcdeGatewaySignature_(body, 'submit_abcde');
+  if (!sigCheck.ok) {
+    return { success: false, error: sigCheck.error, message: sigCheck.message };
+  }
+
   var ss = getSpreadsheet();
   var props = getScriptProperties_();
-  
+
   if (props.getProperty('KILL_SWITCH_ABCDE') === 'true') {
     return { success: false, error: 'ABCDE_DISABLED', message: 'Hệ thống thực hành đang tạm đóng. Vui lòng liên hệ BTC.' };
   }
-  
-  var fullName = (body.fullName || '').trim();
-  var email = (body.email || '').trim();
-  var passcode = (body.passcode || '').trim().toUpperCase();
-  var chatVersion = (body.chatVersion || 'stable').trim();
-  var data = body.data || {};
-  
+
+  if (sigCheck.mode !== 'OBSERVE' && !body.emailAuthVerified) {
+    return { success: false, error: 'EMAIL_AUTH_REQUIRED', message: 'Cần xác thực quyền sở hữu email trước khi gửi báo cáo.' };
+  }
+
+  var fullName = String((body && body.fullName) || '').replace(/[\r\n]+/g, ' ').trim();
+  var email = String((body && body.email) || '').trim().toLowerCase();
+  var passcode = String((body && body.passcode) || '').trim().toUpperCase();
+  var chatVersion = String((body && body.chatVersion) || 'stable').trim();
+  var submissionId = String((body && body.submissionId) || '').trim();
+  var data = (body && body.data && typeof body.data === 'object' && !Array.isArray(body.data)) ? body.data : {};
+  var history = Array.isArray(body && body.history) ? body.history : [];
+
   if (!fullName || fullName.length > 100) {
     return { success: false, error: 'INVALID_NAME', message: 'Họ và tên không hợp lệ.' };
   }
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return { success: false, error: 'INVALID_EMAIL', message: 'Địa chỉ Email không hợp lệ.' };
   }
-  
-  var sheetName = 'ABCDE_Data';
-  var sheet = ss.getSheetByName(sheetName);
-  if (!sheet) {
-    sheet = ss.insertSheet(sheetName);
-    sheet.appendRow(['Timestamp', 'FullName', 'Email', 'Passcode', 'A_Adversity', 'B_Belief', 'C_Consequence', 'D_Disputation', 'E_Energization', 'ChatVersion']);
-    sheet.getRange(1, 1, 1, 10).setFontWeight('bold');
-  } else {
-    // Đảm bảo tiêu đề cột 10 là ChatVersion nếu chưa có
-    var lastCol = sheet.getLastColumn();
-    if (lastCol < 10) {
-      sheet.getRange(1, 10).setValue('ChatVersion').setFontWeight('bold');
+  if (!submissionId || submissionId.length > 128) {
+    return { success: false, error: 'INVALID_SUBMISSION_ID', message: 'Thiếu mã định danh lượt nộp bài.' };
+  }
+
+  // Chống trùng submissionId bằng Cache + ScriptLock + cột 11 Submission_ID
+  var cache = CacheService.getScriptCache();
+  var subCacheKey = 'abcde_sub_' + abcdeSha256Hex_(submissionId).slice(0, 32);
+  if (cache.get(subCacheKey)) {
+    return {
+      success: true,
+      duplicate: true,
+      sheetSaved: true,
+      emailSent: false,
+      emailMessage: 'Bài thực hành này đã được ghi nhận trước đó.'
+    };
+  }
+
+  var lock = LockService.getScriptLock();
+  var hasLock = false;
+  try {
+    hasLock = lock.tryLock(10000);
+  } catch (eLock) {
+    hasLock = false;
+  }
+  if (!hasLock) {
+    return { success: false, error: 'LOCK_TIMEOUT', message: 'Hệ thống đang bận xử lý. Vui lòng thử lại sau ít giây.' };
+  }
+
+  var sheetSaved = false;
+  try {
+    if (cache.get(subCacheKey)) {
+      return {
+        success: true,
+        duplicate: true,
+        sheetSaved: true,
+        emailSent: false,
+        emailMessage: 'Bài thực hành này đã được ghi nhận trước đó.'
+      };
+    }
+
+    var sheetName = 'ABCDE_Data';
+    var sheet = ss.getSheetByName(sheetName);
+    if (!sheet) {
+      sheet = ss.insertSheet(sheetName);
+      sheet.appendRow([
+        'Timestamp', 'FullName', 'Email', 'Passcode',
+        'A_Adversity', 'B_Belief', 'C_Consequence', 'D_Disputation', 'E_Energization',
+        'ChatVersion', 'Submission_ID'
+      ]);
+      sheet.getRange(1, 1, 1, 11).setFontWeight('bold');
+    } else {
+      var lastCol = sheet.getLastColumn();
+      if (lastCol < 10) {
+        sheet.getRange(1, 10).setValue('ChatVersion').setFontWeight('bold');
+      }
+      if (lastCol < 11) {
+        sheet.getRange(1, 11).setValue('Submission_ID').setFontWeight('bold');
+      }
+      var lastRow = sheet.getLastRow();
+      if (lastRow > 1) {
+        var startRow = Math.max(2, lastRow - 199);
+        var checkCount = lastRow - startRow + 1;
+        var recentSubIds = sheet.getRange(startRow, 11, checkCount, 1).getValues();
+        for (var r = recentSubIds.length - 1; r >= 0; r--) {
+          if (String(recentSubIds[r][0] || '').trim() === submissionId) {
+            cache.put(subCacheKey, '1', 21600);
+            return {
+              success: true,
+              duplicate: true,
+              sheetSaved: true,
+              emailSent: false,
+              emailMessage: 'Bài thực hành này đã được ghi nhận trước đó.'
+            };
+          }
+        }
+      }
+    }
+
+    sheet.appendRow([
+      new Date(),
+      fullName,
+      email,
+      passcode,
+      data.A || '',
+      data.B || '',
+      data.C || '',
+      data.D || '',
+      data.E || '',
+      chatVersion,
+      submissionId
+    ]);
+    sheetSaved = true;
+    cache.put(subCacheKey, '1', 21600);
+  } finally {
+    if (hasLock) {
+      try { lock.releaseLock(); } catch (eRel) {}
     }
   }
-  
-  sheet.appendRow([
-    new Date(),
-    fullName,
-    email,
-    passcode,
-    data.A || '',
-    data.B || '',
-    data.C || '',
-    data.D || '',
-    data.E || '',
-    chatVersion
-  ]);
-  
-  try {
-    sendAbcdeEmailReport_(email, fullName, data, chatVersion);
-  } catch(mailErr) {
-    Logger.log('Send email failed: ' + mailErr.toString());
+
+  var emailSent = false;
+  var emailMessage = '';
+  if (props.getProperty('KILL_SWITCH_EMAIL') === 'true') {
+    writeSystemLog(ss, 'INFO', 'KILL_SWITCH_EMAIL is true, skipping ABCDE email to ' + email);
+    emailMessage = 'Chức năng gửi email hiện đang tạm tắt.';
+  } else if (getRemainingQuota() < 20) {
+    writeSystemLog(ss, 'WARN', 'Daily email quota < 20, preserving quota and skipping ABCDE email to ' + email);
+    emailMessage = 'Hạn mức gửi thư dùng chung trong ngày sắp hết nên hệ thống ưu tiên bảo toàn cho đăng ký/học phí. Kết quả ABCDE của bạn đã được lưu; vui lòng dùng nút Sao chép hoặc Lưu PDF ngay trên màn hình.';
+  } else {
+    try {
+      var mailRes = sendAbcdeEmailReport_(email, fullName, data, chatVersion, history);
+      emailSent = Boolean(mailRes && mailRes.sent);
+      emailMessage = (mailRes && mailRes.message) || '';
+    } catch (mailErr) {
+      writeSystemLog(ss, 'ERROR', 'ABCDE send email failed for ' + email, mailErr.toString());
+      emailSent = false;
+      emailMessage = 'Gửi email gặp lỗi: ' + (mailErr.message || mailErr.toString());
+    }
   }
-  
-  return { success: true };
+
+  return {
+    success: true,
+    duplicate: false,
+    sheetSaved: sheetSaved,
+    emailSent: emailSent,
+    emailMessage: emailMessage
+  };
 }
 
-function sendAbcdeEmailReport_(email, fullName, data, chatVersion) {
-  var subject = '☀️ Báo cáo Thực hành Lạc quan ABCDE - ' + fullName;
+function formatAbcdeHtmlField_(text) {
+  if (!text) return '';
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/\n/g, '<br/>');
+}
+
+function sendAbcdeEmailReport_(email, fullName, data, chatVersion, history) {
+  var props = getScriptProperties_();
+  var ss = getSpreadsheet();
+  var testMode = props.getProperty('TEST_MODE') === 'true';
+  var allowlistStr = props.getProperty('RECIPIENT_ALLOWLIST') || '';
+  var allowlist = allowlistStr.split(',').map(function(e) { return e.trim(); }).filter(Boolean);
+
+  var toAddress = testMode ? allowlist.join(',') : email;
+  if (!toAddress) {
+    writeSystemLog(ss, 'WARN', 'Skipping ABCDE email: TEST_MODE active but RECIPIENT_ALLOWLIST empty');
+    return { sent: false, message: 'TEST_MODE đang bật nhưng chưa có RECIPIENT_ALLOWLIST.' };
+  }
+
+  var cleanSubjectName = String(fullName || '').replace(/[\r\n]+/g, ' ').trim();
+  var subject = '☀️ Báo cáo Thực hành Lạc quan ABCDE - ' + cleanSubjectName;
+  var safeFullNameHtml = formatAbcdeHtmlField_(fullName);
   var versionText = chatVersion === 'beta' ? 'Bản thử nghiệm (Có tri thức lớp học RAG)' : 'Bản ổn định (Thực hành nhanh)';
-  var htmlBody = 
+
+  var dialogueHtml = '';
+  if (history && history.length > 0) {
+    dialogueHtml +=
+      '<div style="margin-top: 25px; border-top: 2px dashed #cbd5e1; padding-top: 20px;">' +
+      '<h3 style="color: #334155; font-size: 1.15rem; margin-bottom: 12px; text-align: center;">📜 Nhật Ký Đối Thoại Socratic (Martin Seligman)</h3>' +
+      '<p style="font-size: 0.85rem; color: #64748b; text-align: center; margin-top: 0; margin-bottom: 16px;">Toàn bộ tiến trình đối thoại giữa bạn và Trợ lý Socratic để bẻ gãy niềm tin tiêu cực</p>';
+
+    for (var i = 0; i < history.length; i++) {
+      var item = history[i] || {};
+      var role = item.role;
+      var rawContent = String(item.content || '').replace(/\[NEXT_STATE:[^\]]+\]/gi, '').trim();
+      if (!rawContent) continue;
+
+      var isAi = (role === 'ai' || role === 'model');
+      var bgColor = isAi ? '#f8fafc' : '#eff6ff';
+      var borderColor = isAi ? '#94a3b8' : '#2563eb';
+      var roleTitle = isAi ? '🤖 Trợ lý Socratic:' : '👤 ' + safeFullNameHtml + ':';
+      var titleColor = isAi ? '#475569' : '#1d4ed8';
+
+      dialogueHtml +=
+        '<div style="background-color: ' + bgColor + '; border-left: 3px solid ' + borderColor + '; padding: 10px 14px; margin-bottom: 10px; border-radius: 4px; font-size: 0.95rem;">' +
+        '<strong style="color: ' + titleColor + '; font-size: 0.85rem; display: block; margin-bottom: 4px;">' + roleTitle + '</strong>' +
+        '<div style="color: #1e293b; line-height: 1.5;">' + formatAbcdeHtmlField_(rawContent) + '</div>' +
+        '</div>';
+    }
+    dialogueHtml += '</div>';
+  }
+
+  var htmlBody =
     '<div style="font-family: \'Segoe UI\', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px; background-color: #fcfbf7; color: #2c2520;">' +
     '<h2 style="color: #c97d54; text-align: center; border-bottom: 2px solid #c97d54; padding-bottom: 10px; margin-top: 0;">☀️ Báo cáo Thực hành Lạc quan ABCDE</h2>' +
-    '<p>Xin chào <strong>' + fullName + '</strong>,</p>' +
+    '<p>Xin chào <strong>' + safeFullNameHtml + '</strong>,</p>' +
     '<p>Chúc mừng bạn đã hoàn thành xuất sắc quy trình Socratic ABCDE của Martin Seligman để tự điều chỉnh cảm xúc và tư duy. Dưới đây là bản tổng hợp kết quả thực hành của bạn:</p>' +
     '<p style="font-size: 0.9rem; color: #64748b; margin-bottom: 20px;"><strong>Phiên bản thực hành:</strong> ' + versionText + '</p>' +
-    
+
     '<div style="margin-top: 20px;">' +
     '<div style="background-color: #fff; padding: 15px; border-left: 4px solid #d45d55; margin-bottom: 15px; border-radius: 0 8px 8px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">' +
     '<strong style="color: #d45d55; font-size: 1.1rem;">A - Nghịch cảnh (Adversity)</strong>' +
-    '<p style="margin: 5px 0 0 0; line-height: 1.5;">' + data.A + '</p>' +
+    '<p style="margin: 5px 0 0 0; line-height: 1.5; color: #334155;">' + formatAbcdeHtmlField_(data.A) + '</p>' +
     '</div>' +
-    
+
     '<div style="background-color: #fff; padding: 15px; border-left: 4px solid #e2a85c; margin-bottom: 15px; border-radius: 0 8px 8px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">' +
     '<strong style="color: #e2a85c; font-size: 1.1rem;">B - Niềm tin tự động (Belief)</strong>' +
-    '<p style="margin: 5px 0 0 0; line-height: 1.5;">' + data.B + '</p>' +
+    '<p style="margin: 5px 0 0 0; line-height: 1.5; color: #334155;">' + formatAbcdeHtmlField_(data.B) + '</p>' +
     '</div>' +
-    
+
     '<div style="background-color: #fff; padding: 15px; border-left: 4px solid #6b9e78; margin-bottom: 15px; border-radius: 0 8px 8px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">' +
     '<strong style="color: #6b9e78; font-size: 1.1rem;">C - Hệ quả (Consequence)</strong>' +
-    '<p style="margin: 5px 0 0 0; line-height: 1.5;">' + data.C + '</p>' +
+    '<p style="margin: 5px 0 0 0; line-height: 1.5; color: #334155;">' + formatAbcdeHtmlField_(data.C) + '</p>' +
     '</div>' +
-    
+
     '<div style="background-color: #fff; padding: 15px; border-left: 4px solid #4a90e2; margin-bottom: 15px; border-radius: 0 8px 8px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">' +
     '<strong style="color: #4a90e2; font-size: 1.1rem;">D - Phản biện (Disputation)</strong>' +
-    '<p style="margin: 5px 0 0 0; line-height: 1.5;">' + data.D + '</p>' +
+    '<p style="margin: 5px 0 0 0; line-height: 1.5; color: #334155;">' + formatAbcdeHtmlField_(data.D) + '</p>' +
     '</div>' +
-    
+
     '<div style="background-color: #fff; padding: 15px; border-left: 4px solid #9c27b0; margin-bottom: 15px; border-radius: 0 8px 8px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">' +
     '<strong style="color: #9c27b0; font-size: 1.1rem;">E - Thiết lập Năng lượng (Energization)</strong>' +
-    '<p style="margin: 5px 0 0 0; line-height: 1.5;">' + data.E + '</p>' +
+    '<p style="margin: 5px 0 0 0; line-height: 1.5; color: #334155;">' + formatAbcdeHtmlField_(data.E) + '</p>' +
     '</div>' +
     '</div>' +
-    
-    '<p style="margin-top: 20px; font-size: 0.9rem; color: #7f756d; text-align: center; border-top: 1px solid #e0e0e0; padding-top: 15px;">' +
-    'Được phát triển bởi CultureCode Community & Deliver Happiness Masterclass © 2026.' +
+
+    dialogueHtml +
+
+    '<p style="margin-top: 25px; font-size: 0.9rem; color: #7f756d; text-align: center; border-top: 1px solid #e0e0e0; padding-top: 15px;">' +
+    'Được phát triển bởi CultureCode Community &amp; Deliver Happiness Masterclass © 2026.' +
     '</p>' +
     '</div>';
-    
+
   MailApp.sendEmail({
-    to: email,
+    to: toAddress,
     subject: subject,
     htmlBody: htmlBody
   });
+
+  return { sent: true, message: 'Đã gửi báo cáo ABCDE qua email thành công.' };
 }
 
 function testSendCheckinEmailToLastRow() {
@@ -3515,9 +4248,23 @@ function sendAuthGateActivationEmail_(opts) {
       activationUrl + '\n\n' +
       'Trân trọng,\nDelivering Happiness Model';
 
+    var props = getScriptProperties_();
+    var testMode = props.getProperty('TEST_MODE') === 'true';
+    var actualTo = toEmail;
+    var actualSubject = subject;
+    if (testMode) {
+      var allowlistStr = props.getProperty('RECIPIENT_ALLOWLIST') || '';
+      var allowlist = allowlistStr.split(',').map(function(e) { return e.trim(); }).filter(Boolean);
+      if (!allowlist.length) {
+        return { success: false, error: 'TEST_MODE_EMPTY_ALLOWLIST' };
+      }
+      actualTo = allowlist.join(',');
+      actualSubject = '[TEST -> ' + toEmail + '] ' + subject;
+    }
+
     MailApp.sendEmail({
-      to: toEmail,
-      subject: subject,
+      to: actualTo,
+      subject: actualSubject,
       body: plainBody,
       htmlBody: htmlBody,
       name: 'Delivering Happiness Model'
@@ -3534,6 +4281,9 @@ var APOLLO_IAM_SPREADSHEET_ID = '1Ju4y-KNDe7eiMvpbyq2mPfKTijH_1NIC3j8Rykl7cak';
 var SHEET_APOLLO_SUMMARY = 'Tổng Hợp Học Viên';
 var SHEET_APOLLO_LOGS = 'Nhật Ký Từng Trạm';
 var SHEET_LMS_CHECKPOINTS = 'Thu Hoạch LMS & Checkpoints';
+var SHEET_BLOOMING_5LANG = 'Blooming_On_5_Languages';
+var SHEET_BLOOMING_IAM = 'Blooming_On_Workshop_IAM';
+var SHEET_BLOOMING_FUNNEL = 'Blooming_On_Funnel_Interests';
 
 function formatIamSetsColumn_(sets, fieldKey) {
   if (!sets || !Array.isArray(sets) || sets.length === 0) return '';
@@ -4449,7 +5199,10 @@ function handleGetLmsIamSubmissions_(params) {
     success: true,
     apolloSummary: [],
     apolloLogs: [],
-    lmsCheckpoints: []
+    lmsCheckpoints: [],
+    blooming5Lang: [],
+    bloomingIam: [],
+    bloomingFunnel: []
   };
 
   var sheetsToTry = [];
@@ -4476,6 +5229,20 @@ function handleGetLmsIamSubmissions_(params) {
     if (cpSheet && results.lmsCheckpoints.length === 0) {
       results.lmsCheckpoints = cpSheet.getDataRange().getValues();
     }
+    try {
+      var b5Sheet = ss.getSheetByName(SHEET_BLOOMING_5LANG);
+      if (b5Sheet && results.blooming5Lang.length === 0) {
+        results.blooming5Lang = b5Sheet.getDataRange().getValues();
+      }
+      var bIamSheet = ss.getSheetByName(SHEET_BLOOMING_IAM);
+      if (bIamSheet && results.bloomingIam.length === 0) {
+        results.bloomingIam = bIamSheet.getDataRange().getValues();
+      }
+      var bFunnelSheet = ss.getSheetByName(SHEET_BLOOMING_FUNNEL);
+      if (bFunnelSheet && results.bloomingFunnel.length === 0) {
+        results.bloomingFunnel = bFunnelSheet.getDataRange().getValues();
+      }
+    } catch (eBloomRead) {}
   }
 
   return results;
@@ -4985,147 +5752,304 @@ function handleSaveCoachNote(data) {
 }
 
 /**
- * Trả về danh sách toàn bộ học viên từ Master_Roster (Hỗ trợ cả REST và JSONP)
+ * SEC-01 HARDENING: Khóa endpoint lộ danh bạ & mật khẩu khởi tạo
  */
 function handleGetMasterRoster(params) {
-  try {
-    var ss = getMasterRosterSpreadsheet_();
-    var sheet = getOrCreateMasterRosterSheet(ss);
-    var rows = sheet.getDataRange().getValues();
-
-    if (rows.length <= 1) {
-      return jsonOut({ success: true, count: 0, learners: [] });
-    }
-
-    var learners = [];
-    var cohortFilter = params.cohort ? normalizeCohortSlug(params.cohort) : "";
-    var statusFilter = params.status ? String(params.status).toUpperCase().trim() : "";
-
-    for (var i = 1; i < rows.length; i++) {
-      var rCohort = normalizeCohortSlug(rows[i][4]);
-      var rStatus = String(rows[i][5] || "").toUpperCase().trim();
-
-      if (cohortFilter && rCohort !== cohortFilter) continue;
-      if (statusFilter && rStatus !== statusFilter) continue;
-
-      learners.push({
-        compound_key: String(rows[i][0] || ""),
-        email: String(rows[i][1] || ""),
-        phone: String(rows[i][2] || ""),
-        full_name: String(rows[i][3] || ""),
-        cohort: String(rows[i][4] || ""),
-        enrollment_status: rStatus,
-        activation_status: String(rows[i][6] || ""),
-        activation_type: String(rows[i][7] || ""),
-        role: String(rows[i][8] || "Learner"),
-        default_password: String(rows[i][10] || ""),
-        force_pwd_change: rows[i][11] === true || rows[i][11] === "TRUE",
-        is_paid: rows[i][12] === true || rows[i][12] === "TRUE",
-        payment_status: String(rows[i][13] || "PAID"),
-        created_at: rows[i][14],
-        activated_at: rows[i][15],
-        admin_notes: String(rows[i][16] || "")
-      });
-    }
-
-    var callback = params.callback || "";
-    if (callback && typeof CALLBACK_REGEX !== 'undefined' && CALLBACK_REGEX.test(callback)) {
-      return ContentService.createTextOutput(callback + "(" + JSON.stringify({ success: true, count: learners.length, learners: learners }) + ");")
-        .setMimeType(ContentService.MimeType.JAVASCRIPT);
-    }
-
-    return jsonOut({ success: true, count: learners.length, learners: learners });
-
-  } catch (err) {
-    return jsonOut({ success: false, error: "SERVER_ERROR", message: err.toString() });
+  var disabledPayload = {
+    success: false,
+    error: "ENDPOINT_DISABLED",
+    count: 0,
+    learners: [],
+    message: "Endpoint get_master_roster đã bị khóa vì lý do bảo mật; vui lòng dùng /api/admin/roster."
+  };
+  var callback = (params && params.callback) ? String(params.callback) : "";
+  if (callback && typeof CALLBACK_REGEX !== 'undefined' && CALLBACK_REGEX.test(callback)) {
+    return ContentService.createTextOutput(callback + "(" + JSON.stringify(disabledPayload) + ");")
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
   }
+  return jsonOut(disabledPayload);
 }
 
 /**
- * Phân giải danh tính khi học viên đăng nhập
+ * SEC-01 HARDENING: Khóa endpoint phân giải mật khẩu khởi tạo phía GAS
  */
 function handleResolveLoginIdentity(data) {
+  return jsonOut({
+    success: false,
+    error: "ENDPOINT_DISABLED",
+    message: "Endpoint resolve_login_identity đã bị khóa vì lý do bảo mật; vui lòng dùng Central Auth API (/api/auth/login)."
+  });
+}
+
+// ─── BLOOMING ON 1 (5 NGÔN NGỮ TRÂN TRỌNG & HỆ SINH THÁI ĐA NHÁNH) ──────────
+function getBloomingTargetSpreadsheets_() {
+  var list = [];
+  var seenIds = {};
   try {
-    var rawIdentity = String(data.identity || data.email || data.phone || "").trim().toLowerCase();
-    if (!rawIdentity) {
-      return jsonOut({ success: false, error: "MISSING_IDENTITY", message: "Vui lòng nhập email hoặc số điện thoại." });
+    var mainSs = getSpreadsheet();
+    if (mainSs && !seenIds[mainSs.getId()]) {
+      seenIds[mainSs.getId()] = true;
+      list.push(mainSs);
     }
-
-    var cleanPhone = rawIdentity.replace(/\D/g, "");
-    var normalizedPhone = cleanPhone.startsWith("84") ? "0" + cleanPhone.slice(2) : cleanPhone;
-    if (normalizedPhone.length === 9 && !normalizedPhone.startsWith("0")) {
-      normalizedPhone = "0" + normalizedPhone;
-    }
-
-    var ss = getMasterRosterSpreadsheet_();
-    var sheet = getOrCreateMasterRosterSheet(ss);
-    var rows = sheet.getDataRange().getValues();
-
-    var matching = [];
-
-    for (var i = 1; i < rows.length; i++) {
-      var rKey = String(rows[i][0] || "");
-      var rEmail = String(rows[i][1] || "").toLowerCase().trim();
-      var rPhone = String(rows[i][2] || "").replace(/\D/g, "");
-      var rPhoneNorm = rPhone.startsWith("84") ? "0" + rPhone.slice(2) : rPhone;
-      if (rPhoneNorm.length === 9 && !rPhoneNorm.startsWith("0")) {
-        rPhoneNorm = "0" + rPhoneNorm;
-      }
-
-      var emailMatch = (rawIdentity.indexOf("@") !== -1 && rEmail === rawIdentity);
-      var phoneMatch = (normalizedPhone.length >= 9 && rPhoneNorm === normalizedPhone);
-      var keyMatch = (rKey.toLowerCase() === rawIdentity);
-
-      if (emailMatch || phoneMatch || keyMatch) {
-        var phoneStr = String(rows[i][2] || "").trim();
-        if (phoneStr && phoneStr.length === 9 && !phoneStr.startsWith("0")) {
-          phoneStr = "0" + phoneStr;
-        }
-        var defaultPwdStr = String(rows[i][10] || "").trim();
-        if (defaultPwdStr.length < 4 && phoneStr.length >= 4) {
-          defaultPwdStr = phoneStr.slice(-4);
-        }
-
-        matching.push({
-          compound_key: rKey,
-          email: String(rows[i][1] || "").toLowerCase().trim(),
-          phone: phoneStr,
-          full_name: rows[i][3],
-          name: rows[i][3],
-          cohort: rows[i][4],
-          enrollment_status: rows[i][5],
-          activation_status: rows[i][6],
-          role: rows[i][8],
-          default_password: defaultPwdStr,
-          default_pwd: defaultPwdStr,
-          force_pwd_change: rows[i][11] === true || rows[i][11] === "TRUE",
-          is_paid: rows[i][12] === true || rows[i][12] === "TRUE",
-          payment_status: rows[i][13]
-        });
+  } catch (e1) {}
+  try {
+    if (typeof APOLLO_IAM_SPREADSHEET_ID !== 'undefined' && APOLLO_IAM_SPREADSHEET_ID) {
+      var extraSs = SpreadsheetApp.openById(APOLLO_IAM_SPREADSHEET_ID);
+      if (extraSs && !seenIds[extraSs.getId()]) {
+        seenIds[extraSs.getId()] = true;
+        list.push(extraSs);
       }
     }
+  } catch (e2) {}
+  return list;
+}
 
-    if (matching.length === 0) {
-      return jsonOut({ success: false, error: "NOT_FOUND", message: "Không tìm thấy thông tin học viên." });
+function ensureBloomingSheet_(ss, sheetName, headers, headerBgColor) {
+  var sheet = ss.getSheetByName(sheetName);
+  if (!sheet) {
+    sheet = ss.insertSheet(sheetName);
+    sheet.appendRow(headers);
+    var hdr = sheet.getRange(1, 1, 1, headers.length);
+    hdr.setBackground(headerBgColor || '#BE123C');
+    hdr.setFontColor('#FFFFFF');
+    hdr.setFontWeight('bold');
+  }
+  return sheet;
+}
+
+function upsertBloomingRowByEmail_(sheet, email, matchColIdxOneBased, rowValues) {
+  var normEmail = String(email || '').trim().toLowerCase();
+  if (normEmail && sheet.getLastRow() > 1) {
+    var colVals = sheet.getRange(2, matchColIdxOneBased, sheet.getLastRow() - 1, 1).getValues();
+    for (var i = 0; i < colVals.length; i++) {
+      if (String(colVals[i][0] || '').trim().toLowerCase() === normEmail) {
+        sheet.getRange(i + 2, 1, 1, rowValues.length).setValues([rowValues]);
+        return 'updated';
+      }
+    }
+  }
+  sheet.appendRow(rowValues);
+  return 'inserted';
+}
+
+function handleBlooming5LangSubmission_(body) {
+  var lock = LockService.getScriptLock();
+  var hasLock = false;
+  try { hasLock = lock.tryLock(15000); } catch (e) { hasLock = false; }
+
+  try {
+    var nowStr = Utilities.formatDate(new Date(), 'Asia/Ho_Chi_Minh', 'yyyy-MM-dd HH:mm:ss');
+    var name = String(body.full_name || body.name || 'Khách Blooming On').trim();
+    var email = String(body.email || '').trim().toLowerCase();
+    var phone = String(body.phone || '').trim();
+    var company = String(body.company || '').trim();
+    var cohort = String(body.cohort || 'Blooming On 1').trim();
+    var headers = [
+      'Thời Gian Cập Nhật', 'Họ Và Tên', 'Email', 'Số Điện Thoại', 'Đơn Vị / Công Ty',
+      'Cohort', 'Ngôn Ngữ #1 (Mã)', 'Ngôn Ngữ #1', 'Điểm #1', 'Phần Trăm #1',
+      'Ngôn Ngữ #2', 'Điểm Mù #5', 'Tóm Tắt Thứ Hạng', 'Điểm Chi Tiết (JSON)'
+    ];
+    var rowValues = [
+      nowStr,
+      name,
+      email,
+      phone,
+      company,
+      cohort,
+      String(body.primary_code || ''),
+      String(body.primary_language || ''),
+      Number(body.primary_score || 0) || 0,
+      Number(body.primary_percentage || 0) || 0,
+      String(body.secondary_language || ''),
+      String(body.blindspot_language || ''),
+      String(body.ranked_summary || ''),
+      body.scores_json ? JSON.stringify(body.scores_json) : ''
+    ];
+
+    var targets = getBloomingTargetSpreadsheets_();
+    for (var idx = 0; idx < targets.length; idx++) {
+      try {
+        var sheet = ensureBloomingSheet_(targets[idx], SHEET_BLOOMING_5LANG, headers, '#BE123C');
+        upsertBloomingRowByEmail_(sheet, email, 3, rowValues);
+      } catch (eWrite) {}
     }
 
-    var activeList = matching.filter(function(m) { return m.enrollment_status === "ACTIVE"; });
-    if (activeList.length === 1) {
-      return jsonOut({ success: true, learner: activeList[0] });
-    }
-
-    var disabledList = matching.filter(function(m) { return m.enrollment_status === "DISABLED"; });
-    if (activeList.length === 0 && disabledList.length > 0) {
-      return jsonOut({
-        success: false,
-        error: "ACCOUNT_DISABLED",
-        message: "Tài khoản học viên của bạn đang tạm ngưng hoạt động. Vui lòng liên hệ Ban Giảng Huấn để được kích hoạt lại."
-      });
-    }
-
-    return jsonOut({ success: true, count: matching.length, candidates: matching });
-
+    return jsonOut({
+      success: true,
+      action: 'sync_5lang_result',
+      email: email,
+      primary_code: body.primary_code || '',
+      timestamp: nowStr
+    });
   } catch (err) {
-    return jsonOut({ success: false, error: "SERVER_ERROR", message: err.toString() });
+    return jsonOut({ success: false, error: 'BLOOMING_5LANG_ERROR', message: err.toString() });
+  } finally {
+    if (hasLock) { try { lock.releaseLock(); } catch (e2) {} }
   }
 }
+
+function handleBloomingCheckinSubmission_(body) {
+  var lock = LockService.getScriptLock();
+  var hasLock = false;
+  try { hasLock = lock.tryLock(15000); } catch (e) { hasLock = false; }
+
+  try {
+    var nowStr = Utilities.formatDate(new Date(), 'Asia/Ho_Chi_Minh', 'yyyy-MM-dd HH:mm:ss');
+    var name = String(body.name || body.fullName || 'Khách Blooming On').trim();
+    var email = String(body.email || '').trim().toLowerCase();
+    var phone = String(body.phone || '').trim();
+    var company = String(body.company || '').trim();
+    var cohort = String(body.cohort || 'Blooming On 1').trim();
+    var headers = [
+      'Thời Gian Cập Nhật', 'Họ Và Tên', 'Email', 'Số Điện Thoại', 'Đơn Vị / Công Ty',
+      'Cohort', 'Chế Độ I•A•M', 'Insight (I)', 'Action (A)', 'Mindset (M)',
+      'Cam Kết 7 Ngày', 'Ngôn Ngữ #1', 'Điểm Mù #5', 'Trạm 1-3 Chi Tiết (JSON)', 'Thảo Luận Nhóm (JSON)'
+    ];
+
+    var targets = getBloomingTargetSpreadsheets_();
+    for (var idx = 0; idx < targets.length; idx++) {
+      try {
+        var sheet = ensureBloomingSheet_(targets[idx], SHEET_BLOOMING_IAM, headers, '#9F1239');
+        var alreadyExists = false;
+        if (email && sheet.getLastRow() > 1) {
+          var emails = sheet.getRange(2, 3, sheet.getLastRow() - 1, 1).getValues();
+          for (var r = 0; r < emails.length; r++) {
+            if (String(emails[r][0] || '').trim().toLowerCase() === email) {
+              alreadyExists = true;
+              break;
+            }
+          }
+        }
+        if (!alreadyExists) {
+          sheet.appendRow([nowStr, name, email, phone, company, cohort, '1_STATION', '', '', '', '', '', '', '', '']);
+        }
+      } catch (eWrite) {}
+    }
+
+    return jsonOut({
+      success: true,
+      action: 'sync_blooming_checkin',
+      email: email,
+      cohort: cohort,
+      timestamp: nowStr
+    });
+  } catch (err) {
+    return jsonOut({ success: false, error: 'BLOOMING_CHECKIN_ERROR', message: err.toString() });
+  } finally {
+    if (hasLock) { try { lock.releaseLock(); } catch (e2) {} }
+  }
+}
+
+function handleBloomingWorkshopSubmission_(body) {
+  var lock = LockService.getScriptLock();
+  var hasLock = false;
+  try { hasLock = lock.tryLock(15000); } catch (e) { hasLock = false; }
+
+  try {
+    var nowStr = Utilities.formatDate(new Date(), 'Asia/Ho_Chi_Minh', 'yyyy-MM-dd HH:mm:ss');
+    var name = String(body.name || 'Khách Blooming On').trim();
+    var email = String(body.email || '').trim().toLowerCase();
+    var phone = String(body.phone || '').trim();
+    var company = String(body.company || '').trim();
+    var cohort = String(body.cohort || 'Blooming On 1').trim();
+    var iam = body.iam || {};
+    var headers = [
+      'Thời Gian Cập Nhật', 'Họ Và Tên', 'Email', 'Số Điện Thoại', 'Đơn Vị / Công Ty',
+      'Cohort', 'Chế Độ I•A•M', 'Insight (I)', 'Action (A)', 'Mindset (M)',
+      'Cam Kết 7 Ngày', 'Ngôn Ngữ #1', 'Điểm Mù #5', 'Trạm 1-3 Chi Tiết (JSON)', 'Thảo Luận Nhóm (JSON)'
+    ];
+    var rowValues = [
+      nowStr,
+      name,
+      email,
+      phone,
+      company,
+      cohort,
+      String(body.iamMode || '1_STATION'),
+      String(iam.I || ''),
+      String(iam.A || ''),
+      String(iam.M || ''),
+      String(body.commit7d || ''),
+      String(body.primaryLangLabel || body.primaryLangCode || ''),
+      String(body.blindSpotCode || ''),
+      body.stations ? JSON.stringify(body.stations) : '',
+      body.discussions ? JSON.stringify(body.discussions) : ''
+    ];
+
+    var targets = getBloomingTargetSpreadsheets_();
+    for (var idx = 0; idx < targets.length; idx++) {
+      try {
+        var sheet = ensureBloomingSheet_(targets[idx], SHEET_BLOOMING_IAM, headers, '#9F1239');
+        upsertBloomingRowByEmail_(sheet, email, 3, rowValues);
+      } catch (eWrite) {}
+    }
+
+    return jsonOut({
+      success: true,
+      action: 'sync_blooming_workshop',
+      email: email,
+      iamMode: body.iamMode || '1_STATION',
+      timestamp: nowStr
+    });
+  } catch (err) {
+    return jsonOut({ success: false, error: 'BLOOMING_WORKSHOP_ERROR', message: err.toString() });
+  } finally {
+    if (hasLock) { try { lock.releaseLock(); } catch (e2) {} }
+  }
+}
+
+function handleBloomingFunnelOptin_(body) {
+  var lock = LockService.getScriptLock();
+  var hasLock = false;
+  try { hasLock = lock.tryLock(15000); } catch (e) { hasLock = false; }
+
+  try {
+    var nowStr = Utilities.formatDate(new Date(), 'Asia/Ho_Chi_Minh', 'yyyy-MM-dd HH:mm:ss');
+    var name = String(body.name || 'Khách Blooming On').trim();
+    var email = String(body.email || '').trim().toLowerCase();
+    var phone = String(body.phone || '').trim();
+    var company = String(body.company || '').trim();
+    var cohort = String(body.cohort || 'Blooming On 1').trim();
+    var interests = Array.isArray(body.interests) ? body.interests : [];
+    var note = String(body.note || '').trim();
+    var headers = [
+      'Thời Gian Cập Nhật', 'Họ Và Tên', 'Email', 'Số Điện Thoại', 'Đơn Vị / Công Ty',
+      'Cohort', 'Chương Trình Quan Tâm', 'DHM 11', 'NVC', 'AI Happiness', 'In-house', 'Ghi Chú'
+    ];
+    var rowValues = [
+      nowStr,
+      name,
+      email,
+      phone,
+      company,
+      cohort,
+      interests.join(', '),
+      interests.indexOf('DHM11') !== -1 ? 'TRUE' : 'FALSE',
+      interests.indexOf('NVC') !== -1 ? 'TRUE' : 'FALSE',
+      interests.indexOf('AI_HAPPINESS') !== -1 ? 'TRUE' : 'FALSE',
+      interests.indexOf('INHOUSE') !== -1 ? 'TRUE' : 'FALSE',
+      note
+    ];
+
+    var targets = getBloomingTargetSpreadsheets_();
+    for (var idx = 0; idx < targets.length; idx++) {
+      try {
+        var sheet = ensureBloomingSheet_(targets[idx], SHEET_BLOOMING_FUNNEL, headers, '#047857');
+        upsertBloomingRowByEmail_(sheet, email, 3, rowValues);
+      } catch (eWrite) {}
+    }
+
+    return jsonOut({
+      success: true,
+      action: 'blooming_funnel_optin',
+      email: email,
+      interests: interests,
+      timestamp: nowStr
+    });
+  } catch (err) {
+    return jsonOut({ success: false, error: 'BLOOMING_FUNNEL_ERROR', message: err.toString() });
+  } finally {
+    if (hasLock) { try { lock.releaseLock(); } catch (e2) {} }
+  }
+}
+

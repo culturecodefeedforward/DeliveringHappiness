@@ -68,6 +68,9 @@
                 <!-- Questions will be injected here -->
             </div>
 
+            <div id="quizSaveStatus" role="status" aria-live="assertive" style="display:none; margin:18px auto; padding:14px 16px; border:1px solid rgba(245,158,11,.45); border-radius:12px; color:#fde68a; background:rgba(245,158,11,.08);"></div>
+            <button id="quizRetrySaveBtn" class="btn-quiz-next" type="button" style="display:none">Gửi lại kết quả</button>
+
             <!-- Nút điều hướng nhanh trong suốt quá trình quiz -->
             <div class="quiz-nav-actions" id="quizNavActions">
                 <a href="/" class="btn-nav btn-nav-info" id="quizNavInfo">Thông tin chương trình</a>
@@ -100,7 +103,6 @@
     </div>
 
     <!-- Script logic assumes some CSS variables from styles.css like --warm-yellow -->
-    <script src="tracking.js?v=1.0"></script>
     <script src="quiz.js?v=2.0"></script>
 </body>
 

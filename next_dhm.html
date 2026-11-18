@@ -561,6 +561,10 @@
         </div>
       </div>
 
+      <p class="data-collection-note" role="note" style="font-size:0.9rem; line-height:1.5; color:rgba(255,255,255,0.72); margin:0;">
+        Hiện tại, hệ thống chỉ lưu họ tên, email, số điện thoại và khóa học dự kiến. Các thông tin bổ sung bên dưới chưa được gửi hoặc lưu.
+      </p>
+
       <label>
         Công ty / Tổ chức
         <input type="text" name="company" autocomplete="organization" placeholder="Tên doanh nghiệp hoặc tổ chức của bạn..." />
@@ -627,8 +631,6 @@
   </div>
 
   <script>
-    window.CUSTOM_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
-
     // CẤU HÌNH CÁC KHÓA ĐANG MỞ / DỰ KIẾN (Dễ dàng mở rộng cho tương lai)
     const ACTIVE_COHORTS_CONFIG = {
       hcm: {
@@ -717,6 +719,8 @@
       }).join('');
     }
 
+    var pendingInterestSubmission = null;
+
     function showInterestStatus(message, isError) {
       var status = document.getElementById('interestStatus');
       status.innerHTML = message;
@@ -734,55 +738,47 @@
       var formData = new FormData(event.target);
       var formValues = Object.fromEntries(formData.entries());
 
-      var locationChosen = formValues.preferredLocation || 'Chưa xác định';
-      var noteParts = ['[Địa điểm mong muốn: ' + locationChosen + ']'];
-
-      var refName = formValues.referrerName ? formValues.referrerName.trim() : '';
-      var refPhone = formValues.referrerPhone ? formValues.referrerPhone.trim() : '';
-      if (refName || refPhone) {
-        var refStr = '[Người giới thiệu: ' + (refName || 'Không có tên');
-        if (refPhone) {
-          refStr += ' - SĐT: ' + refPhone;
-        }
-        refStr += ']';
-        noteParts.push(refStr);
+      var selectedLocation = document.querySelector('input[name="preferredLocation"]:checked');
+      var selectedCard = selectedLocation ? selectedLocation.closest('.location-card') : null;
+      var region = selectedCard ? selectedCard.getAttribute('data-region') : '';
+      var expectedCohort = region === 'hn' ? 'DHM11' : region === 'hcm' ? 'DHM12' : '';
+      if (!expectedCohort) {
+        showInterestStatus('⚠️ <strong>Chưa xác định được khóa học.</strong><br/>Hãy chọn khu vực muốn tham gia rồi gửi lại.', true);
+        submit.disabled = false;
+        submit.textContent = 'Gửi thông tin quan tâm';
+        return;
       }
-
-      if (formValues.userNote && formValues.userNote.trim()) {
-        noteParts.push('[Kỳ vọng / Lời nhắn]: ' + formValues.userNote.trim());
-      }
-      var noteCombined = noteParts.join('\n');
-
       var payload = {
-        fullName: formValues.fullName ? formValues.fullName.trim() : '',
+        full_name: formValues.fullName ? formValues.fullName.trim() : '',
         email: formValues.email ? formValues.email.trim() : '',
         phone: formValues.phone ? formValues.phone.trim() : '',
-        company: formValues.company ? formValues.company.trim() : '',
-        jobTitle: formValues.jobTitle ? formValues.jobTitle.trim() : '',
-        referrerName: refName,
-        referrerPhone: refPhone,
-        location: locationChosen,
-        note: noteCombined,
-        type: 'NEXT_DHM_INTEREST',
-        lane: 'next_dhm',
-        event_id: 'NEXT_DHM_INTEREST',
+        expected_cohort: expectedCohort,
         source: 'Web_Next_DHM_Interest',
-        interestUuid: createInterestUuid()
+        interest_uuid: ''
       };
+      var payloadFingerprint = JSON.stringify(payload);
+      if (!pendingInterestSubmission || pendingInterestSubmission.fingerprint !== payloadFingerprint) {
+        pendingInterestSubmission = { fingerprint: payloadFingerprint, interestUuid: createInterestUuid() };
+      }
+      payload.interest_uuid = pendingInterestSubmission.interestUuid;
 
       try {
-        await fetch(window.CUSTOM_WEBAPP_URL, {
+        var response = await fetch('/api/leads', {
           method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
           body: JSON.stringify(payload)
         });
+        var result = await response.json();
+        if (!response.ok || !result || result.success !== true || result.interest_uuid !== payload.interest_uuid) {
+          throw new Error('LEAD_SUBMISSION_NOT_CONFIRMED');
+        }
 
+        pendingInterestSubmission = null;
         event.target.reset();
         locationCards.forEach(c => c.classList.remove('selected'));
-        showInterestStatus('✨ <strong>Gửi thông tin thành công!</strong><br/>CultureCode Team đã tiếp nhận thông tin quan tâm của bạn cho các khóa <strong>Delivering Happiness Masterclass tiếp theo</strong>. Chúng tôi sẽ ưu tiên liên hệ và gửi email thông báo kèm đường link đăng ký chính thức ngay khi khóa học tại khu vực bạn đăng ký mở cổng tuyển sinh.', false);
+        showInterestStatus('✨ <strong>Gửi thông tin thành công!</strong><br/>CultureCode Team đã tiếp nhận thông tin quan tâm của bạn cho các khóa <strong>Delivering Happiness Masterclass tiếp theo</strong>. Chúng tôi sẽ ưu tiên liên hệ và gửi thông báo khi khóa học tại khu vực bạn đăng ký mở cổng tuyển sinh.', false);
       } catch (err) {
-        showInterestStatus('⚠️ Chưa gửi được thông tin do lỗi kết nối mạng. Vui lòng kiểm tra lại đường truyền hoặc liên hệ CultureCode Team.', true);
+        showInterestStatus('⚠️ <strong>Chưa xác nhận được thông tin.</strong><br/>Hệ thống chưa xác nhận đã nhận yêu cầu. Thông tin vẫn được giữ trong biểu mẫu; nếu gửi lại cùng nội dung, hệ thống sẽ dùng cùng mã yêu cầu để tránh ghi trùng.', true);
       } finally {
         submit.disabled = false;
         submit.textContent = 'Gửi thông tin quan tâm';

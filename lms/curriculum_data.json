@@ -372,7 +372,7 @@
         {
           "id": "a2-1",
           "title": "Đòn bẩy Tự chủ: 70.000 giờ làm việc",
-          "file": "data/artifacts/70000_gio_lam_viec.mp3",
+          "file": "../data/artifacts/70000_gio_lam_viec.mp3",
           "duration": "39:50"
         },
         {
@@ -461,7 +461,7 @@
             {
               "id": "a2-drivers-1",
               "title": "Đòn bẩy Tự chủ: 70.000 giờ làm việc",
-              "file": "data/artifacts/70000_gio_lam_viec.mp3",
+              "file": "../data/artifacts/70000_gio_lam_viec.mp3",
               "duration": "39:50"
             },
             {
@@ -1005,7 +1005,7 @@
         {
           "id": "sub-3a-1",
           "title": "Mục 3A.1: Bảng Vinh Danh & Điểm Danh 3 Thói Quen (Tỉnh thức, Biết ơn, Vị nhân)",
-          "target": "stage3a-tracker-section",
+          "target": "stage3-tracker-section",
           "tab": "tab-practice"
         },
         {

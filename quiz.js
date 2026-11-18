@@ -1,5 +1,4 @@
-// --- CONFIGURATION ---
-// Quiz sử dụng chung logToSheet và SHEET_WEBAPP_URL từ tracking.js lo liệu.
+// Bài làm được gửi tới API để máy chủ tự chấm và xác nhận kết quả.
 
 const quizData = [
     {
@@ -107,10 +106,20 @@ const quizData = [
 let currentStep = 0;
 let score = 0;
 let answered = false;
+let selectedOptionIndices = [];
+let assessmentAttemptId = null;
+const ASSESSMENT_VERSION = 'quiz-stage-1-v1';
 
-// --- TRACKING (Dùng chung bộ sessionId từ tracking.js) ---
-if (typeof logToSheet === 'undefined') {
-    window.logToSheet = () => { console.log('Hệ thống tracking chưa được tải'); };
+function createAssessmentAttemptId() {
+    if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+        return window.crypto.randomUUID().toLowerCase();
+    }
+    const bytes = new Uint8Array(16);
+    window.crypto.getRandomValues(bytes);
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    const hex = Array.from(bytes, value => value.toString(16).padStart(2, '0')).join('');
+    return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
 }
 
 function shuffleArray(array) {
@@ -121,18 +130,9 @@ function shuffleArray(array) {
 }
 
 function initQuiz() {
-    logToSheet('START_QUIZ', 'User entered assessment page');
     renderQuestion();
-
-    // Track buttons at navigation of quiz
-    const navActions = document.getElementById('quizNavActions');
-    if (navActions) {
-        navActions.querySelectorAll('.btn-nav').forEach(btn => {
-            btn.addEventListener('click', () => {
-                logToSheet('CTA_CLICK_DURING_QUIZ', btn.innerText.trim());
-            });
-        });
-    }
+    const retryButton = document.getElementById('quizRetrySaveBtn');
+    if (retryButton) retryButton.addEventListener('click', () => { void showSummary(); });
 }
 
 function renderQuestion() {
@@ -143,7 +143,7 @@ function renderQuestion() {
     progressBar.style.width = `${((currentStep) / quizData.length) * 100}%`;
 
     // Sort options to randomly place correct answer
-    const currentOptions = [...data.options];
+    const currentOptions = data.options.map((option, originalIndex) => ({ ...option, originalIndex }));
     shuffleArray(currentOptions);
     data.shuffledOptions = currentOptions;
 
@@ -154,7 +154,7 @@ function renderQuestion() {
         <div class="quiz-question-text">${data.q}</div>
         <div class="quiz-options">
             ${currentOptions.map((opt, idx) => `
-                <div class="quiz-option" onclick="handleAnswer(${idx}, ${opt.isCorrect})">
+                <div class="quiz-option" data-option-index="${opt.originalIndex}" onclick="handleAnswer(${idx})">
                     <span style="font-weight:800; color:var(--warm-yellow); margin-right:12px; font-size:1.1rem">${labels[idx]}.</span>
                     ${opt.text}
                 </div>
@@ -166,18 +166,16 @@ function renderQuestion() {
     answered = false;
 }
 
-function handleAnswer(index, isCorrect) {
+function handleAnswer(index) {
     if (answered) return;
+    const selectedOption = quizData[currentStep].shuffledOptions[index];
+    if (!selectedOption) return;
     answered = true;
+    selectedOptionIndices[currentStep] = selectedOption.originalIndex;
+    const isCorrect = selectedOption.isCorrect;
 
     const options = document.querySelectorAll('.quiz-option');
     options[index].classList.add(isCorrect ? 'correct' : 'wrong');
-
-    // Logging chi tiết từng câu
-    logToSheet('ANSWER_QUESTION', quizData[currentStep].q, {
-        questionNum: currentStep + 1,
-        result: isCorrect ? 'Đúng' : 'Sai'
-    });
 
     const feedbackEl = document.getElementById('quizFeedback');
 
@@ -210,31 +208,61 @@ function nextQuestion() {
     }
 }
 
-function showSummary() {
+async function showSummary() {
     document.getElementById('quizProgressBar').style.width = '100%';
     const container = document.getElementById('quizContent');
     const summary = document.getElementById('quizSummary');
+    const status = document.getElementById('quizSaveStatus');
+    const retryButton = document.getElementById('quizRetrySaveBtn');
+    if (!status || !retryButton) return;
+    if (selectedOptionIndices.length !== quizData.length || selectedOptionIndices.some(value => !Number.isInteger(value))) {
+        status.textContent = 'Chưa đủ câu trả lời để lưu kết quả. Hãy tải lại bài và hoàn thành đủ câu hỏi.';
+        status.style.display = 'block';
+        return;
+    }
 
-    // Ẩn các nút điều hướng nhanh của quiz để tránh trùng lặp nút ở màn hình kết quả
-    const navActions = document.getElementById('quizNavActions');
-    if (navActions) navActions.style.display = 'none';
+    if (!assessmentAttemptId) assessmentAttemptId = createAssessmentAttemptId();
+    retryButton.style.display = 'none';
+    status.textContent = 'Đang lưu kết quả bài sát hạch…';
+    status.style.display = 'block';
 
-    if (container) container.style.display = 'none';
-    if (summary) summary.style.display = 'block';
-
-    const finalScoreEl = document.getElementById('finalScore');
-    const scoreStr = `${score}/${quizData.length}`;
-    if (finalScoreEl) finalScoreEl.innerText = scoreStr;
-
-    // Logging tổng hợp khi xong bài
-    logToSheet('FINISH_QUIZ', 'User reached summary screen', { score: scoreStr });
-
-    // Track buttons at footer of summary
-    document.querySelectorAll('.summary-actions a').forEach(btn => {
-        btn.addEventListener('click', () => {
-            logToSheet('CTA_CLICK', btn.innerText.trim());
+    try {
+        const response = await fetch('/api/assessment/attempts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+                attempt_id: assessmentAttemptId,
+                assessment_type: 'QUIZ_STAGE_1',
+                assessment_version: ASSESSMENT_VERSION,
+                is_anonymous: true,
+                answers: selectedOptionIndices
+            })
         });
-    });
+        let result;
+        try { result = await response.json(); } catch (_) { throw new Error('INVALID_RESPONSE'); }
+        const serverScore = Number(result && result.score);
+        const serverPercentage = Number(result && result.percentage);
+        if (!response.ok || !result || result.success !== true || result.attempt_id !== assessmentAttemptId ||
+            !Number.isInteger(serverScore) || serverScore < 0 || serverScore > quizData.length ||
+            serverPercentage !== Math.round((serverScore / quizData.length) * 100) ||
+            result.passed !== (serverScore >= Math.ceil(quizData.length * 0.8))) {
+            throw new Error('ASSESSMENT_SAVE_REJECTED');
+        }
+
+        score = serverScore;
+        const finalScoreEl = document.getElementById('finalScore');
+        if (finalScoreEl) finalScoreEl.textContent = `${serverScore}/${quizData.length}`;
+        if (container) container.style.display = 'none';
+        status.style.display = 'none';
+        retryButton.style.display = 'none';
+        if (summary) summary.style.display = 'block';
+        const navActions = document.getElementById('quizNavActions');
+        if (navActions) navActions.style.display = 'none';
+    } catch (_) {
+        status.textContent = 'Chưa lưu được kết quả. Hãy thử gửi lại; bài làm hiện tại vẫn được giữ.';
+        status.style.display = 'block';
+        retryButton.style.display = 'block';
+    }
 }
 
 function finishQuiz() {

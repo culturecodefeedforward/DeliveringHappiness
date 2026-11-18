@@ -204,6 +204,14 @@ function generateCallbackName() {
 // JSONP POLLING (Condition 2: chỉ trả success/state/registrationUuid/error)
 // ============================================================
 function pollRegistrationStatus(uuid, attempt, paymentCode) {
+    if (window.DHM10_REGISTRATION_CLOSED !== false) {
+        return Promise.resolve({
+            success: false,
+            state: 'REGISTRATION_CLOSED',
+            error: 'REGISTRATION_CLOSED',
+            interestLink: DH_INTEREST_URL
+        });
+    }
     const normalizedPaymentCode = isValidSePayPaymentCode(paymentCode)
         ? String(paymentCode).toUpperCase()
         : getStoredPaymentCode();
@@ -276,6 +284,14 @@ function pollRegistrationStatus(uuid, attempt, paymentCode) {
 }
 
 async function fetchRegistrationStatus(uuid, attempt, paymentCode) {
+    if (window.DHM10_REGISTRATION_CLOSED !== false) {
+        return {
+            success: false,
+            state: 'REGISTRATION_CLOSED',
+            error: 'REGISTRATION_CLOSED',
+            interestLink: DH_INTEREST_URL
+        };
+    }
     const callbackName = CALLBACK_PREFIX + 'FetchStatus' + String(attempt).padStart(2, '0') + 'ABCDEFGH';
     const url = DHM10_WEBAPP_URL
         + '?action=checkStatus'
@@ -491,11 +507,13 @@ function showInlineError(message) {
 function showRegistrationClosed(interestLink) {
     const form = document.getElementById('crmForm');
     const header = document.querySelector('.header');
+    const success = document.getElementById('successMessage');
     const closed = document.getElementById('registrationClosed');
     const closedLink = document.getElementById('registrationClosedInterestLink');
     if (closedLink) closedLink.href = interestLink || DH_INTEREST_URL;
     if (form) form.style.display = 'none';
     if (header) header.style.display = 'none';
+    if (success) success.style.display = 'none';
     if (closed) closed.style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -659,6 +677,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('crmForm');
     if (!form) return;
 
+    if (window.DHM10_REGISTRATION_CLOSED !== false) {
+        clearAllDhm9SessionState();
+        clearLastRegistration();
+        clearPaymentReference();
+        clearRegistrationUuid();
+        showRegistrationClosed(DH_INTEREST_URL);
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showRegistrationClosed(DH_INTEREST_URL);
+        });
+        return;
+    }
+
     const phoneInput = document.querySelector('input[name="phone"]');
     let _phoneDebounceTimer = null;
     let lastCheckedPhone = '';
@@ -705,6 +736,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function validatePhoneRealtime() {
+        if (window.DHM10_REGISTRATION_CLOSED !== false) return;
         if (!phoneInput) return;
         const phoneVal = phoneInput.value.trim();
         const normalizedPhone = normalizePhone(phoneVal);

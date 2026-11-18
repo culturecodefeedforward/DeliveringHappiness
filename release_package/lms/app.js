@@ -249,7 +249,7 @@ const initDhmLmsApp = () => {
                     { id: "sub-2-6", title: "🏆 Đúc Kết & Chuyển Hóa", target: "habit-panel-capstone", habit: "capstone", tab: "tab-practice" }
                 ],
                 audios: [
-                    { id: "a2-1", title: "Đòn bẩy Tự chủ: 70.000 giờ làm việc", file: "data/artifacts/70000_gio_lam_viec.mp3", duration: "39:50" },
+                    { id: "a2-1", title: "Đòn bẩy Tự chủ: 70.000 giờ làm việc", file: "../data/artifacts/70000_gio_lam_viec.mp3", duration: "39:50" },
                     { id: "a2-2", title: "Đòn bẩy Kết nối: Thỏa thuận văn hóa", file: "data/artifacts/thoa_thuan_van_hoa.mp3", duration: "38:20" },
                     { id: "a2-3", title: "Thói quen 1 (Tỉnh thức): Âm thanh SBA", file: "data/artifacts/audio_mindful.mp3", duration: "35:10" },
                     { id: "a2-4", title: "Thói quen 2 (Biết ơn): Âm thanh thực hành", file: "data/artifacts/audio_biet_on.mp3", duration: "33:50" },
@@ -311,9 +311,14 @@ const initDhmLmsApp = () => {
         ]
     };
 
+    function getLocalApiConfig() {
+        const config = typeof window !== "undefined" ? window.__DHM_LOCAL_API_CONFIG__ : null;
+        return config && config.enabled === true ? config : null;
+    }
+
     let currentStageIndex = 0;
     let currentUser = null;
-    let authorizedRoster = [];
+    // Static client-side roster removed per SEC-01; authentication relies exclusively on Central Auth API.
 
     function getInitialLearnerProgress() {
         return {
@@ -618,7 +623,7 @@ const initDhmLmsApp = () => {
 
     // 5. HELPER FUNCTIONS
     // TRIAL AUTHORIZATION & ROSTER HELPERS
-    const TRIAL_EMAILS_STORAGE_KEY = "dhm_lms_approved_trials";
+    const TRIAL_EMAILS_STORAGE_KEY = "dhm_lms_verified_trials_v2";
 
     function getApprovedTrialEmails() {
         try {
@@ -644,15 +649,20 @@ const initDhmLmsApp = () => {
         }
     }
 
-    function saveTrialUserProfile(email, name, phone) {
+    function saveTrialUserProfile(email, name, phone, verifiedAt) {
         if (!email) return;
         const clean = String(email).trim().toLowerCase();
+        const verifiedTimestamp = verifiedAt && Number.isFinite(Date.parse(verifiedAt))
+            ? new Date(verifiedAt).toISOString()
+            : "";
+        if (!verifiedTimestamp) return;
         try {
             const raw = localStorage.getItem("dhm_lms_trial_profiles");
             const profiles = raw ? JSON.parse(raw) : {};
             profiles[clean] = {
                 name: name || clean.split("@")[0],
                 phone: phone || "",
+                trial_email_verified_at: verifiedTimestamp,
                 updatedAt: new Date().toISOString()
             };
             localStorage.setItem("dhm_lms_trial_profiles", JSON.stringify(profiles));
@@ -677,19 +687,7 @@ const initDhmLmsApp = () => {
         if (!email) return false;
         const clean = String(email).trim().toLowerCase();
         if (!clean) return false;
-        const list = getApprovedTrialEmails();
-        if (list.includes(clean)) return true;
-        if (typeof authorizedRoster !== "undefined" && Array.isArray(authorizedRoster)) {
-            return authorizedRoster.some(l => {
-                const lEmail = String(l.Email || l.email || "").toLowerCase().trim();
-                if (lEmail !== clean) return false;
-                const r = String(l.Role || l.role || "").toLowerCase();
-                const ps = String(l.Payment_Status || l.payment_status || "").toUpperCase();
-                const c = String(l.Cohort_ID || l.cohort || "").toLowerCase();
-                return l.isTrial === true || l.is_trial === true || r === "trial" || ps === "TRIAL" || c.includes("trải nghiệm") || c.includes("interest");
-            });
-        }
-        return false;
+        return getApprovedTrialEmails().includes(clean);
     }
 
     function normalizePhone(str) {
@@ -712,111 +710,7 @@ const initDhmLmsApp = () => {
         return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
-    // ROSTER & DIRECTORY
-    async function loadRoster() {
-        try {
-            let res = await fetch("/lms/master_learners_roster.json");
-            if (!res.ok) {
-                res = await fetch("authorized_roster.json");
-            }
-            if (res.ok) {
-                authorizedRoster = await res.json();
-                return;
-            }
-        } catch (e) {
-            // fallback
-        }
-        try {
-            const resFallback = await fetch("authorized_roster.json");
-            if (resFallback.ok) {
-                authorizedRoster = await resFallback.json();
-            }
-        } catch (err) {
-            console.warn("Offline/Fallback authorized roster mode", err);
-        }
-    }
-
-    function getRosterOverrides() {
-        try {
-            const raw = localStorage.getItem("dhm_roster_overrides");
-            return raw ? JSON.parse(raw) : {};
-        } catch (e) {
-            return {};
-        }
-    }
-
-    function findLearner(rawIdentity) {
-        const id = normalizeIdentity(rawIdentity);
-        if (!id) return null;
-
-        const overrides = getRosterOverrides();
-        
-        // Tìm tất cả các ứng viên khớp danh tính (hỗ trợ trường hợp 1 email có nhiều khóa học)
-        const candidates = authorizedRoster.filter(l => {
-            const lKey = (l.Compound_Key || l.compound_key || "").toLowerCase();
-            const lEmail = (l.Email || l.email) ? normalizeIdentity(l.Email || l.email) : "";
-            const lPhone = l.Phone || l.phone_full || l.phone_raw || l.phone || "";
-            const keyMatch = lKey && lKey === id;
-            const emailMatch = lEmail && (lEmail === id || lEmail.split('@')[0] === id);
-            const phoneMatch = lPhone && normalizePhone(lPhone) === normalizePhone(id);
-            return keyMatch || emailMatch || phoneMatch;
-        });
-
-        // Ưu tiên chọn bản ghi ACTIVE nếu có nhiều bản ghi của cùng email
-        let match = candidates.find(c => (c.Enrollment_Status || c.enrollment_status || "ACTIVE") === "ACTIVE") || candidates[0];
-
-        if (match) {
-            let learner = {
-                learner_id: match.Compound_Key || match.compound_key || match.learner_id || "DHM-LEARNER",
-                compound_key: match.Compound_Key || match.compound_key || "",
-                identity: match.Email || match.email || match.Phone || match.phone || match.learner_id || "DHM-LEARNER",
-                name: match.Full_Name || match.full_name || match.name || match.Email || match.email,
-                email: match.Email || match.email || "",
-                phone: match.Phone || match.phone_full || match.phone_raw || match.phone || "",
-                phone_last4: (match.Phone || match.phone_full || match.phone || "").slice(-4),
-                cohort: match.Cohort_ID || match.cohort || "Học viên",
-                enrollment_status: match.Enrollment_Status || match.enrollment_status || "ACTIVE",
-                activation_status: match.Activation_Status || match.activation_status || "ACTIVATED",
-                role: match.Role || match.role || "Learner",
-                is_paid: Boolean(match.Is_Paid === true || match.is_paid === true || match.isPaid === true || match.Is_Paid === "TRUE"),
-                payment_status: match.Payment_Status || match.payment_status || match.paymentStatus || null,
-                isTrial: Boolean(match.isTrial === true || match.is_trial === true || match.Role === "trial" || match.role === "trial" || match.Payment_Status === "TRIAL" || match.payment_status === "TRIAL" || String(match.Cohort_ID || match.cohort || "").toLowerCase().includes("trải nghiệm") || String(match.Cohort_ID || match.cohort || "").toLowerCase().includes("interest")),
-                missing_phone: match.phone_status === "legacy_partial" || !(match.Phone || match.phone_full || match.phone),
-                force_pwd_change: (match.Force_Pwd_Change === true || match.force_pwd_change === true || match.Force_Pwd_Change === "TRUE"),
-                default_pwd: match.Default_Password || match.default_pwd || "1234",
-                password_hash: match.Password_Hash || match.password_hash || null
-            };
-            const ov = overrides[learner.email] || overrides[learner.learner_id];
-            if (ov) {
-                if (ov.phone) {
-                    learner.phone = ov.phone;
-                    learner.phone_last4 = ov.phone.slice(-4);
-                    learner.missing_phone = false;
-                }
-                if (ov.password_hash !== undefined) {
-                    learner.password_hash = ov.password_hash;
-                }
-                if (ov.force_pwd_change !== undefined) {
-                    learner.force_pwd_change = ov.force_pwd_change;
-                }
-                if (ov.is_paid !== undefined) {
-                    learner.is_paid = Boolean(ov.is_paid);
-                }
-                if (ov.payment_status !== undefined) {
-                    learner.payment_status = ov.payment_status;
-                }
-            }
-            return learner;
-        }
-
-        const overrideEntry = Object.values(overrides).find(ov => {
-            return (ov.email && normalizeIdentity(ov.email) === id) || (ov.phone && normalizePhone(ov.phone) === normalizePhone(id));
-        });
-        if (overrideEntry && !overrideEntry.missing_phone) return overrideEntry;
-
-        // BẢO VỆ BẢN QUYỀN: Tuyệt đối không tự cấp quyền học viên chính thức cho email ngoài danh bạ
-        return null;
-    }
+    // ROSTER & DIRECTORY REMOVED (SEC-01): Learner authentication and role resolution use Central Auth API only.
 
     function resetToDefaultLoginView() {
         if (authErrorBanner) authErrorBanner.classList.add("hidden");
@@ -844,14 +738,6 @@ const initDhmLmsApp = () => {
         if (submitAuthWrapper) submitAuthWrapper.classList.remove("hidden");
         if (newcomerToggleWrapper) newcomerToggleWrapper.classList.remove("hidden");
         if (btnSubmitText) btnSubmitText.textContent = "Vào Học Ngay";
-
-        const currentVal = (loginIdentityInput.value || "").trim();
-        if (currentVal.includes("@") && currentVal.length >= 6) {
-            const found = findLearner(currentVal);
-            if (found) {
-                updateAuthModeForLearner(found);
-            }
-        }
     }
 
     function showTrialOnboardingView(rawEmail, fromFailedLogin = false) {
@@ -897,234 +783,172 @@ const initDhmLmsApp = () => {
         }
     }
 
-    function updateAuthModeForLearner(learner) {
-        if (!learner) {
-            if (authUserDetected) authUserDetected.classList.add("hidden");
-            // Mặc định luôn giữ ô password và nút submit
-            if (passwordGroup) passwordGroup.classList.remove("hidden");
-            if (phoneOnboardingGroup) phoneOnboardingGroup.classList.add("hidden");
-            if (submitAuthWrapper) submitAuthWrapper.classList.remove("hidden");
-            if (newcomerToggleWrapper) newcomerToggleWrapper.classList.remove("hidden");
-            if (btnSubmitText) btnSubmitText.textContent = "Vào Học Ngay";
-            if (loginPasswordInput) {
-                loginPasswordInput.removeAttribute("required");
-                loginPasswordInput.placeholder = "Nhập 4 số cuối Số điện thoại hoặc để trống nếu là người mới";
-            }
-            if (loginIdentityLabel) loginIdentityLabel.textContent = "Email học viên đã đăng ký";
-            return;
-        }
+    // Legacy client-side password check & static roster mode hint removed per SEC-01.
 
-        // Đã nhận diện Học viên Chính thức trong danh bạ Roster
-        if (trialTriggerWrapper) trialTriggerWrapper.classList.add("hidden");
-        if (trialOnboardingGroup) trialOnboardingGroup.classList.add("hidden");
-        if (submitAuthWrapper) submitAuthWrapper.classList.remove("hidden");
-        if (newcomerToggleWrapper) newcomerToggleWrapper.classList.remove("hidden");
-        if (loginIdentityLabel) loginIdentityLabel.textContent = "Email học viên đã đăng ký";
-        if (authUserDetected) {
-            authUserDetected.classList.remove("hidden");
-            if (detectedUserName) detectedUserName.textContent = learner.name || learner.email;
-            if (detectedUserCohort) detectedUserCohort.textContent = learner.cohort || "Học viên";
-        }
-
-        const isTrialUser = learner.isTrial || learner.role === "trial";
-        if (isTrialUser) {
-            if (passwordGroup) passwordGroup.classList.remove("hidden");
-            if (loginPasswordInput) {
-                loginPasswordInput.removeAttribute("required");
-                loginPasswordInput.placeholder = "4 số cuối SĐT hoặc mật khẩu (hoặc để trống)";
-            }
-            if (phoneOnboardingGroup) phoneOnboardingGroup.classList.add("hidden");
-            if (onboardingPhoneInput) onboardingPhoneInput.removeAttribute("required");
-            if (btnSubmitText) btnSubmitText.textContent = "Vào Học Chặng 1 Ngay";
-            return;
-        }
-
-        const isApolloOrPwdAuth = learner.force_pwd_change || learner.password_hash || learner.default_pwd || (learner.cohort && learner.cohort.toLowerCase().includes("apollo"));
-        const hasPhone = learner.phone && String(learner.phone).trim().length >= 8 && !learner.missing_phone;
-
-        if (!hasPhone && !isApolloOrPwdAuth) {
-            if (passwordGroup) passwordGroup.classList.add("hidden");
-            if (loginPasswordInput) loginPasswordInput.removeAttribute("required");
-            if (phoneOnboardingGroup) phoneOnboardingGroup.classList.remove("hidden");
-            if (onboardingPhoneInput) onboardingPhoneInput.setAttribute("required", "true");
-            if (btnSubmitText) btnSubmitText.textContent = "Kích Hoạt & Vào Học";
-        } else {
-            if (passwordGroup) passwordGroup.classList.remove("hidden");
-            if (loginPasswordInput) {
-                loginPasswordInput.removeAttribute("required");
-                if (learner.force_pwd_change) {
-                    loginPasswordInput.placeholder = "Nhập mật khẩu khởi tạo của bạn";
-                } else if (learner.password_hash || learner.default_pwd) {
-                    loginPasswordInput.placeholder = "Nhập mật khẩu truy cập của bạn";
-                } else {
-                    loginPasswordInput.placeholder = "Nhập 4 số cuối Số điện thoại của bạn";
-                }
-            }
-            if (phoneOnboardingGroup) phoneOnboardingGroup.classList.add("hidden");
-            if (onboardingPhoneInput) onboardingPhoneInput.removeAttribute("required");
-            if (btnSubmitText) btnSubmitText.textContent = "Vào Học Ngay";
-        }
-    }
-
-    async function verifyPassword(learner, inputPassword) {
-        if (!learner) return { valid: false };
-        const pwd = String(inputPassword || "").trim();
-
-        const overrides = getRosterOverrides();
-        const ov = overrides[learner.email] || overrides[learner.learner_id] || {};
-        const passwordHash = ov.password_hash !== undefined ? ov.password_hash : (learner.password_hash || null);
-        const forcePwdChange = ov.force_pwd_change !== undefined ? ov.force_pwd_change : (learner.force_pwd_change === true);
-
-        // Ưu tiên 2: Mật khẩu cá nhân đã đổi (đã có password_hash)
-        if (passwordHash) {
-            const inputHash = await sha256(pwd);
-            if (inputHash === passwordHash) {
-                return { valid: true, mustChange: false };
-            }
-            return { valid: false, hasCustomPassword: true };
-        }
-
-        // Ưu tiên 3: Mật khẩu mặc định khởi tạo
-        const defaultPwd = String(learner.default_pwd || learner.default_password || "1234").trim();
-        if (forcePwdChange && pwd === defaultPwd) {
-            return { valid: true, mustChange: true };
-        }
-        if (defaultPwd && pwd === defaultPwd) {
-            return { valid: true, mustChange: forcePwdChange };
-        }
-
-        // Ưu tiên 4: Cơ chế kế thừa 4 số cuối SĐT (học viên cũ có SĐT)
-        if (learner.phone_last4 && pwd === String(learner.phone_last4).trim()) {
-            return { valid: true, mustChange: false };
-        }
-        if (learner.phone) {
-            const last4 = normalizePhone(String(learner.phone)).slice(-4);
-            if (last4 && pwd === last4) {
-                return { valid: true, mustChange: false };
-            }
-        }
-
-        return { valid: false };
-    }
-    window.verifyPassword = verifyPassword;
-
-    async function saveNewPassword(learner, newPassword) {
-        const hash = await sha256(newPassword);
-        const overrides = getRosterOverrides();
-        const currentOv = overrides[learner.email] || overrides[learner.learner_id] || {};
-        const updatedLearner = {
-            ...learner,
-            ...currentOv,
-            password_hash: hash,
-            force_pwd_change: false
-        };
-        overrides[learner.email] = updatedLearner;
-        localStorage.setItem("dhm_roster_overrides", JSON.stringify(overrides));
-
-        // Cập nhật session currentUser
-        currentUser = updatedLearner;
-        localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
-
-        // Webhook đồng bộ về Google Sheets CRM (chạy ngầm, không chặn UI)
-        const webhookUrl = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
-        const payload = {
-            action: "update_password",
-            email: learner.email,
-            password_hash: hash,
-            force_pwd_change: false
-        };
-        try {
-            fetch(webhookUrl, {
+    async function saveNewPassword(learner, newPassword, currentPassword = "") {
+        const localApiConfig = getLocalApiConfig();
+        if (localApiConfig) {
+            const tokenKey = localApiConfig.accessTokenStorageKey || "dhm_lms_api_access_token";
+            const accessToken = sessionStorage.getItem(tokenKey);
+            if (!accessToken) throw new Error("AUTH_SESSION_REQUIRED");
+            const body = { new_password: String(newPassword || "") };
+            if (currentPassword) body.current_password = String(currentPassword);
+            const response = await fetch("/api/auth/password", {
                 method: "POST",
-                headers: { "Content-Type": "text/plain;charset=utf-8" },
-                body: JSON.stringify(payload)
-            }).catch(err => console.warn("Background password sync notice:", err));
-        } catch (e) {
-            console.warn("Webhook update_password failed to dispatch:", e);
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            });
+            const result = await response.json().catch(() => null);
+            if (!response.ok || !result || result.success !== true) {
+                throw new Error((result && result.error) || `HTTP_${response.status}`);
+            }
+            currentUser = {
+                ...learner,
+                ...(result.user || {}),
+                force_pwd_change: false,
+                must_change_password: false
+            };
+            localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
+            return currentUser;
         }
 
-        return updatedLearner;
+        throw new Error("CENTRAL_AUTH_API_REQUIRED");
+    }
+
+    const TRIAL_ACCESS_TOKEN_KEY = "dhm_lms_trial_access_token";
+    const TRIAL_REFRESH_TOKEN_KEY = "dhm_lms_trial_refresh_token";
+    const TRIAL_PENDING_ACCESS_TOKEN_KEY = "dhm_lms_trial_pending_access_token";
+    const TRIAL_PENDING_REFRESH_TOKEN_KEY = "dhm_lms_trial_pending_refresh_token";
+    const TRIAL_SIGNUP_PROFILE_KEY = "dhm_lms_trial_signup_profile";
+
+    function clearTrialSessionTokens() {
+        sessionStorage.removeItem(TRIAL_ACCESS_TOKEN_KEY);
+        sessionStorage.removeItem(TRIAL_REFRESH_TOKEN_KEY);
+        sessionStorage.removeItem(TRIAL_PENDING_ACCESS_TOKEN_KEY);
+        sessionStorage.removeItem(TRIAL_PENDING_REFRESH_TOKEN_KEY);
+    }
+
+    async function fetchTrialApiSession() {
+        let accessToken = sessionStorage.getItem(TRIAL_ACCESS_TOKEN_KEY);
+        if (!accessToken) return { success: false, noSession: true };
+
+        let response;
+        try {
+            response = await fetch("/api/auth/trial/session", {
+                method: "GET",
+                headers: { Authorization: `Bearer ${accessToken}` },
+                cache: "no-store"
+            });
+        } catch (error) {
+            return { success: false, networkError: true };
+        }
+
+        if (response.status === 401) {
+            const refreshToken = sessionStorage.getItem(TRIAL_REFRESH_TOKEN_KEY);
+            if (!refreshToken) {
+                clearTrialSessionTokens();
+                return { success: false, expired: true };
+            }
+            try {
+                const refreshResponse = await fetch("/api/auth/trial/refresh", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ refresh_token: refreshToken })
+                });
+                const refreshed = await refreshResponse.json();
+                if (!refreshResponse.ok || !refreshed || refreshed.success !== true || !refreshed.access_token || !refreshed.refresh_token || !refreshed.user) {
+                    clearTrialSessionTokens();
+                    return { success: false, expired: true };
+                }
+                sessionStorage.setItem(TRIAL_ACCESS_TOKEN_KEY, refreshed.access_token);
+                sessionStorage.setItem(TRIAL_REFRESH_TOKEN_KEY, refreshed.refresh_token);
+                return { success: true, user: refreshed.user };
+            } catch (error) {
+                return { success: false, networkError: true };
+            }
+        }
+
+        let data = null;
+        try { data = await response.json(); } catch (error) {}
+        if (!response.ok || !data || data.success !== true || !data.user) {
+            if (response.status === 403) clearTrialSessionTokens();
+            return { success: false, rejected: true };
+        }
+        return { success: true, user: data.user };
     }
 
     async function checkUrlMagicLinkVerification() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get("token");
-        const email = urlParams.get("email");
-        const action = urlParams.get("action");
+        const hashParams = new URLSearchParams((window.location.hash || "").replace(/^#/, ""));
+        const urlAccessToken = hashParams.get("access_token") || "";
+        const urlRefreshToken = hashParams.get("refresh_token") || "";
+        const authError = hashParams.get("error_description") || hashParams.get("error") || "";
+        const legacyTrialToken = hashParams.get("trial_token") || "";
+        const pendingAccessToken = sessionStorage.getItem(TRIAL_PENDING_ACCESS_TOKEN_KEY) || "";
+        const accessToken = urlAccessToken || pendingAccessToken;
+        if (!accessToken && !authError && !legacyTrialToken) return false;
 
-        if (token && (action === "verify" || action === "verify_token")) {
-            // Kiểm tra hiệu lực chỉ trong ngày hôm nay 30/10/2026 theo yêu cầu Sếp Dzũ
-            const expirationTime = new Date("2026-10-31T00:00:00+07:00").getTime();
-            if (Date.now() >= expirationTime) {
-                window.history.replaceState({}, document.title, window.location.pathname);
-                alert("⚠️ Liên kết trải nghiệm Chặng 1 đã hết hạn!\n\nLiên kết này chỉ có hiệu lực duy nhất trong ngày diễn ra Webinar (Thứ Sáu 30/10/2026). Sang ngày mới liên kết đã tự động vô hiệu lực.\n\nVui lòng liên hệ Ban Giảng Huấn nếu bạn cần hỗ trợ.");
-                if (typeof showAuthModal === "function") showAuthModal();
-                return false;
-            }
-
-            const cleanEmail = (email || "").trim().toLowerCase();
-            if (cleanEmail) {
-                saveApprovedTrialEmail(cleanEmail);
-            }
-
-            // Dọn dẹp URL param để giữ đường dẫn sạch đẹp
+        if (urlAccessToken || authError || legacyTrialToken) {
             window.history.replaceState({}, document.title, window.location.pathname);
+        }
+        const showVerificationError = message => {
+            if (typeof showAuthModal === "function") showAuthModal();
+            if (authErrorTitle) authErrorTitle.textContent = "Chưa xác minh được liên kết";
+            if (authErrorDesc) authErrorDesc.textContent = message;
+            if (authErrorBanner) authErrorBanner.classList.remove("hidden");
+            return true;
+        };
 
-            // Tự động cấp quyền học thử Chặng 1 tức thì (Optimistic Access)
-            // Ngăn chặn học viên bị chặn do mạng lag, lỗi CORS 302 của Apps Script, hoặc token đã dùng 1 lần
-            const baseTrialUser = {
-                learner_id: "TRIAL-" + Date.now().toString(36).toUpperCase(),
-                name: cleanEmail ? cleanEmail.split("@")[0] : "Học viên Trải nghiệm",
-                email: cleanEmail,
-                phone: "",
-                phone_last4: "",
-                cohort: "Học viên Trải nghiệm",
-                role: "trial",
-                isTrial: true
-            };
+        if (!accessToken) {
+            clearTrialSessionTokens();
+            return showVerificationError(legacyTrialToken
+                ? "Liên kết học thử cũ không còn được chấp nhận. Vui lòng yêu cầu liên kết mới."
+                : "Liên kết xác minh không hợp lệ hoặc đã hết hạn. Vui lòng yêu cầu liên kết mới.");
+        }
 
-            currentUser = baseTrialUser;
-            localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
+        if (urlAccessToken) {
+            sessionStorage.setItem(TRIAL_PENDING_ACCESS_TOKEN_KEY, urlAccessToken);
+            if (urlRefreshToken) sessionStorage.setItem(TRIAL_PENDING_REFRESH_TOKEN_KEY, urlRefreshToken);
+        }
+        let signupProfile = {};
+        try { signupProfile = JSON.parse(sessionStorage.getItem(TRIAL_SIGNUP_PROFILE_KEY) || "{}"); } catch (error) {}
+
+        try {
+            const response = await fetch("/api/auth/trial/activate", {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ full_name: signupProfile.full_name || "", phone: signupProfile.phone || "" })
+            });
+            let data = null;
+            try { data = await response.json(); } catch (error) {}
+            if (!response.ok || !data || data.success !== true || !data.user) {
+                if (response.status === 401 || response.status === 403) clearTrialSessionTokens();
+                return showVerificationError("Máy chủ chưa xác nhận được email hoặc quyền học thử. Chưa có quyền truy cập; vui lòng yêu cầu liên kết mới.");
+            }
+
+            const refreshToken = urlRefreshToken || sessionStorage.getItem(TRIAL_PENDING_REFRESH_TOKEN_KEY) || "";
+            sessionStorage.setItem(TRIAL_ACCESS_TOKEN_KEY, accessToken);
+            if (refreshToken) sessionStorage.setItem(TRIAL_REFRESH_TOKEN_KEY, refreshToken);
+            sessionStorage.removeItem(TRIAL_PENDING_ACCESS_TOKEN_KEY);
+            sessionStorage.removeItem(TRIAL_PENDING_REFRESH_TOKEN_KEY);
+            sessionStorage.removeItem(TRIAL_SIGNUP_PROFILE_KEY);
+            localStorage.removeItem("dhm_lms_auth_user");
+            localStorage.removeItem("dhm_lms_trial_profiles");
+            currentUser = { ...data.user, role: "trial", isTrial: true };
             if (authErrorBanner) authErrorBanner.classList.add("hidden");
             hideAuthModal();
             applyUserSession();
-
-            // Xác thực ngầm với Google Apps Script Webhook để đồng bộ Leads_Directory & làm giàu profile
-            try {
-                const webhookUrl = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
-                const verifyEndpoint = `${webhookUrl}?action=verify_token&token=${encodeURIComponent(token)}&email=${encodeURIComponent(cleanEmail)}`;
-
-                const resp = await fetch(verifyEndpoint);
-                const data = await resp.json();
-
-                if (data && data.error === "TOKEN_EXPIRED") {
-                    localStorage.removeItem("dhm_lms_auth_user");
-                    currentUser = null;
-                    applyUserSession();
-                    alert("⚠️ Liên kết trải nghiệm Chặng 1 đã hết hạn!\n\nLiên kết này chỉ có hiệu lực duy nhất trong ngày diễn ra Webinar (Thứ Sáu 30/10/2026).\n\nVui lòng liên hệ Ban Giảng Huấn nếu bạn cần hỗ trợ.");
-                    if (typeof showAuthModal === "function") showAuthModal();
-                    return false;
-                }
-
-                if ((data && data.success && data.verified) || (data && data.error === "TOKEN_ALREADY_USED")) {
-                    const user = (data && data.user) || {};
-                    if (user.lead_id) currentUser.learner_id = user.lead_id;
-                    if (user.full_name) currentUser.name = user.full_name;
-                    if (user.phone) {
-                        currentUser.phone = user.phone;
-                        currentUser.phone_last4 = user.phone.slice(-4);
-                    }
-                    localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
-                    applyUserSession();
-                }
-            } catch (err) {
-                console.warn("Background magic link verification error (optimistic login preserved):", err);
-            }
-
-            alert("🎉 Xác thực thành công!\n\nChào mừng bạn đến với trải nghiệm học thử Chặng 1 (Pre-Class 90 phút) của Delivering Happiness LMS.");
+            alert("🎉 Email đã được xác minh. Quyền học thử Chặng 1 đã mở.");
             return true;
+        } catch (error) {
+            console.warn("Trial email activation failed.", error);
+            return showVerificationError("Không kết nối được dịch vụ xác minh. Chưa có quyền học thử; hãy thử lại khi kết nối ổn định.");
         }
-        return false;
     }
 
     function showTrialUpgradeModal() {
@@ -1147,52 +971,171 @@ const initDhmLmsApp = () => {
         updateGlobalProgress();
     }
 
+    function centralApiTokenKeys(config = getLocalApiConfig()) {
+        return {
+            access: (config && config.accessTokenStorageKey) || "dhm_lms_api_access_token",
+            refresh: (config && config.refreshTokenStorageKey) || "dhm_lms_api_refresh_token"
+        };
+    }
+
+    function clearCentralApiTokens(config = getLocalApiConfig()) {
+        const keys = centralApiTokenKeys(config);
+        sessionStorage.removeItem(keys.access);
+        sessionStorage.removeItem(keys.refresh);
+    }
+
+    function mapCentralApiUser(apiUser) {
+        const email = String(apiUser && apiUser.email || "").trim().toLowerCase();
+        const role = String(apiUser && apiUser.role || "").trim().toLowerCase();
+        if (!email || role !== "learner") return null;
+        const id = String(apiUser.learner_id || apiUser.id || email);
+        return {
+            learner_id: id,
+            identity: email,
+            email,
+            name: String(apiUser.name || email.split("@")[0]),
+            cohort: String(apiUser.cohort || apiUser.cohort_id || "Học viên"),
+            cohort_id: String(apiUser.cohort_id || ""),
+            role: "learner",
+            isTrial: false,
+            is_paid: typeof apiUser.is_paid === "boolean" ? apiUser.is_paid : null,
+            payment_status: String(apiUser.payment_status || "UNKNOWN"),
+            force_pwd_change: apiUser.must_change_password === true || apiUser.force_pwd_change === true,
+            must_change_password: apiUser.must_change_password === true || apiUser.force_pwd_change === true
+        };
+    }
+
+    function applyCentralApiSession(apiUser, accessToken, refreshToken = "", config = getLocalApiConfig()) {
+        const keys = centralApiTokenKeys(config);
+        const mappedUser = mapCentralApiUser(apiUser);
+        if (!mappedUser || !accessToken) return false;
+        sessionStorage.setItem(keys.access, accessToken);
+        if (refreshToken) sessionStorage.setItem(keys.refresh, refreshToken);
+        currentUser = mappedUser;
+        localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
+        if (authErrorBanner) authErrorBanner.classList.add("hidden");
+        if (currentUser.must_change_password) {
+            hideAuthModal();
+            showForceChangePasswordModal(currentUser);
+        } else {
+            applyUserSession();
+        }
+        return true;
+    }
+
+    async function fetchCentralApiSession(config = getLocalApiConfig()) {
+        const keys = centralApiTokenKeys(config);
+        let accessToken = sessionStorage.getItem(keys.access);
+        if (!accessToken) return { success: false, noSession: true };
+
+        let response;
+        try {
+            response = await fetch("/api/auth/session", {
+                method: "GET",
+                headers: { Authorization: `Bearer ${accessToken}` },
+                cache: "no-store"
+            });
+        } catch {
+            return { success: false, networkError: true };
+        }
+
+        if (response.status === 401) {
+            const refreshToken = sessionStorage.getItem(keys.refresh);
+            if (!refreshToken) {
+                clearCentralApiTokens(config);
+                return { success: false, expired: true };
+            }
+            try {
+                const refreshResponse = await fetch("/api/auth/refresh", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ refresh_token: refreshToken })
+                });
+                const refreshed = await refreshResponse.json().catch(() => null);
+                if (!refreshResponse.ok || !refreshed || refreshed.success !== true ||
+                    !refreshed.access_token || !refreshed.refresh_token || !refreshed.user) {
+                    clearCentralApiTokens(config);
+                    return { success: false, expired: true };
+                }
+                sessionStorage.setItem(keys.access, refreshed.access_token);
+                sessionStorage.setItem(keys.refresh, refreshed.refresh_token);
+                return { success: true, user: refreshed.user };
+            } catch {
+                return { success: false, networkError: true };
+            }
+        }
+
+        const data = await response.json().catch(() => null);
+        if (!response.ok || !data || data.success !== true || !data.user) {
+            if (response.status === 401 || response.status === 403) clearCentralApiTokens(config);
+            return { success: false, rejected: true, error: data && data.error };
+        }
+        return { success: true, user: data.user };
+    }
+
+    async function initializeCentralApiAuth(config = getLocalApiConfig()) {
+        localStorage.removeItem(TRIAL_EMAILS_STORAGE_KEY);
+        const keys = centralApiTokenKeys(config);
+        const accessToken = sessionStorage.getItem(keys.access);
+        if (!accessToken) {
+            currentUser = null;
+            localStorage.removeItem("dhm_lms_auth_user");
+            initGuestPreview();
+            showAuthModal();
+            return;
+        }
+
+        const session = await fetchCentralApiSession(config);
+        if (session.success && applyCentralApiSession(session.user, sessionStorage.getItem(keys.access), sessionStorage.getItem(keys.refresh) || "", config)) {
+            return;
+        }
+        currentUser = null;
+        localStorage.removeItem("dhm_lms_auth_user");
+        initGuestPreview();
+        showAuthModal();
+        if (authErrorTitle) authErrorTitle.textContent = session.networkError ? "Chưa kiểm tra được phiên đăng nhập" : "Phiên đăng nhập không hợp lệ";
+        if (authErrorDesc) authErrorDesc.textContent = session.networkError
+            ? "Không kết nối được máy chủ; quyền học chưa được mở. Hãy thử lại khi kết nối ổn định."
+            : "Máy chủ chưa xác nhận phiên học viên; hãy đăng nhập lại.";
+        if (authErrorBanner) authErrorBanner.classList.remove("hidden");
+    }
+
     async function initAuth() {
         const isVerifiedFromUrl = await checkUrlMagicLinkVerification();
         if (isVerifiedFromUrl) {
             return;
         }
 
-        const storedUser = localStorage.getItem("dhm_lms_auth_user");
-        if (storedUser) {
-            try {
-                currentUser = JSON.parse(storedUser);
+        if (sessionStorage.getItem(TRIAL_ACCESS_TOKEN_KEY)) {
+            const trialSession = await fetchTrialApiSession();
+            if (trialSession.success) {
+                currentUser = { ...trialSession.user, role: "trial", isTrial: true };
                 applyUserSession();
-
-                // NẾU TÀI KHOẢN ĐANG Ở TRẠNG THÁI HỌC THỬ (TRIAL) -> KIỂM TRA NỀN XEM ĐÃ ĐƯỢC COACH NÂNG CẤP CHÍNH THỨC CHƯA
-                if (currentUser && (currentUser.isTrial || currentUser.role === "trial") && currentUser.email) {
-                    const webhookUrl = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
-                    fetch(webhookUrl, {
-                        method: "POST",
-                        headers: { "Content-Type": "text/plain;charset=utf-8" },
-                        body: JSON.stringify({ action: "resolve_login_identity", identity: currentUser.email })
-                    }).then(res => res.json()).then(data => {
-                        if (data.success && data.learner && data.learner.enrollment_status === "ACTIVE" && !data.learner.isTrial && data.learner.role !== "trial") {
-                            console.log("[DHM LMS] Phát hiện học viên đã được nâng cấp chính thức từ Webhook:", data.learner);
-                            currentUser = {
-                                ...currentUser,
-                                ...data.learner,
-                                isTrial: false,
-                                role: data.learner.role || "Learner"
-                            };
-                            localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
-                            renderSyllabus();
-                            updateGlobalProgress();
-                        }
-                    }).catch(err => {
-                        console.warn("[DHM LMS] Kiểm tra nâng cấp nền không khả dụng:", err);
-                    });
-                }
-            } catch (e) {
+                return;
+            }
+            if (trialSession.networkError) {
                 initGuestPreview();
                 showAuthModal();
-                triggerAutoTelemetryOnBoot();
+                if (authErrorTitle) authErrorTitle.textContent = "Chưa kiểm tra được phiên học thử";
+                if (authErrorDesc) authErrorDesc.textContent = "Không kết nối được máy chủ. Quyền học thử chưa được mở; hãy thử lại khi kết nối ổn định.";
+                if (authErrorBanner) authErrorBanner.classList.remove("hidden");
+                return;
             }
-        } else {
-            initGuestPreview();
-            showAuthModal();
-            triggerAutoTelemetryOnBoot();
         }
+
+        const localApiConfig = getLocalApiConfig();
+        if (localApiConfig) {
+            await initializeCentralApiAuth(localApiConfig);
+            return;
+        }
+
+        currentUser = null;
+        try { localStorage.removeItem("dhm_lms_auth_user"); } catch (e) {}
+        initGuestPreview();
+        showAuthModal();
+        if (authErrorTitle) authErrorTitle.textContent = "Chưa thể xác nhận phiên đăng nhập";
+        if (authErrorDesc) authErrorDesc.textContent = "Hệ thống chưa xác nhận được quyền học. Vui lòng thử lại sau.";
+        if (authErrorBanner) authErrorBanner.classList.remove("hidden");
     }
 
     function showAuthModal() {
@@ -1265,6 +1208,9 @@ const initDhmLmsApp = () => {
         showQuickStartIfNeeded();
         updatePersonalValueLinks();
         triggerAutoTelemetryOnBoot();
+        centralRestoreCompleted = false;
+        centralEditedBeforeRestore = false;
+        centralRestorePromise = restoreCentralApiHabitTracker();
     }
 
     function updatePersonalValueLinks() {
@@ -1280,17 +1226,10 @@ const initDhmLmsApp = () => {
                 'a[href*="khao-sat-xung-dot-tki"]'
             ];
             const targetLinks = document.querySelectorAll(selectors.join(', '));
-            const targetEmail = (currentUser && (currentUser.email || currentUser.identity)) 
-                ? (currentUser.email || currentUser.identity).toLowerCase().trim() 
-                : "";
             targetLinks.forEach(link => {
                 const href = link.getAttribute("href") || "";
                 const baseUrl = href.split("?")[0];
-                if (targetEmail) {
-                    link.setAttribute("href", `${baseUrl}?email=${encodeURIComponent(targetEmail)}&source=lms`);
-                } else {
-                    link.setAttribute("href", baseUrl);
-                }
+                link.setAttribute("href", baseUrl);
             });
         } catch (e) {
             console.warn("Lỗi cập nhật liên kết khảo sát & thực hành:", e);
@@ -1306,6 +1245,21 @@ const initDhmLmsApp = () => {
         const progressKey = `dhm_lms_progress_${currentUser.identity}`;
         localStorage.setItem(progressKey, JSON.stringify(learnerProgress));
 
+        if (currentUser.isTrial === true || String(currentUser.role || "").toLowerCase() === "trial") {
+            setTrialProgressStatus("Đã lưu cục bộ; đang đồng bộ…", true);
+            syncTrialProgressToServerApi();
+            updateGlobalProgress();
+            return;
+        }
+        if (getLocalApiConfig()) {
+            if (!centralRestoreCompleted) {
+                centralEditedBeforeRestore = true;
+            }
+            setCentralApiProgressStatus("Đã lưu cục bộ; đang đồng bộ…", true);
+            syncProgressToCentralApi();
+            updateGlobalProgress();
+            return;
+        }
         recordLearnerInDirectory();
         syncToGoogleSheets();
         updateGlobalProgress();
@@ -1401,7 +1355,7 @@ const initDhmLmsApp = () => {
     }
 
     function syncQuizResultToWebhook(score, total, percentage, passed, attempt, answers) {
-        if (!currentUser) return;
+        if (!currentUser || getLocalApiConfig()) return;
         const webhookUrl = LMS_CONFIG.AUTHORIZED_WEBHOOKS[0];
         if (!webhookUrl) return;
 
@@ -1428,7 +1382,7 @@ const initDhmLmsApp = () => {
     }
 
     function syncMeValuesToWebhook(values) {
-        if (!currentUser) return;
+        if (!currentUser || getLocalApiConfig()) return;
         const webhookUrl = LMS_CONFIG.AUTHORIZED_WEBHOOKS[0];
         if (!webhookUrl) return;
 
@@ -1552,8 +1506,360 @@ const initDhmLmsApp = () => {
         };
     }
 
+    function setTrialProgressStatus(message, isPending) {
+        if (!saveStatusIndicator) return;
+        saveStatusIndicator.textContent = message;
+        saveStatusIndicator.dataset.syncState = isPending ? "pending" : "synced";
+        saveStatusIndicator.className = isPending ? "text-amber-300 font-medium" : "text-brand-green font-medium";
+    }
+
+    function setCentralApiProgressStatus(message, isPending) {
+        if (!saveStatusIndicator) return;
+        saveStatusIndicator.textContent = message;
+        saveStatusIndicator.dataset.syncState = isPending ? "pending" : "synced";
+        saveStatusIndicator.className = isPending ? "text-amber-300 font-medium" : "text-brand-green font-medium";
+    }
+
+    function sanitizeHabitTrackerForCentralApi(value) {
+        const safe = {};
+        const habitKeys = ["mindfulness", "gratitude", "optimism", "flow", "altruism"];
+        if (!value || typeof value !== "object" || Array.isArray(value)) return safe;
+        for (let day = 1; day <= 21; day++) {
+            const dayKey = `day_${day}`;
+            const dayValue = value[dayKey];
+            if (!dayValue || typeof dayValue !== "object" || Array.isArray(dayValue)) continue;
+            const safeDay = {};
+            habitKeys.forEach(key => {
+                if (typeof dayValue[key] === "boolean") safeDay[key] = dayValue[key];
+            });
+            if (Object.keys(safeDay).length > 0) safe[dayKey] = safeDay;
+        }
+        return safe;
+    }
+
+    let centralRestorePromise = null;
+    let centralRestoreCompleted = false;
+    let centralEditedBeforeRestore = false;
+
+    async function restoreCentralApiHabitTracker() {
+        const config = getLocalApiConfig();
+        if (!config || !currentUser || currentUser.isTrial === true) {
+            centralRestoreCompleted = true;
+            return;
+        }
+        const keys = centralApiTokenKeys(config);
+        const accessToken = sessionStorage.getItem(keys.access);
+        const cohortId = String(currentUser.cohort_id || "");
+        if (!accessToken || !cohortId) {
+            centralRestoreCompleted = true;
+            return;
+        }
+
+        const localKey = String(currentUser.learner_id || currentUser.email || "learner").replace(/[^a-zA-Z0-9_-]/g, "_");
+        const progressKey = `dhm_lms_progress_${currentUser.identity || currentUser.email || currentUser.learner_id || "guest"}`;
+        const versionKey = `dhm_lms_api_progress_version_${localKey}`;
+        const queueKey = `dhm_lms_api_progress_outbox_${localKey}`;
+        const readPendingQueue = () => {
+            try {
+                const storedQueue = JSON.parse(localStorage.getItem(queueKey) || "[]");
+                return Array.isArray(storedQueue) ? storedQueue : [];
+            } catch {
+                return [];
+            }
+        };
+
+        try {
+            const query = new URLSearchParams({ cohort_id: cohortId, stage_id: "stage-3a" });
+            const response = await fetch(`/api/telemetry/progress/restore?${query.toString()}`, {
+                method: "GET",
+                headers: { Authorization: `Bearer ${accessToken}` }
+            });
+            if (!response.ok) return;
+            const result = await response.json().catch(() => null);
+            if (!result || result.success !== true) return;
+
+            const pendingQueue = readPendingQueue();
+            const stage3a = learnerProgress.stageData["stage-3a"] || (learnerProgress.stageData["stage-3a"] = {});
+            const localTracker = sanitizeHabitTrackerForCentralApi(stage3a.habitTracker || {});
+            const hasLocalTracker = Object.keys(localTracker).length > 0;
+            const localVersion = Math.max(0, Number(localStorage.getItem(versionKey) || "0"));
+            const remoteVersion = Math.max(0, Number(result.version || "0"));
+
+            if (result.found === true && remoteVersion > localVersion) {
+                localStorage.setItem(versionKey, String(remoteVersion));
+            }
+            if (pendingQueue.length > 0 || centralEditedBeforeRestore) return;
+            if (result.found === true && remoteVersion >= localVersion) {
+                const remoteSnapshot = result.stage_data || {};
+                const remoteTracker = sanitizeHabitTrackerForCentralApi(remoteSnapshot.habit_tracker);
+                const remoteCompletedStages = Array.isArray(remoteSnapshot.completed_stages)
+                    ? remoteSnapshot.completed_stages.filter(value => typeof value === "string").slice(0, 100)
+                    : [];
+                const remoteStageIndex = Number(remoteSnapshot.current_stage_index);
+                const nextStageIndex = Number.isInteger(remoteStageIndex) && remoteStageIndex >= 0 &&
+                    curriculum && remoteStageIndex < curriculum.stages.length ? remoteStageIndex : 0;
+                const changed = JSON.stringify(localTracker) !== JSON.stringify(remoteTracker) ||
+                    JSON.stringify(learnerProgress.completedStages || []) !== JSON.stringify(remoteCompletedStages) ||
+                    Number(currentStageIndex) !== nextStageIndex;
+                stage3a.habitTracker = remoteTracker;
+                learnerProgress.completedStages = remoteCompletedStages;
+                currentStageIndex = nextStageIndex;
+                if (!isStageUnlocked(currentStageIndex)) currentStageIndex = 0;
+                if (!learnerProgress.stageData["stage-3"]) {
+                    learnerProgress.stageData["stage-3"] = { habitTracker: {}, weeklyCheckins: {} };
+                }
+                learnerProgress.stageData["stage-3"].habitTracker = JSON.parse(JSON.stringify(remoteTracker));
+                localStorage.setItem(progressKey, JSON.stringify(learnerProgress));
+                localStorage.setItem(versionKey, String(remoteVersion));
+                if (changed) {
+                    renderSyllabus();
+                    loadStage(currentStageIndex);
+                    updateGlobalProgress();
+                }
+                return;
+            }
+
+            if (hasLocalTracker && (result.found !== true || localVersion > remoteVersion)) {
+                await syncProgressToCentralApi("stage-3a", { skipAwaitRestore: true });
+            }
+        } catch (error) {
+            console.warn("Không thể khôi phục tiến độ thói quen từ máy chủ.", error);
+        } finally {
+            centralRestoreCompleted = true;
+        }
+    }
+
+    async function syncProgressToCentralApi(targetStageId, options = {}) {
+        const config = getLocalApiConfig();
+        if (!config || !currentUser || currentUser.isTrial === true) {
+            return { success: false, error: "CENTRAL_LEARNER_SESSION_REQUIRED" };
+        }
+        const keys = centralApiTokenKeys(config);
+        const accessToken = sessionStorage.getItem(keys.access);
+        const cohortId = String(currentUser.cohort_id || "");
+        if (!accessToken || !cohortId) {
+            setCentralApiProgressStatus("Đã lưu trên trình duyệt; cần đăng nhập lại để đồng bộ.", true);
+            return { success: false, error: "AUTH_SESSION_REQUIRED" };
+        }
+        if (centralRestorePromise && !options.skipAwaitRestore) {
+            try { await centralRestorePromise; } catch {}
+        }
+
+        const currentStage = curriculum && curriculum.stages && curriculum.stages[currentStageIndex];
+        const stageId = String(targetStageId || (currentStage && currentStage.id) || "stage-1");
+        const summary = {
+            completed_stages: Array.isArray(learnerProgress.completedStages)
+                ? learnerProgress.completedStages.filter(value => typeof value === "string").slice(0, 100)
+                : [],
+            current_stage_index: Number.isInteger(Number(currentStageIndex)) ? Number(currentStageIndex) : 0
+        };
+        if (stageId === "stage-3a") {
+            const stage3a = learnerProgress.stageData && learnerProgress.stageData["stage-3a"];
+            summary.habit_tracker = sanitizeHabitTrackerForCentralApi(stage3a && stage3a.habitTracker);
+        }
+        const snapshotHash = await sha256(JSON.stringify(summary));
+        const localKey = String(currentUser.learner_id || currentUser.email || "learner").replace(/[^a-zA-Z0-9_-]/g, "_");
+        const queueKey = `dhm_lms_api_progress_outbox_${localKey}`;
+        const versionKey = `dhm_lms_api_progress_version_${localKey}`;
+        const lastAckKey = `dhm_lms_api_progress_last_ack_${localKey}`;
+        const ackState = JSON.stringify({ snapshotHash, cohortId, stageId, eventType: "PROGRESS_UPDATE" });
+        let queue = [];
+        try {
+            const stored = JSON.parse(localStorage.getItem(queueKey) || "[]");
+            if (Array.isArray(stored)) queue = stored;
+        } catch {
+            queue = [];
+        }
+
+        if (localStorage.getItem(lastAckKey) !== ackState &&
+            !queue.some(item => item.snapshotHash === snapshotHash && item.cohortId === cohortId && item.stageId === stageId)) {
+            if (!window.crypto || typeof window.crypto.randomUUID !== "function") {
+                setCentralApiProgressStatus("Đã lưu cục bộ; trình duyệt chưa hỗ trợ mã đồng bộ an toàn.", true);
+                return { success: false, error: "UUID_GENERATOR_UNAVAILABLE" };
+            }
+            const version = Math.max(0, Number(localStorage.getItem(versionKey) || "0")) + 1;
+            queue.push({
+                eventId: window.crypto.randomUUID(), cohortId, stageId,
+                eventType: "PROGRESS_UPDATE", version, snapshotHash, stageData: summary
+            });
+            localStorage.setItem(versionKey, String(version));
+            localStorage.setItem(queueKey, JSON.stringify(queue));
+        }
+
+        if (queue.length === 0) {
+            setCentralApiProgressStatus("✓ Đã lưu cục bộ và đồng bộ.", false);
+            return { success: true, duplicateSkipped: true };
+        }
+
+        const event = queue[0];
+        try {
+            const response = await fetch("/api/telemetry/progress", {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    cohort_id: event.cohortId,
+                    stage_id: event.stageId,
+                    event_id: event.eventId,
+                    event_type: event.eventType,
+                    stage_data: event.stageData,
+                    version: event.version
+                })
+            });
+            const result = await response.json().catch(() => null);
+            if (response.status === 401) {
+                const refreshed = await fetchCentralApiSession(config);
+                if (refreshed.success) return await syncProgressToCentralApi(targetStageId, { ...options, skipAwaitRestore: true });
+            }
+            if ((response.status === 409 || (result && result.error === "PROGRESS_VERSION_CONFLICT")) && !options.rebasedAfterConflict) {
+                let nextBaseVersion = Math.max(0, Number(event.version || "0"));
+                if (event.stageId === "stage-3a") {
+                    const restoreQuery = new URLSearchParams({ cohort_id: event.cohortId, stage_id: "stage-3a" });
+                    const restoreRes = await fetch(`/api/telemetry/progress/restore?${restoreQuery.toString()}`, {
+                        method: "GET",
+                        headers: { Authorization: `Bearer ${accessToken}` }
+                    }).catch(() => null);
+                    const restoreData = restoreRes && restoreRes.ok ? await restoreRes.json().catch(() => null) : null;
+                    if (restoreData && restoreData.success === true) {
+                        nextBaseVersion = Math.max(nextBaseVersion, Number(restoreData.version || "0"));
+                    }
+                }
+                queue = queue.map((item, idx) => ({ ...item, version: nextBaseVersion + 1 + idx }));
+                localStorage.setItem(versionKey, String(nextBaseVersion + queue.length));
+                localStorage.setItem(queueKey, JSON.stringify(queue));
+                return await syncProgressToCentralApi(targetStageId, { ...options, skipAwaitRestore: true, rebasedAfterConflict: true });
+            }
+            if (!response.ok || !result || result.success !== true) {
+                const error = (result && result.error) || `HTTP_${response.status}`;
+                setCentralApiProgressStatus(`Đã lưu cục bộ; chưa đồng bộ (${error}). Có thể thử lại.`, true);
+                return { success: false, error, eventId: event.eventId };
+            }
+            queue = queue.filter(item => item.eventId !== event.eventId);
+            localStorage.setItem(queueKey, JSON.stringify(queue));
+            localStorage.setItem(lastAckKey, ackState);
+            if (queue.length > 0) {
+                setCentralApiProgressStatus("Đang đồng bộ các thay đổi đã lưu…", true);
+                return await syncProgressToCentralApi(targetStageId, { ...options, skipAwaitRestore: true });
+            }
+            setCentralApiProgressStatus("✓ Đã lưu cục bộ và đồng bộ.", false);
+            return { success: true, message: result.message, eventId: event.eventId };
+        } catch {
+            setCentralApiProgressStatus("Đã lưu cục bộ; kết nối gián đoạn. Bấm lưu lại để thử tiếp.", true);
+            return { success: false, error: "NETWORK_ERROR", eventId: event.eventId };
+        }
+    }
+
+    async function syncTrialProgressToServerApi() {
+        if (!currentUser || !(currentUser.isTrial === true || String(currentUser.role || "").toLowerCase() === "trial")) {
+            return { success: false, error: "TRIAL_SESSION_REQUIRED" };
+        }
+        const accessToken = sessionStorage.getItem(TRIAL_ACCESS_TOKEN_KEY);
+        if (!accessToken) {
+            setTrialProgressStatus("Đã lưu trên trình duyệt; cần xác minh lại để đồng bộ.", true);
+            return { success: false, error: "TRIAL_SESSION_REQUIRED" };
+        }
+
+        const identity = normalizeIdentity(currentUser.identity || currentUser.email || currentUser.learner_id);
+        const stage = curriculum && curriculum.stages && curriculum.stages[currentStageIndex];
+        const stageId = (stage && stage.id) || "stage-1";
+        const cohortId = currentUser.cohort_id || "DHM_TRIAL_STAGE1";
+        const eventType = "PROGRESS_UPDATE";
+        const snapshotJson = JSON.stringify(learnerProgress);
+        const snapshotHash = await sha256(snapshotJson);
+        const queueKey = `dhm_lms_trial_progress_outbox_${identity}`;
+        const versionKey = `dhm_lms_trial_progress_version_${identity}`;
+        const lastAckKey = `dhm_lms_trial_progress_last_ack_${identity}`;
+        const ackState = JSON.stringify({ snapshotHash, cohortId, stageId, eventType });
+        let queue = [];
+        try {
+            const storedQueue = JSON.parse(localStorage.getItem(queueKey) || "[]");
+            if (Array.isArray(storedQueue)) queue = storedQueue;
+        } catch (error) {}
+
+        if (localStorage.getItem(lastAckKey) !== ackState &&
+            !queue.some(item => item.snapshotHash === snapshotHash && item.cohortId === cohortId && item.stageId === stageId && item.eventType === eventType)) {
+            if (!window.crypto || typeof window.crypto.randomUUID !== "function") {
+                setTrialProgressStatus("Đã lưu cục bộ; trình duyệt chưa hỗ trợ mã đồng bộ an toàn.", true);
+                return { success: false, error: "UUID_GENERATOR_UNAVAILABLE" };
+            }
+            const version = Math.max(0, Number(localStorage.getItem(versionKey) || "0")) + 1;
+            queue.push({
+                eventId: window.crypto.randomUUID(),
+                cohortId,
+                stageId,
+                eventType,
+                version,
+                snapshotHash,
+                stageData: JSON.parse(snapshotJson)
+            });
+            localStorage.setItem(versionKey, String(version));
+            localStorage.setItem(queueKey, JSON.stringify(queue));
+        }
+
+        if (queue.length === 0) {
+            setTrialProgressStatus("✓ Đã lưu cục bộ và đồng bộ.", false);
+            return { success: true, duplicateSkipped: true };
+        }
+
+        const event = queue[0];
+        try {
+            const response = await fetch("/api/telemetry/progress", {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    cohort_id: event.cohortId,
+                    stage_id: event.stageId,
+                    event_id: event.eventId,
+                    event_type: event.eventType,
+                    stage_data: event.stageData,
+                    version: event.version
+                })
+            });
+            const responseText = await response.text();
+            let result = null;
+            try { result = JSON.parse(responseText); } catch (error) {}
+
+            if (response.status === 401) {
+                const refreshed = await fetchTrialApiSession();
+                if (refreshed.success) return await syncTrialProgressToServerApi();
+                setTrialProgressStatus("Đã lưu cục bộ; phiên hết hạn, hãy xác minh lại để đồng bộ.", true);
+                return { success: false, error: "TRIAL_SESSION_EXPIRED" };
+            }
+            if (!response.ok || !result || result.success !== true) {
+                const errorCode = (result && result.error) || `HTTP_${response.status}`;
+                setTrialProgressStatus(`Đã lưu cục bộ; chưa đồng bộ (${errorCode}). Có thể thử lại.`, true);
+                return { success: false, error: errorCode, eventId: event.eventId };
+            }
+
+            queue = queue.filter(item => item.eventId !== event.eventId);
+            localStorage.setItem(queueKey, JSON.stringify(queue));
+            localStorage.setItem(lastAckKey, JSON.stringify({
+                snapshotHash: event.snapshotHash,
+                cohortId: event.cohortId,
+                stageId: event.stageId,
+                eventType: event.eventType
+            }));
+            if (queue.length > 0) {
+                setTrialProgressStatus("Đang đồng bộ thay đổi đã lưu…", true);
+                return await syncTrialProgressToServerApi();
+            }
+            setTrialProgressStatus("✓ Đã lưu cục bộ và đồng bộ.", false);
+            return { success: true, message: result.message, eventId: event.eventId };
+        } catch (error) {
+            setTrialProgressStatus("Đã lưu cục bộ; kết nối gián đoạn. Có thể thử lưu lại để đồng bộ.", true);
+            return { success: false, error: "NETWORK_ERROR", eventId: event.eventId };
+        }
+    }
+
     function syncToGoogleSheets() {
         if (!currentUser) return;
+        if (getLocalApiConfig()) return;
+        if (currentUser.isTrial === true || String(currentUser.role || "").toLowerCase() === "trial") return;
         if (!LMS_CONFIG.ENABLE_REMOTE_SYNC) {
             return;
         }
@@ -1645,17 +1951,6 @@ const initDhmLmsApp = () => {
                 };
             }
         }
-        const rosterMatch = findLearner(rawIdentity);
-        if (rosterMatch) {
-            return {
-                learner_id: rosterMatch.learner_id || "DHM-USER",
-                identity: rawIdentity,
-                name: rosterMatch.name || rosterMatch.full_name || rosterMatch.email || rawIdentity,
-                email: rosterMatch.email || rawIdentity,
-                phone: rosterMatch.phone || "",
-                cohort: rosterMatch.cohort || "Team Happiness Apollo"
-            };
-        }
         try {
             const pvHist = JSON.parse(localStorage.getItem(`dhm_pv_history_${rawIdentity}`) || "[]");
             if (Array.isArray(pvHist) && pvHist.length > 0 && pvHist[0]) {
@@ -1682,6 +1977,9 @@ const initDhmLmsApp = () => {
     }
 
     function triggerAutoTelemetryOnBoot() {
+        // Tạm dừng telemetry khởi động cho đến khi có quyết định đồng ý/lưu trữ và endpoint được duyệt.
+        return;
+        if (getLocalApiConfig()) return;
         let storedAuthUser = null;
         try {
             const rawStoredUser = localStorage.getItem("dhm_lms_auth_user");
@@ -1978,6 +2276,7 @@ const initDhmLmsApp = () => {
     window.extractIamAndNotesTelemetry = extractIamAndNotesTelemetry;
 
     function syncHabitTrackerToCRM() {
+        if (getLocalApiConfig()) return;
         const statusEl = document.getElementById("habit-sync-status");
         if (statusEl) statusEl.textContent = "";
         if (!currentUser) {
@@ -2085,7 +2384,12 @@ const initDhmLmsApp = () => {
         // ƯU TIÊN 1: NẾU BỊ VÔ HIỆU HÓA HOẶC THU HỒI THANH TOÁN -> CHẶN NGAY LẬP TỨC
         if (user.enrollment_status === "DISABLED") return false;
         if (user.is_paid === false || String(user.payment_status || "").toUpperCase() === "UNPAID") {
-            return false;
+            // Khóa lịch sử đã kết thúc (DHM3 -> DHM8) là học viên chính thức đã tốt nghiệp, chỉ chặn khi UNPAID rõ ràng
+            const cohortStrCheck = String(user.cohort || "").trim().toUpperCase();
+            const isHistorical = DHM_PAID_GATE_CONFIG && Array.isArray(DHM_PAID_GATE_CONFIG.HISTORICAL_PAID_COHORTS) && DHM_PAID_GATE_CONFIG.HISTORICAL_PAID_COHORTS.some(c => cohortStrCheck.includes(c));
+            if (!isHistorical || String(user.payment_status || "").toUpperCase() === "UNPAID") {
+                return false;
+            }
         }
 
         const isCoach = (
@@ -2275,6 +2579,18 @@ const initDhmLmsApp = () => {
     }
     window.migrateOldStageData = migrateOldStageData;
 
+    function mergeHabitTrackerByDay(...trackers) {
+        const merged = {};
+        trackers.forEach(tracker => {
+            if (!tracker || typeof tracker !== "object" || Array.isArray(tracker)) return;
+            Object.entries(tracker).forEach(([dayKey, dayState]) => {
+                if (!dayState || typeof dayState !== "object" || Array.isArray(dayState)) return;
+                merged[dayKey] = { ...(merged[dayKey] || {}), ...dayState };
+            });
+        });
+        return merged;
+    }
+
     function syncLegacyStageData(prog) {
         if (!prog || !prog.stageData) return;
         const sd = prog.stageData;
@@ -2298,13 +2614,31 @@ const initDhmLmsApp = () => {
         if (h2b.flow) sd["stage-2"].habits.flow = h2b.flow;
         if (h2b.optimism) sd["stage-2"].habits.optimism = h2b.optimism;
 
-        // Sync 3a & 3b -> legacy stage-3
-        sd["stage-3"] = sd["stage-3"] || { habitTracker: {}, weeklyCheckins: {} };
+        // Giữ dữ liệu cũ; dữ liệu Chặng 3A chuẩn ghi đè theo từng thói quen/ngày.
+        const s3 = sd["stage-3"] || {};
         const s3a = sd["stage-3a"] || {};
         const s3b = sd["stage-3b"] || {};
+        const mergedTracker = mergeHabitTrackerByDay(
+            s3.habitTracker,
+            s3b.habitTracker,
+            s3a.habitTracker
+        );
+        const mergedWeeklyCheckins = {
+            ...(s3.weeklyCheckins || {}),
+            ...(s3b.weeklyCheckins || {}),
+            ...(s3a.weeklyCheckins || {})
+        };
 
-        sd["stage-3"].habitTracker = { ...(s3a.habitTracker || {}), ...(s3b.habitTracker || {}) };
-        sd["stage-3"].weeklyCheckins = { ...(s3a.weeklyCheckins || {}), ...(s3b.weeklyCheckins || {}) };
+        sd["stage-3a"] = {
+            ...s3a,
+            habitTracker: mergedTracker,
+            weeklyCheckins: mergedWeeklyCheckins
+        };
+        sd["stage-3"] = {
+            ...s3,
+            habitTracker: mergedTracker,
+            weeklyCheckins: mergedWeeklyCheckins
+        };
     }
     window.syncLegacyStageData = syncLegacyStageData;
     function isStageUnlocked(stageIdOrIdx) {
@@ -3456,7 +3790,7 @@ const initDhmLmsApp = () => {
     }
 
     function syncCrossDevicePVHistory(email, localHistory) {
-        if (!email) return;
+        if (!email || getLocalApiConfig()) return;
         const webhookUrl = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
         const emailLower = email.toLowerCase().trim();
         const url = `${webhookUrl}?action=get_pv_history&email=${encodeURIComponent(emailLower)}`;
@@ -4577,7 +4911,15 @@ const initDhmLmsApp = () => {
     function renderStage3AView(stage) {
         const s1 = learnerProgress.stageData["stage-1"] || {};
         const s2 = learnerProgress.stageData["stage-2"] || { habits: {} };
-        const s3 = learnerProgress.stageData["stage-3"] || { habitTracker: {}, weeklyCheckins: {} };
+        const s3Legacy = learnerProgress.stageData["stage-3"] || {};
+        const s3b = learnerProgress.stageData["stage-3b"] || {};
+        const s3 = learnerProgress.stageData["stage-3a"] || (learnerProgress.stageData["stage-3a"] = {});
+        s3.habitTracker = mergeHabitTrackerByDay(s3Legacy.habitTracker, s3b.habitTracker, s3.habitTracker);
+        s3.weeklyCheckins = {
+            ...(s3Legacy.weeklyCheckins || {}),
+            ...(s3b.weeklyCheckins || {}),
+            ...(s3.weeklyCheckins || {})
+        };
 
         // 11.1 Recap Me Values
         const values = s1.selectedValues || [];
@@ -4854,6 +5196,7 @@ const initDhmLmsApp = () => {
                         s3.habitTracker[d] = s3.habitTracker[d] || {};
                         s3.habitTracker[d][k] = !s3.habitTracker[d][k];
                         saveLearnerProgress();
+                        syncHabitTrackerToCRM();
                         renderStage3View(stage);
                     };
                 });
@@ -6529,8 +6872,69 @@ const initDhmLmsApp = () => {
     if (btnBottomRoadmap) btnBottomRoadmap.addEventListener("click", openRoadmapDoc);
 
     // 14. AUTH FORM SUBMIT
+    async function submitCentralApiAuth() {
+        const identity = String(loginIdentityInput.value || "").trim().toLowerCase();
+        const password = String(loginPasswordInput.value || "").trim();
+        if (!identity || !password || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identity)) {
+            authErrorTitle.textContent = "Thiếu hoặc sai thông tin đăng nhập";
+            authErrorDesc.textContent = "Hãy nhập đúng email và mật khẩu.";
+            authErrorBanner.classList.remove("hidden");
+            return false;
+        }
+
+        const submitButton = authForm.querySelector('button[type="submit"]');
+        const originalButtonText = btnSubmitText ? btnSubmitText.textContent : "Vào Học Ngay";
+        if (submitButton) submitButton.disabled = true;
+        if (btnSubmitText) btnSubmitText.textContent = "Đang xác thực...";
+        authErrorBanner.classList.add("hidden");
+        try {
+            const response = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ identity, password })
+            });
+            const result = await response.json().catch(() => null);
+            if (!response.ok || !result || result.success !== true || !result.access_token || !result.user) {
+                const error = result && result.error;
+                authErrorTitle.textContent = "Đăng nhập chưa thành công";
+                authErrorDesc.textContent = error === "INVALID_CREDENTIALS"
+                    ? "Email hoặc mật khẩu không chính xác."
+                    : error === "ACTIVE_LEARNER_ENROLLMENT_REQUIRED"
+                        ? "Tài khoản chưa có ghi danh học viên đang hoạt động."
+                        : error === "ROLE_REQUIRES_ADMIN_ALLOWLIST"
+                            ? "Tài khoản chưa được cấp quyền truy cập phù hợp."
+                            : "Máy chủ chưa xác nhận quyền học viên. Hãy thử lại hoặc liên hệ Ban Giảng Huấn.";
+                authErrorBanner.classList.remove("hidden");
+                return false;
+            }
+            loginPasswordInput.value = "";
+            const applied = applyCentralApiSession(result.user, result.access_token, result.refresh_token || "");
+            if (!applied) {
+                clearCentralApiTokens();
+                authErrorTitle.textContent = "Hồ sơ chưa được xác nhận";
+                authErrorDesc.textContent = "Máy chủ chưa trả về hồ sơ học viên hợp lệ; quyền truy cập chưa được mở.";
+                authErrorBanner.classList.remove("hidden");
+                return false;
+            }
+            return true;
+        } catch {
+            authErrorTitle.textContent = "Không kết nối được máy chủ";
+            authErrorDesc.textContent = "Thông tin đăng nhập chưa được xác nhận; quyền học chưa được mở.";
+            authErrorBanner.classList.remove("hidden");
+            return false;
+        } finally {
+            if (submitButton) submitButton.disabled = false;
+            if (btnSubmitText) btnSubmitText.textContent = originalButtonText;
+        }
+    }
+
     authForm.addEventListener("submit", async (e) => {
         e.preventDefault();
+
+        if (getLocalApiConfig() && !(trialOnboardingGroup && !trialOnboardingGroup.classList.contains("hidden"))) {
+            await submitCentralApiAuth();
+            return;
+        }
 
         // NẾU ĐANG Ở GIAO DIỆN HỌC THỬ / NGƯỜI MỚI -> DELEGATE SANG NÚT GỬI LIÊN KẾT HỌC THỬ
         if (trialOnboardingGroup && !trialOnboardingGroup.classList.contains("hidden")) {
@@ -6544,187 +6948,13 @@ const initDhmLmsApp = () => {
         if (trialTriggerWrapper) trialTriggerWrapper.classList.add("hidden");
         if (trialOnboardingGroup) trialOnboardingGroup.classList.add("hidden");
 
-        const rawIdentity = (loginIdentityInput.value || "").trim();
-        if (!rawIdentity) {
-            loginIdentityInput.focus();
+        if (!getLocalApiConfig()) {
+            if (authErrorTitle) authErrorTitle.textContent = "Chưa thể xác nhận phiên đăng nhập";
+            if (authErrorDesc) authErrorDesc.textContent = "Hệ thống chưa xác nhận được quyền học. Vui lòng thử lại sau.";
+            if (authErrorBanner) authErrorBanner.classList.remove("hidden");
             return;
         }
-
-        let learner = findLearner(rawIdentity);
-
-        // NẾU CHƯA THẤY TRONG BỘ NHỚ TĨNH -> GỌI WEBHOOK PHÂN GIẢI DANH TÍNH TỪ MASTER ROSTER GOOGLE SHEETS
-        if (!learner) {
-            try {
-                const webhookUrl = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
-                const probeRes = await fetch(webhookUrl, {
-                    method: "POST",
-                    headers: { "Content-Type": "text/plain;charset=utf-8" },
-                    body: JSON.stringify({ action: "resolve_login_identity", identity: rawIdentity })
-                });
-                if (probeRes.ok) {
-                    const probeData = await probeRes.json();
-                    if (probeData.error === "ACCOUNT_DISABLED") {
-                        authErrorTitle.textContent = "Tài khoản tạm ngưng hoạt động";
-                        authErrorDesc.textContent = "Tài khoản học viên của bạn đang tạm ngưng hoạt động. Vui lòng liên hệ Ban Giảng Huấn để được kích hoạt lại.";
-                        authErrorBanner.classList.remove("hidden");
-                        return;
-                    }
-                    if (probeData.success && probeData.learner) {
-                        const rawL = probeData.learner;
-                        let cleanP = String(rawL.phone || "").trim();
-                        if (cleanP.length === 9 && !cleanP.startsWith("0")) {
-                            cleanP = "0" + cleanP;
-                        }
-                        const defPwd = String(rawL.default_password || rawL.default_pwd || (cleanP.length >= 4 ? cleanP.slice(-4) : "1234")).trim();
-
-                        learner = {
-                            ...rawL,
-                            name: rawL.name || rawL.full_name || rawIdentity.split("@")[0],
-                            email: String(rawL.email || "").toLowerCase().trim(),
-                            phone: cleanP,
-                            phone_last4: cleanP.slice(-4),
-                            default_pwd: defPwd,
-                            default_password: defPwd
-                        };
-                        if (Array.isArray(authorizedRoster)) {
-                            authorizedRoster.push(learner);
-                        }
-                    }
-                }
-            } catch (probeErr) {
-                console.warn("[DHM LMS] Không phân giải được danh tính từ Webhook, fallback local:", probeErr);
-            }
-        }
-
-        // NHẬN DIỆN HỌC VIÊN TRẢI NGHIỆM ĐÃ ĐƯỢC PHÊ DUYỆT / ĐĂNG KÝ
-        if (!learner && isTrialAccount(rawIdentity)) {
-            const profile = getTrialUserProfile(rawIdentity);
-            currentUser = {
-                learner_id: profile.learner_id || ("TRIAL-" + Date.now().toString(36).toUpperCase()),
-                name: profile.name || rawIdentity.split("@")[0],
-                email: rawIdentity.toLowerCase(),
-                phone: profile.phone || "",
-                phone_last4: profile.phone ? profile.phone.slice(-4) : "",
-                cohort: "Học viên Trải nghiệm",
-                role: "trial",
-                isTrial: true
-            };
-            localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
-            hideAuthModal();
-            applyUserSession();
-            return;
-        }
-
-        // TRƯỜNG HỢP 0: HỌC VIÊN BỊ VÔ HIỆU HÓA TRẠNG THÁI (DISABLED)
-        if (learner && learner.enrollment_status === "DISABLED") {
-            authErrorTitle.textContent = "Tài khoản tạm ngưng hoạt động";
-            authErrorDesc.textContent = "Tài khoản học viên của bạn đang tạm ngưng hoạt động. Vui lòng liên hệ Ban Giảng Huấn để được kích hoạt lại.";
-            authErrorBanner.classList.remove("hidden");
-            return;
-        }
-
-        // TRƯỜNG HỢP 1: KHÔNG TÌM THẤY EMAIL TRONG DANH BẠ HỌC VIÊN CHÍNH THỨC
-        // -> Tự động kích hoạt form Đăng ký & Nhận liên kết học thử Chặng 1 cho Người mới (kèm notice từ failed login)
-        if (!learner) {
-            showTrialOnboardingView(rawIdentity, true);
-            return;
-        }
-
-        // TRƯỜNG HỢP 2: HỌC VIÊN CHÍNH THỨC NHƯNG THIẾU SỐ ĐIỆN THOẠI TRONG ROSTER (Không áp dụng cho Apollo/tài khoản có mật khẩu)
-        const isApolloOrPwdAuth = learner.force_pwd_change || learner.password_hash || learner.default_pwd || (learner.cohort && learner.cohort.toLowerCase().includes("apollo"));
-        const hasPhone = learner.phone && learner.phone.trim().length >= 8 && !learner.missing_phone;
-        const isPhoneOnboarding = !passwordGroup.classList.contains("hidden") ? false : true;
-
-        if (!hasPhone && !isApolloOrPwdAuth && !isPhoneOnboarding) {
-            passwordGroup.classList.add("hidden");
-            loginPasswordInput.removeAttribute("required");
-            phoneOnboardingGroup.classList.remove("hidden");
-            onboardingPhoneInput.setAttribute("required", "true");
-            btnSubmitText.textContent = "Kích Hoạt & Vào Học";
-            onboardingPhoneInput.focus();
-            return;
-        }
-
-        if (isPhoneOnboarding) {
-            const rawPhone = onboardingPhoneInput.value;
-            const cleanPhone = normalizePhone(rawPhone);
-            if (cleanPhone.length !== 10) {
-                authErrorTitle.textContent = "Số điện thoại không hợp lệ";
-                authErrorDesc.textContent = "Vui lòng nhập đúng 10 số điện thoại di động Việt Nam.";
-                authErrorBanner.classList.remove("hidden");
-                return;
-            }
-
-            const updatedLearner = {
-                ...learner,
-                phone: cleanPhone,
-                phone_last4: cleanPhone.slice(-4),
-                missing_phone: false
-            };
-            const overrides = getRosterOverrides();
-            overrides[learner.email] = updatedLearner;
-            localStorage.setItem("dhm_roster_overrides", JSON.stringify(overrides));
-
-            currentUser = updatedLearner;
-            localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
-            applyUserSession();
-            return;
-        }
-
-        // TRƯỜNG HỢP 3: HỌC VIÊN CHÍNH THỨC -> XÁC THỰC MẬT KHẨU
-        const inputPassword = (loginPasswordInput.value || "").trim();
-        if (!inputPassword) {
-            if (learner.isTrial || learner.role === "trial") {
-                currentUser = learner;
-                localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
-                applyUserSession();
-                return;
-            }
-            authErrorTitle.textContent = "Vui lòng nhập mật khẩu";
-            if (learner.force_pwd_change) {
-                authErrorDesc.textContent = "Mật khẩu khởi tạo không đúng hoặc chưa nhập. Vui lòng kiểm tra lại.";
-            } else if (learner.password_hash || learner.default_pwd) {
-                authErrorDesc.textContent = "Mật khẩu truy cập không đúng hoặc chưa nhập. Vui lòng kiểm tra lại.";
-            } else {
-                authErrorDesc.textContent = "Mật khẩu là 4 số cuối của Số điện thoại đã đăng ký. Vui lòng nhập mật khẩu.";
-            }
-            authErrorBanner.classList.remove("hidden");
-            loginPasswordInput.focus();
-            return;
-        }
-
-        const authResult = await verifyPassword(learner, inputPassword);
-        if (!authResult.valid) {
-            if (learner.isTrial || learner.role === "trial") {
-                console.warn("[DHM LMS] Trial user password mismatch, granting Stage 1 trial access anyway.");
-                currentUser = learner;
-                localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
-                applyUserSession();
-                return;
-            }
-            authErrorTitle.textContent = "Mật khẩu không chính xác";
-            if (learner.force_pwd_change) {
-                authErrorDesc.textContent = "Mật khẩu khởi tạo không đúng. Vui lòng kiểm tra lại.";
-            } else if (learner.password_hash || learner.default_pwd) {
-                authErrorDesc.textContent = "Mật khẩu truy cập không đúng. Vui lòng kiểm tra lại.";
-            } else {
-                authErrorDesc.textContent = "Mật khẩu là 4 số cuối của Số điện thoại đã đăng ký. Vui lòng kiểm tra lại.";
-            }
-            authErrorBanner.classList.remove("hidden");
-            loginPasswordInput.focus();
-            return;
-        }
-
-        // BẮT BUỘC ĐỔI MẬT KHẨU KHỞI TẠO (Apollo hoặc tài khoản mới gắn cờ force_pwd_change)
-        if (authResult.mustChange) {
-            hideAuthModal();
-            showForceChangePasswordModal(learner);
-            return;
-        }
-
-        currentUser = learner;
-        localStorage.setItem("dhm_lms_auth_user", JSON.stringify(currentUser));
-        applyUserSession();
+        // Fail-closed: legacy GAS identity endpoint & client-side password verification removed per SEC-01.
     });
 
     // Nút chuyển sang form đăng ký học thử cho Người Mới
@@ -6777,42 +7007,14 @@ const initDhmLmsApp = () => {
         if (newcomerToggleWrapper) newcomerToggleWrapper.classList.remove("hidden");
         if (loginIdentityLabel) loginIdentityLabel.textContent = "Email học viên đã đăng ký";
 
-        if (val.includes("@") && val.length >= 6) {
-            const found = findLearner(val);
-            if (found) {
-                updateAuthModeForLearner(found);
-            } else if (isTrialAccount(val)) {
-                // Nhận diện Học viên Trải nghiệm Chặng 1 đã kích hoạt / đăng ký
-                if (authUserDetected) {
-                    authUserDetected.innerHTML = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-brand-green/20 text-brand-green border border-brand-green/30">🌱 Học viên Trải nghiệm Chặng 1</span>`;
-                    authUserDetected.classList.remove("hidden");
-                }
-                if (passwordGroup) passwordGroup.classList.add("hidden");
-                if (loginPasswordInput) loginPasswordInput.removeAttribute("required");
-                if (phoneOnboardingGroup) phoneOnboardingGroup.classList.add("hidden");
-                if (onboardingPhoneInput) onboardingPhoneInput.removeAttribute("required");
-                if (submitAuthWrapper) submitAuthWrapper.classList.remove("hidden");
-                if (btnSubmitText) btnSubmitText.textContent = "Vào Học Chặng 1 Ngay";
-            } else {
-                if (authUserDetected) authUserDetected.classList.add("hidden");
-                if (passwordGroup) passwordGroup.classList.remove("hidden");
-                if (submitAuthWrapper) submitAuthWrapper.classList.remove("hidden");
-                if (loginPasswordInput) {
-                    loginPasswordInput.placeholder = "Nhập 4 số cuối SĐT (hoặc để trống nếu đăng ký mới)";
-                    loginPasswordInput.removeAttribute("required");
-                }
-                if (btnSubmitText) btnSubmitText.textContent = "Vào Học / Đăng Ký";
-            }
-        } else {
-            if (authUserDetected) authUserDetected.classList.add("hidden");
-            if (passwordGroup) passwordGroup.classList.remove("hidden");
-            if (submitAuthWrapper) submitAuthWrapper.classList.remove("hidden");
-            if (loginPasswordInput) {
-                loginPasswordInput.placeholder = "Nhập 4 số cuối Số điện thoại của bạn";
-                loginPasswordInput.removeAttribute("required");
-            }
-            if (btnSubmitText) btnSubmitText.textContent = "Vào Học Ngay";
+        if (authUserDetected) authUserDetected.classList.add("hidden");
+        if (passwordGroup) passwordGroup.classList.remove("hidden");
+        if (submitAuthWrapper) submitAuthWrapper.classList.remove("hidden");
+        if (loginPasswordInput) {
+            loginPasswordInput.placeholder = "Nhập mật khẩu truy cập của bạn";
+            loginPasswordInput.removeAttribute("required");
         }
+        if (btnSubmitText) btnSubmitText.textContent = "Vào Học Ngay";
     });
 
     if (btnTogglePwd) {
@@ -6850,8 +7052,35 @@ const initDhmLmsApp = () => {
     });
 
     if (btnLogout) {
-        btnLogout.addEventListener("click", () => {
+        btnLogout.addEventListener("click", async () => {
             if (confirm("Bạn có chắc chắn muốn đăng xuất không?")) {
+                const trialAccessToken = sessionStorage.getItem(TRIAL_ACCESS_TOKEN_KEY);
+                if (trialAccessToken) {
+                    try {
+                        await fetch("/api/auth/trial/logout", {
+                            method: "POST",
+                            headers: { Authorization: `Bearer ${trialAccessToken}` }
+                        });
+                    } catch (error) {
+                        console.warn("Không xác nhận được đăng xuất Trial phía máy chủ.", error);
+                    }
+                    clearTrialSessionTokens();
+                    sessionStorage.removeItem(TRIAL_SIGNUP_PROFILE_KEY);
+                }
+                const centralConfig = getLocalApiConfig();
+                const centralKeys = centralApiTokenKeys(centralConfig);
+                const centralAccessToken = centralConfig ? sessionStorage.getItem(centralKeys.access) : null;
+                if (centralConfig && centralAccessToken) {
+                    try {
+                        await fetch("/api/auth/logout", {
+                            method: "POST",
+                            headers: { Authorization: `Bearer ${centralAccessToken}` }
+                        });
+                    } catch (error) {
+                        console.warn("Không xác nhận được đăng xuất phía máy chủ.", error);
+                    }
+                    clearCentralApiTokens(centralConfig);
+                }
                 localStorage.removeItem("dhm_lms_auth_user");
                 currentUser = null;
                 updatePersonalValueLinks();
@@ -6964,11 +7193,11 @@ const initDhmLmsApp = () => {
                 return;
             }
 
-            const defaultPwd = learner.default_pwd || "1234";
-            if (newPwd === defaultPwd || newPwd === "1234") {
+            const blockedInitialPwd = String(learner.default_pwd || "").trim();
+            if (blockedInitialPwd && newPwd === blockedInitialPwd) {
                 if (forcePwdErrorBanner) {
                     forcePwdErrorTitle.textContent = "Mật khẩu không an toàn";
-                    forcePwdErrorDesc.textContent = "Không được sử dụng lại mật khẩu mặc định (1234). Vui lòng chọn mật khẩu mới.";
+                    forcePwdErrorDesc.textContent = "Không được sử dụng lại mật khẩu khởi tạo. Vui lòng chọn mật khẩu mới.";
                     forcePwdErrorBanner.classList.remove("hidden");
                 }
                 forceNewPwdInput.focus();
@@ -7027,14 +7256,12 @@ const initDhmLmsApp = () => {
             const newPwd = (selfNewPwdInput.value || "").trim();
             const confirmPwd = (selfConfirmPwdInput.value || "").trim();
 
-            const verifyResult = await verifyPassword(currentUser, currentPwd);
-            if (!verifyResult.valid) {
+            if (!getLocalApiConfig()) {
                 if (selfPwdErrorBanner) {
-                    selfPwdErrorTitle.textContent = "Mật khẩu hiện tại không đúng";
-                    selfPwdErrorDesc.textContent = "Mật khẩu hiện tại không chính xác. Vui lòng kiểm tra lại.";
+                    selfPwdErrorTitle.textContent = "Không thể đổi mật khẩu";
+                    selfPwdErrorDesc.textContent = "Thiếu cấu hình Central Auth API để xác thực mật khẩu hiện tại.";
                     selfPwdErrorBanner.classList.remove("hidden");
                 }
-                selfCurrentPwdInput.focus();
                 return;
             }
 
@@ -7072,7 +7299,7 @@ const initDhmLmsApp = () => {
                 if (btnSubmitSelfPwdText) btnSubmitSelfPwdText.textContent = "Đang lưu...";
                 if (btnSubmitSelfPwd) btnSubmitSelfPwd.disabled = true;
 
-                await saveNewPassword(currentUser, newPwd);
+                await saveNewPassword(currentUser, newPwd, currentPwd);
 
                 if (selfPwdSuccessBanner) selfPwdSuccessBanner.classList.remove("hidden");
                 setTimeout(() => {
@@ -7172,7 +7399,7 @@ const initDhmLmsApp = () => {
             const email = (loginIdentityInput.value || "").trim().toLowerCase();
             const fullName = (trialNameInput ? trialNameInput.value : "").trim();
             const rawPhone = (trialPhoneInput ? trialPhoneInput.value : "").trim();
-            const isConsented = trialConsentInput ? trialConsentInput.checked : true;
+            const isConsented = trialConsentInput ? trialConsentInput.checked : false;
 
             if (trialStatusMsg) {
                 trialStatusMsg.className = "hidden p-2.5 rounded-xl text-center text-xs";
@@ -7219,31 +7446,29 @@ const initDhmLmsApp = () => {
                 return;
             }
 
-            // Gửi yêu cầu qua Webhook Apps Script
+            // Gửi yêu cầu qua API máy chủ; email chỉ được gửi khi máy chủ bật rõ cấu hình Trial Auth.
             const originalBtnText = btnRequestTrialText ? btnRequestTrialText.textContent : "Gửi Liên Kết Học Thử";
             if (btnRequestTrialText) btnRequestTrialText.textContent = "⏳ Đang gửi liên kết...";
             btnRequestTrial.disabled = true;
 
-            const webhookUrl = "https://script.google.com/macros/s/AKfycbw0vTBMod1rp4f_906BcjwXbPhlb9ltiDiwVPdaOg4fOWZZOlpmy7jp2fOSrETQQe9PZQ/exec";
             const payload = {
-                action: "register_or_request_link",
                 email: email,
                 full_name: fullName,
                 phone: cleanPhone,
-                survey_type: "LMS_TRIAL"
+                consent: true
             };
+            sessionStorage.setItem(TRIAL_SIGNUP_PROFILE_KEY, JSON.stringify({ full_name: fullName, phone: cleanPhone }));
 
             try {
-                const resp = await fetch(webhookUrl, {
+                const resp = await fetch("/api/auth/trial/request", {
                     method: "POST",
-                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(payload)
                 });
-                const data = await resp.json();
+                let data = null;
+                try { data = await resp.json(); } catch (parseError) {}
 
-                if (data && data.success) {
-                    saveApprovedTrialEmail(email);
-                    saveTrialUserProfile(email, fullName, cleanPhone);
+                if (resp.ok && data && data.success === true) {
                     // Ẩn khối cảnh báo vàng "Email này chưa có trong danh sách..." để người dùng không tưởng nhầm là lỗi
                     if (trialRosterNotice) trialRosterNotice.classList.add("hidden");
 
@@ -7264,20 +7489,20 @@ const initDhmLmsApp = () => {
                     }
                     if (btnRequestTrialText) btnRequestTrialText.textContent = "Đã Gửi Liên Kết";
                     startTrialCooldown(60);
-                } else if (data && data.error === "RATE_LIMIT_EXCEEDED") {
-                    saveApprovedTrialEmail(email);
-                    saveTrialUserProfile(email, fullName, cleanPhone);
+                } else if (resp.ok && data && data.error === "RATE_LIMIT_EXCEEDED") {
                     const waitSec = data.retry_after_seconds || 60;
                     if (trialStatusMsg) {
                         trialStatusMsg.className = "p-2.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs text-left";
-                        trialStatusMsg.textContent = data.message || `Hệ thống vừa gửi liên kết. Vui lòng chờ ${waitSec} giây trước khi gửi lại yêu cầu.`;
+                        trialStatusMsg.textContent = data.message || `Hệ thống đang giới hạn yêu cầu. Vui lòng chờ ${waitSec} giây trước khi gửi lại.`;
                         trialStatusMsg.classList.remove("hidden");
                     }
                     startTrialCooldown(waitSec);
                 } else {
                     if (trialStatusMsg) {
                         trialStatusMsg.className = "p-2.5 rounded-xl bg-red-500/15 border border-red-500/30 text-red-300 text-xs";
-                        trialStatusMsg.textContent = (data && data.message) ? data.message : "Có lỗi xảy ra khi gửi liên kết. Vui lòng thử lại sau.";
+                        trialStatusMsg.textContent = resp.ok && data && data.message
+                            ? data.message
+                            : "Máy chủ chưa xác nhận yêu cầu gửi liên kết. Chưa có quyền học thử; vui lòng thử lại.";
                         trialStatusMsg.classList.remove("hidden");
                     }
                     btnRequestTrial.disabled = false;
@@ -7285,26 +7510,13 @@ const initDhmLmsApp = () => {
                 }
             } catch (err) {
                 console.warn("Request trial error:", err);
-                saveApprovedTrialEmail(email);
-                saveTrialUserProfile(email, fullName, cleanPhone);
-                if (trialRosterNotice) trialRosterNotice.classList.add("hidden");
                 if (trialStatusMsg) {
-                    trialStatusMsg.className = "p-3.5 rounded-xl bg-brand-green/15 border border-brand-green/30 text-brand-green text-xs leading-relaxed space-y-2 text-left";
-                    trialStatusMsg.innerHTML = `
-                        <div class="flex items-center gap-2 font-bold text-sm text-white">
-                            <span>🎉</span> <span>Yêu cầu đã được tiếp nhận!</span>
-                        </div>
-                        <div class="text-slate-200">
-                            Hệ thống đang xử lý và gửi liên kết tới <strong>${escapeHtml(email)}</strong>.
-                        </div>
-                        <div class="p-2.5 rounded-lg bg-black/40 border border-brand-green/20 text-[11px] text-slate-300 leading-relaxed">
-                            <strong>💡 Lưu ý:</strong> Vui lòng kiểm tra hòm thư của bạn (kể cả mục <strong>Spam / Thư rác</strong>) sau ít phút.
-                        </div>
-                    `;
+                    trialStatusMsg.className = "p-3.5 rounded-xl bg-red-500/15 border border-red-500/30 text-red-300 text-xs leading-relaxed";
+                    trialStatusMsg.textContent = "Không xác nhận được yêu cầu do lỗi kết nối. Chưa có quyền học thử; vui lòng thử lại.";
                     trialStatusMsg.classList.remove("hidden");
                 }
-                if (btnRequestTrialText) btnRequestTrialText.textContent = "Đã Gửi Liên Kết";
-                startTrialCooldown(60);
+                btnRequestTrial.disabled = false;
+                if (btnRequestTrialText) btnRequestTrialText.textContent = originalBtnText;
             }
         });
     }
@@ -8727,6 +8939,16 @@ const initDhmLmsApp = () => {
                     return;
                 }
 
+                if (getLocalApiConfig()) {
+                    updateMailtoLink();
+                    if (statusMsg) {
+                        statusMsg.className = "p-3 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs leading-relaxed";
+                        statusMsg.textContent = "Trong chế độ kiểm thử cục bộ, biểu mẫu không tự gửi ra ngoài. Anh/chị có thể dùng liên kết Email cá nhân bên dưới để tự gửi.";
+                        statusMsg.classList.remove("hidden");
+                    }
+                    return;
+                }
+
                 sendBtn.disabled = true;
                 if (sendBtnText) sendBtnText.textContent = "⏳ Đang gửi thông điệp...";
 
@@ -8752,7 +8974,7 @@ const initDhmLmsApp = () => {
 
                     if (statusMsg) {
                         statusMsg.className = "p-3 rounded-xl bg-brand-green/15 border border-brand-green/30 text-brand-green text-xs leading-relaxed space-y-1";
-                        statusMsg.innerHTML = `<div>🎉 <strong>Thông điệp đã được gửi thành công!</strong></div><div>Hệ thống đã chuyển thư tới <strong>culturecodeproject@gmail.com</strong>. Ban điều phối sẽ phản hồi sớm nhất qua email <strong>${email}</strong>.</div>`;
+                        statusMsg.textContent = `🎉 Thông điệp đã được gửi thành công! Hệ thống đã chuyển thư tới culturecodeproject@gmail.com. Ban điều phối sẽ phản hồi sớm nhất qua email ${email}.`;
                         statusMsg.classList.remove("hidden");
                     }
 
@@ -8771,7 +8993,7 @@ const initDhmLmsApp = () => {
                     console.error("Contact send error:", err);
                     if (statusMsg) {
                         statusMsg.className = "p-3 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs";
-                        statusMsg.innerHTML = `<div>⚠️ Không thể kết nối trực tiếp đến máy chủ. Vui lòng bấm vào liên kết <strong>"Mở bằng ứng dụng Email cá nhân ↗"</strong> bên dưới để gửi thư trực tiếp.</div>`;
+                        statusMsg.textContent = "⚠️ Không thể kết nối trực tiếp đến máy chủ. Vui lòng bấm vào liên kết ‘Mở bằng ứng dụng Email cá nhân’ bên dưới để gửi thư trực tiếp.";
                         statusMsg.classList.remove("hidden");
                     }
                     sendBtn.disabled = false;
@@ -8788,9 +9010,7 @@ const initDhmLmsApp = () => {
 
     // 15. INITIAL BOOTSTRAP
     loadCurriculumData().then(() => {
-        loadRoster().then(() => {
-            initAuth();
-        });
+        initAuth();
     });
 
     // Auto-refresh Personal Values & ABCDE results on window focus and storage event
