@@ -44,7 +44,7 @@ const initDhmLmsApp = () => {
                     { id: "a1-3", title: "3. Ẩn dụ Ba tầng lầu & Case Study Zappos", file: "data/artifacts/ba_tang_zappos.mp3", duration: "40:15" },
                     { id: "a1-4", title: "4. Hạnh phúc không khẩu hiệu", file: "data/artifacts/hanh_phuc_khong_khau_hieu.mp3", duration: "38:40" }
                 ],
-                summary: "Mọi hành động con người đều hội tụ về đích đến là Hạnh phúc (Aristotle). Tuy nhiên, não bộ rất nhanh thích nghi với Thú vui ngắn hạn do cơ chế thích nghi khoái lạc (Hedonic Adaptation). Để bền vững, ta cần nâng cấp lên sự Đam mê dấn thân (The Engaged Life) và Mục đích cao cả (Higher Purpose).",
+                summary: "Mọi hành động con người đều hội tụ về đích đến là Hạnh phúc (Aristotle). Tuy nhiên, não bộ rất nhanh thích nghi với Thú vui ngắn hạn do cơ chế thích nghi khoái lạc (Hedonic Adaptation). Để bền vững, ta cần nâng cấp lên Đam mê (Passion) và Mục đích cao cả (Higher Purpose) khi cống hiến cho điều lớn lao hơn bản thân.",
                 insights: [
                     { title: "Cấp độ 1: Thú vui (Pleasure)", desc: "Nhanh nguội lạnh do cơ chế thích nghi khoái lạc. Tiền bạc, tiện nghi vật chất chỉ đem lại thỏa mãn nhất thời." },
                     { title: "Cấp độ 2: Đam mê (Passion)", desc: "Dấn thân và gắn kết sâu với công việc. Say mê làm việc đến mức quên đi thời gian." },
