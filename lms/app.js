@@ -33,7 +33,7 @@ const initDhmLmsApp = () => {
                 videoType: "mp4",
                 subSections: [
                     { id: "sub-1-1", title: "Khoa Học Hạnh Phúc & 3 Cấp Độ (Pleasure • Passion • Higher Purpose)", target: "stage1-mod-1-1", tab: "tab-practice" },
-                    { id: "sub-1-2", title: "Định Vị La Bàn Giá Trị Cá Nhân (ME Values)", target: "stage1-mod-1-2", tab: "tab-practice" },
+                    { id: "sub-1-2", title: "Định Vị Giá Trị Cốt Lõi Cá Nhân (Me Values)", target: "stage1-mod-1-2", tab: "tab-practice" },
                     { id: "sub-1-cp1", title: "Check point 1: Đúc Kết I • A • M", target: "stage1-mod-cp1", tab: "tab-practice" },
                     { id: "sub-1-quiz", title: "Cổng Sát Hạch Vượt Chặng (10 Câu • Đạt ≥ 80%)", target: "stage1-mod-quiz", tab: "tab-practice" }
                 ],
@@ -206,7 +206,7 @@ const initDhmLmsApp = () => {
                     },
                     {
                         id: "mod-1-2",
-                        title: "La Bàn Giá Trị Cá Nhân (Me Values)",
+                        title: "Giá Trị Cốt Lõi Cá Nhân (Me Values)",
                         iam: {
                             id: "iam_1_2",
                             title: "Đúc kết I • A • M 1.2 — La Bàn Giá Trị Sống",
@@ -3628,7 +3628,7 @@ const initDhmLmsApp = () => {
             if (cp1BadgesEl) {
                 cp1BadgesEl.innerHTML = `
                     <p class="text-[11px] text-slate-400 italic leading-relaxed">
-                        Chưa có kết quả La Bàn Giá Trị. Bạn có thể tự nhập giá trị tâm đắc vào ô I bên dưới hoặc làm bài test 1vs1 ở phần La Bàn Giá Trị Cá Nhân (Me Values).
+                        Chưa có kết quả Giá Trị Cốt Lõi Cá Nhân (Me Values). Bạn có thể tự nhập giá trị tâm đắc vào ô I bên dưới hoặc làm bài test 1vs1 ở phần Giá Trị Cốt Lõi Cá Nhân (Me Values).
                     </p>
                 `;
             }
@@ -4287,7 +4287,7 @@ const initDhmLmsApp = () => {
                 if (cp1BridgeBadges) {
                     cp1BridgeBadges.innerHTML = `
                         <p class="text-[11px] text-slate-400 italic leading-relaxed">
-                            Chưa có kết quả La Bàn Giá Trị. Bạn có thể tự nhập giá trị tâm đắc vào ô I bên dưới hoặc làm bài test 1vs1 ở phần La Bàn Giá Trị Cá Nhân (Me Values).
+                            Chưa có kết quả Giá Trị Cốt Lõi Cá Nhân (Me Values). Bạn có thể tự nhập giá trị tâm đắc vào ô I bên dưới hoặc làm bài test 1vs1 ở phần Giá Trị Cốt Lõi Cá Nhân (Me Values).
                         </p>
                     `;
                 }

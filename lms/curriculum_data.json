@@ -25,7 +25,7 @@
         },
         {
           "id": "sub-1-2",
-          "title": "La Bàn Giá Trị Cá Nhân (Me Values)",
+          "title": "Giá Trị Cốt Lõi Cá Nhân (Me Values)",
           "target": "stage1-mod-1-2",
           "tab": "tab-practice"
         },
@@ -213,7 +213,7 @@
         },
         {
           "id": "mod-1-2",
-          "title": "La Bàn Giá Trị Cá Nhân (Me Values)",
+          "title": "Giá Trị Cốt Lõi Cá Nhân (Me Values)",
           "description": "Khám phá các giá trị cốt lõi điển hình và xếp hạng qua các tình huống điển hình.",
           "valueOptions": [
             "Tiến bộ (luôn tiến lên phía trước, phát triển không ngừng)",

@@ -1034,7 +1034,7 @@ async function submitPersonalValuesReport(fullName, email) {
     }, 250);
   } catch (err) {
     button.disabled = false;
-    button.textContent = 'Hiện kết quả La bàn giá trị cốt lõi cá nhân của bạn';
+    button.textContent = 'Hiện kết quả Giá Trị Cốt Lõi Cá Nhân (Me Values) của bạn';
     const disabledErr = err && err.message === 'PERSONAL_VALUES_API_DISABLED';
     const authErr = err && err.message === 'MISSING_LOCAL_ACCESS_TOKEN';
     setPersonalValuesSubmitStatus(disabledErr
