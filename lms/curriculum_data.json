@@ -9,7 +9,7 @@
       "stageNumber": 1,
       "badge": "Chặng 1 · Online",
       "title": "Chặng 1 · Khởi động với hạnh phúc",
-      "subtitle": "Khoa học Hạnh phúc • 3 Cấp độ • Định vị La Bàn (Me Values)",
+      "subtitle": "Khoa học Hạnh phúc • 3 Cấp độ • Định vị Giá Trị Cốt Lõi Cá Nhân (Me Values)",
       "instructor": "",
       "estimatedMinutes": 30,
       "videoUrl": "data/artifacts/the_explainer.mp4",
@@ -1316,7 +1316,7 @@
             "desc": "Trích từ slide bài giảng chính thức DHM: Tầng 1 Vật chất, Tầng 2 Tinh thần, Tầng 3 Tâm hồn."
           },
           {
-            "title": "Slide Bài Giảng: La Bàn Me Values (Giá Trị Cốt Lõi Cá Nhân)",
+            "title": "Slide Bài Giảng: Giá Trị Cốt Lõi Cá Nhân (Me Values)",
             "url": "data/artifacts/slides/slide_23.png",
             "desc": "Trích từ slide bài giảng chính thức DHM: Mô hình 3 vòng tròn Me - We - Community và Sự thống nhất bắt đầu từ Giá trị cá nhân."
           },
@@ -1333,7 +1333,7 @@
           "title": "Tình Huống Thực Tế 1.1: Trống Rỗng Sau Khi Đạt Đỉnh Doanh Số",
           "context": "Một trưởng phòng kinh doanh xuất sắc sau 6 tháng miệt mài đã dẫn dắt đội ngũ vượt 130% KPI quý, nhận được khoản tiền thưởng lớn và sự tán dương từ ban giám đốc. Tuy nhiên, chỉ sau đúng 1 tuần ăn mừng, anh rơi vào trạng thái hụt hẫng, mất phương hướng và cảm thấy công việc hoàn toàn vô nghĩa khi bước vào chu kỳ KPI mới.",
           "facultyAnalysis": "Hiện tượng này trong tâm lý học gọi là Thích Nghi Khoái Lạc (Hedonic Adaptation). Phần thưởng tiền bạc và danh vọng thuộc Cấp độ 1 (Thú vui ngắn hạn - Pleasure). Khi đạt được, dopamine tụt dốc nhanh chóng khiến người ta nhanh chóng trở lại mức cảm xúc ban đầu. Nếu chỉ dùng Cấp độ 1 để dẫn dắt đội ngũ, quản lý sẽ liên tục kiệt sức (burnout).",
-          "modelAnswer": "1. Nhận diện: Thừa nhận đây là quy luật tâm lý tự nhiên của Thú vui Cấp độ 1, không tự dằn vặt hay hoang mang.\n2. Chuyển dịch sang Cấp độ 2 (Flow/Đam mê): Tái thiết kế quy trình làm việc tập trung vào thử thách phát triển năng lực cho nhân viên thay vì chỉ nhìn vào con số.\n3. Nâng cấp lên Cấp độ 3 (Mục đích cao cả): Kết nối mục tiêu bán hàng với giá trị thực sự mang lại cho cuộc sống của khách hàng; xây dựng văn hóa đội ngũ hỗ trợ nhau cùng tiến bộ.",
+          "modelAnswer": "1. Nhận diện: Thừa nhận đây là quy luật tâm lý tự nhiên của Thú vui Cấp độ 1, không tự dằn vặt hay hoang mang.\n2. Chuyển dịch sang Cấp độ 2 (Đam mê - Passion): Tái thiết kế quy trình làm việc tập trung vào thử thách phát triển năng lực cho nhân viên thay vì chỉ nhìn vào con số.\n3. Nâng cấp lên Cấp độ 3 (Mục đích cao cả): Kết nối mục tiêu bán hàng với giá trị thực sự mang lại cho cuộc sống của khách hàng; xây dựng văn hóa đội ngũ hỗ trợ nhau cùng tiến bộ.",
           "reflectionPrompt": "Nếu ở vị trí của trưởng phòng này, bạn sẽ làm gì để tìm lại động lực nội tại và giúp đội ngũ không bị kiệt sức sau mỗi đợt chốt KPI?",
           "actionPrompt": "Hành động cụ thể bạn sẽ áp dụng ngay trong tuần này tại phòng ban/đội ngũ của mình:"
         },
@@ -1341,7 +1341,7 @@
           "id": "scenario-1-2",
           "title": "Tình Huống Thực Tế 1.2: Xung Đột Giữa 'Chính Trực' Và Áp Lực Doanh Số",
           "context": "Vào tuần cuối cùng của quý, doanh số của phòng kinh doanh còn thiếu 5% để đạt mốc thưởng toàn công ty. Cấp trên gợi ý ghi nhận trước một hợp đồng chưa hoàn tất thủ tục pháp lý sang tháng sau để 'làm đẹp số liệu'. Quản lý cảm thấy bị giằng xé dữ dội giữa áp lực tập thể và giá trị cá nhân 'Sự chính trực'.",
-          "facultyAnalysis": "Đây là bài kiểm tra kinh điển về La Bàn Giá Trị (Me Values). Khi các giá trị bị xung đột với lợi ích ngắn hạn, La Bàn chính là công cụ giúp người lãnh đạo không bị lạc lối. Tony Hsieh tại Zappos từng khẳng định: 'Nếu bạn không sẵn sàng hy sinh lợi nhuận ngắn hạn vì giá trị cốt lõi, thì đó không phải là giá trị cốt lõi mà chỉ là khẩu hiệu quảng cáo'.",
+          "facultyAnalysis": "Đây là bài kiểm tra kinh điển về La Bàn Giá Trị (Values Compass). Khi các giá trị bị xung đột với lợi ích ngắn hạn, La Bàn chính là công cụ giúp người lãnh đạo không bị lạc lối. Tony Hsieh tại Zappos từng khẳng định: 'Nếu bạn không sẵn sàng hy sinh lợi nhuận ngắn hạn vì giá trị cốt lõi, thì đó không phải là giá trị cốt lõi mà chỉ là khẩu hiệu quảng cáo'.",
           "modelAnswer": "1. Định vị La Bàn: Khẳng định 'Sự chính trực' là ranh giới đạo đức không thể thỏa hiệp.\n2. Đối thoại minh bạch (Courageous Conversation): Trình bày trung thực với cấp trên về rủi ro pháp lý và tổn hại uy tín thương hiệu lâu dài.\n3. Đề xuất giải pháp Win-Win: Tập trung toàn lực đội ngũ vào việc chốt các cơ hội bán thêm (upsell) hợp pháp cho khách hàng cũ trong 48 giờ cuối, thay vì gian lận số liệu.",
           "reflectionPrompt": "Bạn đã từng đối mặt với tình huống nào đòi hỏi phải bảo vệ giá trị cốt lõi trước áp lực ngoại cảnh chưa? Bạn đã phản ứng ra sao?",
           "actionPrompt": "Một nguyên tắc bất khả xâm phạm bạn cam kết giữ vững khi lãnh đạo hoặc làm việc cùng đội ngũ là gì?"
